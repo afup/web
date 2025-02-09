@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Seed\AbstractSeed;
 
 class ComptaOperation extends AbstractSeed
 {
-    public function run()
+    public function run(): void
     {
         $data = [
             [
@@ -25,4 +27,3 @@ class ComptaOperation extends AbstractSeed
             ->save();
     }
 }
-

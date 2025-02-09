@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members\GeneralMeeting;
 
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -14,12 +16,9 @@ class ListAction
 {
     const VALID_SORTS = ['nom', 'date_consultation', 'presence', 'personnes_avec_pouvoir_nom'];
     const VALID_DIRECTIONS = ['asc', 'desc'];
-    /** @var UserRepository */
-    private $userRepository;
-    /** @var GeneralMeetingRepository */
-    private $generalMeetingRepository;
-    /** @var Environment */
-    private $twig;
+    private UserRepository $userRepository;
+    private GeneralMeetingRepository $generalMeetingRepository;
+    private Environment $twig;
 
     public function __construct(
         UserRepository $userRepository,
@@ -31,7 +30,7 @@ class ListAction
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $latestDate = $this->generalMeetingRepository->getLatestDate();
         $sort = $request->query->get('sort', 'nom');

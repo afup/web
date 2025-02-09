@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -24,25 +26,16 @@ class TicketEventType implements NotifyPropertyInterface
      */
     private $price;
 
-    /**
-     * @var \DateTime
-     */
-    private $dateStart;
+    private ?\DateTime $dateStart = null;
 
-    /**
-     * @var \DateTime
-     */
-    private $dateEnd;
+    private ?\DateTime $dateEnd = null;
 
     /**
      * @var string
      */
     private $description;
 
-    /**
-     * @var TicketType
-     */
-    private $ticketType;
+    private ?TicketType $ticketType = null;
 
     /**
      * @var int
@@ -59,9 +52,8 @@ class TicketEventType implements NotifyPropertyInterface
 
     /**
      * @param int $ticketTypeId
-     * @return TicketEventType
      */
-    public function setTicketTypeId($ticketTypeId)
+    public function setTicketTypeId($ticketTypeId): self
     {
         $this->propertyChanged('ticketTypeId', $this->ticketTypeId, $ticketTypeId);
         $this->ticketTypeId = $ticketTypeId;
@@ -78,9 +70,8 @@ class TicketEventType implements NotifyPropertyInterface
 
     /**
      * @param int $eventId
-     * @return TicketEventType
      */
-    public function setEventId($eventId)
+    public function setEventId($eventId): self
     {
         $this->propertyChanged('eventId', $this->eventId, $eventId);
         $this->eventId = $eventId;
@@ -97,9 +88,8 @@ class TicketEventType implements NotifyPropertyInterface
 
     /**
      * @param float $price
-     * @return TicketEventType
      */
-    public function setPrice($price)
+    public function setPrice($price): self
     {
         $this->propertyChanged('price', $this->price, $price);
         $this->price = $price;
@@ -109,16 +99,12 @@ class TicketEventType implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getDateStart()
+    public function getDateStart(): ?\DateTime
     {
         return $this->dateStart;
     }
 
-    /**
-     * @param \DateTime $dateStart
-     * @return TicketEventType
-     */
-    public function setDateStart(\DateTime $dateStart)
+    public function setDateStart(\DateTime $dateStart): self
     {
         $this->propertyChanged('dateStart', $this->dateStart, $dateStart);
         $this->dateStart = $dateStart;
@@ -128,16 +114,12 @@ class TicketEventType implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getDateEnd()
+    public function getDateEnd(): ?\DateTime
     {
         return $this->dateEnd;
     }
 
-    /**
-     * @param \DateTime $dateEnd
-     * @return TicketEventType
-     */
-    public function setDateEnd(\DateTime $dateEnd)
+    public function setDateEnd(\DateTime $dateEnd): self
     {
         $this->propertyChanged('dateEnd', $this->dateEnd, $dateEnd);
         $this->dateEnd = $dateEnd;
@@ -154,9 +136,8 @@ class TicketEventType implements NotifyPropertyInterface
 
     /**
      * @param string $description
-     * @return TicketEventType
      */
-    public function setDescription($description)
+    public function setDescription($description): self
     {
         $this->propertyChanged('description', $this->description, $description);
         $this->description = $description;
@@ -166,16 +147,12 @@ class TicketEventType implements NotifyPropertyInterface
     /**
      * @return TicketType
      */
-    public function getTicketType()
+    public function getTicketType(): ?TicketType
     {
         return $this->ticketType;
     }
 
-    /**
-     * @param TicketType $ticketType
-     * @return TicketEventType
-     */
-    public function setTicketType(TicketType $ticketType)
+    public function setTicketType(TicketType $ticketType): self
     {
         $this->ticketType = $ticketType;
         return $this;
@@ -194,7 +171,7 @@ class TicketEventType implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setMaxTickets($maxTickets)
+    public function setMaxTickets($maxTickets): self
     {
         $this->propertyChanged('maxTickets', $this->maxTickets, $maxTickets);
         $this->maxTickets = $maxTickets;

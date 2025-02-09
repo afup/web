@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Utils;
 
 use Symfony\Component\Yaml\Yaml;
@@ -11,7 +13,7 @@ define('EURO', '€');
  */
 class Configuration
 {
-    static private $values;
+    private static $values;
 
     public function __construct()
     {
@@ -26,7 +28,7 @@ class Configuration
             'mailer_force_recipients', 'mailer_bcc'
         ];
 
-        foreach($parameters as $param) {
+        foreach ($parameters as $param) {
 
             // env var exist ?
             if (false !== $value = getenv(strtoupper($param))) {
@@ -38,7 +40,6 @@ class Configuration
                 self::$values[$param] = $sfParameters[$param];
             }
         }
-
     }
 
     private function loadSymfonyParameters(): array

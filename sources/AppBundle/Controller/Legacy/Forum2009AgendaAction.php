@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Legacy;
 
 use Afup\Site\Forum\Forum;
@@ -9,10 +11,8 @@ use Twig\Environment;
 
 class Forum2009AgendaAction
 {
-    /** @var Forum */
-    private $forum;
-    /** @var Environment */
-    private $twig;
+    private Forum $forum;
+    private Environment $twig;
 
     public function __construct(Forum $forum, Environment $twig)
     {
@@ -20,7 +20,7 @@ class Forum2009AgendaAction
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         return new Response($this->twig->render('legacy/forumphp2009/agenda.html.twig', [
             'agenda' => $this->forum->genAgenda(2009),

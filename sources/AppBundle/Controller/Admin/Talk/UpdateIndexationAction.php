@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Talk;
 
 use AppBundle\Indexation\Talks\Runner;
@@ -9,10 +11,8 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 class UpdateIndexationAction
 {
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var Runner */
-    private $runner;
+    private FlashBagInterface $flashBag;
+    private Runner $runner;
 
     public function __construct(
         Runner $runner,
@@ -22,7 +22,7 @@ class UpdateIndexationAction
         $this->flashBag = $flashBag;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse
     {
         set_time_limit(240);
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Event;
 
 use AppBundle\CFP\SpeakerFactory;
@@ -8,12 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SpeakerPageAction
 {
-    /** @var SpeakerPage */
-    private $speakerPage;
-    /** @var SpeakerFactory */
-    private $speakerFactory;
-    /** @var EventActionHelper */
-    private $eventActionHelper;
+    private SpeakerPage $speakerPage;
+    private SpeakerFactory $speakerFactory;
+    private EventActionHelper $eventActionHelper;
 
     public function __construct(
         SpeakerPage $speakerPage,

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Migration\AbstractMigration;
 
 class MariaDBToMysql extends AbstractMigration
 {
-    public function change()
+    public function change(): void
     {
         $this->execute("ALTER TABLE afup_sessions ALTER COLUMN skill SET DEFAULT 0");
         $this->execute("ALTER TABLE afup_forum MODIFY date_debut date NULL");
@@ -19,4 +21,3 @@ class MariaDBToMysql extends AbstractMigration
         $this->execute("ALTER TABLE afup_inscription_forum MODIFY transport_mode SMALLINT NULL");
     }
 }
-

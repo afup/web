@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Speaker;
 
 use AppBundle\Controller\Event\EventActionHelper;
@@ -17,16 +19,11 @@ class SpeakerListAction
 {
     const VALID_SORTS = ['name', 'company'];
     const VALID_DIRECTIONS = ['asc', 'desc'];
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var EventRepository */
-    private $eventRepository;
-    /** @var SpeakerRepository */
-    private $speakerRepository;
-    /** @var TalkRepository */
-    private $talkRepository;
-    /** @var Environment */
-    private $twig;
+    private EventActionHelper $eventActionHelper;
+    private EventRepository $eventRepository;
+    private SpeakerRepository $speakerRepository;
+    private TalkRepository $talkRepository;
+    private Environment $twig;
 
     public function __construct(
         EventActionHelper $eventActionHelper,
@@ -42,7 +39,7 @@ class SpeakerListAction
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $sort = $request->query->get('sort', 'name');
         $direction = $request->query->get('direction', 'asc');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Event\Form;
 
@@ -21,31 +23,28 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class SpeakerType extends AbstractType
 {
-    const OPT_PHOTO_REQUIRED = 'photo_required';
-    const OPT_USER_GITHUB = 'user_github';
+    public const OPT_PHOTO_REQUIRED = 'photo_required';
+    public const OPT_USER_GITHUB = 'user_github';
 
-    /** @var GithubUserRepository */
-    private $githubUserRepository;
-    /** @var SpeakerRepository */
-    private $speakerRepository;
-    /** @var TokenStorage */
-    private $tokenStorage;
+    private GithubUserRepository $githubUserRepository;
+    private SpeakerRepository $speakerRepository;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         GithubUserRepository $githubUserRepository,
         SpeakerRepository $speakerRepository,
-        TokenStorage $tokenStorage
+        TokenStorageInterface $tokenStorage
     ) {
         $this->githubUserRepository = $githubUserRepository;
         $this->speakerRepository = $speakerRepository;
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('civility', ChoiceType::class, ['choices' => ['M' => 'M', 'Mme' => 'Mme']])
@@ -58,10 +57,11 @@ class SpeakerType extends AbstractType
             ->add('biography', TextareaType::class)
             ->add('twitter', TextType::class, ['required' => false])
             ->add('mastodon', UrlType::class, ['required' => false, 'help' => 'Exemple https://mastodon.online/@afup', 'default_protocol' => 'https'])
+            ->add('bluesky', TextType::class, ['required' => false, 'help' => 'Exemple acme.bsky.social'])
         ;
 
         if (true === $options[self::OPT_USER_GITHUB]) {
-            // mieux vaudrait passer par un option référeent ou "saisie dans le BO", mais le bug
+            // il vaudrait mieux passer par une option référent ou "saisie dans le BO", mais le bug
             // a été vu lors du Forum PHP 2022, on est pragmatique et le corrige au plus vite.
             $builder
                 ->add('referent_person', TextType::class, ['required' => false, 'property_path' => 'referentPerson', 'label' => 'Personne référente'])
@@ -72,18 +72,14 @@ class SpeakerType extends AbstractType
                         'property_path' => 'githubUser',
                         'label' => 'Utilisateur GitHub',
                         'required' => false,
-                        'choice_label' => function (GithubUser $user) {
-                            return $user->getLabel();
-                        },
+                        'choice_label' => fn (GithubUser $user) => $user->getLabel(),
                         'choice_value' => function ($choice) {
                             if ($choice instanceof GithubUser) {
                                 return $choice->getId();
                             }
                             return $choice;
                         },
-                        'choice_loader' => new CallbackChoiceLoader(function () {
-                            return $this->githubUserRepository->getAllOrderedByLogin();
-                        }),
+                        'choice_loader' => new CallbackChoiceLoader(fn () => $this->githubUserRepository->getAllOrderedByLogin()),
                     ]
                 )
             ;
@@ -94,7 +90,7 @@ class SpeakerType extends AbstractType
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent): void {
             $speaker = $formEvent->getData();
             $user = $this->tokenStorage->getToken()->getUser();
 
@@ -111,6 +107,7 @@ class SpeakerType extends AbstractType
                     $speaker->setBiography($previousSpeakerInfos->getBiography());
                     $speaker->setTwitter($previousSpeakerInfos->getTwitter());
                     $speaker->setMastodon($previousSpeakerInfos->getMastodon());
+                    $speaker->setBluesky($previousSpeakerInfos->getBluesky());
                     $speaker->setPhoto($previousSpeakerInfos->getPhoto());
 
                     $formEvent->getForm()->add('isFromPreviousEvent', HiddenType::class, ['mapped' => false]);
@@ -119,7 +116,7 @@ class SpeakerType extends AbstractType
         });
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([

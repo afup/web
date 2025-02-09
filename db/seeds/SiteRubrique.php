@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use AppBundle\Site\Model\Rubrique;
 use Phinx\Seed\AbstractSeed;
 
 class SiteRubrique extends AbstractSeed
 {
-    public function run()
+    public function run(): void
     {
         $data = [
             [

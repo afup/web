@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Controller\Event\EventActionHelper;
@@ -9,12 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SpeakerInfosAction
 {
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var SpeakerRepository */
-    private $speakerRepository;
-    /** @var SpeakerPage */
-    private $speakerPage;
+    private EventActionHelper $eventActionHelper;
+    private SpeakerRepository $speakerRepository;
+    private SpeakerPage $speakerPage;
 
     public function __construct(
         EventActionHelper $eventActionHelper,

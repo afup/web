@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\TechLetter\Model;
 
 class TechLetterFactory
 {
-    public static function createTechLetterFromJson($json)
+    public static function createTechLetterFromJson($json): TechLetter
     {
         $array = json_decode((string) $json, true);
 
@@ -17,7 +19,7 @@ class TechLetterFactory
 
         if (isset($array['articles'])) {
             foreach ($array['articles'] as $article) {
-                $language = isset($article['language']) ? $article['language'] : 'en';
+                $language = $article['language'] ?? 'en';
                 $articles[] = new Article($article['url'], $article['title'], $article['host'], $article['readingTime'], $article['excerpt'], $language);
             }
         }

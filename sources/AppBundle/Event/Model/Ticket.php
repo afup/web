@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use AppBundle\Event\Validator\Constraints as Assert;
@@ -112,10 +114,7 @@ class Ticket implements NotifyPropertyInterface
      */
     private $id;
 
-    /**
-     * @var \DateTime
-     */
-    private $date;
+    private ?\DateTime $date = null;
 
     /**
      * @var string
@@ -132,10 +131,7 @@ class Ticket implements NotifyPropertyInterface
      */
     private $ticketTypeId;
 
-    /**
-     * @var TicketEventType
-     */
-    private $ticketEventType;
+    private ?TicketEventType $ticketEventType = null;
 
     /**
      * @var int
@@ -207,15 +203,9 @@ class Ticket implements NotifyPropertyInterface
      */
     private $forumId;
 
-    /**
-     * @var int
-     */
-    private $memberType;
+    private ?int $memberType = null;
 
-    /**
-     * @var int
-     */
-    private $memberId;
+    private ?int $memberId = null;
 
     /**
      * @var bool
@@ -277,9 +267,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param int $id
-     * @return Ticket
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -289,16 +278,12 @@ class Ticket implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getDate()
+    public function getDate(): ?\DateTime
     {
         return $this->date;
     }
 
-    /**
-     * @param \DateTime $date
-     * @return Ticket
-     */
-    public function setDate(\DateTime $date)
+    public function setDate(\DateTime $date): self
     {
         $this->propertyChanged('date', $this->date, $date);
         $this->date = $date;
@@ -315,9 +300,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param string $reference
-     * @return Ticket
      */
-    public function setReference($reference)
+    public function setReference($reference): self
     {
         $this->propertyChanged('reference', $this->reference, $reference);
         $this->reference = $reference;
@@ -334,9 +318,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param string $voucher
-     * @return Ticket
      */
-    public function setVoucher($voucher)
+    public function setVoucher($voucher): self
     {
         $this->propertyChanged('voucher', $this->voucher, $voucher);
         $this->voucher = $voucher;
@@ -353,9 +336,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param int $ticketTypeId
-     * @return Ticket
      */
-    public function setTicketTypeId($ticketTypeId)
+    public function setTicketTypeId($ticketTypeId): self
     {
         $this->propertyChanged('ticketTypeId', $this->ticketTypeId, $ticketTypeId);
         $this->ticketTypeId = $ticketTypeId;
@@ -365,16 +347,12 @@ class Ticket implements NotifyPropertyInterface
     /**
      * @return TicketEventType
      */
-    public function getTicketEventType()
+    public function getTicketEventType(): ?TicketEventType
     {
         return $this->ticketEventType;
     }
 
-    /**
-     * @param TicketEventType $ticketEventType
-     * @return Ticket
-     */
-    public function setTicketEventType(TicketEventType $ticketEventType)
+    public function setTicketEventType(TicketEventType $ticketEventType): self
     {
         $this->ticketEventType = $ticketEventType;
         $this->ticketTypeId = $ticketEventType->getTicketTypeId();
@@ -391,9 +369,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param int $amount
-     * @return Ticket
      */
-    public function setAmount($amount)
+    public function setAmount($amount): self
     {
         $this->propertyChanged('amount', $this->amount, $amount);
         $this->amount = $amount;
@@ -410,9 +387,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param string $paymentInfo
-     * @return Ticket
      */
-    public function setPaymentInfo($paymentInfo)
+    public function setPaymentInfo($paymentInfo): self
     {
         $this->propertyChanged('paymentInfo', $this->paymentInfo, $paymentInfo);
         $this->paymentInfo = $paymentInfo;
@@ -429,9 +405,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param string $civility
-     * @return Ticket
      */
-    public function setCivility($civility)
+    public function setCivility($civility): self
     {
         $this->propertyChanged('civility', $this->civility, $civility);
         $this->civility = $civility;
@@ -448,9 +423,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param string $firstname
-     * @return Ticket
      */
-    public function setFirstname($firstname)
+    public function setFirstname($firstname): self
     {
         $this->propertyChanged('firstname', $this->firstname, $firstname);
         $this->firstname = $firstname;
@@ -467,9 +441,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param string $lastname
-     * @return Ticket
      */
-    public function setLastname($lastname)
+    public function setLastname($lastname): self
     {
         $this->propertyChanged('lastname', $this->lastname, $lastname);
         $this->lastname = $lastname;
@@ -486,9 +459,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param string $email
-     * @return Ticket
      */
-    public function setEmail($email)
+    public function setEmail($email): self
     {
         $this->propertyChanged('email', $this->email, $email);
         $this->email = $email;
@@ -505,9 +477,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param string $phoneNumber
-     * @return Ticket
      */
-    public function setPhoneNumber($phoneNumber)
+    public function setPhoneNumber($phoneNumber): self
     {
         $this->propertyChanged('phoneNumber', $this->phoneNumber, $phoneNumber);
         $this->phoneNumber = $phoneNumber;
@@ -524,9 +495,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param bool $companyCitation
-     * @return Ticket
      */
-    public function setCompanyCitation($companyCitation)
+    public function setCompanyCitation($companyCitation): self
     {
         $this->propertyChanged('companyCitation', $this->companyCitation, $companyCitation);
         $this->companyCitation = $companyCitation;
@@ -543,9 +513,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param bool $newsletter
-     * @return Ticket
      */
-    public function setNewsletter($newsletter)
+    public function setNewsletter($newsletter): self
     {
         $this->propertyChanged('newsletter', $this->newsletter, $newsletter);
         $this->newsletter = $newsletter;
@@ -562,9 +531,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param bool $optin
-     * @return Ticket
      */
-    public function setOptin($optin)
+    public function setOptin($optin): self
     {
         $this->propertyChanged('optin', $this->optin, $optin);
         $this->optin = $optin;
@@ -581,9 +549,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param string $comments
-     * @return Ticket
      */
-    public function setComments($comments)
+    public function setComments($comments): self
     {
         $this->propertyChanged('comments', $this->comments, $comments);
         $this->comments = $comments;
@@ -600,9 +567,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param int $status
-     * @return Ticket
      */
-    public function setStatus($status)
+    public function setStatus($status): self
     {
         $this->propertyChanged('status', $this->status, $status);
         $this->status = $status;
@@ -619,9 +585,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param int $invoiceStatus
-     * @return Ticket
      */
-    public function setInvoiceStatus($invoiceStatus)
+    public function setInvoiceStatus($invoiceStatus): self
     {
         $this->propertyChanged('invoiceStatus', $this->invoiceStatus, $invoiceStatus);
         $this->invoiceStatus = $invoiceStatus;
@@ -638,9 +603,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param int $forumId
-     * @return Ticket
      */
-    public function setForumId($forumId)
+    public function setForumId($forumId): self
     {
         $this->propertyChanged('forumId', $this->forumId, $forumId);
         $this->forumId = $forumId;
@@ -650,16 +614,15 @@ class Ticket implements NotifyPropertyInterface
     /**
      * @return int
      */
-    public function getMemberType()
+    public function getMemberType(): ?int
     {
         return $this->memberType;
     }
 
     /**
      * @param int $memberType
-     * @return Ticket
      */
-    public function setMemberType($memberType)
+    public function setMemberType($memberType): self
     {
         $memberType = (int) $memberType;
         $this->propertyChanged('memberType', $this->memberType, $memberType);
@@ -671,16 +634,15 @@ class Ticket implements NotifyPropertyInterface
     /**
      * @return int
      */
-    public function getMemberId()
+    public function getMemberId(): ?int
     {
         return $this->memberId;
     }
 
     /**
      * @param int $memberId
-     * @return Ticket
      */
-    public function setMemberId($memberId)
+    public function setMemberId($memberId): self
     {
         $memberId = (int) $memberId;
         $this->propertyChanged('memberId', $this->memberId, $memberId);
@@ -699,9 +661,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param bool $day1Checkin
-     * @return Ticket
      */
-    public function setDay1Checkin($day1Checkin)
+    public function setDay1Checkin($day1Checkin): self
     {
         $this->propertyChanged('day1Checkin', $this->day1Checkin, $day1Checkin);
         $this->day1Checkin = $day1Checkin;
@@ -718,27 +679,20 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param bool $day2Checkin
-     * @return Ticket
      */
-    public function setDay2Checkin($day2Checkin)
+    public function setDay2Checkin($day2Checkin): self
     {
         $this->propertyChanged('day2Checkin', $this->day2Checkin, $day2Checkin);
         $this->day2Checkin = $day2Checkin;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->firstname . ' ' . $this->lastname;
     }
 
-    /**
-     * @return array
-     */
-    public function getTags()
+    public function getTags(): array
     {
         return [$this->tag1, $this->tag2, $this->tag3];
     }
@@ -753,10 +707,8 @@ class Ticket implements NotifyPropertyInterface
 
     /**
      * @param null|string $specialPriceToken
-     *
-     * @return Ticket
      */
-    public function setSpecialPriceToken($specialPriceToken)
+    public function setSpecialPriceToken($specialPriceToken): self
     {
         $this->propertyChanged('specialPriceToken', $this->specialPriceToken, $specialPriceToken);
         $this->specialPriceToken = $specialPriceToken;
@@ -777,7 +729,7 @@ class Ticket implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setNearestOffice($nearestOffice)
+    public function setNearestOffice($nearestOffice): self
     {
         $this->propertyChanged('nearestOffice', $this->nearestOffice, $nearestOffice);
 
@@ -799,7 +751,7 @@ class Ticket implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setTransportMode($transportMode)
+    public function setTransportMode($transportMode): self
     {
         $this->propertyChanged('transportMode', $this->transportMode, $transportMode);
 
@@ -821,7 +773,7 @@ class Ticket implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setTransportDistance($transportDistance)
+    public function setTransportDistance($transportDistance): self
     {
         $this->propertyChanged('transportDistance', $this->transportDistance, $transportDistance);
 
@@ -842,7 +794,7 @@ class Ticket implements NotifyPropertyInterface
      * @param null|string $qrCode
      * @return $this
      */
-    public function setQrCode($qrCode)
+    public function setQrCode($qrCode): self
     {
         $this->propertyChanged('qrCode', $this->qrCode, $qrCode);
         $this->qrCode = $qrCode;

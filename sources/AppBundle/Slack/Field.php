@@ -1,74 +1,43 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AppBundle\Slack;
 
-class Field
+final class Field
 {
-    /**
-     * @var string
-     */
-    private $title;
+    private ?string $title = null;
+    private ?string $value = null;
+    private bool $short = true;
 
-    /**
-     * @var string
-     */
-    private $value;
-
-    /**
-     * @var bool
-     */
-    private $short = true;
-
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     * @return Field
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): self
     {
         $this->title = $title;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue(): ?string
     {
         return $this->value;
     }
 
-    /**
-     * @param string $value
-     * @return Field
-     */
-    public function setValue($value)
+    public function setValue(string $value): self
     {
         $this->value = $value;
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isShort()
+    public function isShort(): bool
     {
         return $this->short;
     }
 
-    /**
-     * @param boolean $short
-     * @return Field
-     */
-    public function setShort($short)
+    public function setShort(bool $short): self
     {
         $this->short = $short;
         return $this;

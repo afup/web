@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -33,10 +35,7 @@ class GeneralMeetingVote implements NotifyPropertyInterface
      */
     private $value;
 
-    /**
-     * @var \DateTime
-     */
-    private $createdAt;
+    private ?\DateTime $createdAt = null;
 
     /**
      * @return int
@@ -51,7 +50,7 @@ class GeneralMeetingVote implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setQuestionId($questionId)
+    public function setQuestionId($questionId): self
     {
         $this->propertyChanged('questionId', $this->questionId, $questionId);
         $this->questionId = $questionId;
@@ -72,7 +71,7 @@ class GeneralMeetingVote implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setUserId($userId)
+    public function setUserId($userId): self
     {
         $this->propertyChanged('userId', $this->userId, $userId);
         $this->userId = $userId;
@@ -93,7 +92,7 @@ class GeneralMeetingVote implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setWeight($weight)
+    public function setWeight($weight): self
     {
         $this->propertyChanged('weight', $this->weight, $weight);
         $this->weight = $weight;
@@ -117,17 +116,13 @@ class GeneralMeetingVote implements NotifyPropertyInterface
         $valuesLabels = self::getVoteLabelsByValue();
         $value = $this->getValue();
 
-        if (isset($valuesLabels[$value])) {
-            return $valuesLabels[$value];
-        }
-
-        return null;
+        return $valuesLabels[$value] ?? null;
     }
 
     /**
      * @param string $value
      */
-    public function setValue($value)
+    public function setValue($value): self
     {
         $this->propertyChanged('value', $this->value, $value);
         $this->value = $value;
@@ -138,17 +133,15 @@ class GeneralMeetingVote implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @param \DateTime $createdAt
-     *
      * @return $this
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->propertyChanged('createdAt', $this->createdAt, $createdAt);
         $this->createdAt = $createdAt;
@@ -156,7 +149,7 @@ class GeneralMeetingVote implements NotifyPropertyInterface
         return $this;
     }
 
-    public static function isValueAllowed($value)
+    public static function isValueAllowed($value): bool
     {
         return in_array($value, self::getAllValues());
     }
@@ -166,7 +159,7 @@ class GeneralMeetingVote implements NotifyPropertyInterface
         return array_keys(self::getVoteLabelsByValue());
     }
 
-    public static function getVoteLabelsByValue()
+    public static function getVoteLabelsByValue(): array
     {
         return [
             self::VALUE_YES => 'Oui',

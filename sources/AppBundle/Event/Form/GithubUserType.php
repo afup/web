@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Event\Form;
 
@@ -20,7 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GithubUserType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('user', TextType::class, [
@@ -46,9 +48,7 @@ class GithubUserType extends AbstractType
                 /**
                  * @param $githubUser null|GithubUser
                  */
-                function ($githubUser) {
-                    return $githubUser === null ? null : $githubUser->getLogin();
-                },
+                fn ($githubUser) => $githubUser === null ? null : $githubUser->getLogin(),
                 /**
                  * @param $githubUsername string
                  */
@@ -59,16 +59,14 @@ class GithubUserType extends AbstractType
 
                     try {
                         return $githubClient->getUserInfos($githubUsername);
-                    } catch (UnableToFindGithubUserException $e) {
-                        throw new TransformationFailedException($e->getMessage());
-                    } catch (UnableToGetGithubUserInfosException $e) {
+                    } catch (UnableToFindGithubUserException|UnableToGetGithubUserInfosException $e) {
                         throw new TransformationFailedException($e->getMessage());
                     }
                 }
             ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([

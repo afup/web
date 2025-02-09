@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Planete;
 
 use Afup\Site\Logger\DbLoggerTrait;
@@ -11,7 +13,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
@@ -19,16 +20,11 @@ class FeedEditAction
 {
     use DbLoggerTrait;
 
-    /** @var FeedRepository */
-    private $feedRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var Environment */
-    private $twig;
+    private FeedRepository $feedRepository;
+    private FormFactoryInterface $formFactory;
+    private UrlGeneratorInterface $urlGenerator;
+    private FlashBagInterface $flashBag;
+    private Environment $twig;
 
     public function __construct(
         FeedRepository $feedRepository,
@@ -48,9 +44,6 @@ class FeedEditAction
     {
         $id = $request->query->getInt('id');
         $feed = $this->feedRepository->get($id);
-        if (null === $feed) {
-            throw new NotFoundHttpException('Flux introuvable');
-        }
         $data = new FeedFormData();
         $data->name = $feed->getName();
         $data->feed = $feed->getFeed();

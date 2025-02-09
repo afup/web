@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Migration\AbstractMigration;
 
 class UserBadgeConstraint extends AbstractMigration
 {
-    public function change()
+    public function change(): void
     {
         $sql = <<<EOF
 ALTER TABLE afup_personnes_physiques_badge 

@@ -147,7 +147,7 @@ Feature: Espace membre, accueil
     When I follow "Consulter"
     Then I should see "Payer ma cotisation"
     When I follow "Télécharger la facture"
-    Then the response header "Content-disposition" should equal 'attachment; filename="MyCorp_COTIS-2024-200_13072018.pdf"'
+    Then the response header "Content-disposition" should equal 'attachment; filename="MyCorp_COTIS-2025-200_13072018.pdf"'
 
   @reloadDbWithTestData
   Scenario: Si on est pas company manager de la personne morale, on ne peux pas télécharger la facture

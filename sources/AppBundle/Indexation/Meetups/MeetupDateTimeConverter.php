@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Indexation\Meetups;
 
 use DateTime;
@@ -12,11 +14,10 @@ class MeetupDateTimeConverter
     /**
      * @param string $dateTimeString
      *
-     * @return DateTime
      *
      * @throws Exception
      */
-    public function convertStringToDateTime($dateTimeString)
+    public function convertStringToDateTime($dateTimeString): \DateTime
     {
         $unAccentDateString = $this->getDateTimeStringWithoutAccents($dateTimeString);
 
@@ -33,7 +34,7 @@ class MeetupDateTimeConverter
             throw new Exception('Abbréviation de mois invalide : ' . $monthAbbreviation);
         }
 
-        list($year, $day, $hour, $minute, $timezoneAbbreviation) = [
+        [$year, $day, $hour, $minute, $timezoneAbbreviation] = [
             $parsedDateTime['year'],
             $parsedDateTime['day'],
             $parsedDateTime['time'][0],
@@ -60,12 +61,10 @@ class MeetupDateTimeConverter
     }
 
     /**
-     * @param string $dateTimeString
-     * @return array
      *
      * @throws Exception
      */
-    private function parseDateString($dateTimeString)
+    private function parseDateString(string $dateTimeString): array
     {
         $pattern = '/(\S+)\s+(\d+)\s+(\S+)\s+(\d+),\s+(\d+:\d+)\s+([A-Za-z0-9\s\+\-]+)/u';
         preg_match($pattern, $dateTimeString, $matches);
@@ -86,13 +85,12 @@ class MeetupDateTimeConverter
     /**
      * @param int $time
      *
-     * @return void
      *
      * @throws Exception
      */
-    private function validateTime($time)
+    private function validateTime($time): void
     {
-        list($hour, $minute) = $time;
+        [$hour, $minute] = $time;
 
         if ($hour >= 24 || $minute >= 60) {
             throw new Exception('Heure invalide : ' . implode(':', $time));
@@ -100,13 +98,11 @@ class MeetupDateTimeConverter
     }
 
     /**
-     * @param string $timezoneAbbreviation
      *
-     * @return DateTimeZone
      *
      * @throws Exception
      */
-    public function getTimezoneFromAbbreviation($timezoneAbbreviation)
+    public function getTimezoneFromAbbreviation(string $timezoneAbbreviation): \DateTimeZone
     {
         $timezoneNameMap = $this->getTimezoneNameMap();
 
@@ -125,7 +121,7 @@ class MeetupDateTimeConverter
      *
      * @return string[]
      */
-    private function getTimezoneNameMap()
+    private function getTimezoneNameMap(): array
     {
         return [
             'UTC+0' => 'UTC',
@@ -142,7 +138,7 @@ class MeetupDateTimeConverter
      * @param string $dateTimeString
      * @return string
      */
-    private function getDateTimeStringWithoutAccents($dateTimeString)
+    private function getDateTimeStringWithoutAccents($dateTimeString): ?string
     {
         $normalized = Normalizer::normalize($dateTimeString, Normalizer::FORM_KD);
 

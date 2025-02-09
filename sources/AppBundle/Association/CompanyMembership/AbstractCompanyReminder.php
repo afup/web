@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\CompanyMembership;
 
 use AppBundle\Association\MembershipReminderInterface;
@@ -15,22 +17,17 @@ use AppBundle\Email\Mailer\Message;
 
 abstract class AbstractCompanyReminder implements MembershipReminderInterface
 {
-    /**
-     * @var Mailer
-     */
-    private $mailer;
+    private Mailer $mailer;
 
     protected $membershipFee;
 
     protected $membersPerFee;
 
-    private $subscriptionReminderLogRepository;
+    private SubscriptionReminderLogRepository $subscriptionReminderLogRepository;
 
     /**
-     * @param Mailer                            $mailer
      * @param int                               $membershipFee
      * @param int                               $membersPerFee
-     * @param SubscriptionReminderLogRepository $subscriptionReminderLogRepository
      */
     public function __construct(
         Mailer $mailer,
@@ -48,7 +45,7 @@ abstract class AbstractCompanyReminder implements MembershipReminderInterface
     abstract protected function getSubject();
     abstract protected function getKey();
 
-    public function sendReminder(NotifiableInterface $user)
+    public function sendReminder(NotifiableInterface $user): void
     {
         $log = new SubscriptionReminderLog();
         $log

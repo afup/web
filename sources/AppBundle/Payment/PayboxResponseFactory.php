@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Payment;
 
 use Symfony\Component\HttpFoundation\Request;
 
 class PayboxResponseFactory
 {
-    public static function createFromRequest(Request $request)
+    public static function createFromRequest(Request $request): PayboxResponse
     {
         $keys = [
             'cmd',

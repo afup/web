@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\CFP;
 
@@ -17,8 +19,7 @@ class PhotoStorage
     private $basePath;
     private $publicPath;
     private $legacyBasePath;
-    /** @var Filesystem */
-    private $filesystem;
+    private Filesystem $filesystem;
 
     const DIR_ORIGINAL = 'originals';
     const DIR_THUMBS = 'thumbnails';
@@ -36,14 +37,14 @@ class PhotoStorage
         $this->filesystem = new Filesystem();
     }
 
-    public function store(File $photo, Speaker $speaker)
+    public function store(File $photo, Speaker $speaker): string
     {
         $fileName = $speaker->getId() . '.' . $photo->guessExtension();
         $directory = $this->basePath . '/' . $speaker->getEventId() . '/' . self::DIR_ORIGINAL;
         $this->createDirectory($directory);
         // delete all formats
         if ($speaker->getId() !== null) {
-            foreach (self::FORMAT as $format => $sizes) {
+            foreach (array_keys(self::FORMAT) as $format) {
                 $files = glob($this->basePath . '/' . $speaker->getEventId() . '/' . $format . '/' . $speaker->getId() . '.*');
                 $this->filesystem->remove($files);
             }
@@ -54,7 +55,7 @@ class PhotoStorage
         return $fileName;
     }
 
-    public function getUrl(Speaker $speaker, $format = null)
+    public function getUrl(Speaker $speaker, $format = null): ?string
     {
         if ($format === null) {
             $format = self::DIR_THUMBS;
@@ -62,11 +63,9 @@ class PhotoStorage
         if (!in_array($format, [self::DIR_ORIGINAL, self::DIR_THUMBS])) {
             throw new \UnexpectedValueException(sprintf('Bad format: %s', $format));
         }
-        if ($format !== self::DIR_ORIGINAL) {
-            // We have to check if the file exists or create it from the original size
-            if (!$this->filesystem->exists($this->getPath($speaker, $format))) {
-                $this->generateFormat($speaker, $format);
-            }
+        // We have to check if the file exists or create it from the original size
+        if ($format !== self::DIR_ORIGINAL && !$this->filesystem->exists($this->getPath($speaker, $format))) {
+            $this->generateFormat($speaker, $format);
         }
 
         if ($this->filesystem->exists($this->getPath($speaker, $format))) {
@@ -76,7 +75,7 @@ class PhotoStorage
         return null;
     }
 
-    public function getPath(Speaker $speaker, $format)
+    public function getPath(Speaker $speaker, string $format): string
     {
         if (!in_array($format, [self::DIR_ORIGINAL, self::DIR_THUMBS])) {
             throw new \UnexpectedValueException(sprintf('Bad format: %s', $format));
@@ -88,10 +87,7 @@ class PhotoStorage
         return $directory . '/' . $speaker->getPhoto();
     }
 
-    /**
-     * @return string
-     */
-    public function storeLegacy(UploadedFile $photo, Event $event, Speaker $speaker)
+    public function storeLegacy(UploadedFile $photo, Event $event, Speaker $speaker): string
     {
         $dir = '/templates/' . $event->getPath() . '/images/intervenants';
         $path = $dir . '/' . $speaker->getId() . '.jpg';
@@ -114,10 +110,7 @@ class PhotoStorage
         return $path;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getLegacyUrl(Event $event, Speaker $speaker)
+    public function getLegacyUrl(Event $event, Speaker $speaker): ?string
     {
         $path = '/templates/' . $event->getPath() . '/images/intervenants/' . $speaker->getId() . '.jpg';
         if (is_file($this->legacyBasePath . $path)) {
@@ -127,7 +120,7 @@ class PhotoStorage
         return null;
     }
 
-    public function storeFromGravatar(Speaker $speaker)
+    public function storeFromGravatar(Speaker $speaker): ?string
     {
         $tmpImagePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('gravatar-', true) . '.jpg';
         // Transformation en 90x120 JPG pour simplifier
@@ -143,7 +136,7 @@ class PhotoStorage
         return null;
     }
 
-    private function generateFormat(Speaker $speaker, $format)
+    private function generateFormat(Speaker $speaker, string $format): void
     {
         $originalPath = $this->getPath($speaker, self::DIR_ORIGINAL);
         $formatPath = $this->getPath($speaker, $format);
@@ -193,7 +186,7 @@ class PhotoStorage
             }
 
             $img = imagecreatetruecolor($width, $height);
-            if ($transparent === true) {
+            if ($transparent) {
                 imagecolortransparent($img, imagecolorallocatealpha($img, 0, 0, 0, 127));
                 imagealphablending($img, false);
                 imagesavealpha($img, true);
@@ -207,7 +200,7 @@ class PhotoStorage
         }
     }
 
-    private function createDirectory($directory)
+    private function createDirectory(string $directory): void
     {
         try {
             $this->filesystem->mkdir($directory, 0755);

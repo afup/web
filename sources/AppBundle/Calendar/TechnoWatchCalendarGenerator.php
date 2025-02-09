@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Calendar;
 
 use Sabre\VObject\Component\VCalendar;
@@ -11,14 +13,10 @@ class TechnoWatchCalendarGenerator
      */
     private $name;
 
-    /**
-     * @var \DateTime
-     */
-    private $currentDate;
+    private \DateTime $currentDate;
 
     /**
      * @param string $name
-     * @param \DateTime $currentDate
      */
     public function __construct($name, \DateTime $currentDate)
     {
@@ -29,7 +27,6 @@ class TechnoWatchCalendarGenerator
     /**
      * @param string $googleSpreadsheetCsvUrl
      * @param $displayPrefix
-     * @param null $filter
      *
      * @return string
      */
@@ -53,11 +50,9 @@ class TechnoWatchCalendarGenerator
 
     /**
      * @param $googleSpreadsheetCsvUrl
-     * @param null $filter
      *
-     * @return array
      */
-    private function prepareEvents($googleSpreadsheetCsvUrl, $filter = null)
+    private function prepareEvents($googleSpreadsheetCsvUrl, $filter = null): array
     {
         $url = $googleSpreadsheetCsvUrl;
 
@@ -69,7 +64,7 @@ class TechnoWatchCalendarGenerator
         $events = [];
 
         while (false !== ($row = fgetcsv($fp))) {
-            if (0 === strlen(trim($row[0]))) {
+            if (trim($row[0]) === '') {
                 continue;
             }
 
@@ -88,11 +83,11 @@ class TechnoWatchCalendarGenerator
             $firstChair = trim($row[4]);
             $secondChair = trim($row[5]);
 
-            if (strlen($filter) > 0 && (!($firstChair == $filter || $secondChair == $filter))) {
+            if (strlen($filter) > 0 && ($firstChair != $filter && $secondChair != $filter)) {
                 continue;
             }
 
-            if (0 === strlen($firstChair) || 0 == strlen($secondChair)) {
+            if ($firstChair === '' || 0 == strlen($secondChair)) {
                 continue;
             }
 

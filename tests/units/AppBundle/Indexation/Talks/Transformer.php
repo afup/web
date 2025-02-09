@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Indexation\Talks\tests\units;
 
 use AppBundle\Event\Model\Event;
@@ -10,7 +12,7 @@ use AppBundle\Indexation\Talks\Transformer as TestedClass;
 
 class Transformer extends \atoum
 {
-    public function testTransform()
+    public function testTransform(): void
     {
         $this
             ->given(
@@ -113,7 +115,7 @@ class Transformer extends \atoum
         ;
     }
 
-    public function testTransformEmpty()
+    public function testTransformEmpty(): void
     {
         $this
             ->given($talk = new Talk())

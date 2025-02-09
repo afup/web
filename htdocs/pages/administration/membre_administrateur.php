@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 // Impossible to access the file itself
 use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Controller\LegacyController;
 
-/** @var \AppBundle\Controller\LegacyController $this */
+/** @var LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;

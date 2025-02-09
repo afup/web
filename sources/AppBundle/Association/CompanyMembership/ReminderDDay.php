@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Association\CompanyMembership;
 
 class ReminderDDay extends AbstractCompanyReminder
 {
-    protected function getText()
+    protected function getText(): string
     {
         return '<p>Cher société membre de l\'AFUP,</p>
 
@@ -28,12 +30,12 @@ L’équipe AFUP</p>
 ';
     }
 
-    protected function getSubject()
+    protected function getSubject(): string
     {
         return 'Fin de validité de votre adhésion à l’AFUP';
     }
 
-    protected function getKey()
+    protected function getKey(): string
     {
         return 'DDay';
     }

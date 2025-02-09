@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Association\Model\User;
@@ -21,20 +23,13 @@ use Twig\Environment;
 
 class SpecialPriceAction
 {
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var TicketSpecialPriceRepository */
-    private $ticketSpecialPriceRepository;
-    /** @var Security */
-    private $security;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var Environment */
-    private $twig;
+    private EventActionHelper $eventActionHelper;
+    private TicketSpecialPriceRepository $ticketSpecialPriceRepository;
+    private Security $security;
+    private UrlGeneratorInterface $urlGenerator;
+    private FormFactoryInterface $formFactory;
+    private FlashBagInterface $flashBag;
+    private Environment $twig;
 
     public function __construct(
         EventActionHelper $eventActionHelper,

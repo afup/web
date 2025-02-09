@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 // Impossible to access the file itself
 use Afup\Site\Comptabilite\Comptabilite;
 
-/** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -37,7 +38,7 @@ switch ($action) {
         // No search param?
         if (!isset($_GET['q']) || !($q = trim($_GET['q']))) {
             $smarty->assign('action', $defaultAction);
-            continue;
+            break;
         }
 
         $smarty->assign('q', htmlspecialchars($q));
@@ -49,4 +50,3 @@ switch ($action) {
         }
     break;
 }
-

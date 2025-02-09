@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Utils\tests\units;
 
 use Afup\Site\Utils\Utils as UtilsToTest;
@@ -35,7 +37,7 @@ class Utils extends \atoum
     /**
      * @dataProvider dataProvider
      */
-    public function testCryptFromText($decrypted, $encrypted)
+    public function testCryptFromText($decrypted, $encrypted): void
     {
         $this
             ->string(UtilsToTest::cryptFromText($decrypted))
@@ -45,7 +47,7 @@ class Utils extends \atoum
     /**
      * @dataProvider dataProvider
      */
-    public function testDecryptFromText($decrypted, $encrypted)
+    public function testDecryptFromText($decrypted, $encrypted): void
     {
         $this
             ->string(UtilsToTest::decryptFromText($encrypted))

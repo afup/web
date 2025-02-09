@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Notifier;
 
@@ -8,78 +10,40 @@ use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
 use AppBundle\Slack\Message;
 use AppBundle\Slack\MessageFactory;
+use GuzzleHttp\ClientInterface;
 use JMS\Serializer\Serializer;
 
 class SlackNotifier
 {
-    /**
-     * @var string
-     */
-    private $postUrl;
+    private string $postUrl;
+    private MessageFactory $messageFactory;
+    private Serializer $serializer;
+    private ClientInterface $httpClient;
 
-    /**
-     * @var MessageFactory
-     */
-    private $messageFactory;
-
-    /**
-     * @var Serializer
-     */
-    private $serializer;
-
-    /**
-     * SlackNotifier constructor.
-     * @param $postUrl
-     * @param MessageFactory $messageFactory
-     * @param Serializer $serializer
-     */
-    public function __construct($postUrl, MessageFactory $messageFactory, Serializer $serializer)
+    public function __construct(string $postUrl, MessageFactory $messageFactory, Serializer $serializer, ClientInterface $httpClient)
     {
         $this->postUrl = $postUrl;
         $this->messageFactory = $messageFactory;
         $this->serializer = $serializer;
+        $this->httpClient = $httpClient;
     }
 
-    /**
-     * Send a message to slack for a new vote
-     *
-     * @param Vote $vote
-     * @return bool
-     */
-    public function notifyVote(Vote $vote)
+    public function notifyVote(Vote $vote): void
     {
-        $message = $this->messageFactory->createMessageForVote($vote);
-        return $this->sendMessage($message);
+        $this->sendMessage($this->messageFactory->createMessageForVote($vote));
     }
 
-    /**
-     * Send a message to slack for a new talk
-     *
-     * @param Talk $talk
-     * @param Event $event
-     *
-     * @return bool
-     */
-    public function notifyTalk(Talk $talk, Event $event)
+    public function notifyTalk(Talk $talk, Event $event): void
     {
-        $message = $this->messageFactory->createMessageForTalk($talk, $event);
-        return $this->sendMessage($message);
+        $this->sendMessage($this->messageFactory->createMessageForTalk($talk, $event));
     }
 
-    /**
-     * @param Message $message
-     * @return bool
-     */
-    public function sendMessage(Message $message)
+    public function sendMessage(Message $message): void
     {
-        $ch = curl_init($this->postUrl);
-
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, ['payload' => $this->serializer->serialize($message, 'json')]);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $result = curl_exec($ch);
-        curl_close($ch);
-
-        return true;
+        $this->httpClient->request('POST', $this->postUrl, [
+            'form_params' => [
+                'payload' => $this->serializer->serialize($message, 'json'),
+            ],
+        ]);
     }
 }

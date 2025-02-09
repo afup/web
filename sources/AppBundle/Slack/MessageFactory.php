@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Slack;
 
@@ -18,25 +20,17 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class MessageFactory
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
     /**
      * MessageFactory constructor.
-     * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    /**
-     * @param Vote $vote
-     * @return Message
-     */
-    public function createMessageForVote(Vote $vote)
+    public function createMessageForVote(Vote $vote): Message
     {
         $attachment = new Attachment();
         $attachment
@@ -83,12 +77,10 @@ class MessageFactory
     }
 
     /**
-     * @param Talk $talk
-     * @param Event $event
      *
      * @return Message $message
      */
-    public function createMessageForTalk(Talk $talk, Event $event)
+    public function createMessageForTalk(Talk $talk, Event $event): Message
     {
         $attachment = new Attachment();
         $attachment
@@ -134,7 +126,7 @@ class MessageFactory
         return $message;
     }
 
-    public function createMessageForMemberNotification($membersToCheckCount)
+    public function createMessageForMemberNotification(string $membersToCheckCount): Message
     {
         $attachment = new Attachment();
         $attachment
@@ -157,7 +149,7 @@ class MessageFactory
         return $message;
     }
 
-    public function createMessageForGeneralMeeting(GeneralMeetingRepository $generalMeetingRepository, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
+    public function createMessageForGeneralMeeting(GeneralMeetingRepository $generalMeetingRepository, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator): Message
     {
         $latestDate = $generalMeetingRepository->getLatestDate();
         Assertion::notNull($latestDate);
@@ -187,10 +179,7 @@ class MessageFactory
         return $message;
     }
 
-    /**
-     * @return Message
-     */
-    public function createMessageForTicketStats(Event $event, EventStatsRepository $eventStatsRepository, TicketTypeRepository $ticketRepository, \DateTime $date = null)
+    public function createMessageForTicketStats(Event $event, EventStatsRepository $eventStatsRepository, TicketTypeRepository $ticketRepository, \DateTime $date = null): Message
     {
         $eventStats = $eventStatsRepository->getStats($event->getId());
         $message = new Message();
@@ -200,7 +189,7 @@ class MessageFactory
             ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
         ;
 
-        if (null !== $date) {
+        if ($date instanceof \DateTime) {
             $eventStatsFiltered = $eventStatsRepository->getStats($event->getId(), $date);
 
             $attachment = new Attachment();
@@ -242,7 +231,7 @@ class MessageFactory
     }
 
 
-    public function createMessageForCfpStats(Event $event, TalkRepository $talkRepository, TalkToSpeakersRepository $talkToSpeakersRepository, \DateTime $currentDate, \DateTime $since = null)
+    public function createMessageForCfpStats(Event $event, TalkRepository $talkRepository, TalkToSpeakersRepository $talkToSpeakersRepository, \DateTime $currentDate, \DateTime $since = null): Message
     {
         $message = new Message();
         $message
@@ -251,14 +240,14 @@ class MessageFactory
             ->setIconUrl('https://pbs.twimg.com/profile_images/600291061144145920/Lpf3TDQm_400x400.png')
         ;
 
-        if (null !== $since) {
+        if ($since instanceof \DateTime) {
             //Il n'y a pas les heures dans les dates de soumission en base
             $since = clone $since;
             $since->setTime(0, 0, 0);
 
             $fields = $this->prepareCfpStatsFields($talkRepository, $talkToSpeakersRepository, $event, $since);
 
-            if (count($fields)) {
+            if ($fields !== []) {
                 $attachment = new Attachment();
                 $attachment
                     ->setTitle(sprintf('Réponses au CFP du %s depuis le %s : ', $event->getTitle(), $since->format('d/m/Y H:i')))
@@ -293,7 +282,10 @@ class MessageFactory
         return $message;
     }
 
-    private function prepareCfpStatsFields(TalkRepository $talkRepository, TalkToSpeakersRepository $talkToSpeakersRepository, Event $event, \DateTime $since = null)
+    /**
+     * @return Field[]
+     */
+    private function prepareCfpStatsFields(TalkRepository $talkRepository, TalkToSpeakersRepository $talkToSpeakersRepository, Event $event, \DateTime $since = null): array
     {
         $infos = [
             'Nombre de talks' => $talkRepository->getNumberOfTalksByEvent($event, $since)['talks'],

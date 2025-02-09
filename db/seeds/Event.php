@@ -1,17 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Seed\AbstractSeed;
 
 class Event extends AbstractSeed
 {
     const ID_FORUM = 1;
 
-    public function run()
+    public function run(): void
     {
         $now = time();
         $oneDayInSeconds = 60*60*24;
         $oneMonthInSeconds = $oneDayInSeconds*30;
-        $event = $now + $oneMonthInSeconds * 5;
+
+        $event = new DateTime('@' . ($now + $oneMonthInSeconds * 5));
+        $event->setTime(0, 0, 0);
+        $event = $event->getTimestamp();
 
         $data = [
             [

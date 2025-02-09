@@ -59,6 +59,10 @@
             <i class="icon file"></i>
             Exporter la période en CSV
         </a>
+        <a href="index.php?page=compta_banque&amp;action=download_attachments&amp;id_periode={$smarty.get.id_periode}" class="item">
+            <i class="icon file zip"></i>
+            Télécharger les justificatifs groupés par mois
+        </a>
     </div>
 
     <div class="ui top attached tabular menu">
@@ -119,11 +123,11 @@
                  {$ecriture.description}
              </td>
 		{if $ecriture.idoperation == 1}
-			<td class="right aligned" width='100'>-{$ecriture.montant|number_format:2:',':' '}</td>
+			<td class="right aligned" width='100'>-{$ecriture.montant|floatval|number_format:2:',':' '}</td>
 			<td width='100'></td>
 		{else}
 			<td width='100'></td>
-			<td class="right aligned" width='100'>+{$ecriture.montant|number_format:2:',':' '}</td>
+			<td class="right aligned" width='100'>+{$ecriture.montant|floatval|number_format:2:',':' '}</td>
 		{/if}
 
             <td>

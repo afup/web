@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Event;
 
 use AppBundle\Association\Model\User;
@@ -9,17 +11,14 @@ class UserDisabledEvent extends Event
 {
     const NAME = 'user.disabled';
 
-    /**
-     * @var User
-     */
-    private $user;
+    private User $user;
 
     public function __construct(User $user)
     {
         $this->user = $user;
     }
 
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }

@@ -1,28 +1,46 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
-use AppBundle\Controller\SiteBaseController;
 use AppBundle\Offices\OfficesCollection;
+use AppBundle\Twig\ViewRenderer;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response;
 
-class CompanyPublicProfileController extends SiteBaseController
+class CompanyPublicProfileController extends AbstractController
 {
-    public function indexAction($id, $slug)
+    private ViewRenderer $view;
+    private BadgesComputer $badgesComputer;
+    private RepositoryFactory $repositoryFactory;
+    private string $storageDir;
+
+    public function __construct(ViewRenderer $view,
+                                BadgesComputer $badgesComputer,
+                                RepositoryFactory $repositoryFactory,
+                                string $storageDir)
+    {
+        $this->view = $view;
+        $this->badgesComputer = $badgesComputer;
+        $this->repositoryFactory = $repositoryFactory;
+        $this->storageDir = $storageDir;
+    }
+
+    public function index($id, $slug): Response
     {
         $companyMember = $this->checkAndGetCompanyMember($id, $slug);
 
-        return $this->render(
-            ':site:company_public_profile.html.twig',
-            [
-                'company_member' => $companyMember,
-                'offices' => $this->getRelatedAfupOffices($companyMember),
-                'badges' => $this->get(BadgesComputer::class)->getCompanyBadges($companyMember),
-            ]
-        );
+        return $this->view->render('site/company_public_profile.html.twig', [
+            'company_member' => $companyMember,
+            'offices' => $this->getRelatedAfupOffices($companyMember),
+            'badges' => $this->badgesComputer->getCompanyBadges($companyMember),
+        ]);
     }
 
     /**
@@ -36,7 +54,7 @@ class CompanyPublicProfileController extends SiteBaseController
         /**
          * @var CompanyMemberRepository $companyRepository
          */
-        $companyRepository = $this->get('ting')->get(CompanyMemberRepository::class);
+        $companyRepository = $this->repositoryFactory->get(CompanyMemberRepository::class);
         $companyMember = $companyRepository->findById($id);
 
         if ($companyMember === null
@@ -50,13 +68,11 @@ class CompanyPublicProfileController extends SiteBaseController
         return $companyMember;
     }
 
-    public function logoAction($id, $slug)
+    public function logo($id, $slug)
     {
         $companyMember = $this->checkAndGetCompanyMember($id, $slug);
 
-        $dir = $this->getParameter('kernel.project_dir') . '/htdocs/uploads/members_logo';
-
-        $filepath = $dir . DIRECTORY_SEPARATOR . $companyMember->getLogoUrl();
+        $filepath = $this->storageDir . DIRECTORY_SEPARATOR . $companyMember->getLogoUrl();
 
         if (false === is_file($filepath)) {
             throw $this->createNotFoundException();
@@ -65,7 +81,10 @@ class CompanyPublicProfileController extends SiteBaseController
         return new BinaryFileResponse($filepath);
     }
 
-    private function getRelatedAfupOffices(CompanyMember $companyMember)
+    /**
+     * @return mixed[]
+     */
+    private function getRelatedAfupOffices(CompanyMember $companyMember): array
     {
         $officesCollection = new OfficesCollection();
         $offices = [];
@@ -78,14 +97,10 @@ class CompanyPublicProfileController extends SiteBaseController
             $offices[] = $office;
         }
 
-        usort($offices, function ($a, $b) {
+        usort($offices, function (array $a, array $b): int {
             $a = $a['label'];
             $b = $b['label'];
-
-            if ($a == $b) {
-                return 0;
-            }
-            return ($a < $b) ? -1 : 1;
+            return $a <=> $b;
         });
 
         return $offices;

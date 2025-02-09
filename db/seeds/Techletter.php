@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Seed\AbstractSeed;
 
 class Techletter extends AbstractSeed
 {
-    public function run()
+    public function run(): void
     {
         $table = $this->table('afup_techletter');
         $table->truncate();

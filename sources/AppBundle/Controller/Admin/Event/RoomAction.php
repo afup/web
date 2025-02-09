@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Controller\Event\EventActionHelper;
@@ -19,18 +21,12 @@ use Twig\Environment;
 
 class RoomAction
 {
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var RoomRepository */
-    private $roomRepository;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var Environment */
-    private $twig;
+    private EventActionHelper $eventActionHelper;
+    private FormFactoryInterface $formFactory;
+    private RoomRepository $roomRepository;
+    private FlashBagInterface $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
+    private Environment $twig;
 
     public function __construct(
         EventActionHelper $eventActionHelper,
@@ -92,20 +88,16 @@ class RoomAction
             'event' => $event,
             'rooms' => $rooms,
             'addForm' => $addForm === null ? null : $addForm->createView(),
-            'editForms' => $editForms === null ? null : array_map(static function (Form $form) {
-                return $form->createView();
-            }, $editForms),
+            'editForms' => $editForms === null ? null : array_map(static fn (Form $form) => $form->createView(), $editForms),
             'title' => 'Gestion des salles',
             'event_select_form' => $this->formFactory->create(EventSelectType::class, $event)->createView(),
         ]));
     }
 
     /**
-     * @param CollectionInterface $rooms
-     *
      * @return Form[]
      */
-    private function getFormsForRooms(CollectionInterface $rooms)
+    private function getFormsForRooms(CollectionInterface $rooms): array
     {
         $forms = [];
         foreach ($rooms as $room) {

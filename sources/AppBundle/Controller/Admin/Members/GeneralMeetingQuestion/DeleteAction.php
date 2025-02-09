@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members\GeneralMeetingQuestion;
 
 use AppBundle\Association\Model\GeneralMeetingQuestion;
@@ -14,14 +16,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DeleteAction
 {
-    /** @var GeneralMeetingQuestionRepository */
-    private $generalMeetingQuestionRepository;
-    /** @var GeneralMeetingVoteRepository */
-    private $generalMeetingVoteRepository;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
+    private GeneralMeetingQuestionRepository $generalMeetingQuestionRepository;
+    private GeneralMeetingVoteRepository $generalMeetingVoteRepository;
+    private FlashBagInterface $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
@@ -35,7 +33,7 @@ class DeleteAction
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function __invoke(Request $request, $id)
+    public function __invoke(Request $request, $id): RedirectResponse
     {
         /** @var GeneralMeetingQuestion $question */
         $question = $this->generalMeetingQuestionRepository->get($id);

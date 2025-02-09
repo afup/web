@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Migration\AbstractMigration;
 
 class AfupMeetup extends AbstractMigration
 {
-    public function up()
+    public function up(): void
     {
         $this->execute('CREATE TABLE IF NOT EXISTS `afup_meetup` (
             `id` int(11) NOT NULL,

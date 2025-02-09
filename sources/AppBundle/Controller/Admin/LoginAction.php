@@ -1,33 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Controller\BlocksHandler;
+use AppBundle\Twig\ViewRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Twig\Environment;
 
 class LoginAction
 {
-    /** @var AuthenticationUtils */
-    private $authenticationUtils;
-    /** @var BlocksHandler */
-    private $blocksHandler;
-    /** @var Environment */
-    private $twig;
+    private AuthenticationUtils $authenticationUtils;
+    private ViewRenderer $view;
 
     public function __construct(
         AuthenticationUtils $authenticationUtils,
-        BlocksHandler $blocksHandler,
-        Environment $twig
+        ViewRenderer $view
     ) {
         $this->authenticationUtils = $authenticationUtils;
-        $this->blocksHandler = $blocksHandler;
-        $this->twig = $twig;
+        $this->view = $view;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         // get the login error if there is one
         $error = $this->authenticationUtils->getLastAuthenticationError();
@@ -40,13 +35,13 @@ class LoginAction
         $noDomain = parse_url($targetUri, PHP_URL_HOST) === null;
         $targetPath = $targetUri !== $actualUrl && $noDomain ? $targetUri : null;
 
-        return new Response($this->twig->render('admin/login.html.twig', [
+        return $this->view->render('admin/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
             'target_path' => $targetPath,
             'title' => 'Connexion',
             'page' => 'connexion',
             'class' => 'panel-page',
-        ] + $this->blocksHandler->getDefaultBlocks()));
+        ]);
     }
 }

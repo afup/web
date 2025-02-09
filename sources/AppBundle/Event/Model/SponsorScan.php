@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Event\Model;
 
@@ -47,7 +49,7 @@ class SponsorScan implements NotifyPropertyInterface
      * @param int $id
      * @return $this
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -66,7 +68,7 @@ class SponsorScan implements NotifyPropertyInterface
      * @param string $sponsorTicketId
      * @return $this
      */
-    public function setSponsorTicketId($sponsorTicketId)
+    public function setSponsorTicketId($sponsorTicketId): self
     {
         $this->propertyChanged('token', $this->sponsorTicketId, $sponsorTicketId);
         $this->sponsorTicketId = $sponsorTicketId;
@@ -85,7 +87,7 @@ class SponsorScan implements NotifyPropertyInterface
      * @param \DateTime $createdOn
      * @return $this
      */
-    public function setCreatedOn($createdOn)
+    public function setCreatedOn($createdOn): self
     {
         $this->propertyChanged('createdOn', $this->createdOn, $createdOn);
         $this->createdOn = $createdOn;
@@ -104,7 +106,7 @@ class SponsorScan implements NotifyPropertyInterface
      * @param \DateTime|null $deletedOn
      * @return $this
      */
-    public function setDeletedOn($deletedOn)
+    public function setDeletedOn($deletedOn): self
     {
         $this->propertyChanged('deletedOn', $this->deletedOn, $deletedOn);
         $this->deletedOn = $deletedOn;
@@ -123,7 +125,7 @@ class SponsorScan implements NotifyPropertyInterface
      * @param int $ticketId
      * @return $this
      */
-    public function setTicketId($ticketId)
+    public function setTicketId($ticketId): self
     {
         $this->propertyChanged('manager', $this->ticketId, $ticketId);
         $this->ticketId = $ticketId;

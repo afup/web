@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -86,10 +88,9 @@ class Speaker implements NotifyPropertyInterface
      */
     private $mastodon;
 
-    /**
-     * @var GithubUser
-     */
-    private $githubUser;
+    private ?string $bluesky = null;
+
+    private ?GithubUser $githubUser = null;
 
     /**
      * @var string|null
@@ -100,9 +101,8 @@ class Speaker implements NotifyPropertyInterface
      * Wrapper for SpeakerType to allow picture upload
      *
      * @Assert\File(mimeTypes={"image/jpeg","image/png"})
-     * @var UploadedFile|null
      */
-    private $photoFile;
+    private ?UploadedFile $photoFile = null;
 
     /**
      * @var bool|null
@@ -149,9 +149,8 @@ class Speaker implements NotifyPropertyInterface
 
     /**
      * @param int $id
-     * @return Speaker
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -168,9 +167,8 @@ class Speaker implements NotifyPropertyInterface
 
     /**
      * @param int $user
-     * @return Speaker
      */
-    public function setUser($user)
+    public function setUser($user): self
     {
         $this->propertyChanged('user', $this->user, $user);
         $this->user = $user;
@@ -187,9 +185,8 @@ class Speaker implements NotifyPropertyInterface
 
     /**
      * @param int $eventId
-     * @return Speaker
      */
-    public function setEventId($eventId)
+    public function setEventId($eventId): self
     {
         $this->propertyChanged('eventId', $this->eventId, $eventId);
         $this->eventId = $eventId;
@@ -206,9 +203,8 @@ class Speaker implements NotifyPropertyInterface
 
     /**
      * @param string $civility
-     * @return Speaker
      */
-    public function setCivility($civility)
+    public function setCivility($civility): self
     {
         $this->propertyChanged('civility', $this->civility, $civility);
         $this->civility = $civility;
@@ -225,9 +221,8 @@ class Speaker implements NotifyPropertyInterface
 
     /**
      * @param string $firstname
-     * @return Speaker
      */
-    public function setFirstname($firstname)
+    public function setFirstname($firstname): self
     {
         $this->propertyChanged('firstname', $this->firstname, $firstname);
         $this->firstname = $firstname;
@@ -244,19 +239,15 @@ class Speaker implements NotifyPropertyInterface
 
     /**
      * @param string $lastname
-     * @return Speaker
      */
-    public function setLastname($lastname)
+    public function setLastname($lastname): self
     {
         $this->propertyChanged('lastname', $this->lastname, $lastname);
         $this->lastname = $lastname;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->getFirstname() . " " . ($this->getLastname() ? mb_strtoupper($this->getLastname()) : null);
     }
@@ -271,9 +262,8 @@ class Speaker implements NotifyPropertyInterface
 
     /**
      * @param string $email
-     * @return Speaker
      */
-    public function setEmail($email)
+    public function setEmail($email): self
     {
         $this->propertyChanged('email', $this->email, $email);
         $this->email = $email;
@@ -290,9 +280,8 @@ class Speaker implements NotifyPropertyInterface
 
     /**
      * @param string $company
-     * @return Speaker
      */
-    public function setCompany($company)
+    public function setCompany($company): self
     {
         $this->propertyChanged('company', $this->company, $company);
         $this->company = $company;
@@ -309,9 +298,8 @@ class Speaker implements NotifyPropertyInterface
 
     /**
      * @param string $locality
-     * @return Speaker
      */
-    public function setLocality($locality)
+    public function setLocality($locality): self
     {
         $this->propertyChanged('locality', $this->locality, $locality);
         $this->locality = $locality;
@@ -329,7 +317,7 @@ class Speaker implements NotifyPropertyInterface
     /**
      * @param string|null $phoneNumber
      */
-    public function setPhoneNumber($phoneNumber)
+    public function setPhoneNumber($phoneNumber): void
     {
         $this->propertyChanged('phoneNumber', $this->phoneNumber, $phoneNumber);
         $this->phoneNumber = $phoneNumber;
@@ -346,7 +334,7 @@ class Speaker implements NotifyPropertyInterface
     /**
      * @param string|null $referentPerson
      */
-    public function setReferentPerson($referentPerson)
+    public function setReferentPerson($referentPerson): void
     {
         $this->propertyChanged('referentPerson', $this->referentPerson, $referentPerson);
         $this->referentPerson = $referentPerson;
@@ -363,7 +351,7 @@ class Speaker implements NotifyPropertyInterface
     /**
      * @param string|null $referentPersonEmail
      */
-    public function setReferentPersonEmail($referentPersonEmail)
+    public function setReferentPersonEmail($referentPersonEmail): void
     {
         $this->propertyChanged('referentPersonEmail', $this->referentPersonEmail, $referentPersonEmail);
         $this->referentPersonEmail = $referentPersonEmail;
@@ -380,18 +368,14 @@ class Speaker implements NotifyPropertyInterface
 
     /**
      * @param string $biography
-     * @return Speaker
      */
-    public function setBiography($biography)
+    public function setBiography($biography): self
     {
         $this->propertyChanged('biography', $this->biography, $biography);
         $this->biography = $biography;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getTwitter(): string
     {
         return (string) $this->twitter;
@@ -400,6 +384,20 @@ class Speaker implements NotifyPropertyInterface
     public function getMastodon(): string
     {
         return (string) $this->mastodon;
+    }
+
+    public function getBluesky(): ?string
+    {
+        return $this->bluesky;
+    }
+
+    public function getUrlBluesky(): ?string
+    {
+        if ($this->bluesky === null) {
+            return null;
+        }
+
+        return 'https://bsky.app/profile/' . $this->bluesky;
     }
 
     public function getUsernameTwitter(): string
@@ -413,7 +411,7 @@ class Speaker implements NotifyPropertyInterface
 
     public function getUrlTwitter(): string
     {
-        return $this->getUsernameTwitter() ? sprintf('https://x.com/%s', $this->getUsernameTwitter()) : '';
+        return $this->getUsernameTwitter() !== '' && $this->getUsernameTwitter() !== '0' ? sprintf('https://x.com/%s', $this->getUsernameTwitter()) : '';
     }
 
     public function getUsernameMastodon(): string
@@ -423,13 +421,13 @@ class Speaker implements NotifyPropertyInterface
             return '';
         }
 
-        list(,$username) = explode('@', $mastodon);
+        [, $username] = explode('@', $mastodon);
         return trim($username);
     }
 
     public function getUrlMastodon(): string
     {
-        if (!$this->getUsernameMastodon()) {
+        if ($this->getUsernameMastodon() === '' || $this->getUsernameMastodon() === '0') {
             return '';
         }
         $mastodon = $this->getMastodon();
@@ -447,15 +445,14 @@ class Speaker implements NotifyPropertyInterface
             return '';
         }
 
-        list(,$username) = explode('@', $mastodon);
+        [, $username] = explode('@', $mastodon);
         return trim($username);
     }
 
     /**
      * @param string $twitter
-     * @return Speaker
      */
-    public function setTwitter($twitter)
+    public function setTwitter($twitter): self
     {
         $this->propertyChanged('twitter', $this->twitter, $twitter);
         $this->twitter = $twitter;
@@ -464,28 +461,38 @@ class Speaker implements NotifyPropertyInterface
 
     /**
      * @param string $mastodon
-     * @return Speaker
      */
-    public function setMastodon($mastodon)
+    public function setMastodon($mastodon): self
     {
         $this->propertyChanged('mastodon', $this->mastodon, $mastodon);
         $this->mastodon = $mastodon;
         return $this;
     }
 
+    public function setBluesky(?string $bluesky): self
+    {
+        if ($bluesky !== null) {
+            $bluesky = str_replace('https://bsky.app/profile/', '', $bluesky);
+
+            if (substr($bluesky, 0, 1) === '@') {
+                $bluesky = substr($bluesky, 1);
+            }
+        }
+
+        $this->propertyChanged('bluesky', $this->bluesky, $bluesky);
+        $this->bluesky = $bluesky;
+        return $this;
+    }
+
     /**
      * @return GithubUser
      */
-    public function getGithubUser()
+    public function getGithubUser(): ?GithubUser
     {
         return $this->githubUser;
     }
 
-    /**
-     * @param GithubUser $githubUser
-     * @return Speaker
-     */
-    public function setGithubUser(GithubUser $githubUser)
+    public function setGithubUser(GithubUser $githubUser): self
     {
         $this->githubUser = $githubUser;
         return $this;
@@ -501,9 +508,8 @@ class Speaker implements NotifyPropertyInterface
 
     /**
      * @param string $photo
-     * @return Speaker
      */
-    public function setPhoto($photo)
+    public function setPhoto($photo): self
     {
         if ($this->photo === null || $photo !== null) {
             $this->propertyChanged('photo', $this->photo, $photo);
@@ -512,19 +518,12 @@ class Speaker implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return UploadedFile|null
-     */
-    public function getPhotoFile()
+    public function getPhotoFile(): ?UploadedFile
     {
         return $this->photoFile;
     }
 
-    /**
-     * @param UploadedFile|null $photoFile
-     * @return Speaker
-     */
-    public function setPhotoFile(UploadedFile $photoFile)
+    public function setPhotoFile(?UploadedFile $photoFile): self
     {
         $this->photoFile = $photoFile;
         return $this;
@@ -543,7 +542,7 @@ class Speaker implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setWillAttendSpeakersDiner($willAttendSpeakersDiner)
+    public function setWillAttendSpeakersDiner($willAttendSpeakersDiner): self
     {
         $this->propertyChanged('willAttendSpeakersDiner', $this->willAttendSpeakersDiner, $willAttendSpeakersDiner);
 
@@ -565,7 +564,7 @@ class Speaker implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setHasSpecialDiet($hasSpecialDiet)
+    public function setHasSpecialDiet($hasSpecialDiet): self
     {
         $this->propertyChanged('hasSpecialDiet', $this->hasSpecialDiet, $hasSpecialDiet);
 
@@ -587,7 +586,7 @@ class Speaker implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setSpecialDietDescription($specialDietDescription)
+    public function setSpecialDietDescription($specialDietDescription): self
     {
         $this->propertyChanged('specialDietDescription', $this->specialDietDescription, $specialDietDescription);
         $this->specialDietDescription = $specialDietDescription;
@@ -612,19 +611,14 @@ class Speaker implements NotifyPropertyInterface
             return null;
         }
 
-        if (0 === strlen($this->hotelNights)) {
+        if ((string) $this->hotelNights === '') {
             return [];
         }
 
         return explode(',', $this->hotelNights);
     }
 
-    /**
-     * @param array $hotelNights
-     *
-     * @return Speaker
-     */
-    public function setHotelNightsArray(array $hotelNights)
+    public function setHotelNightsArray(array $hotelNights): self
     {
         return $this->setHotelNights(implode(',', $hotelNights));
     }
@@ -634,7 +628,7 @@ class Speaker implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setHotelNights($hotelNights)
+    public function setHotelNights($hotelNights): self
     {
         $this->propertyChanged('hotelNights', $this->hotelNights, $hotelNights);
         $this->hotelNights = $hotelNights;
@@ -642,10 +636,7 @@ class Speaker implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
-    public function hasHotelNightBefore()
+    public function hasHotelNightBefore(): ?bool
     {
         if (null === ($hotelNights = $this->getHotelNightsArray())) {
             return null;
@@ -654,10 +645,7 @@ class Speaker implements NotifyPropertyInterface
         return in_array(self::NIGHT_BEFORE, $hotelNights);
     }
 
-    /**
-     * @return bool|null
-     */
-    public function hasHotelNightBetween()
+    public function hasHotelNightBetween(): ?bool
     {
         if (null === ($hotelNights = $this->getHotelNightsArray())) {
             return null;
@@ -666,10 +654,7 @@ class Speaker implements NotifyPropertyInterface
         return in_array(self::NIGHT_BETWEEN, $hotelNights);
     }
 
-    /**
-     * @return bool|null
-     */
-    public function hasHotelNightAfter()
+    public function hasHotelNightAfter(): ?bool
     {
         if (null === ($hotelNights = $this->getHotelNightsArray())) {
             return null;
@@ -678,10 +663,7 @@ class Speaker implements NotifyPropertyInterface
         return in_array(self::NIGHT_AFTER, $hotelNights);
     }
 
-    /**
-     * @return bool|null
-     */
-    public function hasNoHotelNight()
+    public function hasNoHotelNight(): ?bool
     {
         if (null === ($hotelNights = $this->getHotelNightsArray())) {
             return null;
@@ -693,10 +675,10 @@ class Speaker implements NotifyPropertyInterface
     /**
      * @Assert\Callback
      */
-    public function validate(ExecutionContextInterface $context, $payload)
+    public function validate(ExecutionContextInterface $context, $payload): void
     {
         // check if the name is actually a fake name
-        if ($this->getPhoto() === null && $this->getPhotoFile() === null) {
+        if ($this->getPhoto() === null && !$this->getPhotoFile() instanceof UploadedFile) {
             $context->buildViolation('Please, upload a photo.')
                 ->atPath('photoFile')
                 ->addViolation();

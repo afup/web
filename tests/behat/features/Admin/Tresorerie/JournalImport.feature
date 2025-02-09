@@ -33,11 +33,11 @@ Feature: Administration - Trésorerie - Journal import
     # Test meetup
     When I follow the button of tooltip "Modifier la ligne CB MEETUP ORG SUB FACT 190323 DONT FRAIS DE COMM. 1,89 EUR"
     Then I should see "Modifier une écriture"
-    Then The "idevenement" field should has the following selected text "Association AFUP"
-    Then The "idcategorie" field should has the following selected text "Meetup"
+    Then The "idevenement" field should have the following selected text "Association AFUP"
+    Then The "idcategorie" field should have the following selected text "Meetup"
     # Test Twilio
     When I move backward one page
     When I follow the button of tooltip "Modifier la ligne CB Twilio SZ5KZ54M FACT 090223 DONT FRAIS DE COMM. 0,26 EUR"
     Then I should see "Modifier une écriture"
-    Then The "idevenement" field should has the following selected text "Association AFUP"
-    Then The "idcategorie" field should has the following selected text "Outils"
+    Then The "idevenement" field should have the following selected text "Association AFUP"
+    Then The "idcategorie" field should have the following selected text "Outils"

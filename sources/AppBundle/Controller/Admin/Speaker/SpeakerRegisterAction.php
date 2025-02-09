@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Speaker;
 
 use Afup\Site\Logger\DbLoggerTrait;
@@ -22,22 +24,14 @@ class SpeakerRegisterAction
 {
     use DbLoggerTrait;
 
-    /** @var SpeakerRepository */
-    private $speakerRepository;
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var TalkRepository */
-    private $talkRepository;
-    /** @var TicketRepository */
-    private $ticketRepository;
-    /** @var InvoiceService */
-    private $invoiceService;
-    /** @var InvoiceRepository */
-    private $invoiceRepository;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
+    private SpeakerRepository $speakerRepository;
+    private EventActionHelper $eventActionHelper;
+    private TalkRepository $talkRepository;
+    private TicketRepository $ticketRepository;
+    private InvoiceService $invoiceService;
+    private InvoiceRepository $invoiceRepository;
+    private FlashBagInterface $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         SpeakerRepository $speakerRepository,
@@ -59,7 +53,7 @@ class SpeakerRegisterAction
         $this->invoiceService = $invoiceService;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse
     {
         $event = $this->eventActionHelper->getEventById($request->query->get('id'));
         $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event);

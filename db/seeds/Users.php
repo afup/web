@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use AppBundle\Association\Model\User;
 use Phinx\Seed\AbstractSeed;
 
@@ -16,7 +18,7 @@ class Users extends AbstractSeed
     const ID_PERSONNE_MORALE_MY_CORP = 1;
     const ID_PERSONNE_MORALE_HELIOS_AEROSPACE = 2;
 
-    public function run()
+    public function run(): void
     {
         $data = [
             [
@@ -172,6 +174,7 @@ class Users extends AbstractSeed
         $oneMonthInSeconds = 60*60*24*30;
 
         $dateDebutUserExpire = mktime(17, 32, 15, 7, 13,2018);
+        $year = (int) date('Y');
 
         $data = [
             [
@@ -195,7 +198,7 @@ class Users extends AbstractSeed
                 'id_personne' => self::ID_PERSONNE_MORALE_MY_CORP,
                 'montant' => 150,
                 'date_fin' => $now + $oneMonthInSeconds * 12,
-                'numero_facture' => 'COTIS-'.date('Y').'-200',
+                'numero_facture' => 'COTIS-' . date('Y') . '-200',
             ],
             [
                 'date_debut' => $dateDebutUserExpire,
@@ -203,7 +206,7 @@ class Users extends AbstractSeed
                 'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE,
                 'montant' => 25,
                 'date_fin' => $now + $oneMonthInSeconds * 12,
-                'numero_facture' => 'COTIS-'.date('Y').'-'.(date('Hi')+200),
+                'numero_facture' => 'COTIS-' . date('Y') . '-' . (date('Hi')+200),
             ],
             [
                 'date_debut' => mktime(16, 10, 10, 1, 1, 2023),
@@ -222,6 +225,14 @@ class Users extends AbstractSeed
                 'numero_facture' => 'COTIS-2024-245',
             ],
             [
+                'date_debut' => mktime(16, 10, 10, 1, 1, $year),
+                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
+                'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
+                'montant' => 30,
+                'date_fin' => mktime(16, 10, 10, 1, 1, $year+1),
+                'numero_facture' => "COTIS-$year-245",
+            ],
+            [
                 'date_debut' => mktime(16, 10, 10, 1, 2, 2023),
                 'type_personne' => AFUP_PERSONNES_MORALES,
                 'id_personne' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
@@ -236,6 +247,14 @@ class Users extends AbstractSeed
                 'montant' => 180,
                 'date_fin' => mktime(16, 10, 10, 1, 2, 2025),
                 'numero_facture' => 'COTIS-2024-249',
+            ],
+            [
+                'date_debut' => mktime(16, 10, 10, 1, 2, $year),
+                'type_personne' => AFUP_PERSONNES_MORALES,
+                'id_personne' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
+                'montant' => 180,
+                'date_fin' => mktime(16, 10, 10, 1, 2, $year+1),
+                'numero_facture' => "COTIS-$year-249",
             ],
         ];
 

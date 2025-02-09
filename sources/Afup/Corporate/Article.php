@@ -1,11 +1,14 @@
 <?php
+
+declare(strict_types=1);
 namespace Afup\Site\Corporate;
 
-
+use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Configuration;
 
 class Article
 {
+    public $soustitre;
     public $id;
     public $id_site_rubrique;
     public $id_personne_physique;
@@ -31,7 +34,7 @@ class Article
     const TYPE_CONTENU_HTML = 'html';
     const TYPE_CONTENU_MARKDOWN = 'markdown';
 
-    public static function getThemesLabels()
+    public static function getThemesLabels(): array
     {
         return [
             self::THEME_ID_CYCLE_CONFERENCE => 'Cycles de conférences',
@@ -46,17 +49,13 @@ class Article
     {
         $themes = self::getThemesLabels();
 
-        if (isset($themes[$code])) {
-            return $themes[$code];
-        }
-
-        return '';
+        return $themes[$code] ?? '';
     }
 
     /**
      * @param mixed $position
      */
-    public function setPosition($position)
+    public function setPosition($position): void
     {
         $this->position = $position;
     }
@@ -68,28 +67,21 @@ class Article
      */
     protected $conf;
     /**
-     * @var \Afup\Site\Utils\Base_De_Donnees
+     * @var Base_De_Donnees
      */
     protected $bdd;
 
-    function __construct($id = 0, $bdd = false, $conf = false)
+    public function __construct($id = 0, $bdd = false, $conf = false)
     {
         $this->id = $id;
 
-        if ($bdd) {
-            $this->bdd = $bdd;
-        } else {
-            $this->bdd = new _Site_Base_De_Donnees();
-        }
+        $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
 
-        if ($conf) {
-            $this->conf = $conf;
-        } else {
-            $this->conf = $GLOBALS['AFUP_CONF'];
-        }
+        $this->conf = $conf ?: $GLOBALS['AFUP_CONF'];
     }
 
-    function afficher() {
+    public function afficher(): string
+    {
         return '
             <article>' .
         '<time datetime=' . date("Y-m-d", $this->date) . '>' . $this->date() . '</time>' .
@@ -99,17 +91,17 @@ class Article
         '</article>';
     }
 
-    function titre()
+    public function titre()
     {
         return $this->titre;
     }
 
-    public function getCode()
+    public function getCode(): string
     {
         return $this->id . '-' . $this->raccourci;
     }
 
-    function teaser()
+    public function teaser()
     {
         switch (true) {
             case !empty($this->chapeau):
@@ -121,7 +113,7 @@ class Article
         return $teaser;
     }
 
-    function corps()
+    public function corps()
     {
         if ($this->etat <= 0) {
             return false;
@@ -142,14 +134,17 @@ class Article
         return $corps;
     }
 
-    function date()
+    public function date(): string
     {
         return date("d/m/y", $this->date);
     }
 
-    function positionable()
+    /**
+     * @return int[]
+     */
+    public function positionable(): array
     {
-        $positions = array();
+        $positions = [];
         for ($i = 9; $i >= -9; $i--) {
             $positions[$i] = $i;
         }
@@ -157,9 +152,9 @@ class Article
         return $positions;
     }
 
-    function exportable()
+    public function exportable(): array
     {
-        return array(
+        return [
             'id' => $this->id,
             'id_site_rubrique' => $this->id_site_rubrique,
             'id_personne_physique' => $this->id_personne_physique,
@@ -169,20 +164,20 @@ class Article
             'contenu' => $this->contenu,
             'type_contenu' => $this->type_contenu,
             'position' => $this->position,
-            'date' => date('Y-m-d H:i:s', $this->date),
+            'date' => date('Y-m-d H:i:s', (int) $this->date),
             'theme' => $this->theme,
             'id_forum' => $this->id_forum,
             'etat' => $this->etat,
-        );
+        ];
     }
 
-    function supprimer()
+    public function supprimer()
     {
         $requete = 'DELETE FROM afup_site_article WHERE id = ' . $this->bdd->echapper($this->id);
         return $this->bdd->executer($requete);
     }
 
-    function charger()
+    public function charger(): void
     {
         $requete = 'SELECT *
                     FROM afup_site_article
@@ -190,7 +185,7 @@ class Article
         $this->remplir($this->bdd->obtenirEnregistrement($requete));
     }
 
-    function chargerDepuisRaccourci($raccourci)
+    public function chargerDepuisRaccourci($raccourci): void
     {
         $requete = 'SELECT *
                     FROM afup_site_article
@@ -198,7 +193,7 @@ class Article
         $this->remplir($this->bdd->obtenirEnregistrement($requete));
     }
 
-    function charger_dernier_depuis_rubrique()
+    public function charger_dernier_depuis_rubrique(): void
     {
         $requete = 'SELECT *
                     FROM afup_site_article
@@ -207,7 +202,7 @@ class Article
         $this->remplir($this->bdd->obtenirEnregistrement($requete));
     }
 
-    function remplir($article)
+    public function remplir(array $article): void
     {
         $this->id = $article['id'];
         $this->id_site_rubrique = $article['id_site_rubrique'];
@@ -225,7 +220,7 @@ class Article
         $this->route = $this->route();
     }
 
-    function modifier()
+    public function modifier()
     {
         $requete = 'UPDATE afup_site_article
         			SET
@@ -247,7 +242,7 @@ class Article
         return $this->bdd->executer($requete);
     }
 
-    function inserer()
+    public function inserer()
     {
         $requete = 'INSERT INTO afup_site_article
         			SET
@@ -276,7 +271,7 @@ class Article
         return $resultat;
     }
 
-    function route()
+    public function route(): string
     {
         $rubrique = new Rubrique($this->id_site_rubrique, $this->bdd, $this->conf);
         $rubrique->charger();
@@ -284,10 +279,10 @@ class Article
             $rubrique->raccourci = 'rubrique';
         }
 
-        return Site::WEB_PATH.Site::WEB_PREFIX.Site::WEB_QUERY_PREFIX . $rubrique->raccourci . '/' . $this->id . '/' . $this->raccourci;
+        return Site::WEB_PATH . Site::WEB_PREFIX . Site::WEB_QUERY_PREFIX . $rubrique->raccourci . '/' . $this->id . '/' . $this->raccourci;
     }
 
-    function fil_d_ariane()
+    public function fil_d_ariane(): string
     {
         $fil = '';
 
@@ -300,14 +295,14 @@ class Article
         return $fil;
     }
 
-    function autres_articles()
+    public function autres_articles(): array
     {
         $articles = new Articles($this->bdd);
 
         return $articles->chargerArticlesDeRubrique($this->id_site_rubrique);
     }
 
-    public function isTypeContenuMarkdown()
+    public function isTypeContenuMarkdown(): bool
     {
         return self::TYPE_CONTENU_MARKDOWN == $this->type_contenu;
     }

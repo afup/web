@@ -1,27 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Event\Model\Repository\EventRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Environment;
 
 class ListAction
 {
+    private EventRepository $eventRepository;
+    private Environment $twig;
     /**
-     * @var EventRepository
+     * @var SessionInterface&Session
      */
-    private $eventRepository;
-    /**
-     * @var Environment
-     */
-    private $twig;
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    private SessionInterface $session;
 
     public function __construct(EventRepository $eventRepository, Environment $twig, SessionInterface $session)
     {
@@ -30,7 +27,7 @@ class ListAction
         $this->session = $session;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         //TODO : à supprimer quand les actions via le formulaire auront été migée
         if (isset($_SESSION['flash']['message'])) {

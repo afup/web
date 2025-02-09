@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\TechLetter;
 
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
@@ -9,20 +11,11 @@ use Psr\Log\NullLogger;
 
 class MailchimpSynchronizer
 {
-    /**
-     * @var Mailchimp
-     */
-    private $mailchimp;
+    private Mailchimp $mailchimp;
 
-    /**
-     * @var TechletterSubscriptionsRepository
-     */
-    private $subscriptionsRepository;
+    private TechletterSubscriptionsRepository $subscriptionsRepository;
 
-    /**
-     * @var string
-     */
-    private $listId;
+    private string $listId;
 
     /**
      * @var LoggerInterface
@@ -37,7 +30,7 @@ class MailchimpSynchronizer
         $this->logger = new NullLogger();
     }
 
-    public function synchronize()
+    public function synchronize(): void
     {
         $subscribdedEmailsOnMailchimp = $this->getSubscribedEmailsOnMailchimp();
         $subscribdedEmailsOnWebsite = $this->getSubscribedEmailsOnWebsite();
@@ -53,7 +46,7 @@ class MailchimpSynchronizer
         return $this;
     }
 
-    private function unsubscribeAddresses(array $emails)
+    private function unsubscribeAddresses(array $emails): void
     {
         foreach ($emails as $email) {
             $this->logger->info('Unsubscribe {address} to techletter', ['address' => $email]);
@@ -65,7 +58,7 @@ class MailchimpSynchronizer
         }
     }
 
-    private function subscribeAddresses(array $emails)
+    private function subscribeAddresses(array $emails): void
     {
         foreach ($emails as $email) {
             $this->logger->info('Subscribe {address} to techletter', ['address' => $email]);

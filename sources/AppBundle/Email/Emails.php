@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Email;
 
 use AppBundle\Email\Mailer\Attachment;
@@ -12,10 +14,9 @@ use InvalidArgumentException;
 
 class Emails
 {
-    /** @var Mailer */
-    private $mailer;
+    private Mailer $mailer;
 
-    private $tempFiles = [];
+    private array $tempFiles = [];
 
     public function __construct(Mailer $mailer)
     {
@@ -30,7 +31,7 @@ class Emails
         }
     }
 
-    public function sendInscription(Event $event, MailUser $recipient)
+    public function sendInscription(Event $event, MailUser $recipient): void
     {
         $mailContent = $event->getMailInscriptionContent();
         if (!$mailContent) {
@@ -56,7 +57,7 @@ class Emails
         $this->mailer->send($message);
     }
 
-    private function getAttachementIcsInscription(Event $event, MailUser $recipient)
+    private function getAttachementIcsInscription(Event $event, MailUser $recipient): Attachment
     {
         $uid = md5((string) $event->getId());
         $organizerCN = MailUserFactory::afup()->getName();

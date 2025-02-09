@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\GeneralMeetingVote;
@@ -19,7 +21,10 @@ class GeneralMeetingVoteRepository extends Repository implements MetadataInitial
         ]);
     }
 
-    public function getResultsForQuestionId($questionId)
+    /**
+     * @return array<string, int>
+     */
+    public function getResultsForQuestionId(int $questionId): array
     {
         $results = [
             GeneralMeetingVote::VALUE_YES => 0,

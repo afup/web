@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Controller\Event\EventActionHelper;
@@ -13,16 +15,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SendLastCallSponsorTokenAction
 {
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var SponsorTicketRepository */
-    private $sponsorTicketRepository;
-    /** @var SponsorTokenMail */
-    private $sponsorTokenMail;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var FlashBagInterface */
-    private $flashBag;
+    private EventActionHelper $eventActionHelper;
+    private SponsorTicketRepository $sponsorTicketRepository;
+    private SponsorTokenMail $sponsorTokenMail;
+    private UrlGeneratorInterface $urlGenerator;
+    private FlashBagInterface $flashBag;
 
     public function __construct(
         EventActionHelper $eventActionHelper,
@@ -38,7 +35,7 @@ class SendLastCallSponsorTokenAction
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse
     {
         $event = $this->eventActionHelper->getEventById($request->query->get('id'), false);
         /** @var SponsorTicket[] $tokens */

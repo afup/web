@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Validator\Constraints;
 
 use AppBundle\Association\Model\CompanyMember;
@@ -8,6 +10,7 @@ use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Model\TicketEventType;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -15,20 +18,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class CorporateMemberValidator extends ConstraintValidator
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
-    /**
-     * @var CompanyMemberRepository
-     */
-    private $companyMemberRepository;
+    private CompanyMemberRepository $companyMemberRepository;
 
-    /**
-     * @var TicketRepository
-     */
-    private $ticketRepository;
+    private TicketRepository $ticketRepository;
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -40,7 +34,7 @@ class CorporateMemberValidator extends ConstraintValidator
         $this->ticketRepository = $ticketRepository;
     }
 
-    public function validate($tickets, Constraint $constraint)
+    public function validate($tickets, Constraint $constraint): void
     {
         if (!$constraint instanceof CorporateMember) {
             throw new UnexpectedTypeException($constraint, CorporateMember::class);
@@ -50,7 +44,7 @@ class CorporateMemberValidator extends ConstraintValidator
         $eventId = null;
 
         foreach ($tickets as $ticket) {
-            if (!($ticket instanceof Ticket) || $ticket->getTicketEventType() === null || $ticket->getTicketEventType()->getTicketType()->getIsRestrictedToMembers() === false) {
+            if (!($ticket instanceof Ticket) || !$ticket->getTicketEventType() instanceof TicketEventType || $ticket->getTicketEventType()->getTicketType()->getIsRestrictedToMembers() === false) {
                 continue;
             }
             if ($eventId === null) {

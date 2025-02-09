@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Association\CompanyMembership;
 
@@ -9,15 +11,9 @@ use AppBundle\Email\Mailer\Mailer;
 
 class CompanyReminderFactory
 {
-    /**
-     * @var Mailer
-     */
-    private $mailer;
+    private Mailer $mailer;
 
-    /**
-     * @var SubscriptionReminderLogRepository
-     */
-    private $subscriptionReminderLogRepository;
+    private SubscriptionReminderLogRepository $subscriptionReminderLogRepository;
 
     public function __construct(Mailer $mailer, SubscriptionReminderLogRepository $subscriptionReminderLogRepository)
     {

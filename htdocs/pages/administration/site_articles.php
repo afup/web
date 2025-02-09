@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 // Impossible to access the file itself
 use Afup\Site\Corporate\Article;
 use Afup\Site\Corporate\Articles;
 use Afup\Site\Corporate\Rubriques;
+use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Logs;
 use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Controller\LegacyController;
 
-/** @var \AppBundle\Controller\LegacyController $this */
+/** @var LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -15,9 +19,9 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 
 $userRepository = $this->get(UserRepository::class);
 
-$action = verifierAction(array('lister', 'ajouter', 'modifier', 'supprimer'));
-$tris_valides = array('titre', 'date');
-$sens_valides = array('asc', 'desc');
+$action = verifierAction(['lister', 'ajouter', 'modifier', 'supprimer']);
+$tris_valides = ['titre', 'date'];
+$sens_valides = ['asc', 'desc'];
 $smarty->assign('action', $action);
 
 
@@ -25,7 +29,7 @@ $smarty->assign('action', $action);
 
 $articles = new Articles($bdd);
 
-$forum  = new \Afup\Site\Forum\Forum($bdd);
+$forum  = new Forum($bdd);
 $forumLabelsById = [];
 foreach ($forum->obtenirListe(null, '*', 'date_debut DESC') as $forum) {
     $forumLabelsById[$forum['id']] = $forum['titre'];
@@ -59,15 +63,14 @@ if ($action == 'lister') {
     }
 
     $articlesList = [];
-    foreach ($articles->obtenirListe($list_champs, $list_ordre.' '.$list_sens, $list_filtre) as $article) {
+    foreach ($articles->obtenirListe($list_champs, $list_ordre . ' ' . $list_sens, $list_filtre) as $article) {
         $article['theme_label'] = Article::getThemeLabel($article['theme']);
-        $article['forum_label'] = isset($forumLabelsById[$article['id_forum']]) ? $forumLabelsById[$article['id_forum']] : '';
+        $article['forum_label'] = $forumLabelsById[$article['id_forum']] ?? '';
         $articlesList[] = $article;
     }
 
     // Mise en place de la liste dans le scope de smarty
     $smarty->assign('articles', $articlesList);
-
 } elseif ($action == 'supprimer') {
     $article = new Article($_GET['id']);
     if ($article->supprimer()) {
@@ -76,23 +79,22 @@ if ($action == 'lister') {
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'article', 'index.php?page=site_articles&action=lister', true);
     }
-
 } else {
-    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+    $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
     $article = new Article($id);
     $rubriques = new Rubriques();
     $users = [null => ''];
     foreach ($userRepository->search() as $user) {
-        $users[$user->getId()] = $user->getFirstName().' '.$user->getLastName();
+        $users[$user->getId()] = $user->getFirstName() . ' ' . $user->getLastName();
     }
 
     $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
-        $formulaire->setDefaults(array('date' => time(),
+        $formulaire->setDefaults(['date' => time(),
                                        'position' => 0,
                                        'id_personne_physique' => $droits->obtenirIdentifiant(),
                                        'type_contenu' => Article::TYPE_CONTENU_MARKDOWN,
-                                       'etat' => 0));
+                                       'etat' => 0]);
     } else {
         $champs = $article->charger();
         $formulaire->setDefaults($article->exportable());
@@ -105,18 +107,18 @@ if ($action == 'lister') {
         $abstractClass = 'tinymce';
     }
 
-    $formulaire->addElement('text'    , 'titre'                    , 'Titre'           , array('size' => 60, 'maxlength' => 255));
-    $formulaire->addElement('textarea', 'chapeau'                  , 'Chapeau'         , array('cols' => 42, 'rows'      => 10, 'class' => $abstractClass));
-    $formulaire->addElement('textarea', 'contenu'                  , 'Contenu'         , array('cols' => 42, 'rows'      => 20, 'class'=> $abstractClass));
+    $formulaire->addElement('text'    , 'titre'                    , 'Titre'           , ['size' => 60, 'maxlength' => 255]);
+    $formulaire->addElement('textarea', 'chapeau'                  , 'Chapeau'         , ['cols' => 42, 'rows'      => 10, 'class' => $abstractClass]);
+    $formulaire->addElement('textarea', 'contenu'                  , 'Contenu'         , ['cols' => 42, 'rows'      => 20, 'class'=> $abstractClass]);
     $formulaire->addElement('hidden', 'type_contenu');
 
     $formulaire->addElement('header'  , ''                         , 'M&eacute;ta-donn&eacute;es');
-    $formulaire->addElement('text'    , 'raccourci'                , 'Raccourci'      , array('size' => 60, 'maxlength' => 255));
-    $formulaire->addElement('select'  , 'id_site_rubrique'         , 'Rubrique'       , array(null => '' ) + $rubriques->obtenirListe('id, nom', 'nom', null, true));
+    $formulaire->addElement('text'    , 'raccourci'                , 'Raccourci'      , ['size' => 60, 'maxlength' => 255]);
+    $formulaire->addElement('select'  , 'id_site_rubrique'         , 'Rubrique'       , [null => '' ] + $rubriques->obtenirListe('id, nom', 'nom', null, true));
     $formulaire->addElement('select'  , 'id_personne_physique'     , 'Auteur'         , $users);
-    $formulaire->addElement('date'    , 'date'                     , 'Date'           , array('language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 1));
+    $formulaire->addElement('date'    , 'date'                     , 'Date'           , ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 1]);
     $formulaire->addElement('select'  , 'position'                 , 'Position'       , $article->positionable());
-    $formulaire->addElement('select'  , 'etat'                     , 'Etat'           , array(-1 => 'Hors ligne', 0 => 'En attente', 1 => 'En ligne'));
+    $formulaire->addElement('select'  , 'etat'                     , 'Etat'           , [-1 => 'Hors ligne', 0 => 'En attente', 1 => 'En ligne']);
     $formulaire->addElement('select'  , 'theme'                    , 'Thème'          , ['' => ''] + Article::getThemesLabels());
     $formulaire->addElement('select'  , 'id_forum'                , 'Forum'          , ['' => ''] + $forumLabelsById);
 
@@ -143,16 +145,12 @@ if ($action == 'lister') {
         $article->position = $formulaire->exportValue('position');
         $date = $formulaire->exportValue('date');
 
-        $article->date = mktime($date['H'], $date['i'], $date['s'], $date['M'], $date['d'], $date['Y']);
+        $article->date = mktime((int) $date['H'],(int) $date['i'], (int) $date['s'], (int) $date['M'], (int) $date['d'], (int) $date['Y']);
         $article->etat = $formulaire->exportValue('etat');
         $article->theme = $formulaire->exportValue('theme');
         $article->id_forum = $formulaire->exportValue('id_forum');
 
-        if ($action == 'ajouter') {
-            $ok = $article->inserer();
-        } else {
-            $ok = $article->modifier();
-        }
+        $ok = $action == 'ajouter' ? $article->inserer() : $article->modifier();
 
         if ($ok) {
             if ($action == 'ajouter') {

@@ -1,38 +1,44 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
-use AppBundle\Controller\SiteBaseController;
+use AppBundle\Twig\ViewRenderer;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
-class CompanyPublicProfileListController extends SiteBaseController
+class CompanyPublicProfileListController extends AbstractController
 {
-    public function indexAction()
+    private ViewRenderer $view;
+    private RepositoryFactory $repositoryFactory;
+
+    public function __construct(ViewRenderer $view, RepositoryFactory $repositoryFactory)
+    {
+        $this->view = $view;
+        $this->repositoryFactory = $repositoryFactory;
+    }
+
+    public function index(): Response
     {
         /**
          * @var CompanyMemberRepository $companyRepository
          */
-        $companyRepository = $this->get('ting')->get(CompanyMemberRepository::class);
+        $companyRepository = $this->repositoryFactory->get(CompanyMemberRepository::class);
 
         $displayableCompanies = $companyRepository->findDisplayableCompanies();
 
-        usort($displayableCompanies, function (CompanyMember $companyMemberA, CompanyMember $companyMemberB) {
+        usort($displayableCompanies, function (CompanyMember $companyMemberA, CompanyMember $companyMemberB): int {
             $a = $companyMemberA->getCompanyName();
             $b = $companyMemberB->getCompanyName();
-
-            if ($a == $b) {
-                return 0;
-            }
-
-            return ($a < $b) ? -1 : 1;
+            return $a <=> $b;
         });
 
-        return $this->render(
-            ':site:company_public_profile_list.html.twig',
-            [
-                'company_member_list' => $displayableCompanies,
-            ]
-        );
+        return $this->view->render(':site:company_public_profile_list.html.twig', [
+            'company_member_list' => $displayableCompanies,
+        ]);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Form;
 
 use Afup\Site\Association\Personnes_Morales;
@@ -23,10 +25,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserEditType extends AbstractType
 {
-    /** @var Personnes_Morales */
-    private $personnesMorales;
-    /** @var Pays */
-    private $pays;
+    private Personnes_Morales $personnesMorales;
+    private Pays $pays;
 
     public function __construct(
         Personnes_Morales $personnesMorales,
@@ -36,7 +36,7 @@ class UserEditType extends AbstractType
         $this->pays = $pays;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $civilities = ['M.', 'Mme'];
         $builder
@@ -225,26 +225,18 @@ class UserEditType extends AbstractType
             ->add('save', SubmitType::class, ['label' => 'Ajouter']);
 
         $builder->get('roles')->addModelTransformer(new CallbackTransformer(
-            function ($rolesAsArray): string {
-                return json_encode($rolesAsArray);
-            },
-            function ($rolesAsString): array {
-                return json_decode($rolesAsString);
-            }
+            fn ($rolesAsArray): string => json_encode($rolesAsArray),
+            fn ($rolesAsString): array => json_decode($rolesAsString)
         ));
 
         $builder
             ->get('companyId')->addModelTransformer(new CallbackTransformer(
-                function ($value): string {
-                    return $value;
-                },
-                function ($value): int {
-                    return (int) $value;
-                }
+                fn ($value): string => (string) $value,
+                fn ($value): int => (int) $value
             ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Command;
 
 use AppBundle\Association\Model\CompanyMember;
@@ -13,7 +15,7 @@ class UpdateCompanyMemberStateCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('update-company-member-state')
@@ -24,7 +26,7 @@ class UpdateCompanyMemberStateCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var CompanyMemberRepository $companyMemberRepository */
         $companyMemberRepository = $this->getContainer()->get('ting')->get(CompanyMemberRepository::class);

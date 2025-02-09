@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 
 use Phinx\Migration\AbstractMigration;
 
 class MmeMle extends AbstractMigration
 {
-    public function change()
+    public function change(): void
     {
         $sql = <<<SQL
 UPDATE afup_conferenciers set civilite = 'Mme' where civilite = 'Mlle';

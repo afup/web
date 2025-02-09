@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\GeneralMeeting;
 
 use AppBundle\Association\Model\User;
@@ -7,11 +9,11 @@ use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
 
 class GeneralMeetingRepository
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -21,7 +23,7 @@ class GeneralMeetingRepository
     /**
      * @return DateTimeInterface[]
      */
-    public function getAllDates()
+    public function getAllDates(): array
     {
         $query = $this->connection->executeQuery(<<<'SQL'
 SELECT DISTINCT apag.date
@@ -30,9 +32,7 @@ ORDER BY apag.date DESC
 SQL
         );
 
-        return array_map(static function (array $row) {
-            return DateTimeImmutable::createFromFormat('U', $row['date']);
-        }, $query->fetchAll());
+        return array_map(static fn (array $row) => DateTimeImmutable::createFromFormat('U', $row['date']), $query->fetchAll());
     }
 
     /**
@@ -46,9 +46,9 @@ SQL
         return null !== $row['maxDate'] ? DateTimeImmutable::createFromFormat('U', $row['maxDate']) : null;
     }
 
-    public function hasGeneralMeetingPlanned(DateTimeInterface $currentDate = null)
+    public function hasGeneralMeetingPlanned(DateTimeInterface $currentDate = null): bool
     {
-        if (null === $currentDate) {
+        if (!$currentDate instanceof \DateTimeInterface) {
             $currentDate = new DateTime();
         }
         $latestDate = $this->getLatestDate();
@@ -58,10 +58,8 @@ SQL
 
     /**
      * @param string $login
-     *
-     * @return GeneralMeeting|null
      */
-    public function findOneByLoginAndDate($login, DateTimeInterface $date)
+    public function findOneByLoginAndDate($login, DateTimeInterface $date): ?GeneralMeeting
     {
         $query = $this->connection->prepare(<<<'SQL'
 SELECT apag.*
@@ -89,11 +87,9 @@ SQL
     }
 
     /**
-     * @param DateTimeInterface $date
-     * @return array|null
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
-    public function findOneByDate(DateTimeInterface $date)
+    public function findOneByDate(DateTimeInterface $date): ?array
     {
         $query = $this->connection->prepare(<<<SQL
 SELECT * FROM afup_assemblee_generale
@@ -112,10 +108,7 @@ SQL
         ] : null;
     }
 
-    /**
-     * @return int
-     */
-    public function countAttendeesAndPowers(DateTimeInterface $date)
+    public function countAttendeesAndPowers(DateTimeInterface $date): int
     {
         $query = $this->connection->prepare(<<<'SQL'
 SELECT COUNT(*) c
@@ -130,7 +123,7 @@ SQL
         return (int) $query->fetch()['c'];
     }
 
-    public function countAttendees(DateTimeInterface $date)
+    public function countAttendees(DateTimeInterface $date): int
     {
         $query = $this->connection->prepare(<<<'SQL'
 SELECT COUNT(*) c
@@ -166,7 +159,7 @@ SQL
      *
      * @return Attendee[]
      */
-    public function getAttendees(DateTimeInterface $date, $order = 'nom', $direction = 'asc', $idPersonneAvecPouvoir = null)
+    public function getAttendees(DateTimeInterface $date, $order = 'nom', $direction = 'asc', $idPersonneAvecPouvoir = null): array
     {
         $query = $this->connection->createQueryBuilder()
             ->from('afup_personnes_physiques', 'app')
@@ -194,21 +187,19 @@ SQL
                 ->setParameter('pouvoir', $idPersonneAvecPouvoir);
         }
 
-        return array_map(static function (array $row) {
-            return new Attendee(
-                (int) $row['id'],
-                $row['email'],
-                $row['login'],
-                $row['nom'],
-                $row['prenom'],
-                $row['nearest_office'],
-                $row['date_consultation'] ? DateTimeImmutable::createFromFormat('U', $row['date_consultation']) : null,
-                (int) $row['presence'],
-                $row['power_id'] ? (int) $row['power_id'] : null,
-                $row['power_lastname'],
-                $row['power_firstname']
-            );
-        }, $query->execute()->fetchAll());
+        return array_map(static fn (array $row): Attendee => new Attendee(
+            (int) $row['id'],
+            $row['email'],
+            $row['login'],
+            $row['nom'],
+            $row['prenom'],
+            $row['nearest_office'],
+            $row['date_consultation'] ? DateTimeImmutable::createFromFormat('U', $row['date_consultation']) : null,
+            (int) $row['presence'],
+            $row['power_id'] ? (int) $row['power_id'] : null,
+            $row['power_lastname'],
+            $row['power_firstname']
+        ), $query->execute()->fetchAll());
     }
 
     /**
@@ -216,7 +207,7 @@ SQL
      *
      * @return array<int, string>
      */
-    public function getPowerSelectionList(DateTimeInterface $date, $excludeLogin)
+    public function getPowerSelectionList(DateTimeInterface $date, $excludeLogin): array
     {
         $query = $this->connection->createQueryBuilder()
             ->from('afup_personnes_physiques', 'app')
@@ -242,7 +233,7 @@ SQL
         return $list;
     }
 
-    public function getValidAttendeeIds(DateTimeInterface $date)
+    public function getValidAttendeeIds(DateTimeInterface $date): array
     {
         // On autorise un battement de 14 jours
         $timestamp = $date->getTimestamp() - 14 * 86400;
@@ -264,9 +255,7 @@ SQL
         $query->bindValue('date', $timestamp);
         $query->execute();
 
-        return array_map(static function (array $row) {
-            return (int) $row['id'];
-        }, $query->fetchAll());
+        return array_map(static fn (array $row): int => (int) $row['id'], $query->fetchAll());
     }
 
     /**
@@ -308,10 +297,9 @@ SQL
     }
 
     /**
-     * @param DateTimeInterface $date
      * @param string $description
      * @return bool
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function save(DateTimeInterface $date, $description)
     {
@@ -377,10 +365,8 @@ SQL
 
     /**
      * @param string $login
-     *
-     * @return Attendee|null
      */
-    public function getAttendee($login, DateTimeInterface $date)
+    public function getAttendee($login, DateTimeInterface $date): ?Attendee
     {
         $query = $this->connection->prepare(<<<'SQL'
 SELECT
@@ -424,17 +410,15 @@ SQL
 
     /**
      * @param int $nombrePersonnesAJourDeCotisation
-     *
-     * @return int
      */
-    public function obtenirEcartQuorum(DateTimeInterface $date, $nombrePersonnesAJourDeCotisation)
+    public function obtenirEcartQuorum(DateTimeInterface $date, $nombrePersonnesAJourDeCotisation): int
     {
         $quorum = (int) ceil($nombrePersonnesAJourDeCotisation / 4);
 
         return $this->countAttendeesAndPowers($date) - $quorum;
     }
 
-    public function hasUserRspvedToLastGeneralMeeting(User $user)
+    public function hasUserRspvedToLastGeneralMeeting(User $user): bool
     {
         $generalMeeting = null;
         $latestDate = $this->getLatestDate();
@@ -442,6 +426,6 @@ SQL
             $generalMeeting = $this->findOneByLoginAndDate($user->getUsername(), $latestDate);
         }
 
-        return null !== $generalMeeting && null !== $generalMeeting->getModificationDate();
+        return $generalMeeting instanceof GeneralMeeting && $generalMeeting->getModificationDate() instanceof \DateTimeInterface;
     }
 }

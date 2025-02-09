@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Security;
 
@@ -9,20 +11,17 @@ use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class TestGithubAuthenticator extends SocialAuthenticator
 {
-    private $githubUserRepository;
-    private $router;
+    private GithubUserRepository $githubUserRepository;
 
-    public function __construct(GithubUserRepository $githubUserRepository, RouterInterface $router)
+    public function __construct(GithubUserRepository $githubUserRepository)
     {
         $this->githubUserRepository = $githubUserRepository;
-        $this->router = $router;
     }
 
     public function getCredentials(Request $request)
@@ -33,7 +32,6 @@ class TestGithubAuthenticator extends SocialAuthenticator
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $githubUsers = $this->getTestUsersDetails();
-
 
         if (!isset($githubUsers[$credentials])) {
             throw new \RuntimeException('Test user not found');
@@ -60,38 +58,30 @@ class TestGithubAuthenticator extends SocialAuthenticator
         return $user;
     }
 
-    private function getTestUsersDetails()
+    private function getTestUsersDetails(): array
     {
-        $testUsers = [];
-
-        $testUsers['userGithub1'] = [
+        return ['userGithub1' => [
             'id' => 10,
             'name' => 'Name1',
             'login' => 'user_github_1',
             'company' => null,
             'html_url' => 'http://test1.com',
             'avatar_url' => 'http://test1.com',
-        ];
-
-        $testUsers['userGithub2'] = [
+        ], 'userGithub2' => [
             'id' => 42,
             'name' => 'Name2',
             'login' => 'user_github_2',
             'company' => 'company name',
             'html_url' => 'http://test2.com',
             'avatar_url' => 'http://test2.com',
-        ];
-
-        $testUsers['agallou'] = [
+        ], 'agallou' => [
             'id' => 320372,
             'name' => 'agallou',
             'login' => 'agallou',
             'company' => 'AFUP',
             'html_url' => 'http://test2.com',
             'avatar_url' => 'http://test2.com',
-        ];
-
-        return $testUsers;
+        ]];
     }
 
     /**
@@ -103,7 +93,7 @@ class TestGithubAuthenticator extends SocialAuthenticator
             'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
         ];
 
-        return new JsonResponse($data, 403);
+        return new JsonResponse($data, Response::HTTP_FORBIDDEN);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
@@ -117,12 +107,17 @@ class TestGithubAuthenticator extends SocialAuthenticator
     public function start(Request $request, AuthenticationException $authException = null)
     {
         $body = "<h1>Oauth login test</h1>";
-        foreach ($this->getTestUsersDetails() as $name => $infos) {
+        foreach (array_keys($this->getTestUsersDetails()) as $name) {
             $uri = $request->getUri();
             $uri .= $request->query->count() ? '&' : '?';
             $uri .= 'github_test_user=' . $name;
             $body .= sprintf('<a href="%s">Connect as %s</a><br />', $uri, $name);
         }
         return new Response($body);
+    }
+
+    public function supports(Request $request): bool
+    {
+        return true;
     }
 }

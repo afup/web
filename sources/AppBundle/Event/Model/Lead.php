@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
@@ -49,15 +51,12 @@ class Lead implements \JsonSerializable
      */
     private $website;
 
-    /**
-     * @var Event
-     */
-    private $event;
+    private ?Event $event = null;
 
     /**
      * @var string|null
      */
-    private $poste = null;
+    private $poste;
 
     /**
      * @return string
@@ -69,9 +68,8 @@ class Lead implements \JsonSerializable
 
     /**
      * @param string $firstname
-     * @return Lead
      */
-    public function setFirstname($firstname)
+    public function setFirstname($firstname): self
     {
         $this->firstname = $firstname;
         return $this;
@@ -87,9 +85,8 @@ class Lead implements \JsonSerializable
 
     /**
      * @param string $lastname
-     * @return Lead
      */
-    public function setLastname($lastname)
+    public function setLastname($lastname): self
     {
         $this->lastname = $lastname;
         return $this;
@@ -105,9 +102,8 @@ class Lead implements \JsonSerializable
 
     /**
      * @param string $email
-     * @return Lead
      */
-    public function setEmail($email)
+    public function setEmail($email): self
     {
         $this->email = $email;
         return $this;
@@ -123,9 +119,8 @@ class Lead implements \JsonSerializable
 
     /**
      * @param string $company
-     * @return Lead
      */
-    public function setCompany($company)
+    public function setCompany($company): self
     {
         $this->company = $company;
         return $this;
@@ -141,9 +136,8 @@ class Lead implements \JsonSerializable
 
     /**
      * @param string $phone
-     * @return Lead
      */
-    public function setPhone($phone)
+    public function setPhone($phone): self
     {
         $this->phone = $phone;
         return $this;
@@ -159,9 +153,8 @@ class Lead implements \JsonSerializable
 
     /**
      * @param string $language
-     * @return Lead
      */
-    public function setLanguage($language)
+    public function setLanguage($language): self
     {
         $this->language = $language;
         return $this;
@@ -177,18 +170,14 @@ class Lead implements \JsonSerializable
 
     /**
      * @param string $website
-     * @return Lead
      */
-    public function setWebsite($website)
+    public function setWebsite($website): self
     {
         $this->website = $website;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->firstname . ' ' . $this->lastname;
     }
@@ -196,16 +185,15 @@ class Lead implements \JsonSerializable
     /**
      * @return Event
      */
-    public function getEvent()
+    public function getEvent(): ?Event
     {
         return $this->event;
     }
 
     /**
      * @param Event $event
-     * @return Lead
      */
-    public function setEvent(Event $event)
+    public function setEvent(Event $event): self
     {
         $this->event = $event;
         return $this;
@@ -238,7 +226,7 @@ class Lead implements \JsonSerializable
     /**
      * @param string|null $poste
      */
-    public function setPoste($poste)
+    public function setPoste($poste): void
     {
         $this->poste = $poste;
     }

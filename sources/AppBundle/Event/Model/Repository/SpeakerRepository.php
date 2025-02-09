@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
@@ -15,10 +17,12 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<Speaker>
+ */
 class SpeakerRepository extends Repository implements MetadataInitializer
 {
     /**
-     * @param Talk $talk
      * @return CollectionInterface&iterable<Speaker>
      */
     public function getSpeakersByTalk(Talk $talk)
@@ -35,9 +39,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
 
     /**
      * Retrieve speakers with a scheduled talk for a given event
-     * @param Event $event
      * @param bool $returnTalksThatWillBePublished
-     *
      * @return CollectionInterface
      */
     public function getScheduledSpeakersByEvent(Event $event, $returnTalksThatWillBePublished = false)
@@ -51,7 +53,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         }
 
         $query = $this->getPreparedQuery('SELECT speaker.conferencier_id, speaker.id_forum, speaker.civilite, speaker.nom, speaker.prenom, speaker.email, speaker.societe,
-        speaker.biographie, speaker.twitter, speaker.mastodon, speaker.user_github, speaker.photo, talk.titre, talk.session_id,
+        speaker.biographie, speaker.twitter, speaker.mastodon, speaker.bluesky, speaker.user_github, speaker.photo, talk.titre, talk.session_id,
         speaker.will_attend_speakers_diner,
         speaker.has_special_diet,
         speaker.referent_person,
@@ -70,8 +72,6 @@ class SpeakerRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @param Event $event
-     *
      * @return CollectionInterface
      */
     public function getSpeakersByEvent(Event $event)
@@ -116,12 +116,10 @@ class SpeakerRepository extends Repository implements MetadataInitializer
     /**
      * Retourne `true` si le speaker avec l'email ($email) a soumis au moins 1 CFP pour l'évènement ($event) passé en paramètre.
      *
-     * @param Event $event
      * @param string $email
      *
-     * @return bool
      */
-    public function hasCFPSubmitted(Event $event, $email)
+    public function hasCFPSubmitted(Event $event, $email): bool
     {
         $query = $this->getPreparedQuery(
             'SELECT COUNT(afup_conferenciers.conferencier_id) AS cfp
@@ -166,10 +164,7 @@ SQL
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
-    /**
-     * @return int
-     */
-    public function countByEvent(Event $event)
+    public function countByEvent(Event $event): int
     {
         $query = $this->getPreparedQuery('SELECT COUNT(*) AS nb FROM (SELECT nom, prenom FROM afup_conferenciers WHERE id_forum = :eventId GROUP BY nom, prenom) c')
             ->setParams(['eventId' => $event->getId()]);
@@ -250,6 +245,11 @@ SQL
             ->addField([
                 'columnName' => 'mastodon',
                 'fieldName' => 'mastodon',
+                'type' => 'string'
+            ])
+            ->addField([
+                'columnName' => 'bluesky',
+                'fieldName' => 'bluesky',
                 'type' => 'string'
             ])
             ->addField([

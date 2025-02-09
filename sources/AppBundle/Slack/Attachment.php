@@ -1,222 +1,121 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AppBundle\Slack;
 
-class Attachment
+final class Attachment
 {
-    /**
-     * @var string
-     */
-    private $fallback;
+    private ?string $fallback = null;
+    private ?string $pretext = null;
+    private ?string $authorName = null;
+    private ?string $authorLink = null;
+    private ?string $authorIcon = null;
+    private ?string $title = null;
+    private ?string $titleLink = null;
+    private ?string $text = null;
+    private ?string $color = null;
 
-    /**
-     * @var string
-     */
-    private $pretext;
+    /** @var Field[] */
+    private array $fields = [];
 
-    /**
-     * @var string
-     */
-    private $author_name;
+    /** @var string[] */
+    private array $mrkdwnIn = [];
 
-    /**
-     * @var string
-     */
-    private $author_link;
-
-    /**
-     * @var string
-     */
-    private $author_icon;
-
-    /**
-     * @var string
-     */
-    private $title;
-
-    /**
-     * @var string
-     */
-    private $title_link;
-
-    /**
-     * @var string
-     */
-    private $text;
-
-    /**
-     * @var string
-     */
-    private $color;
-
-    /**
-     * @var Field[]
-     */
-    private $fields = [];
-
-    /**
-     * @var array
-     */
-    private $mrkdwn_in = [];
-
-    /**
-     * @return string
-     */
-    public function getFallback()
+    public function getFallback(): ?string
     {
         return $this->fallback;
     }
 
-    /**
-     * @param string $fallback
-     * @return Attachment
-     */
-    public function setFallback($fallback)
+    public function setFallback(string $fallback): self
     {
         $this->fallback = $fallback;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getPretext()
+    public function getPretext(): ?string
     {
         return $this->pretext;
     }
 
-    /**
-     * @param string $pretext
-     * @return Attachment
-     */
-    public function setPretext($pretext)
+    public function setPretext(string $pretext): self
     {
         $this->pretext = $pretext;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getAuthorName()
+    public function getAuthorName(): ?string
     {
-        return $this->author_name;
+        return $this->authorName;
     }
 
-    /**
-     * @param string $author_name
-     * @return Attachment
-     */
-    public function setAuthorName($author_name)
+    public function setAuthorName(string $authorName): self
     {
-        $this->author_name = $author_name;
+        $this->authorName = $authorName;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getAuthorLink()
+    public function getAuthorLink(): ?string
     {
-        return $this->author_link;
+        return $this->authorLink;
     }
 
-    /**
-     * @param string $author_link
-     * @return Attachment
-     */
-    public function setAuthorLink($author_link)
+    public function setAuthorLink(string $authorLink): self
     {
-        $this->author_link = $author_link;
+        $this->authorLink = $authorLink;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getAuthorIcon()
+    public function getAuthorIcon(): ?string
     {
-        return $this->author_icon;
+        return $this->authorIcon;
     }
 
-    /**
-     * @param string $author_icon
-     * @return Attachment
-     */
-    public function setAuthorIcon($author_icon)
+    public function setAuthorIcon(string $authorIcon): self
     {
-        $this->author_icon = $author_icon;
+        $this->authorIcon = $authorIcon;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     * @return Attachment
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): self
     {
         $this->title = $title;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitleLink()
+    public function getTitleLink(): ?string
     {
-        return $this->title_link;
+        return $this->titleLink;
     }
 
-    /**
-     * @param string $title_link
-     * @return Attachment
-     */
-    public function setTitleLink($title_link)
+    public function setTitleLink(string $titleLink): self
     {
-        $this->title_link = $title_link;
+        $this->titleLink = $titleLink;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getText()
+    public function getText(): ?string
     {
         return $this->text;
     }
 
-    /**
-     * @param string $text
-     * @return Attachment
-     */
-    public function setText($text)
+    public function setText(string $text): self
     {
         $this->text = $text;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getColor()
+    public function getColor(): ?string
     {
         return $this->color;
     }
 
-    /**
-     * @param string $color
-     * @return Attachment
-     */
-    public function setColor($color)
+    public function setColor(string $color): self
     {
         $this->color = $color;
         return $this;
@@ -225,36 +124,31 @@ class Attachment
     /**
      * @return Field[]
      */
-    public function getFields()
+    public function getFields(): array
     {
         return $this->fields;
     }
 
-    /**
-     * @param Field $field
-     * @return Attachment
-     */
-    public function addField(Field $field)
+    public function addField(Field $field): self
     {
         $this->fields[] = $field;
         return $this;
     }
 
     /**
-     * @return array
+     * @return string[]
      */
-    public function getMrkdwnIn()
+    public function getMrkdwnIn(): array
     {
-        return $this->mrkdwn_in;
+        return $this->mrkdwnIn;
     }
 
     /**
-     * @param array $mrkdwn_in
-     * @return Attachment
+     * @param string[] $mrkdwnIn
      */
-    public function setMrkdwnIn($mrkdwn_in)
+    public function setMrkdwnIn(array $mrkdwnIn): self
     {
-        $this->mrkdwn_in = $mrkdwn_in;
+        $this->mrkdwnIn = $mrkdwnIn;
         return $this;
     }
 }

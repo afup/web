@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Event;
 
 use Afup\Site\Forum\Facturation;
@@ -27,26 +29,16 @@ use Twig\Environment;
 
 class PendingBankwiresAction
 {
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var InvoiceRepository */
-    private $invoiceRepository;
-    /** @var TicketRepository */
-    private $ticketRepository;
-    /** @var LegacyModelFactory */
-    private $legacyModelFactory;
-    /** @var Emails */
-    private $emails;
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-    /** @var CsrfTokenManagerInterface */
-    private $csrfTokenManager;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var Environment */
-    private $twig;
+    private EventActionHelper $eventActionHelper;
+    private InvoiceRepository $invoiceRepository;
+    private TicketRepository $ticketRepository;
+    private LegacyModelFactory $legacyModelFactory;
+    private Emails $emails;
+    private EventDispatcherInterface $eventDispatcher;
+    private CsrfTokenManagerInterface $csrfTokenManager;
+    private FlashBagInterface $flashBag;
+    private FormFactoryInterface $formFactory;
+    private Environment $twig;
 
     public function __construct(
         EventActionHelper $eventActionHelper,
@@ -72,7 +64,7 @@ class PendingBankwiresAction
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $id = $request->query->get('id');
 
@@ -101,7 +93,7 @@ class PendingBankwiresAction
         ]));
     }
 
-    private function setInvoicePaid(Event $event, Invoice $invoice)
+    private function setInvoicePaid(Event $event, Invoice $invoice): void
     {
         $invoice
             ->setStatus(Ticket::STATUS_PAID)
@@ -119,7 +111,7 @@ class PendingBankwiresAction
                 ->setInvoiceStatus(Ticket::INVOICE_SENT);
             $this->ticketRepository->save($ticket);
 
-            $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket) {
+            $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket): int {
                 $this->emails->sendInscription($event, new MailUser($ticket->getEmail(), $ticket->getLabel()));
 
                 return 1;

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Offices;
 
 class OfficesCollection
 {
-    public function getAll()
+    public function getAll(): array
     {
         return [
             'bordeaux' => [
@@ -41,7 +43,6 @@ class OfficesCollection
                 'youtube' => 'https://www.youtube.com/channel/UCPYMUpcC3b5zd-hVNGEWHAA',
                 'blog_url' => 'http://limoges.afup.org/',
                 'linkedin' => 'afup-limoges',
-                'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/limoges/workadventure',
                 'map' => [
                     "legend-first-point-x" => "410",
                     "legend-first-point-y" => "380",
@@ -66,7 +67,6 @@ class OfficesCollection
                 'youtube' => 'https://www.youtube.com/channel/UCkMGtNcB-VeqMlQ9p2JMIKg',
                 'linkedin' => 'afup-hdf',
                 'bluesky' => 'hdf.afup.org',
-                'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/hautsdefrance/workadventure',
                 'map' => [
                     "legend-first-point-x" => "490",
                     "legend-first-point-y" => "55",
@@ -120,7 +120,6 @@ class OfficesCollection
                 'youtube' => 'https://www.youtube.com/channel/UCSHpe_EYwK0ZhitIJPGSjlQ',
                 'twitter' => 'AFUP_Lyon',
                 'blog_url' => 'http://lyon.afup.org',
-                'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/lyon/workadventure',
                 'linkedin' => 'afup-lyon',
                 'bluesky' => 'lyon.afup.org',
                 'map' => [
@@ -146,7 +145,6 @@ class OfficesCollection
                 'twitter' => 'AFUP_AixMrs',
                 'youtube' => 'https://www.youtube.com/channel/UC77cQ1izl155u6Y8daMZYiA',
                 'blog_url' => 'http://aix-marseille.afup.org/',
-                'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/aixmarseille/workadventure',
                 'map' => [
                     "legend-first-point-x" => "600",
                     "legend-first-point-y" => "540",
@@ -194,6 +192,7 @@ class OfficesCollection
                 'twitter' => 'afup_nantes',
                 'blog_url' => 'http://nantes.afup.org/',
                 'linkedin' => 'afup-nantes',
+                'bluesky' => 'nantes.afup.org',
                 'map' => [
                     "legend-first-point-x" => "285",
                     "legend-first-point-y" => "290",
@@ -217,7 +216,6 @@ class OfficesCollection
                 'logo_url' => '/images/offices/paris.svg',
                 'twitter' => 'afup_paris',
                 'bluesky' => 'paris.afup.org',
-                'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/paris/workadventure',
                 'map' => [
                     "legend-first-point-x" => "460",
                     "legend-first-point-y" => "180",
@@ -286,7 +284,6 @@ class OfficesCollection
                 'twitter' => 'AFUP_Rennes',
                 'blog_url' => 'https://rennes.afup.org/',
                 'youtube' => 'https://www.youtube.com/channel/UCv1VGfqKhygjTOZkdVUWfpQ',
-                'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/rennes/workadventure',
                 'linkedin' => 'afup-rennes',
                 'map' => [
                     "legend-first-point-x" => "285",
@@ -365,7 +362,6 @@ class OfficesCollection
                 'meetup_urlname' => 'afup-tours-php',
                 'meetup_id' => '28638984',
                 'youtube' => 'https://www.youtube.com/channel/UCtKhGIofgKM9ecrdZNyn_pA',
-                'workadventure_url' => 'https://play.workadventu.re/@/antenne-afup/tours/workadventure',
                 'linkedin' => 'afup-tours',
                 'map' => [
                     "legend-first-point-x" => "380",
@@ -395,21 +391,18 @@ class OfficesCollection
         throw new \InvalidArgumentException('Office nout found');
     }
 
-    public function getAllSortedByLabels()
+    public function getAllSortedByLabels(): array
     {
         $offices = $this->getAll();
 
         uasort(
             $offices,
-            function ($a, $b) {
-                return strcmp($a['label'], $b['label']);
-            }
+            fn ($a, $b): int => strcmp($a['label'], $b['label'])
         );
 
-
-        $offices = array_filter(
+        return array_filter(
             $offices,
-            function ($value) {
+            function ($value): bool {
                 if (!isset($value['hide_on_offices_page'])) {
                     return true;
                 }
@@ -417,8 +410,6 @@ class OfficesCollection
                 return !$value['hide_on_offices_page'];
             }
         );
-
-        return $offices;
     }
 
     public function findByCode($code)
@@ -432,7 +423,10 @@ class OfficesCollection
         return $all[$code];
     }
 
-    public function getOrderedLabelsByKey()
+    /**
+     * @return mixed[]
+     */
+    public function getOrderedLabelsByKey(): array
     {
         $labels = [];
         foreach ($this->getAllSortedByLabels() as $key => $office) {

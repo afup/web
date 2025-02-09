@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Migration\AbstractMigration;
 
 class Vote extends AbstractMigration
 {
-    public function change()
+    public function change(): void
     {
         $sql = <<<SQL
 DROP TABLE IF EXISTS `afup_assemblee_generale_question`;

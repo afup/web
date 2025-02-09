@@ -1,15 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 
 class InvoiceFactory
 {
-    /**
-     * @var InvoiceRepository
-     */
-    private $invoiceRepository;
+    private InvoiceRepository $invoiceRepository;
 
     public function __construct(InvoiceRepository $invoiceRepository)
     {
@@ -43,7 +42,7 @@ class InvoiceFactory
         return $invoice;
     }
 
-    public function createInvoiceForEvent(Event $event)
+    public function createInvoiceForEvent(Event $event): Invoice
     {
         $invoice = new Invoice();
         $invoice

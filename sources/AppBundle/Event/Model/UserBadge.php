@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -9,30 +11,18 @@ class UserBadge implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    /**
-     * @var int
-     */
-    private $userId;
+    private ?int $userId = null;
 
-    /**
-     * @var int
-     */
-    private $badgeId;
+    private ?int $badgeId = null;
 
-    /**
-     * @var Badge
-     */
-    private $badge;
+    private ?Badge $badge = null;
 
-    /**
-     * @var \DateTime
-     */
-    private $issuedAt;
+    private ?\DateTime $issuedAt = null;
 
     /**
      * @return int
      */
-    public function getUserId()
+    public function getUserId(): ?int
     {
         return $this->userId;
     }
@@ -42,7 +32,7 @@ class UserBadge implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setUserId($userId)
+    public function setUserId($userId): self
     {
         $userId = (int) $userId;
         $this->propertyChanged('userId', $this->userId, $userId);
@@ -54,7 +44,7 @@ class UserBadge implements NotifyPropertyInterface
     /**
      * @return int
      */
-    public function getBadgeId()
+    public function getBadgeId(): ?int
     {
         return $this->badgeId;
     }
@@ -64,7 +54,7 @@ class UserBadge implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setBadgeId($badgeId)
+    public function setBadgeId($badgeId): self
     {
         $badgeId = (int) $badgeId;
         $this->propertyChanged('badgeId', $this->badgeId, $badgeId);
@@ -73,32 +63,27 @@ class UserBadge implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getBadge()
+    public function getBadge(): ?Badge
     {
         return $this->badge;
     }
 
-    public function setBadge(Badge $badge = null)
+    public function setBadge(Badge $badge = null): self
     {
         $this->badge = $badge;
 
         return $this;
     }
 
-    /**
-     * @return \DateTime|null
-     */
-    public function getIssuedAt()
+    public function getIssuedAt(): ?\DateTime
     {
         return $this->issuedAt;
     }
 
     /**
-     * @param \DateTime $issuedAt
-     *
      * @return $this
      */
-    public function setIssuedAt(\DateTime $issuedAt = null)
+    public function setIssuedAt(\DateTime $issuedAt = null): self
     {
         $this->propertyChanged('issuedAt', $this->issuedAt, $issuedAt);
         $this->issuedAt = $issuedAt;

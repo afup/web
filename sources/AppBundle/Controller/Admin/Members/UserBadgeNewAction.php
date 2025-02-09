@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members;
 
 use AppBundle\Association\Form\UserBadgeType;
@@ -12,12 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserBadgeNewAction
 {
-    /** @var UserRepository */
-    private $userRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var UserBadgeRepository */
-    private $userBadgeRepository;
+    private UserRepository $userRepository;
+    private FormFactoryInterface $formFactory;
+    private UserBadgeRepository $userBadgeRepository;
 
     public function __construct(
         UserRepository $userRepository,
@@ -29,7 +28,7 @@ class UserBadgeNewAction
         $this->userBadgeRepository = $userBadgeRepository;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse
     {
         $user = $this->userRepository->get($request->get('user_id'));
         $userBadgeForm = $this->formFactory->create(UserBadgeType::class, [], ['user' => $user]);

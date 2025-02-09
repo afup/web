@@ -289,7 +289,7 @@
 
 {% block content %}
 {{ render(controller(
-    'AppBundle\\Controller\\SecondaryMenuController::displayAction',
+    'AppBundle\\Controller\\Website\\SecondaryMenuController::display',
     { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ANTENNES') }
 )) }}
 <div class="mw1400p center" id="container">
@@ -413,12 +413,6 @@
                         {% if office.youtube is defined %}
                             <a class="button-inverted" href="{{ office.youtube }}">
                                 <i class="fa fa-youtube" aria-hidden="true"></i>&nbsp;Youtube
-                            </a>
-                        {% endif %}
-
-                        {% if office.workadventure_url is defined %}
-                            <a class="button-inverted" href="{{ office.workadventure_url }}">
-                                <i aria-hidden="true" class="fa fa-video-camera"></i>&nbsp;Work&nbsp;Adventure
                             </a>
                         {% endif %}
                     </div>

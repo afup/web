@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members\GeneralMeeting;
 
 use Afup\Site\Logger\DbLoggerTrait;
@@ -17,14 +19,10 @@ class PrepareAction
 {
     use DbLoggerTrait;
 
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var Environment */
-    private $twig;
-    /** @var GeneralMeetingRepository */
-    private $generalMeetingRepository;
+    private FormFactoryInterface $formFactory;
+    private FlashBagInterface $flashBag;
+    private Environment $twig;
+    private GeneralMeetingRepository $generalMeetingRepository;
 
     public function __construct(
         GeneralMeetingRepository $generalMeetingRepository,

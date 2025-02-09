@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Speaker;
 
 use Afup\Site\Logger\DbLoggerTrait;
@@ -23,20 +25,13 @@ class SpeakerAddAction
 {
     use DbLoggerTrait;
 
-    /** @var EventRepository */
-    private $eventRepository;
-    /** @var SpeakerRepository */
-    private $speakerRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var PhotoStorage */
-    private $photoStorage;
-    /** @var Environment */
-    private $twig;
+    private EventRepository $eventRepository;
+    private SpeakerRepository $speakerRepository;
+    private FormFactoryInterface $formFactory;
+    private FlashBagInterface $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
+    private PhotoStorage $photoStorage;
+    private Environment $twig;
 
     public function __construct(
         EventRepository $eventRepository,
@@ -77,6 +72,7 @@ class SpeakerAddAction
             $speaker->setBiography($data->biography);
             $speaker->setTwitter($data->twitter);
             $speaker->setMastodon($data->mastodon);
+            $speaker->setBluesky($data->bluesky);
             $speaker->setEmail($data->email);
             $speaker->setUser($data->githubUser !== null ? $data->githubUser->getId() : null);
             $speaker->setCompany($data->company);

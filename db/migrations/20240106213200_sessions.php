@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Migration\AbstractMigration;
 
 class Sessions extends AbstractMigration
 {
-    public function change()
+    public function change(): void
     {
         $sql = <<<EOF
 CREATE TABLE `sessions` (

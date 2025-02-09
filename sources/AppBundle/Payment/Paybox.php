@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Payment;
 
 class Paybox
@@ -31,13 +33,12 @@ class Paybox
     private $identifiant;
 
     private $total = 0;
-    private $cmd = null;
-    private $porteur = null;
-    private $urlRetourEffectue = null;
-    private $urlRetourRefuse = null;
-    private $urlRetourErreur = null;
-    private $urlRetourAnnule = null;
-    private $urlRepondreA = null;
+    private $cmd;
+    private $porteur;
+    private $urlRetourEffectue;
+    private $urlRetourRefuse;
+    private $urlRetourAnnule;
+    private $urlRepondreA;
 
     public function __construct($domainServer, $secretKey, $site, $rang, $identifiant)
     {
@@ -49,7 +50,7 @@ class Paybox
         $this->identifiant = $identifiant;
     }
 
-    public function generate(\DateTimeInterface $now, PayboxBilling $payboxBilling, $quantity = 1)
+    public function generate(\DateTimeInterface $now, PayboxBilling $payboxBilling, $quantity = 1): string
     {
         // On récupère la date au format ISO-8601
         $dateTime = $now->format('c');
@@ -112,12 +113,11 @@ class Paybox
             $htmlForm .= '  <input type="hidden" name="' . $inputKey . '" value="' . $inputValue . '">' . PHP_EOL;
         }
         $htmlForm .= '  <button type="submit" class="button button--call-to-action paiement">Régler par carte</button>' . PHP_EOL;
-        $htmlForm .= '</form>';
 
-        return $htmlForm;
+        return $htmlForm . '</form>';
     }
 
-    private function generatePbxShoppingcart($quantity = 1)
+    private function generatePbxShoppingcart($quantity = 1): string
     {
         if ($quantity > self::PAYBOX_SHOPPING_MAX_QUANTITY) {
             $quantity = self::PAYBOX_SHOPPING_MAX_QUANTITY;
@@ -126,7 +126,7 @@ class Paybox
         return sprintf('<?xml version="1.0" encoding="utf-8"?><shoppingcart><total><totalQuantity>%d</totalQuantity></total></shoppingcart>', $quantity);
     }
 
-    private function generatePbxBiling(PayboxBilling $payboxBilling)
+    private function generatePbxBiling(PayboxBilling $payboxBilling): string
     {
         $domDocument = new \DOMDocument('1.0', 'utf-8');
         $billing = $domDocument->createElement('Billing');
@@ -163,7 +163,7 @@ class Paybox
         return str_replace(["\n", "\r"], "", $domDocument->saveXML());
     }
 
-    private function preparePbxBillingValue($value, $maxLength, $default)
+    private function preparePbxBillingValue($value, int $maxLength, $default)
     {
         $value = $value ? trim($value) : '';
 
@@ -181,10 +181,8 @@ class Paybox
 
     /**
      * @param int $total Montant en centimes d'euros
-     *
-     * @return self
      */
-    public function setTotal($total)
+    public function setTotal($total): self
     {
         $this->total = $total;
 
@@ -193,10 +191,8 @@ class Paybox
 
     /**
      * @param null|string $cmd
-     *
-     * @return self
      */
-    public function setCmd($cmd)
+    public function setCmd($cmd): self
     {
         $this->cmd = $cmd;
 
@@ -205,10 +201,8 @@ class Paybox
 
     /**
      * @param null|string $porteur
-     *
-     * @return self
      */
-    public function setPorteur($porteur)
+    public function setPorteur($porteur): self
     {
         $this->porteur = $porteur;
 
@@ -217,10 +211,8 @@ class Paybox
 
     /**
      * @param null|string $urlRetourEffectue
-     *
-     * @return self
      */
-    public function setUrlRetourEffectue($urlRetourEffectue)
+    public function setUrlRetourEffectue($urlRetourEffectue): self
     {
         $this->urlRetourEffectue = $urlRetourEffectue;
 
@@ -229,10 +221,8 @@ class Paybox
 
     /**
      * @param null|string $urlRetourRefuse
-     *
-     * @return self
      */
-    public function setUrlRetourRefuse($urlRetourRefuse)
+    public function setUrlRetourRefuse($urlRetourRefuse): self
     {
         $this->urlRetourRefuse = $urlRetourRefuse;
 
@@ -241,22 +231,16 @@ class Paybox
 
     /**
      * @param null|string $urlRetourErreur
-     *
-     * @return self
      */
-    public function setUrlRetourErreur($urlRetourErreur)
+    public function setUrlRetourErreur($urlRetourErreur): self
     {
-        $this->urlRetourErreur = $urlRetourErreur;
-
         return $this;
     }
 
     /**
      * @param null|string $urlRetourAnnule
-     *
-     * @return self
      */
-    public function setUrlRetourAnnule($urlRetourAnnule)
+    public function setUrlRetourAnnule($urlRetourAnnule): self
     {
         $this->urlRetourAnnule = $urlRetourAnnule;
 
@@ -268,7 +252,7 @@ class Paybox
      *
      * return self
      */
-    public function setUrlRepondreA($urlRepondreA)
+    public function setUrlRepondreA($urlRepondreA): self
     {
         $this->urlRepondreA = $urlRepondreA;
 

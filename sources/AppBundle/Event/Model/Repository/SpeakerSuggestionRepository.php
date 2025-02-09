@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\SpeakerSuggestion;
@@ -11,8 +13,6 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 class SpeakerSuggestionRepository extends Repository implements MetadataInitializer
 {
     /**
-     * @param SerializerFactoryInterface $serializerFactory
-     * @param array $options
      *
      * @return Metadata
      */

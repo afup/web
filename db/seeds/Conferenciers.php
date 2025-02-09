@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Seed\AbstractSeed;
 
 class Conferenciers extends AbstractSeed
 {
     const ID_CONFERENCIER = 1;
 
-    public function run()
+    public function run(): void
     {
         $data = [
             [
@@ -21,6 +23,7 @@ class Conferenciers extends AbstractSeed
                 'biographie' => 'Président 2018-2019 de l\'AFUP',
                 'twitter' => 'ubermuda',
                 'mastodon' => 'https://phpc.social/@ubermuda',
+                'bluesky' => 'afup.org',
                 'user_github' => GithubUsers::ID_GITHUBUSER_UBERMUDA,
                 'photo' => '1968.jpg',
                 'will_attend_speakers_diner' => null,
@@ -40,6 +43,7 @@ class Conferenciers extends AbstractSeed
                 'biographie' => 'Bio Adrien',
                 'twitter' => 'agallou',
                 'mastodon' => 'https://phpc.social/@agallou',
+                'bluesky' => 'lyon.afup.org',
                 'user_github' => 2,
                 'photo' => '1968.jpg',
                 'will_attend_speakers_diner' => null,

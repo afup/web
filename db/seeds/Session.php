@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Phinx\Seed\AbstractSeed;
 
 class Session extends AbstractSeed
@@ -9,10 +11,10 @@ class Session extends AbstractSeed
         2
     ];
 
-    public function run()
+    public function run(): void
     {
-        $dateDebut = DateTimeImmutable::createFromFormat('U', strtotime('-' .rand(5, 6). ' days'));
-        $date = DateTimeImmutable::createFromFormat('U', strtotime('-' .rand(1, 5). ' days'));
+        $dateDebut = DateTimeImmutable::createFromFormat('U', (string) strtotime('-' . random_int(5, 6) . ' days'));
+        $date = DateTimeImmutable::createFromFormat('U', (string) strtotime('-' . random_int(1, 5) . ' days'));
 
         $sessions = [
             [

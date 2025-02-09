@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Legacy;
 
 use Afup\Site\Forum\AppelConferencier;
@@ -10,12 +12,9 @@ use Twig\Environment;
 
 class Forum2016SessionsAction
 {
-    /** @var AppelConferencier */
-    private $appelConferencier;
-    /** @var TranslatorInterface */
-    private $translator;
-    /** @var Environment */
-    private $twig;
+    private AppelConferencier $appelConferencier;
+    private TranslatorInterface $translator;
+    private Environment $twig;
 
     public function __construct(
         AppelConferencier $appelConferencier,
@@ -27,7 +26,7 @@ class Forum2016SessionsAction
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $eventId = 15;
         $sessions = $this->appelConferencier->obtenirListeSessionsPlannifies($eventId);
@@ -37,7 +36,7 @@ class Forum2016SessionsAction
             $day1key => [],
             $day2key => [],
         ];
-        foreach ($sessions as $index => $session) {
+        foreach ($sessions as $session) {
             $session['conferenciers'] = $this->appelConferencier->obtenirConferenciersPourSession($session['session_id']);
             $session['journees'] = explode(' ', $session['journee']);
 

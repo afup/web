@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Legacy;
 
 use Assert\Assertion;
@@ -12,15 +14,14 @@ use Twig\Error\LoaderError;
 
 class LegacyEventAction
 {
-    /** @var Environment */
-    private $twig;
+    private Environment $twig;
 
     public function __construct(Environment $twig)
     {
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $year = $request->attributes->getInt('year');
         $page = str_replace('.php', '', $request->attributes->get('page'));
@@ -28,9 +29,7 @@ class LegacyEventAction
             Assertion::inArray($year, [2005, 2006, 2007, 2008, 2009]);
             Assertion::regex($page, '/[a-z0-9_]+/');
             $template = $this->twig->load(sprintf('legacy/forumphp%d/%s.html.twig', $year, $page));
-        } catch (AssertionFailedException $e) {
-            throw new NotFoundHttpException('Page introuvable');
-        } catch (LoaderError $e) {
+        } catch (AssertionFailedException|LoaderError $e) {
             throw new NotFoundHttpException('Page introuvable');
         }
 

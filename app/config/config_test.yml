@@ -17,7 +17,7 @@ parameters:
     database_user: afup
     database_password: afup
     github_authenticator: "AppBundle\\Security\\TestGithubAuthenticator"
-    slack_url: null
+    slack_url: "http://fake-slack-url"
 
     smtp_host: "mailcatcher"
     smtp_tls: 0
@@ -34,3 +34,16 @@ services:
 
 ewz_recaptcha:
     enabled: false
+
+
+monolog:
+    handlers:
+        deprecation_stream:
+            type: stream
+            path: "%kernel.logs_dir%/%kernel.environment%.deprecations.log"
+
+        deprecation_filter:
+            type: filter
+            handler: deprecation_stream
+            max_level: info
+            channels: ["php"]

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\GithubUser;
@@ -50,6 +52,9 @@ class SpeakerFormData
      * @var string
      */
     public $mastodon;
+
+    public ?string $bluesky = null;
+
     /**
      * @Assert\File(mimeTypes={"image/jpeg","image/png"})
      * @var UploadedFile|null

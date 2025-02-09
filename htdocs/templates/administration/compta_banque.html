@@ -36,10 +36,6 @@
                 <i class="icon file excel"></i>
                 Export XLSX
             </a>
-            <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte={$compte_id}&amp;action=download_attachments" class="item">
-                <i class="icon file zip"></i>
-                Télécharger les justificatifs triés par mois
-            </a>
         </div>
 
         <table class="ui table striped compact celled">
@@ -61,11 +57,11 @@
                         <td>{$ecriture.reglement}</td>
                         <td>{$ecriture.description}</td>
                         {if $ecriture.idoperation == 1}
-                            <td class="right aligned">{$ecriture.montant|number_format:2:',':' '}</td>
+                            <td class="right aligned">{$ecriture.montant|floatval|number_format:2:',':' '}</td>
                             <td> </td>
                         {else}
                             <td> </td>
-                            <td class="right aligned">{$ecriture.montant|number_format:2:',':' '}</td>
+                            <td class="right aligned">{$ecriture.montant|floatval|number_format:2:',':' '}</td>
                         {/if}
                         <td class="right aligned">
                             <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}"
@@ -84,13 +80,13 @@
                                 <b><i>Sous Total</i></b>
                             </td>
                             <td class="right aligned">
-                                <b><i></i>{if $txt.debit}{$txt.debit|number_format:2:',':' '}{else}0,00{/if}</i></b>
+                                <b><i></i>{if $txt.debit}{$txt.debit|floatval|number_format:2:',':' '}{else}0,00{/if}</i></b>
                             </td>
                             <td class="right aligned">
-                                <b><i></i>{if $txt.credit}{$txt.credit|number_format:2:',':' '}{else}0,00{/if}</i></b>
+                                <b><i></i>{if $txt.credit}{$txt.credit|floatval|number_format:2:',':' '}{else}0,00{/if}</i></b>
                             </td>
                             <td class="right aligned">
-                                <b><i>{$txt.dif|number_format:2:',':' '}</i></b>
+                                <b><i>{$txt.dif|floatval|number_format:2:',':' '}</i></b>
                             </td>
                         </tr>
                         {assign var=compteurLigne value=0}
@@ -111,7 +107,7 @@
                     <th class="center aligned">
                         <div class="ui mini statistic">
                             <div class="value">
-                                {$total.debit|number_format:2:',':' '}
+                                {$total.debit|floatval|number_format:2:',':' '}
                             </div>
                             <iv class="label">
                                 Total débit
@@ -121,7 +117,7 @@
                     <th class="center aligned">
                         <div class="ui mini statistic">
                             <div class="value">
-                                {$total.credit|number_format:2:',':' '}
+                                {$total.credit|floatval|number_format:2:',':' '}
                             </div>
                             <iv class="label">
                                 Total crédit
@@ -135,7 +131,7 @@
                     <th colspan="2" class="center aligned">
                         <div class="ui tiny statistic">
                             <div class="value">
-                                {$total.dif|number_format:2:',':' '}
+                                {$total.dif|floatval|number_format:2:',':' '}
                             </div>
                             <iv class="label">
                                 Solde

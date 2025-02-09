@@ -1,6 +1,6 @@
 parameters:
     phpVersion: 70400 # PHP 7.4
-    level: 1
+    level: 2
     paths:
         - sources
     scanFiles:
@@ -15,9 +15,6 @@ parameters:
             - sources/AppBundle/Twig/AssetsExtension.php
             - sources/AppBundle/Twig/TwigExtension.php
 
-    ignoreErrors:
-        -
-            message: '#^Method AppBundle\\Controller\\SiteBaseController\:\:render\(\) overrides @final method Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller\:\:render\(\)\.$#'
-            identifier: method.parentMethodFinalByPhpDoc
-            count: 1
-            path: sources/AppBundle/Controller/SiteBaseController.php
+    stubFiles:
+            - tests/stubs/Ting/Repository/Repository.php.stub
+            - tests/stubs/Ting/Repository/RepositoryFactory.php.stub

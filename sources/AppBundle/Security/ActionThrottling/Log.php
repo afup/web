@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Security\ActionThrottling;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -34,10 +36,7 @@ class Log implements NotifyPropertyInterface
      */
     private $objectId;
 
-    /**
-     * @var \DateTime
-     */
-    private $createdOn;
+    private ?\DateTime $createdOn = null;
 
     /**
      * @return int
@@ -49,9 +48,8 @@ class Log implements NotifyPropertyInterface
 
     /**
      * @param int $id
-     * @return Log
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->id = $id;
         return $this;
@@ -67,9 +65,8 @@ class Log implements NotifyPropertyInterface
 
     /**
      * @param string $ip
-     * @return Log
      */
-    public function setIp($ip)
+    public function setIp($ip): self
     {
         $this->ip = $ip;
         return $this;
@@ -85,9 +82,8 @@ class Log implements NotifyPropertyInterface
 
     /**
      * @param string $action
-     * @return Log
      */
-    public function setAction($action)
+    public function setAction($action): self
     {
         $this->action = $action;
         return $this;
@@ -103,9 +99,8 @@ class Log implements NotifyPropertyInterface
 
     /**
      * @param int $objectId
-     * @return Log
      */
-    public function setObjectId($objectId)
+    public function setObjectId($objectId): self
     {
         $this->objectId = $objectId;
         return $this;
@@ -114,16 +109,12 @@ class Log implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getCreatedOn()
+    public function getCreatedOn(): ?\DateTime
     {
         return $this->createdOn;
     }
 
-    /**
-     * @param \DateTime $createdOn
-     * @return Log
-     */
-    public function setCreatedOn(\DateTime $createdOn)
+    public function setCreatedOn(\DateTime $createdOn): self
     {
         $this->createdOn = $createdOn;
         return $this;

@@ -1,23 +1,18 @@
 <?php
+
+declare(strict_types=1);
 namespace Afup\Site\Corporate;
 
 class Footer
 {
-    private $conf;
-
-    function __construct()
-    {
-        $this->conf = $GLOBALS['AFUP_CONF'];
-    }
-
-    function logos()
+    public function logos(): string
     {
         $branche = new Branche();
         $branche->navigation_avec_image(true);
         return '<ul id="LogoBar"><li>' . $branche->naviguer(9, 0, "LogoElement") . '</li></ul>';
     }
 
-    function questions()
+    public function questions(): string
     {
         $articles = new Articles();
         $questions = $articles->chargerDernieresQuestions();
@@ -26,12 +21,11 @@ class Footer
         foreach ($questions as $question) {
             $contenu .= '<li><a href="' . $question->route() . '">' . $question->titre() . '</a></li>';
         }
-        $contenu .= '</ul>';
 
-        return $contenu;
+        return $contenu . '</ul>';
     }
 
-    function articles()
+    public function articles(): string
     {
         $articles = new Articles();
         $ajouts = $articles->chargerDerniersAjouts();
@@ -39,12 +33,11 @@ class Footer
         foreach ($ajouts as $ajout) {
             $contenu .= '<li><a href="' . $ajout->route() . '">' . $ajout->titre() . '</a></li>';
         }
-        $contenu .= '</ul>';
 
-        return $contenu;
+        return $contenu . '</ul>';
     }
 
-    function render()
+    public function render(): string
     {
         return "";
     }

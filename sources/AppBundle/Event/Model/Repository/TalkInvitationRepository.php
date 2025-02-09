@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\TalkInvitation;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -12,7 +15,7 @@ class TalkInvitationRepository extends Repository implements MetadataInitializer
 {
     /**
      * @param $talkId
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getPendingInvitationsByTalkId($talkId)
     {
@@ -27,8 +30,6 @@ class TalkInvitationRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @param SerializerFactoryInterface $serializerFactory
-     * @param array $options
      * @return Metadata
      */
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])

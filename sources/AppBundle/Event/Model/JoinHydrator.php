@@ -1,19 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 class JoinHydrator extends HydratorAggregator
 {
-    public function aggregateOn($mainObjectAlias, $joinedObjectAlias, $mainObjectGetter)
+    public function aggregateOn($mainObjectAlias, $joinedObjectAlias, $mainObjectGetter): self
     {
         $this
-            ->callableDataIs(function ($result) use ($joinedObjectAlias) {
-                return $result[$joinedObjectAlias];
-            })
-            ->callableIdIs(function ($result) use ($mainObjectAlias, $mainObjectGetter) {
-                return $result[$mainObjectAlias]->$mainObjectGetter();
-            })
-            ->callableFinalizeAggregate(function ($result, $aggregate) use ($joinedObjectAlias) {
+            ->callableDataIs(fn ($result) => $result[$joinedObjectAlias])
+            ->callableIdIs(fn ($result) => $result[$mainObjectAlias]->$mainObjectGetter())
+            ->callableFinalizeAggregate(function (array $result, $aggregate) use ($joinedObjectAlias) {
                 $result['.aggregation'][$joinedObjectAlias] = array_filter($aggregate);
                 return $result;
             })

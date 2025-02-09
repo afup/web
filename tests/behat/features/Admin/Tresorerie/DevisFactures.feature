@@ -68,7 +68,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I should see "Paris Cedex 7"
     And I should see "Payé"
     # Envoi de la facture par email
-    Then I follow the button of tooltip "Envoyer la facture 2024-3 par mail"
+    Then I follow the button of tooltip "Envoyer la facture 2025-3 par mail"
     And I should only receive the following emails:
       | from               | to                         | subject      |
       | <bonjour@afup.org> | <martine@ens-en-folie.biz> | Facture AFUP |
@@ -80,7 +80,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     # Téléchargement de la facture
     When I go to "/admin/"
     And I follow "Factures"
-    And I follow the button of tooltip "Télécharger la facture 2024-3"
+    And I follow the button of tooltip "Télécharger la facture 2025-3"
     Then the response header "Content-disposition" should match '#attachment; filename="Facture - ESN dev en folie - (.*).pdf"#'
     When I parse the pdf downloaded content
     Then The page "1" of the PDF should contain "N° TVA Intracommunautaire : FR7612345"
@@ -158,7 +158,7 @@ Feature: Administration - Trésorerie - Devis/Facture
   @vat
   Scenario: Test du PDF de facture après 2024
     Given I am logged in as admin and on the Administration
-    When I go to "/pages/administration/index.php?page=compta_devis"
+    When I go to "/pages/administration/index.php?page=compta_devis&id_periode=15"
     Then the ".content h2" element should contain "Liste devis"
     When I follow the button of tooltip "Télécharger le devis Krampouz"
     Then the response header "Content-disposition" should equal 'attachment; filename="Devis - Krampouz - 2024-01-03.pdf"'

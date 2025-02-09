@@ -9,8 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class FeedsController
 {
-    /** @var FeedRepository */
-    private $feedRepository;
+    private FeedRepository $feedRepository;
 
     public function __construct(FeedRepository $feedRepository)
     {
@@ -30,6 +29,6 @@ final class FeedsController
             ];
         }
 
-        return new Response(json_encode($data), 200, ['Content-Type' => 'application/json']);
+        return new Response(json_encode($data), Response::HTTP_OK, ['Content-Type' => 'application/json']);
     }
 }

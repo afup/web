@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 
 use Phinx\Migration\AbstractMigration;
 
 class QrCode extends AbstractMigration
 {
-    public function change()
+    public function change(): void
     {
         $sql = <<<EOF
 ALTER TABLE `afup_inscription_forum`

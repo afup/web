@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Event;
 
 use AppBundle\Event\Model\Event;
@@ -11,10 +13,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class EventActionHelper
 {
-    /** @var EventRepository */
-    protected $eventRepository;
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    protected EventRepository $eventRepository;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         EventRepository $eventRepository,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\TechLetter\Model;
 
 class News implements \JsonSerializable
@@ -13,15 +15,11 @@ class News implements \JsonSerializable
      * @var string
      */
     private $title;
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $date;
+    private \DateTimeImmutable $date;
 
     /**
      * @param string $url
      * @param string $title
-     * @param \DateTimeImmutable $date
      */
     public function __construct($url, $title, \DateTimeImmutable $date)
     {
@@ -46,10 +44,7 @@ class News implements \JsonSerializable
         return $this->title;
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getDate()
+    public function getDate(): \DateTimeImmutable
     {
         return $this->date;
     }

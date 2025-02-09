@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Talk;
 
 use AppBundle\Email\Mailer\Mailer;
@@ -20,16 +22,11 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class InvitationFormHandler
 {
-    /** @var TalkInvitationRepository */
-    private $talkInvitationRepository;
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-    /** @var TranslatorInterface */
-    private $translator;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var Mailer */
-    private $mailer;
+    private TalkInvitationRepository $talkInvitationRepository;
+    private EventDispatcherInterface $eventDispatcher;
+    private TranslatorInterface $translator;
+    private UrlGeneratorInterface $urlGenerator;
+    private Mailer $mailer;
 
     public function __construct(
         TalkInvitationRepository $talkInvitationRepository,
@@ -45,10 +42,7 @@ class InvitationFormHandler
         $this->mailer = $mailer;
     }
 
-    /**
-     * @return bool
-     */
-    public function handle(Request $request, Event $event, FormInterface $form, GithubUser $user, Talk $talk)
+    public function handle(Request $request, Event $event, FormInterface $form, GithubUser $user, Talk $talk): bool
     {
         $form->handleRequest($request);
         if (!$form->isSubmitted() || !$form->isValid()) {
@@ -63,7 +57,7 @@ class InvitationFormHandler
             $form->addError(new FormError($exception->getMessage()));
         }
         // Send mail to the other guy, begging for him to join the talk
-        $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($talk, $user, $event, $invitation) {
+        $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($talk, $user, $event, $invitation): void {
             $text = $this->translator->trans('mail.invitation.text', [
                 '%name%' => $user->getName() ?: $user->getLogin(),
                 '%title%' => $talk->getTitle(),

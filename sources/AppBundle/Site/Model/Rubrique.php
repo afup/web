@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Site\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -50,7 +52,7 @@ class Rubrique implements NotifyPropertyInterface
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId($id): void
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -61,7 +63,7 @@ class Rubrique implements NotifyPropertyInterface
         return $this->idPersonnePhysique;
     }
 
-    public function setIdPersonnePhysique($id)
+    public function setIdPersonnePhysique($id): void
     {
         $this->propertyChanged('idPersonnePhysique', $this->idPersonnePhysique, $id);
         $this->idPersonnePhysique = $id;
@@ -72,7 +74,7 @@ class Rubrique implements NotifyPropertyInterface
         return $this->idParent;
     }
 
-    public function setIdParent($id)
+    public function setIdParent($id): void
     {
         $this->propertyChanged('idParent', $this->idParent, $id);
         $this->idParent = $id;
@@ -83,7 +85,7 @@ class Rubrique implements NotifyPropertyInterface
         return $this->nom;
     }
 
-    public function setNom($nom)
+    public function setNom($nom): void
     {
         $this->propertyChanged('nom', $this->nom, $nom);
         $this->nom = $nom;
@@ -94,7 +96,7 @@ class Rubrique implements NotifyPropertyInterface
         return $this->raccourci;
     }
 
-    public function setRaccourci($raccourci)
+    public function setRaccourci($raccourci): void
     {
         $this->propertyChanged('raccourci', $this->raccourci, $raccourci);
         $this->raccourci = $raccourci;
@@ -105,7 +107,7 @@ class Rubrique implements NotifyPropertyInterface
         return $this->descriptif;
     }
 
-    public function setDescriptif($descriptif)
+    public function setDescriptif($descriptif): void
     {
         $this->descriptif = $descriptif;
         $this->propertyChanged('descriptif', $this->descriptif, $descriptif);
@@ -116,7 +118,7 @@ class Rubrique implements NotifyPropertyInterface
         return $this->contenu;
     }
 
-    public function setContenu($contenu)
+    public function setContenu($contenu): void
     {
         $this->propertyChanged('contenu', $this->contenu, $contenu);
         $this->contenu = $contenu;
@@ -127,7 +129,7 @@ class Rubrique implements NotifyPropertyInterface
         return $this->position;
     }
 
-    public function setPosition($position)
+    public function setPosition($position): void
     {
         $this->propertyChanged('position', $this->position, $position);
         $this->position = $position;
@@ -138,7 +140,7 @@ class Rubrique implements NotifyPropertyInterface
         return $this->icone;
     }
 
-    public function setIcone($icone)
+    public function setIcone($icone): void
     {
         $this->propertyChanged('icone', $this->icone, $icone);
         $this->icone = $icone;
@@ -149,7 +151,7 @@ class Rubrique implements NotifyPropertyInterface
         return  $this->date;
     }
 
-    public function setDate($date)
+    public function setDate($date): void
     {
         $this->propertyChanged('date', $this->date, $date);
         $this->date = $date;
@@ -160,7 +162,7 @@ class Rubrique implements NotifyPropertyInterface
         return $this->etat;
     }
 
-    public function setEtat($etat)
+    public function setEtat($etat): void
     {
         $this->propertyChanged('etat', $this->etat, $etat);
         $this->etat = $etat;
@@ -171,7 +173,7 @@ class Rubrique implements NotifyPropertyInterface
         return $this->pagination;
     }
 
-    public function setPagination($pagination = 0)
+    public function setPagination($pagination = 0): void
     {
         $pagination = is_null($pagination) ? 0 : $pagination;
         $this->propertyChanged('pagination', $this->pagination, $pagination);
@@ -183,7 +185,7 @@ class Rubrique implements NotifyPropertyInterface
         return $this->feuilleAssociee;
     }
 
-    public function setFeuilleAssociee($feuilleAssociee)
+    public function setFeuilleAssociee($feuilleAssociee): void
     {
         $this->propertyChanged('feuilleAssociee', $this->feuilleAssociee, $feuilleAssociee);
         $this->feuilleAssociee = $feuilleAssociee;

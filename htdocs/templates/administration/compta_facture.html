@@ -40,7 +40,7 @@
                  <span class="ui yellow label">En attente</span>
             {/if}
              </td>
-            <td class="right aligned">{$ecriture.prix|number_format:2:',':' '}</td>
+            <td class="right aligned">{$ecriture.prix|floatval|number_format:2:',':' '}</td>
             <td class="single line right aligned">
                <a href="index.php?page=compta_facture&amp;action=modifier&amp;id={$ecriture.id}"
                   data-position="left center"

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Event\CFP;
 
 use AppBundle\CFP\SpeakerFactory;
@@ -19,24 +21,15 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class InviteAction
 {
-    /** @var TalkRepository */
-    private $talkRepository;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var SpeakerFactory */
-    private $speakerFactory;
-    /** @var SessionInterface */
-    private $session;
-    /** @var TranslatorInterface */
-    private $translator;
-    /** @var TalkInvitationRepository */
-    private $talkInvitationRepository;
-    /** @var TalkToSpeakersRepository */
-    private $talkToSpeakersRepository;
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var FlashBagInterface */
-    private $flashBag;
+    private TalkRepository $talkRepository;
+    private UrlGeneratorInterface $urlGenerator;
+    private SpeakerFactory $speakerFactory;
+    private SessionInterface $session;
+    private TranslatorInterface $translator;
+    private TalkInvitationRepository $talkInvitationRepository;
+    private TalkToSpeakersRepository $talkToSpeakersRepository;
+    private EventActionHelper $eventActionHelper;
+    private FlashBagInterface $flashBag;
 
     public function __construct(
         EventActionHelper $eventActionHelper,
@@ -60,7 +53,7 @@ class InviteAction
         $this->flashBag = $flashBag;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse
     {
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
         $token = $request->attributes->get('token');

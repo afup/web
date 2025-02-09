@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -28,7 +30,7 @@ class Meetup implements NotifyPropertyInterface
     /**
      * @var string|null
      */
-    private $location = null;
+    private $location;
 
     /**
      * @var ?string
@@ -50,10 +52,8 @@ class Meetup implements NotifyPropertyInterface
 
     /**
      * @param int $id
-     *
-     * @return Meetup
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -71,10 +71,8 @@ class Meetup implements NotifyPropertyInterface
 
     /**
      * @param DateTime $date
-     *
-     * @return Meetup
      */
-    public function setDate($date)
+    public function setDate($date): self
     {
         $this->propertyChanged('date', $this->date, $date);
         $this->date = $date;
@@ -92,10 +90,8 @@ class Meetup implements NotifyPropertyInterface
 
     /**
      * @param string $title
-     *
-     * @return Meetup
      */
-    public function setTitle($title)
+    public function setTitle($title): self
     {
         $this->propertyChanged('title', $this->title, $title);
         $this->title = $title;
@@ -113,10 +109,8 @@ class Meetup implements NotifyPropertyInterface
 
     /**
      * @param string|null $location
-     *
-     * @return Meetup
      */
-    public function setLocation($location = null)
+    public function setLocation($location = null): self
     {
         $this->propertyChanged('location', $this->location, $location);
         $this->location = $location;
@@ -134,10 +128,8 @@ class Meetup implements NotifyPropertyInterface
 
     /**
      * @param ?string $description
-     *
-     * @return Meetup
      */
-    public function setDescription($description)
+    public function setDescription($description): self
     {
         $this->propertyChanged('description', $this->description, $description);
         $this->description = $description;
@@ -155,10 +147,8 @@ class Meetup implements NotifyPropertyInterface
 
     /**
      * @param string $antenneName
-     *
-     * @return Meetup
      */
-    public function setAntenneName($antenneName)
+    public function setAntenneName($antenneName): self
     {
         $this->propertyChanged('antenneName', $this->antenneName, $antenneName);
         $this->antenneName = $antenneName;

@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Compta\Importer\test\units;
 
-use AppBundle\Compta\Importer\Operation;
 use AppBundle\Compta\Importer\AutoQualifier as TestedClass;
+use AppBundle\Compta\Importer\Operation;
 use AppBundle\Model\ComptaCategorie;
 use AppBundle\Model\ComptaEvenement;
 use AppBundle\Model\ComptaModeReglement;
-use Phinx\Console\Command\Test;
 
 class AutoQualifier extends \atoum
 {
-    public function testDefaultOperation()
+    public function testDefaultOperation(): void
     {
         $operation = new Operation('2022-02-22', 'DESCRIPTION', '123', Operation::CREDIT, '1234');
         $qualifier = new TestedClass([]);
@@ -43,7 +44,7 @@ class AutoQualifier extends \atoum
     /**
      * @dataProvider idModeReglementData
      */
-    public function testIdModeReglement($description, $idModeReglement)
+    public function testIdModeReglement($description, $idModeReglement): void
     {
         $operation = new Operation('2022-02-22', $description, '123', Operation::CREDIT, '1234');
         $qualifier = new TestedClass([]);
@@ -89,7 +90,7 @@ class AutoQualifier extends \atoum
      * @dataProvider qualifierData
      */
     public function testQualifier($operationDescription, $operationType,
-        $expectedIdModeReglement, $expectedEvenement, $expectedCategorie, $expectedAttachment, $expectedHT, $expectedHTKey)
+        $expectedIdModeReglement, $expectedEvenement, $expectedCategorie, $expectedAttachment, $expectedHT, $expectedHTKey): void
     {
         $operation = new Operation('2022-02-22', $operationDescription, '100', $operationType, '1234');
         $qualifier = new TestedClass($this->fakeBD());
@@ -102,10 +103,10 @@ class AutoQualifier extends \atoum
         if ($expectedHTKey) {
             $this->float($actual[$expectedHTKey])->isEqualTo($expectedHT);
         }
-
     }
 
-    private function fakeBD():array {
+    private function fakeBD():array
+    {
         return [
             [
                 'id' => 1,

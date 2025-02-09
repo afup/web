@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Comptabilite;
 
+use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
@@ -14,11 +17,11 @@ use AppBundle\Email\Mailer\Message;
 class Facture
 {
     /**
-     * @var \Afup\Site\Utils\Base_De_Donnees
+     * @var Base_De_Donnees
      */
     private $_bdd;
 
-    function __construct(&$bdd)
+    public function __construct(&$bdd)
     {
         $this->_bdd = $bdd;
     }
@@ -27,9 +30,8 @@ class Facture
     /* Journal des opération
      *
      */
-    function obtenirDevis($idPeriode = null)
+    public function obtenirDevis($idPeriode = null)
     {
-
         $requete = 'SELECT ';
         $requete .= ' acf.*, sum(quantite * pu) prix ';
         $requete .= 'FROM ';
@@ -54,9 +56,8 @@ class Facture
         return $this->_bdd->obtenirTous($requete);
     }
 
-    function obtenirDevisDetails($id)
+    public function obtenirDevisDetails($id)
     {
-
         $requete = 'SELECT ';
         $requete .= 'afup_compta_facture.*, ';
         $requete .= 'afup_compta_facture_details.ref,afup_compta_facture_details.designation,afup_compta_facture_details.quantite,afup_compta_facture_details.pu ';
@@ -72,9 +73,8 @@ class Facture
         return $this->_bdd->obtenirTous($requete);
     }
 
-    function obtenirFacture()
+    public function obtenirFacture()
     {
-
         $requete = 'SELECT ';
         $requete .= ' acf.*, sum(quantite * pu) prix ';
         $requete .= 'FROM ';
@@ -93,9 +93,8 @@ class Facture
         return $this->_bdd->obtenirTous($requete);
     }
 
-    function obtenirFactureDetails($id)
+    public function obtenirFactureDetails($id)
     {
-
         $requete = 'SELECT ';
         $requete .= 'afup_compta_facture.*, ';
         $requete .= 'afup_compta_facture_details.ref,afup_compta_facture_details.designation,afup_compta_facture_details.quantite,afup_compta_facture_details.pu ';
@@ -111,7 +110,7 @@ class Facture
         return $this->_bdd->obtenirTous($requete);
     }
 
-    function obtenir($id)
+    public function obtenir(string $id)
     {
         $requete = 'SELECT';
         $requete .= '  * ';
@@ -133,7 +132,7 @@ class Facture
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-    function obtenir_details($id)
+    public function obtenir_details(string $id)
     {
         $requete = 'SELECT';
         $requete .= '  * ';
@@ -144,11 +143,10 @@ class Facture
         return $this->_bdd->obtenirTous($requete);
     }
 
-    function ajouter($date_devis, $societe, $service, $adresse, $code_postal, $ville, $id_pays,
+    public function ajouter($date_devis, $societe, $service, $adresse, $code_postal, $ville, $id_pays,
                      $nom, $prenom, $tel, $email, $tva_intra, $observation, $ref_clt1, $ref_clt2, $ref_clt3,
                      $etat_paiement = 0, $date_paiement = null, $devise = 'EUR')
     {
-
         $requete = 'INSERT INTO ';
         $requete .= 'afup_compta_facture (';
         $requete .= 'date_devis,societe,service,adresse,code_postal,ville,id_pays,';
@@ -180,7 +178,7 @@ class Facture
         return $this->_bdd->executer($requete);
     }
 
-    function ajouter_details($ref, $designation, int $quantite, float $pu, int $tva = 0)
+    public function ajouter_details($ref, $designation, int $quantite, float $pu, int $tva = 0)
     {
         $requete = 'INSERT INTO ';
         $requete .= 'afup_compta_facture_details (';
@@ -198,11 +196,10 @@ class Facture
         return $this->_bdd->executer($requete);
     }
 
-    function modifier($id, $date_devis, $societe, $service, $adresse, $code_postal, $ville, $id_pays,
+    public function modifier($id, $date_devis, $societe, $service, $adresse, $code_postal, $ville, $id_pays,
                       $nom, $prenom, $tel, $email, $tva_intra, $observation, $ref_clt1, $ref_clt2, $ref_clt3,
                       $numero_devis, $numero_facture, $etat_paiement, $date_paiement, $devise)
     {
-
         $requete = 'UPDATE ';
         $requete .= 'afup_compta_facture ';
         $requete .= 'SET ';
@@ -237,7 +234,7 @@ class Facture
         return $this->_bdd->executer($requete);
     }
 
-    function modifier_details($id, $ref, $designation, int $quantite, float $pu, int $tva = 0)
+    public function modifier_details(string $id, $ref, $designation, int $quantite, float $pu, int $tva = 0)
     {
         $requete = 'UPDATE ';
         $requete .= 'afup_compta_facture_details ';
@@ -253,7 +250,7 @@ class Facture
         return $this->_bdd->executer($requete);
     }
 
-    function obtenirDernier()
+    public function obtenirDernier()
     {
         /**
          * @TODO ne supporte pas les enregistrements concurrents !
@@ -266,7 +263,7 @@ class Facture
     }
 
 
-    function transfertDevis($numero_devis)
+    public function transfertDevis($numero_devis)
     {
         $numero_facture = $this->genererNumeroFacture();
 
@@ -281,26 +278,26 @@ class Facture
         return $this->_bdd->executer($requete);
     }
 
-    function genererNumeroFacture()
+    public function genererNumeroFacture(): string
     {
         $year = (int) date('Y');
 
         $sql = "SELECT MAX(CAST(SUBSTRING_INDEX(numero_facture, '-', -1) AS UNSIGNED)) + 1
             FROM afup_compta_facture
             WHERE LEFT(numero_facture, 4)=";
-        $index = $this->_bdd->obtenirUn($sql.$year);
+        $index = $this->_bdd->obtenirUn($sql . $year);
 
         // index null = changement d'année
         // on va chercher l'index de l'année dernière
         if (null === $index) {
-            $index = $this->_bdd->obtenirUn($sql.($year-1));
+            $index = $this->_bdd->obtenirUn($sql . ($year-1));
             $index = (int) (is_null($index) ? 1 : $index);
         }
 
         return "$year-$index";
     }
 
-    function genererNumeroDevis()
+    public function genererNumeroDevis(): string
     {
         $requete = 'SELECT';
         $requete .= "  MAX(CAST(SUBSTRING_INDEX(numero_devis, '-', -1) AS UNSIGNED)) + 1 ";
@@ -314,7 +311,7 @@ class Facture
     }
 
 
-    function genererDevis($reference, $chemin = null)
+    public function genererDevis(string $reference, $chemin = null): void
     {
         $requete = 'SELECT * FROM afup_compta_facture WHERE numero_devis=' . $this->_bdd->echapper($reference);
         $coordonnees = $this->_bdd->obtenirEnregistrement($requete);
@@ -443,22 +440,22 @@ class Facture
                         $vatAmounts[$detail['tva']] = 0;
                     }
                     $vatAmounts[$detail['tva']] += ($detail['tva'] / 100) * $montantTtc;
-                    $montantTtc = $montantTtc * (1 + ($detail['tva'] / 100));
+                    $montantTtc *= 1 + ($detail['tva'] / 100);
 
                     $x += 20;
                     $pdf->SetXY($x, $y);
 
-                    $pdf->MultiCell(30, 5, utf8_decode($this->formatFactureValue($detail['pu'], $isSubjectedToVat)) . $devise, 'T', 0, "R");
+                    $pdf->MultiCell(30, 5, $this->formatFactureValue($detail['pu'], $isSubjectedToVat) . $devise, 'T', 0, "R");
 
                     $x += 30;
                     $pdf->SetXY($x, $y);
-                    $pdf->MultiCell(30, 5, utf8_decode($this->formatFactureValue($montantTtc, $isSubjectedToVat)) . $devise, 'T', 0, "R");
+                    $pdf->MultiCell(30, 5, $this->formatFactureValue($montantTtc, $isSubjectedToVat) . $devise, 'T', 0, "R");
                 } else {
                     $pdf->Cell(30, 5, $detail['ref'], 1);
                     $pdf->Cell(80, 5, utf8_decode($detail['designation']), 1);
                     $pdf->Cell(20, 5, utf8_decode($detail['quantite']), 1, 0, "C");
                     $pdf->Cell(30, 5, utf8_decode($detail['pu']) . $devise, 1, 0, "R");
-                    $pdf->Cell(30, 5, utf8_decode($montantHt) . $devise, 1, 0, "R");
+                    $pdf->Cell(30, 5, $montantHt . $devise, 1, 0, "R");
                 }
 
                 $totalHt += $montantHt;
@@ -511,7 +508,7 @@ class Facture
     }
 
 
-    function genererFacture($reference, $chemin = null)
+    public function genererFacture(string $reference, $chemin = null): void
     {
         $requete = 'SELECT * FROM afup_compta_facture WHERE numero_facture=' . $this->_bdd->echapper($reference);
         $coordonnees = $this->_bdd->obtenirEnregistrement($requete);
@@ -554,7 +551,7 @@ class Facture
             utf8_decode($coordonnees['code_postal']) . "\n" .
             utf8_decode($coordonnees['ville']) . "\n" .
             utf8_decode($pays->obtenirNom($coordonnees['id_pays'])) .
-            ($coordonnees['tva_intra'] ? ("\n" . utf8_decode('N° TVA Intracommunautaire : ' . $coordonnees['tva_intra'])) : null)        );
+            ($coordonnees['tva_intra'] ? ("\n" . utf8_decode('N° TVA Intracommunautaire : ' . $coordonnees['tva_intra'])) : null));
 
         $pdf->Ln(10);
         $pdf->SetFont('Arial', 'BU', 10);
@@ -607,11 +604,7 @@ class Facture
                 break;
         }
         $yInitial = $pdf->getY();
-        if ($isSubjectedToVat) {
-            $columns = [0, 30, 90, 110, 130, 160, 190];
-        } else {
-            $columns = [0, 30, 110, 130, 160, 190];
-        }
+        $columns = $isSubjectedToVat ? [0, 30, 90, 110, 130, 160, 190] : [0, 30, 110, 130, 160, 190];
 
         $vatAmounts = [];
 
@@ -644,17 +637,17 @@ class Facture
                         $vatAmounts[$detail['tva']] = 0;
                     }
                     $vatAmounts[$detail['tva']] += ($detail['tva'] / 100) * $montantTtc;
-                    $montantTtc = $montantTtc * (1 + ($detail['tva'] / 100));
+                    $montantTtc *= 1 + ($detail['tva'] / 100);
                 }
 
                 $x += 20;
                 $pdf->SetXY($x, $y);
 
-                $pdf->MultiCell(30, 5, utf8_decode($this->formatFactureValue($detail['pu'], $isSubjectedToVat)) . $devise, 'T', 0, "R");
+                $pdf->MultiCell(30, 5, $this->formatFactureValue($detail['pu'], $isSubjectedToVat) . $devise, 'T', 0, "R");
 
                 $x += 30;
                 $pdf->SetXY($x, $y);
-                $pdf->MultiCell(30, 5, utf8_decode($this->formatFactureValue($montantTtc, $isSubjectedToVat)) . $devise, 'T', 0, "R");
+                $pdf->MultiCell(30, 5, $this->formatFactureValue($montantTtc, $isSubjectedToVat) . $devise, 'T', 0, "R");
 
                 $totalHt += $montantHt;
                 $totalTtc += $montantTtc;
@@ -708,25 +701,23 @@ class Facture
         }
     }
 
-    private function formatFactureValue($value, $isSubjectedToVat)
+    private function formatFactureValue($value, bool $isSubjectedToVat)
     {
         if (!$isSubjectedToVat) {
             return $value;
         }
 
-        return number_format($value, 2, ',', ' ');
+        return number_format((float) $value, 2, ',', ' ');
     }
 
     /**
      * Envoi par mail d'une facture au format PDF
      *
      * @param   string $reference Reference de la facturation
-     * @access public
      * @return bool Succès de l'envoi
      */
-    function envoyerFacture($reference)
+    public function envoyerFacture(string $reference)
     {
-        $configuration = $GLOBALS['AFUP_CONF'];
         $personne = $this->obtenirParNumeroFacture($reference);
 
         $sujet = "Facture AFUP\n";
@@ -745,7 +736,7 @@ class Facture
         $message = new Message($sujet, new MailUser(MailUser::DEFAULT_SENDER_EMAIL, MailUser::DEFAULT_SENDER_NAME), new MailUser($personne['email'], $personne['nom']));
         $message->addAttachment(new Attachment(
             $chemin_facture,
-            'facture-'.$reference.'.pdf',
+            'facture-' . $reference . '.pdf',
             'base64',
             'application/pdf'
         ));

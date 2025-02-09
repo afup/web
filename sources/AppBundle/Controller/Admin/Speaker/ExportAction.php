@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Speaker;
 
 use AppBundle\Event\Model\Repository\EventRepository;
@@ -12,10 +14,8 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ExportAction
 {
-    /** @var EventRepository */
-    private $eventRepository;
-    /** @var ExportGenerator */
-    private $exportGenerator;
+    private EventRepository $eventRepository;
+    private ExportGenerator $exportGenerator;
 
     public function __construct(
         EventRepository $eventRepository,
@@ -25,7 +25,7 @@ class ExportAction
         $this->exportGenerator = $exportGenerator;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): BinaryFileResponse
     {
         if ($request->query->has('id')) {
             $event = $this->eventRepository->get($request->query->getInt('id'));

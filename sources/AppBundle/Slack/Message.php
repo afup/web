@@ -1,120 +1,72 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AppBundle\Slack;
 
-class Message
+final class Message
 {
-    /**
-     * @var string
-     */
-    private $channel;
+    private ?string $channel = null;
+    private ?string $username = null;
+    private ?string $text = null;
+    private ?string $iconUrl = null;
 
-    /**
-     * @var string
-     */
-    private $username;
+    /** @var Attachment[] */
+    private array $attachments = [];
 
-    /**
-     * @var string
-     */
-    private $text;
-
-    /**
-     * @var string
-     */
-    private $icon_url;
-
-    /**
-     * @var Attachment[]
-     */
-    private $attachments = [];
-
-    /**
-     * @return string
-     */
-    public function getChannel()
+    public function getChannel(): ?string
     {
         return $this->channel;
     }
 
-    /**
-     * @param string $channel
-     * @return Message
-     */
-    public function setChannel($channel)
+    public function setChannel(string $channel): self
     {
         $this->channel = $channel;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getUsername()
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    /**
-     * @param string $username
-     * @return Message
-     */
-    public function setUsername($username)
+    public function setUsername(string $username): self
     {
         $this->username = $username;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getText()
+    public function getText(): ?string
     {
         return $this->text;
     }
 
-    /**
-     * @param string $text
-     * @return Message
-     */
-    public function setText($text)
+    public function setText(string $text): self
     {
         $this->text = $text;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getIconUrl()
+    public function getIconUrl(): ?string
     {
-        return $this->icon_url;
+        return $this->iconUrl;
     }
 
-    /**
-     * @param string $icon_url
-     * @return Message
-     */
-    public function setIconUrl($icon_url)
+    public function setIconUrl(string $iconUrl): self
     {
-        $this->icon_url = $icon_url;
+        $this->iconUrl = $iconUrl;
         return $this;
     }
 
     /**
      * @return Attachment[]
      */
-    public function getAttachments()
+    public function getAttachments(): array
     {
         return $this->attachments;
     }
 
-    /**
-     * @param Attachment $attachment
-     * @return Message
-     */
-    public function addAttachment(Attachment $attachment)
+    public function addAttachment(Attachment $attachment): self
     {
         $this->attachments[] = $attachment;
         return $this;

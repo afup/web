@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Model;
 
 use AppBundle\Association\NotifiableInterface;
@@ -126,10 +128,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
      */
     private $status = 0;
 
-    /**
-     * @var \DateTime
-     */
-    private $reminderDate;
+    private ?\DateTime $reminderDate = null;
 
     /**
      * @var string
@@ -141,10 +140,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
      */
     private $lastSubscription;
 
-    /**
-     * @var CompanyMember
-     */
-    private $company;
+    private ?CompanyMember $company = null;
 
     /**
      * @var string
@@ -171,9 +167,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param int $id
-     * @return User
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -190,9 +185,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $mobilephone
-     * @return User
      */
-    public function setMobilephone($mobilephone)
+    public function setMobilephone($mobilephone): self
     {
         $this->propertyChanged('mobilephone', $this->mobilephone, $mobilephone);
         $this->mobilephone = $mobilephone;
@@ -209,9 +203,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $nearestOffice
-     * @return User
      */
-    public function setNearestOffice($nearestOffice)
+    public function setNearestOffice($nearestOffice): self
     {
         $this->propertyChanged('nearestOffice', $this->nearestOffice, $nearestOffice);
         $this->nearestOffice = $nearestOffice;
@@ -223,7 +216,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         $code = $this->getNearestOffice();
 
         // FIXME corriger ça dans le formulaire
-        if (null === $code || '-Aucune-' === $code || 0 === strlen(trim($code))) {
+        if (null === $code || '-Aucune-' === $code || trim($code) === '') {
             return  null;
         }
 
@@ -243,9 +236,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param int $companyId
-     * @return User
      */
-    public function setCompanyId($companyId)
+    public function setCompanyId($companyId): self
     {
         $this->propertyChanged('companyId', $this->companyId, $companyId);
         $this->companyId = $companyId;
@@ -262,9 +254,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $username
-     * @return User
      */
-    public function setUsername($username)
+    public function setUsername($username): self
     {
         $this->propertyChanged('username', $this->username, $username);
         $this->username = $username;
@@ -281,9 +272,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $password
-     * @return User
      */
-    public function setPassword($password)
+    public function setPassword($password): self
     {
         $this->propertyChanged('password', $this->password, $password);
         $this->password = $password;
@@ -293,7 +283,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     /**
      * @param string $password
      */
-    public function setPlainPassword($password)
+    public function setPlainPassword($password): void
     {
         $this->setPassword(md5($password));
     }
@@ -308,9 +298,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param int $level
-     * @return User
      */
-    public function setLevel($level)
+    public function setLevel($level): self
     {
         $this->propertyChanged('level', $this->level, $level);
         $this->level = $level;
@@ -327,9 +316,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param int $levelModules
-     * @return User
      */
-    public function setLevelModules($levelModules)
+    public function setLevelModules($levelModules): self
     {
         $this->propertyChanged('levelModules', $this->levelModules, $levelModules);
         $this->levelModules = $levelModules;
@@ -346,9 +334,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $civility
-     * @return User
      */
-    public function setCivility($civility)
+    public function setCivility($civility): self
     {
         $this->propertyChanged('civility', $this->civility, $civility);
         $this->civility = $civility;
@@ -365,9 +352,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $firstName
-     * @return User
      */
-    public function setFirstName($firstName)
+    public function setFirstName($firstName): self
     {
         $this->propertyChanged('firstName', $this->firstName, $firstName);
         $this->firstName = $firstName;
@@ -384,9 +370,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $lastName
-     * @return User
      */
-    public function setLastName($lastName)
+    public function setLastName($lastName): self
     {
         $this->propertyChanged('lastName', $this->lastName, $lastName);
         $this->lastName = $lastName;
@@ -403,9 +388,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $email
-     * @return User
      */
-    public function setEmail($email)
+    public function setEmail($email): self
     {
         $this->propertyChanged('email', $this->email, $email);
         $this->email = $email;
@@ -422,9 +406,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $address
-     * @return User
      */
-    public function setAddress($address)
+    public function setAddress($address): self
     {
         $this->propertyChanged('address', $this->address, $address);
         $this->address = $address;
@@ -441,9 +424,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $zipCode
-     * @return User
      */
-    public function setZipCode($zipCode)
+    public function setZipCode($zipCode): self
     {
         $this->propertyChanged('zipCode', $this->zipCode, $zipCode);
         $this->zipCode = $zipCode;
@@ -460,9 +442,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $city
-     * @return User
      */
-    public function setCity($city)
+    public function setCity($city): self
     {
         $this->propertyChanged('city', $this->city, $city);
         $this->city = $city;
@@ -479,9 +460,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $country
-     * @return User
      */
-    public function setCountry($country)
+    public function setCountry($country): self
     {
         $this->propertyChanged('country', $this->country, $country);
         $this->country = $country;
@@ -498,9 +478,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $phone
-     * @return User
      */
-    public function setPhone($phone)
+    public function setPhone($phone): self
     {
         $this->propertyChanged('phone', $this->phone, $phone);
         $this->phone = $phone;
@@ -517,9 +496,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param int $status
-     * @return User
      */
-    public function setStatus($status)
+    public function setStatus($status): self
     {
         $this->propertyChanged('status', $this->status, $status);
         $this->status = $status;
@@ -529,16 +507,12 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     /**
      * @return \DateTime
      */
-    public function getReminderDate()
+    public function getReminderDate(): ?\DateTime
     {
         return $this->reminderDate;
     }
 
-    /**
-     * @param \DateTime $reminderDate
-     * @return User
-     */
-    public function setReminderDate(\DateTime $reminderDate = null)
+    public function setReminderDate(\DateTime $reminderDate = null): self
     {
         $this->propertyChanged('reminderDate', $this->reminderDate, $reminderDate);
         $this->reminderDate = $reminderDate;
@@ -555,16 +529,15 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $hash
-     * @return User
      */
-    public function setHash($hash)
+    public function setHash($hash): self
     {
         $this->propertyChanged('hash', $this->hash, $hash);
         $this->hash = $hash;
         return $this;
     }
 
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->firstName . ' ' . $this->lastName;
     }
@@ -577,16 +550,16 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return $this->lastSubscription;
     }
 
-    public function setLastSubscription(?string $sub)
+    public function setLastSubscription(?string $sub): void
     {
         if ($sub !== null) {
             $this->lastSubscription = \DateTimeImmutable::createFromFormat('U', $sub);
         }
     }
 
-    public function hasUpToDateMembershipFee(\DateTimeInterface $now = null)
+    public function hasUpToDateMembershipFee(\DateTimeInterface $now = null): bool
     {
-        if (null === $now) {
+        if (!$now instanceof \DateTimeInterface) {
             $now = new \DateTime();
         }
         return $this->getLastSubscription() > $now;
@@ -594,7 +567,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     public function getDaysBeforeMembershipExpiration(\DateTimeInterface $now = null)
     {
-        if (null === $now) {
+        if (!$now instanceof \DateTimeInterface) {
             $now = new \DateTime();
         }
 
@@ -610,16 +583,12 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     /**
      * @return CompanyMember
      */
-    public function getCompany()
+    public function getCompany(): ?CompanyMember
     {
         return $this->company;
     }
 
-    /**
-     * @param CompanyMember $company
-     * @return User
-     */
-    public function setCompany(CompanyMember $company)
+    public function setCompany(CompanyMember $company): self
     {
         $this->company = $company;
         return $this;
@@ -635,10 +604,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param int $slackInviteStatus
-     *
-     * @return User
      */
-    public function setSlackInviteStatus($slackInviteStatus)
+    public function setSlackInviteStatus($slackInviteStatus): self
     {
         $this->propertyChanged('slackInviteStatus', $this->slackInviteStatus, $slackInviteStatus);
         $this->slackInviteStatus = $slackInviteStatus;
@@ -646,23 +613,17 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function canRequestSlackInvite()
+    public function canRequestSlackInvite(): bool
     {
         return false === $this->hasRole('ROLE_MEMBER_EXPIRED') && $this->getSlackInviteStatus() === self::SLACK_INVITE_STATUS_NONE;
     }
 
-    /**
-     * @return bool
-     */
-    public function slackInviteRequested()
+    public function slackInviteRequested(): bool
     {
         return $this->getSlackInviteStatus() === self::SLACK_INVITE_STATUS_REQUESTED;
     }
 
-    public function canAccessAdmin()
+    public function canAccessAdmin(): int
     {
         $roles = $this->getRoles();
 
@@ -672,10 +633,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return count($diff);
     }
 
-    /**
-     * @return boolean
-     */
-    public function isMemberForCompany()
+    public function isMemberForCompany(): bool
     {
         return ($this->companyId !== null && $this->companyId > 0);
     }
@@ -713,23 +671,14 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param $role
-     * @return bool
      */
-    public function hasRole($role)
+    public function hasRole($role): bool
     {
         $roles = $this->getRoles();
-        if (in_array($role, $roles)) {
-            return true;
-        }
-
-        return false;
+        return in_array($role, $roles);
     }
 
-    /**
-     * @param array $roles
-     * @return User
-     */
-    public function setRoles(array $roles = null)
+    public function setRoles(array $roles = null): self
     {
         if ($roles === null) {
             $roles = [];
@@ -741,9 +690,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $role
-     * @return User
      */
-    public function addRole($role)
+    public function addRole($role): self
     {
         $roles = $this->roles;
         $this->roles[] = $role;
@@ -756,9 +704,8 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
 
     /**
      * @param string $role
-     * @return User
      */
-    public function removeRole($role)
+    public function removeRole($role): self
     {
         if ($this->hasRole($role)) {
             $roleNum = array_search($role, $this->roles);
@@ -775,7 +722,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return null;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
@@ -788,7 +735,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         ]);
     }
 
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         $array = unserialize($serialized);
         $this->id = $array['id'];
@@ -815,7 +762,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return $this->levelModules[2];
     }
 
-    public function setWebsiteLevel($level)
+    public function setWebsiteLevel($level): void
     {
         $oldLevelModules = $this->levelModules;
         $this->levelModules[2] = $level;
@@ -827,7 +774,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return $this->levelModules[3];
     }
 
-    public function setEventLevel($level)
+    public function setEventLevel($level): void
     {
         $oldLevelModules = $this->levelModules;
         $this->levelModules[3] = $level;
@@ -839,7 +786,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return $this->levelModules[4];
     }
 
-    public function setOfficeLevel($level)
+    public function setOfficeLevel($level): void
     {
         $oldLevelModules = $this->levelModules;
         $this->levelModules[4] = $level;
@@ -851,7 +798,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return $this->alternateEmail;
     }
 
-    public function setAlternateEmail($alternateEmail)
+    public function setAlternateEmail($alternateEmail): void
     {
         $this->propertyChanged('alternateEmail', $this->alternateEmail, $alternateEmail);
         $this->alternateEmail = $alternateEmail;
@@ -862,7 +809,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return $this->needsUpToDateMembership;
     }
 
-    public function setNeedsUpToDateMembership($needsUpToDateMembership)
+    public function setNeedsUpToDateMembership($needsUpToDateMembership): void
     {
         $this->propertyChanged('needsUpToDateMembership', $this->needsUpToDateMembership, $needsUpToDateMembership);
         $this->needsUpToDateMembership = $needsUpToDateMembership;

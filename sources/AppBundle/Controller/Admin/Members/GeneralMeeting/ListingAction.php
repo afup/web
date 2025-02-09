@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members\GeneralMeeting;
 
 use Afup\Site\Utils\PDF_AG;
@@ -12,15 +14,14 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ListingAction
 {
-    /** @var GeneralMeetingRepository */
-    private $generalMeetingRepository;
+    private GeneralMeetingRepository $generalMeetingRepository;
 
     public function __construct(GeneralMeetingRepository $generalMeetingRepository)
     {
         $this->generalMeetingRepository = $generalMeetingRepository;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): BinaryFileResponse
     {
         $latestDate = $this->generalMeetingRepository->getLatestDate();
         Assertion::notNull($latestDate);

@@ -2,13 +2,20 @@
 
 $finder = (new PhpCsFixer\Finder())
     ->name('*.php')
-    ->in(__DIR__ . "/sources/AppBundle")
+    ->in([
+        __DIR__ . '/app',
+        __DIR__ . '/db',
+        __DIR__ . '/htdocs',
+        __DIR__ . '/sources',
+        __DIR__ . '/tests',
+    ])
 ;
 
 return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PSR2' => true,
+        '@PHP74Migration:risky' => true,
         'blank_line_after_opening_tag' => true,
         'concat_space' => ['spacing' => 'one'],
         'no_alias_functions' => true,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Association\CompanyMembership;
 
@@ -15,20 +17,11 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class InvitationMail
 {
-    /**
-     * @var Mailer
-     */
-    private $mailer;
+    private Mailer $mailer;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(Mailer $mailer, TranslatorInterface $translator, RouterInterface $router)
     {
@@ -42,9 +35,8 @@ class InvitationMail
      *
      * @param CompanyMember $companyMember The company who sends the invitation
      * @param CompanyMemberInvitation $invitation The invitation to send
-     * @return bool
      */
-    public function sendInvitation(CompanyMember $companyMember, CompanyMemberInvitation $invitation)
+    public function sendInvitation(CompanyMember $companyMember, CompanyMemberInvitation $invitation): bool
     {
         $text = $this->translator->trans('mail.invitationMembership.text',
             [

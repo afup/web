@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Site\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -9,10 +11,7 @@ class Article implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    /**
-     * @var int
-     */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @var int
@@ -54,20 +53,14 @@ class Article implements NotifyPropertyInterface
      */
     private $eventId;
 
-    /**
-     * @var \DateTime
-     */
-    private $publishedAt;
+    private ?\DateTime $publishedAt = null;
 
-    /**
-     * @var int
-     */
-    private $state;
+    private ?int $state = null;
 
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -77,7 +70,7 @@ class Article implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $id = (int) $id;
         $this->propertyChanged('id', $this->id, $id);
@@ -98,7 +91,7 @@ class Article implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setRubricId($rubricId)
+    public function setRubricId($rubricId): self
     {
         $this->propertyChanged('rubricId', $this->rubricId, $rubricId);
         $this->rubricId = $rubricId;
@@ -119,7 +112,7 @@ class Article implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setTitle($title)
+    public function setTitle($title): self
     {
         $this->propertyChanged('title', $this->title, $title);
         $this->title = $title;
@@ -141,7 +134,7 @@ class Article implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setPath($path)
+    public function setPath($path): self
     {
         $this->propertyChanged('path', $this->path, $path);
 
@@ -170,7 +163,7 @@ class Article implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setLeadParagraph($leadParagraph)
+    public function setLeadParagraph($leadParagraph): self
     {
         $this->propertyChanged('leadParagraph', $this->leadParagraph, $leadParagraph);
         $this->leadParagraph = $leadParagraph;
@@ -198,7 +191,7 @@ class Article implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setContent($content)
+    public function setContent($content): self
     {
         $this->propertyChanged('content', $this->content, $content);
         $this->content = $content;
@@ -219,7 +212,7 @@ class Article implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setContentType($contentType)
+    public function setContentType($contentType): self
     {
         $this->propertyChanged('contentType', $this->contentType, $contentType);
         $this->contentType = $contentType;
@@ -227,10 +220,7 @@ class Article implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isContentTypeMarkdown()
+    public function isContentTypeMarkdown(): bool
     {
         return $this->contentType == \Afup\Site\Corporate\Article::TYPE_CONTENU_MARKDOWN;
     }
@@ -238,17 +228,15 @@ class Article implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getPublishedAt()
+    public function getPublishedAt(): ?\DateTime
     {
         return $this->publishedAt;
     }
 
     /**
-     * @param \DateTime $publishedAt
-     *
      * @return $this
      */
-    public function setPublishedAt(\DateTime $publishedAt)
+    public function setPublishedAt(\DateTime $publishedAt): self
     {
         $this->propertyChanged('publishedAt', $this->publishedAt, $publishedAt);
         $this->publishedAt = $publishedAt;
@@ -269,7 +257,7 @@ class Article implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setTheme($theme)
+    public function setTheme($theme): self
     {
         $this->propertyChanged('theme', $this->theme, $theme);
         $this->theme = $theme;
@@ -302,7 +290,7 @@ class Article implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setEventId($eventId)
+    public function setEventId($eventId): self
     {
         $this->propertyChanged('eventId', $this->eventId, $eventId);
         $this->eventId = $eventId;
@@ -315,32 +303,26 @@ class Article implements NotifyPropertyInterface
      */
     public function getTeaser()
     {
-        if (strlen($leadParagraph = $this->getLeadParagraph())) {
+        if (strlen($leadParagraph = $this->getLeadParagraph()) !== 0) {
             return strip_tags($leadParagraph);
         }
 
         return  substr(strip_tags($this->getContent()), 0, 200);
     }
 
-    /**
-     * @return string
-     */
-    public function getTextTeaser()
+    public function getTextTeaser(): string
     {
         return html_entity_decode($this->getTeaser());
     }
 
-    /**
-     * @return string
-     */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->getId() . '-' . $this->getPath();
     }
     /**
      * @return int
      */
-    public function getState()
+    public function getState(): ?int
     {
         return $this->state;
     }
@@ -350,7 +332,7 @@ class Article implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setState($state)
+    public function setState($state): self
     {
         $state = (int) $state;
         $this->propertyChanged('state', $this->state, $state);

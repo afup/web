@@ -1,21 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Security;
 
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
-use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class TalkVoter extends Voter
 {
-    /**
-     * @var SpeakerRepository
-     */
-    private $speakerRepository;
+    private SpeakerRepository $speakerRepository;
 
     public function __construct(SpeakerRepository $speakerRepository)
     {
@@ -48,9 +46,6 @@ class TalkVoter extends Voter
 
         // All speakers associated to a talk can edit the talk
         foreach ($speakers as $speaker) {
-            /**
-             * @var $speaker Speaker
-             */
             if ($speaker->getUser() === $user->getId()) {
                 return true;
             }

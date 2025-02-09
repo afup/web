@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Talk;
@@ -12,12 +14,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class TweetRepository extends Repository implements MetadataInitializer
 {
-    /**
-     * @param Talk $talk
-     *
-     * @return int
-     */
-    public function getNumberOfTweetsByTalk(Talk $talk)
+    public function getNumberOfTweetsByTalk(Talk $talk): int
     {
         $query = $this->getQuery('SELECT COUNT(id) AS tweets FROM tweet WHERE id_session = :talk_id');
         $query->setParams(['talk_id' => $talk->getId()]);
@@ -25,8 +22,6 @@ class TweetRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @param SerializerFactoryInterface $serializerFactory
-     * @param array $options
      *
      * @return Metadata
      */

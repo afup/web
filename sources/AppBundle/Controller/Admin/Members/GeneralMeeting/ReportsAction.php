@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members\GeneralMeeting;
 
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -18,14 +20,10 @@ use Twig\Environment;
 
 class ReportsAction
 {
-    /** @var Environment */
-    private $twig;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var FormFactoryInterface */
-    private $formFactory;
+    private Environment $twig;
+    private FlashBagInterface $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
+    private FormFactoryInterface $formFactory;
 
     public function __construct(Environment           $twig,
                                 FlashBagInterface     $flashBag,
@@ -56,7 +54,7 @@ class ReportsAction
         // add
         $form = $this->buildForm();
         if ($form->handleRequest($request) && $form->isValid()) {
-            /** @var UploadedFile $uploadedFile */
+            /** @var UploadedFile $reportFile */
             $reportFile = $form->get('file')->getData();
             if ($reportFile->move($basePath, $reportFile->getClientOriginalName())) {
                 $this->flashBag->add('notice', 'Le compte rendu a correctement été ajouté.');
@@ -73,7 +71,7 @@ class ReportsAction
         foreach ($files as $file) {
             $report = pathinfo($file);
 
-            $report['size'] = self::humanFilesize(filesize($file));
+            $report['size'] = $this->humanFilesize(filesize($file));
             $report['mtime'] = filemtime($file);
             $reports[] = $report;
         }
@@ -84,7 +82,7 @@ class ReportsAction
         ]));
     }
 
-    private static function humanFilesize($bytes): string
+    private function humanFilesize($bytes): string
     {
         $sz = 'BKMGTP';
         $factor = floor((strlen((string) $bytes) - 1) / 3);

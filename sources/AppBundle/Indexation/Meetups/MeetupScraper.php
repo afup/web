@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Indexation\Meetups;
 
 use AppBundle\Event\Model\Meetup;
@@ -87,11 +89,9 @@ class MeetupScraper
     /**
      * Récupère et charge les données de la page pour une meetup url donnée
      *
-     * @param string $antenneUrl
-     * @return DOMXPath
      * @throws Exception
      */
-    public function getDomContent($antenneUrl)
+    public function getDomContent(string $antenneUrl): \DOMXPath
     {
         $url = self::MEETUP_URL . $antenneUrl;
         $content = file_get_contents($url);
@@ -110,13 +110,12 @@ class MeetupScraper
     }
 
     /**
-     * @return array
      * @throws Exception
      */
-    public function getAntennesFromOfficesCollection()
+    public function getAntennesFromOfficesCollection(): array
     {
         $offices = (new OfficesCollection())->getAll();
-        if (!is_array($offices) || [] === $offices) {
+        if ([] === $offices) {
             throw new Exception("The antennes array is invalid or is empty");
         }
 

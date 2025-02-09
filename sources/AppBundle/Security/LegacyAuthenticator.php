@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Security;
 
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -14,7 +18,7 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class LegacyAuthenticator extends AbstractGuardAuthenticator
 {
-    private $userRepository;
+    private UserRepository $userRepository;
 
     public function __construct(UserRepository $userRepository)
     {
@@ -74,7 +78,9 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        $request->getSession()->getFlashBag()->add('error', "Utilisateur et/ou mot de passe incorrect");
+        /** @var SessionInterface&Session $session */
+        $session = $request->getSession();
+        $session->getFlashBag()->add('error', "Utilisateur et/ou mot de passe incorrect");
 
         return null;
     }
@@ -85,13 +91,9 @@ class LegacyAuthenticator extends AbstractGuardAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         $actualUrl = $request->getSchemeAndHttpHost() . $request->getRequestUri();
-        if (
-            $request->request->has('_target_path')
-                and $target_path = $request->request->get('_target_path')
-                and $target_path !== $actualUrl
-                and parse_url($target_path, PHP_URL_HOST) === null
-        ) {
-            return new RedirectResponse($target_path);
+        $targetPath = $request->request->get('_target_path');
+        if ($targetPath !== $actualUrl && $targetPath && parse_url($targetPath, PHP_URL_HOST) === null) {
+            return new RedirectResponse($targetPath);
         }
 
         return new RedirectResponse('/member/');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Command;
 
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -13,7 +15,7 @@ class UpdateUserStateCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('update-user-state')
@@ -24,7 +26,7 @@ class UpdateUserStateCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var UserRepository $userRepository */
         $userRepository = $this->getContainer()->get('ting')->get(UserRepository::class);

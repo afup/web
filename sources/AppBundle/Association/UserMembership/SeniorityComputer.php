@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\UserMembership;
 
 use Afup\Site\Association\Cotisations;
@@ -8,10 +10,7 @@ use AppBundle\Association\Model\User;
 
 class SeniorityComputer
 {
-    /**
-     * @var Cotisations
-     */
-    private $cotisations;
+    private Cotisations $cotisations;
 
     public function __construct(Cotisations $cotisations)
     {
@@ -27,7 +26,7 @@ class SeniorityComputer
         return $infos['years'];
     }
 
-    public function computeCompanyAndReturnInfos(CompanyMember $companyMember)
+    public function computeCompanyAndReturnInfos(CompanyMember $companyMember): array
     {
         $cotis = $this->cotisations->obtenirListe(AFUP_PERSONNES_MORALES, $companyMember->getId());
 
@@ -41,14 +40,14 @@ class SeniorityComputer
         return $infos['years'];
     }
 
-    public function computeAndReturnInfos(User $user)
+    public function computeAndReturnInfos(User $user): array
     {
         $cotis = $this->cotisations->obtenirListe(AFUP_PERSONNES_PHYSIQUES, $user->getId());
 
         return $this->computeFromCotisationsAndReturnInfos($cotis);
     }
 
-    private function computeFromCotisationsAndReturnInfos(array $cotisations)
+    private function computeFromCotisationsAndReturnInfos(array $cotisations): array
     {
         $now = new \DateTime();
         $diffs = [];
@@ -72,7 +71,7 @@ class SeniorityComputer
 
         $firstYear = null;
 
-        if (count($years)) {
+        if ($years !== []) {
             $firstYear = min($years);
         }
 

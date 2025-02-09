@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Controller\Event\EventActionHelper;
@@ -11,10 +13,8 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class BadgesGenerateAction
 {
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var RegistrationsExportGenerator */
-    private $registrationsExportGenerator;
+    private EventActionHelper $eventActionHelper;
+    private RegistrationsExportGenerator $registrationsExportGenerator;
 
     public function __construct(
         EventActionHelper $eventActionHelper,
@@ -24,7 +24,7 @@ class BadgesGenerateAction
         $this->registrationsExportGenerator = $registrationsExportGenerator;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): BinaryFileResponse
     {
         $event = $this->eventActionHelper->getEventById($request->query->get('id'), false);
         $file = new SplFileObject(sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('badges_', true), 'w+');
