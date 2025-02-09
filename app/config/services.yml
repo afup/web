@@ -707,7 +707,6 @@ services:
         autowire: true
         public: true
 
-
     app.github.http_client:
         class: GuzzleHttp\Client
         arguments:
@@ -717,3 +716,11 @@ services:
     AppBundle\Github\GithubClient:
         arguments:
             $githubClient: '@app.github.http_client'
+
+    app.meetup.http_client:
+        class: GuzzleHttp\Client
+
+    AppBundle\Indexation\Meetups\MeetupClient:
+        arguments:
+            $httpClient: '@app.meetup.http_client'
+            $antennesCollection: '@AppBundle\Antennes\AntennesCollection'
