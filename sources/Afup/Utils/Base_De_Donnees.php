@@ -24,9 +24,10 @@ class Base_De_Donnees
      * @param string $database Nom de la base
      * @param string $user Nom de l'utilisateur
      * @param string $password Mot de passe
+     * @param string $timezone Timezone de la base de données
      * @return void
      */
-    public function __construct($host, $database, $user, $password, $port = null)
+    public function __construct($host, $database, $user, $password, $port = null, $timezone = null)
     {
         $this->config = [
             'host' => $host,
@@ -34,13 +35,17 @@ class Base_De_Donnees
             'user' => $user,
             'password' => $password,
             'port' => $port,
+            'timezone' => $timezone,
         ];
     }
 
     public function getDbLink()
     {
         if ($this->link === null) {
-            $this->link = mysqli_connect($this->config['host'], $this->config['user'], $this->config['password'], null, (int) $this->config['port']) or die('Connexion à la base de données impossible');
+            $this->link = mysqli_connect($this->config['host'], $this->config['user'], $this->config['password'], null, $this->config['port']) or die('Connexion à la base de données impossible');
+            if ($this->config['timezone']) {
+                mysqli_query($this->link, "SET time_zone = '" . $this->config['timezone'] . "'");
+            }
             mysqli_set_charset($this->link, "utf8mb4");
             $this->selectionnerBase($this->config['database']);
         }
