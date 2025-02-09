@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Association\Form\TicketEventType;
@@ -21,22 +23,14 @@ use Twig\Environment;
 
 class PricesAddAction
 {
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var TicketTypeRepository */
-    private $ticketTypeRepository;
-    /** @var TicketEventTypeRepository */
-    private $ticketEventTypeRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var Environment */
-    private $twig;
-    /** @var ValidatorInterface */
-    private $validator;
+    private EventActionHelper $eventActionHelper;
+    private TicketTypeRepository $ticketTypeRepository;
+    private TicketEventTypeRepository $ticketEventTypeRepository;
+    private FormFactoryInterface $formFactory;
+    private FlashBagInterface $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
+    private Environment $twig;
+    private ValidatorInterface $validator;
 
     public function __construct(
         EventActionHelper $eventActionHelper,

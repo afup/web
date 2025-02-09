@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Calendar;
 
 use AppBundle\Event\Model\Event;
@@ -11,10 +13,7 @@ use Sabre\VObject\Component\VCalendar;
 
 class IcsPLanningGenerator
 {
-    /**
-     * @var TalkRepository
-     */
-    private $talkRepository;
+    private TalkRepository $talkRepository;
 
     public function __construct(TalkRepository $talkRepository)
     {
@@ -22,7 +21,6 @@ class IcsPLanningGenerator
     }
 
     /**
-     * @param Event $event
      * @return string
      */
     public function generateForEvent(Event $event)

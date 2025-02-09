@@ -1,9 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Command;
 
 use AppBundle\Association;
+use AppBundle\Association\CompanyMembership\CompanyReminderFactory;
+use AppBundle\Association\MembershipReminderInterface;
+use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
+use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Association\UserMembership\Reminder15DaysAfterEnd;
+use AppBundle\Association\UserMembership\Reminder15DaysBeforeEnd;
+use AppBundle\Association\UserMembership\Reminder7DaysBeforeEnd;
+use AppBundle\Association\UserMembership\ReminderDDay;
+use AppBundle\Association\UserMembership\UserReminderFactory;
+use AppBundle\Email\Mailer\Mailer;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,10 +24,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class SubscriptionReminderCommand extends ContainerAwareCommand
 {
+    private Mailer $mailer;
+    public function __construct(Mailer $mailer)
+    {
+        $this->mailer = $mailer;
+    }
     /**
      * @inheritDoc
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('subscription:reminder')
@@ -27,19 +44,19 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $mailer = $this->getContainer()->get(\AppBundle\Email\Mailer\Mailer::class);
-        $factory = new Association\UserMembership\UserReminderFactory($mailer, $this->getContainer()->get('ting')->get(Association\Model\Repository\SubscriptionReminderLogRepository::class));
-        $companyFactory = new Association\CompanyMembership\CompanyReminderFactory(
+        $mailer = $this->mailer;
+        $factory = new UserReminderFactory($mailer, $this->getContainer()->get('ting')->get(SubscriptionReminderLogRepository::class));
+        $companyFactory = new CompanyReminderFactory(
             $mailer,
-            $this->getContainer()->get('ting')->get(Association\Model\Repository\SubscriptionReminderLogRepository::class)
+            $this->getContainer()->get('ting')->get(SubscriptionReminderLogRepository::class)
         );
 
         /**
-         * @var Association\Model\Repository\UserRepository $repository
+         * @var UserRepository $repository
          */
-        $repository = $this->getContainer()->get('ting')->get(Association\Model\Repository\UserRepository::class);
+        $repository = $this->getContainer()->get('ting')->get(UserRepository::class);
 
         $dryRun = $input->getOption('dry-run');
 
@@ -48,22 +65,22 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
         $reminders = [
             'in 15 days' => [
                 'date' => $today->add(new \DateInterval('P15D')),
-                'physical' => Association\UserMembership\Reminder15DaysBeforeEnd::class,
+                'physical' => Reminder15DaysBeforeEnd::class,
                 'company' => Association\CompanyMembership\Reminder15DaysBeforeEnd::class
             ],
             'in 7 days' => [
                 'date' => $today->add(new \DateInterval('P7D')),
-                'physical' => Association\UserMembership\Reminder7DaysBeforeEnd::class,
+                'physical' => Reminder7DaysBeforeEnd::class,
                 'company' => Association\CompanyMembership\Reminder7DaysBeforeEnd::class
             ],
             'Today' => [
                 'date' => $today,
-                'physical' => Association\UserMembership\ReminderDDay::class,
+                'physical' => ReminderDDay::class,
                 'company' => Association\CompanyMembership\ReminderDDay::class
             ],
             '15 days ago' => [
                 'date' => $today->sub(new \DateInterval('P15D')),
-                'physical' => Association\UserMembership\Reminder15DaysAfterEnd::class,
+                'physical' => Reminder15DaysAfterEnd::class,
                 'company' => Association\CompanyMembership\Reminder15DaysAfterEnd::class
             ],
         ];
@@ -71,7 +88,7 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
         $output->writeln('<info>Reminders des souscriptions</info>');
         foreach ($reminders as $name => $details) {
             $reminder = $factory->getReminder($details['physical']);
-            $users = $repository->getUsersByEndOfMembership($details['date'], Association\Model\Repository\UserRepository::USER_TYPE_PHYSICAL);
+            $users = $repository->getUsersByEndOfMembership($details['date'], UserRepository::USER_TYPE_PHYSICAL);
 
             $output->writeln(sprintf('%s (%s)', $name, $details['date']->format('d/m/Y')));
             $output->writeln(sprintf('<info>%s membres</info>', $users->count()));
@@ -79,7 +96,7 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
 
 
             $reminder = $companyFactory->getReminder($details['company']);
-            $users = $repository->getUsersByEndOfMembership($details['date'], Association\Model\Repository\UserRepository::USER_TYPE_COMPANY);
+            $users = $repository->getUsersByEndOfMembership($details['date'], UserRepository::USER_TYPE_COMPANY);
             $output->writeln(sprintf('<info>%s entreprises</info>', $users->count()));
             $this->handleReminders($output, $reminder, $users, $dryRun);
         }
@@ -89,10 +106,10 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
 
     private function handleReminders(
         OutputInterface $output,
-        Association\MembershipReminderInterface $reminder,
+        MembershipReminderInterface $reminder,
         CollectionInterface $users,
         $dryRun = true
-    ) {
+    ): void {
         foreach ($users as $user) {
             /**
              * @var $user Association\Model\User

@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Association;
 
 use Afup\Site\Corporate\Site;
 use Afup\Site\Droits;
 use Afup\Site\Utils\Base_De_Donnees;
-use Afup\Site\Utils\Configuration;
 use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\PDF_Facture;
+use Afup\Site\Utils\Utils;
+use Afup\Site\Utils\Vat;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\Email\Mailer\Attachment;
@@ -15,8 +18,6 @@ use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
-use Afup\Site\Utils\Vat;
-use Afup\Site\Utils\Utils;
 use Assert\Assertion;
 use DateInterval;
 use DateTime;
@@ -52,10 +53,9 @@ class Cotisations
      * Constructeur.
      *
      * @param object $bdd Instance de la couche d'abstraction à la base de données
-     * @access public
      * @return void
      */
-    function __construct(&$bdd, $droits = null)
+    public function __construct(&$bdd, $droits = null)
     {
         $this->_bdd = $bdd;
         $this->_droits = $droits;
@@ -69,10 +69,9 @@ class Cotisations
      * @param string $champs Champs à renvoyer
      * @param string $ordre Tri des enregistrements
      * @param bool $associatif Renvoyer un tableau associatif ?
-     * @access public
      * @return array
      */
-    function obtenirListe($type_personne, $id_personne, $champs = '*', $ordre = 'date_fin DESC', $associatif = false)
+    public function obtenirListe($type_personne, $id_personne, string $champs = '*', string $ordre = 'date_fin DESC', bool $associatif = false)
     {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
@@ -94,10 +93,9 @@ class Cotisations
      *
      * @param int $id Identifiant de la cotisation
      * @param string $champs Champs à renvoyer
-     * @access public
      * @return array
      */
-    function obtenir($id, $champs = '*')
+    public function obtenir($id, string $champs = '*')
     {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
@@ -111,10 +109,8 @@ class Cotisations
     /**
      * Renvoit le numéro de la prochaine facture au format : {année}-{index depuis le début de l'année}
      *
-     * @access private
-     * @return string
      */
-    function _genererNumeroFacture()
+    public function _genererNumeroFacture(): string
     {
         $requete = 'SELECT';
         $requete .= "  MAX(CAST(SUBSTRING_INDEX(numero_facture, '-', -1) AS UNSIGNED)) + 1 ";
@@ -140,11 +136,10 @@ class Cotisations
      * @param int $date_fin Date de fin de la cotisation
      * @param string $commentaires Commentaires concernnant la cotisation
      * @param string $referenceClient Reference client à mentionner sur la facture
-     * @access public
      * @return bool     Succès de l'ajout
      */
-    function ajouter($type_personne, $id_personne, $montant, $type_reglement,
-                     $informations_reglement, $date_debut, $date_fin, $commentaires, $referenceClient = null)
+    public function ajouter($type_personne, $id_personne, $montant, $type_reglement,
+                     $informations_reglement, $date_debut, $date_fin, $commentaires, $referenceClient = null): bool
     {
         $requete = 'INSERT INTO ';
         $requete .= '  afup_cotisations (type_personne, id_personne, montant, type_reglement , informations_reglement,';
@@ -161,11 +156,7 @@ class Cotisations
         $requete .= $this->_bdd->echapper(base64_encode(random_bytes(30))) . ',';
         $requete .= $this->_bdd->echapper($commentaires) . ',';
         $requete .= $this->_bdd->echapper($referenceClient) . ')';
-
-        if ($this->_bdd->executer($requete) === false) {
-            return false;
-        }
-        return true;
+        return $this->_bdd->executer($requete) !== false;
     }
 
     /**
@@ -182,11 +173,10 @@ class Cotisations
      * @param int $date_fin Date de fin de la cotisation
      * @param string $commentaires Commentaires concernnant la cotisation
      * @param string $referenceClient Reference client à mentionner sur la facture
-     * @access public
      * @return bool Succès de la modification
      */
-    function modifier($id, $type_personne, $id_personne, $montant, $type_reglement,
-                      $informations_reglement, $date_debut, $date_fin, $commentaires, $referenceClient)
+    public function modifier($id, $type_personne, $id_personne, $montant, $type_reglement,
+                      $informations_reglement, $date_debut, $date_fin, $commentaires, $referenceClient): bool
     {
         $requete = 'UPDATE';
         $requete .= '  afup_cotisations ';
@@ -202,13 +192,10 @@ class Cotisations
         $requete .= '  reference_client=' . $this->_bdd->echapper($referenceClient) . ' ';
         $requete .= 'WHERE';
         $requete .= '  id=' . $id;
-        if ($this->_bdd->executer($requete) === false) {
-            return false;
-        }
-        return true;
+        return $this->_bdd->executer($requete) !== false;
     }
 
-    function estDejaReglee($cmd)
+    public function estDejaReglee($cmd)
     {
         $requete = 'SELECT';
         $requete .= '  1 ';
@@ -219,7 +206,7 @@ class Cotisations
         return $this->_bdd->obtenirUn($requete);
     }
 
-    function notifierRegelementEnLigneAuTresorier($cmd, $total, $autorisation, $transaction, UserRepository $userRepository)
+    public function notifierRegelementEnLigneAuTresorier(string $cmd, string $total, string $autorisation, string $transaction, UserRepository $userRepository): ?bool
     {
         $account = $this->getAccountFromCmd($cmd);
 
@@ -254,9 +241,10 @@ class Cotisations
         if (false === $ok) {
             return false;
         }
+        return null;
     }
 
-    function validerReglementEnLigne($cmd, $total, $autorisation, $transaction)
+    public function validerReglementEnLigne($cmd, $total, string $autorisation, string $transaction)
     {
         $reference = substr($cmd, 0, strlen($cmd) - 4);
         $verif = substr($cmd, strlen($cmd) - 3, strlen($cmd));
@@ -272,10 +260,9 @@ class Cotisations
                     $cotisation['id'],
                     AFUP_COTISATIONS_REGLEMENT_ENLIGNE, "autorisation : " . $autorisation . " / transaction : " . $transaction
                 );
-
-        } elseif (substr(md5($reference), -3) == strtolower($verif) and !$this->estDejaReglee($cmd)) {
+        } elseif (substr(md5($reference), -3) === strtolower($verif) && !$this->estDejaReglee($cmd)) {
             [$ref, $date, $type_personne, $id_personne, $reste] = explode('-', $cmd, 5);
-            $date_debut = mktime(0, 0, 0, substr($date, 2, 2), substr($date, 0, 2), substr($date, 4, 4));
+            $date_debut = mktime(0, 0, 0, (int) substr($date, 2, 2), (int) substr($date, 0, 2), (int) substr($date, 4, 4));
 
             $cotisation = $this->obtenirDerniere($type_personne, $id_personne);
             $date_fin_precedente = $cotisation === false ? 0 : $cotisation['date_fin'];
@@ -298,7 +285,10 @@ class Cotisations
         return $result;
     }
 
-    public function getAccountFromCmd($cmd)
+    /**
+     * @return int[]|string[]
+     */
+    public function getAccountFromCmd($cmd): array
     {
         $arr = explode('-', $cmd, 5);
         // Personne morale : $cmd=FCOTIS-2023-202
@@ -316,10 +306,9 @@ class Cotisations
      * Supprime une cotisation
      *
      * @param int $id Identifiant de la cotisation à supprimer
-     * @access public
      * @return bool Succès de la suppression
      */
-    function supprimer($id)
+    public function supprimer($id)
     {
         $requete = 'DELETE FROM afup_cotisations WHERE id=' . $id;
         return $this->_bdd->executer($requete);
@@ -330,10 +319,9 @@ class Cotisations
      *
      * @param int $id_cotisation Identifiant de la cotisation
      * @param string $chemin Chemin du fichier PDF à générer. Si ce chemin est omi, le PDF est renvoyé au navigateur.
-     * @access public
      * @return int Le numero de la facture
      */
-    function genererFacture($id_cotisation, $chemin = null)
+    public function genererFacture($id_cotisation, $chemin = null)
     {
         $requete = 'SELECT * FROM afup_cotisations WHERE id=' . $id_cotisation;
         $cotisation = $this->_bdd->obtenirEnregistrement($requete);
@@ -397,7 +385,7 @@ class Cotisations
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
             $pdf->Cell(50, 5, 'ADH', 1);
-            $pdf->Cell(100, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $cotisation['date_fin'])), 1);
+            $pdf->Cell(100, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', (int) $cotisation['date_fin'])), 1);
             $pdf->Cell(40, 5, utf8_decode($cotisation['montant'] . ' '), 1);
 
             $pdf->Ln(15);
@@ -445,7 +433,7 @@ class Cotisations
         $pdf->Cell(10, 5, utf8_decode('Lors de votre règlement, merci de préciser la mention : "Facture n°' . $cotisation['numero_facture']) . '"');
 
         if (is_null($chemin)) {
-            $pattern = str_replace(' ', '', $patternPrefix) . '_' . $cotisation['numero_facture'] . '_' . date('dmY', $cotisation['date_debut']) . '.pdf';
+            $pattern = str_replace(' ', '', $patternPrefix) . '_' . $cotisation['numero_facture'] . '_' . date('dmY', (int) $cotisation['date_debut']) . '.pdf';
 
             $pdf->Output($pattern, 'D');
         } else {
@@ -455,13 +443,13 @@ class Cotisations
         return $cotisation['numero_facture'];
     }
 
-    private function buildDetailsPersonneMorale(PDF_Facture $pdf, $montant, $dateFin)
+    private function buildDetailsPersonneMorale(PDF_Facture $pdf, $montant, $dateFin): array
     {
         $montantTtc = $montant * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE);
         $pdf->Ln();
         $pdf->SetFillColor(255, 255, 255);
         $pdf->Cell(20, 5, 'ADH', 1);
-        $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $dateFin)), 1);
+        $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', (int) $dateFin)), 1);
         $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montant) . ' '), 1, 0, 'R');
         $pdf->Cell(25, 5, utf8_decode((Utils::MEMBERSHIP_FEE_VAT_RATE * 100) . ' %'), 1, 0, 'R');
         $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantTtc) . ' '), 1, 0, 'R');
@@ -471,7 +459,7 @@ class Cotisations
         return [$totalHt, $total];
     }
 
-    private function buildDetailsPersonnePhysique(PDF_Facture $pdf, $montant, $dateFin)
+    private function buildDetailsPersonnePhysique(PDF_Facture $pdf, $montant, $dateFin): array
     {
         $montantFixeHt = 5 / 100 * $montant;
         $montantFixeTTc = $montantFixeHt * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE);
@@ -480,7 +468,7 @@ class Cotisations
         $pdf->Ln();
         $pdf->SetFillColor(255, 255, 255);
         $pdf->Cell(20, 5, 'ADH-var', 1);
-        $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $dateFin) . ' - part variable'), 1);
+        $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', (int) $dateFin) . ' - part variable'), 1);
         $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantFixeHt) . ' '), 1, 0, 'R');
         $pdf->Cell(25, 5, utf8_decode((Utils::MEMBERSHIP_FEE_VAT_RATE * 100) . ' %'), 1, 0, 'R');
         $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantFixeTTc) . ' '), 1, 0, 'R');
@@ -488,9 +476,9 @@ class Cotisations
         $pdf->Ln();
         $pdf->SetFillColor(255, 255, 255);
         $pdf->Cell(20, 5, 'ADH-fixe', 1);
-        $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', $dateFin) . ' - part fixe'), 1);
+        $pdf->Cell(95, 5, utf8_decode("Adhésion AFUP jusqu'au " . date('d/m/Y', (int) $dateFin) . ' - part fixe'), 1);
         $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantVariable) . ' '), 1, 0, 'R');
-        $pdf->Cell(25, 5, utf8_decode('0' . ' %'), 1, 0, 'R');
+        $pdf->Cell(25, 5, utf8_decode('0 %'), 1, 0, 'R');
         $pdf->Cell(25, 5, utf8_decode($this->formatFactureValue($montantVariable) . ' '), 1, 0, 'R');
 
         $totalHt = $montantFixeHt + $montantVariable;
@@ -499,7 +487,7 @@ class Cotisations
         return [$totalHt, $total];
     }
 
-    private function formatFactureValue($value)
+    private function formatFactureValue($value): string
     {
         return number_format($value, 2, ',', ' ');
     }
@@ -508,13 +496,10 @@ class Cotisations
      * Envoi par mail d'une facture au format PDF
      *
      * @param   int $id_cotisation Identifiant de la cotisation
-     * @access public
      * @return bool Succès de l'envoi
      */
     public function envoyerFacture($id_cotisation, Mailer $mailer, UserRepository $userRepository)
     {
-        $configuration = $GLOBALS['AFUP_CONF'];
-
         $personne = $this->obtenir($id_cotisation, 'type_personne, id_personne');
 
         if ($personne['type_personne'] == AFUP_PERSONNES_MORALES) {
@@ -563,12 +548,11 @@ class Cotisations
 
     /**
      * Retourne la dernière cotisation d'une personne morale
-     *
-     * @param    int $id_personne Identifiant de la personne
-     * @access    public
-     * @return    array|false
+     * @param int|string $type_personne
+     * @param int $id_personne Identifiant de la personne
+     * @return array|false
      */
-    function obtenirDerniere($type_personne, $id_personne)
+    public function obtenirDerniere($type_personne, $id_personne)
     {
         $requete = 'SELECT';
         $requete .= '  * ';
@@ -591,10 +575,9 @@ class Cotisations
      *
      * @param    int $type_personne Identifiant du type de personne
      * @param    int $id_personne Identifiant de la personne
-     * @access    public
      * @return    int                    Timestamp de la date de la cotisation
      */
-    function obtenirDateDebut($type_personne, $id_personne)
+    public function obtenirDateDebut($type_personne, $id_personne)
     {
         $requete = 'SELECT';
         $requete .= '  date_fin ';
@@ -616,16 +599,12 @@ class Cotisations
     }
 
     /**
-     * @param array $cotisation from Afup_Personnes_Physiques::obtenirDerniereCotisation
+     * @param array|false $cotisation from Afup_Personnes_Physiques::obtenirDerniereCotisation
      * @return DateTime Date of end of next subscription
      */
-    public function finProchaineCotisation($cotisation)
+    public function finProchaineCotisation($cotisation = false): DateTime
     {
-        if ($cotisation === false) {
-            $endSubscription = new DateTime();
-        } else {
-            $endSubscription = DateTime::createFromFormat('U', $cotisation['date_fin']);
-        }
+        $endSubscription = $cotisation === false ? new DateTime() : DateTime::createFromFormat('U', $cotisation['date_fin']);
         $base = $now = new DateTime();
 
         $year = new DateInterval('P1Y');
@@ -645,7 +624,7 @@ class Cotisations
      * @param string|null $token Token de la facture. Si null, pas de vérification
      * @return array
      */
-    public function getByInvoice($invoiceId, $token = null)
+    public function getByInvoice(string $invoiceId, string $token = null)
     {
         $requete = 'SELECT';
         $requete .= '  * ';
@@ -668,7 +647,7 @@ class Cotisations
      * @param string $informations_reglement Informations concernant le règlement (numéro de chèque, de virement etc.)
      * @return bool Succès de la modification
      */
-    function updatePayment($id, $type_reglement, $informations_reglement)
+    public function updatePayment($id, $type_reglement, string $informations_reglement): bool
     {
         $requete = 'UPDATE';
         $requete .= '  afup_cotisations ';
@@ -677,13 +656,10 @@ class Cotisations
         $requete .= '  informations_reglement=' . $this->_bdd->echapper($informations_reglement);
         $requete .= ' WHERE';
         $requete .= '  id=' . $id;
-        if ($this->_bdd->executer($requete) === false) {
-            return false;
-        }
-        return true;
+        return $this->_bdd->executer($requete) !== false;
     }
 
-    public function isCurrentUserAllowedToReadInvoice ($invoiceId)
+    public function isCurrentUserAllowedToReadInvoice(string $invoiceId)
     {
         if (!$this->_droits) {
             throw new \RuntimeException('La variable $_droits ne doit pas être null.');

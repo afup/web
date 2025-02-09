@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Twig;
 
 use AppBundle\Offices\OfficesCollection;
@@ -27,7 +29,7 @@ class OfficesExtension extends \Twig_Extension
         ];
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'offices';
     }

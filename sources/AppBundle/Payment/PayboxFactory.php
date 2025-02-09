@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Payment;
 
@@ -9,10 +11,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class PayboxFactory
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     private $payboxDomainServer;
     private $payboxSecretKey;
@@ -37,7 +36,7 @@ class PayboxFactory
      *
      * @return string html with payment button
      */
-    public function createPayboxForSubscription($facture, $montant, $email, PayboxBilling $billing)
+    public function createPayboxForSubscription($facture, $montant, $email, PayboxBilling $billing): string
     {
         $paybox = $this->getPaybox();
 
@@ -57,7 +56,7 @@ class PayboxFactory
         return $paybox->generate($now, $billing);
     }
 
-    public function createPayboxForTicket(Invoice $invoice, Event $event, $amount)
+    public function createPayboxForTicket(Invoice $invoice, Event $event, $amount): string
     {
         $paybox = $this->getPaybox();
 
@@ -79,7 +78,7 @@ class PayboxFactory
         return $paybox->generate($now, PayboxBilling::createFromInvoice($invoice));
     }
 
-    public function getPaybox()
+    public function getPaybox(): Paybox
     {
         return new Paybox(
             $this->payboxDomainServer,

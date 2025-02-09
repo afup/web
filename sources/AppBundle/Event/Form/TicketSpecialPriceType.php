@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\TicketSpecialPrice;
@@ -16,7 +18,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class TicketSpecialPriceType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('token', TextType::class, [
@@ -53,7 +55,7 @@ class TicketSpecialPriceType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => TicketSpecialPrice::class

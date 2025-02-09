@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace Afup\Site\Forum;
 
-
 class InscriptionType
 {
-    private $types = [
+    private array $types = [
         'AFUP_FORUM_PREMIERE_JOURNEE' => AFUP_FORUM_PREMIERE_JOURNEE  ,
         'AFUP_FORUM_DEUXIEME_JOURNEE' => AFUP_FORUM_DEUXIEME_JOURNEE  ,
         'AFUP_FORUM_2_JOURNEES' => AFUP_FORUM_2_JOURNEES  ,
@@ -39,7 +40,7 @@ class InscriptionType
      */
     public function getTypeNameById($id)
     {
-        if (array_search($id, $this->types) === false) {
+        if (!in_array($id, $this->types)) {
             return null;
         }
         return array_search($id, $this->types);

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 namespace Afup\Site\Corporate;
 
 use Afup\Site\Utils\Configuration;
@@ -21,17 +23,13 @@ class Page
      */
     private $bdd;
 
-    function __construct($bdd = false)
+    public function __construct($bdd = false)
     {
-        if ($bdd) {
-            $this->bdd = $bdd;
-        } else {
-            $this->bdd = new _Site_Base_De_Donnees();
-        }
+        $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
         $this->conf = $GLOBALS['AFUP_CONF'];
     }
 
-    function definirRoute($route)
+    public function definirRoute($route): void
     {
         $this->route = $route;
         switch (true) {
@@ -59,13 +57,13 @@ class Page
         }
     }
 
-    function community()
+    public function community(): string
     {
         $branche = new Branche($this->bdd);
         return $branche->naviguer(5, 2);
     }
 
-    function header($url = null, UserInterface $user = null)
+    public function header($url = null, UserInterface $user = null): string
     {
         $branche = new Branche($this->bdd);
         $url = urldecode($url);
@@ -73,7 +71,7 @@ class Page
 
         $feuillesEnfants = $branche->feuillesEnfants(Feuille::ID_FEUILLE_HEADER);
 
-        if (null !== $user) {
+        if ($user instanceof UserInterface) {
             $feuillesEnfants[] = [
                 'id' => PHP_INT_MAX,
                 'id_parent' => Feuille::ID_FEUILLE_HEADER,
@@ -86,8 +84,6 @@ class Page
                 'image' => null,
                 'patterns' => "#/admin/company#",
             ];
-
-
         } else {
             $feuillesEnfants[] = [
                 'id' => PHP_INT_MAX - 1,
@@ -106,14 +102,16 @@ class Page
 
         foreach ($feuillesEnfants as $feuille) {
             $isCurrent = false;
-            foreach (explode(PHP_EOL, $feuille['patterns']) as $pattern) {
-                $pattern = trim($pattern);
-                if (strlen($pattern) === 0) {
-                    continue;
-                }
+            if ($feuille['patterns']) {
+                foreach (explode(PHP_EOL, $feuille['patterns']) as $pattern) {
+                    $pattern = trim($pattern);
+                    if ($pattern === '') {
+                        continue;
+                    }
 
-                if (preg_match($pattern, $url)) {
-                    $isCurrent = true;
+                    if (preg_match($pattern, $url)) {
+                        $isCurrent = true;
+                    }
                 }
             }
 
@@ -129,7 +127,6 @@ class Page
                             $isCurrent = true;
                         }
                     }
-
                 }
             }
 
@@ -142,21 +139,20 @@ class Page
             $str .= sprintf("<li class='%s'><a href='%s'>%s</a></li>", $class, $feuille['lien'], $feuille['nom']);
         }
 
-        $str .= '<ul>';
-
-        return $str;
+        return $str . '<ul>';
     }
 
-    function content()
+    public function content()
     {
         return $this->content;
     }
 
-    function social() {
+    public function social(): string
+    {
         return
             '<ul id="menufooter-share">
                 <li>
-                    <a href="'.Site::WEB_PATH.Site::WEB_PREFIX.Site::WEB_QUERY_PREFIX.'faq/53/comment-contacter-l-afup" class="spriteshare spriteshare-mail">Nous contacter</a>
+                    <a href="' . Site::WEB_PATH . Site::WEB_PREFIX . Site::WEB_QUERY_PREFIX . 'faq/53/comment-contacter-l-afup" class="spriteshare spriteshare-mail">Nous contacter</a>
                 </li>
                 <li>
                     <a href="http://www.facebook.com/fandelafup" class="spriteshare spriteshare-facebook">L\'AFUP sur Facebook</a>
@@ -168,7 +164,10 @@ class Page
                 ';
     }
 
-    function footer()
+    /**
+     * @return array{nom: mixed, items: mixed}[]
+     */
+    public function footer(): array
     {
         $branche = new Branche($this->bdd);
 
@@ -183,17 +182,10 @@ class Page
         return $footerColumns;
     }
 
-    function getRightColumn() {
+    public function getRightColumn(): Branche
+    {
         $branche = new Branche($this->bdd);
         $branche->navigation_avec_image(true);
         return $branche;
-
-        $content = '<aside id="sidebar-article" class="mod item left w33 m50 t100">';
-        $content .= '<h2>L\'afup<br>organise...</h2>' . $branche->naviguer(1, 2, "externe");
-        //twitter widget
-        $content .= '<h2>Sur Twitter...</h2><a class="twitter-timeline" href="https://twitter.com/afup" data-widget-id="582135958075752448">Tweets by @afup</a>';
-        $content .= '<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?"http":"https";if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
-        $content .= '</aside>';
-        return $content;
     }
 }

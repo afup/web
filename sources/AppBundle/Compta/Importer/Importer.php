@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Compta\Importer;
 
 interface Importer
 {
     /**
      * @param string $filePath
-     * @return void
      */
-    public function initialize($filePath);
+    public function initialize($filePath): void;
 
     /**
      * @return boolean

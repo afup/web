@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Compta\Importer;
 
 use AppBundle\Model\ComptaCompte;
@@ -8,22 +10,16 @@ class CreditMutuel implements Importer
 {
     const CODE = 'CMUT';
 
-    /**
-     * @var \SplFileObject
-     */
-    private $file;
+    private ?\SplFileObject $file = null;
 
-    public function initialize($filePath)
+    public function initialize($filePath): void
     {
         $this->file = new \SplFileObject($filePath, 'r');
         $this->file->setCsvControl(';');
         $this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::SKIP_EMPTY);
     }
 
-    /**
-     * @return boolean
-     */
-    public function validate()
+    public function validate(): bool
     {
         $this->file->rewind();
         $firstLine = $this->file->current();
@@ -31,12 +27,7 @@ class CreditMutuel implements Importer
         if (!is_array($firstLine)) {
             return false;
         }
-
-        if (count($firstLine) === 6 && $firstLine[1] === 'Date de valeur') {
-            return true;
-        }
-
-        return false;
+        return count($firstLine) === 6 && $firstLine[1] === 'Date de valeur';
     }
 
     /**
@@ -65,10 +56,10 @@ class CreditMutuel implements Importer
             $description = implode(' ', array_filter(explode(' ', $description)));
 
             if ('' === $data[3]) {
-                $montant = abs(str_replace(',', '.', $data[2]));
+                $montant = abs((float) str_replace(',', '.', $data[2]));
                 $type = Operation::DEBIT;
             } else {
-                $montant = abs(str_replace(',', '.', $data[3]));
+                $montant = abs((float) str_replace(',', '.', $data[3]));
                 $type = Operation::CREDIT;
             }
 
@@ -77,13 +68,13 @@ class CreditMutuel implements Importer
             // Malheureusement le cmut, contrairement  à la caisse d'epargne, n'a pas cette clé dans le fichier.
             // Donc on va sortir ça avec un sha1 de la ligne et croiser les doigts pour que l'ordonnancement soit le même.
             // En théorie ça devrait le faire, le solde faisant partie de l'export, mais il ne faut sous-estimer personne
-            $numeroOperation = substr(sha1(implode($data)), 0, 20);
+            $numeroOperation = substr(sha1(implode('', $data)), 0, 20);
 
             yield new Operation($dateEcriture, $description, $montant, $type, $numeroOperation);
         }
     }
 
-    public function getCompteId()
+    public function getCompteId(): int
     {
         return ComptaCompte::COURANT_CMUT;
     }

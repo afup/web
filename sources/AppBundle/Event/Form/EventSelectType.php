@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Event\Form;
 
@@ -13,15 +15,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EventSelectType extends AbstractType
 {
-    /** @var EventRepository */
-    private $eventRepository;
+    private EventRepository $eventRepository;
 
     public function __construct(EventRepository $eventRepository)
     {
         $this->eventRepository = $eventRepository;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('id', ChoiceType::class,
@@ -36,7 +37,7 @@ class EventSelectType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Event::class,

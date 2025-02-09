@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 // Impossible to access the file itself
-use Afup\Site\Niveau_Partenariat;
-use Afup\Site\Forum\Partenaires;
 use Afup\Site\Forum\Forum;
+use Afup\Site\Forum\Partenaires;
+use Afup\Site\Niveau_Partenariat;
 use Afup\Site\Utils\Logs;
 
-/** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -36,16 +37,16 @@ if ($action == 'lister') {
 } else {
     $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
-		$formulaire->setDefaults(['ranking' => 1]);
+        $formulaire->setDefaults(['ranking' => 1]);
     } else {
         $champs = $partenaires->obtenir($_GET['id']);
         $forum = $forums->obtenir($champs['id_forum']);
 
         $formulaire->setDefaults($champs);
 
-    	if (isset($champs) && isset($champs['id'])) {
-    	    $_GET['id'] = $champs['id'];
-    	}
+        if (isset($champs) && isset($champs['id'])) {
+            $_GET['id'] = $champs['id'];
+        }
 
         $formulaire->addElement('hidden', 'id', $_GET['id']);
     }
@@ -60,9 +61,9 @@ if ($action == 'lister') {
     $formulaire->addElement('static'  , 'note'                           , '', 'Faire attention à la taille');
     $formulaire->addElement('file'    , 'logo'        , 'Logo');
     if ($action == 'modifier') {
-        $formulaire->addElement('static'  , 'html'                     , '', '<img src="/templates/'.$forum['path'].'/images/'.$champs['logo'].'" /><br />');
-        $chemin = realpath('../../templates/'.$forum['path'].'/images/'.$champs['logo']);
-        if ($champs['logo'] && file_exists($chemin)) {
+        $formulaire->addElement('static'  , 'html'                     , '', '<img src="/templates/' . $forum['path'] . '/images/' . $champs['logo'] . '" /><br />');
+        $chemin = realpath('../../templates/' . $forum['path'] . '/images/' . $champs['logo']);
+        if ($champs['logo'] && $chemin && file_exists($chemin)) {
             if ((function_exists('getimagesize'))) {
                 $info = getimagesize($chemin);
                 $formulaire->addElement('static'  , 'html'                     , '', 'Taille actuelle : ' . $info[3]);
@@ -88,7 +89,7 @@ if ($action == 'lister') {
         $file = $formulaire->getElement('logo');
         $data = $file->getValue();
         if ($data['name']) {
-            $file->moveUploadedFile(realpath('../../templates/'.$forum['path'].'/images/'));
+            $file->moveUploadedFile(realpath('../../templates/' . $forum['path'] . '/images/'));
             $data = $file->getValue();
             $valeurs['logo'] = $data['name'];
         } else {

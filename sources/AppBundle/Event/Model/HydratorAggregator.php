@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /***********************************************************************
  *
  * Ting - PHP Datamapper
@@ -44,30 +46,27 @@ class HydratorAggregator extends Hydrator
     protected $callableFinalizeAggregate;
 
     /**
-     * @param callable $callableForId
      * @return $this
      */
-    public function callableIdIs(callable $callableForId)
+    public function callableIdIs(callable $callableForId): self
     {
         $this->callableForId = $callableForId;
         return $this;
     }
 
     /**
-     * @param callable $callableForData
      * @return $this
      */
-    public function callableDataIs(callable $callableForData)
+    public function callableDataIs(callable $callableForData): self
     {
         $this->callableForData = $callableForData;
         return $this;
     }
 
     /**
-     * @param callable $callableFinalizeAggregate
      * @return $this
      */
-    public function callableFinalizeAggregate(callable $callableFinalizeAggregate)
+    public function callableFinalizeAggregate(callable $callableFinalizeAggregate): self
     {
         $this->callableFinalizeAggregate = $callableFinalizeAggregate;
         return $this;
@@ -98,7 +97,7 @@ class HydratorAggregator extends Hydrator
 
             $currentId = $callableForId($result);
 
-            if (isset($knownIdentifiers[$currentId]) === true) {
+            if (isset($knownIdentifiers[$currentId])) {
                 continue;
             }
 
@@ -129,13 +128,7 @@ class HydratorAggregator extends Hydrator
         }
     }
 
-    /**
-     * @param mixed $result
-     * @param mixed $aggregate
-     *
-     * @return mixed
-     */
-    private function finalizeAggregate($result, $aggregate)
+    private function finalizeAggregate(array $result, $aggregate): array
     {
         if ($this->callableFinalizeAggregate === null) {
             $result['aggregate'] = $aggregate;

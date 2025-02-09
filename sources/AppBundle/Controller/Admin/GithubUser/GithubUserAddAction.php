@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\GithubUser;
 
 use Afup\Site\Logger\DbLoggerTrait;
@@ -19,18 +21,12 @@ class GithubUserAddAction
 {
     use DbLoggerTrait;
 
-    /** @var GithubUserRepository */
-    private $githubUserRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var Environment */
-    private $twig;
-    /** @var GithubClient */
-    private $githubClient;
+    private GithubUserRepository $githubUserRepository;
+    private FormFactoryInterface $formFactory;
+    private FlashBagInterface $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
+    private Environment $twig;
+    private GithubClient $githubClient;
 
     public function __construct(
         GithubUserRepository  $githubUserRepository,

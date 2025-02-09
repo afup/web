@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Security;
 
@@ -11,10 +13,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class TalkVoter extends Voter
 {
-    /**
-     * @var SpeakerRepository
-     */
-    private $speakerRepository;
+    private SpeakerRepository $speakerRepository;
 
     public function __construct(SpeakerRepository $speakerRepository)
     {

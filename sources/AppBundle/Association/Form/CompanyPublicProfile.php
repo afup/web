@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Form;
 
 use AppBundle\Offices\OfficesCollection;
@@ -25,7 +27,7 @@ class CompanyPublicProfile extends AbstractType
     const DESCRIPTION_MAX_LENGTH = 2000;
     const MEMBERSHIP_REASON_MAX_LENGTH = 150;
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $officesCollection = new OfficesCollection();
 
@@ -159,14 +161,14 @@ class CompanyPublicProfile extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'logo_required' => true,
         ]);
     }
 
-    private function getMembershipReasonHelp()
+    private function getMembershipReasonHelp(): string
     {
         return <<<EOF
 Décrivez en moins de %s caractères pourquoi vous êtes membre AFUP.

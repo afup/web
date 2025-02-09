@@ -1,6 +1,7 @@
 <?php
-namespace Afup\Site\Corporate;
 
+declare(strict_types=1);
+namespace Afup\Site\Corporate;
 
 class Accueil
 {
@@ -9,25 +10,22 @@ class Accueil
      */
     private $bdd;
 
-    function __construct($bdd = false)
+    public function __construct($bdd = false)
     {
-        if ($bdd) {
-            $this->bdd = $bdd;
-        } else {
-            $this->bdd = new _Site_Base_De_Donnees();
-        }
+        $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
     }
 
-    function charger()
+    public function charger(): void
     {
-
     }
 
-    function afficher() {
+    public function afficher(): string
+    {
         return $this->colonne_de_gauche();
     }
 
-    function colonne_de_gauche() {
+    public function colonne_de_gauche(): string
+    {
         $articles = new Articles($this->bdd);
         $derniers_articles = $articles->chargerDerniersAjouts(10);
 
@@ -36,10 +34,10 @@ class Accueil
 
         foreach ($derniers_articles as $article) {
             $chapeau = $article->chapeau;
-            $colonne .= '<a href="'.$article->route().'" class="article article-teaser">';
-            $colonne .= '<time datetime="'.date('Y-m-d', $article->date).'">'.date('d|m|y', $article->date).'</time>';
-            $colonne .= '<h2>'.$article->titre.'</h2>';
-            $colonne .= '<p>'.strip_tags($chapeau, '<p><strong>').'</p>';
+            $colonne .= '<a href="' . $article->route() . '" class="article article-teaser">';
+            $colonne .= '<time datetime="' . date('Y-m-d', $article->date) . '">' . date('d|m|y', $article->date) . '</time>';
+            $colonne .= '<h2>' . $article->titre . '</h2>';
+            $colonne .= '<p>' . strip_tags($chapeau, '<p><strong>') . '</p>';
             $colonne .= '</a>';
         }
 

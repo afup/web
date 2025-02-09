@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
@@ -138,7 +140,7 @@ class TicketRepository extends Repository implements MetadataInitializer
             $params['day'] = $day;
         }
 
-        if (null !== $ticketType) {
+        if ($ticketType instanceof TicketType) {
             $sql .= ' AND aif.type_inscription = :ticket_type_id';
             $params['ticket_type_id'] = $ticketType->getId();
         }
@@ -161,8 +163,6 @@ class TicketRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @param Event $event
-     *
      * @return Ticket[]
      */
     public function getByEvent(Event $event)

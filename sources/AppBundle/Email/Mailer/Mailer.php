@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Email\Mailer;
 
 use Afup\Site\Utils\Configuration;
@@ -12,16 +14,13 @@ use Twig_Environment;
  */
 class Mailer
 {
-    /** @var LoggerInterface */
-    private $logger;
-    /** @var Twig_Environment */
-    private $twig;
-    /** @var MailerAdapter */
-    private $adapter;
+    private LoggerInterface $logger;
+    private \Twig_Environment $twig;
+    private MailerAdapter $adapter;
     /** @var string|null */
     private $forcedRecipient;
     /** @var string[] */
-    private $defaultBccs;
+    private array $defaultBccs;
 
     public function __construct(
         LoggerInterface $logger,
@@ -40,10 +39,10 @@ class Mailer
     /**
      * @return boolean true on success, false on failure
      */
-    public function send(Message $message, $addDefaultBccs = false)
+    public function send(Message $message, $addDefaultBccs = false): bool
     {
         try {
-            if (null === $message->getFrom()) {
+            if (!$message->getFrom() instanceof MailUser) {
                 $message->setFrom(MailUserFactory::afup());
             }
             if ($this->forcedRecipient) {
@@ -71,7 +70,7 @@ class Mailer
      *
      * @return boolean true on success, false on failure
      */
-    public function sendTransactional(Message $message, $content, $address = null, $title = null)
+    public function sendTransactional(Message $message, $content, $address = null, $title = null): bool
     {
         $this->renderTemplate($message, 'mail_templates/message-transactionnel.html.twig', [
             'title' => $title ?: $message->getSubject(),
@@ -87,10 +86,8 @@ class Mailer
      *
      * @param string $subject
      * @param string $content
-     *
-     * @return bool
      */
-    public function sendSimpleMessage($subject, $content, MailUser ...$recipients)
+    public function sendSimpleMessage($subject, $content, MailUser ...$recipients): bool
     {
         if ([] === $recipients) {
             $recipients = [MailUserFactory::tresorier()];
@@ -103,9 +100,8 @@ class Mailer
 
     /**
      * @param string $template
-     * @param array  $data
      */
-    public function renderTemplate(Message $message, $template, array $data)
+    public function renderTemplate(Message $message, $template, array $data): void
     {
         $message->setHtml();
         $message->setContent($this->twig->render($template, $data));

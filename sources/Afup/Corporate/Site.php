@@ -1,6 +1,9 @@
 <?php
+
+declare(strict_types=1);
 namespace Afup\Site\Corporate;
 
+use Afup\Site\Utils\Base_De_Donnees;
 
 class Site
 {
@@ -9,20 +12,16 @@ class Site
     const WEB_QUERY_PREFIX = '?route=';
 
     /**
-     * @var \Afup\Site\Utils\Base_De_Donnees
+     * @var Base_De_Donnees
      */
     protected $bdd;
 
-    function __construct($bdd = false)
+    public function __construct($bdd = false)
     {
-        if ($bdd) {
-            $this->bdd = $bdd;
-        } else {
-            $this->bdd = new _Site_Base_De_Donnees();
-        }
+        $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
     }
 
-    static function raccourcir($texte, $separator = '-')
+    public static function raccourcir($texte, string $separator = '-'): ?string
     {
         $texte = str_replace('�', 'e', $texte);
         $texte = iconv('ISO-8859-15', 'ASCII//TRANSLIT', trim($texte));
@@ -34,37 +33,34 @@ class Site
         return preg_replace($pattern, $replacement, strtolower($texte));
     }
 
-    static function transformer_lien_spip($texte)
+    public static function transformer_lien_spip($texte)
     {
-        $texte = preg_replace('`\[(.*?)[[:space:]]*->http://(.*?)\]`', "<a href=\"http://" . '$2' . "\">" . '$1' . "</a>", $texte);
-        $texte = preg_replace('`\[(.*?)->(.*?)\]`', "<a href=\"http://" . '$2' . "\">" . '$1' . "</a>", $texte);
-        return $texte;
+        $texte = preg_replace('`\[(.*?)[[:space:]]*->http://(.*?)\]`', '<a href="http://$2">$1</a>', $texte);
+        return preg_replace('`\[(.*?)->(.*?)\]`', '<a href="http://$2">$1</a>', $texte);
     }
 
-    static function transformer_liste_spip($texte)
+    public static function transformer_liste_spip($texte): string
     {
         $lignes = explode("\n", $texte);
         foreach ($lignes as &$ligne) {
             $ligne = preg_replace("`^- (.*)`", "<ul>\n<li>\$1</li>\n</ul>", $ligne);
         }
         $texte = implode("\n", $lignes);
-        $texte = str_replace("</ul>\n<ul>\n", '', $texte);
-        return $texte;
+        return str_replace("</ul>\n<ul>\n", '', $texte);
     }
 
-    static function transformer_spip_en_html($texte)
+    public static function transformer_spip_en_html($texte): string
     {
-        $texte = Site::transformer_lien_spip($texte);
+        $texte = self::transformer_lien_spip($texte);
         for ($i = 0; $i < 2; $i++) {
-            $texte = preg_replace('`\{\{\{[[:space:]]*(.*?)[[:space:]]*\}\}\}`', "<h3>" . '$1' . "</h3>", $texte);
-            $texte = preg_replace('`\{\{[[:space:]]*(.*?)[[:space:]]*\}\}`', "<strong>" . '$1' . "</strong>", $texte);
-            $texte = preg_replace('`\{[[:space:]]*(.*?)[[:space:]]*\}`', "<em>" . '$1' . "</em>", $texte);
+            $texte = preg_replace('`\{\{\{[[:space:]]*(.*?)[[:space:]]*\}\}\}`', '<h3>$1</h3>', $texte);
+            $texte = preg_replace('`\{\{[[:space:]]*(.*?)[[:space:]]*\}\}`', '<strong>$1</strong>', $texte);
+            $texte = preg_replace('`\{[[:space:]]*(.*?)[[:space:]]*\}`', '<em>$1</em>', $texte);
         }
-        $texte = Site::transformer_liste_spip($texte);
-        return $texte;
+        return self::transformer_liste_spip($texte);
     }
 
-    function importer_spip()
+    public function importer_spip(): void
     {
         $this->bdd->executer('TRUNCATE TABLE afup_site_article');
         $this->bdd->executer('TRUNCATE TABLE afup_site_rubrique');
@@ -80,9 +76,9 @@ class Site
                 $rubrique->position = 0;
                 $rubrique->date = time();
                 $rubrique->nom = ($rubrique_spip['titre']);
-                $rubrique->raccourci = Site::raccourcir($rubrique_spip['titre']);
-                $rubrique->descriptif = Site::transformer_spip_en_html(($rubrique_spip['descriptif']));
-                $rubrique->contenu = Site::transformer_spip_en_html(($rubrique_spip['texte']));
+                $rubrique->raccourci = self::raccourcir($rubrique_spip['titre']);
+                $rubrique->descriptif = self::transformer_spip_en_html(($rubrique_spip['descriptif']));
+                $rubrique->contenu = self::transformer_spip_en_html(($rubrique_spip['texte']));
                 $rubrique->etat = 1;
                 $rubrique->inserer();
                 $nombre_rubriques++;
@@ -97,9 +93,9 @@ class Site
                 $article = new Article($article_spip['id_article'], $this->bdd);
                 $article->id_site_rubrique = $article_spip['id_rubrique'];
                 $article->titre = ($article_spip['titre']);
-                $article->raccourci = Site::raccourcir($article_spip['titre']);
-                $article->chapeau = Site::transformer_spip_en_html(($article_spip['chapo']));
-                $article->contenu = Site::transformer_spip_en_html(($article_spip['texte']));
+                $article->raccourci = self::raccourcir($article_spip['titre']);
+                $article->chapeau = self::transformer_spip_en_html(($article_spip['chapo']));
+                $article->contenu = self::transformer_spip_en_html(($article_spip['texte']));
                 $article->position = 0;
                 $article->date = strtotime($article_spip['date']);
                 $article->etat = 1;

@@ -1,6 +1,11 @@
 <?php
 
-require_once __DIR__ .'/../../../sources/Afup/Bootstrap/Http.php';
+declare(strict_types=1);
+
+use Afup\Site\Utils\SymfonyKernel;
+use Symfony\Component\HttpFoundation\Request;
+
+require_once __DIR__ . '/../../../sources/Afup/Bootstrap/Http.php';
 /*
  * Define LOADED_USING_INDEX to true
  * See compta_journal.php first lines as example for security check.
@@ -31,9 +36,9 @@ if ('cli-server' === PHP_SAPI) {
 $server['REQUEST_URI'] = '/admin/void';
 $server['LEGACY_REFERER'] = $_SERVER['REQUEST_URI'];
 
-$request = new \Symfony\Component\HttpFoundation\Request($_GET, $_POST, [], $_COOKIE, $_FILES, $server);
+$request = new Request($_GET, $_POST, [], $_COOKIE, $_FILES, $server);
 
-$kernel = new \Afup\Site\Utils\SymfonyKernel($request);
+$kernel = new SymfonyKernel($request);
 
 $response = $kernel->getResponse();
 $response->send();

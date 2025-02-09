@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\SlackMembers;
 
 use AppBundle\Slack\UsersChecker;
@@ -8,10 +10,8 @@ use Twig\Environment;
 
 class CheckMembersAction
 {
-    /** @var UsersChecker */
-    private $usersChecker;
-    /** @var Environment */
-    private $twig;
+    private UsersChecker $usersChecker;
+    private Environment $twig;
 
     public function __construct(
         UsersChecker $usersChecker,
@@ -21,7 +21,7 @@ class CheckMembersAction
         $this->twig = $twig;
     }
 
-    public function __invoke()
+    public function __invoke(): Response
     {
         return new Response($this->twig->render('admin/slackmembers/index.html.twig', [
             'title' => 'Slack membres',

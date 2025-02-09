@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\GeneralMeeting;
 
 use DateTimeInterface;
@@ -10,16 +12,13 @@ class GeneralMeeting
     private $id;
     /** @var int */
     private $personnePhysiqueId;
-    /** @var DateTimeInterface */
-    private $date;
+    private \DateTimeInterface $date;
     /** @var int */
     private $presence;
     /** @var int */
     private $personneAvecPouvoirId;
-    /** @var DateTimeInterface|null */
-    private $consultationDate;
-    /** @var DateTimeInterface|null */
-    private $modificationDate;
+    private ?\DateTimeInterface $consultationDate;
+    private ?\DateTimeInterface $modificationDate;
 
     /**
      * @param int $id
@@ -55,7 +54,7 @@ class GeneralMeeting
         return $this->personnePhysiqueId;
     }
 
-    public function getDate()
+    public function getDate(): \DateTimeInterface
     {
         return $this->date;
     }
@@ -70,12 +69,12 @@ class GeneralMeeting
         return $this->personneAvecPouvoirId;
     }
 
-    public function getConsultationDate()
+    public function getConsultationDate(): ?\DateTimeInterface
     {
         return $this->consultationDate;
     }
 
-    public function getModificationDate()
+    public function getModificationDate(): ?\DateTimeInterface
     {
         return $this->modificationDate;
     }

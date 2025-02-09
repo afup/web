@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Indexation\Talks;
 
 use AppBundle\Event\Model\Event;
@@ -10,14 +12,10 @@ use AppBundle\Event\Model\Talk;
 class Transformer
 {
     /**
-     * @param Planning $planning
-     * @param Talk $talk
-     * @param Event $event
      * @param Speaker[]|\Traversable $speakers
      *
-     * @return array
      */
-    public function transform(Planning $planning, Talk $talk, Event $event, \Traversable $speakers)
+    public function transform(Planning $planning, Talk $talk, Event $event, \Traversable $speakers): array
     {
         $item = [
             'planning_id' => $planning->getId(),
@@ -27,7 +25,7 @@ class Transformer
             'event' => [
                 'id' => $event->getId(),
                 'title' => $event->getTitle(),
-                'start_date' => $event->getDateStart() ? $event->getDateStart()->format('Y-m-d') : null,
+                'start_date' => $event->getDateStart() instanceof \DateTime ? $event->getDateStart()->format('Y-m-d') : null,
             ],
             'type' => [
                 'id' => $talk->getType(),

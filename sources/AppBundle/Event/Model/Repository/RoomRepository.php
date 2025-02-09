@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Room;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -12,8 +15,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 class RoomRepository extends Repository implements MetadataInitializer
 {
     /**
-     * @param Event $event
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getByEvent(Event $event)
     {
@@ -21,8 +23,6 @@ class RoomRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @param SerializerFactoryInterface $serializerFactory
-     * @param array $options
      * @return Metadata
      */
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])

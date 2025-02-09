@@ -12,15 +12,25 @@ use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\SponsorScan;
 use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Model\Ticket;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-class SponsorScanController extends EventBaseController
+class SponsorScanController extends AbstractController
 {
-    public function indexAction(Request $request, $eventSlug)
+    private RepositoryFactory $repositoryFactory;
+    private EventActionHelper $eventActionHelper;
+    public function __construct(RepositoryFactory $repositoryFactory, EventActionHelper $eventActionHelper)
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $this->repositoryFactory = $repositoryFactory;
+        $this->eventActionHelper = $eventActionHelper;
+    }
+    public function index(Request $request, $eventSlug)
+    {
+        $event = $this->eventActionHelper->getEvent($eventSlug);
 
         try {
             $sponsorTicket = $this->checkSponsorTicket($request);
@@ -30,7 +40,7 @@ class SponsorScanController extends EventBaseController
         }
 
         /** @var SponsorScanRepository $scanRepository */
-        $scanRepository = $this->get('ting')->get(SponsorScanRepository::class);
+        $scanRepository = $this->repositoryFactory->get(SponsorScanRepository::class);
         $scans = $scanRepository->getBySponsorTicket($sponsorTicket);
 
         return $this->render(':event/sponsor:scan.html.twig', [
@@ -40,9 +50,9 @@ class SponsorScanController extends EventBaseController
         ]);
     }
 
-    public function newAction(Request $request, $eventSlug)
+    public function new(Request $request, $eventSlug)
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
 
         try {
             $this->checkSponsorTicket($request);
@@ -69,9 +79,9 @@ class SponsorScanController extends EventBaseController
         ]);
     }
 
-    public function flashAction(Request $request, string $code, string $eventSlug)
+    public function flash(Request $request, string $code, string $eventSlug): RedirectResponse
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
 
         try {
             $sponsorTicket = $this->checkSponsorTicket($request);
@@ -81,7 +91,7 @@ class SponsorScanController extends EventBaseController
         }
 
         /** @var TicketRepository $ticketRepository */
-        $ticketRepository = $this->get('ting')->get(TicketRepository::class);
+        $ticketRepository = $this->repositoryFactory->get(TicketRepository::class);
         /** @var Ticket $ticket */
         $ticket = $ticketRepository->getOneBy(['forumId' => $event->getId(), 'qrCode' => $code]);
 
@@ -91,7 +101,7 @@ class SponsorScanController extends EventBaseController
         }
 
         /** @var SponsorScanRepository $scanRepository */
-        $scanRepository = $this->get('ting')->get(SponsorScanRepository::class);
+        $scanRepository = $this->repositoryFactory->get(SponsorScanRepository::class);
         $scan = $scanRepository->getOneBy(['sponsorTicketId' => $sponsorTicket->getId(), 'ticketId' => $ticket->getId()]);
 
         if ($scan instanceof SponsorScan && $scan->getDeletedOn() === null) {
@@ -114,9 +124,9 @@ class SponsorScanController extends EventBaseController
         return $this->redirectToRoute('sponsor_scan', ['eventSlug' => $eventSlug]);
     }
 
-    public function exportAction(Request $request, $eventSlug)
+    public function export(Request $request, $eventSlug)
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
         try {
             $sponsorTicket = $this->checkSponsorTicket($request);
         } catch (InvalidSponsorTokenException $e) {
@@ -128,7 +138,7 @@ class SponsorScanController extends EventBaseController
         $tmpFile = tempnam(sys_get_temp_dir(), $baseName);
         $file = new \SplFileObject($tmpFile, 'w');
 
-        $scanRepository = $this->get('ting')->get(SponsorScanRepository::class);
+        $scanRepository = $this->repositoryFactory->get(SponsorScanRepository::class);
         $scans = $scanRepository->getBySponsorTicket($sponsorTicket);
 
         $file->fputcsv(['Nom', 'Prénom', 'Email', 'Date']);
@@ -149,9 +159,9 @@ class SponsorScanController extends EventBaseController
         return $response;
     }
 
-    public function deleteAction(Request $request, $eventSlug, $scanId)
+    public function delete(Request $request, string $eventSlug, $scanId): RedirectResponse
     {
-        $this->checkEventSlug($eventSlug);
+        $this->eventActionHelper->getEvent($eventSlug);
         try {
             $sponsorTicket = $this->checkSponsorTicket($request);
         } catch (InvalidSponsorTokenException $e) {
@@ -160,7 +170,7 @@ class SponsorScanController extends EventBaseController
         }
 
         /** @var SponsorScanRepository $scanRepository */
-        $scanRepository = $this->get('ting')->get(SponsorScanRepository::class);
+        $scanRepository = $this->repositoryFactory->get(SponsorScanRepository::class);
         $scan = $scanRepository->getOneBy(['sponsorTicketId' => $sponsorTicket->getId(), 'id' => $scanId]);
 
         if ($scan instanceof SponsorScan) {
@@ -181,7 +191,7 @@ class SponsorScanController extends EventBaseController
         /**
          * @var SponsorTicket $sponsorTicket
          */
-        $sponsorTicket = $this->get('ting')->get(SponsorTicketRepository::class)->get($request->getSession()->get('sponsor_ticket_id'));
+        $sponsorTicket = $this->repositoryFactory->get(SponsorTicketRepository::class)->get($request->getSession()->get('sponsor_ticket_id'));
         if ($sponsorTicket === null) {
             throw new InvalidSponsorTokenException('Token invalide.');
         }

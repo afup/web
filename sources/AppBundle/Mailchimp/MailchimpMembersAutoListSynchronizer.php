@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Mailchimp;
 
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -8,15 +10,9 @@ use Psr\Log\NullLogger;
 
 class MailchimpMembersAutoListSynchronizer
 {
-    /**
-     * @var \AppBundle\Mailchimp\Mailchimp
-     */
-    private $mailchimp;
+    private Mailchimp $mailchimp;
 
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private UserRepository $userRepository;
 
     /**
      * @var string
@@ -31,7 +27,7 @@ class MailchimpMembersAutoListSynchronizer
     /**
      * @param string $listId
      */
-    public function __construct(\AppBundle\Mailchimp\Mailchimp $mailchimp, UserRepository $userRepository, $listId)
+    public function __construct(Mailchimp $mailchimp, UserRepository $userRepository, $listId)
     {
         $this->mailchimp = $mailchimp;
         $this->userRepository = $userRepository;
@@ -39,7 +35,7 @@ class MailchimpMembersAutoListSynchronizer
         $this->logger = new NullLogger();
     }
 
-    public function synchronize()
+    public function synchronize(): void
     {
         $subscribedEmailsOnMailchimp = array_map('strtolower', $this->mailchimp->getAllSubscribedMembersAddresses($this->listId));
         $unSubscribedEmailsOnMailchimp = array_map('strtolower', $this->mailchimp->getAllUnSubscribedMembersAddresses($this->listId));
@@ -61,21 +57,16 @@ class MailchimpMembersAutoListSynchronizer
     }
 
     /**
-     * @param LoggerInterface $logger
-     *
      * @return $this
      */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): self
     {
         $this->logger = $logger;
 
         return $this;
     }
 
-    /**
-     * @param array $emails
-     */
-    private function archiveAddresses(array $emails)
+    private function archiveAddresses(array $emails): void
     {
         // Ici on archive les contacts pour deux raisons :
         // - Cela permet de distinguer les personnes qui ont réellement voulu unsubscriber de personnes qu'on en enlevées nous même de la liste
@@ -86,10 +77,7 @@ class MailchimpMembersAutoListSynchronizer
         }
     }
 
-    /**
-     * @param array $emails
-     */
-    private function subscribeAddresses(array $emails)
+    private function subscribeAddresses(array $emails): void
     {
         $errors = [];
 
@@ -104,15 +92,12 @@ class MailchimpMembersAutoListSynchronizer
             }
         }
 
-        if (count($errors)) {
+        if ($errors !== []) {
             throw new \RuntimeException('Errors during subscribeAddresses : ' . implode($errors, PHP_EOL));
         }
     }
 
-    /**
-     * @return array
-     */
-    private function getSubscribedEmailsOnWebsite()
+    private function getSubscribedEmailsOnWebsite(): array
     {
         $subscribdedEmails =  [];
 
@@ -121,15 +106,5 @@ class MailchimpMembersAutoListSynchronizer
         }
 
         return $subscribdedEmails;
-    }
-
-    /**
-     * @return array
-     */
-    private function getSubscribedEmailsOnMailchimp()
-    {
-        $mailsOnMailchimp = $this->mailchimp->getAllSubscribedMembersAddresses($this->listId);
-
-        return $mailsOnMailchimp;
     }
 }

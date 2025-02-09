@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Invoice;
 
 use AppBundle\Event\Model\Invoice;
@@ -9,10 +11,8 @@ use AppBundle\Event\Model\Ticket;
 
 class InvoiceService
 {
-    /** @var InvoiceRepository */
-    private $invoiceRepository;
-    /** @var TicketRepository */
-    private $ticketRepository;
+    private InvoiceRepository $invoiceRepository;
+    private TicketRepository $ticketRepository;
 
     public function __construct(
         InvoiceRepository $invoiceRepository,
@@ -26,7 +26,7 @@ class InvoiceService
         $reference,
         $paymentType,
         $paymentInfos,
-        $paymentDate,
+        ?\DateTime $paymentDate,
         $email,
         $company,
         $lastname,
@@ -40,7 +40,7 @@ class InvoiceService
         $authorization = null,
         $transaction = null,
         $status = Ticket::STATUS_CREATED
-    ) {
+    ): void {
         $tickets = $this->ticketRepository->getByReference($reference);
         $amount = 0.0;
         foreach ($tickets as $ticket) {
@@ -86,7 +86,7 @@ class InvoiceService
         }
     }
 
-    public function deleteInvoice(Invoice $invoice)
+    public function deleteInvoice(Invoice $invoice): void
     {
         $tickets = $this->ticketRepository->getByReference($invoice->getReference());
         if (0 === count($tickets)) {

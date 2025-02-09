@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members;
 
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -10,12 +12,9 @@ use Twig\Environment;
 
 class UserListAction
 {
-    /** @var UserRepository */
-    private $userRepository;
-    /** @var OfficesCollection */
-    private $officesCollection;
-    /** @var Environment */
-    private $twig;
+    private UserRepository $userRepository;
+    private OfficesCollection $officesCollection;
+    private Environment $twig;
 
     public function __construct(
         UserRepository $userRepository,
@@ -27,7 +26,7 @@ class UserListAction
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         // Modification des paramètres de tri en fonction des demandes passées en GET
         $sort = $request->query->get('sort', 'lastname');

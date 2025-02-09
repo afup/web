@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Form;
 
 use Afup\Site\Utils\Pays;
+use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Ticket;
 use Symfony\Component\Form\AbstractType;
@@ -14,18 +17,16 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
 
 class PurchaseType extends AbstractType
 {
     const MAX_NB_PERSONNES = 15;
 
-    /**
-     * @var Pays
-     */
-    private $country;
+    private Pays $country;
 
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(Pays $pays, TokenStorageInterface $tokenStorage)
     {
@@ -33,7 +34,7 @@ class PurchaseType extends AbstractType
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $maxNbPersonne = $options['special_price_token'] ? 1 : self::MAX_NB_PERSONNES;
 
@@ -104,7 +105,7 @@ class PurchaseType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Invoice::class,
@@ -113,13 +114,17 @@ class PurchaseType extends AbstractType
             'special_price_token' => null,
             'event_id' => null,
             'cascade_validation' => true,
-            'validation_groups' => function () {
+            'validation_groups' => function (): array {
                 $groups = ['Default'];
 
-                $user = $this->tokenStorage->getToken()->getUser();
-                if (is_object($user) === false) {
+                $user = null;
+                if ($this->tokenStorage->getToken() instanceof TokenInterface) {
+                    $user = $this->tokenStorage->getToken()->getUser();
+                }
+
+                if ($user === null) {
                     $groups[] = 'not_logged_in';
-                } elseif ((int) $user->getCompanyId() === 0) {
+                } elseif ($user instanceof User && (int) $user->getCompanyId() === 0) {
                     $groups[] = 'personal';
                 } else {
                     $groups[] = 'corporate';

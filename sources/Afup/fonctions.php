@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
+use AppBundle\Association\Form\HTML_QuickForm;
+
 /**
  * Affiche un message puis redirige le visiteur vers une URL spécifiée
  * @param   string  $message    Message à afficher
  * @param   string  $url        URL vers laquelle rediriger le visiteur
  * @param   bool    $erreur     S'agit-il d'une erreur
- * @return  void
  */
-function afficherMessage($message, $url, $erreur = false) {
+function afficherMessage($message, string $url, $erreur = false): void
+{
     $_SESSION['flash']['message'] = $message;
     $_SESSION['flash']['erreur'] = $erreur;
     header('Location: ' . $url);
@@ -21,13 +25,13 @@ function afficherMessage($message, $url, $erreur = false) {
  *
  * @param   string  $url        URL pour l'attribut "action" du formulaire
  * @param   string  $nom        Nom du formulaire
- * @return  \AppBundle\Association\Form\HTML_QuickForm
  */
-function instancierFormulaire($url = null, $nom = 'formulaire') {
+function instancierFormulaire($url = null, $nom = 'formulaire'): HTML_QuickForm
+{
     if (is_null($url)) {
         $url = $_SERVER['REQUEST_URI'];
     }
-    $formulaire = new \AppBundle\Association\Form\HTML_QuickForm($nom, 'post', $url);
+    $formulaire = new HTML_QuickForm($nom, 'post', $url);
     $formulaire->removeAttribute('name');
     return $formulaire;
 }
@@ -35,10 +39,11 @@ function instancierFormulaire($url = null, $nom = 'formulaire') {
 /**
  * Renvoit un tableau contenant les éléments d'un formulaire
  *
- * @param   \AppBundle\Association\Form\HTML_QuickForm  $formulaire     Formulaire à traiter
+ * @param HTML_QuickForm $formulaire Formulaire à traiter
  * @return  array
  */
-function genererFormulaire(\AppBundle\Association\Form\HTML_QuickForm &$formulaire) {
+function genererFormulaire(HTML_QuickForm &$formulaire)
+{
     foreach ($formulaire->getElements() as $el) {
         $attrs = $el->getAttributes();
         if ($el instanceof HTML_QuickForm_submit) {
@@ -62,7 +67,8 @@ function genererFormulaire(\AppBundle\Association\Form\HTML_QuickForm &$formulai
  * @param   array  $actions_disponibles    Actions disponibles
  * @return  string
  */
-function verifierAction($actions_disponibles) {
+function verifierAction($actions_disponibles)
+{
     if (!is_array($actions_disponibles) || count($actions_disponibles) == 0) {
         trigger_error("Les actions disponibles doivent être passées sous forme d'un tableau d'au moins un élément", E_USER_ERROR);
         return false;
@@ -81,22 +87,25 @@ function verifierAction($actions_disponibles) {
  * @param   string  $texte  Texte à traiter
  * @return  string          Texte traité
  */
-function supprimerAccents($texte) {
+function supprimerAccents($texte): ?string
+{
     $texte = htmlentities($texte);
     return preg_replace('/&([a-z])[a-z]+;/i',"$1", $texte);
 }
 
-function obtenirTitre($pages, $page) {
+function obtenirTitre($pages, $page)
+{
     foreach ($pages as $_page => $_page_details) {
         if ($page == $_page) {
             return $_page_details['nom'];
         }
-        if (isset($_page_details['elements']) and is_array($_page_details['elements'])) {
+        if (isset($_page_details['elements']) && is_array($_page_details['elements'])) {
             foreach ($_page_details['elements'] as $_element => $_element_details) {
                 if ($page == $_element) {
                     return $_element_details['nom'];
-	            }
-	        }
-	    }
+                }
+            }
+        }
     }
+    return null;
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\SpeakerInfos;
 
@@ -13,17 +15,15 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class SpeakersExpensesStorage
 {
     private $basePath;
-    private $publicPath;
-    private $filesystem;
+    private Filesystem $filesystem;
 
-    public function __construct($basePath, $publicPath)
+    public function __construct($basePath)
     {
         $this->basePath = $basePath;
-        $this->publicPath = $publicPath;
         $this->filesystem = new Filesystem();
     }
 
-    public function store(UploadedFile $file, Speaker $speaker)
+    public function store(UploadedFile $file, Speaker $speaker): string
     {
         $fileName = $this->buildFilename($file->getClientOriginalName(), $speaker);
         $directory = $this->getDir($speaker);
@@ -34,7 +34,7 @@ class SpeakersExpensesStorage
         return $fileName;
     }
 
-    public function delete($filename, Speaker $speaker)
+    public function delete($filename, Speaker $speaker): void
     {
         $file = $this->buildFilename($filename, $speaker);
         $dirname = $this->getDir($speaker);
@@ -44,7 +44,10 @@ class SpeakersExpensesStorage
         }
     }
 
-    public function getFiles(Speaker $speaker)
+    /**
+     * @return array{basename: (array | string), path: non-falsy-string}[]
+     */
+    public function getFiles(Speaker $speaker): array
     {
         $directory = $this->getDir($speaker);
         $this->createDirectory($directory);
@@ -63,7 +66,7 @@ class SpeakersExpensesStorage
         return $files;
     }
 
-    private function createDirectory($directory)
+    private function createDirectory(string $directory): void
     {
         try {
             $this->filesystem->mkdir($directory, 0755);
@@ -72,17 +75,12 @@ class SpeakersExpensesStorage
         }
     }
 
-    private function getDir(Speaker $speaker)
+    private function getDir(Speaker $speaker): string
     {
         return $this->basePath . '/' . $speaker->getEventId();
     }
 
-    private function getPath(Speaker $speaker)
-    {
-        return $this->publicPath . '/' . $speaker->getEventId() . '/';
-    }
-
-    private function buildFilename($file, $speaker)
+    private function buildFilename($file, Speaker $speaker): string
     {
         return sprintf('%d_%s', $speaker->getId(), $file);
     }

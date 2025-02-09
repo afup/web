@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\CompanyMember;
@@ -13,7 +15,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class CompanyMemberRepository extends Repository implements MetadataInitializer
 {
-    public function findDisplayableCompanies()
+    public function findDisplayableCompanies(): array
     {
         $queryBuilder = $this->getQueryBuilderWithCompleteCompanyMember();
         $queryBuilder->where('apm.public_profile_enabled = 1');
@@ -27,7 +29,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
 
         return array_filter(
             $companies,
-            fn (CompanyMember $companyMember) => true === $companyMember->hasUpToDateMembershipFee()
+            fn (CompanyMember $companyMember): bool => $companyMember->hasUpToDateMembershipFee()
         );
     }
 

@@ -1,22 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website\Member;
 
 use AppBundle\Association\Form\CompanyPublicProfile;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
-class CompanyPublicProfileController extends Controller
+class CompanyPublicProfileController extends AbstractController
 {
-    public function indexAction(Request $request)
+    private RepositoryFactory $repositoryFactory;
+    private string $storageDir;
+
+    public function __construct(RepositoryFactory $repositoryFactory, string $storageDir)
+    {
+        $this->repositoryFactory = $repositoryFactory;
+        $this->storageDir = $storageDir;
+    }
+    public function index(Request $request)
     {
         /**
          * @var CompanyMemberRepository $companyRepository
          */
-        $companyRepository = $this->get('ting')->get(CompanyMemberRepository::class);
+        $companyRepository = $this->repositoryFactory->get(CompanyMemberRepository::class);
         /** @var CompanyMember $companyMember */
         $companyMember = $companyRepository->get($this->getUser()->getCompanyId());
 
@@ -87,14 +98,12 @@ class CompanyPublicProfileController extends Controller
         );
     }
 
-    private function prepareUploadedFilesDir()
+    private function prepareUploadedFilesDir(): string
     {
-        $dir = $this->getParameter('kernel.project_dir') . '/htdocs/uploads/members_logo';
-
-        if (!is_dir($dir)) {
-            mkdir($dir);
+        if (!is_dir($this->storageDir)) {
+            mkdir($this->storageDir);
         }
 
-        return $dir;
+        return $this->storageDir;
     }
 }

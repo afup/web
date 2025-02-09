@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event;
 
 use AppBundle\CFP\PhotoStorage;
@@ -14,30 +16,15 @@ use Symfony\Component\Asset\Packages;
 
 class JsonLd
 {
-    /**
-     * @var TalkRepository
-     */
-    private $talkRepository;
+    private TalkRepository $talkRepository;
 
-    /**
-     * @var TicketEventTypeRepository
-     */
-    private $ticketEventTypeRepository;
+    private TicketEventTypeRepository $ticketEventTypeRepository;
 
-    /**
-     * @var TicketTypeAvailability
-     */
-    private $ticketTypeAvailability;
+    private TicketTypeAvailability $ticketTypeAvailability;
 
-    /**
-     * @var Packages
-     */
-    private $packages;
+    private Packages $packages;
 
-    /**
-     * @var PhotoStorage
-     */
-    private $photoStorage;
+    private PhotoStorage $photoStorage;
 
     public function __construct(
         TalkRepository $talkRepository,
@@ -53,11 +40,7 @@ class JsonLd
         $this->ticketEventTypeRepository = $ticketEventTypeRepository;
     }
 
-    /**
-     * @param Event $event
-     * @return array
-     */
-    public function getDataForEvent(Event $event)
+    public function getDataForEvent(Event $event): array
     {
         /**
          * @var Talk[] $talks
@@ -154,7 +137,7 @@ class JsonLd
         ];
     }
 
-    private function getDescription(Event $event)
+    private function getDescription(Event $event): string
     {
         if ($event->getDateStart()->format('Y-m-d') === $event->getDateEnd()->format('Y-m-d')) {
             return sprintf(

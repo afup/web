@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Event\CFP;
 
 use AppBundle\CFP\SpeakerFactory;
@@ -10,12 +12,9 @@ use Twig_Environment;
 
 class SidebarRenderer
 {
-    /** @var TalkRepository */
-    private $talkRepository;
-    /** @var SpeakerFactory */
-    private $speakerFactory;
-    /** @var Twig_Environment */
-    private $twig;
+    private TalkRepository $talkRepository;
+    private SpeakerFactory $speakerFactory;
+    private \Twig_Environment $twig;
 
     public function __construct(
         TalkRepository $talkRepository,

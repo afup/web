@@ -9,7 +9,7 @@
 
 {% block content %}
 {{ render(controller(
-    'AppBundle\\Controller\\Website\\SecondaryMenuController::displayAction',
+    'AppBundle\\Controller\\Website\\SecondaryMenuController::display',
     { 'feuille_id': rubrique.feuille_associee }
 )) }}
 <div class="mw1400p center" id="container">

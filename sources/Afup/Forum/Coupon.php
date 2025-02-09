@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Forum;
 
 class Coupon
@@ -7,7 +9,6 @@ class Coupon
     /**
      * Instance de la couche d'abstraction à la base de données
      * @var     object
-     * @access  private
      */
     private $_bdd;
 
@@ -15,10 +16,9 @@ class Coupon
      * Constructeur.
      *
      * @param  object $bdd Instance de la couche d'abstraction à la base de données
-     * @access public
      * @return void
      */
-    function __construct(&$bdd)
+    public function __construct(&$bdd)
     {
         $this->_bdd = $bdd;
     }
@@ -28,10 +28,9 @@ class Coupon
      *
      * @param  int $id Identifiant du forum
      * @param  string $champs Champs à renvoyer
-     * @access public
      * @return array
      */
-    function obtenir($id, $champs = '*')
+    public function obtenir($id, string $champs = '*')
     {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
@@ -41,7 +40,7 @@ class Coupon
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-    function obtenirCouponsForum($id_forum)
+    public function obtenirCouponsForum(string $id_forum)
     {
         $requete = 'SELECT';
         $requete .= '  id, texte ';
@@ -51,23 +50,23 @@ class Coupon
         return $this->_bdd->obtenirAssociatif($requete);
     }
 
-    function ajouter($id_forum, $texte)
+    public function ajouter($id_forum, $texte)
     {
         $requete = 'INSERT INTO ';
         $requete .= '  afup_forum_coupon (id, id_forum, texte) ';
         $requete .= 'VALUES (null,';
-        $requete .= (int)$id_forum . ',';
+        $requete .= (int) $id_forum . ',';
         $requete .= $this->_bdd->echapper(strtoupper($texte)) . ')';
         return $this->_bdd->executer($requete);
     }
 
-    function supprimer($id)
+    public function supprimer(string $id)
     {
         $requete = 'DELETE FROM afup_forum_coupon WHERE id=' . $id;
         return $this->_bdd->executer($requete);
     }
 
-    function supprimerParForum($id_forum)
+    public function supprimerParForum(string $id_forum)
     {
         $requete = 'DELETE FROM afup_forum_coupon WHERE id_forum =' . $id_forum;
         return $this->_bdd->executer($requete);

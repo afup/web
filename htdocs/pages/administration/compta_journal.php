@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 // Impossible to access the file itself
 use Afup\Site\Comptabilite\Comptabilite;
 use Afup\Site\Utils\Logs;
-use AppBundle\Compta\Importer;
+use AppBundle\Compta\Importer\CaisseEpargne;
+use AppBundle\Compta\Importer\CreditMutuel;
+use AppBundle\Compta\Importer\CreditMutuelLivret;
+use AppBundle\Compta\Importer\Factory;
 
-/** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -31,17 +35,13 @@ $smarty->assign('action', $action);
 $compta = new Comptabilite($bdd);
 
 
-if (isset($_GET['id_periode']) && $_GET['id_periode']) {
-	$id_periode=$_GET['id_periode'];
-} else {
-	$id_periode="";
-}
+$id_periode = isset($_GET['id_periode']) && $_GET['id_periode'] ? $_GET['id_periode'] : "";
 
 $id_periode = $compta->obtenirPeriodeEnCours($id_periode);
 $smarty->assign('id_periode', $id_periode);
 
 $listPeriode = $compta->obtenirListPeriode();
-$smarty->assign('listPeriode', $listPeriode );
+$smarty->assign('listPeriode', $listPeriode);
 
 
 $periode_debut=$listPeriode[$id_periode-1]['date_debut'];
@@ -63,21 +63,16 @@ if ($action == 'lister') {
     // Accounting lines for the selected period
     $journal = $compta->obtenirJournal('', $periode_debut, $periode_fin, !$alsoDisplayClassifed);
     $smarty->assign('journal', $journal);
-}
-elseif ($action == 'debit') {
-	$journal = $compta->obtenirJournal(1,$periode_debut,$periode_fin, !$alsoDisplayClassifed);
-	$smarty->assign('journal', $journal);
-}
-elseif ($action == 'credit') {
-	$journal = $compta->obtenirJournal(2,$periode_debut,$periode_fin, !$alsoDisplayClassifed);
-	$smarty->assign('journal', $journal);
-
+} elseif ($action == 'debit') {
+    $journal = $compta->obtenirJournal('1',$periode_debut,$periode_fin, !$alsoDisplayClassifed);
+    $smarty->assign('journal', $journal);
+} elseif ($action == 'credit') {
+    $journal = $compta->obtenirJournal('2',$periode_debut,$periode_fin, !$alsoDisplayClassifed);
+    $smarty->assign('journal', $journal);
 } elseif ($action == 'ajouter' || $action == 'modifier') {
+    $formulaire = instancierFormulaire();
 
-  	$formulaire = instancierFormulaire();
-
-   if ($action == 'modifier')
-   {
+    if ($action === 'modifier') {
         $champsRecup = $compta->obtenir($_GET['id']);
 
         $champs['idcompte']          = $champsRecup['idcompte'];
@@ -102,37 +97,37 @@ elseif ($action == 'credit') {
 
 
 
-		//$formulaire->setDefaults($champsRecup);
-		$formulaire->addElement('hidden', 'id', $_GET['id']);
-   } else {
-       $champs['idcompte'] = 1;
-       $champs['date_saisie'] = date('Y-m-d');
-       $champs['date_reglement'] = date('Y-m-d');
-   }
-   $formulaire->setDefaults($champs);
+        //$formulaire->setDefaults($champsRecup);
+        $formulaire->addElement('hidden', 'id', $_GET['id']);
+    } else {
+        $champs['idcompte'] = 1;
+        $champs['date_saisie'] = date('Y-m-d');
+        $champs['date_reglement'] = date('Y-m-d');
+    }
+    $formulaire->setDefaults($champs);
 
-// facture associé à un évènement
-   $formulaire->addElement('header'  , ''                         , 'Sélectionner un Journal');
-   $formulaire->addElement('select'  , 'idoperation', 'Type d\'opération', $compta->obtenirListOperations());
-   $formulaire->addElement('select'  , 'idcompte'   , 'Compte', $compta->obtenirListComptes());
-   $formulaire->addElement('select'  , 'idevenement', 'Evenement', $compta->obtenirListEvenements());
+    // facture associé à un évènement
+    $formulaire->addElement('header'  , ''                         , 'Sélectionner un Journal');
+    $formulaire->addElement('select'  , 'idoperation', 'Type d\'opération', $compta->obtenirListOperations());
+    $formulaire->addElement('select'  , 'idcompte'   , 'Compte', $compta->obtenirListComptes());
+    $formulaire->addElement('select'  , 'idevenement', 'Evenement', $compta->obtenirListEvenements());
 
-//detail facture
-   $formulaire->addElement('header'  , ''                         , 'Détail Facture');
+    //detail facture
+    $formulaire->addElement('header'  , ''                         , 'Détail Facture');
 
-//$mois=10;
-   $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', ['language' => 'fr',
+    //$mois=10;
+    $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', ['language' => 'fr',
                                                                                 'format'   => 'd F Y',
-  																				'minYear' => date('Y')-5,
-  																				'maxYear' => date('Y')+1]);
+                                                                                'minYear' => date('Y')-5,
+                                                                                'maxYear' => date('Y')+1]);
 
-  $formulaire->addElement('select'  , 'idcategorie', 'Type de compte', $compta->obtenirListCategories());
-  $formulaire->addElement('text', 'nom_frs', 'Nom fournisseurs' , ['size' => 30, 'maxlength' => 40]);
+    $formulaire->addElement('select'  , 'idcategorie', 'Type de compte', $compta->obtenirListCategories());
+    $formulaire->addElement('text', 'nom_frs', 'Nom fournisseurs' , ['size' => 30, 'maxlength' => 40]);
     $formulaire->addElement('text'    , 'tva_intra'  , 'TVA intracommunautaire (facture)', ['size' => 30, 'maxlength' => 100]);
     $formulaire->addElement('text', 'numero', 'Numero facture' , ['size' => 30, 'maxlength' => 40]);
-   	$formulaire->addElement('textarea', 'description', 'Description', ['cols' => 42, 'rows' => 5]);
-	$formulaire->addElement('text', 'montant', 'Montant' , ['size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_montant']);
-	$formulaire->addElement('text', 'comment', 'Commentaire' , ['size' => 30, 'maxlength' => 255]);
+    $formulaire->addElement('textarea', 'description', 'Description', ['cols' => 42, 'rows' => 5]);
+    $formulaire->addElement('text', 'montant', 'Montant' , ['size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_montant']);
+    $formulaire->addElement('text', 'comment', 'Commentaire' , ['size' => 30, 'maxlength' => 255]);
 
     $formulaire->addElement('header'  , ''                         , 'TVA');
     $formulaire->addElement('text', 'montant_ht_soumis_tva_5_5', 'Montant HT soumis à TVA 5.5%' , ['size' => 30, 'maxlength' => 40, 'id' => 'compta_journal_ht_5_5']);
@@ -146,69 +141,69 @@ elseif ($action == 'credit') {
 
     $formulaire->addElement('select'  , 'tva_zone', 'Zone TVA', array_merge(['' => 'Non définie'], Comptabilite::TVA_ZONES));
 
-//reglement
-   $formulaire->addElement('header'  , ''                         , 'Réglement');
-   $formulaire->addElement('select'  , 'idmode_regl', 'Réglement', $compta->obtenirListReglements());
-   $formulaire->addElement('date'    , 'date_reglement'     , 'Date', ['language' => 'fr',
+    //reglement
+    $formulaire->addElement('header'  , ''                         , 'Réglement');
+    $formulaire->addElement('select'  , 'idmode_regl', 'Réglement', $compta->obtenirListReglements());
+    $formulaire->addElement('date'    , 'date_reglement'     , 'Date', ['language' => 'fr',
                                                                             'format'   => 'd F Y',
-   																			'minYear' => date('Y')-5,
-   																			'maxYear' => date('Y')+1]);
-   $formulaire->addElement('text', 'obs_regl', 'Info reglement' , ['size' => 30, 'maxlength' => 40]);
+                                                                            'minYear' => date('Y')-5,
+                                                                            'maxYear' => date('Y')+1]);
+    $formulaire->addElement('text', 'obs_regl', 'Info reglement' , ['size' => 30, 'maxlength' => 40]);
 
 
-// boutons
+    // boutons
     $formulaire->addElement('header'  , 'boutons'                  , '');
     $formulaire->addElement('submit'  , 'soumettre'                , ucfirst($action));
 
-	// 2012-02-18 A. Gendre
-	$passer = null;
-	if($action != 'ajouter'){
-		$res = $compta->obtenirSuivantADeterminer($_GET['id']);
-		if(is_array($res)){
-			$passer = $res['id'];
-			$formulaire->addElement('submit', 'soumettrepasser'   , 'Soumettre & passer');
-			$formulaire->addElement('submit', 'passer'   , 'Passer');
-		}
-	}
+    // 2012-02-18 A. Gendre
+    $passer = null;
+    if ($action !== 'ajouter') {
+        $res = $compta->obtenirSuivantADeterminer($_GET['id']);
+        if (is_array($res)) {
+            $passer = $res['id'];
+            $formulaire->addElement('submit', 'soumettrepasser'   , 'Soumettre & passer');
+            $formulaire->addElement('submit', 'passer'   , 'Passer');
+        }
+    }
 
-	// ajoute des regles
-	$formulaire->addRule('idoperation'   , 'Type d\'opération manquant'    , 'required');
-	$formulaire->addRule('idcompte'      , 'Compte manquant'    , 'required');
-	$formulaire->addRule('idoperation'   , 'Type d\'opération manquant'    , 'nonzero');
-	$formulaire->addRule('idevenement'    , 'Evenement manquant'   , 'required');
-	$formulaire->addRule('idevenement'    , 'Evenement manquant'   , 'nonzero');
-	$formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'required');
-	$formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'nonzero');
-	$formulaire->addRule('montant'       , 'Montant manquant'      , 'required');
+    // ajoute des regles
+    $formulaire->addRule('idoperation'   , 'Type d\'opération manquant'    , 'required');
+    $formulaire->addRule('idcompte'      , 'Compte manquant'    , 'required');
+    $formulaire->addRule('idoperation'   , 'Type d\'opération manquant'    , 'nonzero');
+    $formulaire->addRule('idevenement'    , 'Evenement manquant'   , 'required');
+    $formulaire->addRule('idevenement'    , 'Evenement manquant'   , 'nonzero');
+    $formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'required');
+    $formulaire->addRule('idcategorie'    , 'Type de compte manquant'     , 'nonzero');
+    $formulaire->addRule('montant'       , 'Montant manquant'      , 'required');
 
 
-	// 2012-02-18 A. Gendre
-	if (isset($_POST['passer']) && isset($passer)) {
-		 afficherMessage('L\'écriture n\'a pas été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=compta_journal&action=modifier&id=' . $passer);
-		 return;
-	}
+    // 2012-02-18 A. Gendre
+    if (isset($_POST['passer']) && isset($passer)) {
+        afficherMessage('L\'écriture n\'a pas été ' . (($action === 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=compta_journal&action=modifier&id=' . $passer);
+        return;
+    }
 
     if ($formulaire->validate()) {
-		$valeur = $formulaire->exportValues();
+        $valeur = $formulaire->exportValues();
 
-$date_ecriture= $valeur['date_saisie']['Y']."-".$valeur['date_saisie']['F']."-".$valeur['date_saisie']['d'] ;
-$date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-".$valeur['date_reglement']['d'] ;
+        $date_ecriture= $valeur['date_saisie']['Y'] . "-" . $valeur['date_saisie']['F'] . "-" . $valeur['date_saisie']['d'] ;
+        $date_regl=$valeur['date_reglement']['Y'] . "-" . $valeur['date_reglement']['F'] . "-" . $valeur['date_reglement']['d'] ;
 
-    	if ($action == 'ajouter') {
-   			$ok = $compta->ajouter(
-            						$valeur['idoperation'],
-            						$valeur['idcompte'],
-            						$valeur['idcategorie'],
-            						$date_ecriture,
-            						$valeur['nom_frs'],
-            						$valeur['tva_intra'],
-            						$valeur['montant'],
-            						$valeur['description'],
-									$valeur['numero'],
-									$valeur['idmode_regl'],
-									$date_regl,
-									$valeur['obs_regl'],
-									$valeur['idevenement'],
+        if ($action === 'ajouter') {
+            $ok = $compta->ajouter(
+                                    $valeur['idoperation'],
+                                    $valeur['idcompte'],
+                                    $valeur['idcategorie'],
+                                    $date_ecriture,
+                                    $valeur['nom_frs'],
+                                    $valeur['tva_intra'],
+                                    $valeur['montant'],
+                                    $valeur['description'],
+                                    $valeur['numero'],
+                                    $valeur['idmode_regl'],
+                                    $date_regl,
+                                    $valeur['obs_regl'],
+                                    $valeur['idevenement'],
                                     $valeur['comment'],
                                     0,
                                     $valeur['montant_ht_soumis_tva_0'],
@@ -217,23 +212,23 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
                                     $valeur['montant_ht_soumis_tva_20'],
                                     $valeur['tva_zone']
 
-            						);
+                                    );
         } else {
-   			$ok = $compta->modifier(
-            						$valeur['id'],
-            						$valeur['idoperation'],
-            						$valeur['idcompte'],
-            						$valeur['idcategorie'],
-            						$date_ecriture,
-            						$valeur['nom_frs'],
+            $ok = $compta->modifier(
+                                    $valeur['id'],
+                                    $valeur['idoperation'],
+                                    $valeur['idcompte'],
+                                    $valeur['idcategorie'],
+                                    $date_ecriture,
+                                    $valeur['nom_frs'],
                                     $valeur['tva_intra'],
-            						$valeur['montant'],
-            						$valeur['description'],
-									$valeur['numero'],
-									$valeur['idmode_regl'],
-									$date_regl,
-									$valeur['obs_regl'],
-									$valeur['idevenement'],
+                                    $valeur['montant'],
+                                    $valeur['description'],
+                                    $valeur['numero'],
+                                    $valeur['idmode_regl'],
+                                    $date_regl,
+                                    $valeur['obs_regl'],
+                                    $valeur['idevenement'],
                                     $valeur['comment'],
                                     null,
                                     0,
@@ -242,23 +237,23 @@ $date_regl=$valeur['date_reglement']['Y']."-".$valeur['date_reglement']['F']."-"
                                     $valeur['montant_ht_soumis_tva_10'],
                                     $valeur['montant_ht_soumis_tva_20'],
                                     $valeur['tva_zone']
-            						);
+                                    );
         }
         if ($ok) {
-            if ($action == 'ajouter') {
+            if ($action === 'ajouter') {
                 Logs::log('Ajout une écriture ' . $formulaire->exportValue('titre'));
             } else {
                 Logs::log('Modification une écriture ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
-			// 2012-02-18 A. Gendre
-			if (isset($_POST['soumettrepasser']) && isset($passer)) {
-				$urlredirect = 'index.php?page=compta_journal&action=modifier&id=' . $passer;
-			} else {
-				$urlredirect = 'index.php?page=compta_journal&action=lister#L' . $valeur['id'];
-			}
-			afficherMessage('L\'écriture a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), $urlredirect);
+            // 2012-02-18 A. Gendre
+            if (isset($_POST['soumettrepasser']) && isset($passer)) {
+                $urlredirect = 'index.php?page=compta_journal&action=modifier&id=' . $passer;
+            } else {
+                $urlredirect = 'index.php?page=compta_journal&action=lister#L' . $valeur['id'];
+            }
+            afficherMessage('L\'écriture a été ' . (($action === 'ajouter') ? 'ajoutée' : 'modifiée'), $urlredirect);
         } else {
-            $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'écriture');
+            $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action === 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'écriture');
         }
     }
 
@@ -376,7 +371,6 @@ elseif ($action === 'export') {
  * in order to improve utilization.
  */
 elseif ($action === 'modifier_colonne') {
-
     try {
         // Bad request?
         if (!isset($_POST['val']) || !isset($_GET['column']) || !isset($_GET['id']) || !($line = $compta->obtenir($_GET['id']))) {
@@ -462,7 +456,6 @@ elseif ($action === 'modifier_colonne') {
  * the new one in the line.
  */
 elseif ($action === 'upload_attachment') {
-
     try {
         // Bad request?
         if (!isset($_GET['id']) || !($line = $compta->obtenir($_GET['id']))) {
@@ -585,16 +578,13 @@ elseif ($action === 'download_attachment') {
         header("Content-disposition: attachment; filename=\"" . basename($filename) . "\"");
         readfile($filename);
         exit;
-
     } catch (Exception $e) {
         header('HTTP/1.1 400 Bad Request');
         header('X-Info: ' . $e->getMessage());
     }
     exit;
-}
-
-elseif ($action == 'supprimer') {
-    if ($compta->supprimerEcriture($_GET['id']) ) {
+} elseif ($action == 'supprimer') {
+    if ($compta->supprimerEcriture($_GET['id'])) {
         Logs::log('Suppression de l\'écriture ' . $_GET['id']);
         afficherMessage('L\'écriture a été supprimée', 'index.php?page=compta_journal&action=lister');
     } else {
@@ -602,16 +592,16 @@ elseif ($action == 'supprimer') {
     }
 } elseif ($action == 'importer') {
     $formulaire = instancierFormulaire();
-	$formulaire->addElement('header', null          , 'Import CSV');
-    $formulaire->addElement('file', 'fichiercsv', 'Fichier banque'     );
+    $formulaire->addElement('header', null          , 'Import CSV');
+    $formulaire->addElement('file', 'fichiercsv', 'Fichier banque');
     $formulaire->addElement('select', 'banque', 'Banque', [
-        Importer\CaisseEpargne::CODE => "Caisse d'Épargne",
-        Importer\CreditMutuel::CODE => 'Crédit Mutuel - Compte Courant',
-        Importer\CreditMutuelLivret::CODE => 'Crédit Mutuel - Livret',
+        CaisseEpargne::CODE => "Caisse d'Épargne",
+        CreditMutuel::CODE => 'Crédit Mutuel - Compte Courant',
+        CreditMutuelLivret::CODE => 'Crédit Mutuel - Livret',
     ]);
 
-	$formulaire->addElement('header', 'boutons'  , '');
-	$formulaire->addElement('submit', 'soumettre', 'Soumettre');
+    $formulaire->addElement('header', 'boutons'  , '');
+    $formulaire->addElement('submit', 'soumettre', 'Soumettre');
 
     if ($formulaire->validate()) {
         $valeurs = $formulaire->exportValues();
@@ -619,7 +609,7 @@ elseif ($action == 'supprimer') {
         $tmpDir = __DIR__ . '/../../../tmp';
         if ($file->isUploadedFile()) {
             $file->moveUploadedFile($tmpDir, 'banque.csv');
-            $importerFactory = new Importer\Factory();
+            $importerFactory = new Factory();
             $importer = $importerFactory->create(
                 $tmpDir . '/banque.csv',
                 $valeurs['banque']
@@ -636,7 +626,7 @@ elseif ($action == 'supprimer') {
     }
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 } elseif ($action == 'ventiler') {
-    $idCompta = (int)$_GET['id'];
+    $idCompta = (int) $_GET['id'];
     $ligneCompta = $compta->obtenir($idCompta);
     $montantTotal = 0;
 

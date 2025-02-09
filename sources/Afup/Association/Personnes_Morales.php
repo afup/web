@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 // Voir la classe Afup\Site\Association\Personnes_Physiques
 namespace Afup\Site\Association;
 
@@ -14,7 +16,6 @@ class Personnes_Morales
     /**
      * Instance de la couche d'abstraction à la base de données
      * @var     Base_De_Donnees
-     * @access  private
      */
     private $_bdd;
 
@@ -22,9 +23,8 @@ class Personnes_Morales
      * Constructeur.
      *
      * @param  Base_De_Donnees $bdd Instance de la couche d'abstraction à la base de données
-     * @access public
      */
-    function __construct(&$bdd)
+    public function __construct(&$bdd)
     {
         $this->_bdd = $bdd;
     }
@@ -35,16 +35,14 @@ class Personnes_Morales
      * @param  string $champs Champs à renvoyer
      * @param  string $ordre Tri des enregistrements
      * @param  bool $associatif Renvoyer un tableau associatif ?
-     * @access public
      * @return array
      */
-    function obtenirListe($champs = '*',
-                          $ordre = 'raison_sociale',
+    public function obtenirListe(string $champs = '*',
+                          string $ordre = 'raison_sociale',
                           $associatif = false,
                           $filtre = false,
                           $isActive = null
-    )
-    {
+    ) {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
         $requete .= 'FROM';
@@ -77,22 +75,21 @@ class Personnes_Morales
      * Obtenir le nombre d'actifs d'une personne morale
      *
      * @param  integer $id ID de la personne morale
-     * @access public
      * @return int le nombre d'actifs
      */
-    function obtenirActifs($id)
+    public function obtenirActifs($id): int
     {
         $requete = "SELECT count(*) FROM afup_personnes_morales m, afup_personnes_physiques p ";
         $requete .= "where m.id = $id and m.id = p.id_personne_morale and p.etat = 1";
         $actifs = $this->_bdd->obtenirTous($requete);
 
-        return (int)current($actifs[0]);
+        return (int) current($actifs[0]);
     }
 
     public function obtenirMembresMaximum($id, $default = 3)
     {
         $requete = "SELECT max_members FROM afup_personnes_morales";
-        $requete .= " where afup_personnes_morales.id = " . (int)$id;
+        $requete .= " where afup_personnes_morales.id = " . (int) $id;
         $row = $this->_bdd->obtenirTous($requete);
 
         if (!isset($row[0])) {
@@ -111,10 +108,9 @@ class Personnes_Morales
      *
      * @param  int $id Identifiant de la personne
      * @param  string $champs Champs à renvoyer
-     * @access public
      * @return array|false
      */
-    function obtenir($id, $champs = '*')
+    public function obtenir($id, string $champs = '*')
     {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
@@ -133,10 +129,9 @@ class Personnes_Morales
      * @param  string $ville Ville de la personne morale
      * @param  int $id_pays Identifiant du pays de la personne morale
      * @param  int $etat Etat de la personne morale
-     * @access public
      * @return bool     Succès de l'ajout
      */
-    function ajouter($civilite, $nom, $prenom, $email, $raison_sociale, $siret, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $max_members)
+    public function ajouter(string $civilite, $nom, $prenom, $email, $raison_sociale, $siret, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $max_members)
     {
         $requete = 'INSERT INTO
         afup_personnes_morales (civilite, nom, prenom, email, raison_sociale, siret, adresse, code_postal, ville, id_pays, telephone_fixe, telephone_portable, etat, max_members)
@@ -155,7 +150,6 @@ class Personnes_Morales
         $this->_bdd->echapper($etat) . ', ' .
         $this->_bdd->echapper($max_members) . ')';
         return $this->_bdd->executer($requete);
-
     }
 
 
@@ -169,10 +163,9 @@ class Personnes_Morales
      * @param  string $ville Ville de la personne morale
      * @param  int $id_pays Identifiant du pays de la personne morale
      * @param  int $etat Etat de la personne morale
-     * @access public
      * @return bool     Succès de l'ajout
      */
-    function modifier($id, $civilite, $nom, $prenom, $email, $raison_sociale, $siret, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $max_members = null)
+    public function modifier($id, string $civilite, $nom, $prenom, $email, $raison_sociale, $siret, $adresse, $code_postal, $ville, $id_pays, $telephone_fixe, $telephone_portable, $etat, $max_members = null)
     {
         $requete  = 'UPDATE 
           afup_personnes_morales 
@@ -193,7 +186,7 @@ class Personnes_Morales
         if ($max_members !== null) {
             $requete .= ', max_members = ' . $this->_bdd->echapper($max_members);
         }
-        $requete .= 'WHERE  id=' . (int)$id;
+        $requete .= 'WHERE  id=' . (int) $id;
         return $this->_bdd->executer($requete);
     }
 
@@ -201,10 +194,9 @@ class Personnes_Morales
      * Supprime une personne morale
      *
      * @param  int $id Identifiant de la personne morale à supprimer
-     * @access public
      * @return bool     Succès de la suppression
      */
-    function supprimer($id, UserRepository $userRepository)
+    public function supprimer($id, UserRepository $userRepository)
     {
         $cotisation = new Cotisations($this->_bdd);
         $cotisation_personne_morale = $cotisation->obtenirListe(AFUP_PERSONNES_MORALES, $id, 'id');
@@ -221,10 +213,9 @@ class Personnes_Morales
      * Retourne le nombre de personnes morales.
      *
      * @param   int $etat Etat des personnes à retourner
-     * @access  public
      * @return  int
      */
-    function obtenirNombrePersonnesMorales($etat = NULL)
+    public function obtenirNombrePersonnesMorales($etat = null)
     {
         $requete = 'SELECT';
         $requete .= '  COUNT(*) ';
@@ -246,5 +237,3 @@ class Personnes_Morales
         return ceil($membersCount / AFUP_PERSONNE_MORALE_SEUIL) * AFUP_COTISATION_PERSONNE_MORALE;
     }
 }
-
-?>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Utils;
 
 use AppBundle\GeneralMeeting\Attendee;
@@ -12,7 +14,7 @@ class PDF_AG extends \FPDF
     /**
      * @param Attendee[] $attendees
      */
-    public function prepareContent(array $attendees)
+    public function prepareContent(array $attendees): void
     {
         $this->AddPage();
 
@@ -27,15 +29,15 @@ class PDF_AG extends \FPDF
 
         $this->Ln();
 
-        usort($attendees, static function (Attendee $a, Attendee $b) {
-            $triA = $a->getLastname().' '.$a->getFirstname();
+        usort($attendees, static function (Attendee $a, Attendee $b): int {
+            $triA = $a->getLastname() . ' ' . $a->getFirstname();
             if ($a->getPowerLastname()) {
-                $triA = $a->getPowerLastname().' '.$a->getPowerFirstname();
+                $triA = $a->getPowerLastname() . ' ' . $a->getPowerFirstname();
             }
 
-            $triB = $b->getLastname().' '.$b->getFirstname();
+            $triB = $b->getLastname() . ' ' . $b->getFirstname();
             if ($b->getPowerLastname()) {
-                $triB = $b->getPowerLastname().' '.$b->getPowerFirstname();
+                $triB = $b->getPowerLastname() . ' ' . $b->getPowerFirstname();
             }
 
             if ($triA !== $triB) {
@@ -55,9 +57,9 @@ class PDF_AG extends \FPDF
             }
 
             $this->writeRow([
-                $attendee->getLastname().' '.$attendee->getFirstname(),
+                $attendee->getLastname() . ' ' . $attendee->getFirstname(),
                 $presence,
-                $attendee->getPowerLastname().' '.$attendee->getPowerFirstname(),
+                $attendee->getPowerLastname() . ' ' . $attendee->getPowerFirstname(),
                 '',
             ]);
 
@@ -65,7 +67,7 @@ class PDF_AG extends \FPDF
         }
     }
 
-    private function writeRow(array $row)
+    private function writeRow(array $row): void
     {
         $widths = [65, 20, 65, 35];
 
@@ -74,11 +76,11 @@ class PDF_AG extends \FPDF
         }
     }
 
-    public function Footer()
+    public function Footer(): void
     {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
-        $this->Cell(0, 10, utf8_decode($this->getFooterTitle()).' - Page '.$this->PageNo(), 0, 0, 'C');
+        $this->Cell(0, 10, utf8_decode($this->getFooterTitle()) . ' - Page ' . $this->PageNo(), 0, 0, 'C');
     }
 
     public function getFooterTitle()
@@ -86,7 +88,7 @@ class PDF_AG extends \FPDF
         return $this->footerTitle;
     }
 
-    public function setFooterTitle($footerTitle)
+    public function setFooterTitle($footerTitle): void
     {
         $this->footerTitle = $footerTitle;
     }

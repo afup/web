@@ -123,11 +123,11 @@
                  {$ecriture.description}
              </td>
 		{if $ecriture.idoperation == 1}
-			<td class="right aligned" width='100'>-{$ecriture.montant|number_format:2:',':' '}</td>
+			<td class="right aligned" width='100'>-{$ecriture.montant|floatval|number_format:2:',':' '}</td>
 			<td width='100'></td>
 		{else}
 			<td width='100'></td>
-			<td class="right aligned" width='100'>+{$ecriture.montant|number_format:2:',':' '}</td>
+			<td class="right aligned" width='100'>+{$ecriture.montant|floatval|number_format:2:',':' '}</td>
 		{/if}
 
             <td>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Site;
 
 use Afup\Site\Logger\DbLoggerTrait;
@@ -14,19 +16,13 @@ class DeleteRubriqueAction
 {
     use DbLoggerTrait;
 
-    /**
-    * @var CsrfTokenManagerInterface
-    */
-    private $csrfTokenManager;
+    private CsrfTokenManagerInterface $csrfTokenManager;
 
-    /** @var FlashBagInterface */
-    private $flashBag;
+    private FlashBagInterface $flashBag;
 
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
-    /** @var RubriqueRepository */
-    private $rubriqueRepository;
+    private RubriqueRepository $rubriqueRepository;
 
     public function __construct(
         RubriqueRepository $rubriqueRepository,
@@ -43,9 +39,8 @@ class DeleteRubriqueAction
     /**
      * @param int $id
      * @param string $token
-     * @return RedirectResponse
      */
-    public function __invoke($id, $token)
+    public function __invoke($id, $token): RedirectResponse
     {
         if (false === $this->csrfTokenManager->isTokenValid(new CsrfToken('rubrique_delete', $token))) {
             $this->flashBag->add('error', 'Token invalide');

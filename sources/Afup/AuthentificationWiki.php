@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 namespace Afup\Site;
 
 /**
@@ -10,10 +12,8 @@ class AuthentificationWiki implements AuthentificationInterface
      * Connecte l'utilisateur
      *
      * @param  Array $event Evenement de connection
-     * @access public
-     * @return void
      */
-    public function seConnecter($event)
+    public function seConnecter($event): void
     {
         $wikiUser = [];
         $wikiUser["show_comments"] = "Y";
@@ -26,13 +26,9 @@ class AuthentificationWiki implements AuthentificationInterface
      * Déconnecte l'utilisateur
      *
      * @param  Array $event Evenement de déconnection
-     * @access public
-     * @return void
      */
-    public function seDeconnecter($event)
+    public function seDeconnecter($event): void
     {
         unset($_SESSION["user"]);
     }
 }
-
-?>

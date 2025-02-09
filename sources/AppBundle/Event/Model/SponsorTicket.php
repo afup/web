@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Event\Model;
 
@@ -53,15 +55,9 @@ class SponsorTicket implements NotifyPropertyInterface
      */
     private $idForum;
 
-    /**
-     * @var \DateTime
-     */
-    private $createdOn;
+    private ?\DateTime $createdOn = null;
 
-    /**
-     * @var \DateTime
-     */
-    private $editedOn;
+    private ?\DateTime $editedOn = null;
 
     /**
      * @var int
@@ -83,9 +79,8 @@ class SponsorTicket implements NotifyPropertyInterface
 
     /**
      * @param int $id
-     * @return SponsorTicket
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -102,9 +97,8 @@ class SponsorTicket implements NotifyPropertyInterface
 
     /**
      * @param string $company
-     * @return SponsorTicket
      */
-    public function setCompany($company)
+    public function setCompany($company): self
     {
         $this->propertyChanged('company', $this->company, $company);
         $this->company = $company;
@@ -121,9 +115,8 @@ class SponsorTicket implements NotifyPropertyInterface
 
     /**
      * @param string $token
-     * @return SponsorTicket
      */
-    public function setToken($token)
+    public function setToken($token): self
     {
         $this->propertyChanged('token', $this->token, $token);
         $this->token = $token;
@@ -140,9 +133,8 @@ class SponsorTicket implements NotifyPropertyInterface
 
     /**
      * @param string $contactEmail
-     * @return SponsorTicket
      */
-    public function setContactEmail($contactEmail)
+    public function setContactEmail($contactEmail): self
     {
         $this->propertyChanged('contactEmail', $this->contactEmail, $contactEmail);
         $this->contactEmail = $contactEmail;
@@ -159,9 +151,8 @@ class SponsorTicket implements NotifyPropertyInterface
 
     /**
      * @param int $maxInvitations
-     * @return SponsorTicket
      */
-    public function setMaxInvitations($maxInvitations)
+    public function setMaxInvitations($maxInvitations): self
     {
         $this->propertyChanged('maxInvitations', $this->maxInvitations, $maxInvitations);
         $this->maxInvitations = $maxInvitations;
@@ -178,9 +169,8 @@ class SponsorTicket implements NotifyPropertyInterface
 
     /**
      * @param int $usedInvitations
-     * @return SponsorTicket
      */
-    public function setUsedInvitations($usedInvitations)
+    public function setUsedInvitations($usedInvitations): self
     {
         $this->propertyChanged('usedInvitations', $this->usedInvitations, $usedInvitations);
         $this->usedInvitations = $usedInvitations;
@@ -197,9 +187,8 @@ class SponsorTicket implements NotifyPropertyInterface
 
     /**
      * @param int $idForum
-     * @return SponsorTicket
      */
-    public function setIdForum($idForum)
+    public function setIdForum($idForum): self
     {
         $this->propertyChanged('idForum', $this->idForum, $idForum);
         $this->idForum = $idForum;
@@ -209,16 +198,12 @@ class SponsorTicket implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getCreatedOn()
+    public function getCreatedOn(): ?\DateTime
     {
         return $this->createdOn;
     }
 
-    /**
-     * @param \DateTime $createdOn
-     * @return SponsorTicket
-     */
-    public function setCreatedOn(\DateTime $createdOn)
+    public function setCreatedOn(\DateTime $createdOn): self
     {
         $this->propertyChanged('createdOn', $this->createdOn, $createdOn);
         $this->createdOn = $createdOn;
@@ -228,16 +213,12 @@ class SponsorTicket implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getEditedOn()
+    public function getEditedOn(): ?\DateTime
     {
         return $this->editedOn;
     }
 
-    /**
-     * @param \DateTime $editedOn
-     * @return SponsorTicket
-     */
-    public function setEditedOn(\DateTime $editedOn)
+    public function setEditedOn(\DateTime $editedOn): self
     {
         $this->propertyChanged('editedOn', $this->editedOn, $editedOn);
         $this->editedOn = $editedOn;
@@ -254,9 +235,8 @@ class SponsorTicket implements NotifyPropertyInterface
 
     /**
      * @param int $creatorId
-     * @return SponsorTicket
      */
-    public function setCreatorId($creatorId)
+    public function setCreatorId($creatorId): self
     {
         $this->propertyChanged('creatorId', $this->creatorId, $creatorId);
         $this->creatorId = $creatorId;
@@ -281,9 +261,8 @@ class SponsorTicket implements NotifyPropertyInterface
 
     /**
      * @param bool $qrCodesScannerAvailable
-     * @return SponsorTicket
      */
-    public function setQrCodesScannerAvailable($qrCodesScannerAvailable)
+    public function setQrCodesScannerAvailable($qrCodesScannerAvailable): self
     {
         $this->propertyChanged('qrCodesScannerAvailable', $this->qrCodesScannerAvailable, $qrCodesScannerAvailable);
         $this->qrCodesScannerAvailable = $qrCodesScannerAvailable;

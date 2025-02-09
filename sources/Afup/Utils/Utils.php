@@ -1,8 +1,8 @@
 <?php
+
+declare(strict_types=1);
 namespace Afup\Site\Utils;
 
-use Afup\Site\AuthentificationInterfaceWiki;
-use Afup\Site\AuthentificationWiki;
 use Afup\Site\Droits;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -32,25 +32,26 @@ class Utils
      * @return String containing either just a URL or a complete image tag
      * @source http://gravatar.com/site/implement/images/php/
      */
-    public static function get_gravatar($email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = [])
+    public static function get_gravatar($email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = []): string
     {
         $url = 'https://www.gravatar.com/avatar/';
         $url .= md5(strtolower(trim($email)));
         $url .= "?s=$s&d=$d&r=$r";
         if ($img) {
             $url = '<img src="' . $url . '"';
-            foreach ($atts as $key => $val)
+            foreach ($atts as $key => $val) {
                 $url .= ' ' . $key . '="' . $val . '"';
+            }
             $url .= ' />';
         }
         return $url;
     }
 
-    public static function cryptFromText($text)
+    public static function cryptFromText($text): string
     {
         // return base64_encode(mcrypt_cbc(MCRYPT_TripleDES, 'PaiementFactureAFUP_AFUP', $text, MCRYPT_ENCRYPT, '@PaiFact'));
-
-        if (strlen($text) % 8) {
+        $text = (string) $text;
+        if (strlen($text) % 8 !== 0) {
             $text = str_pad($text, strlen($text) + 8 - strlen($text) % 8, "\0");
         }
 
@@ -60,7 +61,7 @@ class Utils
         return base64_encode(openssl_encrypt($text, 'des-ede3-cbc', $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv));
     }
 
-    public static function decryptFromText($text)
+    public static function decryptFromText($text): string
     {
         // return trim(mcrypt_cbc(MCRYPT_TripleDES, 'PaiementFactureAFUP_AFUP', base64_decode(str_replace(' ', '+', $text)), MCRYPT_DECRYPT, '@PaiFact'));
 

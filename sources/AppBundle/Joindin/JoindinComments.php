@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Joindin;
 
 use AppBundle\Event\Model\Talk;
@@ -7,25 +9,14 @@ use Psr\Cache\CacheItemPoolInterface;
 
 class JoindinComments
 {
-    /**
-     * @var CacheItemPoolInterface
-     */
-    private $cache;
+    private CacheItemPoolInterface $cache;
 
-    /**
-     * @param CacheItemPoolInterface $cache
-     */
     public function __construct(CacheItemPoolInterface $cache)
     {
         $this->cache = $cache;
     }
 
-    /**
-     * @param Talk $talk
-     *
-     * @return array
-     */
-    public function getCommentsFromTalk(Talk $talk)
+    public function getCommentsFromTalk(Talk $talk): array
     {
         if (!$talk->hasJoindinId()) {
             return [];
@@ -40,10 +31,8 @@ class JoindinComments
 
     /**
      * @param int $joindinId
-     *
-     * @return array
      */
-    protected function getCommmentsFromId($joindinId)
+    protected function getCommmentsFromId($joindinId): array
     {
         return $this->prepareCommentsFromJoindinResponse($this->callJoindInApi($joindinId));
     }
@@ -68,11 +57,11 @@ class JoindinComments
     /**
      * @param string $response
      *
-     * @return mixed
+     * @return array{comment: mixed, user_display_name: mixed, created_date: mixed, rating: mixed}[]
      *
      * @throws \Exception
      */
-    private function prepareCommentsFromJoindinResponse($response)
+    private function prepareCommentsFromJoindinResponse($response): array
     {
         $decodedResponse = json_decode($response, true);
         if (!is_array($decodedResponse) || !isset($decodedResponse['comments'])) {
@@ -81,7 +70,7 @@ class JoindinComments
 
         $comments = [];
         foreach ($decodedResponse['comments'] as $comment) {
-            if (0 === strlen($comment['user_display_name'])) {
+            if ((string) $comment['user_display_name'] === '') {
                 $comment['user_display_name'] = 'Anonyme';
             }
 

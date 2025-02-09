@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Controller\Event\EventActionHelper;
@@ -19,18 +21,12 @@ use Twig\Environment;
 
 class RoomAction
 {
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var RoomRepository */
-    private $roomRepository;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var Environment */
-    private $twig;
+    private EventActionHelper $eventActionHelper;
+    private FormFactoryInterface $formFactory;
+    private RoomRepository $roomRepository;
+    private FlashBagInterface $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
+    private Environment $twig;
 
     public function __construct(
         EventActionHelper $eventActionHelper,
@@ -99,11 +95,9 @@ class RoomAction
     }
 
     /**
-     * @param CollectionInterface $rooms
-     *
      * @return Form[]
      */
-    private function getFormsForRooms(CollectionInterface $rooms)
+    private function getFormsForRooms(CollectionInterface $rooms): array
     {
         $forms = [];
         foreach ($rooms as $room) {

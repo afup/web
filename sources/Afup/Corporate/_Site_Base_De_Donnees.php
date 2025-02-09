@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 namespace Afup\Site\Corporate;
 
 use Afup\Site\Utils\Base_De_Donnees;
@@ -6,7 +8,7 @@ use Afup\Site\Utils\Configuration;
 
 class _Site_Base_De_Donnees extends Base_De_Donnees
 {
-    function __construct()
+    public function __construct()
     {
         /**
          * @var Configuration $conf

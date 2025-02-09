@@ -1,30 +1,33 @@
 <?php
+
+declare(strict_types=1);
 namespace Afup\Site\Corporate;
+
+use Afup\Site\Utils\Base_De_Donnees;
 
 class Rubriques
 {
     /**
-     * @var \Afup\Site\Utils\Base_De_Donnees
+     * @var Base_De_Donnees
      */
     protected $bdd;
 
-    function __construct($bdd = false)
+    public function __construct($bdd = false)
     {
-        if ($bdd) {
-            $this->bdd = $bdd;
-        } else {
-            $this->bdd = new _Site_Base_De_Donnees();
-        }
+        $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
     }
 
-    function chargerSousRubriques($id_site_rubrique)
+    /**
+     * @return Rubrique[]
+     */
+    public function chargerSousRubriques($id_site_rubrique): array
     {
         $requete = ' SELECT';
         $requete .= '  * ';
         $requete .= ' FROM';
         $requete .= '  afup_site_rubrique ';
         $requete .= ' WHERE ';
-        $requete .= '  id_parent = ' . (int)$id_site_rubrique;
+        $requete .= '  id_parent = ' . (int) $id_site_rubrique;
         $requete .= ' ORDER BY date ASC';
         $elements = $this->bdd->obtenirTous($requete);
 
@@ -38,11 +41,10 @@ class Rubriques
         }
 
         return $rubriques;
-
     }
 
-    function obtenirListe($champs = '*',
-                          $ordre = 'titre',
+    public function obtenirListe(string $champs = '*',
+                          string $ordre = 'titre',
                           $filtre = null,
                           $associatif = false
     ) {
@@ -51,7 +53,7 @@ class Rubriques
         $requete .= 'FROM';
         $requete .= '  afup_site_rubrique ';
 
-        if (strlen(trim($filtre)) > 0) {
+        if ($filtre && trim($filtre) !== '') {
             $requete .= sprintf(' WHERE afup_site_rubrique.nom LIKE %s ', $this->bdd->echapper('%' . $filtre . '%'));
         }
 

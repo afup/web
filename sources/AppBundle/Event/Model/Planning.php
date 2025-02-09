@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -9,34 +11,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Planning implements NotifyPropertyInterface
 {
     use NotifyProperty;
-    /**
-     * @var int
-     */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var int
      * @Assert\NotBlank()
      * @Assert\GreaterThan(0)
      */
-    private $talkId;
+    private ?int $talkId = null;
+
+    private ?\DateTime $start = null;
+
+    private ?\DateTime $end = null;
 
     /**
-     * @var \DateTime
-     */
-    private $start;
-
-    /**
-     * @var \DateTime
-     */
-    private $end;
-
-    /**
-     * @var int
      * @Assert\NotBlank()
      * @Assert\GreaterThan(0)
      */
-    private $eventId;
+    private ?int $eventId = null;
 
     /**
      * @var bool
@@ -46,7 +37,7 @@ class Planning implements NotifyPropertyInterface
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -56,7 +47,7 @@ class Planning implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $id = (int) $id;
         $this->propertyChanged('id', $this->id, $id);
@@ -67,7 +58,7 @@ class Planning implements NotifyPropertyInterface
     /**
      * @return int
      */
-    public function getTalkId()
+    public function getTalkId(): ?int
     {
         return $this->talkId;
     }
@@ -77,7 +68,7 @@ class Planning implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setTalkId($talkId)
+    public function setTalkId($talkId): self
     {
         $talkId = (int) $talkId;
         $this->propertyChanged('talkId', $this->talkId, $talkId);
@@ -89,16 +80,12 @@ class Planning implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getStart()
+    public function getStart(): ?\DateTime
     {
         return $this->start;
     }
 
-    /**
-     * @param \DateTime $start
-     * @return Planning
-     */
-    public function setStart(\DateTime $start)
+    public function setStart(\DateTime $start): self
     {
         $this->propertyChanged('start', $this->start, $start);
         $this->start = $start;
@@ -108,16 +95,12 @@ class Planning implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getEnd()
+    public function getEnd(): ?\DateTime
     {
         return $this->end;
     }
 
-    /**
-     * @param \DateTime $end
-     * @return Planning
-     */
-    public function setEnd(\DateTime $end)
+    public function setEnd(\DateTime $end): self
     {
         $this->propertyChanged('end', $this->end, $end);
         $this->end = $end;
@@ -127,7 +110,7 @@ class Planning implements NotifyPropertyInterface
     /**
      * @return int
      */
-    public function getEventId()
+    public function getEventId(): ?int
     {
         return $this->eventId;
     }
@@ -137,7 +120,7 @@ class Planning implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setEventId($eventId)
+    public function setEventId($eventId): self
     {
         $eventId = (int) $eventId;
         $this->propertyChanged('eventId', $this->eventId, $eventId);
@@ -151,7 +134,7 @@ class Planning implements NotifyPropertyInterface
 
      * @return $this
      */
-    public function setIsKeynote($isKeynote)
+    public function setIsKeynote($isKeynote): self
     {
         $this->propertyChanged('isKeynote', $this->isKeynote, $isKeynote);
         $this->isKeynote = $isKeynote;

@@ -1,15 +1,15 @@
 home:
   path: /home
-  defaults: { _controller: AppBundle:Website\Home:display }
+  defaults: { _controller: AppBundle\Controller\Website\HomeController::display }
   options:
     sitemap: true
 
 become_sponsor_latest:
   path: /become-sponsor
-  defaults: { _controller: AppBundle:Event\Lead:becomeSponsorLatest }
+  defaults: { _controller: AppBundle\Controller\Event\LeadController:becomeSponsorLatest }
 
 sitemap:
   path: /plan-du-site
-  defaults: { _controller: AppBundle:Website\HtmlSitemap:display }
+  defaults: { _controller: AppBundle\Controller\Website\HtmlSitemapController:display }
   options:
     sitemap: true

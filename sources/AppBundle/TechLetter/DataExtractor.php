@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\TechLetter;
 
 class DataExtractor
@@ -9,7 +11,10 @@ class DataExtractor
      */
     const WORD_READ_BY_MINUTES = 250;
 
-    public function extractDataForTechLetter($url)
+    /**
+     * @return mixed[]
+     */
+    public function extractDataForTechLetter($url): array
     {
         $urlInfo = parse_url($url);
 
@@ -44,28 +49,24 @@ class DataExtractor
             "BlogPosting",
         ];
 
-        if ($richSchema !== false) {
-            foreach ($richSchema as $schema) {
-                if (
-                    ! isset($schema['@type'])
-                    || !in_array($schema["@type"], $listOfTypes)
-                ) {
-                    continue;
-                }
+        foreach ($richSchema as $schema) {
+            if (
+                ! isset($schema['@type'])
+                || !in_array($schema["@type"], $listOfTypes)
+            ) {
+                continue;
+            }
 
-                if (isset($schema['datePublished'])) {
-                    $date = new \DateTimeImmutable($schema['datePublished']);
-                    $data['date'] = $date->format('Y-m-d');
-                }
-                if (isset($schema['articleBody'])) {
-                    $body = strip_tags($schema['articleBody']);
-                    $data['readingTime'] = floor(str_word_count($body) / self::WORD_READ_BY_MINUTES);
-                }
+            if (isset($schema['datePublished'])) {
+                $date = new \DateTimeImmutable($schema['datePublished']);
+                $data['date'] = $date->format('Y-m-d');
+            }
+            if (isset($schema['articleBody'])) {
+                $body = strip_tags($schema['articleBody']);
+                $data['readingTime'] = floor(str_word_count($body) / self::WORD_READ_BY_MINUTES);
             }
         }
 
-        $data = array_map(fn ($value) => trim($value), $data);
-
-        return $data;
+        return array_map(fn ($value): string => trim($value), $data);
     }
 }

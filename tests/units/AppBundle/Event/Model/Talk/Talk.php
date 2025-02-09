@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\tests\units;
 
 use AppBundle\Event\Model\Talk as TestedClass;
 
 class Talk extends \atoum
 {
-    public function testYoutubeUrl()
+    public function testYoutubeUrl(): void
     {
         $this
             ->given($talk = new TestedClass())
@@ -19,7 +21,7 @@ class Talk extends \atoum
         ;
     }
 
-    public function testSlug()
+    public function testSlug(): void
     {
         $this
             ->given($talk = new TestedClass())
@@ -32,5 +34,4 @@ class Talk extends \atoum
                 ->isEqualTo('utiliser-postgresql-en-2014')
         ;
     }
-
 }

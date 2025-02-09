@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\GithubUser;
 
 use AppBundle\Event\Model\Repository\GithubUserRepository;
@@ -9,10 +11,8 @@ use Twig\Environment;
 
 class GithubUserListAction
 {
-    /** @var GithubUserRepository */
-    private $githubUserRepository;
-    /** @var Environment */
-    private $twig;
+    private GithubUserRepository $githubUserRepository;
+    private Environment $twig;
 
     public function __construct(
         GithubUserRepository $githubUserRepository,
@@ -22,7 +22,7 @@ class GithubUserListAction
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $githubUsers = $this->githubUserRepository->getAllOrderedByLogin();
 

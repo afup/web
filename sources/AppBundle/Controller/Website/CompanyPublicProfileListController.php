@@ -1,31 +1,37 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Twig\ViewRenderer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
-class CompanyPublicProfileListController extends Controller
+class CompanyPublicProfileListController extends AbstractController
 {
     private ViewRenderer $view;
+    private RepositoryFactory $repositoryFactory;
 
-    public function __construct(ViewRenderer $view)
+    public function __construct(ViewRenderer $view, RepositoryFactory $repositoryFactory)
     {
         $this->view = $view;
+        $this->repositoryFactory = $repositoryFactory;
     }
 
-    public function indexAction()
+    public function index(): Response
     {
         /**
          * @var CompanyMemberRepository $companyRepository
          */
-        $companyRepository = $this->get('ting')->get(CompanyMemberRepository::class);
+        $companyRepository = $this->repositoryFactory->get(CompanyMemberRepository::class);
 
         $displayableCompanies = $companyRepository->findDisplayableCompanies();
 
-        usort($displayableCompanies, function (CompanyMember $companyMemberA, CompanyMember $companyMemberB) {
+        usort($displayableCompanies, function (CompanyMember $companyMemberA, CompanyMember $companyMemberB): int {
             $a = $companyMemberA->getCompanyName();
             $b = $companyMemberB->getCompanyName();
             return $a <=> $b;

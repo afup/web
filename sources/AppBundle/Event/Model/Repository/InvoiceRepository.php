@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
@@ -16,7 +18,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class InvoiceRepository extends Repository implements MetadataInitializer
 {
-    public function saveWithTickets(Invoice $invoice)
+    public function saveWithTickets(Invoice $invoice): void
     {
         $totalAmount = 0;
         /**

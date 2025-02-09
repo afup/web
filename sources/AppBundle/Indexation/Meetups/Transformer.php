@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Indexation\Meetups;
 
 use AppBundle\Event\Model\Meetup;
@@ -10,26 +12,19 @@ class Transformer
 {
     const MEETUP_URL = 'https://www.meetup.com/fr-FR/';
 
-    /**
-     * @var OfficesCollection
-     */
-    private $officesCollection;
+    private OfficesCollection $officesCollection;
 
-    /**
-     * @param OfficesCollection $officesCollection
-     */
     public function __construct(OfficesCollection $officesCollection)
     {
         $this->officesCollection = $officesCollection;
     }
 
     /**
-     * @param Meetup $meetup
      *
      * @return array
      * @throws Exception
      */
-    public function transform(Meetup $meetup)
+    public function transform(Meetup $meetup): ?array
     {
         $codeOffice = $meetup->getAntenneName();
         $office = $this->officesCollection->findByCode($codeOffice);
@@ -71,12 +66,7 @@ class Transformer
         return $item;
     }
 
-    /**
-     * @param array $office
-     * @param Meetup $meetup
-     * @return string
-     */
-    public function getEventUrl($office, Meetup $meetup)
+    public function getEventUrl(array $office, Meetup $meetup): string
     {
         return self::MEETUP_URL . $office['meetup_urlname'] . '/events/' . $meetup->getId();
     }

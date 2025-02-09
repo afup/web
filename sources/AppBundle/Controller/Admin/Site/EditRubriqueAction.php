@@ -1,33 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Site;
 
 use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Site\Form\RubriqueType;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
-class EditRubriqueAction extends Controller
+class EditRubriqueAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    /** @var FlashBagInterface */
-    private $flashBag;
+    private FlashBagInterface $flashBag;
 
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
-    /** @var Environment */
-    private $twig;
+    private Environment $twig;
 
-    /** @var RubriqueRepository */
-    private $rubriqueRepository;
+    private RubriqueRepository $rubriqueRepository;
 
     /** @var string */
     private $storageDir;
@@ -43,11 +44,10 @@ class EditRubriqueAction extends Controller
 
     /**
      * @param int $id
-     * @param Request $request
      * @return RedirectResponse|Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function __invoke($id,Request $request)
     {

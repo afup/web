@@ -1,21 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Slack;
 
 use AppBundle\Association\Model\Repository\UserRepository;
+use CCMBenchmark\Ting\Query\QueryException;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class UsersChecker
 {
     const SUBSCRIPTION_DELAY = '+15 days';
-    /**
-     * @var UsersClient
-     */
-    private $usersClient;
+    private UsersClient $usersClient;
 
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private UserRepository $userRepository;
 
     public function __construct(UsersClient $usersClient, UserRepository $userRepository)
     {
@@ -25,10 +23,9 @@ class UsersChecker
 
     /**
      * Retourne la liste des utilisateurs devant être supprimé du slack membre
-     * @return array
-     * @throws \CCMBenchmark\Ting\Query\QueryException
+     * @throws QueryException
      */
-    public function checkUsersValidity()
+    public function checkUsersValidity(): array
     {
         $result = [];
         $cursor = '';
@@ -72,7 +69,7 @@ class UsersChecker
                             $result[] = $userInfo;
                         }
                     }
-                } catch (\Symfony\Component\Security\Core\Exception\UsernameNotFoundException $e) {
+                } catch (UsernameNotFoundException $e) {
                     //User Not found ! A supprimer de slack !
                     $result[] = $userInfo;
                 }

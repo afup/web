@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Association\Form;
 
@@ -18,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CompanyMemberType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $choices = [];
         for ($i = 1; $i <=10; $i++) {
@@ -60,7 +62,7 @@ class CompanyMemberType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => CompanyMember::class,

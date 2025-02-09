@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Compta\Importer;
 
 class Operation
@@ -71,10 +73,7 @@ class Operation
         return $this->numeroOperation;
     }
 
-    /**
-     * @return bool
-     */
-    public function isCredit()
+    public function isCredit(): bool
     {
         return self::CREDIT === $this->getType();
     }

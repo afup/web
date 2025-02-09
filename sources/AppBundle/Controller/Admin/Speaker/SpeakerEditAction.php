@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Speaker;
 
 use Afup\Site\Logger\DbLoggerTrait;
@@ -27,24 +29,15 @@ class SpeakerEditAction
     use DbLoggerTrait;
 
     const ID_FORUM_PHOTO_STORAGE = 16;
-    /** @var SpeakerRepository */
-    private $speakerRepository;
-    /** @var TalkRepository */
-    private $talkRepository;
-    /** @var EventRepository */
-    private $eventRepository;
-    /** @var PhotoStorage */
-    private $photoStorage;
-    /** @var SpeakerFormDataFactory */
-    private $speakerFormDataFactory;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var Environment */
-    private $twig;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
+    private SpeakerRepository $speakerRepository;
+    private TalkRepository $talkRepository;
+    private EventRepository $eventRepository;
+    private PhotoStorage $photoStorage;
+    private SpeakerFormDataFactory $speakerFormDataFactory;
+    private FormFactoryInterface $formFactory;
+    private FlashBagInterface $flashBag;
+    private Environment $twig;
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         SpeakerRepository $speakerRepository,

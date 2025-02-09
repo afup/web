@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\TicketEventType;
+use CCMBenchmark\Ting\Query\QueryException;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -15,13 +19,11 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
     const REMOVE_PAST_TICKETS = 1;
     const REMOVE_FUTURE_TICKETS = 2;
     const ACTUAL_TICKETS_ONLY = 3; // Combination of REMOVE_PAST_TICKETS and REMOVE_FUTURE_TICKETS
-
     /**
-     * @param Event $event
      * @param bool $publicOnly
      * @param null|int $datesFilter can be one of self::REMOVE_PAST_TICKETS, self::REMOVE_FUTURE_TICKETS. self::ACTUAL_TICKETS == self::REMOVE_PAST_TICKETS | self::REMOVE_FUTURE_TICKETS. Default value is ACTUAL_TICKETS
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface|TicketEventType[]
-     * @throws \CCMBenchmark\Ting\Query\QueryException
+     * @return CollectionInterface|TicketEventType[]
+     * @throws QueryException
      */
     public function getTicketsByEvent(Event $event, $publicOnly = true, $datesFilter = null)
     {
@@ -36,10 +38,10 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
 
         $params = ['event' => $event->getId()];
 
-        if ($datesFilter & self::REMOVE_PAST_TICKETS) {
+        if (($datesFilter & self::REMOVE_PAST_TICKETS) !== 0) {
             $sql .= ' AND date_end > NOW() ';
         }
-        if ($datesFilter & self::REMOVE_FUTURE_TICKETS) {
+        if (($datesFilter & self::REMOVE_FUTURE_TICKETS) !== 0) {
             $sql .= ' AND date_start < NOW() ';
         }
 
@@ -83,15 +85,12 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
     }
 
     /**
-     * @param Event $event
      * @param bool $publicOnly
-     * @param null $datesFilter
      *
-     * @return bool
      *
-     * @throws \CCMBenchmark\Ting\Query\QueryException
+     * @throws QueryException
      */
-    public function doesEventHasRestrictedToMembersTickets(Event $event, $publicOnly = true, $datesFilter = null)
+    public function doesEventHasRestrictedToMembersTickets(Event $event, $publicOnly = true, $datesFilter = null): bool
     {
         $tickets = $this->getTicketsByEvent($event, $publicOnly, $datesFilter);
 

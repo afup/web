@@ -1,28 +1,50 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website;
 
 use Afup\Site\Corporate\Articles;
 use Afup\Site\Corporate\Branche;
 use Afup\Site\Corporate\Feuille;
+use AlgoliaSearch\AlgoliaException;
+use AlgoliaSearch\Client;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Twig\ViewRenderer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Psr\Log\LoggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class HomeController extends Controller
+class HomeController extends AbstractController
 {
     public const MAX_ARTICLES = 5;
     public const MAX_MEETUPS = 10;
     private ViewRenderer $view;
+    private LoggerInterface $logger;
+    private RepositoryFactory $repositoryFactory;
+    private AdapterInterface $traceableAdapter;
+    private Client $client;
+    private bool $homeAlgoliaEnabled;
 
-    public function __construct(ViewRenderer $view)
+    public function __construct(ViewRenderer $view,
+                                LoggerInterface $logger,
+                                RepositoryFactory $repositoryFactory,
+                                AdapterInterface $traceableAdapter,
+                                Client $client,
+                                bool $homeAlgoliaEnabled)
     {
         $this->view = $view;
+        $this->logger = $logger;
+        $this->repositoryFactory = $repositoryFactory;
+        $this->traceableAdapter = $traceableAdapter;
+        $this->client = $client;
+        $this->homeAlgoliaEnabled = $homeAlgoliaEnabled;
     }
 
-    public function displayAction(): Response
+    public function display(): Response
     {
         $articles = new Articles();
         $derniers_articles = $articles->chargerDerniersAjouts(self::MAX_ARTICLES);
@@ -48,7 +70,7 @@ class HomeController extends Controller
      */
     protected function getTalkOfTheDay()
     {
-        return $this->get('ting')->get(TalkRepository::class)->getTalkOfTheDay(new \DateTime());
+        return $this->repositoryFactory->get(TalkRepository::class)->getTalkOfTheDay(new \DateTime());
     }
 
     /**
@@ -56,11 +78,11 @@ class HomeController extends Controller
      */
     protected function getLatestMeetups()
     {
-        if (false === $this->getParameter('home_algolia_enabled')) {
+        if (!$this->homeAlgoliaEnabled) {
             return [];
         }
 
-        $cache = $this->get('cache.system');
+        $cache = $this->traceableAdapter;
         $cacheKey = 'home_algolia_meetups';
 
         try {
@@ -72,15 +94,15 @@ class HomeController extends Controller
             }
 
             return $cacheItem->get();
-        } catch (\AlgoliaSearch\AlgoliaException $e) {
-            $this->get('logger')->error($e->getMessage());
+        } catch (AlgoliaException $e) {
+            $this->logger->error($e->getMessage());
             return [];
         }
     }
 
     private function doGetLatestMeetups()
     {
-        $algolia = $this->get(\AlgoliaSearch\Client::class);
+        $algolia = $this->client;
         $index = $algolia->initIndex('afup_meetups');
         $results = $index->search('', ['hitsPerPage' => self::MAX_MEETUPS]);
 

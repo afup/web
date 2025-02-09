@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Indexation\Meetups\tests\units;
 
+use AppBundle\Event\Model\Meetup;
 use AppBundle\Indexation\Meetups\Transformer as TestedClass;
 use AppBundle\Offices\OfficesCollection;
-use AppBundle\Event\Model\Meetup;
-use Exception;
 
 class Transformer extends \atoum
 {
-    public function testTransform()
+    public function testTransform(): void
     {
         $this
             ->given(
@@ -30,7 +31,7 @@ class Transformer extends \atoum
             ->when($transformer = new TestedClass(new OfficesCollection()))
             ->then
                 ->array($transformer->transform($meetup))
-                ->isEqualTo( [
+                ->isEqualTo([
                     'meetup_id' => '244992881',
                     'label' => 'Apéro PHP',
                     'event_url' => 'https://www.meetup.com/fr-FR/afup-reims-php/events/244992881',

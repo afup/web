@@ -1,25 +1,39 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Event;
 
 use AppBundle\Calendar\IcsPLanningGenerator;
 use AppBundle\Calendar\JsonPlanningGenerator;
+use AppBundle\CFP\PhotoStorage;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
 use AppBundle\Openfeedback\OpenfeedbackJsonGenerator;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class EventController extends EventBaseController
+class EventController extends AbstractController
 {
-    public function indexAction()
+    private RepositoryFactory $repositoryFactory;
+    private PhotoStorage $photoStorage;
+    private EventActionHelper $eventActionHelper;
+    public function __construct(RepositoryFactory $repositoryFactory, PhotoStorage $photoStorage, EventActionHelper $eventActionHelper)
+    {
+        $this->repositoryFactory = $repositoryFactory;
+        $this->photoStorage = $photoStorage;
+        $this->eventActionHelper = $eventActionHelper;
+    }
+    public function index()
     {
         /**
          * @var EventRepository $eventRepository
          */
-        $eventRepository = $this->get('ting')->get(EventRepository::class);
+        $eventRepository = $this->repositoryFactory->get(EventRepository::class);
         $events = $eventRepository->getNextEvents();
 
         if ($events === null) {
@@ -32,12 +46,12 @@ class EventController extends EventBaseController
         return $this->render(':event:switch.html.twig', ['events' => $events]);
     }
 
-    public function speakerInfosIndexAction()
+    public function speakerInfosIndex()
     {
         /**
          * @var EventRepository $eventRepository
          */
-        $eventRepository = $this->get('ting')->get(EventRepository::class);
+        $eventRepository = $this->repositoryFactory->get(EventRepository::class);
         $event = $eventRepository->getNextEventForGithubUser($this->getUser());
 
         if ($event === null) {
@@ -47,12 +61,12 @@ class EventController extends EventBaseController
         return new RedirectResponse($this->generateUrl('speaker-infos', ['eventSlug' => $event->getPath()]), Response::HTTP_TEMPORARY_REDIRECT);
     }
 
-    public function eventAction($eventSlug)
+    public function event($eventSlug): Response
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
 
-        $talks = $this->get('ting')->get(TalkRepository::class)->getNumberOfTalksByEvent($event);
-        $votes = $this->get('ting')->get(VoteRepository::class)->getNumberOfVotesByEvent($event);
+        $talks = $this->repositoryFactory->get(TalkRepository::class)->getNumberOfTalksByEvent($event);
+        $votes = $this->repositoryFactory->get(VoteRepository::class)->getNumberOfVotesByEvent($event);
 
         $currentDate = new \DateTime();
 
@@ -69,14 +83,12 @@ class EventController extends EventBaseController
 
     /**
      * @param $eventSlug
-     *
-     * @return Response
      */
-    public function planningIcsAction($eventSlug)
+    public function planningIcs($eventSlug): Response
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
 
-        $icsPlanningGenerator = new IcsPLanningGenerator($this->get('ting')->get(TalkRepository::class));
+        $icsPlanningGenerator = new IcsPLanningGenerator($this->repositoryFactory->get(TalkRepository::class));
 
         $response = new Response($icsPlanningGenerator->generateForEvent($event));
 
@@ -93,12 +105,12 @@ class EventController extends EventBaseController
     /**
      * @return JsonResponse
      */
-    public function planningJsonAction($eventSlug)
+    public function planningJson($eventSlug)
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
 
-        $photoStorage = $this->get(\AppBundle\CFP\PhotoStorage::class);
-        $ting = $this->get('ting');
+        $photoStorage = $this->photoStorage;
+        $ting = $this->repositoryFactory;
         $talkRepository = $ting->get(TalkRepository::class);
 
         $jsonPlanningGenerator = new JsonPlanningGenerator($talkRepository, $photoStorage);
@@ -108,12 +120,10 @@ class EventController extends EventBaseController
 
     /**
      * @param $eventSlug
-     *
-     * @return Response
      */
-    public function calendarAction($eventSlug)
+    public function calendar($eventSlug): Response
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
 
         if ($event === null) {
             throw $this->createNotFoundException('Event not found');
@@ -125,22 +135,19 @@ class EventController extends EventBaseController
     /**
      * @return Response
      */
-    public function calendarLatestAction()
+    public function calendarLatest()
     {
-        $event = $this->get('ting')->get(EventRepository::class)->getCurrentEvent();
+        $event = $this->repositoryFactory->get(EventRepository::class)->getCurrentEvent();
 
         return new RedirectResponse($this->generateUrl('event_calendar', ['eventSlug' => $event->getPath()]));
     }
 
-    /**
-     * @return JsonResponse
-     */
-    public function openfeedbackJsonAction($eventSlug)
+    public function openfeedbackJson($eventSlug): JsonResponse
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
 
-        $photoStorage = $this->get(\AppBundle\CFP\PhotoStorage::class);
-        $ting = $this->get('ting');
+        $photoStorage = $this->photoStorage;
+        $ting = $this->repositoryFactory;
         $talkRepository = $ting->get(TalkRepository::class);
 
         $generator = new OpenfeedbackJsonGenerator($talkRepository, $photoStorage);

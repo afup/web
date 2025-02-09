@@ -1,10 +1,10 @@
 news_list:
   path: /
-  defaults: { _controller: AppBundle:Website\News:list }
+  defaults: { _controller: AppBundle\Controller\Website\NewsController::list }
   options:
     sitemap: true
 
 news_display:
   path: /{code}
-  defaults: { _controller: AppBundle:Website\News:display }
+  defaults: { _controller: AppBundle\Controller\Website\NewsController::display }
 

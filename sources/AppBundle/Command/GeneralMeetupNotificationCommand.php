@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Command;
 
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -13,16 +15,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class GeneralMeetupNotificationCommand extends Command
 {
-    /** @var UserRepository */
-    private $userRepository;
-    /** @var GeneralMeetingRepository */
-    private $generalMeetingRepository;
-    /** @var MessageFactory */
-    private $messageFactory;
-    /** @var SlackNotifier */
-    private $slackNotifier;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
+    private UserRepository $userRepository;
+    private GeneralMeetingRepository $generalMeetingRepository;
+    private MessageFactory $messageFactory;
+    private SlackNotifier $slackNotifier;
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         UserRepository $userRepository,
@@ -42,7 +39,7 @@ class GeneralMeetupNotificationCommand extends Command
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('general-meeting-notification');
     }
@@ -50,7 +47,7 @@ class GeneralMeetupNotificationCommand extends Command
     /**
      * @see Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($this->generalMeetingRepository->hasGeneralMeetingPlanned()) {
             $this->slackNotifier->sendMessage($this->messageFactory->createMessageForGeneralMeeting(

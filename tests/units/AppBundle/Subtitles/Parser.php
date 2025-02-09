@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Subtitles\tests\units;
 
 use AppBundle\Subtitles\Parser as TestedClass;
@@ -9,7 +11,7 @@ class Parser extends \atoum
     /**
      * @dataProvider parseDataProvider
      */
-    public function testPars($content, $expectedResult, $case)
+    public function testPars($content, $expectedResult, $case): void
     {
         $this
             ->assert($case)

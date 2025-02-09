@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -43,20 +45,11 @@ class Vote implements NotifyPropertyInterface
      */
     private $vote = 0;
 
-    /**
-     * @var \DateTime
-     */
-    private $submittedOn;
+    private ?\DateTime $submittedOn = null;
 
-    /**
-     * @var GithubUser
-     */
-    private $githubUser;
+    private ?GithubUser $githubUser = null;
 
-    /**
-     * @var Talk
-     */
-    private $talk;
+    private ?Talk $talk = null;
 
     /**
      * @return int
@@ -70,7 +63,7 @@ class Vote implements NotifyPropertyInterface
      * @param int $id
      * @return Vote
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -89,7 +82,7 @@ class Vote implements NotifyPropertyInterface
      * @param int $sessionId
      * @return Vote
      */
-    public function setSessionId($sessionId)
+    public function setSessionId($sessionId): self
     {
         $this->propertyChanged('sessionId', $this->sessionId, $sessionId);
         $this->sessionId = $sessionId;
@@ -108,7 +101,7 @@ class Vote implements NotifyPropertyInterface
      * @param int $user
      * @return Vote
      */
-    public function setUser($user)
+    public function setUser($user): self
     {
         $this->propertyChanged('user', $this->user, $user);
         $this->user = $user;
@@ -127,7 +120,7 @@ class Vote implements NotifyPropertyInterface
      * @param string $comment
      * @return Vote
      */
-    public function setComment($comment)
+    public function setComment($comment): self
     {
         $this->propertyChanged('comment', $this->comment, $comment);
         $this->comment = $comment;
@@ -146,7 +139,7 @@ class Vote implements NotifyPropertyInterface
      * @param int $vote
      * @return Vote
      */
-    public function setVote($vote)
+    public function setVote($vote): self
     {
         $this->propertyChanged('vote', $this->vote, $vote);
         $this->vote = $vote;
@@ -156,16 +149,15 @@ class Vote implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getSubmittedOn()
+    public function getSubmittedOn(): ?\DateTime
     {
         return $this->submittedOn;
     }
 
     /**
-     * @param \DateTime $submittedOn
      * @return Vote
      */
-    public function setSubmittedOn(\DateTime $submittedOn)
+    public function setSubmittedOn(\DateTime $submittedOn): self
     {
         $this->propertyChanged('submittedOn', $this->submittedOn, $submittedOn);
         $this->submittedOn = $submittedOn;
@@ -175,16 +167,15 @@ class Vote implements NotifyPropertyInterface
     /**
      * @return GithubUser
      */
-    public function getGithubUser()
+    public function getGithubUser(): ?GithubUser
     {
         return $this->githubUser;
     }
 
     /**
-     * @param GithubUser $githubUser
      * @return Vote
      */
-    public function setGithubUser(GithubUser $githubUser)
+    public function setGithubUser(GithubUser $githubUser): self
     {
         $this->githubUser = $githubUser;
         return $this;
@@ -193,16 +184,15 @@ class Vote implements NotifyPropertyInterface
     /**
      * @return Talk
      */
-    public function getTalk()
+    public function getTalk(): ?Talk
     {
         return $this->talk;
     }
 
     /**
-     * @param Talk $talk
      * @return Vote
      */
-    public function setTalk(Talk $talk)
+    public function setTalk(Talk $talk): self
     {
         $this->talk = $talk;
         return $this;

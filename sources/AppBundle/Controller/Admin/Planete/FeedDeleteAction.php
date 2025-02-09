@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Planete;
 
 use Afup\Site\Logger\DbLoggerTrait;
@@ -13,12 +15,9 @@ class FeedDeleteAction
 {
     use DbLoggerTrait;
 
-    /** @var FeedRepository */
-    private $feedRepository;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var FlashBagInterface */
-    private $flashBag;
+    private FeedRepository $feedRepository;
+    private UrlGeneratorInterface $urlGenerator;
+    private FlashBagInterface $flashBag;
 
     public function __construct(
         FeedRepository $feedRepository,
@@ -30,7 +29,7 @@ class FeedDeleteAction
         $this->flashBag = $flashBag;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse
     {
         $id = $request->query->get('id');
         if ($this->feedRepository->delete($id)) {

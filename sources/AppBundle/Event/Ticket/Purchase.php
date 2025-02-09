@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Ticket;
 
 class Purchase
@@ -26,9 +28,8 @@ class Purchase
 
     /**
      * @param bool $companyCitation
-     * @return Purchase
      */
-    public function setCompanyCitation($companyCitation)
+    public function setCompanyCitation($companyCitation): self
     {
         $this->companyCitation = $companyCitation;
         return $this;
@@ -44,9 +45,8 @@ class Purchase
 
     /**
      * @param bool $newsletterAfup
-     * @return Purchase
      */
-    public function setNewsletterAfup($newsletterAfup)
+    public function setNewsletterAfup($newsletterAfup): self
     {
         $this->newsletterAfup = $newsletterAfup;
         return $this;

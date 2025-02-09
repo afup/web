@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\EventStats;
@@ -13,8 +15,7 @@ class EventStatsRepository
     const DAY_ONE = 'one';
     const DAY_TWO = 'two';
     const DAYS = [self::DAY_ONE, self::DAY_TWO];
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -23,10 +24,8 @@ class EventStatsRepository
 
     /**
      * @param int $eventId
-     *
-     * @return EventStats
      */
-    public function getStats($eventId, Datetime $from = null)
+    public function getStats($eventId, Datetime $from = null): EventStats
     {
         $stats = new EventStats();
         $stats->firstDay = $this->getStatsForDay($eventId, self::DAY_ONE, $from);
@@ -38,7 +37,7 @@ class EventStatsRepository
             ->where('id_forum = :eventId')
             ->groupBy('type_inscription')
             ->setParameter('eventId', $eventId);
-        if (null !== $from) {
+        if ($from instanceof \Datetime) {
             $baseQueryBuilder->andWhere('aif.date > :from')
                 ->setParameter('from', $from->getTimestamp());
         }
@@ -69,12 +68,10 @@ class EventStatsRepository
 
     /**
      * @param int           $eventId
-     * @param string        $day
      * @param Datetime|null $from
      *
-     * @return DailyStats
      */
-    private function getStatsForDay($eventId, $day, Datetime $from = null)
+    private function getStatsForDay($eventId, string $day, Datetime $from = null): DailyStats
     {
         Assertion::inArray($day, self::DAYS);
         $baseQueryBuilder = $this->connection->createQueryBuilder()
@@ -84,7 +81,7 @@ class EventStatsRepository
             ->where('id_forum = :eventId AND FIND_IN_SET(:day, aft.day)')
             ->setParameter('day', $day)
             ->setParameter('eventId', $eventId);
-        if (null !== $from) {
+        if ($from instanceof \Datetime) {
             $baseQueryBuilder->andWhere('aif.date > :from')
                 ->setParameter('from', $from->getTimestamp());
         }

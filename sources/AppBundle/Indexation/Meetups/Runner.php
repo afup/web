@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Indexation\Meetups;
 
 use AlgoliaSearch\AlgoliaException;
@@ -12,25 +14,13 @@ use CCMBenchmark\Ting\Repository\CollectionInterface;
 
 class Runner
 {
-    /**
-     * @var Client
-     */
-    protected $algoliaClient;
+    protected Client $algoliaClient;
 
-    /**
-     * @var MeetupRepository
-     */
-    protected $meetupRepository;
+    protected MeetupRepository $meetupRepository;
 
-    /**
-     * @var OfficesCollection
-     */
-    protected $officiesCollection;
+    protected OfficesCollection $officiesCollection;
 
-    /**
-     * @var Transformer
-     */
-    protected $transformer;
+    protected Transformer $transformer;
 
     public function __construct(Client $algoliaClient, MeetupRepository $meetupRepository)
     {
@@ -44,7 +34,7 @@ class Runner
      *
      * @throws AlgoliaException
      */
-    public function run()
+    public function run(): void
     {
         $index = $this->initIndex();
 
@@ -85,10 +75,7 @@ class Runner
         return $index;
     }
 
-    /**
-     * @return array
-     */
-    private function getTransformedMeetupsFromDatabase()
+    private function getTransformedMeetupsFromDatabase(): array
     {
         $meetupsCollection = $this->meetupRepository->getAll();
 
@@ -99,7 +86,7 @@ class Runner
      * @param CollectionInterface $meetupsCollection
      * @return array<Meetup>
      */
-    public function transformMeetupsForIndexation($meetupsCollection)
+    public function transformMeetupsForIndexation($meetupsCollection): array
     {
         $meetupsArray = [];
         /** @var Meetup $meetup */

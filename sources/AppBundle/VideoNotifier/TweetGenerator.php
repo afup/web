@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\VideoNotifier;
 
+use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use Twitter_Validation;
 
@@ -9,10 +12,7 @@ class TweetGenerator
 {
     const TWEET_MAX_LENGTH = 280;
 
-    /**
-     * @var Twitter_Validation
-     */
-    protected $twitterValidation;
+    protected \Twitter_Validation $twitterValidation;
 
     public function __construct()
     {
@@ -20,9 +20,7 @@ class TweetGenerator
     }
 
     /**
-     * @param Talk $talk
-     * @param \AppBundle\Event\Model\Speaker[] $speakers
-     *
+     * @param Speaker[] $speakers
      * @return string
      */
     public function generate(Talk $talk, array $speakers)
@@ -36,7 +34,7 @@ class TweetGenerator
             }
         }
 
-        if (!count($twitters)) {
+        if ($twitters === []) {
             throw new \InvalidArgumentException("No speaker found");
         }
 

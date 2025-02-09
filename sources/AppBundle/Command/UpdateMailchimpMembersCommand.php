@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Command;
 
 use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Mailchimp\Mailchimp;
 use AppBundle\Mailchimp\Runner;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,10 +15,22 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateMailchimpMembersCommand extends ContainerAwareCommand
 {
+    private Mailchimp $mailchimp;
+    private RepositoryFactory $ting;
+    private string $mailchimpMembersList;
+
+    public function __construct(Mailchimp $mailchimp,
+                                RepositoryFactory $ting,
+                                string $mailchimpMembersList)
+    {
+        $this->mailchimp = $mailchimp;
+        $this->mailchimpMembersList = $mailchimpMembersList;
+        $this->ting = $ting;
+    }
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('mailchimp:update-members')
@@ -22,31 +38,22 @@ class UpdateMailchimpMembersCommand extends ContainerAwareCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $container = $this->getContainer();
-        $ting = $container->get('ting');
-
-        $membersListId = $this->getContainer()->getParameter('mailchimp_members_list');
-
         /**
          * @var UserRepository $userRepository
          */
-        $userRepository = $ting->get(UserRepository::class);
+        $userRepository = $this->ting->get(UserRepository::class);
 
-        $mailchimp = $this->getContainer()->get(\AppBundle\Mailchimp\Mailchimp::class);
+        $mailchimp = $this->mailchimp;
 
         $runner = new Runner(
             $mailchimp,
             $userRepository,
-            $membersListId
+            $this->mailchimpMembersList
         );
 
-        if ($input->getOption('init') === true) {
-            $errors = $runner->initList();
-        } else {
-            $errors = $runner->updateList();
-        }
+        $errors = $input->getOption('init') === true ? $runner->initList() : $runner->updateList();
         if ($errors !== []) {
             $table = new Table($output);
             $table

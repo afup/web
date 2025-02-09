@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Ticket;
 
 use AppBundle\Event\Model\InvoiceFactory;
@@ -12,25 +14,13 @@ use CCMBenchmark\Ting\Exception;
 
 class SponsorTicketHelper
 {
-    /**
-     * @var InvoiceFactory
-     */
-    private $invoiceFactory;
+    private InvoiceFactory $invoiceFactory;
 
-    /**
-     * @var InvoiceRepository
-     */
-    private $invoiceRepository;
+    private InvoiceRepository $invoiceRepository;
 
-    /**
-     * @var TicketRepository
-     */
-    private $ticketRepository;
+    private TicketRepository $ticketRepository;
 
-    /**
-     * @var SponsorTicketRepository
-     */
-    private $sponsorTicketRepository;
+    private SponsorTicketRepository $sponsorTicketRepository;
 
     public function __construct(
         InvoiceFactory $invoiceFactory,
@@ -44,7 +34,7 @@ class SponsorTicketHelper
         $this->sponsorTicketRepository = $sponsorTicketRepository;
     }
 
-    public function addTicketToSponsor(SponsorTicket $sponsorTicket, Ticket $ticket)
+    public function addTicketToSponsor(SponsorTicket $sponsorTicket, Ticket $ticket): void
     {
         $invoice = $this->invoiceFactory->createInvoiceFromSponsorTicket($sponsorTicket);
         try {
@@ -64,11 +54,11 @@ class SponsorTicketHelper
         }
     }
 
-    public function removeTicketFromSponsor(SponsorTicket $sponsorTicket, Ticket $ticket)
+    public function removeTicketFromSponsor(SponsorTicket $sponsorTicket, Ticket $ticket): void
     {
         $invoice = $this->invoiceFactory->createInvoiceFromSponsorTicket($sponsorTicket);
         if ($invoice->getReference() !== $ticket->getReference()) {
-            throw new \RuntimeException(sprintf('Erreur: le ticket n\'est pas rattaché à ce token'));
+            throw new \RuntimeException('Erreur: le ticket n\'est pas rattaché à ce token');
         }
         try {
             $this->ticketRepository->startTransaction();
@@ -81,7 +71,7 @@ class SponsorTicketHelper
         }
     }
 
-    public function doesTicketBelongsToSponsor(SponsorTicket $sponsorTicket, Ticket $ticket)
+    public function doesTicketBelongsToSponsor(SponsorTicket $sponsorTicket, Ticket $ticket): bool
     {
         $invoice = $this->invoiceFactory->createInvoiceFromSponsorTicket($sponsorTicket);
         return ($ticket->getReference() === $invoice->getReference());

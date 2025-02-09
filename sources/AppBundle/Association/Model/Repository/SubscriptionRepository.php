@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\User;
-use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -12,28 +13,11 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class SubscriptionRepository extends Repository implements MetadataInitializer
 {
-    public function getStats(\DateInterval $interval)
+    public function getStats(\DateInterval $interval): void
     {
         // Personnes physiques
 
         // Personnes morales
-    }
-
-    /**
-     * Add a condition about the type of users: physical, legal or all
-     *
-     * @param SelectInterface $queryBuilder
-     * @param $userType
-     */
-    private function addUserTypeCondition(SelectInterface $queryBuilder, $userType)
-    {
-        if ($userType === UserRepository::USER_TYPE_PHYSICAL) {
-            $queryBuilder->where('id_personne_morale = 0');
-        } elseif ($userType === UserRepository::USER_TYPE_COMPANY) {
-            $queryBuilder->where('id_personne_morale <> 0');
-        } elseif ($userType !== UserRepository::USER_TYPE_ALL) {
-            throw new \UnexpectedValueException(sprintf('Unknown user type "%s"', $userType));
-        }
     }
 
     /**

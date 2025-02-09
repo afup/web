@@ -1,51 +1,60 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\TechLetter;
 
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\Message;
+use AppBundle\Mailchimp\Mailchimp;
 use AppBundle\TechLetter\DataExtractor;
 use AppBundle\TechLetter\Form\SendingType;
 use AppBundle\TechLetter\Model as Techletter;
+use AppBundle\TechLetter\Model\News;
 use AppBundle\TechLetter\Model\Repository\SendingRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class TechLetterGenerateController extends Controller
+class TechLetterGenerateController extends AbstractController
 {
-    /** @var SendingRepository */
-    private $sendingRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var TechletterSubscriptionsRepository */
-    private $techletterSubscriptionsRepository;
-    /** @var Mailer */
-    private $mailer;
+    private SendingRepository $sendingRepository;
+    private FormFactoryInterface $formFactory;
+    private UrlGeneratorInterface $urlGenerator;
+    private TechletterSubscriptionsRepository $techletterSubscriptionsRepository;
+    private Mailer $mailer;
+    private Mailchimp $mailchimp;
+    private string $techletterTestEmailAddress;
+    private string $mailchimpTechletterList;
 
     public function __construct(
         SendingRepository $sendingRepository,
         TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
         FormFactoryInterface $formFactory,
         UrlGeneratorInterface $urlGenerator,
-        Mailer $mailer
+        Mailer $mailer,
+        Mailchimp $mailchimp,
+        string $techletterTestEmailAddress,
+        string $mailchimpTechletterList
     ) {
         $this->sendingRepository = $sendingRepository;
         $this->formFactory = $formFactory;
         $this->urlGenerator = $urlGenerator;
         $this->techletterSubscriptionsRepository = $techletterSubscriptionsRepository;
         $this->mailer = $mailer;
+        $this->mailchimp = $mailchimp;
+        $this->techletterTestEmailAddress = $techletterTestEmailAddress;
+        $this->mailchimpTechletterList = $mailchimpTechletterList;
     }
 
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         $techLetters = $this->sendingRepository->getAllOrderedByDateDesc();
         $form = $this->formFactory->create(SendingType::class);
@@ -67,7 +76,7 @@ class TechLetterGenerateController extends Controller
         ]);
     }
 
-    public function historyAction()
+    public function history(): Response
     {
         $history = [];
         foreach ($this->sendingRepository->getAll() as $sending) {
@@ -77,7 +86,7 @@ class TechLetterGenerateController extends Controller
 
             $techLetter = Techletter\TechLetterFactory::createTechLetterFromJson($sending->getTechletter());
 
-            if (null !== ($firstNews = $techLetter->getFirstNews())) {
+            if (($firstNews = $techLetter->getFirstNews()) instanceof News) {
                 $url = $firstNews->getUrl();
                 $history[] = $defaultColumns + [
                     'type' => 'First news',
@@ -86,7 +95,7 @@ class TechLetterGenerateController extends Controller
                 ];
             }
 
-            if (null !== ($secondNewsNews = $techLetter->getSecondNews())) {
+            if (($secondNewsNews = $techLetter->getSecondNews()) instanceof News) {
                 $url = $secondNewsNews->getUrl();
                 $history[] = $defaultColumns + [
                     'type' => 'second news',
@@ -118,7 +127,7 @@ class TechLetterGenerateController extends Controller
         ]);
     }
 
-    public function generateAction($techletterId, Request $request)
+    public function generate($techletterId, Request $request)
     {
         /**
          * @var Techletter\Sending $sending
@@ -166,10 +175,10 @@ class TechLetterGenerateController extends Controller
 
             $subject = sprintf("Veille de l'AFUP du %s", $sending->getSendingDate()->format('d/m/Y'));
 
-            $template = $this->get('app.mailchimp_techletter_api')->createTemplate($subject . ' - Template', $mailContent);
+            $template = $this->mailchimp->createTemplate($subject . ' - Template', $mailContent);
 
-            $response = $this->get('app.mailchimp_techletter_api')->createCampaign(
-                $this->getParameter('mailchimp_techletter_list'),
+            $response = $this->mailchimp->createCampaign(
+                $this->mailchimpTechletterList,
                 [
                     'template_id' => $template->get('id'),
                     'from_name' => "Pôle Veille de l'AFUP",
@@ -180,7 +189,7 @@ class TechLetterGenerateController extends Controller
 
             if ($this->isCsrfTokenValid('sendToMailchimpAndSchedule', $request->request->get('_csrf_token'))) {
                 try {
-                    $this->get('app.mailchimp_techletter_api')->scheduleCampaign($response['id'], $sending->getSendingDate());
+                    $this->mailchimp->scheduleCampaign($response['id'], $sending->getSendingDate());
                     $message = sprintf("Newsletter envoyée, verrouillée et planifiée pour être envoyée à %s (%s) sur Mailchimp",
                         $sending->getSendingDate()->format('d/m/Y H:i'),
                         $sending->getSendingDate()->getTimezone()->getName()
@@ -214,7 +223,7 @@ class TechLetterGenerateController extends Controller
         );
     }
 
-    public function retrieveDataAction(Request $request)
+    public function retrieveData(Request $request)
     {
         $url = $request->request->get('url');
         if ($url === null) {
@@ -227,7 +236,7 @@ class TechLetterGenerateController extends Controller
         return new JsonResponse($data);
     }
 
-    public function previewAction(Request $request)
+    public function preview(Request $request): Response
     {
         $sendingId = $request->request->getInt('techletterId');
         /**
@@ -246,12 +255,9 @@ class TechLetterGenerateController extends Controller
         }
 
         $techletter = Techletter\TechLetterFactory::createTechLetterFromJson($request->request->get('techletter'));
-
-        if ($techletter instanceof Techletter\TechLetter) {
-            // @todo could be better elsewhere
-            $sending->setTechletter(json_encode($techletter->jsonSerialize()));
-            $this->sendingRepository->save($sending);
-        }
+        // @todo could be better elsewhere
+        $sending->setTechletter(json_encode($techletter->jsonSerialize()));
+        $this->sendingRepository->save($sending);
 
         return $this->render('admin/techletter/mail_template.html.twig', [
             'preview' => true,
@@ -259,7 +265,7 @@ class TechLetterGenerateController extends Controller
         ]);
     }
 
-    public function sendTestAction(Request $request)
+    public function sendTest(Request $request): RedirectResponse
     {
         $sendingId = $request->query->getInt('techletterId');
         /**
@@ -279,7 +285,7 @@ class TechLetterGenerateController extends Controller
 
         $techLetter = Techletter\TechLetterFactory::createTechLetterFromJson($sending->getTechletter());
 
-        $message = new Message($subject, null, new MailUser($this->getParameter('techletter_test_email_address')));
+        $message = new Message($subject, null, new MailUser($this->techletterTestEmailAddress));
         $this->mailer->renderTemplate($message,':admin/techletter:mail_template.html.twig', [
             'tech_letter' => $techLetter,
             'preview' => false,
@@ -291,7 +297,7 @@ class TechLetterGenerateController extends Controller
         return $this->redirectToRoute('admin_techletter_generate', ['techletterId' => $sendingId]);
     }
 
-    public function membersAction()
+    public function members(): Response
     {
         $subscribers = $this->techletterSubscriptionsRepository->getAllSubscriptionsWithUser();
         return $this->render('admin/techletter/members.html.twig', [

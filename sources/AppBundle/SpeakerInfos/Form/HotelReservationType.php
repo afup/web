@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\SpeakerInfos\Form;
 
 use AppBundle\Event\Model\Event;
@@ -18,24 +20,14 @@ class HotelReservationType extends AbstractType
 {
     const NIGHT_NONE = 'none';
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /**
          * @var Event $event
@@ -76,7 +68,7 @@ class HotelReservationType extends AbstractType
                     'choices' => $choices,
                     'constraints' => [
                         new Choice(['choices' => array_values($choices), 'multiple' => true, 'min' => 1]),
-                        new Callback(['callback' => function ($values, ExecutionContextInterface $context) {
+                        new Callback(['callback' => function ($values, ExecutionContextInterface $context): void {
                             if (in_array(self::NIGHT_NONE, $values)
                             && 1 !== count($values)) {
                                 $context
@@ -92,7 +84,7 @@ class HotelReservationType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'event' => null,

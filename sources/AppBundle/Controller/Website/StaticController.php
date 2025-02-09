@@ -1,23 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Offices\OfficesCollection;
 use AppBundle\Twig\ViewRenderer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class StaticController extends Controller
+class StaticController extends AbstractController
 {
     private ViewRenderer $view;
+    private string $superAperoCsvUrl;
 
-    public function __construct(ViewRenderer $view)
+    public function __construct(ViewRenderer $view, string $superAperoCsvUrl)
     {
         $this->view = $view;
+        $this->superAperoCsvUrl = $superAperoCsvUrl;
     }
 
-    public function officesAction()
+    public function offices(): Response
     {
         $officesCollection = new OfficesCollection();
         return $this->view->render(':site:offices.html.twig', [
@@ -25,7 +30,10 @@ class StaticController extends Controller
         ]);
     }
 
-    protected function getAperos($url)
+    /**
+     * @return array{code: (string | null), content: (string | null), meetup_id?: (string | null)}[]
+     */
+    protected function getAperos($url): array
     {
         $fp = fopen($url, 'rb');
         if (!$fp) {
@@ -35,7 +43,7 @@ class StaticController extends Controller
         $aperos = [];
 
         while (false !== ($row = fgetcsv($fp))) {
-            if (0 === strlen(trim($row[0]))) {
+            if (trim($row[0]) === '') {
                 continue;
             }
 
@@ -46,7 +54,7 @@ class StaticController extends Controller
                 'content' => $content,
             ];
 
-            if (strlen(trim($meeetupId))) {
+            if (strlen(trim($meeetupId)) !== 0) {
                 $apero['meetup_id'] = $meeetupId;
             }
 
@@ -56,15 +64,14 @@ class StaticController extends Controller
         return $aperos;
     }
 
-    public function superAperoAction()
+    public function superApero(): Response
     {
-        $aperos = $this->getAperos($this->getParameter('super_apero_csv_url'));
         return $this->view->render(':site:superapero.html.twig', [
-            'aperos' => $aperos
+            'aperos' => $this->superAperoCsvUrl
         ]);
     }
 
-    public function voidAction(Request $request)
+    public function void(Request $request): Response
     {
         $params = [];
         if ($request->attributes->has('legacyContent')) {

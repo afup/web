@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Payment;
 
 use AppBundle\Event\Model\Invoice;
+use League\ISO3166\ISO3166;
 
 class PayboxBilling
 {
@@ -76,7 +79,7 @@ class PayboxBilling
         $country = $this->getCountryCode();
 
         try {
-            $data = (new \League\ISO3166\ISO3166)->alpha2($country);
+            $data = (new ISO3166)->alpha2($country);
 
             return $data['numeric'];
         } catch (\Exception $exception) {
@@ -84,7 +87,7 @@ class PayboxBilling
         }
     }
 
-    public static function createFromInvoice(Invoice $invoice)
+    public static function createFromInvoice(Invoice $invoice): self
     {
         return new self($invoice->getFirstname(), $invoice->getLastname(), $invoice->getAddress(), $invoice->getZipcode(), $invoice->getCity(), $invoice->getCountryId());
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Utils;
 
 use AppBundle\Email\Mailer\Message;
@@ -7,11 +9,9 @@ use AppBundle\Email\Mailer\Message;
 class Mailing
 {
     /**
-     * @param Message $message
      * @param string $body
-     * @return bool
      */
-    public static function envoyerMail(Message $message, $body)
+    public static function envoyerMail(Message $message, $body): bool
     {
         $recipients = $message->getRecipients();
         $recipient = reset($recipients);

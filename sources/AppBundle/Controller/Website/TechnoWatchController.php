@@ -1,24 +1,36 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Calendar\TechnoWatchCalendarGenerator;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class TechnoWatchController extends Controller
+class TechnoWatchController extends AbstractController
 {
-    public function calendarAction(Request $request)
+    private string $technoWatchCalendarKey;
+    private string $technoWatchCalendarUrl;
+
+    public function __construct(string $technoWatchCalendarKey,
+                                string $technoWatchCalendarUrl)
     {
-        if ($request->query->get('key') != $this->getParameter('techno_watch_calendar_key')) {
+        $this->technoWatchCalendarKey = $technoWatchCalendarKey;
+        $this->technoWatchCalendarUrl = $technoWatchCalendarUrl;
+    }
+
+    public function calendar(Request $request): Response
+    {
+        if ($request->query->get('key') !== $this->technoWatchCalendarKey) {
             throw $this->createNotFoundException();
         }
 
         $generator = new TechnoWatchCalendarGenerator("Veille de l'AFUP", new \DateTime());
 
         $calendar = $generator->generate(
-            $this->getParameter('techno_watch_calendar_url'),
+            $this->technoWatchCalendarUrl,
             $request->query->getBoolean('display_prefix', true),
             $request->query->get('filter', '')
         );

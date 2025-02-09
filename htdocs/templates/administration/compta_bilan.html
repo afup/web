@@ -41,7 +41,7 @@
                             {foreach from=$debit item=debits}
                                 <tr>
                                     <td>{$debits.evenement}</td>
-                                    <td class="right aligned">{$debits.montant|number_format:2:',':' '}</td>
+                                    <td class="right aligned">{$debits.montant|floatval|number_format:2:',':' '}</td>
                                     <td class="right aligned single line">
                                         <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}"
                                            data-tooltip="Déplier les écritures de débit/crédit pour {$debits.evenement}"
@@ -74,7 +74,7 @@
                                                         <tr>
                                                             <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
                                                             <td>{$detail.description}</td>
-                                                            <td class="right aligned">{$detail.montant|number_format:2:',':' '}</td>
+                                                            <td class="right aligned">{$detail.montant|floatval|number_format:2:',':' '}</td>
                                                             <td class="right aligned">
                                                                 <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.compta_id}"
                                                                    data-tooltip="Modifier la ligne {$detail.description}"
@@ -115,7 +115,7 @@
                             {foreach from=$credit item=credits}
                                 <tr>
                                     <td>{$credits.evenement}</td>
-                                    <td class="right aligned">{$credits.montant|number_format:2:',':' '}</td>
+                                    <td class="right aligned">{$credits.montant|floatval|number_format:2:',':' '}</td>
                                     <td class="right aligned single line">
                                         <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}"
                                            data-tooltip="Déplier les écritures de crédit/crédit pour {$debits.evenement}"
@@ -150,7 +150,7 @@
                                                         <tr>
                                                             <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
                                                             <td>{$detail.description}</td>
-                                                            <td class="right aligned">{$detail.montant|number_format:2:',':' '}</td>
+                                                            <td class="right aligned">{$detail.montant|floatval|number_format:2:',':' '}</td>
                                                             <td class="right aligned">
                                                                 <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.compta_id}"
                                                                    data-tooltip="Modifier la ligne {$detail.description}"
@@ -185,14 +185,14 @@
                 <th class="center aligned">
                     <div class="ui mini horizontal statistic">
                         <div class="value">
-                            {$totalDepense|number_format:2:',':' '}
+                            {$totalDepense|floatval|number_format:2:',':' '}
                         </div>
                     </div>
                 </th>
                 <th class="center aligned">
                     <div class="ui mini horizontal statistic">
                         <div class="value">
-                            {$totalRecette|number_format:2:',':' '}
+                            {$totalRecette|floatval|number_format:2:',':' '}
                         </div>
                     </div>
                 </th>
@@ -201,7 +201,7 @@
                 <th colspan="2" class="center aligned">
                     <div class="ui tiny horizontal statistic">
                         <div class="value">
-                            {$difMontant|number_format:2:',':' '}
+                            {$difMontant|floatval|number_format:2:',':' '}
                         </div>
                     </div>
                 </th>
@@ -244,7 +244,7 @@
                             <tr>
                                 <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
                                 <td>{$detail.description}</td>
-                                <td class="right aligned">{$detail.montant|number_format:2:',':' '}</td>
+                                <td class="right aligned">{$detail.montant|floatval|number_format:2:',':' '}</td>
                             </tr>
                         {/foreach}
                     </table>
@@ -272,7 +272,7 @@
                             <tr>
                                 <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
                                 <td>{$detail.description}</td>
-                                <td class="right aligned">{$detail.montant|number_format:2:',':' '}</td>
+                                <td class="right aligned">{$detail.montant|floatval|number_format:2:',':' '}</td>
                             </tr>
                         {/foreach}
                     </table>
@@ -290,14 +290,14 @@
                 <td class="center aligned">
                     <div class="ui mini horizontal statistic">
                         <div class="value">
-                            {$sousTotalDebit|number_format:2:',':' '}
+                            {$sousTotalDebit|floatval|number_format:2:',':' '}
                         </div>
                     </div>
                 </td>
                 <td class="center aligned">
                     <div class="ui mini horizontal statistic">
                         <div class="value">
-                            {$sousTotalCredit|number_format:2:',':' '}
+                            {$sousTotalCredit|floatval|number_format:2:',':' '}
                         </div>
                     </div>
                 </td>
@@ -306,7 +306,7 @@
                 <td colspan="2" class="center aligned">
                     <div class="ui tiny horizontal statistic">
                         <div class="value">
-                            {$difMontant|number_format:2:',':' '}
+                            {$difMontant|floatval|number_format:2:',':' '}
                         </div>
                     </div>
                 </td>

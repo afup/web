@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\VideoNotifier;
 
 use AppBundle\Event\Model\Event;
@@ -15,47 +17,20 @@ use TwitterAPIExchange;
 
 class Runner
 {
-    /**
-     * @var TweetGenerator
-     */
-    private $tweetGenerator;
+    private TweetGenerator $tweetGenerator;
 
-    /**
-     * @var PlanningRepository
-     */
-    private $planningRepository;
+    private PlanningRepository $planningRepository;
 
-    /**
-     * @var TalkRepository
-     */
-    private $talkRepository;
+    private TalkRepository $talkRepository;
 
-    /**
-     * @var EventRepository
-     */
-    private $eventRepository;
+    private EventRepository $eventRepository;
 
-    /**
-     * @var SpeakerRepository
-     */
-    private $speakerRepository;
+    private SpeakerRepository $speakerRepository;
 
-    /**
-     * @var TweetRepository
-     */
-    private $tweetRepository;
+    private TweetRepository $tweetRepository;
 
-    /**
-     * @var TwitterAPIExchange
-     */
-    private $twitter;
+    private \TwitterAPIExchange $twitter;
 
-    /**
-     * @param PlanningRepository $planningRepository
-     * @param TalkRepository $talkRepository
-     * @param EventRepository $eventRepository
-     * @param SpeakerRepository $speakerRepository
-     */
     public function __construct(PlanningRepository $planningRepository, TalkRepository $talkRepository, EventRepository $eventRepository, SpeakerRepository $speakerRepository, TweetRepository $tweetRepository, TwitterAPIExchange $twitter)
     {
         $this->tweetGenerator = new TweetGenerator();
@@ -69,10 +44,8 @@ class Runner
 
     /**
      * @param Event|null $eventToFilter
-     *
-     * @return Tweet
      */
-    public function execute(Event $eventToFilter = null)
+    public function execute(Event $eventToFilter = null): Tweet
     {
         $talkInfos = $this->getNextTalkInformations($eventToFilter);
         $tweet = $this->tweetGenerator->generate($talkInfos['talk'], $talkInfos['speakers']);
@@ -89,7 +62,7 @@ class Runner
     {
         $all = $this->getAllTalkInformations($eventToFilter);
         $tweetsFromThisRound = $this->removeTweetsFromLastRound($all);
-        if (0 === count($tweetsFromThisRound)) {
+        if ([] === $tweetsFromThisRound) {
             throw new \LogicException("No talk found");
         }
         return $this->getRandomTalkInformations($tweetsFromThisRound);
@@ -97,10 +70,8 @@ class Runner
 
     /**
      * @param Event|null $eventToFilter
-     *
-     * @return array
      */
-    protected function getAllTalkInformations(Event $eventToFilter = null)
+    protected function getAllTalkInformations(Event $eventToFilter = null): array
     {
         $plannings = $this->planningRepository->getAll();
         $minimumEventDate = $this->getMinimumEventDate();
@@ -117,13 +88,13 @@ class Runner
                 continue;
             }
 
-            if (!($talk->getType() == Talk::TYPE_FULL_LONG || $talk->getType() == Talk::TYPE_FULL_SHORT)) {
+            if ($talk->getType() != Talk::TYPE_FULL_LONG && $talk->getType() != Talk::TYPE_FULL_SHORT) {
                 continue;
             }
 
             $eventId = $planning->getEventId();
 
-            if (null !== $eventToFilter && $eventToFilter->getId() != $eventId) {
+            if ($eventToFilter instanceof Event && $eventToFilter->getId() != $eventId) {
                 continue;
             }
 
@@ -145,10 +116,7 @@ class Runner
         return $talkInformations;
     }
 
-    /**
-     * @return \DateTime
-     */
-    protected function getMinimumEventDate()
+    protected function getMinimumEventDate(): \DateTime
     {
         $datetime = new \DateTime('now');
         $datetime->modify('-2 years');
@@ -157,8 +125,6 @@ class Runner
     }
 
     /**
-     * @param array $talksInformations
-     *
      * @return string
      */
     protected function getRandomTalkInformations(array $talksInformations)
@@ -166,12 +132,7 @@ class Runner
         return $talksInformations[array_rand($talksInformations)];
     }
 
-    /**
-     * @param array $talksInformations
-     *
-     * @return array
-     */
-    protected function removeTweetsFromLastRound(array $talksInformations)
+    protected function removeTweetsFromLastRound(array $talksInformations): array
     {
         $maxCount = 0;
         $minCount = PHP_INT_MAX;
@@ -224,12 +185,10 @@ class Runner
     }
 
     /**
-     * @param Talk $talk
      * @param string $tweetId
      *
-     * @return Tweet
      */
-    private function saveTweet(Talk $talk, $tweetId)
+    private function saveTweet(Talk $talk, $tweetId): Tweet
     {
         $tweet = new Tweet();
         $tweet->setId($tweetId);

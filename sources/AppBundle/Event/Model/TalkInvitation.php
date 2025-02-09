@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -38,10 +40,7 @@ class TalkInvitation implements NotifyPropertyInterface
      */
     private $token;
 
-    /**
-     * @var \DateTime
-     */
-    private $submittedOn;
+    private ?\DateTime $submittedOn = null;
 
     /**
      * @var int
@@ -69,9 +68,8 @@ class TalkInvitation implements NotifyPropertyInterface
 
     /**
      * @param int $id
-     * @return TalkInvitation
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -88,9 +86,8 @@ class TalkInvitation implements NotifyPropertyInterface
 
     /**
      * @param int $talkId
-     * @return TalkInvitation
      */
-    public function setTalkId($talkId)
+    public function setTalkId($talkId): self
     {
         $this->propertyChanged('talkId', $this->talkId, $talkId);
         $this->talkId = $talkId;
@@ -107,9 +104,8 @@ class TalkInvitation implements NotifyPropertyInterface
 
     /**
      * @param string $email
-     * @return TalkInvitation
      */
-    public function setEmail($email)
+    public function setEmail($email): self
     {
         $this->propertyChanged('email', $this->email, $email);
         $this->email = $email;
@@ -126,9 +122,8 @@ class TalkInvitation implements NotifyPropertyInterface
 
     /**
      * @param string $token
-     * @return TalkInvitation
      */
-    public function setToken($token)
+    public function setToken($token): self
     {
         $this->propertyChanged('token', $this->token, $token);
         $this->token = $token;
@@ -138,16 +133,12 @@ class TalkInvitation implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getSubmittedOn()
+    public function getSubmittedOn(): ?\DateTime
     {
         return $this->submittedOn;
     }
 
-    /**
-     * @param \DateTime $submittedOn
-     * @return TalkInvitation
-     */
-    public function setSubmittedOn(\DateTime $submittedOn)
+    public function setSubmittedOn(\DateTime $submittedOn): self
     {
         $this->propertyChanged('submittedOn', $this->submittedOn, $submittedOn);
 
@@ -165,9 +156,8 @@ class TalkInvitation implements NotifyPropertyInterface
 
     /**
      * @param int $state
-     * @return TalkInvitation
      */
-    public function setState($state)
+    public function setState($state): self
     {
         $this->propertyChanged('state', $this->state, $state);
 
@@ -185,9 +175,8 @@ class TalkInvitation implements NotifyPropertyInterface
 
     /**
      * @param int $submittedBy
-     * @return TalkInvitation
      */
-    public function setSubmittedBy($submittedBy)
+    public function setSubmittedBy($submittedBy): self
     {
         $this->propertyChanged('submittedBy', $this->submittedBy, $submittedBy);
         $this->submittedBy = $submittedBy;

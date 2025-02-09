@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Ticket;
 
 use AppBundle\Association\Model\User;
@@ -14,25 +16,13 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class PurchaseTypeFactory
 {
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $securityChecker;
+    private AuthorizationCheckerInterface $securityChecker;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
-    /**
-     * @var InvoiceFactory
-     */
-    private $invoiceFactory;
+    private InvoiceFactory $invoiceFactory;
 
-    /**
-     * @var SpeakerRepository
-     */
-    private $speakerRepository;
+    private SpeakerRepository $speakerRepository;
 
     public function __construct(
         AuthorizationCheckerInterface $securityChecker,
@@ -62,7 +52,7 @@ class PurchaseTypeFactory
             }
         }
 
-        $isCfpSubmitter = null !== $user && $this->speakerRepository->hasCFPSubmitted($event, $user->getEmail());
+        $isCfpSubmitter = $user instanceof User && $this->speakerRepository->hasCFPSubmitted($event, $user->getEmail());
 
         $invoice = $this->invoiceFactory->createInvoiceForEvent($event);
         $ticket = new Ticket();
@@ -76,12 +66,10 @@ class PurchaseTypeFactory
             }
         }
 
-        $invoiceType = $this->formFactory->create(
+        return $this->formFactory->create(
             PurchaseType::class,
             $invoice,
             ['event_id' => $event->getId(), 'member_type' => $memberType, 'is_cfp_submitter' => $isCfpSubmitter, 'special_price_token' => $specialPriceToken]
         );
-
-        return $invoiceType;
     }
 }

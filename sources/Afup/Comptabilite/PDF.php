@@ -1,29 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Comptabilite;
+
 use FPDF;
 
 class PDF extends FPDF
 {
-
-    function Header()       //En-tête
+    public function Header(): void       //En-tête
     {
         $this->Ln(1);              //Saut de ligne
     }
 
-//Pied de page
-    function Footer()
+    //Pied de page
+    public function Footer(): void
     {
 //    $this->SetY(-15);               //Positionnement à 1,5 cm du bas
 //    $this->SetFont('Arial','I',8);  //Police Arial italique 8
 //    $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');      //Numéro de page
-
     }
 
 
-    function tableau($position, $header, $data)
+    public function tableau($position, $header, $data): void
     {
-        if ($position == 1) $position = 0; else $position = 150;
+        $position = $position == 1 ? 0 : 150;
         $y = 30;
 
         //Couleurs, épaisseur du trait et police grasse
@@ -66,6 +67,4 @@ class PDF extends FPDF
         }
         $this->Cell(array_sum($w), 0, '', 'T');
     }
-
-
 }

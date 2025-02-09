@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Form;
 
 use Afup\Site\Association\Personnes_Morales;
@@ -23,10 +25,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserEditType extends AbstractType
 {
-    /** @var Personnes_Morales */
-    private $personnesMorales;
-    /** @var Pays */
-    private $pays;
+    private Personnes_Morales $personnesMorales;
+    private Pays $pays;
 
     public function __construct(
         Personnes_Morales $personnesMorales,
@@ -36,7 +36,7 @@ class UserEditType extends AbstractType
         $this->pays = $pays;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $civilities = ['M.', 'Mme'];
         $builder
@@ -231,12 +231,12 @@ class UserEditType extends AbstractType
 
         $builder
             ->get('companyId')->addModelTransformer(new CallbackTransformer(
-                fn ($value): string => $value,
+                fn ($value): string => (string) $value,
                 fn ($value): int => (int) $value
             ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,

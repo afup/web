@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Payment\tests\units;
 
 use AppBundle\Payment\Paybox as TestedClass;
@@ -10,7 +12,7 @@ class Paybox extends \atoum
     /**
      * @dataProvider generateDateProvider
      */
-    public function testGenerate($case, $domainServer, $secretKey, $site, $rang, $identifiant, $currentDate, $callback, $billing, $expected)
+    public function testGenerate($case, $domainServer, $secretKey, $site, $rang, $identifiant, $currentDate, $callback, $billing, $expected): void
     {
         $this
             ->assert($case)
@@ -115,7 +117,7 @@ EOF;
                 'rang' => $testRang,
                 'identifiant' => $testIdentifiant,
                 'current_date' => new \DateTimeImmutable('2018-03-02 20:20:19'),
-                'callback' => function(TestedClass $paybox) {
+                'callback' => function (TestedClass $paybox): void {
                     $paybox->setTotal(2500);
                     $paybox->setCmd('TEST Paybox');
                     $paybox->setPorteur('test@paybox.com');
@@ -131,7 +133,7 @@ EOF;
                 'rang' => $testRang,
                 'identifiant' => $testIdentifiant,
                 'current_date' => new \DateTimeImmutable('2018-03-02 20:20:19'),
-                'callback' => function(TestedClass $paybox) {
+                'callback' => function (TestedClass $paybox): void {
                     $paybox->setTotal(2500);
                     $paybox->setCmd('TEST Paybox');
                     $paybox->setPorteur('test@paybox.com');
@@ -147,7 +149,7 @@ EOF;
                 'rang' => $testRang,
                 'identifiant' => $testIdentifiant,
                 'current_date' => new \DateTimeImmutable('2018-03-02 20:20:19'),
-                'callback' => function(TestedClass $paybox) {
+                'callback' => function (TestedClass $paybox): void {
                     $paybox->setTotal(2500);
                     $paybox->setCmd('TEST Paybox');
                     $paybox->setPorteur('test@paybox.com');

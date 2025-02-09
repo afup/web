@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Command;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
+use AppBundle\Notifier\SlackNotifier;
+use AppBundle\Slack\MessageFactory;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,10 +17,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class TicketStatsNotificationCommand extends ContainerAwareCommand
 {
+    private MessageFactory $messageFactory;
+    private EventStatsRepository $eventStatsRepository;
+    private SlackNotifier $slackNotifier;
+    public function __construct(MessageFactory $messageFactory, EventStatsRepository $eventStatsRepository, SlackNotifier $slackNotifier)
+    {
+        $this->messageFactory = $messageFactory;
+        $this->eventStatsRepository = $eventStatsRepository;
+        $this->slackNotifier = $slackNotifier;
+    }
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('ticket-stats-notification')
@@ -27,7 +40,7 @@ class TicketStatsNotificationCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $eventReposotory = $this->getContainer()->get('ting')->get(EventRepository::class);
         $ticketRepository = $this->getContainer()->get('ting')->get(TicketTypeRepository::class);
@@ -41,14 +54,14 @@ class TicketStatsNotificationCommand extends ContainerAwareCommand
 
         /** @var Event $event */
         foreach ($eventReposotory->getNextEvents() as $event) {
-            $message = $this->getContainer()->get(\AppBundle\Slack\MessageFactory::class)->createMessageForTicketStats(
+            $message = $this->messageFactory->createMessageForTicketStats(
                 $event,
-                $this->getContainer()->get(EventStatsRepository::class),
+                $this->eventStatsRepository,
                 $ticketRepository,
                 $date
             );
 
-            $this->getContainer()->get(\AppBundle\Notifier\SlackNotifier::class)->sendMessage($message);
+            $this->slackNotifier->sendMessage($message);
         }
 
         return 0;

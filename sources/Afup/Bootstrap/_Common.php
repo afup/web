@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Fichier d'initialisation de l'application (bootstrap), partie commune
  * à tous les contextes (points d'entrée) d'usage de l'application
@@ -17,17 +20,15 @@
  */
 
 // racine de l'application (pas du document root !)
-
 use Afup\Site\Corporate\_Site_Base_De_Donnees;
 use Afup\Site\Utils\Configuration;
 
-$root = realpath(__DIR__ . '/../../..');
+$root = dirname(__DIR__, 3);
 
 require_once $root . '/vendor/autoload.php';
+
 // définitions des constantes
-
 define('AFUP_CHEMIN_RACINE', $root . '/htdocs/');
-
 
 // Voir la classe Afup\Site\Association\Personnes_Morales
 define('AFUP_PERSONNES_PHYSIQUES', 0);
@@ -42,28 +43,19 @@ date_default_timezone_set('Europe/Paris');
  *
  * @author Olivier Hoareau <olivier@phppro.fr>
  */
-set_include_path(
-                       $root . '/dependencies'
-    . PATH_SEPARATOR . $root . '/sources'
-);
+set_include_path($root . '/dependencies' . PATH_SEPARATOR . $root . '/sources');
 
 // préparation de la requête / session
-
-require_once 'Afup/fonctions.php';
-
-
+require_once __DIR__ . '/../fonctions.php';
 
 // chargement de la configuration
 $conf = new Configuration();
 
 // mets la configuration dans une 'clé de registre' accessible à tout moment
-
 $GLOBALS['AFUP_CONF'] = $conf;
 
 // initialisation de la couche d'abstraction de la base de données
-
 $bdd = new _Site_Base_De_Donnees();
 
 // mets la connexion db dans une 'clé de registre' accessible à tout moment
-
 $GLOBALS['AFUP_DB'] = $bdd;

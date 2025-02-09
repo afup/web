@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Email\Mailer\Adapter;
 
 use Afup\Site\Utils\Configuration;
+use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\Message;
 use PHPMailer;
 use UnexpectedValueException;
@@ -29,7 +32,7 @@ class PhpMailerAdapter implements MailerAdapter
         $this->port = $port;
     }
 
-    public static function createFromConfiguration(Configuration $configuration)
+    public static function createFromConfiguration(Configuration $configuration): self
     {
         return new self(
             $configuration->obtenir('smtp_host'),
@@ -40,10 +43,10 @@ class PhpMailerAdapter implements MailerAdapter
         );
     }
 
-    public function send(Message $message)
+    public function send(Message $message): void
     {
         $from = $message->getFrom();
-        if (null === $from) {
+        if (!$from instanceof MailUser) {
             throw new UnexpectedValueException('Trying to send a mail with no sender');
         }
         $phpMailer = $this->createPhpMailer();
@@ -72,7 +75,7 @@ class PhpMailerAdapter implements MailerAdapter
      *
      * @return PHPMailer objet mailer configuré
      */
-    private function createPhpMailer()
+    private function createPhpMailer(): \PHPMailer
     {
         // Exceptions gérées
         $mailer = new PHPMailer(true);

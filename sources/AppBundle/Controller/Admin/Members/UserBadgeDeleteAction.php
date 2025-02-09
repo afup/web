@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members;
 
 use AppBundle\Event\Model\Repository\UserBadgeRepository;
@@ -8,15 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserBadgeDeleteAction
 {
-    /** @var UserBadgeRepository */
-    private $userBadgeRepository;
+    private UserBadgeRepository $userBadgeRepository;
 
     public function __construct(UserBadgeRepository $userBadgeRepository)
     {
         $this->userBadgeRepository = $userBadgeRepository;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse
     {
         $userBadge = $this->userBadgeRepository->getOneBy([
             'badgeId' => $request->attributes->get('badgeId'),
