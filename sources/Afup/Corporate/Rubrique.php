@@ -184,7 +184,7 @@ class Rubrique
             'raccourci' => $this->raccourci,
             'descriptif' => $this->descriptif,
             'contenu' => $this->contenu,
-            'date' => date('Y-m-d', $this->date),
+            'date' => date('Y-m-d', (int) $this->date),
             'etat' => $this->etat,
             'feuille_associee' => $this->feuille_associee,
         ];

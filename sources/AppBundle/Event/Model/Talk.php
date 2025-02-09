@@ -793,6 +793,9 @@ class Talk implements NotifyPropertyInterface
 
     public function getTweetsHasArray(): array
     {
+        if (!$this->getTweets()) {
+            return [];
+        }
         $explodedTweets = explode(PHP_EOL, $this->getTweets());
         $returnedTweets = [];
         foreach ($explodedTweets as $explodedTweet) {
