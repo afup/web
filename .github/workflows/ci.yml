@@ -109,3 +109,13 @@ jobs:
 
       - name: Tests - Functional
         run: make test-functional
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Functional tests - deprecated log - full
+          path: var/logs/test.deprecations.log
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Functional tests - deprecated log - report
+          path: var/logs/test.deprecations_grouped.log
