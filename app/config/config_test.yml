@@ -34,3 +34,16 @@ services:
 
 ewz_recaptcha:
     enabled: false
+
+
+monolog:
+    handlers:
+        deprecation_stream:
+            type: stream
+            path: "%kernel.logs_dir%/%kernel.environment%.deprecations.log"
+
+        deprecation_filter:
+            type: filter
+            handler: deprecation_stream
+            max_level: info
+            channels: ["php"]

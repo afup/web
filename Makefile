@@ -76,7 +76,9 @@ behat:
 test-functional: data config htdocs/uploads tmp
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest mailcatcher
+	make clean-test-deprecated-log
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm cliphp ./bin/behat
+	make var/logs/test.deprecations_grouped.log
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
 
 ### Analyse PHPStan
@@ -161,3 +163,9 @@ db-migrations:
 
 db-seed:
 	php bin/phinx seed:run
+
+clean-test-deprecated-log:
+	rm -f var/logs/test.deprecations.log
+
+var/logs/test.deprecations_grouped.log:
+	cat var/logs/test.deprecations.log | cut -d "]" -f 2 | awk '{$$1=$$1};1' | sort | uniq -c | sort -nr > var/logs/test.deprecations_grouped.log
