@@ -148,10 +148,10 @@ class OfficeFinder
     private function haversineGreatCircleDistance(float $latitudeFrom, float $longitudeFrom, float $latitudeTo, float $longitudeTo, int $earthRadius = 6371000): float
     {
         // convert from degrees to radians
-        $latFrom = deg2rad($latitudeFrom);
-        $lonFrom = deg2rad($longitudeFrom);
-        $latTo = deg2rad($latitudeTo);
-        $lonTo = deg2rad($longitudeTo);
+        $latFrom = deg2rad((float) $latitudeFrom);
+        $lonFrom = deg2rad((float) $longitudeFrom);
+        $latTo = deg2rad((float) $latitudeTo);
+        $lonTo = deg2rad((float) $longitudeTo);
 
         $latDelta = $latTo - $latFrom;
         $lonDelta = $lonTo - $lonFrom;

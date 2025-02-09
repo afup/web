@@ -72,6 +72,14 @@ test:
 behat:
 	./bin/behat
 
+### (Dans Docker) PHP CS Fixer (dry run)
+cs-lint:
+	./bin/php-cs-fixer fix --dry-run -vv
+
+### (Dans Docker) PHP CS Fixer (fix)
+cs-fix:
+	./bin/php-cs-fixer fix -vv
+
 ### Tests fonctionnels
 test-functional: data config htdocs/uploads tmp
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
