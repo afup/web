@@ -268,7 +268,7 @@ class Cotisations
             $date_fin_precedente = $cotisation === false ? 0 : $cotisation['date_fin'];
 
             if ($date_fin_precedente > 0) {
-                $date_debut = strtotime('+1day', $date_fin_precedente);
+                $date_debut = strtotime('+1day', (int) $date_fin_precedente);
             }
 
             $date_fin = $this->finProchaineCotisation($cotisation)->format('U');
