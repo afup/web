@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 // Impossible to access the file itself
+use Afup\Site\Comptabilite\Comptabilite;
 use Afup\Site\Comptabilite\Facture;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Pays;
@@ -26,15 +27,19 @@ $action = verifierAction([
 //$sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-
+$compta = new Comptabilite($bdd);
 $comptaFact = new Facture($bdd);
 
 if ($action == 'lister') {
-    $ecritures = $comptaFact->obtenirFacture();
+    $periodes = $compta->obtenirListPeriode();
+    $id_periode = isset($_GET['id_periode']) && $_GET['id_periode'] ? $_GET['id_periode'] : end($periodes)['id'];
+    $ecritures = $comptaFact->obtenirFacture($id_periode);
     foreach ($ecritures as &$e) {
         $e['link'] = urlencode(Utils::cryptFromText($e['id']));
     }
+    $smarty->assign('id_periode', $id_periode);
     $smarty->assign('ecritures', $ecritures);
+    $smarty->assign('listPeriode', $periodes);
 } elseif ($action == 'telecharger_facture') {
     $comptaFact->genererFacture($_GET['ref']);
 } elseif ($action == 'envoyer_facture') {

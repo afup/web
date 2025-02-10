@@ -8,6 +8,24 @@
         <p>Il faut obligatoirement passer par la saisie d'un devis.</p>
     </div>
 
+    <div class="ui green segment">
+        <form method="GET" name="forum">
+            <input type="hidden" name="page" value="compta_facture" />
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Année comptable</label>
+                        <select name="id_periode" onchange="this.form.submit(); return false;">
+                            {foreach from=$listPeriode item=periode}
+                            <option value="{$periode.id}"{if $id_periode == $periode.id} selected{/if}>{$periode.date_debut} - {$periode.date_fin}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
     <table class="ui table striped compact celled afup-tab-filterable">
         <thead>
             <tr>
