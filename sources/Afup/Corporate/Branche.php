@@ -59,6 +59,10 @@ class Branche
                     AND etat = 1';
         $racine = $this->bdd->obtenirEnregistrement($requete);
 
+        if ($racine === false) {
+            return '';
+        }
+
         $feuilles = $this->extraireFeuilles($id, $profondeur);
         if ($feuilles !== '' && $feuilles !== '0') {
             $navigation = '<ul id="' . $identification . '" class="' . Site::raccourcir($racine['nom']) . '">' . $feuilles . '</ul>';
