@@ -182,7 +182,10 @@ class Article
         $requete = 'SELECT *
                     FROM afup_site_article
                     WHERE id = ' . $this->bdd->echapper($this->id);
-        $this->remplir($this->bdd->obtenirEnregistrement($requete));
+        $data = $this->bdd->obtenirEnregistrement($requete);
+        if ($data) {
+            $this->remplir($data);
+        }
     }
 
     public function chargerDepuisRaccourci($raccourci): void
@@ -190,7 +193,10 @@ class Article
         $requete = 'SELECT *
                     FROM afup_site_article
                     WHERE CONCAT(id, "-", raccourci) = ' . $this->bdd->echapper($raccourci);
-        $this->remplir($this->bdd->obtenirEnregistrement($requete));
+        $data = $this->bdd->obtenirEnregistrement($requete);
+        if ($data) {
+            $this->remplir($data);
+        }
     }
 
     public function charger_dernier_depuis_rubrique(): void
@@ -199,7 +205,10 @@ class Article
                     FROM afup_site_article
                     WHERE id_site_rubrique = ' . $this->bdd->echapper($this->id_site_rubrique) .
             ' ORDER BY date DESC LIMIT 1';
-        $this->remplir($this->bdd->obtenirEnregistrement($requete));
+        $data = $this->bdd->obtenirEnregistrement($requete);
+        if ($data) {
+            $this->remplir($data);
+        }
     }
 
     public function remplir(array $article): void

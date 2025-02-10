@@ -32,6 +32,10 @@ class FeedCrawler
         foreach ($feeds as $feed) {
             echo $feed->getFeed() . ' : début...<br />', PHP_EOL;
             $rss = fetch_rss($feed->getFeed());
+            if (!$rss->items) {
+                echo $feed->getFeed(), ' : vide fin !<br /><br/>', PHP_EOL, PHP_EOL;
+                continue;
+            }
             $rss->items = array_reverse($rss->items);
             foreach ($rss->items as $item) {
                 if (empty($item['id'])) {
