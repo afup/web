@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -19,10 +21,7 @@ class TechletterUnsubscription implements NotifyPropertyInterface
      */
     private $email;
 
-    /**
-     * @var \DateTime
-     */
-    private $unsubscriptionDate;
+    private ?\DateTime $unsubscriptionDate = null;
 
     /**
      * @var string
@@ -47,7 +46,7 @@ class TechletterUnsubscription implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -67,7 +66,7 @@ class TechletterUnsubscription implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setEmail($email)
+    public function setEmail($email): self
     {
         $this->propertyChanged('email', $this->email, $email);
         $this->email = $email;
@@ -78,17 +77,15 @@ class TechletterUnsubscription implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getUnSubscriptionDate()
+    public function getUnSubscriptionDate(): ?\DateTime
     {
         return $this->unsubscriptionDate;
     }
 
     /**
-     * @param \DateTime $unsubscriptionDate
-     *
      * @return $this
      */
-    public function setUnsubscriptionDate(\DateTime $unsubscriptionDate)
+    public function setUnsubscriptionDate(\DateTime $unsubscriptionDate): self
     {
         $this->propertyChanged('unsubscriptionDate', $this->unsubscriptionDate, $unsubscriptionDate);
         $this->unsubscriptionDate = $unsubscriptionDate;
@@ -109,7 +106,7 @@ class TechletterUnsubscription implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setReason($reason)
+    public function setReason($reason): self
     {
         $this->propertyChanged('reason', $this->reason, $reason);
         $this->reason = $reason;
@@ -130,7 +127,7 @@ class TechletterUnsubscription implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setMailchimpId($mailchimpId)
+    public function setMailchimpId($mailchimpId): self
     {
         $this->propertyChanged('mailchimpId', $this->mailchimpId, $mailchimpId);
         $this->mailchimpId = $mailchimpId;

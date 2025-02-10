@@ -1,18 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website;
 
 use Afup\Site\Association\Cotisations;
+use Afup\Site\Association\Personnes_Morales;
+use Afup\Site\Droits;
 use Afup\Site\Logger\DbLoggerTrait;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Utils;
 use Afup\Site\Utils\Vat;
+use AppBundle\Association\CompanyMembership\InvitationMail;
+use AppBundle\Association\CompanyMembership\SubscriptionManagement;
 use AppBundle\Association\Event\NewMemberEvent;
 use AppBundle\Association\Factory\UserFactory;
 use AppBundle\Association\Form\CompanyMemberType;
 use AppBundle\Association\Form\ContactDetailsType;
 use AppBundle\Association\Form\RegisterUserType;
 use AppBundle\Association\Form\UserType;
+use AppBundle\Association\MembershipFeeReferenceGenerator;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\CompanyMemberInvitation;
 use AppBundle\Association\Model\GeneralMeetingQuestion;
@@ -27,37 +34,108 @@ use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
+use AppBundle\Email\Mailer\Mailer;
+use AppBundle\GeneralMeeting\Attendee;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxBilling;
+use AppBundle\Payment\PayboxFactory;
 use AppBundle\Payment\PayboxResponseFactory;
 use AppBundle\Security\LegacyAuthenticator;
+use AppBundle\Slack\LegacyClient;
 use AppBundle\TechLetter\Model\Repository\SendingRepository;
 use AppBundle\Twig\ViewRenderer;
 use Assert\Assertion;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class MemberShipController extends Controller
+class MemberShipController extends AbstractController
 {
     use DbLoggerTrait;
 
     private ViewRenderer $view;
+    private EventDispatcherInterface $eventDispatcher;
+    private TokenStorageInterface $tokenStorage;
+    private AuthorizationCheckerInterface $authorizationChecker;
+    private CsrfTokenManagerInterface $csrfTokenManager;
+    private UserFactory $userFactory;
+    private UserRepository $userRepository;
+    private UserService $userService;
+    private GuardAuthenticatorHandler $guardAuthenticatorHandler;
+    private LegacyAuthenticator $legacyAuthenticator;
+    private RepositoryFactory $repositoryFactory;
+    private InvitationMail $invitationMail;
+    private SubscriptionManagement $subscriptionManagement;
+    private LegacyModelFactory $legacyModelFactory;
+    private PayboxFactory $payboxFactory;
+    private LegacyClient $legacyClient;
+    private Mailer $mailer;
+    private GeneralMeetingRepository $generalMeetingRepository;
+    private GeneralMeetingQuestionRepository $generalMeetingQuestionRepository;
+    private GeneralMeetingVoteRepository $generalMeetingVoteRepository;
+    private string $storageDir;
 
-    public function __construct(ViewRenderer $view)
+    public function __construct(ViewRenderer $view,
+                                EventDispatcherInterface $eventDispatcher,
+                                TokenStorageInterface $tokenStorage,
+                                AuthorizationCheckerInterface $authorizationChecker,
+                                CsrfTokenManagerInterface $csrfTokenManager,
+                                UserFactory $userFactory,
+                                UserRepository $userRepository,
+                                UserService $userService,
+                                GuardAuthenticatorHandler $guardAuthenticatorHandler,
+                                LegacyAuthenticator $legacyAuthenticator,
+                                RepositoryFactory $repositoryFactory,
+                                InvitationMail $invitationMail,
+                                SubscriptionManagement $subscriptionManagement,
+                                LegacyModelFactory $legacyModelFactory,
+                                PayboxFactory $payboxFactory,
+                                LegacyClient $legacyClient,
+                                Mailer $mailer,
+                                GeneralMeetingRepository $generalMeetingRepository,
+                                GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
+                                GeneralMeetingVoteRepository $generalMeetingVoteRepository,
+                                string $storageDir)
     {
         $this->view = $view;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->tokenStorage = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->userFactory = $userFactory;
+        $this->userRepository = $userRepository;
+        $this->userService = $userService;
+        $this->guardAuthenticatorHandler = $guardAuthenticatorHandler;
+        $this->legacyAuthenticator = $legacyAuthenticator;
+        $this->repositoryFactory = $repositoryFactory;
+        $this->invitationMail = $invitationMail;
+        $this->subscriptionManagement = $subscriptionManagement;
+        $this->legacyModelFactory = $legacyModelFactory;
+        $this->payboxFactory = $payboxFactory;
+        $this->legacyClient = $legacyClient;
+        $this->mailer = $mailer;
+        $this->generalMeetingRepository = $generalMeetingRepository;
+        $this->generalMeetingQuestionRepository = $generalMeetingQuestionRepository;
+        $this->generalMeetingVoteRepository = $generalMeetingVoteRepository;
+        $this->storageDir = $storageDir;
     }
 
-    public function becomeMemberAction()
+    public function becomeMember(): Response
     {
         return $this->view->render('site/become_member.html.twig', [
             'membership_fee_natural_person' => AFUP_COTISATION_PERSONNE_PHYSIQUE,
@@ -65,9 +143,9 @@ class MemberShipController extends Controller
         ]);
     }
 
-    public function memberAction(Request $request): Response
+    public function member(Request $request): Response
     {
-        $user = $this->get(UserFactory::class)->createForRegister();
+        $user = $this->userFactory->createForRegister();
 
         $form = $this->createForm(RegisterUserType::class, $user);
         $form->handleRequest($request);
@@ -75,19 +153,19 @@ class MemberShipController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             // Nécessaire pour md5 le mdp qui est fait dans le setPlainPassword => a terme, utiliser les cryptages de sf
             $user->setPlainPassword($user->getPassword());
-            $this->get(UserRepository::class)->save($user);
+            $this->userRepository->save($user);
 
             Logs::initialiser($GLOBALS['AFUP_DB'], $user->getId());
             Logs::log('Ajout de la personne physique ' . $user->getFirstName() . ' ' . $user->getLastName());
 
-            $this->get(UserService::class)->sendWelcomeEmail($user);
+            $this->userService->sendWelcomeEmail($user);
             $this->addFlash('notice', 'Merci pour votre inscription. Il ne reste plus qu\'à régler votre cotisation.');
 
-            return $this->get('security.authentication.guard_handler')
+            return $this->guardAuthenticatorHandler
                 ->authenticateUserAndHandleSuccess(
                     $user,
                     $request,
-                    $this->get(LegacyAuthenticator::class),
+                    $this->legacyAuthenticator,
                     'legacy_secured_area'
                 );
         }
@@ -97,7 +175,7 @@ class MemberShipController extends Controller
         ]);
     }
 
-    public function companyAction(Request $request)
+    public function company(Request $request)
     {
         $data = new CompanyMember();
         $data->setInvitations([
@@ -112,11 +190,11 @@ class MemberShipController extends Controller
              * @var CompanyMember $member
              */
             $member = $subscribeForm->getData();
-            $this->get('ting')->get(CompanyMemberRepository::class)->save($member);
+            $this->repositoryFactory->get(CompanyMemberRepository::class)->save($member);
             /**
              * @var CompanyMemberInvitationRepository $invitationRepository
              */
-            $invitationRepository = $this->get('ting')->get(CompanyMemberInvitationRepository::class);
+            $invitationRepository = $this->repositoryFactory->get(CompanyMemberInvitationRepository::class);
 
             foreach ($member->getInvitations() as $index => $invitation) {
                 if ($invitation->getEmail() === null) {
@@ -136,12 +214,12 @@ class MemberShipController extends Controller
                 $invitationRepository->save($invitation);
 
                 // Send mail to the other guy, begging for him to join the company
-                $this->get('event_dispatcher')->addListener(KernelEvents::TERMINATE, function () use ($member, $invitation) {
-                    $this->get(\AppBundle\Association\CompanyMembership\InvitationMail::class)->sendInvitation($member, $invitation);
+                $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($member, $invitation): void {
+                    $this->invitationMail->sendInvitation($member, $invitation);
                 });
             }
 
-            $subscriptionManager = $this->get(\AppBundle\Association\CompanyMembership\SubscriptionManagement::class);
+            $subscriptionManager = $this->subscriptionManagement;
             $invoice = $subscriptionManager->createInvoiceForInscription($member, count($member->getInvitations()));
 
             return $this->redirectToRoute('company_membership_payment', ['invoiceNumber' => $invoice['invoice'], 'token' => $invoice['token']]);
@@ -152,17 +230,17 @@ class MemberShipController extends Controller
         ]);
     }
 
-    public function paymentAction($invoiceNumber, $token)
+    public function payment(string $invoiceNumber, ?string $token): Response
     {
         /**
          * @var Cotisations $subscription
          */
-        $subscription = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Cotisations::class);
+        $subscription = $this->legacyModelFactory->createObject(Cotisations::class);
         $invoice = $subscription->getByInvoice($invoiceNumber, $token);
         /**
          * @var CompanyMember $company
          */
-        $company = $this->get('ting')->get(CompanyMemberRepository::class)->get($invoice['id_personne']);
+        $company = $this->repositoryFactory->get(CompanyMemberRepository::class)->get($invoice['id_personne']);
 
         if (!$invoice || $company === null) {
             throw $this->createNotFoundException(sprintf('Could not find the invoice "%s" with token "%s"', $invoiceNumber, $token));
@@ -170,7 +248,7 @@ class MemberShipController extends Controller
 
         $payboxBilling = new PayboxBilling($company->getFirstName(), $company->getLastName(), $company->getAddress(), $company->getZipCode(), $company->getCity(), $company->getCountry());
 
-        $paybox = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForSubscription(
+        $paybox = $this->payboxFactory->createPayboxForSubscription(
             'F' . $invoiceNumber,
             (float) $invoice['montant'],
             $company->getEmail(),
@@ -192,12 +270,12 @@ class MemberShipController extends Controller
         ]);
     }
 
-    public function invoiceAction($invoiceNumber, $token)
+    public function invoice(string $invoiceNumber, ?string $token): Response
     {
         /**
          * @var Cotisations $subscription
          */
-        $subscription = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Cotisations::class);
+        $subscription = $this->legacyModelFactory->createObject(Cotisations::class);
         $invoice = $subscription->getByInvoice($invoiceNumber, $token);
 
         if (!$invoice) {
@@ -214,12 +292,12 @@ class MemberShipController extends Controller
         return $response;
     }
 
-    public function memberInvitationAction(Request $request, $invitationId, $token)
+    public function memberInvitation(Request $request, $invitationId, $token)
     {
         /**
          * @var CompanyMemberInvitationRepository $invitationRepository
          */
-        $invitationRepository = $this->get('ting')->get(CompanyMemberInvitationRepository::class);
+        $invitationRepository = $this->repositoryFactory->get(CompanyMemberInvitationRepository::class);
 
         /**
          * @var CompanyMemberInvitation $invitation
@@ -230,7 +308,7 @@ class MemberShipController extends Controller
             /**
              * @var CompanyMember $company
              */
-            $company = $this->get('ting')->get(CompanyMemberRepository::class)->get($invitation->getCompanyId());
+            $company = $this->repositoryFactory->get(CompanyMemberRepository::class)->get($invitation->getCompanyId());
         }
 
         if ($invitation === null || $company === null) {
@@ -258,12 +336,12 @@ class MemberShipController extends Controller
 
             $invitation->setStatus(CompanyMemberInvitation::STATUS_ACCEPTED);
 
-            $this->get('ting')->get(UserRepository::class)->save($user);
+            $this->repositoryFactory->get(UserRepository::class)->save($user);
             $invitationRepository->save($invitation);
             $this->addFlash('success', 'Votre compte a été créé !');
 
             $event = new NewMemberEvent($user);
-            $this->get('event_dispatcher')->dispatch($event::NAME, $event);
+            $this->eventDispatcher->dispatch($event::NAME, $event);
 
             return $this->redirectToRoute('member_index');
         }
@@ -274,35 +352,29 @@ class MemberShipController extends Controller
         ]);
     }
 
-    public function slackInviteRequestAction(Request $request)
+    public function slackInviteRequest(): RedirectResponse
     {
         $user = $this->getUser();
-
         if (!$user->canRequestSlackInvite()) {
             throw $this->createAccessDeniedException("Vous n'êtes pas autorité à demander une invitation");
         }
-
-        $this->get('slack_members_legacy_client')->invite($this->getUser()->getEmail());
-
+        $this->legacyClient->invite($this->getUser()->getEmail());
         $this->addFlash('success', 'Un email vous a été envoyé pour rejoindre le Slack des membres !');
-
         $user->setSlackInviteStatus(User::SLACK_INVITE_STATUS_REQUESTED);
-        $this->get('ting')->get(UserRepository::class)->save($user);
-
+        $this->repositoryFactory->get(UserRepository::class)->save($user);
         $this->log('Demande invitation slack', $this->getUser());
-
         return $this->redirectToRoute('admin_home');
     }
 
-    public function payboxCallbackAction(Request $request)
+    public function payboxCallback(Request $request)
     {
         $payboxResponse = PayboxResponseFactory::createFromRequest($request);
-        $userRepository = $this->get(UserRepository::class);
+        $userRepository = $this->userRepository;
         /**
          * @var Cotisations $cotisations
          */
-        $cotisations = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Cotisations::class);
-        $logs = $this->get(\AppBundle\LegacyModelFactory::class)->createObject(Logs::class);
+        $cotisations = $this->legacyModelFactory->createObject(Cotisations::class);
+        $logs = $this->legacyModelFactory->createObject(Logs::class);
 
         $status = $payboxResponse->getStatus();
         $etat = AFUP_COTISATIONS_PAIEMENT_ERREUR;
@@ -325,11 +397,11 @@ class MemberShipController extends Controller
             if ($lastCotisation === false && $account['type'] == UserRepository::USER_TYPE_PHYSICAL) {
                 $user = $userRepository->get($account['id']);
                 $event = new NewMemberEvent($user);
-                $this->get('event_dispatcher')->dispatch($event::NAME, $event);
+                $this->eventDispatcher->dispatch($event::NAME, $event);
             }
 
             $cotisations->validerReglementEnLigne($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId());
-            $cotisations->notifierRegelementEnLigneAuTresorier($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId(), $userRepository);
+            $cotisations->notifierRegelementEnLigneAuTresorier($payboxResponse->getCmd(), (string) round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId(), $userRepository);
             $logs::log("Ajout de la cotisation " . $payboxResponse->getCmd() . " via Paybox.");
         }
         return new Response();
@@ -337,10 +409,10 @@ class MemberShipController extends Controller
 
 
 
-    public function contactDetailsAction(Request $request)
+    public function contactDetails(Request $request): Response
     {
-        $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);
-        $repo = $this->get('ting')->get(UserRepository::class);
+        $logs = $this->legacyModelFactory->createObject(Logs::class);
+        $repo = $this->repositoryFactory->get(UserRepository::class);
 
         /** @var User $user */
         $user = $repo->get($this->getUserId());
@@ -371,16 +443,16 @@ class MemberShipController extends Controller
         return $this->getDroits()->obtenirIdentifiant();
     }
 
-    private function getDroits()
+    private function getDroits(): Droits
     {
-        return Utils::fabriqueDroits($this->get('security.token_storage'), $this->get('security.authorization_checker'));
+        return Utils::fabriqueDroits($this->tokenStorage, $this->authorizationChecker);
     }
 
-    public function membershipFeeAction()
+    public function membershipFee(): Response
     {
         $bdd = $GLOBALS['AFUP_DB'];
-        $userRepository = $this->get(UserRepository::class);
-        $userService = $this->get(UserService::class);
+        $userRepository = $this->userRepository;
+        $userService = $this->userService;
         $cotisations = $this->getCotisations();
 
         $identifiant = $this->getDroits()->obtenirIdentifiant();
@@ -424,12 +496,12 @@ class MemberShipController extends Controller
 
         if ($user->getCompanyId() > 0) {
             $id_personne = $user->getCompanyId();
-            $personne_morale = new \Afup\Site\Association\Personnes_Morales($bdd);
+            $personne_morale = new Personnes_Morales($bdd);
             $type_personne = AFUP_PERSONNES_MORALES;
             $prefixe = 'Personne morale';
             $montant = $personne_morale->getMembershipFee($id_personne);
             if ($isSubjectedToVat) {
-                $montant = $montant * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE);
+                $montant *= 1 + Utils::MEMBERSHIP_FEE_VAT_RATE;
             }
         } else {
             $id_personne = $identifiant;
@@ -441,11 +513,11 @@ class MemberShipController extends Controller
         $formattedMontant = number_format($montant, 2, ',', ' ');
         $libelle = sprintf("%s : <strong>%s€</strong>", $prefixe, $formattedMontant);
 
-        $reference = (new \AppBundle\Association\MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $user->getLastName());
+        $reference = (new MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $user->getLastName());
 
         $payboxBilling = new PayboxBilling($user->getFirstName(), $user->getLastName(), $user->getAddress(), $user->getZipCode(), $user->getCity(), $user->getCountry());
 
-        $paybox = $this->get(\AppBundle\Payment\PayboxFactory::class)->createPayboxForSubscription(
+        $paybox = $this->payboxFactory->createPayboxForSubscription(
             $reference,
             (float) $montant,
             $user->getEmail(),
@@ -466,18 +538,18 @@ class MemberShipController extends Controller
         ]);
     }
 
-    private function getCotisations()
+    private function getCotisations(): Cotisations
     {
         return new Cotisations($GLOBALS['AFUP_DB'], $this->getDroits());
     }
 
-    public function membershipFeeDownloadAction(Request $request)
+    public function membershipFeeDownload(Request $request): BinaryFileResponse
     {
         $cotisations = $this->getCotisations();
         $identifiant = $this->getDroits()->obtenirIdentifiant();
         $id = $request->get('id');
 
-        $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);
+        $logs = $this->legacyModelFactory->createObject(Logs::class);
 
         if (false === $cotisations->isCurrentUserAllowedToReadInvoice($id)) {
             $logs::log("L'utilisateur id: " . $identifiant . ' a tenté de voir la facture id:' . $id);
@@ -490,39 +562,39 @@ class MemberShipController extends Controller
 
         if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
             /** @var CompanyMember $company */
-            $company = $this->get('ting')->get(CompanyMemberRepository::class)->get($cotisation['id_personne']);
+            $company = $this->repositoryFactory->get(CompanyMemberRepository::class)->get($cotisation['id_personne']);
             Assertion::isInstanceOf($company, CompanyMember::class);
             $patternPrefix = $company->getCompanyName();
         } else {
-            $user = $this->get('ting')->get(UserRepository::class)->get($cotisation['id_personne']);
+            $user = $this->repositoryFactory->get(UserRepository::class)->get($cotisation['id_personne']);
             Assertion::isInstanceOf($user, User::class);
             $patternPrefix = $user->getLastName();
         }
 
         $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', (int) $cotisation['date_debut']) . '.pdf';
 
-        $response = new BinaryFileResponse($tempfile, 200, [], false);
+        $response = new BinaryFileResponse($tempfile, Response::HTTP_OK, [], false);
         $response->deleteFileAfterSend(true);
         $response->setContentDisposition('attachment', $pattern);
 
         return $response;
     }
 
-    public function membershipFeeSendMailAction(Request $request)
+    public function membershipFeeSendMail(Request $request): RedirectResponse
     {
         $cotisations = $this->getCotisations();
         $identifiant = $this->getDroits()->obtenirIdentifiant();
         $id = $request->get('id');
 
-        $logs = $this->get(LegacyModelFactory::class)->createObject(Logs::class);
-        $userRepository = $this->get(UserRepository::class);
+        $logs = $this->legacyModelFactory->createObject(Logs::class);
+        $userRepository = $this->userRepository;
 
         if (false === $cotisations->isCurrentUserAllowedToReadInvoice($id)) {
             $logs::log("L'utilisateur id: " . $identifiant . ' a tenté de voir la facture id:' . $id);
             throw $this->createAccessDeniedException('Cette facture ne vous appartient pas, vous ne pouvez la visualiser.');
         }
 
-        if ($cotisations->envoyerFacture($id, $this->get(\AppBundle\Email\Mailer\Mailer::class), $userRepository)) {
+        if ($cotisations->envoyerFacture($id, $this->mailer, $userRepository)) {
             $logs::log('Envoi par email de la facture pour la cotisation n°' . $id);
             $this->addFlash('success', 'La facture a été envoyée par mail');
         } else {
@@ -532,14 +604,14 @@ class MemberShipController extends Controller
         return $this->redirectToRoute('member_membership_fee');
     }
 
-    public function generalMeetingAction(Request $request)
+    public function generalMeeting(Request $request)
     {
-        $userService = $this->get(UserService::class);
+        $userService = $this->userService;
         /** @var User $user */
         $user = $this->getUser();
         Assertion::isInstanceOf($user, User::class);
         $title = 'Présence prochaine AG';
-        $generalMeetingRepository = $this->get(GeneralMeetingRepository::class);
+        $generalMeetingRepository = $this->generalMeetingRepository;
         $latestDate = $generalMeetingRepository->getLatestDate();
         Assertion::notNull($latestDate);
         $generalMeetingPlanned = $generalMeetingRepository->hasGeneralMeetingPlanned();
@@ -561,7 +633,7 @@ class MemberShipController extends Controller
           'presence' => 0,
           'id_personne_avec_pouvoir' => null,
         ];
-        if (null !== $attendee) {
+        if ($attendee instanceof Attendee) {
             $data['presence'] = $attendee->getPresence();
             $data['id_personne_avec_pouvoir'] = $attendee->getPowerId();
         }
@@ -569,7 +641,7 @@ class MemberShipController extends Controller
         $form = $this->createFormBuilder($data, [
                 'constraints' => [
                     new Assert\Callback([
-                        'callback' => static function (array $data, ExecutionContextInterface $context) {
+                        'callback' => static function (array $data, ExecutionContextInterface $context): void {
                             if ($data['presence'] === 1 && $data['id_personne_avec_pouvoir']) {
                                 $context
                                     ->buildViolation("Vous ne pouvez pas donner votre pouvoir et indiquer que vous participez en même temps.")
@@ -602,7 +674,7 @@ class MemberShipController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            if (null !== $attendee) {
+            if ($attendee instanceof Attendee) {
                 $ok = $generalMeetingRepository->editAttendee(
                     $user->getUsername(),
                     $latestDate,
@@ -629,8 +701,8 @@ class MemberShipController extends Controller
 
         $attendeesWithPower = $generalMeetingRepository->getAttendees($latestDate, 'nom', 'asc', $user->getId());
 
-        $generalMeetingQuestionRepository = $this->get(GeneralMeetingQuestionRepository::class);
-        $generalMeetingVoteRepository = $this->get(GeneralMeetingVoteRepository::class);
+        $generalMeetingQuestionRepository = $this->generalMeetingQuestionRepository;
+        $generalMeetingVoteRepository = $this->generalMeetingVoteRepository;
 
         $currentQuestion = $generalMeetingQuestionRepository->loadNextOpenedQuestion($latestDate);
 
@@ -666,11 +738,11 @@ class MemberShipController extends Controller
         ]);
     }
 
-    public function generalMeetingVoteAction(Request $request)
+    public function generalMeetingVote(Request $request)
     {
-        $generalMeetingRepository = $this->get(GeneralMeetingRepository::class);
-        $generalMeetingQuestionRepository = $this->get(GeneralMeetingQuestionRepository::class);
-        $generalMeetingVoteRepository = $this->get(GeneralMeetingVoteRepository::class);
+        $generalMeetingRepository = $this->generalMeetingRepository;
+        $generalMeetingQuestionRepository = $this->generalMeetingQuestionRepository;
+        $generalMeetingVoteRepository = $this->generalMeetingVoteRepository;
 
         if (null === ($questionId = $request->get('questionId'))) {
             throw $this->createNotFoundException('QuestionId manquant');
@@ -719,7 +791,7 @@ class MemberShipController extends Controller
         return $redirection;
     }
 
-    public function generalMettingDownloadReportAction($filename)
+    public function generalMettingDownloadReport($filename)
     {
         $reports = $this->prepareGeneralMeetingsReportsList();
 
@@ -734,9 +806,12 @@ class MemberShipController extends Controller
         return new BinaryFileResponse($reports[$filename]['path']);
     }
 
-    private function prepareGeneralMeetingsReportsList()
+    /**
+     * @return array{date: (string | false), label: (string | false), filename: mixed, path: mixed}[]
+     */
+    private function prepareGeneralMeetingsReportsList(): array
     {
-        $dir = $this->getParameter('kernel.project_dir') . DIRECTORY_SEPARATOR . '/htdocs/uploads/general_meetings_reports';
+        $dir = $this->storageDir;
         if (!is_dir($dir)) {
             return [];
         }
@@ -759,20 +834,20 @@ class MemberShipController extends Controller
         return $reports;
     }
 
-    public function techletterAction()
+    public function techletter(): Response
     {
         return $this->view->render('site/member/techletter.html.twig', [
-            'subscribed' => $this->get('ting')->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($this->getUser()),
-            'feeUpToDate' => ($this->getUser() !== null and $this->getUser()->getLastSubscription() > new \DateTime()),
-            'token' => $this->get('security.csrf.token_manager')->getToken('techletter_subscription'),
-            'techletter_history' => $this->get('ting')->get(SendingRepository::class)->getAllPastSent(),
+            'subscribed' => $this->repositoryFactory->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($this->getUser()),
+            'feeUpToDate' => ($this->getUser() !== null && $this->getUser()->getLastSubscription() > new \DateTime()),
+            'token' => $this->csrfTokenManager->getToken('techletter_subscription'),
+            'techletter_history' => $this->repositoryFactory->get(SendingRepository::class)->getAllPastSent(),
         ]);
     }
 
-    public function techletterSubscribeAction(Request $request)
+    public function techletterSubscribe(Request $request): RedirectResponse
     {
         $user = $this->getUser();
-        $token = $this->get('security.csrf.token_manager')->getToken('techletter_subscription');
+        $token = $this->csrfTokenManager->getToken('techletter_subscription');
 
         if (
             $user === null
@@ -785,19 +860,17 @@ class MemberShipController extends Controller
 
         $this->addFlash('success', "Vous êtes maintenant abonné à la veille de l'AFUP");
 
-        $this->get('ting')->get(TechletterSubscriptionsRepository::class)->subscribe($user);
+        $this->repositoryFactory->get(TechletterSubscriptionsRepository::class)->subscribe($user);
 
         return $this->redirectToRoute('member_techletter');
     }
 
-    public function techletterUnsubscribeAction(Request $request)
+    public function techletterUnsubscribe(): RedirectResponse
     {
-        $techletterUnsubscriptionRepository = $this->get('ting')->get(TechletterUnsubscriptionsRepository::class);
+        $techletterUnsubscriptionRepository = $this->repositoryFactory->get(TechletterUnsubscriptionsRepository::class);
         $techletterUnsubscription = $techletterUnsubscriptionRepository->createFromUser($this->getUser());
         $techletterUnsubscriptionRepository->save($techletterUnsubscription);
-
         $this->addFlash('success', "Vous êtes maintenant désabonné à la veille de l'AFUP");
-
         return $this->redirectToRoute('member_techletter');
     }
 }

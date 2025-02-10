@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Command;
 
 use AppBundle\Event\Model\Repository\EventRepository;
@@ -18,7 +20,7 @@ class TwitterBotCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('twitter-bot:run')
@@ -29,7 +31,7 @@ class TwitterBotCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $container = $this->getContainer();
         $ting = $container->get('ting');
@@ -46,11 +48,6 @@ class TwitterBotCommand extends ContainerAwareCommand
         return 0;
     }
 
-    /**
-     * @param InputInterface $input
-     *
-     * @return null
-     */
     protected function getEventFilter(InputInterface $input)
     {
         if (null === ($eventPath = $input->getOption('event-path'))) {

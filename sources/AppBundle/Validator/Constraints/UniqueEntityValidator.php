@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Validator\Constraints;
 
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
@@ -9,7 +11,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class UniqueEntityValidator extends ConstraintValidator
 {
-    private $repositoryFactory;
+    private RepositoryFactory $repositoryFactory;
 
     public function __construct(RepositoryFactory $repositoryFactory)
     {
@@ -19,7 +21,7 @@ class UniqueEntityValidator extends ConstraintValidator
     /**
      * @inheritDoc
      */
-    public function validate($entity, Constraint $constraint)
+    public function validate($entity, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueEntity) {
             throw new UnexpectedTypeException($constraint, UniqueEntity::class);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -9,10 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Room implements NotifyPropertyInterface
 {
     use NotifyProperty;
-    /**
-     * @var int
-     */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @var string
@@ -20,16 +19,15 @@ class Room implements NotifyPropertyInterface
     private $name;
 
     /**
-     * @var int
      * @Assert\NotBlank()
      * @Assert\GreaterThan(0)
      */
-    private $eventId;
+    private ?int $eventId = null;
 
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -39,7 +37,7 @@ class Room implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $id = (int) $id;
         $this->propertyChanged('id', $this->id, $id);
@@ -57,9 +55,8 @@ class Room implements NotifyPropertyInterface
 
     /**
      * @param mixed $name
-     * @return Room
      */
-    public function setName($name)
+    public function setName($name): self
     {
         $this->propertyChanged('name', $this->name, $name);
         $this->name = $name;
@@ -69,7 +66,7 @@ class Room implements NotifyPropertyInterface
     /**
      * @return int
      */
-    public function getEventId()
+    public function getEventId(): ?int
     {
         return $this->eventId;
     }
@@ -79,7 +76,7 @@ class Room implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setEventId($eventId)
+    public function setEventId($eventId): self
     {
         $eventId = (int) $eventId;
         $this->propertyChanged('eventId', $this->eventId, $eventId);

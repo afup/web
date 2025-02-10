@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Command;
 
 use AppBundle\Event\Model\Repository\MeetupRepository;
@@ -17,7 +19,7 @@ class ScrappingMeetupEventsCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('scrapping-meetup-event')
@@ -31,9 +33,8 @@ class ScrappingMeetupEventsCommand extends ContainerAwareCommand
      * @see Command
      *
      * @throws \Exception
-     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $io->title('Import des events meetups via scrapping de meetup.com');

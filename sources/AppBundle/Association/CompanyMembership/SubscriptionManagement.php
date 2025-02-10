@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Association\CompanyMembership;
 
@@ -10,17 +12,14 @@ use AppBundle\LegacyModelFactory;
 
 class SubscriptionManagement
 {
-    /**
-     * @var LegacyModelFactory
-     */
-    private $legacyModelFactory;
+    private LegacyModelFactory $legacyModelFactory;
 
     public function __construct(LegacyModelFactory $legacyModelFactory)
     {
         $this->legacyModelFactory = $legacyModelFactory;
     }
 
-    public function createInvoiceForInscription(CompanyMember $company, $numberOfMembers)
+    public function createInvoiceForInscription(CompanyMember $company, $numberOfMembers): array
     {
         $subscription = $this->legacyModelFactory->createObject(Cotisations::class);
 

@@ -1,6 +1,6 @@
 talks_list:
   path: /
-  defaults: { _controller: AppBundle:Website\Talks:list }
+  defaults: { _controller: AppBundle\Controller\Website\TalksController::list }
   options:
     sitemap:
       section: talks
@@ -8,8 +8,8 @@ talks_list:
 
 talks_show:
   path: /{id}-{slug}
-  defaults: { _controller: AppBundle:Website\Talks:show }
+  defaults: { _controller: AppBundle\Controller\Website\TalksController::show }
 
 talks_joindin:
   path: /{id}-{slug}/joindin
-  defaults: { _controller: AppBundle:Website\Talks:joindin }
+  defaults: { _controller: AppBundle\Controller\Website\TalksController::joindin }

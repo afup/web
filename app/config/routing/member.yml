@@ -1,51 +1,51 @@
 member_index:
   path: /
-  defaults: { _controller: AppBundle:Website\Member:index }
+  defaults: { _controller: AppBundle\Controller\Website\MemberController::index }
 
 member_contact:
   path: /contact
-  defaults: { _controller: AppBundle:Website\MemberShip:contactDetails }
+  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::contactDetails }
 
 member_membership_fee:
   path: /membership-fee
-  defaults: { _controller: AppBundle:Website\MemberShip:membershipFee }
+  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::membershipFee }
 
 member_membership_fee_download:
   path: /membership-fee/download
-  defaults: { _controller: AppBundle:Website\MemberShip:membershipFeeDownload }
+  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::membershipFeeDownload }
 
 member_membership_fee_send_mail:
   path: /membership-fee/send-mail
-  defaults: { _controller: AppBundle:Website\MemberShip:membershipFeeSendMail }
+  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::membershipFeeSendMail }
 
 member_general_meeting:
   path: /general-meeting
-  defaults: { _controller: AppBundle:Website\MemberShip:generalMeeting }
+  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::generalMeeting }
 
 member_general_meeting_vote:
   path: /general-meeting/vote
-  defaults: { _controller: AppBundle:Website\MemberShip:generalMeetingVote }
+  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::generalMeetingVote }
 
 member_general_meeting_reports_download:
   path: /general-meeting-report-download/{filename}
-  defaults: { _controller: AppBundle:Website\MemberShip:generalMettingDownloadReport }
+  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::generalMettingDownloadReport }
 
 member_techletter:
   path: /techletter
-  defaults: { _controller: AppBundle:Website\MemberShip:techletter }
+  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::techletter }
 
 member_techletter_unsubscribe:
   path: /techletter-unsubscribe
-  defaults: { _controller: AppBundle:Website\MemberShip:techletterUnsubscribe }
+  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::techletterUnsubscribe }
 
 member_techletter_subscribe:
   path: /techletter-subscribe
-  defaults: { _controller: AppBundle:Website\MemberShip:techletterSubscribe }
+  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::techletterSubscribe }
   methods: [ "POST" ]
 
 member_slack_invite:
   path: /slack-invite
-  defaults: {_controller: AppBundle:Website\MemberShip:slackInviteRequest}
+  defaults: {_controller: AppBundle\Controller\Website\MemberShipController::slackInviteRequest}
 
 member_company:
   path: /company
@@ -57,4 +57,4 @@ member_company_members:
 
 member_company_public_profile:
   path: /company/public_profile
-  defaults: { _controller: AppBundle:Website\Member\CompanyPublicProfile:index }
+  defaults: { _controller: AppBundle\Controller\Website\Member\CompanyPublicProfileController::index }

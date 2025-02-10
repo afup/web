@@ -1,39 +1,49 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Mailchimp\Mailchimp;
 use AppBundle\Mailchimp\SubscriberType;
 use AppBundle\Twig\ViewRenderer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class NewsletterController extends Controller
+class NewsletterController extends AbstractController
 {
     private ViewRenderer $view;
+    private Mailchimp $mailchimp;
+    private string $mailchimpSubscribersList;
 
-    public function __construct(ViewRenderer $view)
+    public function __construct(ViewRenderer $view,
+                                Mailchimp $mailchimp,
+                                string $mailchimpSubscribersList)
     {
         $this->view = $view;
+        $this->mailchimp = $mailchimp;
+        $this->mailchimpSubscribersList = $mailchimpSubscribersList;
     }
 
-    public function subscribeFormAction()
+    public function subscribeForm(): Response
     {
         return $this->render('site/newsletter/subscribe.html.twig', [
             'form' => $this->getSubscriberType()->createView()
         ]);
     }
 
-    public function subscribeAction(Request $request)
+    public function subscribe(Request $request)
     {
         $subscribeForm = $this->getSubscriberType();
         $subscribeForm->handleRequest($request);
 
         if ($subscribeForm->isSubmitted() && $subscribeForm->isValid()) {
             try {
-                $this->get(Mailchimp::class)->subscribeAddress(
-                    $this->getParameter('mailchimp_subscribers_list'),
+                $this->mailchimp->subscribeAddress(
+                    $this->mailchimpSubscribersList,
                     $subscribeForm->getData()['email']
                 );
                 $success = true;
@@ -48,7 +58,7 @@ class NewsletterController extends Controller
         return $this->redirect('/');
     }
 
-    private function getSubscriberType()
+    private function getSubscriberType(): FormInterface
     {
         return $this
             ->createForm(SubscriberType::class, null, [

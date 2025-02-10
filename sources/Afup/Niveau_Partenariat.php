@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site;
 
 class Niveau_Partenariat
@@ -7,7 +9,6 @@ class Niveau_Partenariat
     /**
      * Instance de la couche d'abstraction à la base de données
      * @var     object
-     * @access  private
      */
     private $_bdd;
 
@@ -15,10 +16,9 @@ class Niveau_Partenariat
      * Constructeur.
      *
      * @param  object $bdd Instance de la couche d'abstraction à la base de données
-     * @access public
      * @return void
      */
-    function __construct(&$bdd)
+    public function __construct(&$bdd)
     {
         $this->_bdd = $bdd;
     }
@@ -28,7 +28,7 @@ class Niveau_Partenariat
      *
      * @return array
      */
-    function obtenirListe()
+    public function obtenirListe()
     {
         $requete = 'SELECT';
         $requete .= '  id, titre ';

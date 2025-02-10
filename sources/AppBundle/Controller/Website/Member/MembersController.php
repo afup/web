@@ -32,46 +32,34 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class MembersController
 {
-    /** @var CompanyMemberRepository */
-    private $companyMemberRepository;
-    /** @var UserRepository */
-    private $userRepository;
-    /** @var CompanyMemberInvitationRepository */
-    private $companyMemberInvitationRepository;
+    private CompanyMemberRepository $companyMemberRepository;
+    private UserRepository $userRepository;
+    private CompanyMemberInvitationRepository $companyMemberInvitationRepository;
     private ViewRenderer $view;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var CollectionFilter */
-    private $collectionFilter;
-    /** @var UserCompany */
-    private $userCompany;
-    /** @var Security */
-    private $security;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var CsrfTokenManagerInterface */
-    private $csrfTokenManager;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var InvitationMail */
-    private $invitationMail;
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private FormFactoryInterface $formFactory;
+    private CollectionFilter $collectionFilter;
+    private UserCompany $userCompany;
+    private Security $security;
+    private FlashBagInterface $flashBag;
+    private CsrfTokenManagerInterface $csrfTokenManager;
+    private UrlGeneratorInterface $urlGenerator;
+    private InvitationMail $invitationMail;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
-        CompanyMemberRepository           $companyMemberRepository,
-        UserRepository                    $userRepository,
+        CompanyMemberRepository $companyMemberRepository,
+        UserRepository $userRepository,
         CompanyMemberInvitationRepository $companyMemberInvitationRepository,
-        ViewRenderer                      $view,
-        FormFactoryInterface              $formFactory,
-        CollectionFilter                  $collectionFilter,
-        UserCompany                       $userCompany,
-        Security                          $security,
-        FlashBagInterface                 $flashBag,
-        CsrfTokenManagerInterface         $csrfTokenManager,
-        UrlGeneratorInterface             $urlGenerator,
-        InvitationMail                    $invitationMail,
-        EventDispatcherInterface          $eventDispatcher
+        ViewRenderer $view,
+        FormFactoryInterface $formFactory,
+        CollectionFilter $collectionFilter,
+        UserCompany $userCompany,
+        Security $security,
+        FlashBagInterface $flashBag,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        UrlGeneratorInterface $urlGenerator,
+        InvitationMail $invitationMail,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->companyMemberRepository = $companyMemberRepository;
         $this->userRepository = $userRepository;

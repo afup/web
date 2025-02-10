@@ -1,6 +1,7 @@
 <?php
-namespace Afup\Site\Corporate;
 
+declare(strict_types=1);
+namespace Afup\Site\Corporate;
 
 class Articles
 {
@@ -9,17 +10,13 @@ class Articles
      */
     private $bdd;
 
-    function __construct($bdd = false)
+    public function __construct($bdd = false)
     {
-        if ($bdd) {
-            $this->bdd = $bdd;
-        } else {
-            $this->bdd = new _Site_Base_De_Donnees();
-        }
+        $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
     }
 
-    function obtenirListe($champs = '*',
-                          $ordre = 'titre',
+    public function obtenirListe(string $champs = '*',
+                          string $ordre = 'titre',
                           $filtre = false,
                           $associatif = false)
     {
@@ -31,7 +28,7 @@ class Articles
         $requete .= '  afup_site_rubrique on afup_site_article.id_site_rubrique = afup_site_rubrique.id ';
         $requete .= 'WHERE 1 = 1 ';
         if ($filtre) {
-            $escapedFiltre = $this->bdd->echapper('%' .  $filtre . '%');
+            $escapedFiltre = $this->bdd->echapper('%' . $filtre . '%');
             $requete .= sprintf(' AND (afup_site_article.titre LIKE %s OR afup_site_article.contenu LIKE %s) ', $escapedFiltre, $escapedFiltre);
         }
         $requete .= ' ORDER BY ' . $ordre;
@@ -43,18 +40,21 @@ class Articles
         }
     }
 
-    function chargerArticlesDeRubrique($id_site_rubrique, $rowcount = null)
+    /**
+     * @return Article[]
+     */
+    public function chargerArticlesDeRubrique($id_site_rubrique, $rowcount = null): array
     {
         $requete = ' SELECT';
         $requete .= '  * ';
         $requete .= ' FROM';
         $requete .= '  afup_site_article ';
         $requete .= ' WHERE ';
-        $requete .= '  id_site_rubrique = ' . (int)$id_site_rubrique;
+        $requete .= '  id_site_rubrique = ' . (int) $id_site_rubrique;
         $requete .= '  AND etat = 1';
         $requete .= ' ORDER BY date DESC';
         if (is_int($rowcount)) {
-            $requete .= ' LIMIT 0, ' . (int)$rowcount;
+            $requete .= ' LIMIT 0, ' . $rowcount;
         }
         $elements = $this->bdd->obtenirTous($requete);
 
@@ -68,10 +68,12 @@ class Articles
         }
 
         return $articles;
-
     }
 
-    function chargerDerniersAjouts($rowcount = 10)
+    /**
+     * @return Article[]
+     */
+    public function chargerDerniersAjouts($rowcount = 10): array
     {
         $requete = ' SELECT';
         $requete .= '  afup_site_article.* ';
@@ -86,7 +88,7 @@ class Articles
         $requete .= ' AND afup_site_rubrique.id <> ' . Rubrique::ID_RUBRIQUE_ANTENNES . ' '; // On affiche pas les articles de la page antennes
         $requete .= ' AND afup_site_rubrique.id <> ' . Rubrique::ID_RUBRIQUE_NOS_ACTIONS . ' '; // On affiche pas les articles de la page actions
         $requete .= ' ORDER BY date DESC';
-        $requete .= ' LIMIT 0, ' . (int)$rowcount;
+        $requete .= ' LIMIT 0, ' . (int) $rowcount;
 
         $ajouts = [];
         $elements = $this->bdd->obtenirTous($requete);
@@ -104,7 +106,10 @@ class Articles
         return $ajouts;
     }
 
-    function chargerDernieresQuestions()
+    /**
+     * @return Article[]
+     */
+    public function chargerDernieresQuestions(): array
     {
         $requete = ' SELECT';
         $requete .= '  * ';

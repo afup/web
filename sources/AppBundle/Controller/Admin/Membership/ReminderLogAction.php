@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Membership;
 
 use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
@@ -9,10 +11,8 @@ use Twig\Environment;
 
 class ReminderLogAction
 {
-    /** @var SubscriptionReminderLogRepository */
-    private $subscriptionReminderLogRepository;
-    /** @var Environment */
-    private $twig;
+    private SubscriptionReminderLogRepository $subscriptionReminderLogRepository;
+    private Environment $twig;
 
     public function __construct(
         SubscriptionReminderLogRepository $subscriptionReminderLogRepository,
@@ -22,7 +22,7 @@ class ReminderLogAction
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $page = $request->attributes->getInt('page', 1);
         $limit = 50;

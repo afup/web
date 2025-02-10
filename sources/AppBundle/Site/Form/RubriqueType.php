@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Site\Form;
 
 use Afup\Site\Corporate\Feuilles;
@@ -19,8 +21,8 @@ class RubriqueType extends AbstractType
 {
     const POSITIONS_RUBRIQUES = 9;
 
-    private $rubriqueRepository;
-    private $userRepository;
+    private RubriqueRepository $rubriqueRepository;
+    private UserRepository $userRepository;
 
     public function __construct(RubriqueRepository $rubriqueRepository, UserRepository $userRepository)
     {
@@ -28,7 +30,7 @@ class RubriqueType extends AbstractType
         $this->userRepository = $userRepository;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $users = [];
         foreach ($this->userRepository->getAll() as $user) {

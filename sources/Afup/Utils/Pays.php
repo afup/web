@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Utils;
 
 /**
@@ -11,8 +13,7 @@ class Pays
 
     /**
      * Instance de la couche d'abstraction à la base de données
-     * @var     \Afup\Site\Utils\Base_De_Donnees
-     * @access  private
+     * @var Base_De_Donnees
      */
     private $_bdd;
 
@@ -20,10 +21,9 @@ class Pays
      * Constructeur.
      *
      * @param  object $bdd Instance de la couche d'abstraction à la base de données
-     * @access public
      * @return void
      */
-    function __construct(&$bdd)
+    public function __construct(&$bdd)
     {
         $this->_bdd = $bdd;
     }
@@ -31,10 +31,9 @@ class Pays
     /**
      * Renvoit un tableau associatif des pays avec le code ISO comme clé et le nom comme valeur
      *
-     * @access public
      * @return array
      */
-    function obtenirPays()
+    public function obtenirPays()
     {
         $requete = 'SELECT id, nom FROM afup_pays ORDER BY nom';
         return $this->_bdd->obtenirAssociatif($requete);
@@ -46,13 +45,14 @@ class Pays
      * @param  string $id Identifiant ISO 2a du pays
      * @return string
      */
-    function obtenirNom($id)
+    public function obtenirNom($id)
     {
-        $requete = 'SELECT nom FROM afup_pays WHERE id =' . $this->_bdd->echapper($id);;
+        $requete = 'SELECT nom FROM afup_pays WHERE id =' . $this->_bdd->echapper($id);
+        ;
         return $this->_bdd->obtenirUn($requete);
     }
 
-    function obtenirZonesFrancaises()
+    public function obtenirZonesFrancaises()
     {
         $zonesFrancaises[0] = '--';
         $zonesFrancaises[1] = '01 - Ile de France';
@@ -64,5 +64,3 @@ class Pays
         return $zonesFrancaises;
     }
 }
-
-?>

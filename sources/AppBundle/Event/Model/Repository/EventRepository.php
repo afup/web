@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
@@ -164,7 +166,7 @@ SQL;
     /**
      * @param int $eventCount
      *
-     * @return \CCMBenchmark\Ting\Repository\CollectionInterface
+     * @return CollectionInterface
      */
     public function getPreviousEvents($eventCount)
     {

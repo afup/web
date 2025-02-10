@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Twig;
 
 use Afup\Site\Corporate\Page;
@@ -21,7 +23,17 @@ class ViewRenderer
         $this->twig = $twig;
     }
 
-    public function render(string $view, array $parameters = []): Response
+
+    /**
+     * Renders a view.
+     *
+     * @param string        $view       The view name
+     * @param array         $parameters An array of parameters to pass to the view
+     * @param Response|null $response   A response instance
+     *
+     * @return Response A Response instance
+     */
+    public function render(string $view, array $parameters = [], Response $response = null): Response
     {
         $blocks = [];
         if ($this->requestStack->getCurrentRequest()) {
@@ -38,7 +50,10 @@ class ViewRenderer
 
         $content = $this->twig->render($view, $parameters + $blocks);
 
-        $response = new Response();
+        if (!$response instanceof Response) {
+            $response = new Response();
+        }
+
         return $response->setContent($content);
     }
 }

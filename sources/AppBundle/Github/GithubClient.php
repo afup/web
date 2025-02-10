@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Github;
 
 use AppBundle\Event\Model\GithubUser;
@@ -10,10 +12,7 @@ use GuzzleHttp\RequestOptions;
 
 class GithubClient
 {
-    /**
-     * @var Client
-     */
-    private $githubClient;
+    private Client $githubClient;
 
     public function __construct(Client $githubClient)
     {
@@ -23,12 +22,11 @@ class GithubClient
     /**
      * @param string $username
      *
-     * @return GithubUser
      *
      * @throws UnableToFindGithubUserException
      * @throws UnableToGetGithubUserInfosException
      */
-    public function getUserInfos($username)
+    public function getUserInfos($username): GithubUser
     {
         $response = $this->githubClient->get("/users/{$username}", [
             RequestOptions::HEADERS => [

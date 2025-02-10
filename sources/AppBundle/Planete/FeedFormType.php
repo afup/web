@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Planete;
 
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -13,15 +15,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class FeedFormType extends AbstractType
 {
-    /** @var UserRepository */
-    private $userRepository;
+    private UserRepository $userRepository;
 
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $users = [null => ''];
         foreach ($this->userRepository->search() as $user) {

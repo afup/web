@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members;
 
 use AppBundle\Association\Form\BadgeType;
@@ -16,20 +18,13 @@ use Twig\Environment;
 
 class BadgeNewAction
 {
-    /** @var BadgeRepository */
-    private $badgeRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var Environment */
-    private $twig;
-    /** @var string */
-    private $storageDir;
-    /** @var Filesystem */
-    private $filesystem;
+    private BadgeRepository $badgeRepository;
+    private FormFactoryInterface $formFactory;
+    private FlashBagInterface $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
+    private Environment $twig;
+    private string $storageDir;
+    private Filesystem $filesystem;
 
     public function __construct(
         BadgeRepository $badgeRepository,
@@ -38,7 +33,7 @@ class BadgeNewAction
         FlashBagInterface $flashBag,
         UrlGeneratorInterface $urlGenerator,
         Environment $twig,
-        $storageDir
+        string $storageDir
     ) {
         $this->badgeRepository = $badgeRepository;
         $this->formFactory = $formFactory;

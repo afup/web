@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -10,30 +12,18 @@ class Event implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    /**
-     * @var int
-     */
-    private $id;
+    private ?int $id = null;
 
-    /**
-     * @var string
-     */
-    private $title;
+    private ?string $title = null;
 
-    /**
-     * @var int
-     */
-    private $seats;
+    private ?int $seats = null;
 
     /**
      * @var string[] language indexed array of strings
      */
     private $CFP;
 
-    /**
-     * @var DateTime
-     */
-    private $dateStart;
+    private ?\DateTime $dateStart = null;
 
     /**
      * @var DateTime
@@ -50,10 +40,7 @@ class Event implements NotifyPropertyInterface
      */
     private $dateEndCallForPapers;
 
-    /**
-     * @var DateTime
-     */
-    private $dateEndVote;
+    private ?\DateTime $dateEndVote = null;
 
     /**
      * @var DateTime
@@ -70,20 +57,11 @@ class Event implements NotifyPropertyInterface
      */
     private $dateEndSalesSponsorToken;
 
-    /**
-     * @var DateTime
-     */
-    private $dateEndSpeakersDinerInfosCollection;
+    private ?\DateTime $dateEndSpeakersDinerInfosCollection = null;
 
-    /**
-     * @var DateTime
-     */
-    private $dateEndHotelInfosCollection;
+    private ?\DateTime $dateEndHotelInfosCollection = null;
 
-    /**
-     * @var DateTime
-     */
-    private $datePlanningAnnouncement;
+    private ?\DateTime $datePlanningAnnouncement = null;
 
     /**
      * @var string
@@ -105,28 +83,25 @@ class Event implements NotifyPropertyInterface
      */
     private $placeAddress;
 
-    private $voteEnabled;
+    private ?bool $voteEnabled = null;
 
-    private $speakersDinerEnabled;
+    private ?bool $speakersDinerEnabled = null;
 
-    private $accomodationEnabled;
+    private ?bool $accomodationEnabled = null;
 
-    private $transportInformationEnabled;
+    private ?bool $transportInformationEnabled = null;
 
     /**
      * @var string
      */
     private $waitingListUrl;
 
-    /**
-     * @var bool
-     */
-    private $hasPricesDefinedWithVat;
+    private ?bool $hasPricesDefinedWithVat = null;
 
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -135,7 +110,7 @@ class Event implements NotifyPropertyInterface
      * @param int $id
      * @return Event
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $id = (int) $id;
         $this->propertyChanged('id', $this->id, $id);
@@ -146,7 +121,7 @@ class Event implements NotifyPropertyInterface
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -155,7 +130,7 @@ class Event implements NotifyPropertyInterface
      * @param string $title
      * @return Event
      */
-    public function setTitle($title)
+    public function setTitle($title): self
     {
         $title = (string) $title;
         $this->propertyChanged('title', $this->title, $title);
@@ -166,7 +141,7 @@ class Event implements NotifyPropertyInterface
     /**
      * @return int
      */
-    public function getSeats()
+    public function getSeats(): ?int
     {
         return $this->seats;
     }
@@ -175,7 +150,7 @@ class Event implements NotifyPropertyInterface
      * @param int $seats
      * @return Event
      */
-    public function setSeats($seats)
+    public function setSeats($seats): self
     {
         $seats = (int) $seats;
         $this->propertyChanged('seats', $this->seats, $seats);
@@ -186,28 +161,22 @@ class Event implements NotifyPropertyInterface
     /**
      * @return DateTime
      */
-    public function getDateStart()
+    public function getDateStart(): ?\DateTime
     {
         return $this->dateStart;
     }
 
     /**
-     * @param DateTime $dateStart
      * @return Event
      */
-    public function setDateStart(DateTime $dateStart)
+    public function setDateStart(DateTime $dateStart): self
     {
         $this->propertyChanged('dateStart', $this->dateStart, $dateStart);
         $this->dateStart = $dateStart;
         return $this;
     }
 
-    /**
-     * @param DateTime $dateTime
-     *
-     * @return bool
-     */
-    public function startsBefore(DateTime $dateTime)
+    public function startsBefore(DateTime $dateTime): bool
     {
         return $this->getDateStart() < $dateTime;
     }
@@ -224,7 +193,7 @@ class Event implements NotifyPropertyInterface
      * @param DateTime $dateEnd
      * @return Event
      */
-    public function setDateEnd($dateEnd)
+    public function setDateEnd($dateEnd): self
     {
         $this->propertyChanged('dateEnd', $this->dateEnd, $dateEnd);
         $this->dateEnd = $dateEnd;
@@ -243,7 +212,7 @@ class Event implements NotifyPropertyInterface
      * @param DateTime $dateEndCallForProjects
      * @return Event
      */
-    public function setDateEndCallForProjects($dateEndCallForProjects)
+    public function setDateEndCallForProjects($dateEndCallForProjects): self
     {
         $this->propertyChanged('dateEndCallForProjects', $this->dateEndCallForProjects, $dateEndCallForProjects);
         $this->dateEndCallForProjects = $dateEndCallForProjects;
@@ -262,7 +231,7 @@ class Event implements NotifyPropertyInterface
      * @param DateTime $dateEndCallForPapers
      * @return Event
      */
-    public function setDateEndCallForPapers($dateEndCallForPapers)
+    public function setDateEndCallForPapers($dateEndCallForPapers): self
     {
         $this->propertyChanged('dateEndCallForPapers', $this->dateEndCallForPapers, $dateEndCallForPapers);
         $this->dateEndCallForPapers = $dateEndCallForPapers;
@@ -274,7 +243,7 @@ class Event implements NotifyPropertyInterface
      */
     public function getDateEndVote()
     {
-        if (null === $this->dateEndVote) {
+        if (!$this->dateEndVote instanceof \DateTime) {
             return $this->getDateEndCallForPapers();
         }
 
@@ -282,36 +251,27 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param DateTime $dateEndVote
      * @return Event
      */
-    public function setDateEndVote(DateTime $dateEndVote = null)
+    public function setDateEndVote(DateTime $dateEndVote = null): self
     {
         $this->propertyChanged('dateEndVote', $this->dateEndVote, $dateEndVote);
         $this->dateEndVote = $dateEndVote;
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isCfpOpen(DateTime $currentDate = null)
+    public function isCfpOpen(DateTime $currentDate = null): bool
     {
-        if ($currentDate === null) {
+        if (!$currentDate instanceof \DateTime) {
             $currentDate = new DateTime();
         }
 
         return $this->getDateEndCallForPapers() >= $currentDate;
     }
 
-    /**
-     * @param DateTime $currentDate
-     *
-     * @return bool
-     */
-    public function isVoteAvailable(DateTime $currentDate = null)
+    public function isVoteAvailable(DateTime $currentDate = null): bool
     {
-        if ($currentDate === null) {
+        if (!$currentDate instanceof \DateTime) {
             $currentDate = new DateTime();
         }
 
@@ -330,7 +290,7 @@ class Event implements NotifyPropertyInterface
      * @param DateTime $dateEndPreSales
      * @return Event
      */
-    public function setDateEndPreSales($dateEndPreSales)
+    public function setDateEndPreSales($dateEndPreSales): self
     {
         $this->propertyChanged('dateEndPreSales', $this->dateEndPreSales, $dateEndPreSales);
         $this->dateEndPreSales = $dateEndPreSales;
@@ -349,7 +309,7 @@ class Event implements NotifyPropertyInterface
      * @param DateTime $dateEndSales
      * @return Event
      */
-    public function setDateEndSales($dateEndSales)
+    public function setDateEndSales($dateEndSales): self
     {
         $this->propertyChanged('dateEndSales', $this->dateEndSales, $dateEndSales);
         $this->dateEndSales = $dateEndSales;
@@ -370,7 +330,7 @@ class Event implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setDateEndSalesSponsorToken($dateEndSalesSponsorToken)
+    public function setDateEndSalesSponsorToken($dateEndSalesSponsorToken): self
     {
         $this->propertyChanged('dateEndSalesSponsorToken', $this->dateEndSalesSponsorToken, $dateEndSalesSponsorToken);
         $this->dateEndSalesSponsorToken = $dateEndSalesSponsorToken;
@@ -390,7 +350,7 @@ class Event implements NotifyPropertyInterface
      * @param string $path
      * @return Event
      */
-    public function setPath($path)
+    public function setPath($path): self
     {
         $this->propertyChanged('path', $this->path, $path);
         $this->path = $path;
@@ -409,18 +369,16 @@ class Event implements NotifyPropertyInterface
      * @param string[] $CFP language indexed array of strings
      * @return Event
      */
-    public function setCFP($CFP)
+    public function setCFP($CFP): self
     {
         $this->CFP = $CFP;
         return $this;
     }
 
     /**
-     * @param string $locale
-     *
      * @return null|string
      */
-    public function getSponsorInfos($locale)
+    public function getSponsorInfos(string $locale)
     {
         $cfp = $this->getCFP();
         $key = 'sponsor_management_' . $locale;
@@ -432,7 +390,7 @@ class Event implements NotifyPropertyInterface
         return $cfp[$key];
     }
 
-    public function getMailInscriptionContent()
+    public function getMailInscriptionContent(): ?string
     {
         $cfp = $this->getCFP();
         $key = 'mail_inscription_content';
@@ -444,7 +402,7 @@ class Event implements NotifyPropertyInterface
         return $cfp[$key];
     }
 
-    public function getBecomeSponsorText()
+    public function getBecomeSponsorText(): ?string
     {
         $cfp = $this->getCFP();
         $key = 'become_sponsor_description';
@@ -469,7 +427,7 @@ class Event implements NotifyPropertyInterface
      *
      * @return Event
      */
-    public function setLogoUrl($logoUrl)
+    public function setLogoUrl($logoUrl): self
     {
         $this->propertyChanged('logoUrl', $this->logoUrl, $logoUrl);
         $this->logoUrl = $logoUrl;
@@ -489,7 +447,7 @@ class Event implements NotifyPropertyInterface
      * @param string $placeName
      * @return Event
      */
-    public function setPlaceName($placeName)
+    public function setPlaceName($placeName): self
     {
         $this->propertyChanged('placeName', $this->placeName, $placeName);
         $this->placeName = $placeName;
@@ -508,7 +466,7 @@ class Event implements NotifyPropertyInterface
      * @param string $placeAddress
      * @return Event
      */
-    public function setPlaceAddress($placeAddress)
+    public function setPlaceAddress($placeAddress): self
     {
         $this->propertyChanged('placeAddress', $this->placeAddress, $placeAddress);
         $this->placeAddress = $placeAddress;
@@ -518,17 +476,15 @@ class Event implements NotifyPropertyInterface
     /**
      * @return DateTime
      */
-    public function getDateEndSpeakersDinerInfosCollection()
+    public function getDateEndSpeakersDinerInfosCollection(): ?\DateTime
     {
         return $this->dateEndSpeakersDinerInfosCollection;
     }
 
     /**
-     * @param DateTime $dateEndSpeakersDinerInfosCollection
-     *
      * @return $this
      */
-    public function setDateEndSpeakersDinerInfosCollection(DateTime $dateEndSpeakersDinerInfosCollection = null)
+    public function setDateEndSpeakersDinerInfosCollection(DateTime $dateEndSpeakersDinerInfosCollection = null): self
     {
         $this->propertyChanged('dateEndSpeakersDinerInfosCollection', $this->dateEndSpeakersDinerInfosCollection, $dateEndSpeakersDinerInfosCollection);
         $this->dateEndSpeakersDinerInfosCollection = $dateEndSpeakersDinerInfosCollection;
@@ -539,17 +495,15 @@ class Event implements NotifyPropertyInterface
     /**
      * @return DateTime
      */
-    public function getDateEndHotelInfosCollection()
+    public function getDateEndHotelInfosCollection(): ?\DateTime
     {
         return $this->dateEndHotelInfosCollection;
     }
 
     /**
-     * @param DateTime $dateEndHotelInfosCollection
-     *
      * @return $this
      */
-    public function setDateEndHotelInfosCollection(DateTime $dateEndHotelInfosCollection = null)
+    public function setDateEndHotelInfosCollection(DateTime $dateEndHotelInfosCollection = null): self
     {
         $this->propertyChanged('dateEndHotelInfosCollection', $this->dateEndHotelInfosCollection, $dateEndHotelInfosCollection);
         $this->dateEndHotelInfosCollection = $dateEndHotelInfosCollection;
@@ -557,19 +511,16 @@ class Event implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isPlanningDisplayable()
+    public function isPlanningDisplayable(): bool
     {
         $date = $this->getDatePlanningAnnouncement();
-        return $date === null || new DateTime() >= $date;
+        return !$date instanceof \DateTime || new DateTime() >= $date;
     }
 
     /**
      * @return DateTime
      */
-    public function getDatePlanningAnnouncement()
+    public function getDatePlanningAnnouncement(): ?\DateTime
     {
         return $this->datePlanningAnnouncement;
     }
@@ -579,7 +530,7 @@ class Event implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setDatePlanningAnnouncement(DateTime $datePlanningAnnouncement = null)
+    public function setDatePlanningAnnouncement(DateTime $datePlanningAnnouncement = null): self
     {
         $this->propertyChanged('datePlanningAnnouncement', $this->datePlanningAnnouncement, $datePlanningAnnouncement);
         $this->datePlanningAnnouncement = $datePlanningAnnouncement;
@@ -587,10 +538,7 @@ class Event implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getVoteEnabled()
+    public function getVoteEnabled(): ?bool
     {
         return $this->voteEnabled;
     }
@@ -600,7 +548,7 @@ class Event implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setVoteEnabled($voteEnabled)
+    public function setVoteEnabled($voteEnabled): self
     {
         $voteEnabled = (bool) $voteEnabled;
 
@@ -610,9 +558,9 @@ class Event implements NotifyPropertyInterface
         return $this;
     }
 
-    public function lastsOneDay()
+    public function lastsOneDay(): bool
     {
-        if (null === ($dateStart = $this->getDateStart())) {
+        if (!($dateStart = $this->getDateStart()) instanceof \DateTime) {
             throw new \RuntimeException('Undefined start date for event ' . $this->getId());
         }
 
@@ -626,7 +574,7 @@ class Event implements NotifyPropertyInterface
     /**
      * @return bool
      */
-    public function getSpeakersDinerEnabled()
+    public function getSpeakersDinerEnabled(): ?bool
     {
         return $this->speakersDinerEnabled;
     }
@@ -636,7 +584,7 @@ class Event implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setSpeakersDinerEnabled($speakersDinerEnabled)
+    public function setSpeakersDinerEnabled($speakersDinerEnabled): self
     {
         $speakersDinerEnabled = (bool) $speakersDinerEnabled;
 
@@ -649,7 +597,7 @@ class Event implements NotifyPropertyInterface
     /**
      * @return bool
      */
-    public function getAccomodationEnabled()
+    public function getAccomodationEnabled(): ?bool
     {
         return $this->accomodationEnabled;
     }
@@ -659,7 +607,7 @@ class Event implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setAccomodationEnabled($accomodationEnabled)
+    public function setAccomodationEnabled($accomodationEnabled): self
     {
         $accomodationEnabled = (bool) $accomodationEnabled;
 
@@ -669,7 +617,7 @@ class Event implements NotifyPropertyInterface
         return $this;
     }
 
-    public function isAfupDay()
+    public function isAfupDay(): bool
     {
         return substr($this->getTitle(), 0, 8) == 'AFUP Day';
     }
@@ -687,7 +635,7 @@ class Event implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setWaitingListUrl($waitingListUrl)
+    public function setWaitingListUrl($waitingListUrl): self
     {
         $this->propertyChanged('waitingListUrl', $this->waitingListUrl, $waitingListUrl);
         $this->waitingListUrl = $waitingListUrl;
@@ -701,11 +649,9 @@ class Event implements NotifyPropertyInterface
     }
 
     /**
-     * @param bool $hasPricesDefinedWithVat
-     *
      * @return $this
      */
-    public function setHasPricesDefinedWithVat(bool $hasPricesDefinedWithVat)
+    public function setHasPricesDefinedWithVat(bool $hasPricesDefinedWithVat): self
     {
         $this->propertyChanged('hasPricesDefinedWithVat', $this->hasPricesDefinedWithVat, $hasPricesDefinedWithVat);
         $this->hasPricesDefinedWithVat = $hasPricesDefinedWithVat;
@@ -716,7 +662,7 @@ class Event implements NotifyPropertyInterface
     /**
      * @return bool
      */
-    public function getTransportInformationEnabled()
+    public function getTransportInformationEnabled(): ?bool
     {
         return $this->transportInformationEnabled;
     }
@@ -726,7 +672,7 @@ class Event implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setTransportInformationEnabled($transportInformationEnabled)
+    public function setTransportInformationEnabled($transportInformationEnabled): self
     {
         $transportInformationEnabled = (bool) $transportInformationEnabled;
 
@@ -736,42 +682,42 @@ class Event implements NotifyPropertyInterface
         return $this;
     }
 
-    public function isOnline()
+    public function isOnline(): bool
     {
         return false !== strpos($this->getPath(), 'enligne');
     }
 
-    public static function getInscriptionAttachmentDir()
+    public static function getInscriptionAttachmentDir(): string
     {
         return __DIR__ . '/../../../../htdocs/uploads/mail_inscription_attachment/';
     }
 
-    public static function getInscriptionAttachmentFilepath($eventPath)
+    public static function getInscriptionAttachmentFilepath(?string $eventPath): string
     {
         return self::getInscriptionAttachmentDir() . $eventPath . '.pdf';
     }
 
-    public static function hasInscriptionAttachment($eventPath)
+    public static function hasInscriptionAttachment(?string $eventPath): bool
     {
         return is_file(self::getInscriptionAttachmentFilepath($eventPath));
     }
 
-    public static function getSponsorFileDir()
+    public static function getSponsorFileDir(): string
     {
         return __DIR__ . '/../../../../htdocs/docs/';
     }
 
-    public static function getSponsorFilePublicPath($eventPath, $language)
+    public static function getSponsorFilePublicPath(string $eventPath, string $language): string
     {
         return '/docs/' . $eventPath . '-sponsoring-' . $language . '.pdf';
     }
 
-    public static function getSponsorFilePath($eventPath, $language)
+    public static function getSponsorFilePath(?string $eventPath, string $language): string
     {
         return self::getSponsorFileDir() . $eventPath . '-sponsoring-' . $language . '.pdf';
     }
 
-    public static function hasSponsorFile($eventPath, $language)
+    public static function hasSponsorFile(?string $eventPath, string $language): bool
     {
         return is_file(self::getSponsorFilePath($eventPath, $language));
     }

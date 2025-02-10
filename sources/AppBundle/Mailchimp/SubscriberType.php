@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Mailchimp;
 
@@ -10,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class SubscriberType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email', EmailType::class, ['attr' => ['placeholder' => 'Entrer son email pour s\'abonner'], 'label' => false])

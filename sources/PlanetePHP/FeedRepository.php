@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PlanetePHP;
 
 use Assert\Assertion;
@@ -7,8 +9,7 @@ use Doctrine\DBAL\Connection;
 
 class FeedRepository
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -18,7 +19,7 @@ class FeedRepository
     /**
      * @return Feed[]
      */
-    public function findActive()
+    public function findActive(): array
     {
         $query = $this->connection->prepare('SELECT id, nom, url, feed, etat, id_personne_physique
             FROM afup_planete_flux f WHERE f.etat = :status ORDER BY f.nom');
@@ -35,7 +36,7 @@ class FeedRepository
      *
      * @return Feed[]
      */
-    public function find($sort = 'name', $direction = 'asc', $filter = null)
+    public function find($sort = 'name', $direction = 'asc', $filter = null): array
     {
         $sorts = [
             'name' => 'f.nom',
@@ -49,13 +50,13 @@ class FeedRepository
             ->orderBy($sorts[$sort], $direction);
         if (null !== $filter) {
             $qb->where('nom LIKE :filter')
-                ->setParameter('filter', '%'.$filter.'%');
+                ->setParameter('filter', '%' . $filter . '%');
         }
 
         return $this->hydrateAll($qb->execute()->fetchAll());
     }
 
-    public function get($id)
+    public function get($id): Feed
     {
         $query = $this->connection->prepare('SELECT id, nom, url, feed, etat, id_personne_physique
             FROM afup_planete_flux f WHERE f.id = :id');
@@ -109,12 +110,12 @@ SQL
         )->fetchAll();
     }
 
-    private function hydrateAll(array $rows)
+    private function hydrateAll(array $rows): array
     {
-        return array_map(fn(array $row) => $this->hydrate($row), $rows);
+        return array_map(fn (array $row): Feed => $this->hydrate($row), $rows);
     }
 
-    private function hydrate(array $row)
+    private function hydrate(array $row): Feed
     {
         return new Feed(
             $row['id'],

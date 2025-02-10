@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PlanetePHP;
 
 class DisplayableFeedArticle
@@ -81,7 +83,7 @@ class DisplayableFeedArticle
         return $this->feedUrl;
     }
 
-    public function setContent($content)
+    public function setContent($content): void
     {
         $this->content = $content;
     }

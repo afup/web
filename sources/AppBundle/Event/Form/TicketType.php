@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\Repository\EventRepository;
@@ -27,35 +29,17 @@ class TicketType extends AbstractType
     const MEMBER_PERSONAL = 1;
     const MEMBER_CORPORATE = 2;
 
-    /**
-     * @var TicketEventTypeRepository
-     */
-    private $ticketEventTypeRepository;
+    private TicketEventTypeRepository $ticketEventTypeRepository;
 
-    /**
-     * @var EventRepository
-     */
-    private $eventRepository;
+    private EventRepository $eventRepository;
 
-    /**
-     * @var TicketTypeAvailability
-     */
-    private $ticketTypeAvailability;
+    private TicketTypeAvailability $ticketTypeAvailability;
 
-    /**
-     * @var TicketSpecialPriceRepository
-     */
-    private $ticketSpecialPriceRepository;
+    private TicketSpecialPriceRepository $ticketSpecialPriceRepository;
 
-    /**
-     * @var TicketTypeRepository
-     */
-    private $ticketTypeRepository;
+    private TicketTypeRepository $ticketTypeRepository;
 
-    /**
-     * @var OfficesCollection
-     */
-    protected $officesCollection;
+    protected OfficesCollection $officesCollection;
 
     public function __construct(
         EventRepository $eventRepository,
@@ -72,7 +56,7 @@ class TicketType extends AbstractType
         $this->officesCollection = new OfficesCollection();
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $eventTickets = null;
         $event = null;
@@ -113,7 +97,7 @@ class TicketType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) use ($eventTickets, $options, $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) use ($eventTickets, $options, $event): void {
             $filteredEventTickets = [];
             foreach ($eventTickets as $eventTicket) {
                 if ($eventTicket->getTicketType()->getIsRestrictedToCfpSubmitter() && !$options['is_cfp_submitter']) {
@@ -148,7 +132,7 @@ class TicketType extends AbstractType
                 'choices' => $filteredEventTickets,
                 'choice_label' => 'ticketType.prettyName',
                 'error_bubbling' => false,
-                'choice_attr' => function (\AppBundle\Event\Model\TicketEventType $type, $key, $index) use ($options, $event) {
+                'choice_attr' => function (TicketEventType $type, $key, $index) use ($options, $event): array {
                     $attr = [
                         'data-description' => $type->getDescription(),
                         'data-price' => $type->getPrice(),
@@ -199,7 +183,7 @@ class TicketType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Ticket::class,

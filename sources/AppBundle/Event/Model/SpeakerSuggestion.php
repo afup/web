@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -57,7 +59,7 @@ class SpeakerSuggestion implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -78,7 +80,7 @@ class SpeakerSuggestion implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setEventId($eventId)
+    public function setEventId($eventId): self
     {
         $this->propertyChanged('eventId', $this->eventId, $eventId);
         $this->eventId = $eventId;
@@ -99,7 +101,7 @@ class SpeakerSuggestion implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setSuggesterEmail($suggesterEmail)
+    public function setSuggesterEmail($suggesterEmail): self
     {
         $this->propertyChanged('suggesterEmail', $this->suggesterEmail, $suggesterEmail);
         $this->suggesterEmail = $suggesterEmail;
@@ -120,7 +122,7 @@ class SpeakerSuggestion implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setSuggesterName($suggesterName)
+    public function setSuggesterName($suggesterName): self
     {
         $this->propertyChanged('suggesterName', $this->suggesterName, $suggesterName);
         $this->suggesterName = $suggesterName;
@@ -141,7 +143,7 @@ class SpeakerSuggestion implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setSpeakerName($speakerName)
+    public function setSpeakerName($speakerName): self
     {
         $this->propertyChanged('speakerName', $this->speakerName, $speakerName);
         $this->speakerName = $speakerName;
@@ -162,7 +164,7 @@ class SpeakerSuggestion implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setComment($comment)
+    public function setComment($comment): self
     {
         $this->propertyChanged('comment', $this->comment, $comment);
         $this->comment = $comment;
@@ -181,7 +183,7 @@ class SpeakerSuggestion implements NotifyPropertyInterface
     /**
      * @return $this
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->propertyChanged('createdAt', $this->createdAt, $createdAt);
         $this->createdAt = $createdAt;

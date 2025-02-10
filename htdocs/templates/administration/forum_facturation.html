@@ -29,7 +29,7 @@
             <div class="inline fields">
                 <div class="field">
                     <label>Recherche</label>
-                    <input type="text" name="filtre" value="{$smarty.get.filtre|stripslashes}">
+                    <input type="text" name="filtre" value="{if $smarty.get.filtre}{$smarty.get.filtre|stripslashes}{/if}">
                 </div>
                 <div class="field">
                     <input type="submit" value="Filtrer" class="ui button" name="submit_filtre" />

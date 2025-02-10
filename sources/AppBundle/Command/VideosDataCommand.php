@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Command;
 
 use AppBundle\Event\Model\Planning;
@@ -17,7 +19,7 @@ class VideosDataCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('videos:extract-data-for-youtube-import')
@@ -28,7 +30,7 @@ class VideosDataCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $ting = $this->getContainer()->get('ting');
 

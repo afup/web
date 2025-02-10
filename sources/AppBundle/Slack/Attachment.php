@@ -17,10 +17,10 @@ final class Attachment
     private ?string $color = null;
 
     /** @var Field[] */
-    private $fields = [];
+    private array $fields = [];
 
     /** @var string[] */
-    private $mrkdwnIn = [];
+    private array $mrkdwnIn = [];
 
     public function getFallback(): ?string
     {

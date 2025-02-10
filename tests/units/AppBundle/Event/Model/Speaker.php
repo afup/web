@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\tests\units;
 
 use AppBundle\Event\Model\Speaker as TestedClass;
 
 class Speaker extends \atoum
 {
-    public function testMastodon()
+    public function testMastodon(): void
     {
         $data = [
             ['', '', ''],
@@ -16,7 +18,7 @@ class Speaker extends \atoum
             ['http://@username@mastodon.social', 'username', 'https://mastodon.social/@username'],
         ];
 
-        foreach($data as $expected) {
+        foreach ($data as $expected) {
             $this
                 ->given($speaker = new TestedClass())
                 ->when($speaker->setMastodon($expected[0]))
@@ -29,7 +31,7 @@ class Speaker extends \atoum
     }
 
 
-    public function testTwitter()
+    public function testTwitter(): void
     {
         $data = [
             ['', '', ''],
@@ -38,7 +40,7 @@ class Speaker extends \atoum
             ['http://twitter.com/username', 'username', 'https://x.com/username'],
         ];
 
-        foreach($data as $expected) {
+        foreach ($data as $expected) {
             $this
                 ->given($speaker = new TestedClass())
                 ->when($speaker->setTwitter($expected[0]))

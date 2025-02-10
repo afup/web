@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\GeneralMeeting;
 
 use AppBundle\Association\Model\GeneralMeetingResponse;
@@ -109,12 +111,12 @@ class Attendee
         return $this->presence;
     }
 
-    public function isPresent()
+    public function isPresent(): bool
     {
         return $this->presence === GeneralMeetingResponse::STATUS_PRESENT;
     }
 
-    public function isAbsent()
+    public function isAbsent(): bool
     {
         return $this->presence === GeneralMeetingResponse::STATUS_NON_PRESENT;
     }
@@ -134,7 +136,7 @@ class Attendee
         return $this->powerFirstname;
     }
 
-    public function getHash()
+    public function getHash(): string
     {
         return md5($this->id . '_' . $this->email . '_' . $this->login);
     }

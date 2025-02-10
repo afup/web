@@ -1,17 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 // Impossible to access the file itself
 use Afup\Site\Forum\AppelConferencier;
 use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Pays;
+use AppBundle\Controller\LegacyController;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use Assert\Assertion;
 
-/** @var \AppBundle\Controller\LegacyController $this */
+/** @var LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -97,17 +100,15 @@ if ($action == 'lister') {
 } elseif ($action == 'supprimer') {
     if ($forum_appel->supprimerSession($_GET['id'])) {
         Logs::log('Suppression de la session ' . $_GET['id']);
-        afficherMessage('La session a été supprimée', 'index.php?page=forum_sessions&action=lister&type='.$list_type);
+        afficherMessage('La session a été supprimée', 'index.php?page=forum_sessions&action=lister&type=' . $list_type);
     } else {
-        afficherMessage('Une erreur est survenue lors de la suppression de la session', 'index.php?page=forum_sessions&action=lister&type='.$list_type, true);
+        afficherMessage('Une erreur est survenue lors de la suppression de la session', 'index.php?page=forum_sessions&action=lister&type=' . $list_type, true);
     }
-
 } else {
-
     $pays = new Pays($bdd);
 
     $talk = null;
-	
+
     $formulaire = instancierFormulaire();
     if ($action != 'ajouter') {
         $champs = $forum_appel->obtenirSession($_GET['id']);
@@ -116,14 +117,14 @@ if ($action == 'lister') {
 
         $formulaire->setDefaults($champs);
 
-    	if (isset($champs) && isset($champs['id_forum'])) {
-    	    $_GET['id_forum'] = $champs['id_forum'];
-    	}
+        if (isset($champs) && isset($champs['id_forum'])) {
+            $_GET['id_forum'] = $champs['id_forum'];
+        }
     }
 
     $id = $_GET['id'] ?? 0;
-	$formulaire->addElement('hidden', 'id'      , $id);
-	$formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
+    $formulaire->addElement('hidden', 'id'      , $id);
+    $formulaire->addElement('hidden', 'id_forum', $_GET['id_forum']);
 
     $formulaire->addElement('header', null, 'Présentation');
 
@@ -138,10 +139,10 @@ if ($action == 'lister') {
     }
 
     $formulaire->addElement('textarea', 'abstract'       , 'Résumé', ['cols' => 40, 'rows' => 15,'class'=> $abstractClass]);
-    $formulaire->addElement('hidden', 'use_markdown', (int)$useMarkdown);
+    $formulaire->addElement('hidden', 'use_markdown', (int) $useMarkdown);
 
 
-    $typesLabelsByKey = \AppBundle\Event\Model\Talk::getTypeLabelsByKey();
+    $typesLabelsByKey = Talk::getTypeLabelsByKey();
     asort($typesLabelsByKey);
     $groupe = [];
     foreach ($typesLabelsByKey as $genreKey => $genreLabel) {
@@ -190,15 +191,15 @@ if ($action == 'lister') {
     Assertion::notNull($event);
     $conferenciers = [null => ''];
     foreach ($speakerRepository->searchSpeakers($event) as $speaker) {
-        $conferenciers[$speaker->getId()] = $speaker->getLastname().' '.$speaker->getFirstname();
+        $conferenciers[$speaker->getId()] = $speaker->getLastname() . ' ' . $speaker->getFirstname();
     }
-	$formulaire->addElement('select', 'conferencier_id_1'    , 'N°1', $conferenciers);
-	$formulaire->addElement('select', 'conferencier_id_2'    , 'N°2', $conferenciers);
+    $formulaire->addElement('select', 'conferencier_id_1'    , 'N°1', $conferenciers);
+    $formulaire->addElement('select', 'conferencier_id_2'    , 'N°2', $conferenciers);
     $formulaire->addElement('select', 'conferencier_id_3'    , 'N°3', $conferenciers);
 
-	if ($action != 'ajouter') {
+    if ($action != 'ajouter') {
         $conferenciers = $forum_appel->obtenirConferenciersPourSession($id);
-		$smarty->assign('session_conferenciers', $conferenciers);
+        $smarty->assign('session_conferenciers', $conferenciers);
     }
 
     $commentaires = $forum_appel->obtenirCommentairesPourSession($id);
@@ -209,7 +210,7 @@ if ($action == 'lister') {
             $feed .= '<div class="event">';
             $feed .= '<div class="content">';
             $feed .= '<div class="summary">';
-            $feed .= $commentaire['nom'].' '.$commentaire['prenom'];
+            $feed .= $commentaire['nom'] . ' ' . $commentaire['prenom'];
             $feed .= '<div class="date">';
             $feed .= date('d/m/Y h:i', $commentaire['date']);
             $feed .= '</div>';
@@ -224,39 +225,39 @@ if ($action == 'lister') {
         $formulaire->addElement('static', 'note', '', $feed);
     }
 
-	$formulaire->addElement('header', 'boutons'  , '');
-	$formulaire->addElement('submit', 'soumettre', 'Soumettre');
+    $formulaire->addElement('header', 'boutons'  , '');
+    $formulaire->addElement('submit', 'soumettre', 'Soumettre');
 
-	// On ajoute les règles
-	$formulaire->addRule('titre'            , 'Titre manquant'             , 'required');
-	$formulaire->addRule('conferencier_id_1', 'Conférencier n°1 manquant'          , 'required');
+    // On ajoute les règles
+    $formulaire->addRule('titre'            , 'Titre manquant'             , 'required');
+    $formulaire->addRule('conferencier_id_1', 'Conférencier n°1 manquant'          , 'required');
 
     if ($formulaire->validate()) {
-		$valeurs = $formulaire->exportValues();
-		$valeurs += ['needs_mentoring' => 0];
+        $valeurs = $formulaire->exportValues();
+        $valeurs += ['needs_mentoring' => 0];
 
-		if ($action == 'ajouter') {
-			$session_id = $forum_appel->ajouterSession(
-			    $valeurs['id_forum'],
-                $valeurs['date_soumission']['Y'].'-'.$valeurs['date_soumission']['M'].'-'.$valeurs['date_soumission']['d'],
+        if ($action == 'ajouter') {
+            $session_id = $forum_appel->ajouterSession(
+                $valeurs['id_forum'],
+                $valeurs['date_soumission']['Y'] . '-' . $valeurs['date_soumission']['M'] . '-' . $valeurs['date_soumission']['d'],
                 $valeurs['titre'],
                 $valeurs['abstract'],
-                (int)$valeurs['genre'],
-                (int)$valeurs['plannifie'],
-                isset($valeurs['needs_mentoring']) ? (int)$valeurs['needs_mentoring'] : 0,
-                (int)$valeurs['skill'],
+                (int) $valeurs['genre'],
+                (int) $valeurs['plannifie'],
+                isset($valeurs['needs_mentoring']) ? (int) $valeurs['needs_mentoring'] : 0,
+                (int) $valeurs['skill'],
                 $valeurs['use_markdown']
             );
-			$ok = (bool)$session_id;
+            $ok = (bool) $session_id;
         } else {
-            $session_id = (int)$_GET['id'];
+            $session_id = (int) $_GET['id'];
             $ok = $forum_appel->modifierSession($session_id,
-            								    $valeurs['id_forum'],
-                                                $valeurs['date_soumission']['Y'].'-'.$valeurs['date_soumission']['M'].'-'.$valeurs['date_soumission']['d'],
-			                                    $valeurs['titre'],
-			                                    $valeurs['abstract'],
-                                                (int)$valeurs['genre'],
-                                                (int)$valeurs['plannifie'],
+                                                $valeurs['id_forum'],
+                                                $valeurs['date_soumission']['Y'] . '-' . $valeurs['date_soumission']['M'] . '-' . $valeurs['date_soumission']['d'],
+                                                $valeurs['titre'],
+                                                $valeurs['abstract'],
+                                                (int) $valeurs['genre'],
+                                                (int) $valeurs['plannifie'],
                                                 $valeurs['joindin'],
                                                 $valeurs['youtube_id'],
                                                 $valeurs['slides_url'],
@@ -264,12 +265,12 @@ if ($action == 'lister') {
                                                 $valeurs['blog_post_url'],
                                                 $valeurs['interview_url'],
                                                 $valeurs['language_code'],
-                                                (int)$valeurs['skill'],
-                                                (int)$valeurs['needs_mentoring'],
+                                                (int) $valeurs['skill'],
+                                                (int) $valeurs['needs_mentoring'],
                                                 $valeurs['use_markdown'],
                                                 $valeurs['video_has_fr_subtitles'],
                                                 $valeurs['video_has_en_subtitles'],
-                                                $valeurs['date_publication']['Y'].'-'.$valeurs['date_publication']['M'].'-'.$valeurs['date_publication']['d'] . ' ' . $valeurs['date_publication']['H'] . ':' . $valeurs['date_publication']['i'] . ':' . $valeurs['date_publication']['s'],
+                                                $valeurs['date_publication']['Y'] . '-' . $valeurs['date_publication']['M'] . '-' . $valeurs['date_publication']['d'] . ' ' . $valeurs['date_publication']['H'] . ':' . $valeurs['date_publication']['i'] . ':' . $valeurs['date_publication']['s'],
                                                 $valeurs['tweets'],
                                                 $valeurs['transcript'],
                                                 $valeurs['verbatim']

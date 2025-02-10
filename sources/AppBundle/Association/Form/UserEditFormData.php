@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Form;
 
 use AppBundle\Association\Model\User;
@@ -102,7 +104,7 @@ class UserEditFormData
     /**
      * @Assert\Callback
      */
-    public function validate(ExecutionContextInterface $context)
+    public function validate(ExecutionContextInterface $context): void
     {
         if (!is_array(json_decode($this->roles, true))) {
             $context->buildViolation('Les roles ne sont pas valides')

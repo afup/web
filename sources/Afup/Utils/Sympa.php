@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Utils;
+
 class Sympa
 {
     /**
-     * @var \Afup\Site\Utils\Base_De_Donnees
+     * @var Base_De_Donnees
      */
     private $_bdd;
     private $_configUrl;
@@ -101,7 +104,7 @@ class Sympa
         $requete .= 'VALUES (';
         $requete .= $this->_bdd->echapper($email) . ',';
         $requete .= $this->_bdd->echapper($nom) . ',';
-        $requete .= '\'fr\'' . ')';
+        $requete .= '\'fr\')';
         return $this->_bdd->executer($requete);
     }
 

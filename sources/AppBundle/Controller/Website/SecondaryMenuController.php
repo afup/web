@@ -1,14 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website;
 
 use Afup\Site\Corporate\Branche;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 
-class SecondaryMenuController extends Controller
+class SecondaryMenuController extends AbstractController
 {
-    public function displayAction(Request $request)
+    private RequestStack $requestStack;
+    public function __construct(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
+    public function display(Request $request): Response
     {
         $branche = new Branche();
         $menu = $branche->feuillesEnfants($request->get('feuille_id'));
@@ -16,12 +25,15 @@ class SecondaryMenuController extends Controller
         return $this->render(
             ':site:secondary_menu.html.twig',
             [
-                'menu' => $this->prepareMenu($this->get('request_stack')->getMasterRequest(), $menu),
+                'menu' => $this->prepareMenu($this->requestStack->getMasterRequest(), $menu),
             ]
         );
     }
 
-    protected function prepareMenu(Request $masterRequest, array $menu)
+    /**
+     * @return mixed[]
+     */
+    protected function prepareMenu(Request $masterRequest, array $menu): array
     {
         $preparedMenu = [];
 
@@ -44,14 +56,16 @@ class SecondaryMenuController extends Controller
         }
 
         $isCurrent = false;
-        foreach (explode(PHP_EOL, $feuille['patterns']) as $pattern) {
-            $pattern = trim($pattern);
-            if (strlen($pattern) === 0) {
-                continue;
-            }
+        if ($feuille['patterns']) {
+            foreach (explode(PHP_EOL, $feuille['patterns']) as $pattern) {
+                $pattern = trim($pattern);
+                if ($pattern === '') {
+                    continue;
+                }
 
-            if (preg_match($pattern, $url)) {
-                $isCurrent = true;
+                if (preg_match($pattern, $url)) {
+                    $isCurrent = true;
+                }
             }
         }
 

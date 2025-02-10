@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\UserMembership;
 
 use AppBundle\Association\Model\CompanyMember;
@@ -10,25 +12,13 @@ use AppBundle\Event\Model\Repository\UserBadgeRepository;
 
 class BadgesComputer
 {
-    /**
-     * @var SeniorityComputer
-     */
-    private $seniorityComputer;
+    private SeniorityComputer $seniorityComputer;
 
-    /**
-     * @var EventRepository
-     */
-    private $eventRepository;
+    private EventRepository $eventRepository;
 
-    /**
-     * @var UserBadgeRepository
-     */
-    private $userBadgeRepository;
+    private UserBadgeRepository $userBadgeRepository;
 
-    /**
-     * @var GeneralMeetingResponseRepository
-     */
-    private $generalMeetingResponseRepository;
+    private GeneralMeetingResponseRepository $generalMeetingResponseRepository;
 
     public function __construct(SeniorityComputer $seniorityComputer, EventRepository $eventRepository, UserBadgeRepository $userBadgeRepository, GeneralMeetingResponseRepository $generalMeetingResponseRepository)
     {
@@ -38,7 +28,7 @@ class BadgesComputer
         $this->generalMeetingResponseRepository = $generalMeetingResponseRepository;
     }
 
-    public function getBadges(User $user)
+    public function getBadges(User $user): array
     {
         $badgesInfos = $this->prepareBadgesInfos($user);
 
@@ -47,7 +37,10 @@ class BadgesComputer
         return $this->filterExistingBadges($badgesInfos);
     }
 
-    private function getSpecificBadges(User $user)
+    /**
+     * @return array{date: mixed, id: mixed, tooltip: mixed}[]
+     */
+    private function getSpecificBadges(User $user): array
     {
         $specific = [];
 
@@ -64,7 +57,7 @@ class BadgesComputer
         return $specific;
     }
 
-    public function getCompanyBadges(CompanyMember $companyMember)
+    public function getCompanyBadges(CompanyMember $companyMember): array
     {
         $badgesInfos = $this->prepareCompanyBadgesInfos($companyMember);
 
@@ -72,12 +65,13 @@ class BadgesComputer
 
         $badges = $this->filterExistingBadges($badgesInfos);
 
-        $badges = $this->mapBadgesCodes($badges);
-
-        return $badges;
+        return $this->mapBadgesCodes($badges);
     }
 
-    private function prepareCompanyBadgesInfos(CompanyMember $companyMember)
+    /**
+     * @return array{date: (non-falsy-string & uppercase-string), code: non-falsy-string, tooltip: non-falsy-string}[]
+     */
+    private function prepareCompanyBadgesInfos(CompanyMember $companyMember): array
     {
         $seniorityInfos = $this->seniorityComputer->computeCompanyAndReturnInfos($companyMember);
         $maxBadgesSeniority = 10;
@@ -95,7 +89,10 @@ class BadgesComputer
         return $badgesCodes;
     }
 
-    private function prepareBadgesInfos(User $user)
+    /**
+     * @return mixed[]
+     */
+    private function prepareBadgesInfos(User $user): array
     {
         $badgesCodes = [];
 
@@ -114,11 +111,9 @@ class BadgesComputer
             // a partir de 2022 les badges pour l'AFUP Day ne sont plus par ville mais
             // identiques pour toutes les villes (cela permet de les créer en amont et
             // en simplifie la maintenance).
-            $isolateTownPattern = '/afupday(?P<year>[0-9]{4})/';
-            if (preg_match($isolateTownPattern, $eventInfo['path'], $pathMatches)) {
-                if ($pathMatches['year'] >= 2022) {
-                    $code = 'jy-etais-afupday' . $pathMatches['year'];
-                }
+            $isolateTownPattern = '/afupday(?P<year>\d{4})/';
+            if (preg_match($isolateTownPattern, $eventInfo['path'], $pathMatches) && $pathMatches['year'] >= 2022) {
+                $code = 'jy-etais-afupday' . $pathMatches['year'];
             }
 
             $badgesCodes[$code] = [
@@ -148,12 +143,13 @@ class BadgesComputer
             ];
         }
 
-        $badgesCodes = array_merge($badgesCodes, $this->getSpecificBadges($user));
-
-        return $badgesCodes;
+        return array_merge($badgesCodes, $this->getSpecificBadges($user));
     }
 
-    private function mapBadgesCodes(array $badgesInfos)
+    /**
+     * @return mixed[]
+     */
+    private function mapBadgesCodes(array $badgesInfos): array
     {
         $badgesCodes = [];
         foreach ($badgesInfos as $badgeInfo) {
@@ -163,17 +159,20 @@ class BadgesComputer
         return $badgesCodes;
     }
 
-    private function sortBadgesInfos(array $badgesInfos)
+    private function sortBadgesInfos(array $badgesInfos): array
     {
         usort(
             $badgesInfos,
-            fn (array $a, array $b) => $b['date'] <=> $a['date']
+            fn (array $a, array $b): int => $b['date'] <=> $a['date']
         );
 
         return $badgesInfos;
     }
 
-    private function filterExistingBadges(array $badgesInfos)
+    /**
+     * @return mixed[]
+     */
+    private function filterExistingBadges(array $badgesInfos): array
     {
         $badgespath = __DIR__ . '/../../../../htdocs/images/badges/';
 
@@ -194,7 +193,10 @@ class BadgesComputer
         return $filteredBadges;
     }
 
-    private function getEventsInfos(User $user)
+    /**
+     * @return array{path: mixed, date: mixed, title: mixed}[]
+     */
+    private function getEventsInfos(User $user): array
     {
         $events = $this->eventRepository->getAllPastEventWithTegistrationEmail($user->getEmail());
 
@@ -210,7 +212,10 @@ class BadgesComputer
         return $eventInfos;
     }
 
-    private function getSpeakerYears(User $user)
+    /**
+     * @return mixed[]
+     */
+    private function getSpeakerYears(User $user): array
     {
         $events = $this->eventRepository->getAllPastEventWithSpeakerEmail($user->getEmail());
 
@@ -226,7 +231,10 @@ class BadgesComputer
         return $years;
     }
 
-    private function getGeneralMeetingYears(User $user)
+    /**
+     * @return mixed[]
+     */
+    private function getGeneralMeetingYears(User $user): array
     {
         $responses = $this->generalMeetingResponseRepository->getByUser($user);
         $currentTimestamp = (new \DateTime())->format('U');

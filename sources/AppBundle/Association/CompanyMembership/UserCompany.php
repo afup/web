@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\CompanyMembership;
 
 use AppBundle\Association\Event\UserDisabledEvent;
@@ -9,15 +11,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UserCompany
 {
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private UserRepository $userRepository;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(UserRepository $userRepository, EventDispatcherInterface $eventDispatcher)
     {
@@ -25,19 +21,19 @@ class UserCompany
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function setManager(User $user)
+    public function setManager(User $user): void
     {
         $user->addRole('ROLE_COMPANY_MANAGER');
         $this->userRepository->save($user);
     }
 
-    public function unsetManager(User $user)
+    public function unsetManager(User $user): void
     {
         $user->removeRole('ROLE_COMPANY_MANAGER');
         $this->userRepository->save($user);
     }
 
-    public function disableUser(User $user)
+    public function disableUser(User $user): void
     {
         $user
             ->removeRole('ROLE_COMPANY_MANAGER')
@@ -46,7 +42,7 @@ class UserCompany
         ;
         $this->userRepository->save($user);
 
-        $userDisabledEvent = new UserDisabledEvent($user);
-        $this->eventDispatcher->dispatch(UserDisabledEvent::NAME, $userDisabledEvent);
+        $event = new UserDisabledEvent($user);
+        $this->eventDispatcher->dispatch($event::NAME, $event);
     }
 }

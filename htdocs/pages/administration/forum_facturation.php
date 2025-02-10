@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 // Impossible to access the file itself
 use Afup\Site\Forum\Facturation;
 use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Logs;
+use AppBundle\Controller\LegacyController;
 use AppBundle\Event\Invoice\InvoiceService;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 
-/** @var \AppBundle\Controller\LegacyController $this */
+/** @var LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -53,26 +56,26 @@ if ($action == 'lister') {
     $smarty->assign('forums', $forum->obtenirListe());
     $smarty->assign('facturations', $forum_facturation->obtenirListe($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre));
 } elseif ($action == 'telecharger_devis') {
-	$forum_facturation->genererDevis($_GET['ref']);
+    $forum_facturation->genererDevis($_GET['ref']);
 } elseif ($action == 'telecharger_facture') {
-	$forum_facturation->genererFacture($_GET['ref']);
+    $forum_facturation->genererFacture($_GET['ref']);
     // on évite de renvoyer du html en fin de PDF
     exit(0);
-} elseif ($action == 'envoyer_facture'){
-	if($forum_facturation->envoyerFacture($_GET['ref'])){
-		Logs::log('Envoi par email de la facture n°' . $_GET['ref']);
-		afficherMessage('La facture a été envoyée', 'index.php?page=forum_facturation&action=lister');
-	} else {
-		afficherMessage("La facture n'a pas pu être envoyée", 'index.php?page=forum_facturation&action=lister', true);
-	}
-} elseif ($action == 'facturer_facture'){
-	if($forum_facturation->estFacture($_GET['ref'])){
-		Logs::log('Facturation => facture n°' . $_GET['ref']);
-		afficherMessage('La facture est prise en compte', 'index.php?page=forum_facturation&action=lister');
-	} else {
-		afficherMessage("La facture n'a pas pu être prise en compte", 'index.php?page=forum_facturation&action=lister', true);
-	}
-} elseif ($action == 'supprimer_facture'){
+} elseif ($action == 'envoyer_facture') {
+    if ($forum_facturation->envoyerFacture($_GET['ref'])) {
+        Logs::log('Envoi par email de la facture n°' . $_GET['ref']);
+        afficherMessage('La facture a été envoyée', 'index.php?page=forum_facturation&action=lister');
+    } else {
+        afficherMessage("La facture n'a pas pu être envoyée", 'index.php?page=forum_facturation&action=lister', true);
+    }
+} elseif ($action == 'facturer_facture') {
+    if ($forum_facturation->estFacture($_GET['ref'])) {
+        Logs::log('Facturation => facture n°' . $_GET['ref']);
+        afficherMessage('La facture est prise en compte', 'index.php?page=forum_facturation&action=lister');
+    } else {
+        afficherMessage("La facture n'a pas pu être prise en compte", 'index.php?page=forum_facturation&action=lister', true);
+    }
+} elseif ($action == 'supprimer_facture') {
     $invoice = $invoiceRepository->getByReference($_GET['ref']);
     if (null !== $invoice) {
         try {
@@ -83,12 +86,11 @@ if ($action == 'lister') {
         }
     }
     afficherMessage("La facture n'a pas pu être supprimée", 'index.php?page=forum_facturation&action=lister', true);
-} elseif ($action == 'changer_date_reglement'){
+} elseif ($action == 'changer_date_reglement') {
     $reglement = strtotime(implode('-', array_reverse(explode('/', $_GET['reglement']))));
     if ($forum_facturation->changerDateReglement($_GET['ref'], $reglement)) {
-		afficherMessage('La date de réglement a été changée', 'index.php?page=forum_facturation&action=lister');
+        afficherMessage('La date de réglement a été changée', 'index.php?page=forum_facturation&action=lister');
     } else {
-		afficherMessage('La date de réglement n\'a pas été changée', 'index.php?page=forum_facturation&action=lister', true);
+        afficherMessage('La date de réglement n\'a pas été changée', 'index.php?page=forum_facturation&action=lister', true);
     }
 }
-?>

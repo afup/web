@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Security\ActionThrottling;
 
 use Aura\SqlQuery\Mysql\Select;
@@ -15,7 +17,6 @@ class LogRepository extends Repository implements MetadataInitializer
      * @param string $action
      * @param string|null $ip
      * @param int|null $objectId
-     * @param \DateInterval $interval
      *
      * @return array
      * @throws \RuntimeException
@@ -63,7 +64,7 @@ class LogRepository extends Repository implements MetadataInitializer
      * @param string $action
      * @param string $ip
      */
-    public function removeLogs($action, $ip)
+    public function removeLogs($action, $ip): void
     {
         $query = $this->getPreparedQuery('
             DELETE FROM afup_throttling
@@ -78,10 +79,7 @@ class LogRepository extends Repository implements MetadataInitializer
         $query->execute();
     }
 
-    /**
-     * @param \DateInterval $delay
-     */
-    public function clearOldLogs(\DateInterval $delay)
+    public function clearOldLogs(\DateInterval $delay): void
     {
         $query = $this->getPreparedQuery('
             DELETE FROM afup_throttling

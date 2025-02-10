@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Site\Form;
 
 use Afup\Site\Corporate\Article;
@@ -8,24 +10,19 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewsFiltersType extends AbstractType
 {
-    /**
-     * @var ArticleRepository
-     */
-    private $articleRepository;
+    private ArticleRepository $articleRepository;
 
-    /**
-     * @param ArticleRepository $articleRepository
-     */
     public function __construct(ArticleRepository $articleRepository)
     {
         $this->articleRepository = $articleRepository;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $yearValues = [];
         foreach ($this->articleRepository->getAllYears() as $year) {
@@ -33,7 +30,7 @@ class NewsFiltersType extends AbstractType
         }
 
         $builder
-            ->setMethod('GET')
+            ->setMethod(Request::METHOD_GET)
             ->add(
                 'year',
                 ChoiceType::class,
@@ -68,7 +65,7 @@ class NewsFiltersType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'csrf_protection'   => false,

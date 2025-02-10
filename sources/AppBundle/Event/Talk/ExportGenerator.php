@@ -1,34 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Talk;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
+use CCMBenchmark\Ting\Query\QueryException;
 
 class ExportGenerator
 {
-    /**
-     * @var TalkRepository
-     */
-    private $talkRepository;
+    private TalkRepository $talkRepository;
 
-    /**
-     * @param TalkRepository $talkRepository
-     */
     public function __construct(TalkRepository $talkRepository)
     {
         $this->talkRepository = $talkRepository;
     }
 
     /**
-     * @param Event $event
-     * @param \SplFileObject $toFile
      *
-     * @throws \CCMBenchmark\Ting\Query\QueryException
+     * @throws QueryException
      */
-    public function export(Event $event, \SplFileObject $toFile)
+    public function export(Event $event, \SplFileObject $toFile): void
     {
         $columns = [
             'id',
@@ -60,11 +55,9 @@ class ExportGenerator
     }
 
     /**
-     * @param Event $event
      *
      * @return \Generator
-     *
-     * @throws \CCMBenchmark\Ting\Query\QueryException
+     * @throws QueryException
      */
     private function getFromRegistrationsOnEvent(Event $event)
     {
@@ -76,14 +69,10 @@ class ExportGenerator
     }
 
     /**
-     * @param Talk $talk
-     * @param array $speakers
-     *
-     * @return array
      *
      * @throws \Exception
      */
-    private function prepareLine(Talk $talk, array $speakers)
+    private function prepareLine(Talk $talk, array $speakers): array
     {
         return [
             'id' => $talk->getId(),
@@ -101,22 +90,12 @@ class ExportGenerator
         ];
     }
 
-    /**
-     * @param array $speakers
-     *
-     * @return string
-     */
-    private function prepareSpeakersLabel(array $speakers)
+    private function prepareSpeakersLabel(array $speakers): string
     {
         return implode(',', $this->getSpeakersLabels($speakers));
     }
 
-    /**
-     * @param array $speakers
-     *
-     * @return array
-     */
-    private function getSpeakersLabels(array $speakers)
+    private function getSpeakersLabels(array $speakers): array
     {
         $names = [];
         foreach ($speakers as $speaker) {
@@ -128,19 +107,16 @@ class ExportGenerator
 
     /**
      * @param array|Speaker[] $speakers
-     *
-     * @return string
      */
-    private function prepareSpeakersLocalities(array $speakers)
+    private function prepareSpeakersLocalities(array $speakers): string
     {
         return implode(',', $this->getSpeakersLocalities($speakers));
     }
 
     /**
      * @param array|Speaker[] $speakers
-     * @return array
      */
-    private function getSpeakersLocalities(array $speakers)
+    private function getSpeakersLocalities(array $speakers): array
     {
         $localities = [];
         foreach ($speakers as $speaker) {
@@ -151,8 +127,6 @@ class ExportGenerator
     }
 
     /**
-     * @param Talk $talk
-     *
      * @return string
      */
     private function getLanguageLabel(Talk $talk)

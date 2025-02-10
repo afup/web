@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Association\CompanyMembership;
 
 class Reminder15DaysBeforeEnd extends AbstractCompanyReminder
 {
-    protected function getText()
+    protected function getText(): string
     {
         return 'Cher membre AFUP,<br />
 <p>Votre adhésion d’un an à l’AFUP approche de son terme ! Déjà presque une année que vous bénéficiez de nos tarifs
@@ -29,12 +31,12 @@ L’équipe AFUP</p>
 ';
     }
 
-    protected function getSubject()
+    protected function getSubject(): string
     {
         return 'Votre adhésion à l’AFUP arrive à son terme : J-15';
     }
 
-    protected function getKey()
+    protected function getKey(): string
     {
         return '15DaysBefore';
     }

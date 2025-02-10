@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Command;
 
 use AlgoliaSearch\AlgoliaException;
@@ -16,7 +18,7 @@ class IndexMeetupsCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('indexing:meetups')
@@ -28,7 +30,7 @@ class IndexMeetupsCommand extends ContainerAwareCommand
      * @throws AlgoliaException
      * @see Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $container = $this->getContainer();
         $ting = $this->getContainer()->get('ting');
@@ -47,7 +49,7 @@ class IndexMeetupsCommand extends ContainerAwareCommand
         return 0;
     }
 
-    private function runScraping($output)
+    private function runScraping(OutputInterface $output): void
     {
         $greetInput = new ArrayInput([
             'command' => 'scrapping-meetup-event',

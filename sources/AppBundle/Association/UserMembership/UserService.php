@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\UserMembership;
 
 use Afup\Site\Association\Cotisations;
@@ -13,16 +15,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UserService
 {
-    /** @var UserRepository */
-    private $userRepository;
-    /** @var Mailer */
-    private $mailer;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var string */
-    private $sender;
-    /** @var Cotisations */
-    private $cotisations;
+    private UserRepository $userRepository;
+    private Mailer $mailer;
+    private UrlGeneratorInterface $urlGenerator;
+    private string $sender = MailUser::DEFAULT_SENDER_EMAIL;
+    private Cotisations $cotisations;
 
     public function __construct(
         UserRepository $userRepository,
@@ -34,7 +31,6 @@ class UserService
         $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
         $this->cotisations = $cotisations;
-        $this->sender = MailUser::DEFAULT_SENDER_EMAIL;
     }
 
     public function generateRandomPassword(): string
@@ -42,7 +38,7 @@ class UserService
         return bin2hex(random_bytes(8));
     }
 
-    public function resetPassword(User $user)
+    public function resetPassword(User $user): void
     {
         $newPassword = $this->generateRandomPassword();
         $user->setPlainPassword($newPassword);
@@ -71,7 +67,7 @@ BODY
     /**
      * @param string $email
      */
-    public function resetPasswordForEmail($email)
+    public function resetPasswordForEmail($email): void
     {
         $user = $this->userRepository->loadUserByEmaiOrAlternateEmail($email);
         if (null !== $user) {
@@ -79,7 +75,7 @@ BODY
         }
     }
 
-    public function sendWelcomeEmail(User $user)
+    public function sendWelcomeEmail(User $user): bool
     {
         $message = new Message(
             'Votre compte afup.org',

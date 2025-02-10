@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 class TicketFactory
 {
-    public function createTicketFromSponsorTicket(SponsorTicket $sponsorTicket)
+    public function createTicketFromSponsorTicket(SponsorTicket $sponsorTicket): Ticket
     {
         $ticket = new Ticket();
         $ticket

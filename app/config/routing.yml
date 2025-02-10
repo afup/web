@@ -51,19 +51,19 @@ planete_php_api:
 
 badge_image:
     path: /profile/badge/{id}
-    defaults: {_controller: AppBundle:Website\Badge:badge }
+    defaults: {_controller: AppBundle\Controller\Website\BadgeController::badge }
 
 company_public_profile_logo:
     path: /profile/company/{id}-{slug}/logo
-    defaults: {_controller: AppBundle:Website\CompanyPublicProfile:logo }
+    defaults: {_controller: AppBundle\Controller\Website\CompanyPublicProfileController::logo }
 
 company_public_profile:
     path: /profile/company/{id}-{slug}
-    defaults: {_controller: AppBundle:Website\CompanyPublicProfile:index }
+    defaults: {_controller: AppBundle\Controller\Website\CompanyPublicProfileController::index }
 
 company_public_profile_list:
     path: /profile/company
-    defaults: {_controller: AppBundle:Website\CompanyPublicProfileList:index }
+    defaults: {_controller: AppBundle\Controller\Website\CompanyPublicProfileListController::index }
 
 feed_rss:
     path: /rss.xml

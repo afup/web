@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Form;
 
 use AppBundle\Event\Model\Repository\BadgeRepository;
@@ -14,15 +16,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserBadgeType extends AbstractType
 {
-    /**
-     * @var BadgeRepository
-     */
-    private $badgeRepository;
+    private BadgeRepository $badgeRepository;
 
-    /**
-     * @var UserBadgeRepository
-     */
-    private $userBadgeRepository;
+    private UserBadgeRepository $userBadgeRepository;
 
     public function __construct(BadgeRepository $badgeRepository, UserBadgeRepository $userBadgeRepository)
     {
@@ -30,7 +26,7 @@ class UserBadgeType extends AbstractType
         $this->userBadgeRepository = $userBadgeRepository;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $userBadgesIds = [];
         foreach ($this->userBadgeRepository->findByUserId($options['user']->getId()) as $userBadge) {
@@ -78,7 +74,7 @@ class UserBadgeType extends AbstractType
             );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['user']);
     }

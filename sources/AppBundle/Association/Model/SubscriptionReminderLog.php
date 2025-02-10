@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Association\Model;
 
@@ -20,10 +22,7 @@ class SubscriptionReminderLog implements NotifyPropertyInterface
      */
     private $email;
 
-    /**
-     * @var int
-     */
-    private $userId;
+    private ?int $userId = null;
 
     /**
      * @var int
@@ -35,15 +34,9 @@ class SubscriptionReminderLog implements NotifyPropertyInterface
      */
     private $reminderKey;
 
-    /**
-     * @var \DateTime
-     */
-    private $reminderDate;
+    private ?\DateTime $reminderDate = null;
 
-    /**
-     * @var boolean
-     */
-    private $mailSent;
+    private ?bool $mailSent = null;
 
     /**
      * @return int
@@ -55,9 +48,8 @@ class SubscriptionReminderLog implements NotifyPropertyInterface
 
     /**
      * @param int $id
-     * @return SubscriptionReminderLog
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -67,16 +59,15 @@ class SubscriptionReminderLog implements NotifyPropertyInterface
     /**
      * @return int
      */
-    public function getUserId()
+    public function getUserId(): ?int
     {
         return $this->userId;
     }
 
     /**
      * @param int $userId
-     * @return SubscriptionReminderLog
      */
-    public function setUserId($userId)
+    public function setUserId($userId): self
     {
         $userId = (int) $userId;
         $this->propertyChanged('userId', $this->userId, $userId);
@@ -94,9 +85,8 @@ class SubscriptionReminderLog implements NotifyPropertyInterface
 
     /**
      * @param string $email
-     * @return SubscriptionReminderLog
      */
-    public function setEmail($email)
+    public function setEmail($email): self
     {
         $this->propertyChanged('email', $this->email, $email);
         $this->email = $email;
@@ -113,9 +103,8 @@ class SubscriptionReminderLog implements NotifyPropertyInterface
 
     /**
      * @param int $userType
-     * @return SubscriptionReminderLog
      */
-    public function setUserType($userType)
+    public function setUserType($userType): self
     {
         $this->propertyChanged('userType', $this->userType, $userType);
         $this->userType = $userType;
@@ -132,9 +121,8 @@ class SubscriptionReminderLog implements NotifyPropertyInterface
 
     /**
      * @param string $reminderKey
-     * @return SubscriptionReminderLog
      */
-    public function setReminderKey($reminderKey)
+    public function setReminderKey($reminderKey): self
     {
         $this->propertyChanged('reminderKey', $this->reminderKey, $reminderKey);
         $this->reminderKey = $reminderKey;
@@ -144,16 +132,12 @@ class SubscriptionReminderLog implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getReminderDate()
+    public function getReminderDate(): ?\DateTime
     {
         return $this->reminderDate;
     }
 
-    /**
-     * @param \DateTime $reminderDate
-     * @return SubscriptionReminderLog
-     */
-    public function setReminderDate(\DateTime $reminderDate)
+    public function setReminderDate(\DateTime $reminderDate): self
     {
         $this->propertyChanged('reminderDate', $this->reminderDate, $reminderDate);
         $this->reminderDate = $reminderDate;
@@ -163,16 +147,15 @@ class SubscriptionReminderLog implements NotifyPropertyInterface
     /**
      * @return bool
      */
-    public function getMailSent()
+    public function getMailSent(): ?bool
     {
         return $this->mailSent;
     }
 
     /**
      * @param bool $mailSent
-     * @return SubscriptionReminderLog
      */
-    public function setMailSent($mailSent)
+    public function setMailSent($mailSent): self
     {
         $this->propertyChanged('mailSent', $this->mailSent, (bool) $mailSent);
         $this->mailSent = (bool) $mailSent;

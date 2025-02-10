@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Event\CFP;
 
 use AppBundle\CFP\PhotoStorage;
@@ -20,22 +22,14 @@ use Twig_Environment;
 class IndexAction
 {
     const MAX_EVENTS_HISTORY = 50;
-    /** @var TalkRepository */
-    private $talkRepository;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var Twig_Environment */
-    private $twig;
-    /** @var SpeakerFactory */
-    private $speakerFactory;
-    /** @var PhotoStorage */
-    private $photoStorage;
-    /** @var SidebarRenderer */
-    private $sidebarRenderer;
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var EventRepository */
-    private $eventRepository;
+    private TalkRepository $talkRepository;
+    private UrlGeneratorInterface $urlGenerator;
+    private \Twig_Environment $twig;
+    private SpeakerFactory $speakerFactory;
+    private PhotoStorage $photoStorage;
+    private SidebarRenderer $sidebarRenderer;
+    private EventActionHelper $eventActionHelper;
+    private EventRepository $eventRepository;
 
     public function __construct(
         EventActionHelper $eventActionHelper,
@@ -82,7 +76,7 @@ class IndexAction
             }
         }
         // Remove events with no talks submitted
-        $previousEventTalkLists = array_filter($previousEventTalkLists, static fn (EventTalkList $previousEventTalkList) => [] !== $previousEventTalkList->getTalks());
+        $previousEventTalkLists = array_filter($previousEventTalkLists, static fn (EventTalkList $previousEventTalkList): bool => [] !== $previousEventTalkList->getTalks());
 
         return new Response($this->twig->render('event/cfp/home.html.twig', [
             'event' => $event,

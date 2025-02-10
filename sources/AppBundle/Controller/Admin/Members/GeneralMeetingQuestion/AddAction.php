@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members\GeneralMeetingQuestion;
 
 use AppBundle\Association\Model\GeneralMeetingQuestion;
@@ -17,18 +19,12 @@ use Twig\Environment;
 
 class AddAction
 {
-    /** @var GeneralMeetingQuestionRepository */
-    private $generalMeetingQuestionRepository;
-    /** @var GeneralMeetingRepository */
-    private $generalMeetingRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var Environment */
-    private $twig;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
+    private GeneralMeetingQuestionRepository $generalMeetingQuestionRepository;
+    private GeneralMeetingRepository $generalMeetingRepository;
+    private FormFactoryInterface $formFactory;
+    private FlashBagInterface $flashBag;
+    private Environment $twig;
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,

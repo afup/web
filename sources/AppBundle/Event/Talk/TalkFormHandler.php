@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Talk;
 
 use AppBundle\Event\Model\Event;
@@ -18,18 +20,12 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class TalkFormHandler
 {
-    /** @var TalkRepository */
-    private $talkRepository;
-    /** @var SpeakerRepository */
-    private $speakerRepository;
-    /** @var SlackNotifier */
-    private $slackNotifier;
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-    /** @var TalkToSpeakersRepository */
-    private $talkToSpeakersRepository;
-    /** @var UnitOfWork */
-    private $unitOfWork;
+    private TalkRepository $talkRepository;
+    private SpeakerRepository $speakerRepository;
+    private SlackNotifier $slackNotifier;
+    private EventDispatcherInterface $eventDispatcher;
+    private TalkToSpeakersRepository $talkToSpeakersRepository;
+    private UnitOfWork $unitOfWork;
 
     public function __construct(
         TalkRepository $talkRepository,
@@ -47,10 +43,7 @@ class TalkFormHandler
         $this->unitOfWork = $unitOfWork;
     }
 
-    /**
-     * @return bool
-     */
-    public function handle(Request $request, Event $event, FormInterface $form, Speaker $speaker)
+    public function handle(Request $request, Event $event, FormInterface $form, Speaker $speaker): bool
     {
         $form->handleRequest($request);
         if (!$form->isSubmitted() || !$form->isValid()) {
@@ -61,7 +54,7 @@ class TalkFormHandler
         $talk->setSubmittedOn(new DateTime());
         $this->speakerRepository->save($speaker);
         if (!$this->unitOfWork->isManaged($talk)) {
-            $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($talk, $event) {
+            $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($talk, $event): void {
                 $this->slackNotifier->notifyTalk($talk, $event);
             });
         }

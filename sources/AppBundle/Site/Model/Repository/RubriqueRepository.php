@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Site\Model\Repository;
 
 use AppBundle\Site\Model\Rubrique;
@@ -11,7 +13,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class RubriqueRepository extends Repository implements MetadataInitializer
 {
-    public function getAllRubriques($ordre = 'nom', $direction='asc', $filtre = '%')
+    public function getAllRubriques($ordre = 'nom', $direction='asc', string $filtre = '%')
     {
         if ($direction !== 'desc' && $direction !== 'asc') {
             $direction = 'asc';

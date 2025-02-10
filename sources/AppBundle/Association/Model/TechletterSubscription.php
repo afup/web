@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -14,20 +16,11 @@ class TechletterSubscription implements NotifyPropertyInterface
      */
     private $id;
 
-    /**
-     * @var int
-     */
-    private $userId;
+    private ?int $userId = null;
 
-    /**
-     * @var \DateTime
-     */
-    private $subscriptionDate;
+    private ?\DateTime $subscriptionDate = null;
 
-    /**
-     * @var User
-     */
-    private $user;
+    private ?User $user = null;
 
     /**
      * @return int
@@ -39,9 +32,8 @@ class TechletterSubscription implements NotifyPropertyInterface
 
     /**
      * @param int $id
-     * @return TechletterSubscription
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->id = $id;
         return $this;
@@ -50,16 +42,15 @@ class TechletterSubscription implements NotifyPropertyInterface
     /**
      * @return int
      */
-    public function getUserId()
+    public function getUserId(): ?int
     {
         return $this->userId;
     }
 
     /**
      * @param int $userId
-     * @return TechletterSubscription
      */
-    public function setUserId($userId)
+    public function setUserId($userId): self
     {
         $userId = (int) $userId;
         $this->propertyChanged('userId', $this->userId, $userId);
@@ -70,16 +61,12 @@ class TechletterSubscription implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getSubscriptionDate()
+    public function getSubscriptionDate(): ?\DateTime
     {
         return $this->subscriptionDate;
     }
 
-    /**
-     * @param \DateTime $subscriptionDate
-     * @return TechletterSubscription
-     */
-    public function setSubscriptionDate(\DateTime $subscriptionDate)
+    public function setSubscriptionDate(\DateTime $subscriptionDate): self
     {
         $this->propertyChanged('subscriptionDate', $this->subscriptionDate, $subscriptionDate);
         $this->subscriptionDate = $subscriptionDate;
@@ -89,16 +76,12 @@ class TechletterSubscription implements NotifyPropertyInterface
     /**
      * @return User
      */
-    public function getUser()
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param User $user
-     * @return TechletterSubscription
-     */
-    public function setUser(User $user)
+    public function setUser(User $user): self
     {
         $this->user = $user;
         return $this;

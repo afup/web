@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Event\Form;
 
@@ -18,7 +20,7 @@ class TalkType extends AbstractType
     const OPT_COC_CHECKED = 'codeOfConductChecked';
     const IS_AFUP_DAY = 'isAfupDay';
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('title', TextType::class, [
@@ -85,7 +87,7 @@ class TalkType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             self::OPT_COC_CHECKED => false,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Legacy;
 
 use Assert\Assertion;
@@ -12,15 +14,14 @@ use Twig\Error\LoaderError;
 
 class LegacyEventAction
 {
-    /** @var Environment */
-    private $twig;
+    private Environment $twig;
 
     public function __construct(Environment $twig)
     {
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $year = $request->attributes->getInt('year');
         $page = str_replace('.php', '', $request->attributes->get('page'));

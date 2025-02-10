@@ -53,7 +53,7 @@
              <td  width="250">{$ecriture.ville}</td>
 			<td>{$ecriture.ref_clt1}</td>
 			<td>{$ecriture.numero_devis}</td>
-            <td class="right aligned">{$ecriture.prix|number_format:2:',':' '}</td>
+            <td class="right aligned">{$ecriture.prix|floatval|number_format:2:',':' '}</td>
             <td class="center aligned">
                 {if $ecriture.numero_facture == ''}
                     <span class="ui red label">non</span>

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\TechLetter\Model;
 
 class TechLetterFactory
 {
-    public static function createTechLetterFromJson($json)
+    public static function createTechLetterFromJson($json): TechLetter
     {
         $array = json_decode((string) $json, true);
 

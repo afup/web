@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Event;
 
 use AppBundle\Email\Mailer\Mailer;
@@ -8,18 +10,23 @@ use AppBundle\Event\Form\SpeakerSuggestionType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\SpeakerSuggestionRepository;
 use AppBundle\Event\Model\SpeakerSuggestion;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class SpeakerSuggestionController extends EventBaseController
+class SpeakerSuggestionController extends AbstractController
 {
-    /** @var Mailer */
-    private $mailer;
+    private Mailer $mailer;
+    private RepositoryFactory $repositoryFactory;
+    private EventActionHelper $eventActionHelper;
 
-    public function __construct(Mailer $mailer)
+    public function __construct(Mailer $mailer, RepositoryFactory $repositoryFactory, EventActionHelper $eventActionHelper)
     {
         $this->mailer = $mailer;
+        $this->repositoryFactory = $repositoryFactory;
+        $this->eventActionHelper = $eventActionHelper;
     }
 
     /**
@@ -27,9 +34,9 @@ class SpeakerSuggestionController extends EventBaseController
      *
      * @return Response
      */
-    public function indexAction(Request $request, $eventSlug)
+    public function index(Request $request, $eventSlug)
     {
-        $event = $this->checkEventSlug($eventSlug);
+        $event = $this->eventActionHelper->getEvent($eventSlug);
 
         if ($event->getDateEndCallForPapers() < new \DateTime()) {
             return $this->render(
@@ -46,8 +53,7 @@ class SpeakerSuggestionController extends EventBaseController
         if ($form->isValid()) {
             $speakerSuggestion = $this->createSpeakerSuggestion($event, $form->getData());
 
-            $this
-                ->get('ting')
+            $this->repositoryFactory
                 ->get(SpeakerSuggestionRepository::class)
                 ->save($speakerSuggestion)
             ;
@@ -68,13 +74,7 @@ class SpeakerSuggestionController extends EventBaseController
         );
     }
 
-    /**
-     * @param Event $event
-     * @param array $data
-     *
-     * @return SpeakerSuggestion
-     */
-    private function createSpeakerSuggestion(Event $event, array $data)
+    private function createSpeakerSuggestion(Event $event, array $data): SpeakerSuggestion
     {
         return (new SpeakerSuggestion())
             ->setEventId($event->getId())
@@ -86,11 +86,7 @@ class SpeakerSuggestionController extends EventBaseController
         ;
     }
 
-    /**
-     * @param Event $event
-     * @param SpeakerSuggestion $speakerSuggestion
-     */
-    private function sendMail(Event $event, SpeakerSuggestion $speakerSuggestion)
+    private function sendMail(Event $event, SpeakerSuggestion $speakerSuggestion): void
     {
         $subject = sprintf('%s - Nouvelle suggestion de speaker', $event->getTitle());
 

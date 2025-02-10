@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -57,7 +59,7 @@ class TicketType implements NotifyPropertyInterface
      */
     private $day;
 
-    public function getLabel()
+    public function getLabel(): string
     {
         return sprintf('%s - %s%s - %s',
             $this->getTechnicalName(),
@@ -67,10 +69,7 @@ class TicketType implements NotifyPropertyInterface
         );
     }
 
-    /**
-     * @return bool
-     */
-    public function isEarly()
+    public function isEarly(): bool
     {
         return in_array($this->technicalName, self::EARLY_BIRD_TECHNICAL_NAME);
     }
@@ -85,9 +84,8 @@ class TicketType implements NotifyPropertyInterface
 
     /**
      * @param int $id
-     * @return TicketType
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -104,9 +102,8 @@ class TicketType implements NotifyPropertyInterface
 
     /**
      * @param string $technicalName
-     * @return TicketType
      */
-    public function setTechnicalName($technicalName)
+    public function setTechnicalName($technicalName): self
     {
         $this->propertyChanged('technicalName', $this->technicalName, $technicalName);
         $this->technicalName = $technicalName;
@@ -123,9 +120,8 @@ class TicketType implements NotifyPropertyInterface
 
     /**
      * @param string $prettyName
-     * @return TicketType
      */
-    public function setPrettyName($prettyName)
+    public function setPrettyName($prettyName): self
     {
         $this->propertyChanged('prettyName', $this->prettyName, $prettyName);
         $this->prettyName = $prettyName;
@@ -142,9 +138,8 @@ class TicketType implements NotifyPropertyInterface
 
     /**
      * @param bool $isPublic
-     * @return TicketType
      */
-    public function setIsPublic($isPublic)
+    public function setIsPublic($isPublic): self
     {
         $this->propertyChanged('isPublic', $this->isPublic, $isPublic);
         $this->isPublic = $isPublic;
@@ -161,9 +156,8 @@ class TicketType implements NotifyPropertyInterface
 
     /**
      * @param bool $isRestrictedToMembers
-     * @return TicketType
      */
-    public function setIsRestrictedToMembers($isRestrictedToMembers)
+    public function setIsRestrictedToMembers($isRestrictedToMembers): self
     {
         $this->propertyChanged('isRestrictedToMembers', $this->isRestrictedToMembers, $isRestrictedToMembers);
         $this->isRestrictedToMembers = $isRestrictedToMembers;
@@ -180,10 +174,8 @@ class TicketType implements NotifyPropertyInterface
 
     /**
      * @param bool $isRestrictedToCfpSubmitter
-     *
-     * @return TicketType
      */
-    public function setIsRestrictedToCfpSubmitter($isRestrictedToCfpSubmitter)
+    public function setIsRestrictedToCfpSubmitter($isRestrictedToCfpSubmitter): self
     {
         $this->propertyChanged('isRestrictedToCfpSubmitter', $this->isRestrictedToCfpSubmitter, $isRestrictedToCfpSubmitter);
         $this->isRestrictedToCfpSubmitter = $isRestrictedToCfpSubmitter;
@@ -200,9 +192,8 @@ class TicketType implements NotifyPropertyInterface
 
     /**
      * @param float $defaultPrice
-     * @return TicketType
      */
-    public function setDefaultPrice($defaultPrice)
+    public function setDefaultPrice($defaultPrice): self
     {
         $this->propertyChanged('defaultPrice', $this->defaultPrice, $defaultPrice);
         $this->defaultPrice = $defaultPrice;
@@ -219,9 +210,8 @@ class TicketType implements NotifyPropertyInterface
 
     /**
      * @param bool $isActive
-     * @return TicketType
      */
-    public function setIsActive($isActive)
+    public function setIsActive($isActive): self
     {
         $this->propertyChanged('isActive', $this->isActive, $isActive);
         $this->isActive = $isActive;
@@ -238,9 +228,8 @@ class TicketType implements NotifyPropertyInterface
 
     /**
      * @param string $day
-     * @return TicketType
      */
-    public function setDay($day)
+    public function setDay($day): self
     {
         $this->propertyChanged('day', $this->day, $day);
         $this->day = $day;
@@ -252,7 +241,7 @@ class TicketType implements NotifyPropertyInterface
         return explode(',', $this->day);
     }
 
-    public function getPrettyDays()
+    public function getPrettyDays(): string
     {
         $days = [];
         foreach ($this->getDays() as $day) {

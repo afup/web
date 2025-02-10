@@ -1,25 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\TechLetter\Model;
 
 class TechLetter implements \JsonSerializable
 {
-    /**
-     * @var News|null
-     */
-    private $firstNews;
-    /**
-     * @var News|null
-     */
-    private $secondNews;
-    /**
-     * @var array
-     */
-    private $articles;
-    /**
-     * @var array
-     */
-    private $projects;
+    private ?News $firstNews;
+    private ?News $secondNews;
+    private array $articles;
+    private array $projects;
 
     public function __construct(News $firstNews = null, News $secondNews = null, array $articles = [], array $projects = [])
     {
@@ -29,34 +19,22 @@ class TechLetter implements \JsonSerializable
         $this->projects = $projects;
     }
 
-    /**
-     * @return News|null
-     */
-    public function getFirstNews()
+    public function getFirstNews(): ?News
     {
         return $this->firstNews;
     }
 
-    /**
-     * @return News|null
-     */
-    public function getSecondNews()
+    public function getSecondNews(): ?News
     {
         return $this->secondNews;
     }
 
-    /**
-     * @return array
-     */
-    public function getArticles()
+    public function getArticles(): array
     {
         return $this->articles;
     }
 
-    /**
-     * @return array
-     */
-    public function getProjects()
+    public function getProjects(): array
     {
         return $this->projects;
     }
@@ -67,8 +45,8 @@ class TechLetter implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'firstNews' => $this->firstNews ? $this->firstNews->jsonSerialize() : null,
-            'secondNews' => $this->secondNews ? $this->secondNews->jsonSerialize() : null,
+            'firstNews' => $this->firstNews instanceof News ? $this->firstNews->jsonSerialize() : null,
+            'secondNews' => $this->secondNews instanceof News ? $this->secondNews->jsonSerialize() : null,
             'articles' => array_map(fn (Article $article) => $article->jsonSerialize(), $this->articles),
             'projects' => array_map(fn (Project $project) => $project->jsonSerialize(), $this->projects)
         ];

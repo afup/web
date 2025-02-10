@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Openfeedback;
 
 use AppBundle\CFP\PhotoStorage;
@@ -12,32 +14,17 @@ use AppBundle\Event\Model\Talk;
 
 class OpenfeedbackJsonGenerator
 {
-    /**
-     * @var TalkRepository
-     */
-    private $talkRepository;
+    private TalkRepository $talkRepository;
 
-    /**
-     * @var PhotoStorage
-     */
-    private $photoStorage;
+    private PhotoStorage $photoStorage;
 
-    /**
-     * @param TalkRepository $talkRepository
-     * @param PhotoStorage $photoStorage
-     */
     public function __construct(TalkRepository $talkRepository, PhotoStorage $photoStorage)
     {
         $this->talkRepository = $talkRepository;
         $this->photoStorage = $photoStorage;
     }
 
-    /**
-     * @param Event $event
-     *
-     * @return array
-     */
-    public function generate(Event $event)
+    public function generate(Event $event): array
     {
         $talks = $this->talkRepository->getByEventWithSpeakers($event);
         $data = [];
@@ -101,11 +88,7 @@ class OpenfeedbackJsonGenerator
         return $data;
     }
 
-    /**
-     * @param \DateTime $date
-     * @return string
-     */
-    public function getOpenfeedbackFormat(\DateTime $date)
+    public function getOpenfeedbackFormat(\DateTime $date): string
     {
         return $date->format('Y-m-d\TH:i:sP');
     }

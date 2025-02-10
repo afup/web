@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Planete;
 
 use Afup\Site\Logger\DbLoggerTrait;
@@ -18,16 +20,11 @@ class FeedAddAction
 {
     use DbLoggerTrait;
 
-    /** @var FeedRepository */
-    private $feedRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var Environment */
-    private $twig;
+    private FeedRepository $feedRepository;
+    private FormFactoryInterface $formFactory;
+    private FlashBagInterface $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
+    private Environment $twig;
 
     public function __construct(
         FeedRepository $feedRepository,

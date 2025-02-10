@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 // Impossible to access the file itself
 use Afup\Site\Association\Personnes_Morales;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Pays;
 use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Controller\LegacyController;
 
-/** @var \AppBundle\Controller\LegacyController $this */
+/** @var LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
     exit;
@@ -92,7 +95,7 @@ if ($action == 'lister') {
     $formulaire->addElement('text'    , 'email'              , 'Email'          , ['size' => 30, 'maxlength' => 100]);
     $formulaire->addElement('text'    , 'telephone_fixe'     , 'Tél. fixe'      , ['size' => 20, 'maxlength' => 20]);
     $formulaire->addElement('text'    , 'telephone_portable' , 'Tél. portable'  , ['size' => 20, 'maxlength' => 20]);
-    if($action != 'ajouter') {
+    if ($action != 'ajouter') {
         $smarty->assign('personnes_physiques_associees', $users);
     }
     $formulaire->addElement('header'  , ''                   , 'Paramètres');

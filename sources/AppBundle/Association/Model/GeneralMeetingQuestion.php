@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -18,30 +20,18 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
      */
     private $id;
 
-    /**
-     * @var \DateTime
-     */
-    private $date;
+    private ?\DateTimeInterface $date = null;
 
     /**
      * @var string
      */
     private $label;
 
-    /**
-     * @var \DateTime
-     */
-    private $openedAt;
+    private ?\DateTime $openedAt = null;
 
-    /**
-     * @var \DateTime
-     */
-    private $closedAt;
+    private ?\DateTime $closedAt = null;
 
-    /**
-     * @var \DateTime
-     */
-    private $createdAt;
+    private ?\DateTime $createdAt = null;
 
     /**
      * @return int
@@ -56,7 +46,7 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -67,17 +57,15 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getDate()
+    public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
     }
 
     /**
-     * @param \DateTimeInterface $date
-     *
      * @return $this
      */
-    public function setDate(\DateTimeInterface $date)
+    public function setDate(\DateTimeInterface $date): self
     {
         $this->propertyChanged('date', $this->date, $date);
         $this->date = $date;
@@ -96,7 +84,7 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
     /**
      * @param string $label
      */
-    public function setLabel($label)
+    public function setLabel($label): self
     {
         $this->propertyChanged('label', $this->label, $label);
         $this->label = $label;
@@ -107,7 +95,7 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getOpenedAt()
+    public function getOpenedAt(): ?\DateTime
     {
         return $this->openedAt;
     }
@@ -115,7 +103,7 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
     /**
      * @return $this
      */
-    public function setOpenedAt(\DateTime $openedAt = null)
+    public function setOpenedAt(\DateTime $openedAt = null): self
     {
         $this->propertyChanged('openedAt', $this->openedAt, $openedAt);
         $this->openedAt = $openedAt;
@@ -126,7 +114,7 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getClosedAt()
+    public function getClosedAt(): ?\DateTime
     {
         return $this->closedAt;
     }
@@ -134,7 +122,7 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
     /**
      * @return $this
      */
-    public function setClosedAt(\DateTime $closedAt = null)
+    public function setClosedAt(\DateTime $closedAt = null): self
     {
         $this->propertyChanged('closedAt', $this->closedAt, $closedAt);
         $this->closedAt = $closedAt;
@@ -145,17 +133,15 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @param \DateTime $createdAt
-     *
      * @return $this
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->propertyChanged('createdAt', $this->createdAt, $createdAt);
         $this->createdAt = $createdAt;
@@ -165,11 +151,11 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
 
     public function getStatus(): string
     {
-        if (null !== $this->getClosedAt()) {
+        if ($this->getClosedAt() instanceof \DateTime) {
             return self::STATUS_CLOSED;
         }
 
-        if (null !== $this->getOpenedAt()) {
+        if ($this->getOpenedAt() instanceof \DateTime) {
             return self::STATUS_OPENED;
         }
 

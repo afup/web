@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Email;
 
 class Parsedown extends \Parsedown
@@ -23,12 +25,12 @@ class Parsedown extends \Parsedown
         if (isset($Line['text'][1])) {
             $level = 1;
 
-            while (isset($Line['text'][$level]) and $Line['text'][$level] === '#') {
+            while (isset($Line['text'][$level]) && $Line['text'][$level] === '#') {
                 $level ++;
             }
 
             if ($level > 6) {
-                return;
+                return null;
             }
 
             $text = trim($Line['text'], '# ');
@@ -51,9 +53,10 @@ class Parsedown extends \Parsedown
 
             return $Block;
         }
+        return null;
     }
 
-    private function customHeaderBlock($text)
+    private function customHeaderBlock(string $text): array
     {
         return [
             'element' => [

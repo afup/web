@@ -1,13 +1,17 @@
 <?php
+
+declare(strict_types=1);
 use Afup\Site\Comptabilite\Facture;
 use Afup\Site\Utils\SymfonyKernel;
+use Afup\Site\Utils\Utils;
+use AppBundle\Payment\PayboxBilling;
 use AppBundle\Payment\PayboxFactory;
 
-require_once __DIR__ .'/../../../sources/Afup/Bootstrap/Http.php';
+require_once __DIR__ . '/../../../sources/Afup/Bootstrap/Http.php';
 
 $comptaFact = new Facture($bdd);
 
-$ref = \Afup\Site\Utils\Utils::decryptFromText(urldecode($_GET['ref']));
+$ref = Utils::decryptFromText(urldecode($_GET['ref']));
 
 $facture = $comptaFact->obtenir($ref);
 if ($facture) {
@@ -37,7 +41,7 @@ if ($facture) {
             ->setUrlRetourErreur('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_erreur.php')
         ;
 
-        $payboxBilling = new \AppBundle\Payment\PayboxBilling($facture['prenom'], $facture['nom'], $facture['adresse'], $facture['code_postal'], $facture['ville'], $facture['id_pays']);
+        $payboxBilling = new PayboxBilling($facture['prenom'], $facture['nom'], $facture['adresse'], $facture['code_postal'], $facture['ville'], $facture['id_pays']);
 
         $now = new \DateTime();
         $smarty->assign('paybox', $paybox->generate($now, $payboxBilling));

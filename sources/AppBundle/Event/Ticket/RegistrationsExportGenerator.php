@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Ticket;
 
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -14,38 +16,16 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class RegistrationsExportGenerator
 {
-    /**
-     * @var OfficeFinder
-     */
-    private $officeFinder;
+    private OfficeFinder $officeFinder;
 
-    /**
-     * @var SeniorityComputer
-     */
-    private $seniorityComputer;
+    private SeniorityComputer $seniorityComputer;
 
-    /**
-     * @var InvoiceRepository
-     */
-    private $invoiceRepository;
+    private InvoiceRepository $invoiceRepository;
 
-    /**
-     * @var TicketRepository
-     */
-    private $ticketRepository;
+    private TicketRepository $ticketRepository;
 
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private UserRepository $userRepository;
 
-    /**
-     * @param OfficeFinder $officeFinder
-     * @param SeniorityComputer $seniorityComputer
-     * @param TicketRepository $ticketRepository
-     * @param InvoiceRepository $invoiceRepository
-     * @param UserRepository $userRepository
-     */
     public function __construct(OfficeFinder $officeFinder, SeniorityComputer $seniorityComputer, TicketRepository $ticketRepository, InvoiceRepository $invoiceRepository, UserRepository $userRepository)
     {
         $this->officeFinder = $officeFinder;
@@ -55,11 +35,7 @@ class RegistrationsExportGenerator
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * @param Event $event
-     * @param \SplFileObject $toFile
-     */
-    public function export(Event $event, \SplFileObject $toFile)
+    public function export(Event $event, \SplFileObject $toFile): void
     {
         $columns = [
             'id',
@@ -89,8 +65,6 @@ class RegistrationsExportGenerator
     }
 
     /**
-     * @param Event $event
-     *
      * @return \Generator
      */
     protected function getFromRegistrationsOnEvent(Event $event)
@@ -141,12 +115,7 @@ class RegistrationsExportGenerator
         }
     }
 
-    /**
-     * @param string $comments
-     *
-     * @return string
-     */
-    private function extractAndCleanTags($comments)
+    private function extractAndCleanTags(?string $comments): ?string
     {
         if (!$comments) {
             return null;
@@ -158,21 +127,12 @@ class RegistrationsExportGenerator
         return implode(' - ', array_filter($tags));
     }
 
-    /**
-     * @param User $user
-     *
-     * @return int
-     */
-    private function comptureSeniority(User $user)
+    private function comptureSeniority(User $user): int
     {
         return $this->seniorityComputer->compute($user);
     }
 
-    /**
-     * @param $type
-     * @return mixed|null|string
-     */
-    private function getTypePass($type)
+    private function getTypePass($type): string
     {
         switch ($type) {
             case AFUP_FORUM_PREMIERE_JOURNEE:
@@ -188,12 +148,10 @@ class RegistrationsExportGenerator
             case Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_4:
             case Ticket::TYPE_AFUP_DAY_2021_LIVE_1:
                 return 'PASS JOUR 1';
-                break;
             case AFUP_FORUM_DEUXIEME_JOURNEE:
             case AFUP_FORUM_LATE_BIRD_DEUXIEME_JOURNEE:
             case Ticket::TYPE_AFUP_DAY_2021_LIVE_2:
                 return 'PASS JOUR 2';
-                break;
             case AFUP_FORUM_2_JOURNEES:
             case AFUP_FORUM_2_JOURNEES_AFUP:
             case AFUP_FORUM_2_JOURNEES_ETUDIANT:
@@ -218,22 +176,16 @@ class RegistrationsExportGenerator
             case Ticket::TYPE_AFUP_DAY_2021_LIVE_3:
             case Ticket::TYPE_AFUP_DAY_2021_LIVE_4:
                 return 'PASS 2 JOURS';
-                break;
             case AFUP_FORUM_ORGANISATION:
                 return 'ORGANISATION';
-                break;
             case AFUP_FORUM_PRESSE:
                 return 'PRESSE';
-                break;
             case AFUP_FORUM_CONFERENCIER:
                 return 'CONFERENCIER';
-                break;
             case AFUP_FORUM_SPONSOR:
                 return 'SPONSOR';
-                break;
             default:
                 throw new \RuntimeException(sprintf('Libellé du type %s non trouvé', var_export($type, true)));
-                break;
         }
     }
 }

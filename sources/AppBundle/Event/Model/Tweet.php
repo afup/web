@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -9,35 +11,18 @@ class Tweet implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    /**
-     * @var string
-     */
-    private $id;
+    private ?string $id = null;
 
-    /**
-     * @var int
-     */
-    private $talkId;
+    private ?int $talkId = null;
 
-    /**
-     * @var \DateTime
-     */
-    private $createdAt;
+    private ?\DateTime $createdAt = null;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?string
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return $this
-     */
-    public function setId($id)
+    public function setId($id): self
     {
         $id = (string) $id;
         $this->propertyChanged('id', $this->id, $id);
@@ -46,38 +31,24 @@ class Tweet implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getTalkId()
+    public function getTalkId(): ?int
     {
         return $this->talkId;
     }
 
-    /**
-     * @param int $talkId
-     */
-    public function setTalkId($talkId)
+    public function setTalkId($talkId): void
     {
         $talkId = (int) $talkId;
         $this->propertyChanged('talkId', $this->talkId, $talkId);
         $this->talkId = $talkId;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param \DateTime $createdAt
-     *
-     * @return $this
-     */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->propertyChanged('createdAt', $this->createdAt, $createdAt);
         $this->createdAt = $createdAt;

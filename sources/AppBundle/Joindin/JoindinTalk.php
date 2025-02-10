@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Joindin;
 
 use AppBundle\Event\Model\Talk;
@@ -7,14 +9,8 @@ use Psr\Cache\CacheItemPoolInterface;
 
 class JoindinTalk
 {
-    /**
-     * @var CacheItemPoolInterface
-     */
-    private $cache;
+    private CacheItemPoolInterface $cache;
 
-    /**
-     * @param CacheItemPoolInterface $cache
-     */
     public function __construct(CacheItemPoolInterface $cache)
     {
         $this->cache = $cache;

@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Indexation\Talks;
 
 use AlgoliaSearch\Client;
+use AlgoliaSearch\Index;
 use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\PlanningRepository;
@@ -12,25 +15,12 @@ use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 
 class Runner
 {
-    /**
-     * @var Client
-     */
-    protected $algoliaClient;
+    protected Client $algoliaClient;
 
-    /**
-     * @var RepositoryFactory
-     */
-    protected $ting;
+    protected RepositoryFactory $ting;
 
-    /**
-     * @var Transformer
-     */
-    protected $transformer;
+    protected Transformer $transformer;
 
-    /**
-     * @param Client $algoliaClient
-     * @param RepositoryFactory $ting
-     */
     public function __construct(Client $algoliaClient, RepositoryFactory $ting)
     {
         $this->algoliaClient = $algoliaClient;
@@ -41,7 +31,7 @@ class Runner
     /**
      *
      */
-    public function run()
+    public function run(): void
     {
         $index = $this->initIndex();
 
@@ -60,7 +50,7 @@ class Runner
     }
 
     /**
-     * @return \AlgoliaSearch\Index
+     * @return Index
      */
     protected function initIndex()
     {
@@ -102,12 +92,7 @@ class Runner
         return $this->ting->get(PlanningRepository::class)->getAll();
     }
 
-    /**
-     * @param Planning $planning
-     *
-     * @return array|null
-     */
-    protected function prepareObject(Planning $planning)
+    protected function prepareObject(Planning $planning): ?array
     {
         if ($planning->getStart() > new \DateTime()) {
             return null;

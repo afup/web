@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Event;
 
 use AppBundle\Event\Model\Repository\SpeakerRepository;
@@ -10,12 +12,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SpeakerFilesAction
 {
-    /** @var SpeakersExpensesStorage */
-    private $speakersExpensesStorage;
-    /** @var SpeakerRepository */
-    private $speakerRepository;
-    /** @var EventActionHelper */
-    private $eventActionHelper;
+    private SpeakersExpensesStorage $speakersExpensesStorage;
+    private SpeakerRepository $speakerRepository;
+    private EventActionHelper $eventActionHelper;
 
     public function __construct(
         SpeakersExpensesStorage $speakersExpensesStorage,
@@ -27,7 +26,7 @@ class SpeakerFilesAction
         $this->eventActionHelper = $eventActionHelper;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): BinaryFileResponse
     {
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
         $speaker = $this->speakerRepository->get($request->get('speakerId'));

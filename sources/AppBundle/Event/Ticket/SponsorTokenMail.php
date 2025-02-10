@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Ticket;
 
 use AppBundle\Email\Mailer\Mailer;
@@ -15,25 +17,13 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class SponsorTokenMail
 {
-    /**
-     * @var Mailer
-     */
-    private $mailer;
+    private Mailer $mailer;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var EventRepository
-     */
-    private $eventRepository;
+    private EventRepository $eventRepository;
 
     public function __construct(Mailer $mail, TranslatorInterface $translator, RouterInterface $router, EventRepository $eventRepository)
     {
@@ -46,11 +36,9 @@ class SponsorTokenMail
     /**
      * Send mail to a sponsor with a custom token to get tickets
      *
-     * @param SponsorTicket $sponsorTicket
      * @param $lastCall boolean
-     * @return bool
      */
-    public function sendNotification(SponsorTicket $sponsorTicket, $lastCall = false)
+    public function sendNotification(SponsorTicket $sponsorTicket, $lastCall = false): bool
     {
         /**
          * @var Event $event

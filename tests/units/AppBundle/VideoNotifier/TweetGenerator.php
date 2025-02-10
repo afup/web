@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\VideoNotifier\tests\units;
 
 use AppBundle\Event\Model\Speaker;
@@ -8,11 +10,10 @@ use AppBundle\VideoNotifier\TweetGenerator as TestedClass;
 
 class TweetGenerator extends \atoum
 {
-
     /**
      * @dataProvider generateDateProvider
      */
-    public function testGenerate($case, $talkInfos, $speakersInfos, $expected)
+    public function testGenerate($case, $talkInfos, $speakersInfos, $expected): void
     {
         $speakers = [];
         foreach ($speakersInfos as $speakersInfo) {
@@ -205,7 +206,7 @@ class TweetGenerator extends \atoum
         ];
     }
 
-    public function testGenerateWithFullEntities()
+    public function testGenerateWithFullEntities(): void
     {
         $this
             ->given(

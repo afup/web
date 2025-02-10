@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginAction
 {
-    /** @var AuthenticationUtils */
-    private $authenticationUtils;
+    private AuthenticationUtils $authenticationUtils;
     private ViewRenderer $view;
 
     public function __construct(
@@ -20,7 +22,7 @@ class LoginAction
         $this->view = $view;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         // get the login error if there is one
         $error = $this->authenticationUtils->getLastAuthenticationError();

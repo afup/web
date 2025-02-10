@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\TechletterSubscription;
@@ -13,7 +15,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class TechletterSubscriptionsRepository extends Repository implements MetadataInitializer
 {
-    public function subscribe(User $user = null)
+    public function subscribe(User $user = null): void
     {
         $subscription = new TechletterSubscription();
         $subscription
@@ -25,7 +27,7 @@ class TechletterSubscriptionsRepository extends Repository implements MetadataIn
 
     public function hasUserSubscribed(User $user = null)
     {
-        if (null === $user) {
+        if (!$user instanceof User) {
             return false;
         }
 
@@ -67,7 +69,7 @@ class TechletterSubscriptionsRepository extends Repository implements MetadataIn
         return $row['cnt'];
     }
 
-    private function getAllSubscriptionsWithUserQuery()
+    private function getAllSubscriptionsWithUserQuery(): string
     {
         return 'SELECT app.login, app.email, app.nom, app.prenom, MAX(ac.date_fin) AS lastsubscription, ats.subscription_date, ats.id, ats.user_id
             FROM afup_techletter_subscriptions ats

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Event\Form;
 
@@ -88,7 +90,7 @@ class SpeakerType extends AbstractType
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent): void {
             $speaker = $formEvent->getData();
             $user = $this->tokenStorage->getToken()->getUser();
 

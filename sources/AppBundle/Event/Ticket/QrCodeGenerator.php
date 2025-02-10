@@ -6,14 +6,14 @@ namespace AppBundle\Event\Ticket;
 
 class QrCodeGenerator
 {
-    private $salt;
+    private string $salt;
 
     public function __construct(string $salt)
     {
         $this->salt = $salt;
     }
 
-    public function generate(int $idTicket)
+    public function generate(int $idTicket): string
     {
         return strtr(
             substr(md5($idTicket . $this->salt), 0, 5),

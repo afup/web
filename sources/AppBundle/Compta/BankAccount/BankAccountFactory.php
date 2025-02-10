@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Compta\BankAccount;
 
 class BankAccountFactory
 {
-    public function createApplyableAt(\DateTimeInterface $applicationDate = null)
+    public function createApplyableAt(\DateTimeInterface $applicationDate = null): BankAccount
     {
         $comparisonDate = new \Datetime('2023-01-01');
         $comparisonDate->setTime(0, 0, 1);
 
-        if (null === $applicationDate || $applicationDate > $comparisonDate) {
+        if (!$applicationDate instanceof \DateTimeInterface || $applicationDate > $comparisonDate) {
             return new BankAccount(
                 '10278',
                 '06076',

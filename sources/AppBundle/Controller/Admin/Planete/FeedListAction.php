@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Planete;
 
 use Exception;
@@ -12,10 +14,8 @@ use Twig\Environment;
 
 class FeedListAction
 {
-    /** @var FeedRepository */
-    private $feedRepository;
-    /** @var Environment */
-    private $twig;
+    private FeedRepository $feedRepository;
+    private Environment $twig;
 
     public function __construct(
         FeedRepository $feedRepository,
@@ -25,7 +25,7 @@ class FeedListAction
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $testFeeds = $request->query->getBoolean('testFeeds');
         $filter = $request->query->get('filter');
@@ -48,7 +48,7 @@ class FeedListAction
      *
      * @return array<int, bool>
      */
-    private function testFeeds(array $feeds)
+    private function testFeeds(array $feeds): array
     {
         // on n'affiche rien du tout
         ini_set('display_errors', '0');

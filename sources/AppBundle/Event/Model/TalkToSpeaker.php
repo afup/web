@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -29,9 +31,8 @@ class TalkToSpeaker implements NotifyPropertyInterface
 
     /**
      * @param int $talkId
-     * @return TalkToSpeaker
      */
-    public function setTalkId($talkId)
+    public function setTalkId($talkId): self
     {
         $this->propertyChanged('talkId', $this->talkId, $talkId);
         $this->talkId = $talkId;
@@ -48,9 +49,8 @@ class TalkToSpeaker implements NotifyPropertyInterface
 
     /**
      * @param int $speakerId
-     * @return TalkToSpeaker
      */
-    public function setSpeakerId($speakerId)
+    public function setSpeakerId($speakerId): self
     {
         $this->propertyChanged('speakerId', $this->speakerId, $speakerId);
         $this->speakerId = $speakerId;

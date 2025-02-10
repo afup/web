@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\GeneralMeeting;
 
 use Symfony\Component\Form\AbstractType;
@@ -12,7 +14,7 @@ use Symfony\Component\Validator\Constraints\Date;
 
 class PrepareFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (false === $options['without_date']) {
             $builder
@@ -37,7 +39,7 @@ class PrepareFormType extends AbstractType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('without_date', false);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members\GeneralMeetingVote;
 
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
@@ -12,25 +14,13 @@ use Twig\Environment;
 
 class ListAction
 {
-    /**
-     * @var GeneralMeetingRepository
-     */
-    private $generalMeetingRepository;
+    private GeneralMeetingRepository $generalMeetingRepository;
 
-    /**
-     * @var GeneralMeetingQuestionRepository
-     */
-    private $generalMeetingQuestionRepository;
+    private GeneralMeetingQuestionRepository $generalMeetingQuestionRepository;
 
-    /**
-     * @var GeneralMeetingVoteRepository
-     */
-    private $generalMeetingVoteRepository;
+    private GeneralMeetingVoteRepository $generalMeetingVoteRepository;
 
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private Environment $twig;
 
     public function __construct(
         GeneralMeetingRepository $generalMeetingRepository,
@@ -44,7 +34,7 @@ class ListAction
         $this->generalMeetingVoteRepository = $generalMeetingVoteRepository;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $dates = $this->generalMeetingRepository->getAllDates();
         $latestDate = $this->generalMeetingRepository->getLatestDate();

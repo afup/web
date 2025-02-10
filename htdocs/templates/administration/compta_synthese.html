@@ -44,7 +44,7 @@
                             <tr >
                                 <td>{$debits.categorie}</td>
                                 <td>{$debits.description}</td>
-                                 <td class="right aligned">{$debits.montant|number_format:2:',':' '}</td>
+                                 <td class="right aligned">{$debits.montant|floatval|number_format:2:',':' '}</td>
                             </tr>
                         {foreachelse}
                             <tr>
@@ -68,7 +68,7 @@
                     <tr>
                         <td>{$credits.categorie}</td>
                         <td>{$credits.description}</td>
-                        <td class="right aligned">{$credits.montant|number_format:2:',':' '}</td>
+                        <td class="right aligned">{$credits.montant|floatval|number_format:2:',':' '}</td>
                     </tr>
                     {foreachelse}
                     <tr>
@@ -85,7 +85,7 @@
             <th class="center aligned">
                 <div class="ui tiny horizontal statistic">
                     <div class="value">
-                        {$totalDepense|number_format:2:',':' '}
+                        {$totalDepense|floatval|number_format:2:',':' '}
                     </div>
                     <div class="label">
                         Total dépenses
@@ -95,7 +95,7 @@
             <th class="center aligned">
                 <div class="ui tiny horizontal statistic">
                     <div class="value">
-                        {$totalRecette|number_format:2:',':' '}
+                        {$totalRecette|floatval|number_format:2:',':' '}
                     </div>
                     <div class="label">
                         Total recettes
@@ -108,7 +108,7 @@
             <th colspan="2" class="center aligned">
                 <div class="ui mini horizontal statistic">
                     <div class="value">
-                        {$difMontant|number_format:2:',':' '}
+                        {$difMontant|floatval|number_format:2:',':' '}
                     </div>
                     <div class="label">
                         Différence

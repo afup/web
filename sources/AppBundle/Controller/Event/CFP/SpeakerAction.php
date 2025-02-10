@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Event\CFP;
 
 use AppBundle\CFP\PhotoStorage;
@@ -9,6 +11,7 @@ use AppBundle\Event\Form\SpeakerType;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use DateTime;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,28 +23,17 @@ use Twig_Environment;
 
 class SpeakerAction
 {
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var Twig_Environment */
-    private $twig;
-    /** @var SpeakerFactory */
-    private $speakerFactory;
-    /** @var PhotoStorage */
-    private $photoStorage;
-    /** @var SpeakerRepository */
-    private $speakerRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var SessionInterface */
-    private $session;
-    /** @var TranslatorInterface */
-    private $translator;
-    /** @var SidebarRenderer */
-    private $sidebarRenderer;
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var FlashBagInterface */
-    private $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
+    private \Twig_Environment $twig;
+    private SpeakerFactory $speakerFactory;
+    private PhotoStorage $photoStorage;
+    private SpeakerRepository $speakerRepository;
+    private FormFactoryInterface $formFactory;
+    private SessionInterface $session;
+    private TranslatorInterface $translator;
+    private SidebarRenderer $sidebarRenderer;
+    private EventActionHelper $eventActionHelper;
+    private FlashBagInterface $flashBag;
 
     public function __construct(
         EventActionHelper $eventActionHelper,
@@ -85,7 +77,7 @@ class SpeakerAction
             $this->speakerRepository->save($speaker);
 
             $file = $speaker->getPhotoFile();
-            if ($file !== null) {
+            if ($file instanceof UploadedFile) {
                 $fileName = $this->photoStorage->store($file, $speaker);
                 $speaker->setPhoto($fileName);
                 $this->speakerRepository->save($speaker);

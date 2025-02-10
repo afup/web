@@ -10,7 +10,7 @@
 
 {% block content %}
 {{ render(controller(
-    'AppBundle\\Controller\\Website\\SecondaryMenuController::displayAction',
+    'AppBundle\\Controller\\Website\\SecondaryMenuController::display',
     { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ASSOCIATION') }
 )) }}
 <div class="mw1400p center" id="container">

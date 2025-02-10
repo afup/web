@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\TechletterUnsubscription;
@@ -11,12 +13,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class TechletterUnsubscriptionsRepository extends Repository implements MetadataInitializer
 {
-    /**
-     * @param array $data
-     *
-     * @return TechletterUnsubscription
-     */
-    public function createFromWebhookData(array $data)
+    public function createFromWebhookData(array $data): TechletterUnsubscription
     {
         $techletterUnsubscription = new TechletterUnsubscription();
         $techletterUnsubscription
@@ -29,7 +26,7 @@ class TechletterUnsubscriptionsRepository extends Repository implements Metadata
         return $techletterUnsubscription;
     }
 
-    public function createFromUser(User $user)
+    public function createFromUser(User $user): TechletterUnsubscription
     {
         $techletterUnsubscription = new TechletterUnsubscription();
         $techletterUnsubscription

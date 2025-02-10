@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Model;
 
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -7,29 +9,22 @@ use CCMBenchmark\Ting\Repository\CollectionInterface;
 class CollectionFilter
 {
     /**
-     * @param CollectionInterface $collection
      * @param $method
      * @param $value
-     * @return array
      */
-    public function filter(CollectionInterface $collection, $method, $value)
+    public function filter(CollectionInterface $collection, $method, $value): array
     {
         $items = iterator_to_array($collection->getIterator());
-        $items = array_filter($items, function ($item) use ($method, $value) {
+
+        return array_filter($items, function ($item) use ($method, $value): bool {
             if (method_exists($item, $method) === false) {
                 throw new \RuntimeException(sprintf('Could not find method "%s" on object of type "%s"', $method, get_class($item)));
             }
-            if ($item->$method() === $value) {
-                return true;
-            }
-            return false;
+            return $item->$method() === $value;
         });
-
-        return $items;
     }
 
     /**
-     * @param CollectionInterface $collection
      * @param $method
      * @param $value
      * @return Object|null
@@ -40,7 +35,6 @@ class CollectionFilter
         if (count($extractedItems) !== 1) {
             return null;
         }
-        $item = current($extractedItems);
-        return $item;
+        return current($extractedItems);
     }
 }

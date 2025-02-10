@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Command;
 
 use AppBundle\Event\Model\Repository\TicketRepository;
@@ -13,10 +15,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class QrCodesGeneratorCommand extends ContainerAwareCommand
 {
-    /** @var QrCodeGenerator */
-    private $qrCodeGenerator;
+    private QrCodeGenerator $qrCodeGenerator;
 
-    public function __construct(QrCodeGenerator $qrCodeGenerator, $name = null)
+    public function __construct(QrCodeGenerator $qrCodeGenerator, string $name = null)
     {
         parent::__construct($name);
         $this->qrCodeGenerator = $qrCodeGenerator;
@@ -25,7 +26,7 @@ class QrCodesGeneratorCommand extends ContainerAwareCommand
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('generate-qr-codes')
@@ -41,9 +42,8 @@ class QrCodesGeneratorCommand extends ContainerAwareCommand
      * @see Command
      *
      * @throws \Exception
-     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $io->title('Génération des QR codes pour les badges des participant.e.s pour les évènements.');

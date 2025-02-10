@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Website;
 
 use Afup\Site\Corporate\Article;
 use Afup\Site\Corporate\Rubrique;
 use AppBundle\Twig\ViewRenderer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
-class CmsPageController extends Controller
+class CmsPageController extends AbstractController
 {
     private ViewRenderer $view;
 
@@ -16,7 +19,7 @@ class CmsPageController extends Controller
         $this->view = $view;
     }
 
-    public function displayAction($code)
+    public function display($code): Response
     {
         $articleRepository = new Article(null, $GLOBALS['AFUP_DB']);
         $articleRepository->chargerDepuisRaccourci($code);
@@ -44,7 +47,7 @@ class CmsPageController extends Controller
         ]);
     }
 
-    protected function isRubriqueAllowed($rubrique)
+    protected function isRubriqueAllowed(array $rubrique): bool
     {
         return $rubrique['id'] == Rubrique::ID_RUBRIQUE_ASSOCIATION || $rubrique['id'] == Rubrique::ID_RUBRIQUE_ANTENNES || $rubrique['id'] == Rubrique::ID_RUBRIQUE_INFORMATIONS_PRATIQUES || $rubrique['id'] == Rubrique::ID_RUBRIQUE_NOS_ACTIONS;
     }

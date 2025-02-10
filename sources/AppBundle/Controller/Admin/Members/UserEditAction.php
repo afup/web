@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members;
 
 use Afup\Site\Logger\DbLoggerTrait;
@@ -19,18 +21,12 @@ class UserEditAction
 {
     use DbLoggerTrait;
 
-    /** @var UserRepository */
-    private $userRepository;
-    /** @var UserBadgeRepository */
-    private $userBadgeRepository;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var Environment */
-    private $twig;
+    private UserRepository $userRepository;
+    private UserBadgeRepository $userBadgeRepository;
+    private FormFactoryInterface $formFactory;
+    private UrlGeneratorInterface $urlGenerator;
+    private FlashBagInterface $flashBag;
+    private Environment $twig;
 
     public function __construct(
         UserRepository $userRepository,

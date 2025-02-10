@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 // Impossible to access the file itself
 use Afup\Site\Comptabilite\Comptabilite;
 
-/** @var \AppBundle\Controller\LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
-	trigger_error("Direct access forbidden.", E_USER_ERROR);
-	exit;
+    trigger_error("Direct access forbidden.", E_USER_ERROR);
+    exit;
 }
 
 $action = verifierAction(['lister', 'editer','raccourci','view']);
@@ -16,65 +17,50 @@ $action = verifierAction(['lister', 'editer','raccourci','view']);
 //$sens_valides = array('asc', 'desc');
 $smarty->assign('action', $action);
 
-if (isset($_GET['details']) && $_GET['details'])
-	$details=$_GET['details'];
-else
-	$details ="";
+$details = isset($_GET['details']) && $_GET['details'] ? $_GET['details'] : "";
 
 
 $compta = new Comptabilite($bdd);
 
-if (isset($_GET['id_periode']) && $_GET['id_periode']) 
-	$id_periode=$_GET['id_periode'];
-else
-	$id_periode="";
-	 
+$id_periode = isset($_GET['id_periode']) && $_GET['id_periode'] ? $_GET['id_periode'] : "";
+
 $id_periode = $compta->obtenirPeriodeEnCours($id_periode);
 $smarty->assign('id_periode', $id_periode);
 
 $listPeriode = $compta->obtenirListPeriode();
-$smarty->assign('listPeriode', $listPeriode );
+$smarty->assign('listPeriode', $listPeriode);
 
-	$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
-	$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
+    $periode_debut=$listPeriode[$id_periode-1]['date_debut'];
+    $periode_fin=$listPeriode[$id_periode-1]['date_fin'];
 
-	$smarty->assign('compteurLigne',1);
-	
+    $smarty->assign('compteurLigne',1);
+
 if ($action == 'lister') {
-	
-	$balance = $compta->obtenirBalance('',$periode_debut,$periode_fin);
-	$smarty->assign('balance', $balance);
-	
-	$totalDepense = $compta->obtenirTotalBalance(1,$periode_debut,$periode_fin);
-	$smarty->assign('totalDepense', $totalDepense);
-	
-	$totalRecette = $compta->obtenirTotalBalance(2,$periode_debut,$periode_fin);
-	$smarty->assign('totalRecette', $totalRecette);
-	
-	$difMontant = $totalRecette - $totalDepense ;
-	$smarty->assign('difMontant', $difMontant);
+    $balance = $compta->obtenirBalance('',$periode_debut,$periode_fin);
+    $smarty->assign('balance', $balance);
 
-	if ($details!='')
-	{
-		$dataDetails = $compta->obtenirBalanceDetails($details,$periode_debut,$periode_fin);
-		$smarty->assign('dataDetails', $dataDetails);
+    $totalDepense = $compta->obtenirTotalBalance($periode_debut,$periode_fin, 1);
+    $smarty->assign('totalDepense', $totalDepense);
 
-		$sousTotal = $compta->obtenirSousTotalBalance($details,$periode_debut,$periode_fin);
-		$smarty->assign('sousTotal', $sousTotal);		
-	}
+    $totalRecette = $compta->obtenirTotalBalance($periode_debut,$periode_fin, 2);
+    $smarty->assign('totalRecette', $totalRecette);
 
+    $difMontant = $totalRecette - $totalDepense ;
+    $smarty->assign('difMontant', $difMontant);
+
+    if ($details!='') {
+        $dataDetails = $compta->obtenirBalanceDetails($details,$periode_debut,$periode_fin);
+        $smarty->assign('dataDetails', $dataDetails);
+
+        $sousTotal = $compta->obtenirSousTotalBalance($details,$periode_debut,$periode_fin);
+        $smarty->assign('sousTotal', $sousTotal);
+    }
 }
 
 if ($action == 'view' && $details) {
+    $dataDetails = $compta->obtenirBalanceDetails($details,$periode_debut,$periode_fin);
+    $smarty->assign('dataDetails', $dataDetails);
 
-		$dataDetails = $compta->obtenirBalanceDetails($details,$periode_debut,$periode_fin);
-		$smarty->assign('dataDetails', $dataDetails);
-
-		$sousTotal = $compta->obtenirSousTotalBalance($details,$periode_debut,$periode_fin);
-		$smarty->assign('sousTotal', $sousTotal);		
-		
-
-}		
-
-
-?>
+    $sousTotal = $compta->obtenirSousTotalBalance($details,$periode_debut,$periode_fin);
+    $smarty->assign('sousTotal', $sousTotal);
+}

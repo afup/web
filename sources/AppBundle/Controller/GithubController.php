@@ -1,23 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Controller;
 
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class GithubController extends Controller
+class GithubController extends AbstractController
 {
+    private ClientRegistry $clientRegistry;
+    public function __construct(ClientRegistry $clientRegistry)
+    {
+        $this->clientRegistry = $clientRegistry;
+    }
     /**
      * Link to this controller to start the "connect" process
      *
      */
-    public function connectAction()
+    public function connect()
     {
-        return $this->get('oauth2.registry')
+        return $this->clientRegistry
             ->getClient('github_main')
-            ->redirect();
+            ->redirect([], []);
     }
 
     /**
@@ -25,7 +34,7 @@ class GithubController extends Controller
      *
      * @return Response
      */
-    public function connectCheckAction()
+    public function connectCheck()
     {
         return new RedirectResponse($this->generateUrl('connection_github'));
     }

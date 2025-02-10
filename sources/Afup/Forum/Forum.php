@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Afup\Site\Forum;
 
 class Forum
@@ -7,7 +9,6 @@ class Forum
     /**
      * Instance de la couche d'abstraction à la base de données
      * @var     object
-     * @access  private
      */
     private $_bdd;
 
@@ -15,10 +16,9 @@ class Forum
      * Constructeur.
      *
      * @param  object $bdd Instance de la couche d'abstraction à la base de données
-     * @access public
      * @return void
      */
-    function __construct(&$bdd)
+    public function __construct(&$bdd)
     {
         $this->_bdd = $bdd;
     }
@@ -28,10 +28,9 @@ class Forum
      *
      * @param  int $id Identifiant du forum
      * @param  string $champs Champs à renvoyer
-     * @access public
      * @return array
      */
-    function obtenir($id, $champs = '*')
+    public function obtenir($id, string $champs = '*')
     {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ', annee as forum_annee ';
@@ -41,7 +40,7 @@ class Forum
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-    function supprimable($id)
+    public function supprimable(string $id): bool
     {
         $requete = 'SELECT';
         $requete .= '  f.id, count(session_id) as sessions,count(i.id) as inscriptions ';
@@ -56,7 +55,7 @@ class Forum
         return $forum['sessions'] == 0 && $forum['inscriptions'] == 0;
     }
 
-    function obtenirNombrePlaces($id = NULL)
+    public function obtenirNombrePlaces($id = null)
     {
         if (empty($id)) {
             $id = $this->obtenirDernier();
@@ -66,27 +65,27 @@ class Forum
         return $enregistrement['nb_places'];
     }
 
-    function obtenirDebut($id_forum)
+    public function obtenirDebut($id_forum)
     {
         $requete = 'SELECT UNIX_TIMESTAMP(date_debut)';
         $requete .= 'FROM';
         $requete .= '  afup_forum ';
         $requete .= 'WHERE';
-        $requete .= '  id =  ' . (int)$id_forum;
+        $requete .= '  id =  ' . (int) $id_forum;
         return $this->_bdd->obtenirUn($requete);
     }
 
-    function obtenirForumPrecedent($id_forum)
+    public function obtenirForumPrecedent($id_forum)
     {
         $requete = 'SELECT MAX(id)';
         $requete .= 'FROM';
         $requete .= '  afup_forum ';
         $requete .= 'WHERE';
-        $requete .= '  id <  ' . (int)$id_forum . ' AND titre like "%Forum%"';
+        $requete .= '  id <  ' . (int) $id_forum . ' AND titre like "%Forum%"';
         return $this->_bdd->obtenirUn($requete);
     }
 
-    function obtenirDernier()
+    public function obtenirDernier()
     {
         $requete = 'SELECT id ';
         $requete .= 'FROM afup_forum ';
@@ -100,12 +99,11 @@ class Forum
      * @param  string $champs Champs à renvoyer
      * @param  string $ordre Tri des enregistrements
      * @param  bool $associatif Renvoyer un tableau associatif ?
-     * @access public
      * @return array
      */
-    function obtenirListe($id_forum = null,
-                          $champs = '*',
-                          $ordre = 'titre',
+    public function obtenirListe($id_forum = null,
+                          string $champs = '*',
+                          string $ordre = 'titre',
                           $associatif = false,
                           $filtre = false)
     {
@@ -121,14 +119,14 @@ class Forum
         }
     }
 
-    function afficherDeroulementMobile($sessions)
+    public function afficherDeroulementMobile($sessions): string
     {
         $deroulement = "<div class=\"deroulements\">";
         $jour = 0;
         $heure = 0;
         foreach ($sessions as $session) {
-            if ($jour != mktime(0, 0, 0, date("m", $session['debut']), date("d", $session['debut']), date("Y", $session['debut']))) {
-                $jour = mktime(0, 0, 0, date("m", $session['debut']), date("d", $session['debut']), date("Y", $session['debut']));
+            if ($jour != mktime(0, 0, 0, (int) date("m", $session['debut']), (int) date("d", $session['debut']), (int) date("Y", $session['debut']))) {
+                $jour = mktime(0, 0, 0, (int) date("m", $session['debut']), (int) date("d", $session['debut']), (int) date("Y", $session['debut']));
                 $deroulement .= "<h2 class=\"jour\">" . ($jour > 10000 ? date("d/m/Y", $jour) : 'Jour à définir') . "</h2>";
             }
             if ($heure != $session['debut']) {
@@ -147,25 +145,24 @@ class Forum
                 $conferenciers .= "<br />" . $session['conf2'];
             }
 
-            $deroulement .= "<div class=\"" . join(" ", $classes) . "\">";
+            $deroulement .= "<div class=\"" . implode(" ", $classes) . "\">";
             $deroulement .= "    <div class=\"session\"><a href=\"sessions.php#" . $session['session_id'] . "\">" . $session['titre'] . "</a></div>";
             $deroulement .= "    <div class=\"conferenciers\">" . $conferenciers . "</div>";
             $deroulement .= "    <div class=\"salle\">" . $session['nom_salle'] . "</div>";
             $deroulement .= "</div>";
         }
-        $deroulement .= "</div>";
 
-        return $deroulement;
+        return $deroulement . "</div>";
     }
 
-    function afficherDeroulement($sessions)
+    public function afficherDeroulement($sessions): string
     {
         $deroulement = "<div class=\"deroulements\">";
         $jour = 0;
         $heure = 0;
         foreach ($sessions as $session) {
-            if ($jour != mktime(0, 0, 0, date("m", $session['debut']), date("d", $session['debut']), date("Y", $session['debut']))) {
-                $jour = mktime(0, 0, 0, date("m", $session['debut']), date("d", $session['debut']), date("Y", $session['debut']));
+            if ($jour != mktime(0, 0, 0, (int) date("m", $session['debut']), (int) date("d", $session['debut']), (int) date("Y", $session['debut']))) {
+                $jour = mktime(0, 0, 0, (int) date("m", $session['debut']), (int) date("d", $session['debut']), (int) date("Y", $session['debut']));
                 $deroulement .= "<h2 class=\"jour\">" . ($jour > 10000 ? date("d/m/Y", $jour) : 'Jour à définir') . "</h2>";
             }
             if ($heure != $session['debut']) {
@@ -184,29 +181,24 @@ class Forum
                 $conferenciers .= "<br />" . $session['conf2'];
             }
 
-            $deroulement .= "<div class=\"" . join(" ", $classes) . "\">";
+            $deroulement .= "<div class=\"" . implode(" ", $classes) . "\">";
             $deroulement .= "    <div class=\"session\"><a href=\"sessions.php#" . $session['session_id'] . "\">" . $session['titre'] . "</a></div>";
             $deroulement .= "    <div class=\"conferenciers\">" . $conferenciers . "</div>";
             $deroulement .= "</div>";
         }
-        $deroulement .= "</div>";
 
-        return $deroulement;
+        return $deroulement . "</div>";
     }
 
-    function afficherAgenda($sessions)
+    public function afficherAgenda($sessions): string
     {
         $slots = [];
         $salles = [];
         $debuts = [];
         foreach ($sessions as $session) {
-            $jour = mktime(0, 0, 0, date("m", $session['debut']), date("d", $session['debut']), date("Y", $session['debut']));
+            $jour = mktime(0, 0, 0, (int) date("m", $session['debut']), (int) date("d", $session['debut']), (int) date("Y", $session['debut']));
             $slots[$jour][$session['nom_salle']][$session['debut']] = $session;
-            if (!isset($debuts[$jour])) {
-                $debuts[$jour] = $session['debut'];
-            } else {
-                $debuts[$jour] = min($session['debut'], $debuts[$jour]);
-            }
+            $debuts[$jour] = isset($debuts[$jour]) ? min($session['debut'], $debuts[$jour]) : $session['debut'];
             $salles[] = $session['id_salle'];
         }
         $salles = array_unique($salles);
@@ -219,8 +211,8 @@ class Forum
             $nb_salles = count($slots_avec_salle);
             $agenda .= "<div class=\"slots\" style=\"height: 1700px;\">";
             $agenda .= "<h2 style=\"position: absolute; width: 100%; top: " . round($passage_jour * 1600) . "px;\">" . date("d/m/Y", $jour) . "</h2>";
-            foreach ($slots_avec_salle as $salle => $slots_avec_horaire) {
-                foreach ($slots_avec_horaire as $debut => $session) {
+            foreach ($slots_avec_salle as $slots_avec_horaire) {
+                foreach ($slots_avec_horaire as $session) {
                     $classes = ["slot"];
                     $classes[] = $session['journee'];
 
@@ -241,7 +233,7 @@ class Forum
                     $styles[] = "height: " . round(($session['fin'] - $session['debut']) / 19) . "px;";
                     $styles[] = "top: " . round(40 + $passage_jour * 1600 + ($session['debut'] - $debuts[$jour]) / 19) . "px;";
 
-                    $agenda .= "<div class=\"" . join(" ", $classes) . "\" style=\"" . join(" ", $styles) . "\">";
+                    $agenda .= "<div class=\"" . implode(" ", $classes) . "\" style=\"" . implode(" ", $styles) . "\">";
                     $agenda .= "    <div class=\"session\"><a href=\"sessions.php#" . $session['session_id'] . "\">" . $session['titre'] . "</a></div>";
                     $agenda .= "    <div class=\"conferenciers\">" . $conferenciers . "</div>";
                     $agenda .= "    <div class=\"horaire\">" . date("H\hi", $session['debut']) . " - " . date("H\hi", $session['fin']) . "</div>";
@@ -264,12 +256,12 @@ class Forum
      *
      * @param Int $annee (Optionnel, retournera tout si aucunne année indiquée)
      */
-    function obtenirAgenda($annee = null, $forum_id = null)
+    public function obtenirAgenda($annee = null, $forum_id = null)
     {
         $aWhere = [];
         if (isset($annee)) {
-            $tdebut = mktime(0, 0, 0, 1, 1, $annee);
-            $tfin = mktime(0, 0, 0, 1, 1, ($annee + 1));
+            $tdebut = mktime(0, 0, 0, 1, 1, (int) $annee);
+            $tfin = mktime(0, 0, 0, 1, 1, (int) ($annee + 1));
             $aWhere[] = "p.debut >= " . $tdebut;
             $aWhere[] = "p.fin < " . $tfin;
             $aWhere[] = "s.plannifie = 1";
@@ -296,8 +288,7 @@ class Forum
             "  JOIN afup_forum_salle    l ON p.id_salle   = l.id " .
             $sWhere . " " .
             "ORDER BY p.debut ASC, p.id_salle ASC";
-        $planning = $this->_bdd->obtenirTous($requete);
-        return $planning;
+        return $this->_bdd->obtenirTous($requete);
     }
 
     /**
@@ -311,15 +302,14 @@ class Forum
      * @param  String $heures
      * @return Int
      */
-    function dureeSeance($heures)
+    public function dureeSeance($heures)
     {
         $aHeures = explode("-", $heures);
         $aDebut = explode(":", $aHeures[0]);
         $aFin = explode(":", $aHeures[1]);
-        $iDebut = ((int)$aDebut[0] * 60) + (int)$aDebut[1];
-        $iFin = ((int)$aFin[0] * 60) + (int)$aFin[1];
-        $duree = ($iFin - $iDebut) / 5;
-        return $duree;
+        $iDebut = ((int) $aDebut[0] * 60) + (int) $aDebut[1];
+        $iFin = ((int) $aFin[0] * 60) + (int) $aFin[1];
+        return ($iFin - $iDebut) / 5;
     }
 
     /**
@@ -331,26 +321,20 @@ class Forum
      *                  i.e : "/sessions.php#%1" . %1 is the session id
      * @return String
      */
-    function lienSeance($infoSeance, $for_bo, $linkFormat)
+    public function lienSeance($infoSeance, $for_bo, $linkFormat): ?string
     {
-        $masque = "#^([0-9]+) ?: ?(.*)#";
+        $masque = "#^(\\d+) ?: ?(.*)#";
         //$masque = "#^([0-9]+) ?| ?(.*) ?| ?(.*)#";
 
 
         $lien = '#$1';
         if ($for_bo === false) {
-            if ($linkFormat !== null) {
-                $lien = sprintf($linkFormat, '$1');
-            } else {
-                $lien = './sessions.php#$1';
-            }
+            $lien = $linkFormat !== null ? sprintf($linkFormat, '$1') : './sessions.php#$1';
         }
-
-        $lien = preg_replace($masque, '<p><a href="' . $lien . '"  name="ag_sess_$1">$2</a></p>', $infoSeance);
-        return $lien;
+        return preg_replace($masque, '<p><a href="' . $lien . '"  name="ag_sess_$1">$2</a></p>', $infoSeance);
     }
 
-    function genAgenda($annee, $for_bo = false, $only_data = false, $forum_id = null, $linkFormat = null)
+    public function genAgenda($annee, $for_bo = false, $only_data = false, $forum_id = null, $linkFormat = null)
     {
         $aProgrammeData = [];
         $aAgenda = $this->obtenirAgenda($annee, $forum_id);
@@ -360,7 +344,7 @@ class Forum
             $j = 0;
             $d = null;
             $aProgramme = [];
-            foreach ($aAgenda as $index => $session) {
+            foreach ($aAgenda as $session) {
                 if (!isset($nomSalles[$session['id_salle']])) {
                     $nomSalles[$session['id_salle']] = $session['nom'];
                 }
@@ -443,9 +427,9 @@ CODE_HTML;
                             /* On vérifie qu'on est pas déjà sur une scéance commencée à un tour précédent. */
                             if ($aRowSpan[$idSalle] <= 1):
                                 $bSeance = false;
-                                $rs = null;
-                                /* Calcul du nombre de lignes occupées par la scéance s'il y en a une. */
-                                for ($c = 0; $c < $nbConf; $c++):
+                            $rs = null;
+                            /* Calcul du nombre de lignes occupées par la scéance s'il y en a une. */
+                            for ($c = 0; $c < $nbConf; $c++):
                                     //var_dump($aAgenda[$c]);
                                     if (
                                         $aAgenda[$c]['debut'] == $sHeure . ":" . $m &&
@@ -455,41 +439,40 @@ CODE_HTML;
                                         /* Si on toruve une scéance, on ne mettra pas de cellule vide. */
                                         $bSeance = true;
 
-                                        $bKeynote = $aAgenda[$c]['keynote'];
-                                        $colspan = $bKeynote ? ' colspan="' . $nbSalles . '" class="keynote" ' : '';
-                                        $heures = $aAgenda[$c]['debut'] . "-" . $aAgenda[$c]['fin'];
-                                        $nl = $this->dureeSeance($heures);
-                                        $aRowSpan[$idSalle] = $nl;
+                            $bKeynote = $aAgenda[$c]['keynote'];
+                            $colspan = $bKeynote ? ' colspan="' . $nbSalles . '" class="keynote" ' : '';
+                            $heures = $aAgenda[$c]['debut'] . "-" . $aAgenda[$c]['fin'];
+                            $nl = $this->dureeSeance($heures);
+                            $aRowSpan[$idSalle] = $nl;
 
-                                        $class = 'conf conf_' . ($confNumber % 2 === 0 ? 'odd' : 'even');
+                            $class = 'conf conf_' . ($confNumber % 2 === 0 ? 'odd' : 'even');
 
-                                        $rs = ($nl > 1) ? ' rowspan="' . $nl . '"' : null;
-                                        $nbSeances = (isset($aInfos[$heures][$nomSalle])) ? count($aInfos[$heures][$nomSalle]) : 0;
-                                        if ($nbSeances > 0):
+                            $rs = ($nl > 1) ? ' rowspan="' . $nl . '"' : null;
+                            $nbSeances = (isset($aInfos[$heures][$nomSalle])) ? count($aInfos[$heures][$nomSalle]) : 0;
+                            if ($nbSeances > 0):
                                             $conflit = $nbSeances > 1 ? ' style="color: inherit; background-color: #f99"' : null;
-                                            $sTable .= <<<CODE_HTML
+                            $sTable .= <<<CODE_HTML
                   <td{$rs}{$conflit} width="{$tdWith}%" {$colspan} class="{$class}" >
 
 CODE_HTML;
-                                            for ($sc = 0; $sc < $nbSeances; $sc++):
+                            for ($sc = 0; $sc < $nbSeances; $sc++):
 
                                                 $lien = $this->lienSeance($aInfos[$heures][$nomSalle][$sc], $for_bo, $linkFormat);
-                                                //$lien = '<p><a href="'.($for_bo?'':'./sessions.php').'#$1"  name="ag_sess_$1">$2</a></p>';
-                                                $sTable .= $lien;
-                                            endfor;
-                                            $sTable .= "</td>";
-                                            $confNumber++;
-                                        endif;
-                                        break;
-                                    endif;
-                                endfor;
-                                if (in_array($sHeure . '_' . $m . '_' . $journee, ['17_00_12-11-2009', '10_30_12-11-2009'])) {
-                                    $bKeynote = true;
-                                }
-                                if (false === $bSeance && !$bKeynote):
+                            //$lien = '<p><a href="'.($for_bo?'':'./sessions.php').'#$1"  name="ag_sess_$1">$2</a></p>';
+                            $sTable .= $lien;
+                            endfor;
+                            $sTable .= "</td>";
+                            $confNumber++;
+                            endif;
+                            break;
+                            endif;
+                            endfor;
+                            if (in_array($sHeure . '_' . $m . '_' . $journee, ['17_00_12-11-2009', '10_30_12-11-2009'])) {
+                                $bKeynote = true;
+                            }
+                            if (false === $bSeance && !$bKeynote):
                                     $sTable .= "<td>&nbsp;</td>";
-                                endif;
-                            else:
+                            endif; else:
                                 $aRowSpan[$idSalle]--;
                             endif;
                         }
@@ -513,7 +496,7 @@ CODE_HTML;
         return $sTable;
     }
 
-    function obtenirCsvJoindIn($id_forum)
+    public function obtenirCsvJoindIn($id_forum): string
     {
         $id_forum = $this->_bdd->echapper($id_forum);
 
@@ -546,7 +529,7 @@ CODE_HTML;
         foreach ($donnees as $conference) {
 
             // Gestion de la description
-            $description = html_entity_decode($conference['abstract'], null, 'UTF-8');
+            $description = html_entity_decode($conference['abstract'], ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
             $description = strip_tags($description);
             $description = str_replace('"', '\"', $description);
 
@@ -554,12 +537,12 @@ CODE_HTML;
             $conferenciers = [];
             for ($i = 1; $i <= 2; $i++) {
                 if (!empty($conference['conferencier' . $i]) &&
-                    'En cours de validation' != trim($conference['conferencier' . $i])
+                    'En cours de validation' !== trim($conference['conferencier' . $i])
                 ) {
                     $conferenciers[] = $conference['conferencier' . $i];
                 }
             }
-            if (empty($conferenciers)) {
+            if ($conferenciers === []) {
                 $conferenciers[] = '-';
             }
             $conferenciers = implode(',', $conferenciers);
@@ -587,10 +570,10 @@ CODE_HTML;
         return $csv;
     }
 
-    function ajouter(
+    public function ajouter(
         $titre,
         $nb_places,
-        $date_debut,
+        array $date_debut,
         $date_fin,
         $date_fin_appel_projet,
         $date_fin_appel_conferencier,
@@ -619,10 +602,10 @@ CODE_HTML;
         `logo_url`, `place_name`, `has_prices_defined_with_vat`, `vote_enabled`, `speakers_diner_enabled`, `accomodation_enabled`, `waiting_list_url`, `place_address`, `transport_information_enabled`) ';
         $requete .= 'VALUES (null,';
         $requete .= $this->_bdd->echapper($titre) . ',';
-        $requete .= (int)$nb_places . ',';
+        $requete .= (int) $nb_places . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_debut) . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin) . ',';
-        $requete .= (int)$date_debut['Y'] . ',';
+        $requete .= (int) $date_debut['Y'] . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_projet, true) . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_conferencier, true) . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vote, false) . ',';
@@ -649,11 +632,11 @@ CODE_HTML;
         return $this->_bdd->executer($requete);
     }
 
-    function modifier(
-        $id,
+    public function modifier(
+        string $id,
         $titre,
         $nb_places,
-        $date_debut,
+        array $date_debut,
         $date_fin,
         $date_fin_appel_projet,
         $date_fin_appel_conferencier,
@@ -680,10 +663,10 @@ CODE_HTML;
         $requete .= '  afup_forum ';
         $requete .= 'SET';
         $requete .= '  titre=' . $this->_bdd->echapper($titre) . ',';
-        $requete .= '  nb_places=' . (int)$nb_places . ',';
+        $requete .= '  nb_places=' . (int) $nb_places . ',';
         $requete .= '  date_debut=' . $this->_bdd->echapperSqlDateFromQuickForm($date_debut) . ',';
         $requete .= '  date_fin=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin) . ',';
-        $requete .= '  annee=' . (int)$date_debut['Y'] . ',';
+        $requete .= '  annee=' . (int) $date_debut['Y'] . ',';
         $requete .= '  date_fin_appel_projet=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_projet, true) . ',';
         $requete .= '  date_fin_appel_conferencier=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_appel_conferencier, true) . ',';
         $requete .= '  date_fin_vote=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_vote, false) . ',';
@@ -710,7 +693,7 @@ CODE_HTML;
         return $this->_bdd->executer($requete);
     }
 
-    function supprimer($id_forum)
+    public function supprimer($id_forum)
     {
         $id_forum = $this->_bdd->echapper($id_forum);
 

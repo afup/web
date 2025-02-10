@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Event\CFP;
 
 use AppBundle\CFP\SpeakerFactory;
@@ -31,36 +33,21 @@ use Twig_Environment;
 
 class EditAction
 {
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var Twig_Environment */
-    private $twig;
-    /** @var SpeakerFactory */
-    private $speakerFactory;
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var TranslatorInterface */
-    private $translator;
-    /** @var TalkFormHandler */
-    private $talkFormHandler;
-    /** @var TalkRepository */
-    private $talkRepository;
-    /** @var TalkInvitationRepository */
-    private $talkInvitationRepository;
-    /** @var SpeakerRepository */
-    private $speakerRepository;
-    /** @var VoteRepository */
-    private $voteRepository;
-    /** @var SidebarRenderer */
-    private $sidebarRenderer;
-    /** @var EventActionHelper */
-    private $eventActionHelper;
-    /** @var AuthorizationCheckerInterface */
-    private $authorizationChecker;
-    /** @var InvitationFormHandler */
-    private $invitationFormHandler;
-    /** @var FlashBagInterface */
-    private $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
+    private \Twig_Environment $twig;
+    private SpeakerFactory $speakerFactory;
+    private FormFactoryInterface $formFactory;
+    private TranslatorInterface $translator;
+    private TalkFormHandler $talkFormHandler;
+    private TalkRepository $talkRepository;
+    private TalkInvitationRepository $talkInvitationRepository;
+    private SpeakerRepository $speakerRepository;
+    private VoteRepository $voteRepository;
+    private SidebarRenderer $sidebarRenderer;
+    private EventActionHelper $eventActionHelper;
+    private AuthorizationCheckerInterface $authorizationChecker;
+    private InvitationFormHandler $invitationFormHandler;
+    private FlashBagInterface $flashBag;
 
     public function __construct(
         EventActionHelper $eventActionHelper,

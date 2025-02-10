@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\UserMembership;
 
 use Afup\Site\Association\Personnes_Morales;
@@ -8,10 +10,8 @@ use AppBundle\Association\Model\User;
 
 class StatisticsComputer
 {
-    /** @var UserRepository */
-    private $userRepository;
-    /** @var Personnes_Morales */
-    private $personnesMorales;
+    private UserRepository $userRepository;
+    private Personnes_Morales $personnesMorales;
 
     public function __construct(UserRepository $userRepository, Personnes_Morales $personnesMorales)
     {
@@ -19,7 +19,7 @@ class StatisticsComputer
         $this->personnesMorales = $personnesMorales;
     }
 
-    public function computeStatistics()
+    public function computeStatistics(): Statistics
     {
         $statistics = new Statistics();
         /** @var User[] $users */

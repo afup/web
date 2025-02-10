@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 //@TODO
 // Ajout période comptable automatiquement
 // revoir sous totaux balance
@@ -10,10 +12,6 @@ use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Base_De_Donnees;
 use AppBundle\Compta\Importer\AutoQualifier;
 use AppBundle\Compta\Importer\Importer;
-use AppBundle\Compta\Importer\Operation;
-use AppBundle\Model\ComptaCategorie;
-use AppBundle\Model\ComptaEvenement;
-use AppBundle\Model\ComptaModeReglement;
 
 class Comptabilite
 {
@@ -28,9 +26,9 @@ class Comptabilite
      */
     protected $_bdd;
 
-    public $lastId = null;
+    public $lastId;
 
-    function __construct(&$bdd)
+    public function __construct(&$bdd)
     {
         $this->_bdd = $bdd;
     }
@@ -43,12 +41,10 @@ class Comptabilite
      * Paypal
      *
      */
-    function obtenirJournalBanque($compte = 1,
+    public function obtenirJournalBanque($compte = 1,
                                   $periode_debut = '',
                                   $periode_fin = ''
-    )
-    {
-
+    ) {
         $periode_debut = $this->periodeDebutFin($debutFin = 'debut', $periode_debut);
         $periode_fin = $this->periodeDebutFin($debutFin = 'fin', $periode_fin);
         $requete = 'SELECT ';
@@ -74,27 +70,32 @@ class Comptabilite
         $requete .= 'AND compta.date_regl <= \'' . $periode_fin . '\'  ';
         $requete .= 'AND compta.montant != \'0.00\' ';
         $requete .= 'AND compta.idmode_regl = compta_reglement.id ';
-        $requete .= 'AND idcompte = ' . (int)$compte . ' ';
+        $requete .= 'AND idcompte = ' . (int) $compte . ' ';
         $requete .= 'ORDER BY ';
         $requete .= 'compta.date_regl ';
         return $this->_bdd->obtenirTous($requete);
     }
 
 
-    function obtenirSousTotalJournalBanque($compte = 1, $periode_debut, $periode_fin)
+    public function obtenirSousTotalJournalBanque($periode_debut, $periode_fin, $compte = 1)
     {
-
         $data = $this->obtenirJournalBanque($compte, $periode_debut, $periode_fin);
 
         for ($i = 1; $i <= 12; $i++) {
-            $credit[$i] = '';
-            $debit[$i] = '';
-            $nligne[$i] = '';
+            $credit[$i] = 0;
+            $debit[$i] = 0;
+            $nligne[$i] = 0;
         }
-        foreach ($data as $id => $row) {
-            if ($row['idoperation'] == "1") $debit[$row['mois']] += $row['montant'];
-            if ($row['idoperation'] == "2") $credit[$row['mois']] += $row['montant'];
-            if ($row['idoperation'] == "1" || $row['idoperation'] == "2") $nligne[$row['mois']]++;
+        foreach ($data as $row) {
+            if ($row['idoperation'] == "1") {
+                $debit[$row['mois']] += $row['montant'];
+            }
+            if ($row['idoperation'] == "2") {
+                $credit[$row['mois']] += $row['montant'];
+            }
+            if ($row['idoperation'] == "1" || $row['idoperation'] == "2") {
+                $nligne[$row['mois']]++;
+            }
         }
 
         $dif_old = 0;
@@ -112,9 +113,8 @@ class Comptabilite
         return $tableau;
     }
 
-    function obtenirTotalJournalBanque($compte = 1, $periode_debut, $periode_fin)
+    public function obtenirTotalJournalBanque($periode_debut, $periode_fin, $compte = 1): array
     {
-
         $data = $this->obtenirJournalBanque($compte, $periode_debut, $periode_fin);
         /* echo "<pre>";
        print_r($data);
@@ -122,22 +122,26 @@ class Comptabilite
         $credit = 0;
         $debit = 0;
 
-        foreach ($data as $id => $row) {
-            if ($row['idoperation'] == "1") $debit += $row['montant'];
-            if ($row['idoperation'] == "2") $credit += $row['montant'];
+        foreach ($data as $row) {
+            if ($row['idoperation'] == "1") {
+                $debit += $row['montant'];
+            }
+            if ($row['idoperation'] == "2") {
+                $credit += $row['montant'];
+            }
         }
-//print_r($credit);
-//$dif_old=0;
-//for ($i=1;$i<=12;$i++)
-//{
-//	$dif=$dif_old+$credit[$i]-$debit[$i];
+        //print_r($credit);
+        //$dif_old=0;
+        //for ($i=1;$i<=12;$i++)
+        //{
+        //	$dif=$dif_old+$credit[$i]-$debit[$i];
         $tableau = [
             "debit" => $debit,
             "credit" => $credit,
             "dif" => $credit - $debit
         ];
-//	$dif_old=$dif;
-//}
+        //	$dif_old=$dif;
+        //}
 
         return $tableau;
         /*		$total=0;
@@ -150,27 +154,21 @@ class Comptabilite
 
                 return $total;
                 */
-
     }
 
     /* Journal des opération
      *
      */
 
-    function obtenirJournal($debitCredit = '',
+    public function obtenirJournal(string $debitCredit = '',
                             $periode_debut = '',
                             $periode_fin = '',
                             $onlyUnclasifedEntries = true
-    )
-    {
-
+    ) {
         $periode_debut = $this->periodeDebutFin($debutFin = 'debut', $periode_debut);
         $periode_fin = $this->periodeDebutFin($debutFin = 'fin', $periode_fin);
 
-        if ($debitCredit == 1 || $debitCredit == 2)
-            $filtre = 'AND compta.idoperation =\'' . $debitCredit . '\'  ';
-        else
-            $filtre = "";
+        $filtre = $debitCredit == 1 || $debitCredit == 2 ? 'AND compta.idoperation =\'' . $debitCredit . '\'  ' : "";
 
         $requete = 'SELECT ';
         $requete .= 'compta.date_ecriture, compta.description, compta.montant, compta.idoperation,compta.id as idtmp, ';
@@ -221,15 +219,12 @@ class Comptabilite
     }
 
     // mise en forme du montant
-    function formatMontantCompta($valeur)
+    public function formatMontantCompta($valeur): string
     {
-        $prix_ok = number_format($valeur, 2, ',', ' ');
-
-        return $prix_ok;
-
+        return number_format($valeur, 2, ',', ' ');
     }
 
-    function periodeDebutFin($debutFin = 'debut', $date = '')
+    public function periodeDebutFin($debutFin = 'debut', $date = '')
     {
         // echo "=>$debutFin*$date*<br>";
         if ($date != '') {
@@ -242,8 +237,8 @@ class Comptabilite
                         {
                              $r=obtenirPeriodeEnCours($id_periode);
                         } else {*/
-            return DATE("Y") . "-01-01";
-            //		}
+            return date("Y") . "-01-01";
+        //		}
         } else {
             /*	if ($id_periode !='')
                 {
@@ -251,12 +246,12 @@ class Comptabilite
                      print_r($r);
                      return $r;
                 } else {*/
-            return DATE("Y") . "-12-31";
+            return date("Y") . "-12-31";
             //}
         }
     }
 
-    function obtenirPeriodeEnCours($id_periode)
+    public function obtenirPeriodeEnCours($id_periode)
     {
         // Si la periode existe
         if ($id_periode != "") {
@@ -270,18 +265,16 @@ class Comptabilite
 
         if ($result) {
             return $result[0]['id'];
-        } else                // ajout d'une nouvelle periode
-        {
+        } else {                // ajout d'une nouvelle periode
             $result = $this->ajouterListPeriode();
             return $result[0]['id'];
         }
     }
 
-    function ajouterListPeriode()
+    public function ajouterListPeriode()
     {
-
-        $date_debut = DATE("Y") . '-01-01';
-        $date_fin = DATE("Y") . '-12-31';
+        $date_debut = date("Y") . '-01-01';
+        $date_fin = date("Y") . '-12-31';
 
         $requete = 'INSERT INTO ';
         $requete .= 'compta_periode (';
@@ -294,17 +287,16 @@ class Comptabilite
 
         $this->_bdd->executer($requete);
         return $this->obtenirListPeriode($date_debut, $date_fin);
-
     }
 
-    function obtenirListPeriode($date_debut = '', $date_fin = '')
+    public function obtenirListPeriode(?string $date_debut = '', ?string $date_fin = '')
     {
         $requete = 'SELECT ';
         $requete .= 'id, date_debut,date_fin, verouiller ';
         $requete .= 'FROM  ';
         $requete .= 'compta_periode  ';
 
-        if ($date_debut != '' AND $date_fin != '') {
+        if ($date_debut != '' && $date_fin != '') {
             $requete .= 'WHERE ';
             $requete .= 'compta_periode.date_debut= \'' . $date_debut . '\'  ';
             $requete .= 'AND compta_periode.date_fin= \'' . $date_fin . '\'  ';
@@ -313,13 +305,15 @@ class Comptabilite
         return $this->_bdd->obtenirTous($requete);
     }
 
-    function obtenirListOperations($filtre = '', $where = '')
+    public function obtenirListOperations($filtre = '', ?string $where = '')
     {
         $requete = 'SELECT ';
         $requete .= 'id, operation ';
         $requete .= 'FROM  ';
         $requete .= 'compta_operation  ';
-        if ($where) $requete .= 'WHERE id=' . $where . ' ';
+        if ($where) {
+            $requete .= 'WHERE id=' . $where . ' ';
+        }
 
         $requete .= 'ORDER BY ';
         $requete .= 'operation ';
@@ -339,13 +333,15 @@ class Comptabilite
         }
     }
 
-    function obtenirListComptes($filtre = '', $where = '')
+    public function obtenirListComptes($filtre = '', ?string $where = '')
     {
         $requete = 'SELECT ';
         $requete .= 'id, nom_compte ';
         $requete .= 'FROM  ';
         $requete .= 'compta_compte  ';
-        if ($where) $requete .= 'WHERE id=' . $where . ' ';
+        if ($where) {
+            $requete .= 'WHERE id=' . $where . ' ';
+        }
 
         $requete .= 'ORDER BY ';
         $requete .= 'nom_compte ';
@@ -365,7 +361,7 @@ class Comptabilite
         }
     }
 
-    function obtenirListCategories($filtre = '', $where = '', $usedInAccountingJournal = false)
+    public function obtenirListCategories($filtre = '', ?string $where = '', $usedInAccountingJournal = false)
     {
         $requete = 'SELECT ';
         $requete .= 'id, idevenement, categorie ';
@@ -379,7 +375,7 @@ class Comptabilite
             $wheres[] = 'hide_in_accounting_journal_at IS NULL';
         }
 
-        if (count($wheres)) {
+        if ($wheres !== []) {
             $requete .= sprintf('WHERE %s ',implode(' AND ', $wheres));
         }
 
@@ -399,7 +395,6 @@ class Comptabilite
 
             return $result;
         }
-
     }
 
     public function obtenirListCategoriesJournal()
@@ -410,7 +405,7 @@ class Comptabilite
         return $categories;
     }
 
-    function obtenirListEvenements($filtre = '', $where = '', $usedInAccountingJournal = false)
+    public function obtenirListEvenements($filtre = '', ?string $where = '', $usedInAccountingJournal = false)
     {
         $requete = 'SELECT ';
         $requete .= 'id, evenement ';
@@ -424,7 +419,7 @@ class Comptabilite
             $wheres[] = 'hide_in_accounting_journal_at IS NULL';
         }
 
-        if (count($wheres)) {
+        if ($wheres !== []) {
             $requete .= sprintf('WHERE %s ',implode(' AND ', $wheres));
         }
 
@@ -454,7 +449,7 @@ class Comptabilite
         return $events;
     }
 
-    function obtenirListReglements($filtre = '', $where = '', $usedInAccountingJournal = false)
+    public function obtenirListReglements($filtre = '', ?string $where = '', $usedInAccountingJournal = false)
     {
         $requete = 'SELECT ';
         $requete .= 'id, reglement ';
@@ -468,7 +463,7 @@ class Comptabilite
             $wheres[] = 'hide_in_accounting_journal_at IS NULL';
         }
 
-        if (count($wheres)) {
+        if ($wheres !== []) {
             $requete .= sprintf('WHERE %s ',implode(' AND ', $wheres));
         }
 
@@ -498,11 +493,10 @@ class Comptabilite
         return $reglements;
     }
 
-    function ajouter($idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $tva_intra, $montant, $description,
+    public function ajouter($idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $tva_intra, $montant, $description,
                      $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $numero_operation = null,
                      $attachmentRequired = 0, $montantHtSoumisTva0 = null, $montantHtSoumisTva55 = null, $montantHtSoumisTva10 = null, $montantHtSoumisTva20 = null, $tvaZone = null)
     {
-
         $requete = 'INSERT INTO ';
         $requete .= 'compta (';
         $requete .= 'idoperation,idcategorie,date_ecriture,nom_frs,tva_intra,montant,description,';
@@ -525,11 +519,11 @@ class Comptabilite
         $requete .= $this->_bdd->echapper($numero_operation) . ',';
         $requete .= $this->_bdd->echapper($idcompte) . ',';
         $requete .= $this->_bdd->echapper($attachmentRequired) . ',';
-        $requete .= (!$montantHtSoumisTva0 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva0)) . ',';
-        $requete .= (!$montantHtSoumisTva55 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva55)) . ',';
-        $requete .= (!$montantHtSoumisTva10 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva10)) . ',';
-        $requete .= (!$montantHtSoumisTva20 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva20)) . ',';
-        $requete .= (!$tvaZone ? 'NULL' : $this->_bdd->echapper($tvaZone)) . '';
+        $requete .= ($montantHtSoumisTva0 ? $this->_bdd->echapper($montantHtSoumisTva0) : 'NULL') . ',';
+        $requete .= ($montantHtSoumisTva55 ? $this->_bdd->echapper($montantHtSoumisTva55) : 'NULL') . ',';
+        $requete .= ($montantHtSoumisTva10 ? $this->_bdd->echapper($montantHtSoumisTva10) : 'NULL') . ',';
+        $requete .= ($montantHtSoumisTva20 ? $this->_bdd->echapper($montantHtSoumisTva20) : 'NULL') . ',';
+        $requete .= ($tvaZone ? $this->_bdd->echapper($tvaZone) : 'NULL') . '';
         $requete .= ');';
 
         $resultat = $this->_bdd->executer($requete);
@@ -539,13 +533,11 @@ class Comptabilite
         return $resultat;
     }
 
-    function modifier($id, $idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $tva_intra, $montant, $description,
+    public function modifier(string $id, $idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $tva_intra, $montant, $description,
                       $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $comment, $numero_operation = null, $attachmentRequired = 0,
                       $montantHtSoumisTva0 = null, $montantHtSoumisTva55 = null, $montantHtSoumisTva10 = null, $montantHtSoumisTva20 = null,
                       $tvaZone = null
-    )
-    {
-
+    ) {
         $requete = 'UPDATE ';
         $requete .= 'compta ';
         $requete .= 'SET ';
@@ -561,12 +553,12 @@ class Comptabilite
         $requete .= 'date_regl=' . $this->_bdd->echapper($date_regl) . ',';
         $requete .= 'obs_regl=' . $this->_bdd->echapper($obs_regl) . ',';
         $requete .= 'idcompte=' . $this->_bdd->echapper($idcompte) . ',';
-        $requete .= 'montant_ht_soumis_tva_0=' . (!$montantHtSoumisTva0 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva0)) . ',';
-        $requete .= 'montant_ht_soumis_tva_5_5=' . (!$montantHtSoumisTva55 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva55)) . ',';
-        $requete .= 'montant_ht_soumis_tva_10=' . (!$montantHtSoumisTva10 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva10)) . ',';
-        $requete .= 'montant_ht_soumis_tva_20=' . (!$montantHtSoumisTva20 ? 'NULL' : $this->_bdd->echapper($montantHtSoumisTva20)) . ',';
-        $requete .= 'tva_zone=' . (!$tvaZone ? 'NULL' : $this->_bdd->echapper($tvaZone)) . ',';
-        $requete .= 'comment=' . (!$comment ? 'NULL' : $this->_bdd->echapper($comment)) . ',';
+        $requete .= 'montant_ht_soumis_tva_0=' . ($montantHtSoumisTva0 ? $this->_bdd->echapper($montantHtSoumisTva0) : 'NULL') . ',';
+        $requete .= 'montant_ht_soumis_tva_5_5=' . ($montantHtSoumisTva55 ? $this->_bdd->echapper($montantHtSoumisTva55) : 'NULL') . ',';
+        $requete .= 'montant_ht_soumis_tva_10=' . ($montantHtSoumisTva10 ? $this->_bdd->echapper($montantHtSoumisTva10) : 'NULL') . ',';
+        $requete .= 'montant_ht_soumis_tva_20=' . ($montantHtSoumisTva20 ? $this->_bdd->echapper($montantHtSoumisTva20) : 'NULL') . ',';
+        $requete .= 'tva_zone=' . ($tvaZone ? $this->_bdd->echapper($tvaZone) : 'NULL') . ',';
+        $requete .= 'comment=' . ($comment ? $this->_bdd->echapper($comment) : 'NULL') . ',';
         if ($numero_operation) {
             $requete .= 'numero_operation=' . $this->_bdd->echapper($numero_operation) . ',';
         }
@@ -612,7 +604,7 @@ SQL;
         return $this->_bdd->executer($requete);
     }
 
-    function ajouterConfig($table, $champ, $valeur)
+    public function ajouterConfig(string $table, string $champ, $valeur)
     {
         $requete = 'INSERT INTO ';
         $requete .= '' . $table . ' (';
@@ -624,9 +616,8 @@ SQL;
         return $this->_bdd->executer($requete);
     }
 
-    function modifierConfig($table, $id, $champ, $valeur)
+    public function modifierConfig(string $table, string $id, string $champ, $valeur)
     {
-
         $requete = 'UPDATE ';
         $requete .= '' . $table . ' ';
         $requete .= 'SET ';
@@ -637,7 +628,7 @@ SQL;
         return $this->_bdd->executer($requete);
     }
 
-    function obtenir($id)
+    public function obtenir(string $id)
     {
         $requete = 'SELECT';
         $requete .= '  * ';
@@ -648,8 +639,12 @@ SQL;
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-
-    function obtenirSyntheseEvenement($idoperation = '1', $idevenement)
+    /**
+     * @param string|int $idevenement
+     * @param string|int $idoperation
+     * @return array|false|mixed
+     */
+    public function obtenirSyntheseEvenement($idevenement, $idoperation = 1)
     {
         $requete = 'SELECT ';
         $requete .= 'compta.*, ';
@@ -666,11 +661,15 @@ SQL;
         $requete .= 'compta.date_ecriture ';
 
         return $this->_bdd->obtenirTous($requete);
-
     }
 
 
-    function obtenirTotalSyntheseEvenement($idoperation = '1', $idevenement)
+    /**
+     * @param string|int $idevenement
+     * @param string|int $idoperation
+     * @return int|mixed
+     */
+    public function obtenirTotalSyntheseEvenement($idevenement, $idoperation = 1)
     {
         $requete = 'SELECT ';
         $requete .= 'compta.montant ';
@@ -683,13 +682,13 @@ SQL;
         $data = $this->_bdd->obtenirTous($requete);
 
         $total = 0;
-        foreach ($data as $id => $row) {
+        foreach ($data as $row) {
             $total += $row['montant'];
         }
         return $total;
     }
 
-    function obtenirBilan($idoperation = '1', $periode_debut = '', $periode_fin = '')
+    public function obtenirBilan($idoperation = 1, $periode_debut = '', $periode_fin = '')
     {
         $periode_debut = $this->periodeDebutFin($debutFin = 'debut', $periode_debut);
         $periode_fin = $this->periodeDebutFin($debutFin = 'fin', $periode_fin);
@@ -713,21 +712,26 @@ SQL;
         return $this->_bdd->obtenirTous($requete);
     }
 
-    function obtenirTotalBilan($idoperation = '1', $periode_debut, $periode_fin)
+    public function obtenirTotalBilan($periode_debut, $periode_fin, $idoperation = '1')
     {
-
         $data = $this->obtenirBilan($idoperation, $periode_debut, $periode_fin);
 
         $total = 0;
-        foreach ($data as $id => $row) {
-
+        foreach ($data as $row) {
             $total += $row['montant'];
         }
 
         return $total;
     }
 
-    function obtenirBilanDetails($idoperation, $periode_debut = '', $periode_fin = '', $idevenement)
+    /**
+     * @param string|int $idoperation
+     * @param string|int $idevenement
+     * @param string $periode_debut
+     * @param string $periode_fin
+     * @return array|false|mixed
+     */
+    public function obtenirBilanDetails($idoperation, $idevenement, $periode_debut = '', $periode_fin = '')
     {
         $periode_debut = $this->periodeDebutFin($debutFin = 'debut', $periode_debut);
         $periode_fin = $this->periodeDebutFin($debutFin = 'fin', $periode_fin);
@@ -752,19 +756,16 @@ SQL;
         //$requete .= ' compta_evenement.evenement ';
         $requete .= 'ORDER BY ';
         $requete .= ' compta.date_ecriture ';
-//echo $requete."<br>";
+        //echo $requete."<br>";
         return $this->_bdd->obtenirTous($requete);
-
     }
 
-    function obtenirSousTotalBilan($idoperation = '1', $periode_debut, $periode_fin, $idevenement)
+    public function obtenirSousTotalBilan($periode_debut, $periode_fin, string $idevenement, string $idoperation = '1')
     {
-
-        $data = $this->obtenirBilanDetails($idoperation, $periode_debut, $periode_fin, $idevenement);
+        $data = $this->obtenirBilanDetails($idoperation, $idevenement, $periode_debut, $periode_fin);
 
         $total = 0;
-        foreach ($data as $id => $row) {
-
+        foreach ($data as $row) {
             $total += $row['montant'];
         }
 
@@ -772,7 +773,7 @@ SQL;
     }
 
 
-    function obtenirBalance($idoperation = '', $periode_debut = '', $periode_fin = '')
+    public function obtenirBalance($idoperation = null, $periode_debut = '', $periode_fin = '')
     {
         $periode_debut = $this->periodeDebutFin($debutFin = 'debut', $periode_debut);
         $periode_fin = $this->periodeDebutFin($debutFin = 'fin', $periode_fin);
@@ -789,8 +790,9 @@ SQL;
         $requete .= ' compta.idevenement = compta_evenement.id ';
         $requete .= ' AND compta.date_ecriture >= \'' . $periode_debut . '\' ';
         $requete .= ' AND compta.date_ecriture <= \'' . $periode_fin . '\'  ';
-        if ($idoperation != '')
+        if ($idoperation != '') {
             $requete .= ' AND compta.idoperation = \'' . $idoperation . '\' ';
+        }
 
         $requete .= 'GROUP BY ';
         $requete .= ' compta_evenement.evenement ';
@@ -800,21 +802,23 @@ SQL;
         return $this->_bdd->obtenirTous($requete);
     }
 
-    function obtenirTotalBalance($idoperation = '1', $periode_debut, $periode_fin)
+    public function obtenirTotalBalance($periode_debut, $periode_fin, $idoperation = '1')
     {
-
         $data = $this->obtenirBalance($idoperation, $periode_debut, $periode_fin);
 
         $total = 0;
-        foreach ($data as $id => $row) {
-            if ($idoperation == 1) $total += $row['debit'];
-            if ($idoperation == 2) $total += $row['credit'];
-
+        foreach ($data as $row) {
+            if ($idoperation == 1) {
+                $total += $row['debit'];
+            }
+            if ($idoperation == 2) {
+                $total += $row['credit'];
+            }
         }
         return $total;
     }
 
-    function obtenirBalanceDetails($evenement, $periode_debut = '', $periode_fin = '')
+    public function obtenirBalanceDetails(string $evenement, $periode_debut = '', $periode_fin = '')
     {
         $periode_debut = $this->periodeDebutFin($debutFin = 'debut', $periode_debut);
         $periode_fin = $this->periodeDebutFin($debutFin = 'fin', $periode_fin);
@@ -840,23 +844,30 @@ SQL;
         return $this->_bdd->obtenirTous($requete);
     }
 
-    function obtenirSousTotalBalance($evenement, $periode_debut, $periode_fin)
+    /**
+     * @return array{idevenement: int<1, 30>, debit: mixed, credit: mixed, nligne: int<0, max>}[]
+     */
+    public function obtenirSousTotalBalance(string $evenement, $periode_debut, $periode_fin): array
     {
         $tableau = [];
-//	    	echo $evenement."*".$periode_debut."*".$periode_fin;
+        //	    	echo $evenement."*".$periode_debut."*".$periode_fin;
         $data = $this->obtenirBalanceDetails($evenement, $periode_debut, $periode_fin);
 
         for ($i = 1; $i <= 30; $i++) {
             $credit[$i] = '';
             $debit[$i] = '';
             $nligne[$i] = 0;
-
         }
-        foreach ($data as $id => $row) {
-            if ($row['idoperation'] == "1") $debit[$row['id']] += $row['montant'];
-            if ($row['idoperation'] == "2") $credit[$row['id']] += $row['montant'];
-            if ($row['idoperation'] == "1" || $row['idoperation'] == "2") $nligne[$row['id']]++;
-
+        foreach ($data as $row) {
+            if ($row['idoperation'] == "1") {
+                $debit[$row['id']] += $row['montant'];
+            }
+            if ($row['idoperation'] == "2") {
+                $credit[$row['id']] += $row['montant'];
+            }
+            if ($row['idoperation'] == "1" || $row['idoperation'] == "2") {
+                $nligne[$row['id']]++;
+            }
         }
 
 
@@ -873,13 +884,13 @@ SQL;
         return $tableau;
     }
 
-    function supprimerEcriture($id)
+    public function supprimerEcriture(string $id)
     {
         $requete = 'DELETE FROM compta WHERE id=' . $id;
         return $this->_bdd->executer($requete);
     }
 
-    function obtenirParNumeroOperation($numero_operation)
+    public function obtenirParNumeroOperation($numero_operation)
     {
         $requete = 'SELECT';
         $requete .= '  * ';
@@ -890,7 +901,7 @@ SQL;
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-    function obtenirSuivantADeterminer($numero_operation)
+    public function obtenirSuivantADeterminer($numero_operation)
     {
         $requete = 'SELECT';
         $requete .= '  id ';
@@ -907,7 +918,7 @@ SQL;
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-    function obtenirTous()
+    public function obtenirTous()
     {
         $requete = 'SELECT';
         $requete .= '  * ';
@@ -917,7 +928,7 @@ SQL;
         return $this->_bdd->obtenirTous($requete);
     }
 
-    function obtenirEvenementParIdForum($id)
+    public function obtenirEvenementParIdForum($id)
     {
         $requete = 'SELECT ';
         $requete .= '  compta_evenement.id ';
@@ -926,16 +937,11 @@ SQL;
         $requete .= 'INNER JOIN ';
         $requete .= '  afup_forum on afup_forum.titre = compta_evenement.evenement ';
         $requete .= 'WHERE ';
-        $requete .= '  afup_forum.id = ' . (int)$id;
+        $requete .= '  afup_forum.id = ' . (int) $id;
         return $this->_bdd->obtenirUn($requete);
     }
 
-    /**
-     *
-     * @param Importer $importer
-     * @return bool
-     */
-    function extraireComptaDepuisCSVBanque(Importer $importer)
+    public function extraireComptaDepuisCSVBanque(Importer $importer): bool
     {
         if (!$importer->validate()) {
             return false;
@@ -1012,7 +1018,7 @@ SQL;
      * @param $query string String to search
      * @return array Results sorted by type
      */
-    public function rechercher($query)
+    public function rechercher($query): array
     {
         $like = $this->_bdd->echapper("%$query%");
         $results = [];
@@ -1130,7 +1136,7 @@ SQL;
         return $results;
     }
 
-    function obtenirListRegles($filtre = '', $where = '')
+    public function obtenirListRegles($filtre = '', $where = '')
     {
         $requete = 'SELECT ';
         $requete .= '`id`, `label`, `condition`, `is_credit`, `vat`, `category_id`, `event_id`, `mode_regl_id`, `attachment_required` ';
@@ -1141,7 +1147,7 @@ SQL;
             $wheres[] = 'id=' . intval($where) . ' ';
         }
 
-        if (count($wheres)) {
+        if ($wheres !== []) {
             $requete .= sprintf('WHERE %s ',implode(' AND ', $wheres));
         }
 
@@ -1153,9 +1159,10 @@ SQL;
         } elseif ($filtre) {
             return $this->_bdd->obtenirTous($requete);
         }
+        return null;
     }
 
-    function ajouterRegle($label, $condition, $is_credit, $tva, $category_id, $event_id, $mode_regl_id, $attachment_required)
+    public function ajouterRegle($label, $condition, $is_credit, $tva, $category_id, $event_id, $mode_regl_id, $attachment_required)
     {
         $requete = 'INSERT INTO ';
         $requete .= 'compta_regle (';
@@ -1174,9 +1181,8 @@ SQL;
         return $this->_bdd->executer($requete);
     }
 
-    function modifierRegle($id, $label, $condition, $is_credit, $tva, $category_id, $event_id, $mode_regl_id, $attachment_required)
+    public function modifierRegle($id, $label, $condition, $is_credit, $tva, $category_id, $event_id, $mode_regl_id, $attachment_required)
     {
-
         $requete = 'UPDATE ';
         $requete .= 'compta_regle ';
         $requete .= 'SET ';
@@ -1203,4 +1209,3 @@ SQL;
         return self::TVA_ZONES[$tvaZoneCode];
     }
 }
-

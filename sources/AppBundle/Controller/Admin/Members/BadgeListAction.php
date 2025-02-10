@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members;
 
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -10,12 +12,9 @@ use Twig\Environment;
 
 class BadgeListAction
 {
-    /** @var BadgeRepository */
-    private $badgeRepository;
-    /** @var UserRepository */
-    private $userRepository;
-    /** @var Environment */
-    private $twig;
+    private BadgeRepository $badgeRepository;
+    private UserRepository $userRepository;
+    private Environment $twig;
 
     public function __construct(
         BadgeRepository $badgeRepository,
@@ -27,7 +26,7 @@ class BadgeListAction
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $infos = [];
         foreach ($this->badgeRepository->getAll() as $badge) {

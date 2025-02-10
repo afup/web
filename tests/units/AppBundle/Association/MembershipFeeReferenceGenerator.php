@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\tests\units;
 
 use AppBundle\Association\MembershipFeeReferenceGenerator as TestedClass;
@@ -9,7 +11,7 @@ class MembershipFeeReferenceGenerator extends \atoum
     /**
      * @dataProvider generateDateProvider
      */
-    public function testGenerate($case, $currentDate, $typePersonne, $idPersonne, $nom, $expected)
+    public function testGenerate($case, $currentDate, $typePersonne, $idPersonne, $nom, $expected): void
     {
         $this
             ->assert($case)

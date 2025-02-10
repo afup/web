@@ -1,34 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Speaker;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
+use CCMBenchmark\Ting\Query\QueryException;
 
 class ExportGenerator
 {
-    /**
-     * @var TalkRepository
-     */
-    private $talkRepository;
+    private TalkRepository $talkRepository;
 
-    /**
-     * @param TalkRepository $talkRepository
-     */
     public function __construct(TalkRepository $talkRepository)
     {
         $this->talkRepository = $talkRepository;
     }
 
     /**
-     * @param Event $event
-     * @param \SplFileObject $toFile
      *
-     * @throws \CCMBenchmark\Ting\Query\QueryException
+     * @throws QueryException
      */
-    public function export(Event $event, \SplFileObject $toFile)
+    public function export(Event $event, \SplFileObject $toFile): void
     {
         $columns = [
             'nom_prenom',
@@ -61,11 +56,9 @@ class ExportGenerator
     }
 
     /**
-     * @param Event $event
      *
      * @return \Generator
-     *
-     * @throws \CCMBenchmark\Ting\Query\QueryException
+     * @throws QueryException
      */
     private function getFromRegistrationsOnEvent(Event $event)
     {
@@ -85,14 +78,7 @@ class ExportGenerator
         }
     }
 
-    /**
-     * @param Speaker $speaker
-     * @param array $talks
-     *
-     * @return array
-     *
-     */
-    private function prepareLine(Speaker $speaker, array $talks)
+    private function prepareLine(Speaker $speaker, array $talks): array
     {
         $hasDemandeMentoring = false;
         $labels = [];
@@ -120,44 +106,5 @@ class ExportGenerator
             'lien_bo' => '',
             'commentaire' => '',
         ];
-    }
-
-    /**
-     * @param array $speakers
-     *
-     * @return string
-     */
-    private function prepareSpeakersLabel(array $speakers)
-    {
-        return implode(',', $this->getSpeakersLabels($speakers));
-    }
-
-    /**
-     * @param array $speakers
-     *
-     * @return array
-     */
-    private function getSpeakersLabels(array $speakers)
-    {
-        $names = [];
-        foreach ($speakers as $speaker) {
-            $names[] = $speaker->getLabel();
-        }
-
-        return $names;
-    }
-
-    /**
-     * @param Talk $talk
-     *
-     * @return string
-     */
-    private function getLanguageLabel(Talk $talk)
-    {
-        try {
-            return $talk->getLanguageLabel();
-        } catch (\Exception $e) {
-            return '';
-        }
     }
 }

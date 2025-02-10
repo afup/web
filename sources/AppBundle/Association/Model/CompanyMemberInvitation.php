@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace AppBundle\Association\Model;
 
@@ -41,10 +43,7 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
      */
     private $manager = false;
 
-    /**
-     * @var \DateTime
-     */
-    private $submittedOn;
+    private ?\DateTime $submittedOn = null;
 
     /**
      * @var int
@@ -61,9 +60,8 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
 
     /**
      * @param int $id
-     * @return CompanyMemberInvitation
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -80,9 +78,8 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
 
     /**
      * @param int $companyId
-     * @return CompanyMemberInvitation
      */
-    public function setCompanyId($companyId)
+    public function setCompanyId($companyId): self
     {
         $this->propertyChanged('companyId', $this->companyId, $companyId);
         $this->companyId = $companyId;
@@ -99,9 +96,8 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
 
     /**
      * @param string $email
-     * @return CompanyMemberInvitation
      */
-    public function setEmail($email)
+    public function setEmail($email): self
     {
         $this->propertyChanged('email', $this->email, $email);
         $this->email = $email;
@@ -118,9 +114,8 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
 
     /**
      * @param boolean $manager
-     * @return CompanyMemberInvitation
      */
-    public function setManager($manager)
+    public function setManager($manager): self
     {
         $this->propertyChanged('manager', $this->manager, $manager);
         $this->manager = $manager;
@@ -130,16 +125,12 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
     /**
      * @return \DateTime
      */
-    public function getSubmittedOn()
+    public function getSubmittedOn(): ?\DateTime
     {
         return $this->submittedOn;
     }
 
-    /**
-     * @param \DateTime $submittedOn
-     * @return CompanyMemberInvitation
-     */
-    public function setSubmittedOn(\DateTime $submittedOn)
+    public function setSubmittedOn(\DateTime $submittedOn): self
     {
         $this->propertyChanged('submittedOn', $this->submittedOn, $submittedOn);
         $this->submittedOn = $submittedOn;
@@ -156,9 +147,8 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
 
     /**
      * @param int $status
-     * @return CompanyMemberInvitation
      */
-    public function setStatus($status)
+    public function setStatus($status): self
     {
         $this->propertyChanged('status', $this->status, $status);
         $this->status = $status;
@@ -175,9 +165,8 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
 
     /**
      * @param string $token
-     * @return CompanyMemberInvitation
      */
-    public function setToken($token)
+    public function setToken($token): self
     {
         $this->propertyChanged('token', $this->token, $token);
         $this->token = $token;

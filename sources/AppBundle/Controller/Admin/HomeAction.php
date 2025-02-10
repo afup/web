@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
@@ -17,24 +19,15 @@ use Twig\Environment;
 
 class HomeAction
 {
-    /** @var EventRepository */
-    private $eventRepository;
-    /** @var EventStatsRepository */
-    private $eventStatsRepository;
-    /** @var TicketEventTypeRepository */
-    private $ticketEventTypeRepository;
-    /** @var TechletterSubscriptionsRepository */
-    private $techletterSubscriptionsRepository;
-    /** @var StatisticsComputer */
-    private $statisticsComputer;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var Security */
-    private $security;
-    /** @var Environment */
-    private $twig;
-    /** @var GeneralMeetingRepository */
-    private $generalMeetingRepository;
+    private EventRepository $eventRepository;
+    private EventStatsRepository $eventStatsRepository;
+    private TicketEventTypeRepository $ticketEventTypeRepository;
+    private TechletterSubscriptionsRepository $techletterSubscriptionsRepository;
+    private StatisticsComputer $statisticsComputer;
+    private UrlGeneratorInterface $urlGenerator;
+    private Security $security;
+    private Environment $twig;
+    private GeneralMeetingRepository $generalMeetingRepository;
 
     public function __construct(
         EventRepository $eventRepository,
@@ -58,7 +51,7 @@ class HomeAction
         $this->generalMeetingRepository = $generalMeetingRepository;
     }
 
-    public function __invoke()
+    public function __invoke(): Response
     {
         $nextevents = $this->eventRepository->getNextEvents();
         $cards = [];
@@ -82,7 +75,7 @@ class HomeAction
                     }
                 }
 
-                $info['statistics']['montant total'] = number_format($montantTotal, 0, ',', ' ') . ' €';
+                $info['statistics']['montant total'] = number_format($montantTotal, 0, ',', "\u{a0}") . "\u{a0}€";
                 $info['url'] = '/pages/administration/index.php?page=forum_inscriptions&id_forum=' . $event->getId();
 
                 $cards[] = $info;

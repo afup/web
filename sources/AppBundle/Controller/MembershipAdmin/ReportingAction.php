@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\MembershipAdmin;
 
 use AppBundle\Association\UserMembership\StatisticsComputer;
@@ -9,10 +11,8 @@ use Twig\Environment;
 
 class ReportingAction
 {
-    /** @var StatisticsComputer */
-    private $statisticsComputer;
-    /** @var Environment */
-    private $twig;
+    private StatisticsComputer $statisticsComputer;
+    private Environment $twig;
 
     public function __construct(
         StatisticsComputer $statisticsComputer,
@@ -22,7 +22,7 @@ class ReportingAction
         $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $statistics = $this->statisticsComputer->computeStatistics();
         // @todo Evolution nombre de personnes physiques en cours d'adhésion

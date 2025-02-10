@@ -32,8 +32,8 @@
             {foreach from=$balance item=ecriture}
                 <tr>
                     <td>{$ecriture.evenement}</td>
-                    <td class="right aligned">{$ecriture.debit|number_format:2:',':' '}</td>
-                    <td class="right aligned">{$ecriture.credit|number_format:2:',':' '}</td>
+                    <td class="right aligned">{$ecriture.debit|floatval|number_format:2:',':' '}</td>
+                    <td class="right aligned">{$ecriture.credit|floatval|number_format:2:',':' '}</td>
                     <td class="right aligned single line">
                         <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}"
                            data-tooltip="Voir sur la page courante"
@@ -72,8 +72,8 @@
                                     <td>{$detail.date_ecriture|date_format:"%d/%m/%Y"}</td>
                                     <td>{$detail.categorie}</td>
                                     <td>{$detail.description}</td>
-                                    <td class="right aligned">{if $detail.debit}{$detail.debit|number_format:2:',':' '}{else}0,00{/if}</td>
-                                    <td class="right aligned">{if $detail.credit}{$detail.credit|number_format:2:',':' '}{else}0,00{/if}</td>
+                                    <td class="right aligned">{if $detail.debit}{$detail.debit|floatval|number_format:2:',':' '}{else}0,00{/if}</td>
+                                    <td class="right aligned">{if $detail.credit}{$detail.credit|floatval|number_format:2:',':' '}{else}0,00{/if}</td>
                                     <td class="right aligned">
                                         <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$detail.idtmp}"
                                            data-tooltip="Modifier la ligne {$detail.description}"
@@ -91,10 +91,10 @@
                                                 <b><i> Sous Total</i></b>
                                             </td>
                                             <td class="right aligned">
-                                                <b><i></i>{if $txt.debit}{$txt.debit|number_format:2:',':' '}{else}0,00{/if}</i></b>
+                                                <b><i></i>{if $txt.debit}{$txt.debit|floatval|number_format:2:',':' '}{else}0,00{/if}</i></b>
                                             </td>
                                             <td class="right aligned">
-                                                <b><i></i>{if $txt.credit}{$txt.credit|number_format:2:',':' '}{else}0,00{/if}</i></b>
+                                                <b><i></i>{if $txt.credit}{$txt.credit|floatval|number_format:2:',':' '}{else}0,00{/if}</i></b>
                                             </td>
                                             <td></td>
                                         </tr>
@@ -126,14 +126,14 @@
                     <th colspan="2" class="right aligned">
                         <div class="ui mini horizontal statistic">
                             <div class="value">
-                                {$totalDepense|number_format:2:',':' '}
+                                {$totalDepense|floatval|number_format:2:',':' '}
                             </div>
                         </div>
                     </th>
                     <th class="right aligned">
                         <div class="ui mini horizontal statistic">
                             <div class="value">
-                                {$totalRecette|number_format:2:',':' '}
+                                {$totalRecette|floatval|number_format:2:',':' '}
                             </div>
                         </div>
                     </th>
@@ -185,7 +185,7 @@
                 <td>{$detail.description}</td>
                 <td  class="right aligned">
                     {if $detail.debit}
-                        {$detail.debit|number_format:2:',':' '}
+                        {$detail.debit|floatval|number_format:2:',':' '}
                     {/if}
                 </td>
                 <td  class="right aligned">
@@ -210,12 +210,12 @@
                 </td>
                 <td  class="right aligned">
                     {if $txt.debit}
-                        <b><i></i>{$txt.debit|number_format:2:',':' '}</i></b>
+                        <b><i></i>{$txt.debit|floatval|number_format:2:',':' '}</i></b>
                     {/if}
                 </td>
                 <td  class="right aligned">
                     {if $txt.credit}
-                        <b><i></i>{$txt.credit|number_format:2:',':' '}</i></b>
+                        <b><i></i>{$txt.credit|floatval|number_format:2:',':' '}</i></b>
                     {/if}
                 </td>
                 <td></td>
