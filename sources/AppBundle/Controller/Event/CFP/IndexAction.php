@@ -17,14 +17,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig_Environment;
+use Twig\Environment;
 
 class IndexAction
 {
     const MAX_EVENTS_HISTORY = 50;
     private TalkRepository $talkRepository;
     private UrlGeneratorInterface $urlGenerator;
-    private \Twig_Environment $twig;
+    private Environment $twig;
     private SpeakerFactory $speakerFactory;
     private PhotoStorage $photoStorage;
     private SidebarRenderer $sidebarRenderer;
@@ -36,7 +36,7 @@ class IndexAction
         EventRepository $eventRepository,
         TalkRepository $talkRepository,
         UrlGeneratorInterface $urlGenerator,
-        Twig_Environment $twig,
+        Environment $twig,
         SpeakerFactory $speakerFactory,
         PhotoStorage $photoStorage,
         SidebarRenderer $sidebarRenderer

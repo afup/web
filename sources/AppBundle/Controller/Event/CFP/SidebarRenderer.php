@@ -8,18 +8,18 @@ use AppBundle\CFP\SpeakerFactory;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use DateTime;
-use Twig_Environment;
+use Twig\Environment;
 
 class SidebarRenderer
 {
     private TalkRepository $talkRepository;
     private SpeakerFactory $speakerFactory;
-    private \Twig_Environment $twig;
+    private Environment $twig;
 
     public function __construct(
         TalkRepository $talkRepository,
         SpeakerFactory $speakerFactory,
-        Twig_Environment $twig
+        Environment $twig
     ) {
         $this->talkRepository = $talkRepository;
         $this->speakerFactory = $speakerFactory;

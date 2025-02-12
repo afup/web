@@ -17,12 +17,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Twig_Environment;
+use Twig\Environment;
 
 class ProposeAction
 {
     private UrlGeneratorInterface $urlGenerator;
-    private \Twig_Environment $twig;
+    private Environment $twig;
     private SpeakerFactory $speakerFactory;
     private FormFactoryInterface $formFactory;
     private TranslatorInterface $translator;
@@ -33,7 +33,7 @@ class ProposeAction
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
-        Twig_Environment $twig,
+        Environment $twig,
         FormFactoryInterface $formFactory,
         TalkFormHandler $talkFormHandler,
         SpeakerFactory $speakerFactory,

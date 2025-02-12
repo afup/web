@@ -5,7 +5,11 @@ declare(strict_types=1);
 
 namespace AppBundle\Twig;
 
-class AssetsExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
+use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
+use Twig\TwigFunction;
+
+class AssetsExtension extends AbstractExtension implements GlobalsInterface
 {
     private $kernelRootDir;
 
@@ -20,7 +24,7 @@ class AssetsExtension extends \Twig_Extension implements \Twig_Extension_Globals
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('asset_md5_start', function (string $url) {
+            new TwigFunction('asset_md5_start', function (string $url) {
                 $path = $this->kernelRootDir . '/../htdocs/' . $url;
 
                 return substr(md5_file($path), 0, 8);
