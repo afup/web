@@ -52,7 +52,7 @@ class FeedEditAction
         $data->status = $feed->getStatus();
         $form = $this->formFactory->create(FeedFormType::class, $data);
         $form->handleRequest($request);
-        if ($form->isValid() && $form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $ok = $this->feedRepository->update(
                 $id,
                 $data->name,

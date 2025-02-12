@@ -66,7 +66,7 @@ class SpeakerPage
         ];
         $speakersContactType = $this->formFactory->create(SpeakersContactType::class, $speakersContactDefaults);
         $speakersContactType->handleRequest($request);
-        if ($speakersContactType->isValid()) {
+        if ($speakersContactType->isSubmitted() && $speakersContactType->isValid()) {
             $speakersContactData = $speakersContactType->getData();
             $speaker->setPhoneNumber($speakersContactData['phone_number']);
             $this->speakerRepository->save($speaker);
@@ -123,7 +123,7 @@ class SpeakerPage
 
         $speakersExpensesType = $this->formFactory->create(SpeakersExpensesType::class);
         $speakersExpensesType->handleRequest($request);
-        if ($speakersExpensesType->isValid()) {
+        if ($speakersExpensesType->isSubmitted() && $speakersExpensesType->isValid()) {
             $speakersExpensesData = $speakersExpensesType->getData();
             foreach ($speakersExpensesData['files'] as $file) {
                 $this->speakersExpensesStorage->store($file, $speaker);

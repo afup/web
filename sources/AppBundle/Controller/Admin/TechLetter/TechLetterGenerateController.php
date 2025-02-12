@@ -60,7 +60,7 @@ class TechLetterGenerateController extends AbstractController
         $form = $this->formFactory->create(SendingType::class);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $techletter = $form->getData();
             $this->sendingRepository->save($techletter);
 
