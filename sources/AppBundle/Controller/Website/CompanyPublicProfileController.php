@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website;
 
+use AppBundle\Antennes\Antenne;
+use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
-use AppBundle\Offices\OfficesCollection;
 use AppBundle\Twig\ViewRenderer;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,11 +22,12 @@ class CompanyPublicProfileController extends AbstractController
     private RepositoryFactory $repositoryFactory;
     private string $storageDir;
 
-    public function __construct(ViewRenderer $view,
-                                BadgesComputer $badgesComputer,
-                                RepositoryFactory $repositoryFactory,
-                                string $storageDir)
-    {
+    public function __construct(
+        ViewRenderer $view,
+        BadgesComputer $badgesComputer,
+        RepositoryFactory $repositoryFactory,
+        string $storageDir
+    ) {
         $this->view = $view;
         $this->badgesComputer = $badgesComputer;
         $this->repositoryFactory = $repositoryFactory;
@@ -38,7 +40,7 @@ class CompanyPublicProfileController extends AbstractController
 
         return $this->view->render('site/company_public_profile.html.twig', [
             'company_member' => $companyMember,
-            'offices' => $this->getRelatedAfupOffices($companyMember),
+            'antennes' => $this->getRelatedAfupAntennes($companyMember),
             'badges' => $this->badgesComputer->getCompanyBadges($companyMember),
         ]);
     }
@@ -82,27 +84,23 @@ class CompanyPublicProfileController extends AbstractController
     }
 
     /**
-     * @return mixed[]
+     * @return list<Antenne>
      */
-    private function getRelatedAfupOffices(CompanyMember $companyMember): array
+    private function getRelatedAfupAntennes(CompanyMember $companyMember): array
     {
-        $officesCollection = new OfficesCollection();
-        $offices = [];
+        $antennesCollection = new AntennesCollection();
+        $antennes = [];
         foreach ($companyMember->getFormattedRelatedAfupOffices() as $localOffice) {
-            $office = $officesCollection->findByCode($localOffice);
-            if (null === $office || isset($office['hide_on_offices_page'])) {
+            $antenne = $antennesCollection->findByCode($localOffice);
+            if ($antenne->hideOnOfficesPage) {
                 continue;
             }
 
-            $offices[] = $office;
+            $antennes[] = $antenne;
         }
 
-        usort($offices, function (array $a, array $b): int {
-            $a = $a['label'];
-            $b = $b['label'];
-            return $a <=> $b;
-        });
+        usort($antennes, fn (Antenne $a, Antenne $b) => $a->label <=> $b->label);
 
-        return $offices;
+        return $antennes;
     }
 }

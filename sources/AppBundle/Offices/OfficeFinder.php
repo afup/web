@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Offices;
 
+use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Invoice;
 use Geocoder\Exception\NoResult;
@@ -15,7 +16,7 @@ class OfficeFinder
 {
     public const MAX_DISTANCE_TO_OFFICE = 50000;
 
-    private OfficesCollection $officesCollection;
+    private AntennesCollection $antennesCollection;
 
     private Geocoder $geocoder;
 
@@ -24,7 +25,7 @@ class OfficeFinder
     public function __construct(Geocoder $geocoder)
     {
         $this->geocoder = $geocoder;
-        $this->officesCollection = new OfficesCollection();
+        $this->antennesCollection = new AntennesCollection();
     }
 
     public function findOffice(Invoice $invoice, User $user = null): ?string
@@ -119,9 +120,13 @@ class OfficeFinder
     {
         $localOfficesDistance = [];
 
-        foreach ($this->officesCollection->getAll() as $office => $localOffice) {
-            $distance = $this->haversineGreatCircleDistance($coordinates->getLatitude(), $coordinates->getLongitude(), $localOffice['latitude'], $localOffice['longitude']);
-            $localOfficesDistance[$office] = $distance;
+        foreach ($this->antennesCollection->getAll() as $antenne) {
+            $localOfficesDistance[$antenne->code] = $this->haversineGreatCircleDistance(
+                $coordinates->getLatitude(),
+                $coordinates->getLongitude(),
+                $antenne->map->firstCity->position->latitude,
+                $antenne->map->firstCity->position->longitude,
+            );
         }
 
         asort($localOfficesDistance);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website;
 
-use AppBundle\Offices\OfficesCollection;
+use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,9 +24,8 @@ class StaticController extends AbstractController
 
     public function offices(): Response
     {
-        $officesCollection = new OfficesCollection();
         return $this->view->render(':site:offices.html.twig', [
-            'offices' => $officesCollection->getAllSortedByLabels()
+            'antennes' => (new AntennesCollection())->getAllSortedByLabels(),
         ]);
     }
 

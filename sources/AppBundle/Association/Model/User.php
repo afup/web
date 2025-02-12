@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Model;
 
+use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Association\NotifiableInterface;
-use AppBundle\Offices\OfficesCollection;
 use AppBundle\Validator\Constraints as AppAssert;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
@@ -220,10 +220,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
             return  null;
         }
 
-        $collection = new OfficesCollection();
-        $office = $collection->findByCode($code);
-
-        return $office['label'];
+        return (new AntennesCollection())->findByCode($code)->label;
     }
 
     /**

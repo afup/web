@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Indexation\Meetups\tests\units;
 
+use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Event\Model\Meetup;
 use AppBundle\Indexation\Meetups\Transformer as TestedClass;
-use AppBundle\Offices\OfficesCollection;
 
 class Transformer extends \atoum
 {
@@ -28,7 +28,7 @@ class Transformer extends \atoum
                     ->setDescription($description)
                     ->setAntenneName($meetupAntenneName)
             )
-            ->when($transformer = new TestedClass(new OfficesCollection()))
+            ->when($transformer = new TestedClass(new AntennesCollection()))
             ->then
                 ->array($transformer->transform($meetup))
                 ->isEqualTo([

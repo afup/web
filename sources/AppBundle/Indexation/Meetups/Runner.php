@@ -7,9 +7,9 @@ namespace AppBundle\Indexation\Meetups;
 use AlgoliaSearch\AlgoliaException;
 use AlgoliaSearch\Client;
 use AlgoliaSearch\Index;
+use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Event\Model\Meetup;
 use AppBundle\Event\Model\Repository\MeetupRepository;
-use AppBundle\Offices\OfficesCollection;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 
 class Runner
@@ -18,16 +18,13 @@ class Runner
 
     protected MeetupRepository $meetupRepository;
 
-    protected OfficesCollection $officiesCollection;
-
     protected Transformer $transformer;
 
     public function __construct(Client $algoliaClient, MeetupRepository $meetupRepository)
     {
         $this->algoliaClient = $algoliaClient;
         $this->meetupRepository = $meetupRepository;
-        $this->officiesCollection = new OfficesCollection();
-        $this->transformer = new Transformer($this->officiesCollection);
+        $this->transformer = new Transformer(new AntennesCollection());
     }
 
     /**

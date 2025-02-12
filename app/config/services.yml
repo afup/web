@@ -388,7 +388,7 @@ services:
     AppBundle\Association\Factory\UserFactory:
         autowire: true
 
-    AppBundle\Offices\OfficesCollection:
+    AppBundle\Antennes\AntennesCollection:
         autowire: true
 
     AppBundle\Mailchimp\EventEventSubscriber:

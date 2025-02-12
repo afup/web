@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Indexation\Meetups;
 
+use AppBundle\Antennes\Antenne;
+use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Event\Model\Meetup;
-use AppBundle\Offices\OfficesCollection;
 use DOMDocument;
 use DOMXPath;
 use Exception;
@@ -29,49 +30,49 @@ class MeetupScraper
 
             $eventsArray = [];
             foreach ($antennes as $antenneKey => $antenne) {
-                if (array_key_exists('meetup_urlname', $antenne)) {
-                    //Si l'antenne a une meetup_urlname
-                    $meetupUrl = $this->getMeetupUrlNameFromAntenneArray($antenne);
-                    $meetupAntenneName = $antenneKey;
+                if ($antenne->meetup === null) {
+                    continue;
+                }
 
-                    $xpath = $this->getDomContent($meetupUrl);
+                $meetupAntenneName = $antenneKey;
 
-                    $events = $xpath->query("//*[contains(@id, 'event-card')]");
-                    foreach ($events as $event) {
-                        try {
-                            if (!$event instanceof \DOMElement) {
-                                throw new \Exception('Élement DOM de type invalide');
-                            }
+                $xpath = $this->getDomContent($antenne->meetup->urlName);
 
-                            $eventUrl = $event->getAttribute('href');
-
-                            if (preg_match('/\/events\/(\d+)\//', $eventUrl, $matches)) {
-                                $id = (int) $matches[1];
-                            } else {
-                                throw new Exception(sprintf('Pas d\'id pour cet évent de l\'antenne %s', $antenne));
-                            }
-
-                            $dateString = $xpath->query(".//time", $event)->item(0)->nodeValue;
-                            $dateTime = (new MeetupDateTimeConverter())->convertStringToDateTime($dateString);
-
-                            $title = $xpath->query(".//span[contains(@class, 'cardTitle')]", $event)->item(0)->nodeValue;
-
-                            $descriptionElements = $xpath->query("//div[contains(@class, 'utils_cardDescription__alO8K')]");
-
-                            $description = '';
-                            foreach ($descriptionElements as $descriptionElement) {
-                                $description .= ' ' . $descriptionElement->nodeValue;
-                            }
-
-                            $eventsArray[$meetupAntenneName][] = (new Meetup())
-                                ->setId($id)
-                                ->setDate($dateTime)
-                                ->setTitle($title)
-                                ->setDescription($description)
-                                ->setAntenneName($meetupAntenneName);
-                        } catch (Exception $e) {
-                            throw new Exception('Problème à la construction d\'un évenement', $e->getCode(), $e);
+                $events = $xpath->query("//*[contains(@id, 'event-card')]");
+                foreach ($events as $event) {
+                    try {
+                        if (!$event instanceof \DOMElement) {
+                            throw new \Exception('Élement DOM de type invalide');
                         }
+
+                        $eventUrl = $event->getAttribute('href');
+
+                        if (preg_match('/\/events\/(\d+)\//', $eventUrl, $matches)) {
+                            $id = (int) $matches[1];
+                        } else {
+                            throw new Exception(sprintf('Pas d\'id pour cet évent de l\'antenne %s', $antenne->code));
+                        }
+
+                        $dateString = $xpath->query(".//time", $event)->item(0)->nodeValue;
+                        $dateTime = (new MeetupDateTimeConverter())->convertStringToDateTime($dateString);
+
+                        $title = $xpath->query(".//span[contains(@class, 'cardTitle')]", $event)->item(0)->nodeValue;
+
+                        $descriptionElements = $xpath->query("//div[contains(@class, 'utils_cardDescription__alO8K')]");
+
+                        $description = '';
+                        foreach ($descriptionElements as $descriptionElement) {
+                            $description .= ' ' . $descriptionElement->nodeValue;
+                        }
+
+                        $eventsArray[$meetupAntenneName][] = (new Meetup())
+                            ->setId($id)
+                            ->setDate($dateTime)
+                            ->setTitle($title)
+                            ->setDescription($description)
+                            ->setAntenneName($meetupAntenneName);
+                    } catch (Exception $e) {
+                        throw new Exception('Problème à la construction d\'un évenement', $e->getCode(), $e);
                     }
                 }
             }
@@ -91,7 +92,7 @@ class MeetupScraper
      *
      * @throws Exception
      */
-    public function getDomContent(string $antenneUrl): \DOMXPath
+    public function getDomContent(string $antenneUrl): DOMXPath
     {
         $url = self::MEETUP_URL . $antenneUrl;
         $content = file_get_contents($url);
@@ -110,40 +111,16 @@ class MeetupScraper
     }
 
     /**
+     * @return array<string, Antenne>
      * @throws Exception
      */
     public function getAntennesFromOfficesCollection(): array
     {
-        $offices = (new OfficesCollection())->getAll();
-        if ([] === $offices) {
+        $antennes = (new AntennesCollection())->getAll();
+        if ([] === $antennes) {
             throw new Exception("The antennes array is invalid or is empty");
         }
 
-        return $offices;
-    }
-
-    /**
-     * @param OfficesCollection $array
-     * @return string
-     * @throws InvalidArgumentException
-     */
-    private function getMeetupUrlNameFromAntenneArray($array)
-    {
-        return $this->getArrayValueByKey('meetup_urlname', $array);
-    }
-
-    /**
-     * @param string $key
-     * @param array|OfficesCollection $array
-     * @return mixed
-     * @throws InvalidArgumentException
-     */
-    public function getArrayValueByKey($key, $array)
-    {
-        if (!isset($array[$key])) {
-            throw new InvalidArgumentException("The '$key' does not exist in the given array.");
-        }
-
-        return $array[$key];
+        return $antennes;
     }
 }

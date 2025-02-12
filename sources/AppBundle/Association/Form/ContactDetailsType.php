@@ -6,8 +6,8 @@ declare(strict_types=1);
 namespace AppBundle\Association\Form;
 
 use Afup\Site\Utils\Pays;
+use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Association\Model\User;
-use AppBundle\Offices\OfficesCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -112,10 +112,10 @@ class ContactDetailsType extends AbstractType
      */
     private function getOfficesList(): array
     {
-        $officesCollection = new OfficesCollection();
+        $antennesCollection = new AntennesCollection();
         $offices = ['' => '-Aucune-'];
-        foreach ($officesCollection->getOrderedLabelsByKey() as $id => $city) {
-            $offices[$city] = $id;
+        foreach ($antennesCollection->getAllSortedByLabels() as $antenne) {
+            $offices[$antenne->label] = $antenne->code;
         }
         return $offices;
     }

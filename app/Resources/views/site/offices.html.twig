@@ -338,80 +338,82 @@
     <h2>Liste des antennes</h2>
     <div class="super-apero-officies">
         <div class="container">
-        {% for office_code, office in offices %}
+        {% for antenne in antennes %}
             <div class="col-md-6 afup-office"
-                data-map-key="{{ office_code }}"
-                 {% if office.map is defined %}
-                    data-map-legend-first-point-x="{{ office.map['legend-first-point-x'] }}"
-                    data-map-legend-first-point-y="{{ office.map['legend-first-point-y'] }}"
-                    data-map-legend-second-point-x="{{ office.map['legend-second-point-x'] }}"
-                    data-map-legend-second-point-y="{{ office.map['legend-second-point-y'] }}"
-                    data-map-legend-third-point-x="{{ office.map['legend-third-point-x'] }}"
-                    data-map-legend-third-point-y="{{ office.map['legend-third-point-y'] }}"
-                    data-map-legend-attachment="{{ office.map['legend-attachment'] }}"
-                    data-map-point-latitude="{{ office.map['point-latitude'] }}"
-                    data-map-point-longitude="{{ office.map['point-longitude'] }}"
-                     {% if office.map['legend-second-city-first-point-x'] is defined %}data-map-legend-second-city-first-point-x="{{ office.map['legend-second-city-first-point-x'] }}"{% endif %}
-                     {% if office.map['legend-second-city-first-point-y'] is defined %}data-map-legend-second-city-first-point-y="{{ office.map['legend-second-city-first-point-y'] }}"{% endif %}
-                     {% if office.map['legend-second-city-second-point-x'] is defined %}data-map-legend-second-city-second-point-x="{{ office.map['legend-second-city-second-point-x'] }}"{% endif %}
-                     {% if office.map['legend-second-city-second-point-y'] is defined %}data-map-legend-second-city-second-point-y="{{ office.map['legend-second-city-second-point-y'] }}"{% endif %}
-                     {% if office.map['legend-second-city-third-point-x'] is defined %}data-map-legend-second-city-third-point-x="{{ office.map['legend-second-city-third-point-x'] }}"{% endif %}
-                     {% if office.map['legend-second-city-third-point-y'] is defined %}data-map-legend-second-city-third-point-y="{{ office.map['legend-second-city-third-point-y'] }}"{% endif %}
-                     {% if office.map['point-second-city-latitude'] is defined %}data-map-second-city-point-latitude="{{ office.map['point-second-city-latitude'] }}"{% endif %}
-                     {% if office.map['point-second-city-longitude'] is defined %}data-map-second-city-point-longitude="{{ office.map['point-second-city-longitude'] }}"{% endif %}
+                data-map-key="{{ antenne.code }}"
+                 {% if antenne.map is defined %}
+                    data-map-legend-first-point-x="{{ antenne.map.firstCity.firstPoint.x }}"
+                    data-map-legend-first-point-y="{{ antenne.map.firstCity.firstPoint.y }}"
+                    data-map-legend-second-point-x="{{ antenne.map.firstCity.secondPoint.x }}"
+                    data-map-legend-second-point-y="{{ antenne.map.firstCity.secondPoint.y }}"
+                    data-map-legend-third-point-x="{{ antenne.map.firstCity.thirdPoint.x }}"
+                    data-map-legend-third-point-y="{{ antenne.map.firstCity.thirdPoint.y }}"
+                    data-map-legend-attachment="{{ antenne.map.legendAttachment }}"
+                    data-map-point-latitude="{{ antenne.map.firstCity.position.latitude }}"
+                    data-map-point-longitude="{{ antenne.map.firstCity.position.longitude }}"
+                    {% if antenne.map.secondCity is not null %}
+                    data-map-legend-second-city-first-point-x="{{ antenne.map.secondCity.firstPoint.x }}"
+                    data-map-legend-second-city-first-point-y="{{ antenne.map.secondCity.firstPoint.y }}"
+                    data-map-legend-second-city-second-point-x="{{ antenne.map.secondCity.secondPoint.x }}"
+                    data-map-legend-second-city-second-point-y="{{ antenne.map.secondCity.secondPoint.y }}"
+                    data-map-legend-second-city-third-point-x="{{ antenne.map.secondCity.thirdPoint.x }}"
+                    data-map-legend-second-city-third-point-y="{{ antenne.map.secondCity.thirdPoint.y }}"
+                    data-map-second-city-point-latitude="{{ antenne.map.secondCity.position.latitude }}"
+                    data-map-second-city-point-longitude="{{ antenne.map.secondCity.position.longitude }}"
+                    {% endif %}
                  {% endif %}
-                 {% if office.departements is defined %}
-                    data-departements="{{ office.departements|join(',') }}"
+                 {% if antenne.departements is defined %}
+                    data-departements="{{ antenne.departements|join(',') }}"
                  {% endif %}
-                 {% if office.pays is defined %}
-                    data-pays="{{ office.pays|join(',') }}"
+                 {% if antenne.pays is defined %}
+                    data-pays="{{ antenne.pays|join(',') }}"
                  {% endif %}
-                 {% if office.map_use_second_color is defined%}
+                 {% if antenne.map.useSecondColor %}
                     data-use-second-color="1"
                  {% endif %}
             >
                <div class="container">
                     <div class="col-md-2">
-                        <img src="{{ office.logo_url }}" alt="" />
+                        <img src="{{ antenne.logoUrl }}" alt="" />
                     </div>
                     <div class="col-md-10">
-                        <h3>{{ office.label }}</h3>
+                        <h3>{{ antenne.label }}</h3>
                     </div>
                 </div>
                 <div class="container">
                     <div class="row">
-                        {% if office.blog_url is defined %}
-                            <a class="button-inverted" href="{{ office.blog_url }}">
+                        {% if antenne.socials.blog is not null %}
+                            <a class="button-inverted" href="{{ antenne.socials.blog }}">
                                 <i class="fa fa-rss" aria-hidden="true"></i>&nbsp;Blog
                             </a>
                         {% endif %}
                 
-                        {% if office.twitter is defined %}
-                            <a class="button-inverted" href="https://twitter.com/{{ office.twitter }}">
+                        {% if antenne.socials.twitter is not null %}
+                            <a class="button-inverted" href="https://twitter.com/{{ antenne.socials.twitter }}">
                                 <i class="fa fa-twitter" aria-hidden="true"></i>&nbsp;Twitter
                             </a>
                         {% endif %}
 
-                        {% if office.linkedin is defined %}
-                            <a class="button-inverted" href="https://www.linkedin.com/company/{{ office.linkedin }}">
+                        {% if antenne.socials.linkedin is not null %}
+                            <a class="button-inverted" href="https://www.linkedin.com/company/{{ antenne.socials.linkedin }}">
                                 <i class="fa fa-linkedin" aria-hidden="true"></i>&nbsp;LinkedIn
                             </a>
                         {% endif %}
 
-                        {% if office.bluesky is defined %}
-                            <a class="button-inverted" href="https://bsky.app/profile/{{ office.bluesky }}">
+                        {% if antenne.socials.bluesky is not null %}
+                            <a class="button-inverted" href="https://bsky.app/profile/{{ antenne.socials.bluesky }}">
                                 <svg style="height:15px; fill:#415e96;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M111.8 62.2C170.2 105.9 233 194.7 256 242.4c23-47.6 85.8-136.4 144.2-180.2c42.1-31.6 110.3-56 110.3 21.8c0 15.5-8.9 130.5-14.1 149.2C478.2 298 412 314.6 353.1 304.5c102.9 17.5 129.1 75.5 72.5 133.5c-107.4 110.2-154.3-27.6-166.3-62.9l0 0c-1.7-4.9-2.6-7.8-3.3-7.8s-1.6 3-3.3 7.8l0 0c-12 35.3-59 173.1-166.3 62.9c-56.5-58-30.4-116 72.5-133.5C100 314.6 33.8 298 15.7 233.1C10.4 214.4 1.5 99.4 1.5 83.9c0-77.8 68.2-53.4 110.3-21.8z"/></svg> Bluesky
                             </a>
                         {% endif %}
 
-                        {% if office.meetup_urlname is defined %}
-                            <a class="button-inverted" href="https://www.meetup.com/fr-FR/{{ office.meetup_urlname }}">
+                        {% if antenne.meetup is not null %}
+                            <a class="button-inverted" href="https://www.meetup.com/fr-FR/{{ antenne.meetup.urlName }}">
                                 <i class="fa fa-meetup" aria-hidden="true"></i>&nbsp;Meetup
                             </a>
                         {% endif %}
-                            
-                        {% if office.youtube is defined %}
-                            <a class="button-inverted" href="{{ office.youtube }}">
+
+                        {% if antenne.socials.youtube is not null %}
+                            <a class="button-inverted" href="{{ antenne.socials.youtube }}">
                                 <i class="fa fa-youtube" aria-hidden="true"></i>&nbsp;Youtube
                             </a>
                         {% endif %}

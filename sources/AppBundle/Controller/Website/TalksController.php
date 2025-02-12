@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website;
 
+use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Joindin\JoindinComments;
 use AppBundle\Joindin\JoindinTalk;
-use AppBundle\Offices\OfficesCollection;
 use AppBundle\Subtitles\Parser;
 use AppBundle\Twig\ViewRenderer;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
@@ -27,12 +27,13 @@ class TalksController extends AbstractController
     private string $algoliaAppId;
     private string $algoliaFrontendApikey;
 
-    public function __construct(ViewRenderer $view,
-                                RepositoryFactory $repositoryFactory,
-                                JoindinComments $joindinComments,
-                                JoindinTalk $joindinTalk,
-                                string $algoliaAppId,
-                                string $algoliaFrontendApikey
+    public function __construct(
+        ViewRenderer $view,
+        RepositoryFactory $repositoryFactory,
+        JoindinComments $joindinComments,
+        JoindinTalk $joindinTalk,
+        string $algoliaAppId,
+        string $algoliaFrontendApikey
     ) {
         $this->view = $view;
         $this->repositoryFactory = $repositoryFactory;
@@ -44,9 +45,8 @@ class TalksController extends AbstractController
 
     public function list(): Response
     {
-        $officesCollection = new OfficesCollection();
         return $this->view->render('site/talks/list.html.twig', [
-            'offices' => $officesCollection->getAllSortedByLabels(),
+            'antennes' => (new AntennesCollection())->getAllSortedByLabels(),
             'algolia_app_id' => $this->algoliaAppId,
             'algolia_api_key' => $this->algoliaFrontendApikey,
         ]);

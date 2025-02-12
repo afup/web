@@ -85,6 +85,7 @@
                     <th>&nbsp;</th>
                 </tr>
                 </thead>
+                <tbody>
                 {% for user in users %}
                     {% set isActive = user.status == constant('AppBundle\\Association\\Model\\User::STATUS_ACTIVE') %}
                     {% set isPending = user.status == constant('AppBundle\\Association\\Model\\User::STATUS_PENDING') %}
@@ -102,11 +103,11 @@
                             {% endif %}
                         </td>
                         <td class="{% if isActive %}actif{% else %}disabled{% endif %}">
-                            {% if user.nearestOffice in offices|keys %}
+                            {% if user.nearestOffice in antennes|keys %}
                                 <span class="ui image label">
-                        <img src="{{ offices[user.nearestOffice].logo_url }}">
-                                {{ offices[user.nearestOffice].label }}
-                    </span>
+                                    <img src="{{ antennes[user.nearestOffice].logoUrl }}" />
+                                    {{ antennes[user.nearestOffice].label }}
+                                </span>
                             {% endif %}
                         </td>
                         <td style="text-align: right">
