@@ -72,7 +72,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                     sprintf('https://img.youtube.com/vi/%s/0.jpg', $talk->getYoutubeId()),
                     $talk->getTitle(),
                     strip_tags(html_entity_decode($talk->getDescription())),
-                    ['content_loc' => $talk->getYoutubeUrl()]
+                    ['player_loc' => $talk->getYoutubeUrl()]
                 );
                 $urls->addUrl($urlVideo,'video');
             }
