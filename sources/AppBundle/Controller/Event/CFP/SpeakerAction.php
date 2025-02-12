@@ -19,12 +19,12 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Twig_Environment;
+use Twig\Environment;
 
 class SpeakerAction
 {
     private UrlGeneratorInterface $urlGenerator;
-    private \Twig_Environment $twig;
+    private Environment $twig;
     private SpeakerFactory $speakerFactory;
     private PhotoStorage $photoStorage;
     private SpeakerRepository $speakerRepository;
@@ -38,7 +38,7 @@ class SpeakerAction
     public function __construct(
         EventActionHelper $eventActionHelper,
         UrlGeneratorInterface $urlGenerator,
-        Twig_Environment $twig,
+        Environment $twig,
         FormFactoryInterface $formFactory,
         SpeakerFactory $speakerFactory,
         SpeakerRepository $speakerRepository,

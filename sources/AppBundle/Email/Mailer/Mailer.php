@@ -7,7 +7,7 @@ namespace AppBundle\Email\Mailer;
 use Afup\Site\Utils\Configuration;
 use AppBundle\Email\Mailer\Adapter\MailerAdapter;
 use Psr\Log\LoggerInterface;
-use Twig_Environment;
+use Twig\Environment;
 
 /**
  * Send emails
@@ -15,7 +15,7 @@ use Twig_Environment;
 class Mailer
 {
     private LoggerInterface $logger;
-    private \Twig_Environment $twig;
+    private Environment $twig;
     private MailerAdapter $adapter;
     /** @var string|null */
     private $forcedRecipient;
@@ -24,7 +24,7 @@ class Mailer
 
     public function __construct(
         LoggerInterface $logger,
-        Twig_Environment $twig,
+        Environment $twig,
         MailerAdapter $adapter,
         Configuration $configuration
     ) {

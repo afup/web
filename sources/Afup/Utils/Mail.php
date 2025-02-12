@@ -7,8 +7,8 @@ namespace Afup\Site\Utils;
 use AppBundle\Email\Mailer\Adapter\PhpMailerAdapter;
 use AppBundle\Email\Mailer\Mailer;
 use Psr\Log\NullLogger;
+use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
-use Twig_Environment;
 
 class Mail
 {
@@ -20,7 +20,7 @@ class Mail
 
         return new Mailer(
             new NullLogger(),
-            new Twig_Environment(new FilesystemLoader(self::PROJECT_DIR . '/app/Resources/views/')),
+            new Environment(new FilesystemLoader(self::PROJECT_DIR . '/app/Resources/views/')),
             PhpMailerAdapter::createFromConfiguration($configuration),
             $configuration
         );

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\Symfony\Set\SymfonySetList;
+use Rector\Symfony\Set\TwigSetList;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -26,5 +27,6 @@ return RectorConfig::configure()
         SymfonySetList::SYMFONY_44,
         SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
+        TwigSetList::TWIG_UNDERSCORE_TO_NAMESPACE
     ])
 ;

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace AppBundle\Twig;
 
 use AppBundle\Offices\OfficesCollection;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class OfficesExtension extends \Twig_Extension
+class OfficesExtension extends AbstractExtension
 {
     /**
      * {@inheritdoc}
@@ -14,15 +16,15 @@ class OfficesExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('office_name', function ($code) {
+            new TwigFunction('office_name', function ($code) {
                 $collection = new OfficesCollection();
                 return $collection->findByCode($code)['label'];
             }),
-            new \Twig_SimpleFunction('office_logo', function ($code) {
+            new TwigFunction('office_logo', function ($code) {
                 $collection = new OfficesCollection();
                 return $collection->findByCode($code)['logo_url'];
             }),
-            new \Twig_SimpleFunction('office_meetup_urlname', function ($code) {
+            new TwigFunction('office_meetup_urlname', function ($code) {
                 $collection = new OfficesCollection();
                 return $collection->findByCode($code)['meetup_urlname'];
             }),

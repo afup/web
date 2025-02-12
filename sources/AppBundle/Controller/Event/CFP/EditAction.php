@@ -29,12 +29,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Translation\TranslatorInterface;
-use Twig_Environment;
+use Twig\Environment;
 
 class EditAction
 {
     private UrlGeneratorInterface $urlGenerator;
-    private \Twig_Environment $twig;
+    private Environment $twig;
     private SpeakerFactory $speakerFactory;
     private FormFactoryInterface $formFactory;
     private TranslatorInterface $translator;
@@ -52,7 +52,7 @@ class EditAction
     public function __construct(
         EventActionHelper $eventActionHelper,
         UrlGeneratorInterface $urlGenerator,
-        Twig_Environment $twig,
+        Environment $twig,
         FormFactoryInterface $formFactory,
         TalkRepository $talkRepository,
         TalkInvitationRepository $talkInvitationRepository,
