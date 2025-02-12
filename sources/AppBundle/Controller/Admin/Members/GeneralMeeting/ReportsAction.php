@@ -53,7 +53,8 @@ class ReportsAction
 
         // add
         $form = $this->buildForm();
-        if ($form->handleRequest($request) && $form->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $reportFile */
             $reportFile = $form->get('file')->getData();
             if ($reportFile->move($basePath, $reportFile->getClientOriginalName())) {

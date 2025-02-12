@@ -55,7 +55,7 @@ class CompanyPublicProfileController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
             /** @var UploadedFile $uploadedFile */

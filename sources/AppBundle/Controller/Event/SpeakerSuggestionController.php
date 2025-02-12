@@ -50,7 +50,7 @@ class SpeakerSuggestionController extends AbstractController
         $form = $this->createForm(SpeakerSuggestionType::class);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $speakerSuggestion = $this->createSpeakerSuggestion($event, $form->getData());
 
             $this->repositoryFactory
