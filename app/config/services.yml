@@ -322,7 +322,8 @@ services:
     AppBundle\Routing\LegacyRouter:
         autowire: true
 
-    AlgoliaSearch\Client:
+    Algolia\AlgoliaSearch\SearchClient:
+        factory: [ Algolia\AlgoliaSearch\SearchClient, create ]
         arguments: ["%algolia_app_id%", "%algolia_backend_api_key%"]
 
     AppBundle\Joindin\JoindinComments:

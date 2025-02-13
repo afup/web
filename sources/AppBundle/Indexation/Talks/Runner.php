@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Indexation\Talks;
 
-use AlgoliaSearch\Client;
-use AlgoliaSearch\Index;
+use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\SearchIndex;
 use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\PlanningRepository;
@@ -15,22 +15,19 @@ use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 
 class Runner
 {
-    protected Client $algoliaClient;
+    protected SearchClient $algoliaClient;
 
     protected RepositoryFactory $ting;
 
     protected Transformer $transformer;
 
-    public function __construct(Client $algoliaClient, RepositoryFactory $ting)
+    public function __construct(SearchClient $algoliaClient, RepositoryFactory $ting)
     {
         $this->algoliaClient = $algoliaClient;
         $this->ting = $ting;
         $this->transformer = new Transformer();
     }
 
-    /**
-     *
-     */
     public function run(): void
     {
         $index = $this->initIndex();
@@ -45,14 +42,13 @@ class Runner
             $objects[] = $object;
         }
 
-        $index->clearIndex();
-        $index->addObjects($objects, 'planning_id');
+        $index->clearObjects();
+        $index->saveObjects($objects, [
+            'objectIDKey' => 'planning_id'
+        ]);
     }
 
-    /**
-     * @return Index
-     */
-    protected function initIndex()
+    protected function initIndex(): SearchIndex
     {
         $index = $this->algoliaClient->initIndex('afup_talks');
 

@@ -10,7 +10,7 @@
     "ext-json": "*",
     "ext-libxml": "*",
     "ext-openssl": "*",
-    "algolia/algoliasearch-client-php": "^1.12",
+    "algolia/algoliasearch-client-php": "^3.4",
     "beberlei/assert": "^2.9",
     "captioning/captioning": "^2.6",
     "ccmbenchmark/ting_bundle": "3.4.1",

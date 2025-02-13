@@ -7,8 +7,9 @@ namespace AppBundle\Controller\Website;
 use Afup\Site\Corporate\Articles;
 use Afup\Site\Corporate\Branche;
 use Afup\Site\Corporate\Feuille;
-use AlgoliaSearch\AlgoliaException;
-use AlgoliaSearch\Client;
+use Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
+use Algolia\AlgoliaSearch\SearchClient;
+use AppBundle\Event\Model\Meetup;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Twig\ViewRenderer;
@@ -26,14 +27,14 @@ class HomeController extends AbstractController
     private LoggerInterface $logger;
     private RepositoryFactory $repositoryFactory;
     private AdapterInterface $traceableAdapter;
-    private Client $client;
+    private SearchClient $client;
     private bool $homeAlgoliaEnabled;
 
     public function __construct(ViewRenderer $view,
                                 LoggerInterface $logger,
                                 RepositoryFactory $repositoryFactory,
                                 AdapterInterface $traceableAdapter,
-                                Client $client,
+                                SearchClient $client,
                                 bool $homeAlgoliaEnabled)
     {
         $this->view = $view;
@@ -65,18 +66,15 @@ class HomeController extends AbstractController
         ]);
     }
 
-    /**
-     * @return Talk
-     */
-    protected function getTalkOfTheDay()
+    protected function getTalkOfTheDay(): Talk
     {
         return $this->repositoryFactory->get(TalkRepository::class)->getTalkOfTheDay(new \DateTime());
     }
 
     /**
-     * @return array
+     * @return array<Meetup>
      */
-    protected function getLatestMeetups()
+    protected function getLatestMeetups(): array
     {
         if (!$this->homeAlgoliaEnabled) {
             return [];
