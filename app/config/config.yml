@@ -287,6 +287,10 @@ parameters:
                 forum_partenaire:
                     nom: 'Sponsors/Partenaires'
                     niveau: 'ROLE_ADMIN'
+                healthcheck:
+                    nom: 'Healthcheck'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/healthcheck'
         connexion:
             nom: 'Connexion'
             masquee: true
@@ -357,6 +361,11 @@ ting:
                 port:     "%database_port%"
                 user:     "%database_user%"
                 password: "%database_password%"
+
+    databases_options:
+        "%database_name%":
+            timezone: "%database_timezone%"
+
     repositories:
         event:
             namespace : AppBundle\Event\Model\Repository

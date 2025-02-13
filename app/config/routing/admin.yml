@@ -108,3 +108,7 @@ admin_site:
 admin_github_user_routes:
   resource: "admin_github_user.yml"
   prefix: /event/github-user
+
+admin_healthcheck:
+  path: /healthcheck
+  defaults: {_controller: AppBundle\Controller\Admin\HealthcheckController}

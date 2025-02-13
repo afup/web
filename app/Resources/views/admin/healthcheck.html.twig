@@ -1,0 +1,45 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h1>Healthcheck</h1>
+    <div class="ui grid">
+        <div class="eight wide column">
+            <div class="ui segment">
+                <h2 class="ui header">Dates</h2>
+                <div class="ui clearing divider"></div>
+                <dl>
+                    <dt>PHP</dt>
+                    <dd>{{ dates.php }}</dd>
+                    <dt>MySQL Base_De_Donnees</dt>
+                    <dd>{{ dates.mysql_bdd }}</dd>
+                    <dt>MySQL Ting</dt>
+                    <dd>{{ dates.mysql_ting }}</dd>
+                    <dt>Différence MySQL et PHP</dt>
+                    <dd>
+                        {{ dates.diff ? 'Les timezones sont différentes' : 'Pas de différence de timezones' }}
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="eight wide column">
+            <div class="ui segment">
+                <h2 class="ui header">Versions</h2>
+                <div class="ui clearing divider"></div>
+                <dl>
+                    <dt>PHP</dt>
+                    <dd>{{ versions.php }}</dd>
+                    <dt>Symfony</dt>
+                    <dd>{{ versions.symfony }}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <style>
+        dt {
+            font-weight: bold;
+        }
+        dd {
+            font-family: "Noto Sans Mono", monospace;
+        }
+    </style>
+{% endblock %}
