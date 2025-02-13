@@ -61,7 +61,7 @@ security:
         - { path: ^/admin/members/general_meeting_vote, roles: ROLE_ADMIN }
         - { path: ^/admin/site, roles: ROLE_ADMIN }
         - { path: ^/admin/planete, roles: ROLE_ADMIN }
-        - { path: ^/admin/(members/reporting|association/relances|talk|slackmembers/check), roles: ROLE_ADMIN}
+        - { path: ^/admin/(members/reporting|association/relances|talk|slackmembers/check|healthcheck), roles: ROLE_ADMIN}
         - { path: ^/member, roles: [ROLE_USER, ROLE_MEMBER_EXPIRED]}
         - { path: ^/admin/, roles: ROLE_MEMBER_EXPIRED }
         - { path: ^/blog, allow_if: "request.getClientIp() in ['217.70.189.71', '127.0.0.1', '192.168.42.1'] or request.server.get('ALLOW_BLOG_FROM_ALL') == 1 or request.headers.get('x-afup-blog-api-key') == '%blog_api_key%'" }
