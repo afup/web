@@ -4,6 +4,7 @@ Feature: Administration - Évènements - Inscriptions
   Scenario: Accès à la liste puis ajout d'une inscription
     Given I am logged in as admin and on the Administration
     And I follow "Inscriptions"
+    And print last response
     Then the ".content h2" element should contain "Inscriptions"
     When I follow "Ajouter"
     Then I should see "Ajouter une inscription pour le forum"

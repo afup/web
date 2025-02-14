@@ -13,13 +13,13 @@
     <div class="ui segment">
         <form method="GET" name="filtre">
             <input type="hidden" name="page" value="personnes_morales" />
-            <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
-            <input type="hidden" name="sens" value="{$smarty.get.sens}" />
+            <input type="hidden" name="tri"  value="{$smarty.get.tri|default:''}" />
+            <input type="hidden" name="sens" value="{$smarty.get.sens|default:''}" />
             <div class="ui form">
                 <div class="inline fields">
                     <div class="field">
                         <label>Recherche</label>
-                        <input type="text" name="filtre" value="{if $smarty.get.filtre}{$smarty.get.filtre|stripslashes}{/if}">
+                        <input type="text" name="filtre" value="{$smarty.get.filtre|default:''|stripslashes}">
                     </div>
                     <div class="field">
                         <div class="ui checkbox">

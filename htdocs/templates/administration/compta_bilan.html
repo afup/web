@@ -43,13 +43,13 @@
                                     <td>{$debits.evenement}</td>
                                     <td class="right aligned">{$debits.montant|floatval|number_format:2:',':' '}</td>
                                     <td class="right aligned single line">
-                                        <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}"
+                                        <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode|default:''}"
                                            data-tooltip="Déplier les écritures de débit/crédit pour {$debits.evenement}"
                                            data-position="left center"
                                            class="compact ui icon button">
                                             <i class="expand icon"></i>
                                         </a>
-                                        <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode}"
+                                        <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$debits.id}&amp;id_periode={$smarty.get.id_periode|default:''}"
                                            data-tooltip="Voir le détail des écritures de débit/crédit pour {$debits.evenement}"
                                            data-position="left center"
                                            class="compact ui icon button">
@@ -117,14 +117,14 @@
                                     <td>{$credits.evenement}</td>
                                     <td class="right aligned">{$credits.montant|floatval|number_format:2:',':' '}</td>
                                     <td class="right aligned single line">
-                                        <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}"
+                                        <a href="index.php?page=compta_bilan&amp;action=modifier&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode|default:''}"
                                            data-tooltip="Déplier les écritures de crédit/crédit pour {$debits.evenement}"
                                            data-position="left center"
                                            class="compact ui icon button"
                                         >
                                             <i class="expand icon"></i>
                                         </a>
-                                        <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode}"
+                                        <a href="index.php?page=compta_bilan&amp;action=view&amp;details={$credits.id}&amp;id_periode={$smarty.get.id_periode|default:''}"
                                            data-tooltip="Voir le détail des écritures de débit/crédit pour {$debits.evenement}"
                                            data-position="left center"
                                            class="compact ui icon button"
@@ -212,7 +212,7 @@
 {elseif $action == 'view'}
 
     <div class="ui menu">
-        <a href="index.php?page=compta_bilan&amp;action=lister&id_periode={$smarty.get.id_periode}" class="item">
+        <a href="index.php?page=compta_bilan&amp;action=lister&id_periode={$smarty.get.id_periode|default:''}" class="item">
             <div data-tooltip="Retour du bilan" data-position="bottom left">
                 <i class="icon backward"></i>
                 Retour au bilan

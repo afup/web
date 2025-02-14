@@ -35,14 +35,14 @@
                     <td class="right aligned">{$ecriture.debit|floatval|number_format:2:',':' '}</td>
                     <td class="right aligned">{$ecriture.credit|floatval|number_format:2:',':' '}</td>
                     <td class="right aligned single line">
-                        <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}"
+                        <a href="index.php?page=compta_balance&amp;action=lister&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode|default:''}"
                            data-tooltip="Voir sur la page courante"
                            data-position="left center"
                            class="compact ui icon button"
                         >
                             <i class="expand icon"></i>
                         </a>
-                        <a href="index.php?page=compta_balance&amp;action=view&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode}"
+                        <a href="index.php?page=compta_balance&amp;action=view&amp;details={$ecriture.idevenement}&amp;id_periode={$smarty.get.id_periode|default:''}"
                            data-tooltip="Visualiser sur une autre page"
                            data-position="left center"
                            class="compact ui icon button"
@@ -157,7 +157,7 @@
     </table>
 {elseif $action == 'view'}
     <div class="ui menu">
-        <a href="index.php?page=compta_balance&amp;action=lister&id_periode={$smarty.get.id_periode}" class="item">
+        <a href="index.php?page=compta_balance&amp;action=lister&id_periode={$smarty.get.id_periode|default:''}" class="item">
             <div data-tooltip="Retour balance" data-position="bottom left">
                 <i class="icon backward"></i>
                 Retour balance
