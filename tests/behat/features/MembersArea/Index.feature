@@ -45,7 +45,7 @@ Feature: Espace membre, accueil
     When I follow "Se mettre à jour"
     Then I should see "Payer ma cotisation"
     When I follow "Télécharger la facture"
-    Then the response header "Content-disposition" should equal 'attachment; filename="Maurice_COTIS-2018-198_13072018.pdf"'
+    Then the response header "Content-disposition" should equal 'attachment; filename=Maurice_COTIS-2018-198_13072018.pdf'
 
   @reloadDbWithTestData @vat
   Scenario: Test d'une facture de cotisation de personne physique avant 2024
@@ -55,7 +55,7 @@ Feature: Espace membre, accueil
     When I follow "Consulter"
     Then I should see "Payer ma cotisation"
     When I follow "Télécharger la facture pour la cotisation COTIS-2023-1"
-    Then the response header "Content-disposition" should equal 'attachment; filename="Pike_COTIS-2023-1_01012023.pdf"'
+    Then the response header "Content-disposition" should equal 'attachment; filename=Pike_COTIS-2023-1_01012023.pdf'
     Given I parse the pdf downloaded content
     Then The page "1" of the PDF should contain "Objet : Facture n°COTIS-2023-1"
     Then The page "1" of the PDF should contain "Christopher Pike"
@@ -76,7 +76,7 @@ Feature: Espace membre, accueil
     When I follow "Consulter"
     Then I should see "Payer ma cotisation"
     When I follow "Télécharger la facture pour la cotisation COTIS-2024-245"
-    Then the response header "Content-disposition" should equal 'attachment; filename="Pike_COTIS-2024-245_01012024.pdf"'
+    Then the response header "Content-disposition" should equal 'attachment; filename=Pike_COTIS-2024-245_01012024.pdf'
     Given I parse the pdf downloaded content
     Then The page "1" of the PDF should contain "Objet : Facture n°COTIS-2024-245"
     Then The page "1" of the PDF should contain "Christopher Pike"
@@ -101,7 +101,7 @@ Feature: Espace membre, accueil
     When I follow "Consulter"
     Then I should see "Payer ma cotisation"
     When I follow "Télécharger la facture pour la cotisation COTIS-2023-2"
-    Then the response header "Content-disposition" should equal 'attachment; filename="HeliosAerospace_COTIS-2023-2_02012023.pdf"'
+    Then the response header "Content-disposition" should equal 'attachment; filename=HeliosAerospace_COTIS-2023-2_02012023.pdf'
     Given I parse the pdf downloaded content
     Then The page "1" of the PDF should contain "Objet : Facture n°COTIS-2023-2"
     Then The page "1" of the PDF should contain "Helios Aerospace"
@@ -122,7 +122,7 @@ Feature: Espace membre, accueil
     When I follow "Consulter"
     Then I should see "Payer ma cotisation"
     When I follow "Télécharger la facture pour la cotisation COTIS-2024-249"
-    Then the response header "Content-disposition" should equal 'attachment; filename="HeliosAerospace_COTIS-2024-249_02012024.pdf"'
+    Then the response header "Content-disposition" should equal 'attachment; filename=HeliosAerospace_COTIS-2024-249_02012024.pdf'
     Given I parse the pdf downloaded content
     Then The page "1" of the PDF should contain "Objet : Facture n°COTIS-2024-249"
     Then The page "1" of the PDF should contain "Helios Aerospace"
@@ -147,7 +147,7 @@ Feature: Espace membre, accueil
     When I follow "Consulter"
     Then I should see "Payer ma cotisation"
     When I follow "Télécharger la facture"
-    Then the response header "Content-disposition" should equal 'attachment; filename="MyCorp_COTIS-2025-200_13072018.pdf"'
+    Then the response header "Content-disposition" should equal 'attachment; filename=MyCorp_COTIS-2025-200_13072018.pdf'
 
   @reloadDbWithTestData
   Scenario: Si on est pas company manager de la personne morale, on ne peux pas télécharger la facture

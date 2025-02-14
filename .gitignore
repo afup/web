@@ -32,7 +32,6 @@ js_dist
 /htdocs/uploads
 
 /build/
-/phpunit.xml
 /var/*
 !/var/cache
 /var/cache/*

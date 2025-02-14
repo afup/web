@@ -19,7 +19,7 @@ Feature: Administration - Partie Personnes physiques - cotisations
     Then I should see "Personnes physiques"
     Then I should see "Exports"
     And I follow "Toutes les personnes physiques en CSV"
-    Then the response header "Content-disposition" should equal 'attachment; filename="export_personnes_physiques.csv"'
+    Then the response header "Content-disposition" should equal 'attachment; filename=export_personnes_physiques.csv'
 
   @reloadDbWithTestData
   Scenario: On test l'export CSV des "Personnes physiques actives en CSV"
@@ -28,7 +28,7 @@ Feature: Administration - Partie Personnes physiques - cotisations
     Then I should see "Exports"
     Then I should see "Personnes physiques"
     And I follow "Export des personnes physiques actives en CSV"
-    Then the response header "Content-disposition" should equal 'attachment; filename="export_personnes_physiques_actives.csv"'
+    Then the response header "Content-disposition" should equal 'attachment; filename=export_personnes_physiques_actives.csv'
 
   @reloadDbWithTestData
   Scenario: On test l'export CSV des "Personnes physiques actives et company managers en CSV"
@@ -37,4 +37,4 @@ Feature: Administration - Partie Personnes physiques - cotisations
     Then I should see "Exports"
     Then I should see "Personnes physiques"
     And I follow "Export des personnes physiques actives et company managers en CSV"
-    Then the response header "Content-disposition" should equal 'attachment; filename="export_personnes_physiques_actives_managers.csv"'
+    Then the response header "Content-disposition" should equal 'attachment; filename=export_personnes_physiques_actives_managers.csv'

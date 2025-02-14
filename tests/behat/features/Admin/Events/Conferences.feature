@@ -65,7 +65,7 @@ Feature: Administration - Évènements - Conférences
     Then the ".content h2" element should contain "Conférence"
     And I follow "Exporter les conférences"
     Then the response status code should be 200
-    And the response header "Content-disposition" should match '#^attachment; filename="talks_forum_([0-9]*)-([0-9]*).csv"#'
+    And the response header "Content-disposition" should match '#^attachment; filename=talks_forum_([0-9]*)-([0-9]*).csv#'
 
   Scenario: Export joindIn
     Given I am logged in as admin and on the Administration
