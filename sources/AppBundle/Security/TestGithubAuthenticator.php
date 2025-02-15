@@ -24,7 +24,7 @@ class TestGithubAuthenticator extends SocialAuthenticator
         $this->githubUserRepository = $githubUserRepository;
     }
 
-    public function getCredentials(Request $request)
+    public function getCredentials(Request $request): string
     {
         return $request->get('github_test_user');
     }
@@ -118,6 +118,6 @@ class TestGithubAuthenticator extends SocialAuthenticator
 
     public function supports(Request $request): bool
     {
-        return true;
+        return (bool) $request->get('github_test_user');
     }
 }

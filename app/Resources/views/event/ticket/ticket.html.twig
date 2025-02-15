@@ -5,7 +5,7 @@
 {% form_theme ticketForm _self %}
 
 {% block form_errors %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if errors|length > 0 %}
             <ul class="tickets--errors">
                 {% for error in errors %}
@@ -13,7 +13,7 @@
                 {% endfor %}
             </ul>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_errors %}
 
 {% block metas %}

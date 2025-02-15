@@ -1,6 +1,8 @@
 <div class="secondary-menu">
-    {% for item in menu if item.is_active %}
+    {% for item in menu %}
+        {% if item.is_active %}
         <a href="" class="secondary-menu__current-item">{{ item.nom }}</a>
+        {% endif %}
     {% endfor %}
     <div class="mw1400p center">
         <div class="secondary-menu__list">

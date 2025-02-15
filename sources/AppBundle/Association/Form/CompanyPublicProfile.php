@@ -142,6 +142,7 @@ class CompanyPublicProfile extends AbstractType
                         new Choice([
                             'choices' => array_values($antennesInfos),
                             'multiple' => true,
+                            'strict' => true,
                         ]),
                     ]
                 ]
