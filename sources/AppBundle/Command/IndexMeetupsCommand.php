@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Command;
 
-use AlgoliaSearch\AlgoliaException;
-use AlgoliaSearch\Client;
+use Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
+use Algolia\AlgoliaSearch\SearchClient;
 use AppBundle\Event\Model\Repository\MeetupRepository;
 use AppBundle\Indexation\Meetups\Runner;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -35,8 +35,8 @@ class IndexMeetupsCommand extends ContainerAwareCommand
         $container = $this->getContainer();
         $ting = $this->getContainer()->get('ting');
 
-        /** @var Client $algoliaClient */
-        $algoliaClient = $container->get(Client::class);
+        /** @var SearchClient $algoliaClient */
+        $algoliaClient = $container->get(SearchClient::class);
         $meetupRepository = $ting->get(MeetupRepository::class);
 
         if ($input->getOption('run-scraping')) {
