@@ -628,7 +628,7 @@ SQL;
         return $this->_bdd->executer($requete);
     }
 
-    public function obtenir(string $id)
+    public function obtenir(int $id)
     {
         $requete = 'SELECT';
         $requete .= '  * ';
