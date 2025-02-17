@@ -22,14 +22,14 @@
 <div class="ui segment">
     <form method="GET" name="filtre">
         <input type="hidden" name="page" value="forum_facturation" />
-        <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
-        <input type="hidden" name="sens" value="{$smarty.get.sens}" />
+        <input type="hidden" name="tri"  value="{$smarty.get.tri|default:''}" />
+        <input type="hidden" name="sens" value="{$smarty.get.sens|default:''}" />
         <input type="hidden" name="id_forum" value="{$id_forum}" />
         <div class="ui form">
             <div class="inline fields">
                 <div class="field">
                     <label>Recherche</label>
-                    <input type="text" name="filtre" value="{if $smarty.get.filtre}{$smarty.get.filtre|stripslashes}{/if}">
+                    <input type="text" name="filtre" value="{$smarty.get.filtre|default:''|stripslashes}">
                 </div>
                 <div class="field">
                     <input type="submit" value="Filtrer" class="ui button" name="submit_filtre" />

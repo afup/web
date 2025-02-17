@@ -37,7 +37,7 @@
     "robmorgan/phinx": "^0.9.2",
     "sabre/vobject": "^4.1",
     "setasign/fpdf": "^1.8",
-    "smarty/smarty": "2.6.*",
+    "smarty/smarty": "^5.4",
     "symfony/monolog-bundle": "*",
     "symfony/phpunit-bridge": "^3.1",
     "symfony/symfony": "^3.4",

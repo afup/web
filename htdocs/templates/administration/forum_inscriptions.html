@@ -54,14 +54,14 @@
             </thead>
             <tbody>
             {foreach from=$forum_tarifs item=forum_tarif key=forum_tarif_key}
-            {assign var=inscrits value=`$statistiques.types_inscriptions.inscrits[$forum_tarif_key]`}
-            {assign var=confirmes value=`$statistiques.types_inscriptions.confirmes[$forum_tarif_key]`}
-            {assign var=payants value=`$statistiques.types_inscriptions.payants[$forum_tarif_key]`}
-            {assign var=montant value=`$statistiques.types_inscriptions.payants[$forum_tarif_key]*$forum_tarif`}
-            {assign var=inscrits_total value=`$inscrits_total+$inscrits`}
-            {assign var=confirmes_total value=`$confirmes_total+$confirmes`}
-            {assign var=payants_total value=`$payants_total+$payants`}
-            {assign var=montant_total value=`$montant_total+$montant`}
+            {assign var=inscrits value=$statistiques.types_inscriptions.inscrits[$forum_tarif_key]}
+            {assign var=confirmes value=$statistiques.types_inscriptions.confirmes[$forum_tarif_key]}
+            {assign var=payants value=$statistiques.types_inscriptions.payants[$forum_tarif_key]}
+            {assign var=montant value=$statistiques.types_inscriptions.payants[$forum_tarif_key]*$forum_tarif}
+            {assign var=inscrits_total value=$inscrits_total+$inscrits}
+            {assign var=confirmes_total value=$confirmes_total+$confirmes}
+            {assign var=payants_total value=$payants_total+$payants}
+            {assign var=montant_total value=$montant_total+$montant}
             {if $inscrits != ''}
             <tr>
               <td>
@@ -123,15 +123,15 @@
       <form method="GET" name="filtre">
 
           <input type="hidden" name="page" value="forum_inscriptions" />
-          <input type="hidden" name="tri"  value="{$smarty.get.tri}" />
-          <input type="hidden" name="sens" value="{$smarty.get.sens}" />
+          <input type="hidden" name="tri"  value="{$smarty.get.tri|default:''}" />
+          <input type="hidden" name="sens" value="{$smarty.get.sens|default:''}" />
           <input type="hidden" name="id_forum" value="{$id_forum}" />
 
           <div class="ui form">
               <div class="inline fields">
                   <div class="field">
                       <label>Recherche</label>
-                      <input type="text" name="filtre" value="{if $smarty.get.filtre}{$smarty.get.filtre|stripslashes}{/if}">
+                      <input type="text" name="filtre" value="{$smarty.get.filtre|default:''|stripslashes}">
                   </div>
                   <div class="field">
                       <input type="submit" value="Filtrer" name="submit_filtre" class="ui button">
