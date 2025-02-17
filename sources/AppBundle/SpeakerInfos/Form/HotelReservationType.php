@@ -67,7 +67,7 @@ class HotelReservationType extends AbstractType
                     'multiple' => true,
                     'choices' => $choices,
                     'constraints' => [
-                        new Choice(['choices' => array_values($choices), 'multiple' => true, 'min' => 1]),
+                        new Choice(['choices' => array_values($choices), 'multiple' => true, 'min' => 1, 'strict' => true]),
                         new Callback(['callback' => function ($values, ExecutionContextInterface $context): void {
                             if (in_array(self::NIGHT_NONE, $values)
                             && 1 !== count($values)) {

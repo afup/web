@@ -32,7 +32,7 @@ class FeedFormData
     public $userId;
     /**
      * @var int
-     * @Assert\Choice({0, 1})
+     * @Assert\Choice(choices={0, 1}, strict=true)
      */
     public $status = Feed::STATUS_ACTIVE;
 }

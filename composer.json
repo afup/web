@@ -19,7 +19,7 @@
     "doctrine/dbal": "^2.5",
     "ekino/newrelic-bundle": "^1.4",
     "erusev/parsedown": "^1.6",
-    "excelwebzone/recaptcha-bundle": "1.5.13",
+    "excelwebzone/recaptcha-bundle": "^1.5",
     "ezyang/htmlpurifier": "^4.10",
     "friendsofpear/pear_exception": "0.0.*",
     "guzzlehttp/guzzle": "^6.5",
