@@ -107,6 +107,9 @@ jobs:
         with:
           key: docker-${{ runner.os }}-${{ hashFiles('compose.yml') }}
 
+      - name: Delete symfony cache
+        run: rm -rf var/cache/test
+
       - name: Tests - Functional
         run: make test-functional
 
