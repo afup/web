@@ -105,7 +105,13 @@ jobs:
       - name: Cache Docker images.
         uses: ScribeMD/docker-cache@0.5.0
         with:
-          key: docker-${{ runner.os }}-${{ hashFiles('compose.yml') }}
+          key: |
+            docker-${{ runner.os }}-${{ hashFiles(
+              'compose.yml',
+              'docker/dockerfiles/apachephp/Dockerfile',
+              'docker/dockerfiles/mysql/Dockerfile',
+              'docker/dockerfiles/mysqltest/Dockerfile'
+            ) }}
 
       - name: Delete symfony cache
         run: rm -rf var/cache/test
