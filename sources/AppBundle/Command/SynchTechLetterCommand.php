@@ -4,30 +4,33 @@ declare(strict_types=1);
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use AppBundle\TechLetter\MailchimpSynchronizer;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SynchTechLetterCommand extends ContainerAwareCommand
+class SynchTechLetterCommand extends Command
 {
-    /**
-     * @see Command
-     */
+    private MailchimpSynchronizer $synchronizer;
+    private LoggerInterface $logger;
+
+    public function __construct(MailchimpSynchronizer $synchronizer, LoggerInterface $logger)
+    {
+        $this->synchronizer = $synchronizer;
+        $this->logger = $logger;
+        parent::__construct();
+    }
+
     protected function configure(): void
     {
         $this->setName('sync-techletter');
     }
 
-    /**
-     * @see Command
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $container = $this->getContainer();
-
-        $container
-           ->get('app.techletter_mailchimp_synchronizer')
-           ->setLogger($container->get('logger'))
+        $this->synchronizer
+           ->setLogger($this->logger)
            ->synchronize()
         ;
 

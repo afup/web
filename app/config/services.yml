@@ -26,6 +26,17 @@ services:
               lock_mode: !php/const Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler::LOCK_NONE
 
 
+    AppBundle\Command\:
+        resource: '../../sources/AppBundle/Command/*'
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Command\UpdateMailchimpMembersCommand:
+        arguments:
+            - '@Mailchimp\Mailchimp'
+            - '@CCMBenchmark\TingBundle\Repository\RepositoryFactory'
+            - "%mailchimp_members_list%"
+
     AppBundle\Controller\:
         resource: '../../sources/AppBundle/Controller/*'
         autowire: true
@@ -124,18 +135,6 @@ services:
         autowire: true
         arguments:
             $backOfficePages: '%app.pages_backoffice%'
-
-    AppBundle\Command\GeneralMeetupNotificationCommand:
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\Command\IndexTalksCommand:
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\Command\QrCodesGeneratorCommand:
-        autowire: true
-        autoconfigure: true
 
     AppBundle\GeneralMeeting\GeneralMeetingRepository:
         autowire: true

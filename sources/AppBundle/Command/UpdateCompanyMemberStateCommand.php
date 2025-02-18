@@ -6,30 +6,32 @@ namespace AppBundle\Command;
 
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateCompanyMemberStateCommand extends ContainerAwareCommand
+class UpdateCompanyMemberStateCommand extends Command
 {
-    /**
-     * @see Command
-     */
+    private RepositoryFactory $ting;
+
+    public function __construct(RepositoryFactory $ting)
+    {
+        parent::__construct();
+        $this->ting = $ting;
+    }
+
     protected function configure(): void
     {
         $this
             ->setName('update-company-member-state')
-
         ;
     }
 
-    /**
-     * @see Command
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var CompanyMemberRepository $companyMemberRepository */
-        $companyMemberRepository = $this->getContainer()->get('ting')->get(CompanyMemberRepository::class);
+        $companyMemberRepository = $this->ting->get(CompanyMemberRepository::class);
 
         /** @var CompanyMember $companyMember */
         foreach ($companyMemberRepository->loadAll() as $companyMember) {
