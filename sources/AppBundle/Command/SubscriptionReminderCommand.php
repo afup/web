@@ -17,17 +17,22 @@ use AppBundle\Association\UserMembership\ReminderDDay;
 use AppBundle\Association\UserMembership\UserReminderFactory;
 use AppBundle\Email\Mailer\Mailer;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SubscriptionReminderCommand extends ContainerAwareCommand
+class SubscriptionReminderCommand extends Command
 {
     private Mailer $mailer;
-    public function __construct(Mailer $mailer)
+    private RepositoryFactory $ting;
+
+    public function __construct(Mailer $mailer, RepositoryFactory $ting)
     {
         $this->mailer = $mailer;
+        $this->ting = $ting;
+        parent::__construct();
     }
     /**
      * @inheritDoc
@@ -47,16 +52,16 @@ class SubscriptionReminderCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $mailer = $this->mailer;
-        $factory = new UserReminderFactory($mailer, $this->getContainer()->get('ting')->get(SubscriptionReminderLogRepository::class));
+        $factory = new UserReminderFactory($mailer, $this->ting->get(SubscriptionReminderLogRepository::class));
         $companyFactory = new CompanyReminderFactory(
             $mailer,
-            $this->getContainer()->get('ting')->get(SubscriptionReminderLogRepository::class)
+            $this->ting->get(SubscriptionReminderLogRepository::class)
         );
 
         /**
          * @var UserRepository $repository
          */
-        $repository = $this->getContainer()->get('ting')->get(UserRepository::class);
+        $repository = $this->ting->get(UserRepository::class);
 
         $dryRun = $input->getOption('dry-run');
 

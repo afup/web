@@ -7,11 +7,11 @@ namespace AppBundle\Command;
 use AppBundle\Notifier\SlackNotifier;
 use AppBundle\Slack\MessageFactory;
 use AppBundle\Slack\UsersChecker;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SlackMemberNotificationCommand extends ContainerAwareCommand
+class SlackMemberNotificationCommand extends Command
 {
     private UsersChecker $usersChecker;
     private MessageFactory $messageFactory;
@@ -21,10 +21,9 @@ class SlackMemberNotificationCommand extends ContainerAwareCommand
         $this->usersChecker = $usersChecker;
         $this->messageFactory = $messageFactory;
         $this->slackNotifier = $slackNotifier;
+        parent::__construct();
     }
-    /**
-     * @see Command
-     */
+
     protected function configure(): void
     {
         $this
@@ -32,15 +31,12 @@ class SlackMemberNotificationCommand extends ContainerAwareCommand
         ;
     }
 
-    /**
-     * @see Command
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $results = $this->usersChecker->checkUsersValidity();
 
         if (($nbResults = count($results)) > 0) {
-            $message = $this->messageFactory->createMessageForMemberNotification($nbResults);
+            $message = $this->messageFactory->createMessageForMemberNotification((string) $nbResults);
             $this->slackNotifier->sendMessage($message);
         }
 

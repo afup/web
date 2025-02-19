@@ -8,16 +8,25 @@ use Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
 use Algolia\AlgoliaSearch\SearchClient;
 use AppBundle\Event\Model\Repository\MeetupRepository;
 use AppBundle\Indexation\Meetups\Runner;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class IndexMeetupsCommand extends ContainerAwareCommand
+class IndexMeetupsCommand extends Command
 {
-    /**
-     * @see Command
-     */
+    private RepositoryFactory $ting;
+    private SearchClient $searchClient;
+
+    public function __construct(RepositoryFactory $ting,
+                                SearchClient $searchClient)
+    {
+        $this->ting = $ting;
+        $this->searchClient = $searchClient;
+        parent::__construct();
+    }
+
     protected function configure(): void
     {
         $this
@@ -32,18 +41,13 @@ class IndexMeetupsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $container = $this->getContainer();
-        $ting = $this->getContainer()->get('ting');
-
-        /** @var SearchClient $algoliaClient */
-        $algoliaClient = $container->get(SearchClient::class);
-        $meetupRepository = $ting->get(MeetupRepository::class);
+        $meetupRepository = $this->ting->get(MeetupRepository::class);
 
         if ($input->getOption('run-scraping')) {
             $this->runScraping($output);
         }
 
-        $runner = new Runner($algoliaClient, $meetupRepository);
+        $runner = new Runner($this->searchClient, $meetupRepository);
         $runner->run();
 
         return 0;

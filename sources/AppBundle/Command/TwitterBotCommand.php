@@ -10,16 +10,24 @@ use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TweetRepository;
 use AppBundle\VideoNotifier\Runner;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class TwitterBotCommand extends ContainerAwareCommand
+class TwitterBotCommand extends Command
 {
-    /**
-     * @see Command
-     */
+    private RepositoryFactory $ting;
+    private \TwitterAPIExchange $twitterAPIExchange;
+
+    public function __construct(RepositoryFactory $ting, \TwitterAPIExchange $twitterAPIExchange)
+    {
+        $this->ting = $ting;
+        $this->twitterAPIExchange = $twitterAPIExchange;
+        parent::__construct();
+    }
+
     protected function configure(): void
     {
         $this
@@ -28,20 +36,15 @@ class TwitterBotCommand extends ContainerAwareCommand
         ;
     }
 
-    /**
-     * @see Command
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $container = $this->getContainer();
-        $ting = $container->get('ting');
         $runner = new Runner(
-            $ting->get(PlanningRepository::class),
-            $ting->get(TalkRepository::class),
-            $ting->get(EventRepository::class),
-            $ting->get(SpeakerRepository::class),
-            $ting->get(TweetRepository::class),
-            $container->get(\TwitterAPIExchange::class)
+            $this->ting->get(PlanningRepository::class),
+            $this->ting->get(TalkRepository::class),
+            $this->ting->get(EventRepository::class),
+            $this->ting->get(SpeakerRepository::class),
+            $this->ting->get(TweetRepository::class),
+            $this->twitterAPIExchange
         );
         $runner->execute($this->getEventFilter($input));
 
@@ -54,9 +57,7 @@ class TwitterBotCommand extends ContainerAwareCommand
             return null;
         }
 
-        $event = $this
-            ->getContainer()
-            ->get('ting')
+        $event = $this->ting
             ->get(EventRepository::class)
             ->getByPath($eventPath)
         ;

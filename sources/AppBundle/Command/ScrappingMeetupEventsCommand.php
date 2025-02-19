@@ -6,15 +6,27 @@ namespace AppBundle\Command;
 
 use AppBundle\Event\Model\Repository\MeetupRepository;
 use AppBundle\Indexation\Meetups\MeetupClient;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ScrappingMeetupEventsCommand extends ContainerAwareCommand
+class ScrappingMeetupEventsCommand extends Command
 {
     use LockableTrait;
+
+    private RepositoryFactory $ting;
+    private MeetupClient $meetupClient;
+
+    public function __construct(RepositoryFactory $ting,
+                                MeetupClient $meetupClient)
+    {
+        parent::__construct();
+        $this->ting = $ting;
+        $this->meetupClient = $meetupClient;
+    }
 
     protected function configure(): void
     {
@@ -37,13 +49,9 @@ class ScrappingMeetupEventsCommand extends ContainerAwareCommand
         }
 
         try {
-            $ting = $this->getContainer()->get('ting');
+            $meetups = $this->meetupClient->getEvents();
 
-            /** @var MeetupClient $meetupClient */
-            $meetupClient = $this->getContainer()->get(MeetupClient::class);
-            $meetups = $meetupClient->getEvents();
-
-            $meetupRepository = $ting->get(MeetupRepository::class);
+            $meetupRepository = $this->ting->get(MeetupRepository::class);
 
             $io->progressStart(count($meetups));
             foreach ($meetups as $meetup) {
