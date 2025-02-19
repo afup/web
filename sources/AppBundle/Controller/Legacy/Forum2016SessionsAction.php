@@ -40,7 +40,7 @@ class Forum2016SessionsAction
             $session['conferenciers'] = $this->appelConferencier->obtenirConferenciersPourSession($session['session_id']);
             $session['journees'] = explode(' ', $session['journee']);
 
-            if ('27' === date('d', $session['debut'])) {
+            if ('27' === date('d', (int) $session['debut'])) {
                 $journees[$day1key][] = $session;
             } else {
                 $journees[$day2key][] = $session;

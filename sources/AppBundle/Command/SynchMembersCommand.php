@@ -30,9 +30,8 @@ class SynchMembersCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->synchronizer
-           ->setLogger($this->logger)
-           ->synchronize()
-        ;
+            ->setLogger($this->logger)
+            ->synchronize();
 
         return 0;
     }

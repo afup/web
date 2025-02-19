@@ -32,10 +32,11 @@ services:
         autoconfigure: true
 
     AppBundle\Command\UpdateMailchimpMembersCommand:
+        autoconfigure: true
+        autowire: true
         arguments:
-            - '@Mailchimp\Mailchimp'
-            - '@CCMBenchmark\TingBundle\Repository\RepositoryFactory'
-            - "%mailchimp_members_list%"
+            $mailchimp: '@app.mailchimp_api'
+            $mailchimpMembersList: "%mailchimp_members_list%"
 
     AppBundle\Controller\:
         resource: '../../sources/AppBundle/Controller/*'
@@ -96,6 +97,7 @@ services:
     AppBundle\Controller\Website\NewsletterController:
         autowire: true
         arguments:
+            $mailchimp: '@app.mailchimp_api'
             $mailchimpSubscribersList: '%mailchimp_subscribers_list%'
 
     AppBundle\Controller\Website\StaticController:
@@ -128,8 +130,15 @@ services:
     AppBundle\Controller\Admin\TechLetter\TechLetterGenerateController:
         autowire: true
         arguments:
+            $mailchimp: '@app.mailchimp_techletter_api'
             $techletterTestEmailAddress: '%techletter_test_email_address%'
             $mailchimpTechletterList: '%mailchimp_techletter_list%'
+
+    AppBundle\Mailchimp\Runner:
+        autowire: true
+        arguments:
+            $mailchimp: '@app.mailchimp_api'
+            $membersListId: '%mailchimp_members_list%'
 
     AppBundle\Controller\LegacyController:
         autowire: true
@@ -335,32 +344,37 @@ services:
         class: TwitterAPIExchange
         arguments: ["%twitter_api_settings%"]
 
-    Mailchimp\Mailchimp:
-        arguments: ["%mailchimp_api_key%"]
-        public: false
-
-    AppBundle\Mailchimp\Mailchimp:
-        arguments: ['@Mailchimp\Mailchimp']
-
-    # Ne pas utiliser le nom de la classe pour le service car elle est déjà utilisé pour un autre service.
+    # API/Client Meetup techletter
     app.mailchimp_techletter_client:
         class: Mailchimp\Mailchimp
         arguments: ["%mailchimp_techletter_api_key%"]
         public: false
-
-    # Ne pas utiliser le nom de la classe pour le service car elle est déjà utilisé pour un autre service.
     app.mailchimp_techletter_api:
         class: AppBundle\Mailchimp\Mailchimp
         arguments: ["@app.mailchimp_techletter_client"]
+        public: false
 
-    # Ne pas utiliser le nom de la classe pour le service car elle est déjà utilisé pour un autre service.
-    app.techletter_mailchimp_synchronizer:
-        class: AppBundle\TechLetter\MailchimpSynchronizer
-        arguments: ["@app.mailchimp_techletter_api", '@AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository', "%mailchimp_techletter_list%"]
+    # API/Client Meetup
+    app.mailchimp_client:
+        class: Mailchimp\Mailchimp
+        arguments: ["%mailchimp_api_key%"]
+        public: false
+    app.mailchimp_api:
+        class: AppBundle\Mailchimp\Mailchimp
+        arguments: ["@app.mailchimp_client"]
+        public: false
 
-    app.mailchimp_members_auto_synchronizer:
-        class: AppBundle\Mailchimp\MailchimpMembersAutoListSynchronizer
-        arguments: ['@AppBundle\Mailchimp\Mailchimp', '@AppBundle\Association\Model\Repository\UserRepository', "%mailchimp_members_list%"]
+    AppBundle\TechLetter\MailchimpSynchronizer:
+        autowire: true
+        arguments:
+            $mailchimp: '@app.mailchimp_techletter_api'
+            $listId: "%mailchimp_techletter_list%"
+
+    AppBundle\Mailchimp\MailchimpMembersAutoListSynchronizer:
+        autowire: true
+        arguments:
+            $mailchimp: '@app.mailchimp_api'
+            $listId: "%mailchimp_members_list%"
 
     Afup\Site\Utils\Configuration:
         autowire: true
@@ -392,7 +406,9 @@ services:
         autowire: true
 
     AppBundle\Mailchimp\EventEventSubscriber:
-        arguments: ['@AppBundle\Mailchimp\Mailchimp', "%mailchimp_members_list%"]
+        arguments:
+            - '@app.mailchimp_api'
+            - "%mailchimp_members_list%"
         tags:
           - { name: kernel.event_listener, event: user.disabled, method: onUserDisabled }
 
