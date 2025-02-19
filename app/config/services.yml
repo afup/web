@@ -32,10 +32,10 @@ services:
         autoconfigure: true
 
     AppBundle\Command\UpdateMailchimpMembersCommand:
+        autoconfigure: true
+        autowire: true
         arguments:
-            - '@Mailchimp\Mailchimp'
-            - '@CCMBenchmark\TingBundle\Repository\RepositoryFactory'
-            - "%mailchimp_members_list%"
+            $mailchimpMembersList: "%mailchimp_members_list%"
 
     AppBundle\Controller\:
         resource: '../../sources/AppBundle/Controller/*'
@@ -336,31 +336,22 @@ services:
         arguments: ["%twitter_api_settings%"]
 
     Mailchimp\Mailchimp:
-        arguments: ["%mailchimp_api_key%"]
+        arguments:
+            $apikey: "%mailchimp_techletter_api_key%"
         public: false
 
     AppBundle\Mailchimp\Mailchimp:
-        arguments: ['@Mailchimp\Mailchimp']
+        autowire: true
 
-    # Ne pas utiliser le nom de la classe pour le service car elle est déjà utilisé pour un autre service.
-    app.mailchimp_techletter_client:
-        class: Mailchimp\Mailchimp
-        arguments: ["%mailchimp_techletter_api_key%"]
-        public: false
+    AppBundle\TechLetter\MailchimpSynchronizer:
+        autowire: true
+        arguments:
+            $listId: "%mailchimp_techletter_list%"
 
-    # Ne pas utiliser le nom de la classe pour le service car elle est déjà utilisé pour un autre service.
-    app.mailchimp_techletter_api:
-        class: AppBundle\Mailchimp\Mailchimp
-        arguments: ["@app.mailchimp_techletter_client"]
-
-    # Ne pas utiliser le nom de la classe pour le service car elle est déjà utilisé pour un autre service.
-    app.techletter_mailchimp_synchronizer:
-        class: AppBundle\TechLetter\MailchimpSynchronizer
-        arguments: ["@app.mailchimp_techletter_api", '@AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository', "%mailchimp_techletter_list%"]
-
-    app.mailchimp_members_auto_synchronizer:
-        class: AppBundle\Mailchimp\MailchimpMembersAutoListSynchronizer
-        arguments: ['@AppBundle\Mailchimp\Mailchimp', '@AppBundle\Association\Model\Repository\UserRepository', "%mailchimp_members_list%"]
+    AppBundle\Mailchimp\MailchimpMembersAutoListSynchronizer:
+        autowire: true
+        arguments:
+            $listId: "%mailchimp_members_list%"
 
     Afup\Site\Utils\Configuration:
         autowire: true

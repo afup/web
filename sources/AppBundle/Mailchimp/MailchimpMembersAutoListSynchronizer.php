@@ -14,20 +14,11 @@ class MailchimpMembersAutoListSynchronizer
 
     private UserRepository $userRepository;
 
-    /**
-     * @var string
-     */
-    private $listId;
+    private string $listId;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
-    /**
-     * @param string $listId
-     */
-    public function __construct(Mailchimp $mailchimp, UserRepository $userRepository, $listId)
+    public function __construct(Mailchimp $mailchimp, UserRepository $userRepository, string $listId)
     {
         $this->mailchimp = $mailchimp;
         $this->userRepository = $userRepository;
