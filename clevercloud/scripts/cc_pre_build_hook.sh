@@ -1,5 +1,5 @@
 #!/bin/bash
 
-yarn install --ignore-engines
+npm install --legacy-peer-deps
 
 mkdir $APP_HOME/tmp
