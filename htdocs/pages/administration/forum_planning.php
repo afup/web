@@ -102,8 +102,8 @@ if ($action == 'lister') {
         if ($id == 0) {
             $planning_id = $forum_appel->ajouterSessionDansPlanning($valeurs['id_forum'],
                 $valeurs['id_session'],
-                mktime($valeurs['debut']['H'], $valeurs['debut']['i'], 0, $valeurs['debut']['M'], $valeurs['debut']['d'], $valeurs['debut']['Y']),
-                mktime($valeurs['fin']['H'], $valeurs['fin']['i'], 0, $valeurs['fin']['M'], $valeurs['fin']['d'], $valeurs['fin']['Y']),
+                mktime((int) $valeurs['debut']['H'], (int) $valeurs['debut']['i'], 0, (int) $valeurs['debut']['M'], (int) $valeurs['debut']['d'], (int) $valeurs['debut']['Y']),
+                mktime((int) $valeurs['fin']['H'], (int) $valeurs['fin']['i'], 0, (int) $valeurs['fin']['M'], (int) $valeurs['fin']['d'], (int) $valeurs['fin']['Y']),
                 $valeurs['id_salle']);
 
             $ok = (bool) $planning_id;

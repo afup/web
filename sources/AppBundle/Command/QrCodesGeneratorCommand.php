@@ -6,26 +6,26 @@ namespace AppBundle\Command;
 
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Ticket\QrCodeGenerator;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class QrCodesGeneratorCommand extends ContainerAwareCommand
+class QrCodesGeneratorCommand extends Command
 {
     private QrCodeGenerator $qrCodeGenerator;
+    private RepositoryFactory $ting;
 
-    public function __construct(QrCodeGenerator $qrCodeGenerator, string $name = null)
+    public function __construct(QrCodeGenerator $qrCodeGenerator,
+                                RepositoryFactory $ting)
     {
-        parent::__construct($name);
+        parent::__construct();
         $this->qrCodeGenerator = $qrCodeGenerator;
+        $this->ting = $ting;
     }
 
-    /**
-     * @see Command
-     */
     protected function configure(): void
     {
         $this
@@ -50,7 +50,7 @@ class QrCodesGeneratorCommand extends ContainerAwareCommand
 
         try {
             /** @var TicketRepository $ticketRepository */
-            $ticketRepository = $this->getContainer()->get('ting')->get(TicketRepository::class);
+            $ticketRepository = $this->ting->get(TicketRepository::class);
             $tickets = $ticketRepository->getByEmptyQrCodes();
 
             if (count($tickets) === 0) {

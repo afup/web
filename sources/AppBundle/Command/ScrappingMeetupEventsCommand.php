@@ -5,20 +5,29 @@ declare(strict_types=1);
 namespace AppBundle\Command;
 
 use AppBundle\Event\Model\Repository\MeetupRepository;
-use AppBundle\Indexation\Meetups\MeetupScraper;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use AppBundle\Indexation\Meetups\MeetupClient;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ScrappingMeetupEventsCommand extends ContainerAwareCommand
+class ScrappingMeetupEventsCommand extends Command
 {
     use LockableTrait;
 
-    /**
-     * @see Command
-     */
+    private RepositoryFactory $ting;
+    private MeetupClient $meetupClient;
+
+    public function __construct(RepositoryFactory $ting,
+                                MeetupClient $meetupClient)
+    {
+        parent::__construct();
+        $this->ting = $ting;
+        $this->meetupClient = $meetupClient;
+    }
+
     protected function configure(): void
     {
         $this
@@ -28,12 +37,6 @@ class ScrappingMeetupEventsCommand extends ContainerAwareCommand
         ;
     }
 
-    /**
-     *
-     * @see Command
-     *
-     * @throws \Exception
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
@@ -46,55 +49,29 @@ class ScrappingMeetupEventsCommand extends ContainerAwareCommand
         }
 
         try {
-            $ting = $this->getContainer()->get('ting');
-            $meetupScraper = new MeetupScraper();
-            $meetups = $meetupScraper->getEvents();
+            $meetups = $this->meetupClient->getEvents();
 
-            $meetupRepository = $ting->get(MeetupRepository::class);
+            $meetupRepository = $this->ting->get(MeetupRepository::class);
 
-            $emlementsLength = $this->countAllNestedElements($meetups);
-            $io->progressStart($emlementsLength);
-            foreach ($meetups as $antenneMeetups) {
-                foreach ($antenneMeetups as $meetup) {
-                    $io->progressAdvance();
+            $io->progressStart(count($meetups));
+            foreach ($meetups as $meetup) {
+                $io->progressAdvance();
 
-                    $id =$meetup->getId();
-                    $existingMeetup = $meetupRepository->get($id);
-                    if (!$existingMeetup) {
-                        $meetupRepository->save($meetup);
-                    } else {
-                        $io->note(sprintf('Meetup  id %d déjà en base.', $id));
-                    }
+                $id = $meetup->getId();
+                $existingMeetup = $meetupRepository->get($id);
+                if (!$existingMeetup) {
+                    $meetupRepository->save($meetup);
+                } else {
+                    $io->note(sprintf('Meetup id %d déjà en base.', $id));
                 }
             }
+
             $io->progressFinish();
             $io->success('Terminé avec succès');
+
             return 1;
         } catch (\Exception $e) {
             throw new \Exception('Problème lors du scraping ou de la sauvegarde des évènements Meetup', $e->getCode(), $e);
         }
-    }
-
-    /**
-     * Permet de faire un count sur un tableau multi-dimensionnel
-     *
-     * @param $array
-     *
-     * @return int
-     */
-    private function countAllNestedElements($array)
-    {
-        $count = 0;
-
-        foreach ($array as $element) {
-            if (is_array($element)) {
-                // Si l'élément est un tableau, on appelle récursivement la fonction
-                $count += $this->countAllNestedElements($element);
-            } else {
-                $count++;
-            }
-        }
-
-        return $count;
     }
 }

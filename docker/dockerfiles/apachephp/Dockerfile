@@ -17,6 +17,8 @@ RUN apt-get update && \
 RUN if [ "$ENABLE_XDEBUG" = "true" ]; then echo ************ XDEBUG ENABLED **********; \
 else echo ------------ XDEBUG DISABLED ==========; fi
 
+RUN curl -sL https://deb.nodesource.com/setup_22.x | bash -
+
 # Install required PHP extensions for AFUP website and other management package
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -27,7 +29,6 @@ RUN apt-get update && \
         libmcrypt4 \
         libicu-dev \
         nodejs \
-        npm \
     && \
     docker-php-ext-install \
         pdo_mysql \
@@ -37,8 +38,6 @@ RUN apt-get update && \
         intl \
         pcntl \
     && \
-    # Install Yarn
-    npm install -g yarn && \
     if [ "$ENABLE_XDEBUG" = "true" ]; then pecl install xdebug-2.6.1 && docker-php-ext-enable xdebug; fi && \
     apt-get autoremove --purge -y && \
     rm -rf /var/lib/apt/lists/*

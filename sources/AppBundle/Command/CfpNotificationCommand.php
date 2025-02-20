@@ -11,12 +11,12 @@ use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Notifier\SlackNotifier;
 use AppBundle\Slack\MessageFactory;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CfpNotificationCommand extends ContainerAwareCommand
+class CfpNotificationCommand extends Command
 {
     private MessageFactory $messageFactory;
     private SlackNotifier $slackNotifier;
@@ -29,22 +29,16 @@ class CfpNotificationCommand extends ContainerAwareCommand
         $this->messageFactory = $messageFactory;
         $this->slackNotifier = $slackNotifier;
         $this->ting = $ting;
+        parent::__construct();
     }
-    /**
-     * @see Command
-     */
+
     protected function configure(): void
     {
         $this
             ->setName('cfp-stats-notification')
-            ->addOption('display-diff', null, InputOption::VALUE_NONE)
-
-        ;
+            ->addOption('display-diff', null, InputOption::VALUE_NONE);
     }
 
-    /**
-     * @see Command
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $eventRepository = $this->ting->get(EventRepository::class);

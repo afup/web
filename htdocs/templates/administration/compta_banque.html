@@ -3,7 +3,7 @@
 
     <div class="ui top attached tabular menu">
         {foreach from=$listeComptes item=compte key=id}
-        <a class="{if $id == $compte_id }active{/if} item" href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte={$id}&amp;action=lister">
+        <a class="{if $id == $compte_id }active{/if} item" href="index.php?id_periode={$smarty.get.id_periode|default:''}&amp;page=compta_banque&amp;compte={$id}&amp;action=lister">
             {$compte}
         </a>
         {/foreach}
@@ -32,7 +32,7 @@
         </div>
 
         <div class="ui menu">
-            <a href="index.php?id_periode={$smarty.get.id_periode}&amp;page=compta_banque&amp;compte={$compte_id}&amp;action=exporter" class="item">
+            <a href="index.php?id_periode={$smarty.get.id_periode|default:''}&amp;page=compta_banque&amp;compte={$compte_id}&amp;action=exporter" class="item">
                 <i class="icon file excel"></i>
                 Export XLSX
             </a>

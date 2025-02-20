@@ -85,7 +85,7 @@ class SpeakerPage
 
         $shouldDisplaySpeakersDinerForm = $event->getSpeakersDinerEnabled() && $event->getDateEndSpeakersDinerInfosCollection() > $now;
 
-        if ($shouldDisplaySpeakersDinerForm && $speakersDinerType->isValid()) {
+        if ($shouldDisplaySpeakersDinerForm && $speakersDinerType->isSubmitted() && $speakersDinerType->isValid()) {
             $speakersDinerData = $speakersDinerType->getData();
             $speaker->setWillAttendSpeakersDiner($speakersDinerData['will_attend'] === 1);
             $speaker->setHasSpecialDiet($speakersDinerData['has_special_diet'] === 1);
@@ -111,7 +111,7 @@ class SpeakerPage
 
         $shouldDisplayHotelReservationForm = $event->getAccomodationEnabled() && $event->getDateEndHotelInfosCollection() > $now;
 
-        if ($shouldDisplayHotelReservationForm && $hotelReservationType->isValid()) {
+        if ($shouldDisplayHotelReservationForm && $hotelReservationType->isSubmitted() && $hotelReservationType->isValid()) {
             $hotelReservationData = $hotelReservationType->getData();
             $speaker->setHotelNightsArray($hotelReservationData['nights']);
 

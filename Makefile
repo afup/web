@@ -137,7 +137,7 @@ vendor: composer.phar composer.lock
 	php composer.phar install --no-scripts
 
 node_modules:
-	yarn install
+	npm install --legacy-peer-deps
 
 composer.phar:
     # You may replace the commit hash by whatever the last commit hash is on https://github.com/composer/getcomposer.org/commits/main

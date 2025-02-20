@@ -10,21 +10,29 @@ use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Notifier\SlackNotifier;
 use AppBundle\Slack\MessageFactory;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class TicketStatsNotificationCommand extends ContainerAwareCommand
+class TicketStatsNotificationCommand extends Command
 {
     private MessageFactory $messageFactory;
     private EventStatsRepository $eventStatsRepository;
     private SlackNotifier $slackNotifier;
-    public function __construct(MessageFactory $messageFactory, EventStatsRepository $eventStatsRepository, SlackNotifier $slackNotifier)
+    private RepositoryFactory $ting;
+
+    public function __construct(MessageFactory $messageFactory,
+                                EventStatsRepository $eventStatsRepository,
+                                SlackNotifier $slackNotifier,
+                                RepositoryFactory $ting)
     {
         $this->messageFactory = $messageFactory;
         $this->eventStatsRepository = $eventStatsRepository;
         $this->slackNotifier = $slackNotifier;
+        $this->ting = $ting;
+        parent::__construct();
     }
     /**
      * @see Command
@@ -42,8 +50,8 @@ class TicketStatsNotificationCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $eventReposotory = $this->getContainer()->get('ting')->get(EventRepository::class);
-        $ticketRepository = $this->getContainer()->get('ting')->get(TicketTypeRepository::class);
+        $eventReposotory = $this->ting->get(EventRepository::class);
+        $ticketRepository = $this->ting->get(TicketTypeRepository::class);
 
         $date = null;
 

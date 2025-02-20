@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Indexation\Meetups;
 
-use AlgoliaSearch\AlgoliaException;
-use AlgoliaSearch\Client;
-use AlgoliaSearch\Index;
+use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\SearchIndex;
 use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Event\Model\Meetup;
 use AppBundle\Event\Model\Repository\MeetupRepository;
@@ -14,23 +13,19 @@ use CCMBenchmark\Ting\Repository\CollectionInterface;
 
 class Runner
 {
-    protected Client $algoliaClient;
+    protected SearchClient $algoliaClient;
 
     protected MeetupRepository $meetupRepository;
 
     protected Transformer $transformer;
 
-    public function __construct(Client $algoliaClient, MeetupRepository $meetupRepository)
+    public function __construct(SearchClient $algoliaClient, MeetupRepository $meetupRepository)
     {
         $this->algoliaClient = $algoliaClient;
         $this->meetupRepository = $meetupRepository;
         $this->transformer = new Transformer(new AntennesCollection());
     }
 
-    /**
-     *
-     * @throws AlgoliaException
-     */
     public function run(): void
     {
         $index = $this->initIndex();
@@ -39,17 +34,15 @@ class Runner
 
         $meetups = $this->getTransformedMeetupsFromDatabase();
 
-        $index->clearIndex();
-        $index->addObjects($meetups, 'meetup_id');
+        $index->clearObjects();
+        $index->saveObjects($meetups, [
+            'objectIDKey' => 'meetup_id'
+        ]);
 
         echo "Indexation des meetups terminée avec succès !\n";
     }
 
-    /**
-     * @return Index
-     * @throws AlgoliaException
-     */
-    protected function initIndex()
+    protected function initIndex(): SearchIndex
     {
         $index = $this->algoliaClient->initIndex('afup_meetups');
 
@@ -80,10 +73,9 @@ class Runner
     }
 
     /**
-     * @param CollectionInterface $meetupsCollection
      * @return array<Meetup>
      */
-    public function transformMeetupsForIndexation($meetupsCollection): array
+    public function transformMeetupsForIndexation(CollectionInterface $meetupsCollection): array
     {
         $meetupsArray = [];
         /** @var Meetup $meetup */

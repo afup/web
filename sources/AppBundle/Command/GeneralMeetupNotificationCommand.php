@@ -36,17 +36,11 @@ class GeneralMeetupNotificationCommand extends Command
         $this->urlGenerator = $urlGenerator;
     }
 
-    /**
-     * @see Command
-     */
     protected function configure(): void
     {
         $this->setName('general-meeting-notification');
     }
 
-    /**
-     * @see Command
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($this->generalMeetingRepository->hasGeneralMeetingPlanned()) {

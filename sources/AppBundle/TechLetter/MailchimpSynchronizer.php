@@ -17,10 +17,7 @@ class MailchimpSynchronizer
 
     private string $listId;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(Mailchimp $mailchimp, TechletterSubscriptionsRepository $subscriptionsRepository, string $listId)
     {

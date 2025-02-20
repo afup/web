@@ -26,9 +26,9 @@ final class Field
         return $this->value;
     }
 
-    public function setValue(string $value): self
+    public function setValue($value): self
     {
-        $this->value = $value;
+        $this->value = (string) $value;
         return $this;
     }
 

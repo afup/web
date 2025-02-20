@@ -9,16 +9,22 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class VideosDataCommand extends ContainerAwareCommand
+class VideosDataCommand extends Command
 {
-    /**
-     * @see Command
-     */
+    private RepositoryFactory $ting;
+
+    public function __construct(RepositoryFactory $ting)
+    {
+        $this->ting = $ting;
+        parent::__construct();
+    }
+
     protected function configure(): void
     {
         $this
@@ -27,22 +33,13 @@ class VideosDataCommand extends ContainerAwareCommand
         ;
     }
 
-    /**
-     * @see Command
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $ting = $this->getContainer()->get('ting');
+        /** @var TalkRepository $talkRepository */
+        $talkRepository = $this->ting->get(TalkRepository::class);
 
-        /**
-         * @var TalkRepository $talkRepository
-         */
-        $talkRepository = $ting->get(TalkRepository::class);
-
-        /**
-         * @var EventRepository $eventRepository
-         */
-        $eventRepository = $ting->get(EventRepository::class);
+        /** @var EventRepository $eventRepository */
+        $eventRepository = $this->ting->get(EventRepository::class);
 
         $event = $eventRepository->getByPath($input->getArgument('path'));
 

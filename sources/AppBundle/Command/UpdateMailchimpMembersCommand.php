@@ -26,6 +26,7 @@ class UpdateMailchimpMembersCommand extends ContainerAwareCommand
         $this->mailchimp = $mailchimp;
         $this->mailchimpMembersList = $mailchimpMembersList;
         $this->ting = $ting;
+        parent::__construct();
     }
     /**
      * @see Command

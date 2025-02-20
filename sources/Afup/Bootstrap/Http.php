@@ -23,6 +23,7 @@ declare(strict_types=1);
 // chargement des paramétrages génériques / multi-contextuels de l'application
 
 use Afup\Site\Corporate\Site;
+use Smarty\Smarty;
 
 require_once __DIR__ . '/_Common.php';
 
@@ -59,18 +60,19 @@ $sous_site = array_pop($parties);
 
 // initialisation de Smarty, le moteur de template (html)
 
-$smarty = new Smarty;
-$smarty->template_dir  = [
+$smarty = new Smarty();
+$smarty->setTemplateDir([
     AFUP_CHEMIN_RACINE . 'templates/' . $sous_site . '/',
     AFUP_CHEMIN_RACINE . 'templates/commun/',
-];
-$smarty->compile_dir   = AFUP_CHEMIN_RACINE . 'cache/templates';
+]);
+$smarty->setCompileDir(AFUP_CHEMIN_RACINE . 'cache/templates');
 $smarty->compile_id    = $sous_site;
 $smarty->use_sub_dirs  = true;
 $smarty->compile_check = true;
-$smarty->php_handling  = SMARTY_PHP_ALLOW;
+$smarty->registerPlugin("modifier","stripslashes", "stripslashes");
+$smarty->registerPlugin("modifier","floatval", "floatval");
 
-$smarty->assign('url_base',          'http://' . $_SERVER['HTTP_HOST'] . '/');
+$smarty->assign('url_base',          'https://' . $_SERVER['HTTP_HOST'] . '/');
 $smarty->assign('chemin_template',   $serveur . Site::WEB_PATH . 'templates/' . $sous_site . '/');
 $smarty->assign('chemin_javascript', $serveur . Site::WEB_PATH . 'javascript/');
 

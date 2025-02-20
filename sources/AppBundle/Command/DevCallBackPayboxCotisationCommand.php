@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace AppBundle\Command;
 
 use function GuzzleHttp\Psr7\parse_query;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DevCallBackPayboxCotisationCommand extends ContainerAwareCommand
+class DevCallBackPayboxCotisationCommand extends Command
 {
-    /**
-     * @see Command
-     */
     protected function configure(): void
     {
         $help = <<<EOF
@@ -24,14 +22,10 @@ EOF;
 
         $this
             ->setName('dev:callback-paybox-cotisation')
-            ->addArgument('url_paiement_effectue')
-            ->setHelp($help)
-        ;
+            ->addArgument('url_paiement_effectue', InputArgument::REQUIRED)
+            ->setHelp($help);
     }
 
-    /**
-     * @see Command
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $parsedUrl = parse_url($input->getArgument('url_paiement_effectue'));

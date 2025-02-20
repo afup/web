@@ -15,7 +15,7 @@ class IndexTalksCommand extends Command
 
     public function __construct(Runner $runner)
     {
-        parent::__construct(null);
+        parent::__construct();
         $this->runner = $runner;
     }
 

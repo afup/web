@@ -68,7 +68,13 @@ class LegacyController extends AbstractController
         unset($_SESSION['flash']);
         // Récupération du contenu de la page généré par smarty
         $content = $smarty->fetch($_GET['page'] . '.html');
-        $js = $smarty->fetch($_GET['page'] . '.js.html');
+
+        $file = $_GET['page'] . '.js.html';
+        $js = '';
+        if ($smarty->templateExists($file)) {
+            $js = $smarty->fetch($file);
+        }
+
         return $this->render('admin/base_with_header.html.twig', [
             'title' => obtenirTitre($pages, $_GET['page']),
             'page' => $_GET['page'],

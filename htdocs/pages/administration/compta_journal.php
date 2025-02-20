@@ -73,7 +73,7 @@ if ($action == 'lister') {
     $formulaire = instancierFormulaire();
 
     if ($action === 'modifier') {
-        $champsRecup = $compta->obtenir($_GET['id']);
+        $champsRecup = $compta->obtenir((int) $_GET['id']);
 
         $champs['idcompte']          = $champsRecup['idcompte'];
         $champs['date_saisie']          = $champsRecup['date_ecriture'];
@@ -373,7 +373,7 @@ elseif ($action === 'export') {
 elseif ($action === 'modifier_colonne') {
     try {
         // Bad request?
-        if (!isset($_POST['val']) || !isset($_GET['column']) || !isset($_GET['id']) || !($line = $compta->obtenir($_GET['id']))) {
+        if (!isset($_POST['val']) || !isset($_GET['column']) || !isset($_GET['id']) || !($line = $compta->obtenir((int) $_GET['id']))) {
             throw new Exception("Please verify parameters", 400);
         }
 
@@ -458,7 +458,7 @@ elseif ($action === 'modifier_colonne') {
 elseif ($action === 'upload_attachment') {
     try {
         // Bad request?
-        if (!isset($_GET['id']) || !($line = $compta->obtenir($_GET['id']))) {
+        if (!isset($_GET['id']) || !($line = $compta->obtenir((int) $_GET['id']))) {
             throw new Exception("Please verify parameters", 400);
         }
 
@@ -554,7 +554,7 @@ elseif ($action === 'upload_attachment') {
 elseif ($action === 'download_attachment') {
     try {
         // Bad request?
-        if (!isset($_GET['id']) || !($line = $compta->obtenir($_GET['id']))) {
+        if (!isset($_GET['id']) || !($line = $compta->obtenir((int) $_GET['id']))) {
             throw new Exception("Please verify parameters", 400);
         }
 
