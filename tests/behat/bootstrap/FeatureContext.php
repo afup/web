@@ -9,17 +9,30 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
+use Ifsnop\Mysqldump\Mysqldump;
 use Smalot\PdfParser\Parser;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 class FeatureContext implements Context
 {
-    public const MAILCATCHER_URL = 'http://mailcatcher:1080';
+    private const MAILCATCHER_URL = 'http://mailcatcher:1080';
+    private const DB_NAME = 'web';
 
     private MinkContext $minkContext;
 
     private array $pdfPages = [];
+
+    private PDO $database;
+    private Mysqldump $dumper;
+    private string $dbDumpKey;
+
+    public function __construct()
+    {
+        $this->database = new PDO('mysql:host=dbtest;dbname=' . self::DB_NAME, 'root', 'root');
+        $this->dumper = new Mysqldump('mysql:host=dbtest;dbname=' . self::DB_NAME, 'root', 'root');
+        $this->dbDumpKey = $this->computeDbDumpKey();
+    }
 
     /**
      * @BeforeScenario
@@ -34,11 +47,19 @@ class FeatureContext implements Context
     /**
      * @BeforeScenario @reloadDbWithTestData
      */
-    public function beforeScenarioReloadDb(): void
+    public function beforeScenarioReloadDatabase(): void
     {
         $this->resetDb();
-        $this->migrateDb();
-        $this->seedRun();
+
+        $dbDumpFile = sprintf(__DIR__ . '/../../../var/cache/test/db_dump_%s.sql', $this->dbDumpKey);
+        if (!is_file($dbDumpFile)) {
+            $this->migrateDb();
+            $this->seedRun();
+
+            $this->dumper->start($dbDumpFile);
+        } else {
+            $this->restoreDb($dbDumpFile);
+        }
     }
 
     /**
@@ -59,11 +80,35 @@ class FeatureContext implements Context
         $filesystem->remove(Event::getSponsorFileDir());
     }
 
+    private function computeDbDumpKey(): string
+    {
+        $finder = new Symfony\Component\Finder\Finder();
+        $files = $finder->files()->in([
+            __DIR__ . '/../../../db/migrations/',
+            __DIR__ . '/../../../db/seeds/',
+        ]);
+
+        $key = '';
+        foreach ($files as $file) {
+            $key .= md5_file($file->getRealPath());
+        }
+
+        return md5($key);
+    }
+
+    private function restoreDb(string $dbDumpFile): void
+    {
+        if (false === $this->database->exec(file_get_contents($dbDumpFile))) {
+            throw new RuntimeException(implode(' ', $this->database->errorInfo()));
+        }
+    }
+
     private function resetDb(): void
     {
-        $pdo = new \PDO('mysql:host=dbtest', 'root', 'root');
-        $pdo->exec('DROP DATABASE IF EXISTS web');
-        $pdo->exec('CREATE DATABASE web');
+        $sql = sprintf('DROP DATABASE IF EXISTS %1$s; CREATE DATABASE %1$s; USE %1$s;', self::DB_NAME);
+        if (false === $this->database->exec($sql)) {
+            throw new RuntimeException(implode(' ', $this->database->errorInfo()));
+        }
     }
 
     private function migrateDb(): void
@@ -175,7 +220,7 @@ class FeatureContext implements Context
      * @Then The :field field should have the following selected value :expectedValue
      * @throws ExpectationException
      */
-    public function selectHasForCurrentSelectedValue(string $field, string $expectedValue) :void
+    public function selectHasForCurrentSelectedValue(string $field, string $expectedValue): void
     {
         $node = $this->minkContext->assertSession()->fieldExists($field);
         $options = $node->findAll('css', 'option');
