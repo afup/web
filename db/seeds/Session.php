@@ -35,7 +35,7 @@ class Session extends AbstractSeed
                 'slides_url' => 'https://speakerdeck.com/caporaldead/jouons-tous-ensemble-a-un-petit-jeu',
                 'blog_post_url' => 'https://mon-blog.com/post/123',
                 'interview_url' => 'https://mon-blog.com/interview/456',
-                'openfeedback_url' => 'https://openfeedback.io/eaJnyMXD3oNfhrrnBYDT/2019-06-27/100',
+                'openfeedback_path' => 'eaJnyMXD3oNfhrrnBYDT/2019-06-27/100',
                 'language_code' => 'fr',
                 'markdown' => 1,
                 'joindin' => 24041,
