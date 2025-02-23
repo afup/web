@@ -94,9 +94,8 @@
                 <div class="container talk-date-container">
                     <div class="col-md-12">
                         Conférence donnée lors du <a href="{{ url('talks_list', {"fR": { "event.title" : [ event.title ]}}) }}">{{ event.title }}</a>,
-                        ayant eu lieu {% if event.dateStart == event.dateEnd %}le {{ event.dateStart|date('d') }}{% else %}les {{ event.dateStart|date('d') }} et{{ event.dateEnd|date('d') }}{% endif %} {{ event.dateEnd|localizeddate('none', 'none', 'fr', 'Europe/Paris', 'MMMM YYYY') }}.
+                        ayant eu lieu {% if event.dateStart == event.dateEnd %}le {{ event.dateStart|date('d') }}{% else %}les {{ event.dateStart|date('d') }} et {{ event.dateEnd|date('d') }}{% endif %} {{ event.dateEnd|localizeddate('none', 'none', 'fr', 'Europe/Paris', 'MMMM YYYY') }}.
                     </div>
-
                 </div>
 
                 {% if talk.hasSlidesUrl or talk.hasBlogPostUrl or talk.hasJoindinId or talk.getVideoHasEnSubtitles or talk.getVideoHasFrSubtitles or talk.hasOpenfeedbackPath %}
@@ -174,7 +173,9 @@
                     </div>
                     <div class="container">
                         <div class="col-md-2 speaker-photo-container">
-                            <img src="{{ photo_storage.getUrl(speaker) }}" class="speaker-photo" alt="" />
+                            {% if photo_storage.getUrl(speaker) %}
+                                <img src="{{ photo_storage.getUrl(speaker) }}" class="speaker-photo" alt="" />
+                            {% endif %}
                             <div class="speaker-talks-link">
                                 <a href="{{ url('talks_list', {"fR": { "speakers.label" : [ speaker.label ]}}) }}">Voir tous ses talks</a>
                             </div>
