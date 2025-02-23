@@ -34,23 +34,25 @@
     </script>
 {% endblock %}
 
-{% block title %}{{ talk.title }} - {{ event.title }} - {{ parent() }}{% endblock %}
+{% block title %}{{ talk.title }} - {{ event.title }}{% endblock %}
 
 {% block metas %}
     {{ parent() }}
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="AFUP - {{ talk.title }}">
+    <meta name="twitter:title" content="{{ talk.title }}">
     <meta name="twitter:description" content="{{ talk.description|striptags|raw }}">
     {% if talk.hasYoutubeId %}
         <meta name="twitter:image:src" content="https://img.youtube.com/vi/{{ talk.getYoutubeId }}/hqdefault.jpg">
     {% endif %}
     <meta name="twitter:domain" content="afup.org">
 
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="AFUP - {{ talk.title }}" />
+    <meta property="og:title" content="{{ talk.title }}" />
     <meta property="og:url" content="{{ url('talks_show', {id: talk.id, slug: talk.slug }) }}" />
     {% if talk.hasYoutubeId %}
         <meta property="og:image" content="https://img.youtube.com/vi/{{ talk.getYoutubeId }}/hqdefault.jpg" />
+        <meta property="og:type" content="video.other" />
+    {% else %}
+        <meta property="og:type" content="article" />
     {% endif %}
     <meta property="og:description" content="{{ talk.description|striptags|raw }}" />
     <meta property="og:site_name" content="AFUP" />
@@ -62,10 +64,23 @@
             <div class="col-md-12 talk-title">
                 <h1>{{ talk.title }}</h1>
             </div>
-        </div>
 
-        <div class="container">
-            <div class="col-md-{% if talk.hasYoutubeId %}6{% else %}12"{% endif %}">
+            {% if talk.hasYoutubeId %}
+                <div class="col-md-6">
+                    <h2>Vidéo</h2>
+                    <div class="responsive-video-container">
+                        <div id="player">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ talk.youtubeId }}"
+                                    title="YouTube video player"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="col-md-{% if talk.hasYoutubeId %}6{% else %}12{% endif %}">
                 <div class="container">
                     <div class="col-md-12">
                         <h2>Description</h2>
@@ -78,7 +93,8 @@
                 </div>
                 <div class="container talk-date-container">
                     <div class="col-md-12">
-                        Conférence donnée lors du <a href="{{ url('talks_list', {"fR": { "event.title" : [ event.title ]}}) }}">{{ event.title }}</a>, ayant eu lieu {% if event.dateStart == event.dateEnd %}le {{ event.dateStart|date('d') }}{% else %}les {{ event.dateStart|date('d') }} et {{ event.dateEnd|date('d') }}{% endif %} {{ event.dateEnd|localizeddate('none', 'none', 'fr', 'Europe/Paris', 'MMMM YYYY') }}.
+                        Conférence donnée lors du <a href="{{ url('talks_list', {"fR": { "event.title" : [ event.title ]}}) }}">{{ event.title }}</a>,
+                        ayant eu lieu {% if event.dateStart == event.dateEnd %}le {{ event.dateStart|date('d') }}{% else %}les {{ event.dateStart|date('d') }} et{{ event.dateEnd|date('d') }}{% endif %} {{ event.dateEnd|localizeddate('none', 'none', 'fr', 'Europe/Paris', 'MMMM YYYY') }}.
                     </div>
 
                 </div>
@@ -133,14 +149,6 @@
                 </div>
                 {% endif %}
             </div>
-            {% if talk.hasYoutubeId %}
-            <div class="col-md-6">
-                <h2>Vidéo</h2>
-                <div class="responsive-video-container">
-                    <div id="player"></div>
-                </div>
-            </div>
-            {% endif %}
         </div>
 
         <div class="container">
@@ -247,16 +255,16 @@
             <div class="col-md-12">
                 <div class="container comments-title-container">
                     <div class="col-md-12">
-                        <h2>Transcript</h2>
+                        <h2>Transcription de la vidéo</h2>
                     </div>
                 </div>
 
                 <div class="container">
                     <div class="col-md-12 talk-comment-container transcript">
-
-                    {% for cue in transcript %}
-                        <p data-cue-start="{{ cue.start }}" style="cursor:pointer;">{{ cue.text }}</p>
-                    {% endfor %}
+                        {% for cue in transcript %}
+                            <p data-cue-start="{{ cue.start }}" style="cursor:pointer;">{{ cue.text }}</p>
+                        {% endfor %}
+                    </div>
                 </div>
 
             </div>
@@ -279,7 +287,8 @@
 
                 </div>
             </div>
-            {% endif %}
+        </div>
+        {% endif %}
 
     </div>
 {% endblock %}
