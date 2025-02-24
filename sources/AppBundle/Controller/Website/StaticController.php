@@ -66,7 +66,7 @@ class StaticController extends AbstractController
     public function superApero(): Response
     {
         return $this->view->render(':site:superapero.html.twig', [
-            'aperos' => $this->superAperoCsvUrl
+            'aperos' => $this->getAperos($this->superAperoCsvUrl),
         ]);
     }
 
