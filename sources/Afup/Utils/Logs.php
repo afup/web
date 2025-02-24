@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace Afup\Site\Utils;
 
+use Afup\Site\Corporate\_Site_Base_De_Donnees;
+
 /**
  * Classe de gestion des logs
  */
 class Logs
 {
-    // TODO : Utiliser une constante en PHP5
+    private _Site_Base_De_Donnees $_bdd;
+    private int $_id_utilisateur;
+    private int $_nombre_logs_par_page = 10;
 
     /**
      * Renvoit l'instance unique de la classe Afup\Site\Utils\Logs
      *
      * Cette fonction est une implémentation du pattern Singleton.
      * Cela permet d'appeller statiquement les méthodes de cette classe depuis n'importe où.
-     *
-     * @return object   Instance de la classe Afup\Site\Utils\Logs
      */
-    public static function &_obtenirInstance()
+    public static function &_obtenirInstance(): self
     {
         // TODO : Utiliser une propriété statique en PHP5
         if (!isset($GLOBALS['_afup_log'])) {
@@ -31,7 +33,7 @@ class Logs
     /**
      * Initialise les propriétés de la classe
      *
-     * @param  object $bdd Instance de la couche d'abstraction à la base de données
+     * @param  _Site_Base_De_Donnees $bdd Instance de la couche d'abstraction à la base de données
      * @param  int $id_utilisateur Identifiant de l'utilisateur connecté
      */
     public static function initialiser(&$bdd, $id_utilisateur): void
