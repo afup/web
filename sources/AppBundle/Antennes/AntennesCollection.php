@@ -6,7 +6,7 @@ namespace AppBundle\Antennes;
 
 final class AntennesCollection
 {
-    /** @var list<Antenne> */
+    /** @var array<string, Antenne> */
     private array $antennes;
 
     public function __construct()
