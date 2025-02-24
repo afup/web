@@ -76,5 +76,4 @@ $smarty->assign('url_base',          'https://' . $_SERVER['HTTP_HOST'] . '/');
 $smarty->assign('chemin_template',   $serveur . Site::WEB_PATH . 'templates/' . $sous_site . '/');
 $smarty->assign('chemin_javascript', $serveur . Site::WEB_PATH . 'javascript/');
 
-$GLOBALS['AFUP_DB']->executer("SET NAMES 'utf8'");
 require_once(__DIR__ . '/commonStart.php');
