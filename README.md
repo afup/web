@@ -40,7 +40,20 @@ Ce fichier contient la liste des options disponibles.
 
 #### `DOCKER_UP_OPTIONS`
 
-liste des options à passer à la commande `docker composer up`. 
+Liste des options à passer à la commande `docker composer up`. 
+
+### Processeurs ARM
+
+Pour faire fonctionner les images des bases de données (site et tests) sur un processeur ARM (par exemple sur Mac) il
+faut ajouter une surcharge dans le fichier `compose.override.yml` :
+
+```yaml
+services:
+  db:
+    platform: linux/amd64
+  dbtest:
+    platform: linux/amd64
+```
 
 ## Base de données
 
