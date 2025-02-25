@@ -239,7 +239,7 @@ SQL;
                 FROM afup_personnes_physiques app
                 LEFT JOIN afup_personnes_morales apm ON apm.id = app.id_personne_morale
                 LEFT JOIN afup_cotisations ac ON ac.type_personne = IF(apm.id IS NULL, 0, 1) AND ac.id_personne = IFNULL(apm.id, app.id)
-                WHERE app.email COLLATE latin1_swedish_ci = i.email
+                WHERE app.email = i.email
                 GROUP BY app.`id`
                 )
             END AS lastsubscription
