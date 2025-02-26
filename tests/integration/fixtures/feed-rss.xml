@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Exemple RSS</title>
+        <description>Exemple de flux RSS</description>
+        <link>https://rss.fake/rss.xml</link>
+        <language>FR-fr</language>
+        <pubDate>Tue, 18 Mar 2025 02:53:42 +0100</pubDate>
+        <lastBuildDate>Mon, 17 Mar 2025 06:15:12 +0000</lastBuildDate>
+        <image>
+            <url>https://rss.fake/logo.png</url>
+            <title>Exemple RSS</title>
+            <link>https://rss.fake/rss.xml</link>
+        </image>
+        <managingEditor>author@rss.fake</managingEditor>
+
+        <item>
+            <title><![CDATA[Lorem Ipsum 🐘]]></title>
+            <link>https://rss.fake/news/123-lorem-ipsum</link>
+            <description><![CDATA[<h3>Test php</h3>
+<p>salut</p>]]></description>
+            <pubDate>Mon, 17 Mar 2025 06:15:12 +0000</pubDate>
+            <guid>https://rss.fake/news/123-lorem-ipsum</guid>
+        </item>
+        <item>
+            <title><![CDATA[Autre article]]></title>
+            <link>https://rss.fake/news/456-autre-article</link>
+            <description><![CDATA[<p>contenu php</p>]]></description>
+            <pubDate>Fri, 14 Mar 2025 21:26:02 +0000</pubDate>
+            <guid>https://rss.fake/news/456-autre-article</guid>
+        </item>
+        <item>
+            <title><![CDATA[Article non pertinent]]></title>
+            <link>https://rss.fake/news/789-article-non-pertinent</link>
+            <description><![CDATA[<p>contenu</p>]]></description>
+            <pubDate>Fri, 14 Mar 2025 21:26:02 +0000</pubDate>
+            <guid>https://rss.fake/news/789-article-non-pertinent</guid>
+        </item>
+    </channel>
+</rss>
