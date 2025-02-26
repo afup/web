@@ -9,15 +9,15 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class SpeakerFactory
 {
-    private TokenStorage $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
     private SpeakerRepository $speakerRepository;
 
-    public function __construct(TokenStorage $tokenStorage, SpeakerRepository $speakerRepository)
+    public function __construct(TokenStorageInterface $tokenStorage, SpeakerRepository $speakerRepository)
     {
         $this->tokenStorage = $tokenStorage;
         $this->speakerRepository = $speakerRepository;

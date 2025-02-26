@@ -42,7 +42,6 @@ class UserCompany
         ;
         $this->userRepository->save($user);
 
-        $event = new UserDisabledEvent($user);
-        $this->eventDispatcher->dispatch($event::NAME, $event);
+        $this->eventDispatcher->dispatch(new UserDisabledEvent($user));
     }
 }
