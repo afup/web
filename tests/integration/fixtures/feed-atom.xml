@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet href="https://atom.fake/feed.xsl" type="text/xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="fr-FR">
+    <id>https://atom.fake/blog</id>
+    <link type="text/html" rel="alternate" href="https://atom.fake"/>
+    <link type="application/rss+xml" rel="self" href="https://atom.fake/feed.atom"/>
+
+    <title>Example atom</title>
+    <updated>2025-03-21T23:00:04+01:00</updated>
+
+    <entry>
+        <id>https://atom.fake/lorem-ipsum</id>
+        <published>2025-03-16T15:15:00+02:00</published>
+        <updated>2025-03-16T15:15:00+02:00</updated>
+        <link type="text/html" rel="alternate"
+              href="https://atom.fake/lorem-ipsum"/>
+        <title>Lorem Ipsum</title>
+        <author>
+            <name>Ada Lovelace</name>
+            <uri>https://fr.wikipedia.org/wiki/Ada_Lovelace</uri>
+        </author>
+        <category term="veille"/>
+        <category term="opensource"/>
+        <summary><![CDATA[content php]]></summary>
+        <content type="html">
+            &lt;p&gt;Contenu PHP&lt;/p&gt;
+        </content>
+    </entry>
+
+    <entry>
+        <id>https://atom.fake/article-non-pertinent</id>
+        <published>2025-03-16T15:15:00+02:00</published>
+        <updated>2025-03-16T15:15:00+02:00</updated>
+        <link type="text/html" rel="alternate"
+              href="https://atom.fake/article-non-pertinent"/>
+        <title>Non pertinent</title>
+        <author>
+            <name>Ada Lovelace</name>
+            <uri>https://fr.wikipedia.org/wiki/Ada_Lovelace</uri>
+        </author>
+        <summary><![CDATA[content]]></summary>
+        <content type="html">
+            &lt;p&gt;Contenu&lt;/p&gt;
+        </content>
+    </entry>
+
+    <entry>
+        <id>https://atom.fake/article-trop-ancien</id>
+        <published>2024-10-17T15:00:00+02:00</published>
+        <updated>2024-10-17T15:00:00+02:00</updated>
+        <link type="text/html" rel="alternate"
+              href="https://atom.fake/article-trop-ancien"/>
+        <title>Trop ancien</title>
+        <author>
+            <name>Ada Lovelace</name>
+            <uri>https://fr.wikipedia.org/wiki/Ada_Lovelace</uri>
+        </author>
+        <summary><![CDATA[content]]></summary>
+        <content type="html">
+            &lt;p&gt;Contenu&lt;/p&gt;
+        </content>
+    </entry>
+</feed>

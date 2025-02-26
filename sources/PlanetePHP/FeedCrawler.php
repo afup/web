@@ -4,89 +4,102 @@ declare(strict_types=1);
 
 namespace PlanetePHP;
 
-use Afup\Site\Logger\DbLoggerTrait;
+use Laminas\Feed\Exception\ExceptionInterface;
+use Laminas\Feed\Reader\Reader;
+use Psr\Clock\ClockInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpClient\Exception\ClientException;
+use Symfony\Component\HttpClient\Exception\ServerException;
 
-class FeedCrawler
+final class FeedCrawler
 {
-    use DbLoggerTrait;
-
+    private ClockInterface $clock;
+    private SymfonyFeedClient $httpClient;
     private FeedRepository $feedRepository;
     private FeedArticleRepository $feedArticleRepository;
+    private LoggerInterface $logger;
 
     public function __construct(
+        ClockInterface $clock,
+        SymfonyFeedClient $httpClient,
         FeedRepository $feedRepository,
-        FeedArticleRepository $feedArticleRepository
+        FeedArticleRepository $feedArticleRepository,
+        LoggerInterface $logger
     ) {
+        $this->clock = $clock;
+        $this->httpClient = $httpClient;
         $this->feedRepository = $feedRepository;
         $this->feedArticleRepository = $feedArticleRepository;
-        define('MAGPIE_CACHE_DIR', __DIR__ . '/../../var/cache/prod/planete');
-        define('MAGPIE_OUTPUT_ENCODING', 'UTF-8');
-        require_once __DIR__ . '/../../dependencies/magpierss/rss_fetch.inc';
+        $this->logger = $logger;
+
+        Reader::setHttpClient($this->httpClient);
     }
 
-    public function crawl(): void
+    public function crawl(): CrawlingResult
     {
-        $startMicrotime = microtime(true);
-        $billets = $success = 0;
         $feeds = $this->feedRepository->findActive();
+
+        $saved = 0;
+        $tooOld = 0;
+        $failedFeedsIds = [];
+
         foreach ($feeds as $feed) {
-            echo $feed->getFeed() . ' : début...<br />', PHP_EOL;
-            $rss = fetch_rss($feed->getFeed());
-            if (!$rss->items) {
-                echo $feed->getFeed(), ' : vide fin !<br /><br/>', PHP_EOL, PHP_EOL;
+            $this->logger->info(sprintf('[planete][%s] Start fetching', $feed->getName()));
+
+            try {
+                $items = Reader::import($feed->getFeed());
+            } catch (ExceptionInterface|ClientException|ServerException $e) {
+                $this->logger->error(sprintf('[planete][%s] Error: %s', $feed->getName(), $e->getMessage()));
+
+                // Si une erreur survient, on passe au flux suivant
+                $failedFeedsIds[] = $feed->getId();
                 continue;
             }
-            $rss->items = array_reverse($rss->items);
-            foreach ($rss->items as $item) {
-                if (empty($item['id'])) {
-                    $item['id'] = $item['link'];
-                }
-                if (empty($item['atom_content'])) {
-                    $item['atom_content'] = $item['summary'];
-                }
-                if (empty($item['atom_content'])) {
-                    $item['atom_content'] = $item['content'];
-                }
-                if ($item['atom_content'] === "A") {
-                    $item['atom_content'] = $item['description'];
-                }
-                if (empty($item['updated']) && isset($item['dc']['date'])) {
-                    $item['updated'] = $item['dc']['date'];
-                }
-                if (empty($item['updated']) && isset($item['modified'])) {
-                    $item['updated'] = $item['modified'];
-                }
-                if (empty($item['updated']) && isset($item['pubdate'])) {
-                    $item['updated'] = $item['pubdate'];
-                }
-                if (empty($item['author'])) {
-                    $item['author'] = $feed->getName();
+
+            $this->logger->info(sprintf('[planete][%s] Items: %d', $feed->getName(), count($items)));
+
+            foreach ($items as $item) {
+                $this->logger->info(sprintf('[planete][%s] Item: %s', $feed->getName(), $item->getTitle()));
+
+                $date = $item->getDateCreated();
+
+                if ($date === null || $date < $this->clock->now()->modify('-7 days')) {
+                    $tooOld++;
+                    continue;
                 }
 
-                $item['timestamp'] = strtotime($item['updated']);
-                if ($item['timestamp'] > time() - 7 * 24 * 3600) {
-                    echo sprintf(' - contenu récent : "%s"', $item['title']), PHP_EOL;
-                    $contenu = $item['title'] . " " . $item['atom_content'];
-                    $item['etat'] = $this->feedArticleRepository->isRelevant($contenu);
-                    $success += $this->feedArticleRepository->save(new FeedArticle(
-                        null,
-                        $feed->getId(),
-                        $item['id'],
-                        $item['title'],
-                        $item['link'],
-                        $item['timestamp'],
-                        $item['author'],
-                        $item['summary'],
-                        $item['atom_content'],
-                        $item['etat']
-                    ));
-                    $billets++;
+                $author = $item->getAuthor();
+
+                if (is_array($author)) {
+                    $author = $author['name'] ?? null;
                 }
+
+                $article = new FeedArticle(
+                    null,
+                    $feed->getId(),
+                    $item->getId(),
+                    $item->getTitle(),
+                    $item->getLink(),
+                    $date->getTimestamp(),
+                    $author,
+                    $item->getDescription(),
+                    $item->getContent(),
+                    $this->feedArticleRepository->isRelevant($item->getTitle() . ' ' . $item->getContent()),
+                );
+
+                $this->feedArticleRepository->save($article);
+
+                $saved++;
             }
-            echo $feed->getFeed(), ' : fin !<br /><br/>', PHP_EOL, PHP_EOL;
         }
-        $errors = $billets - $success;
-        $duration = round(microtime(true) - $startMicrotime, 2);
-        $this->log(sprintf('Exploration de %s flux -- %d erreur(s) -- en %ss', count($feeds), $errors, $duration));
+
+        $this->logger->info(sprintf(
+            '[planete] End fetching. %d saved -- %d too old -- %d errors',
+            $saved,
+            $tooOld,
+            implode(', ', $failedFeedsIds),
+        ));
+
+        return new CrawlingResult($saved, $tooOld, $failedFeedsIds);
     }
 }

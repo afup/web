@@ -3,12 +3,6 @@ parameters:
     level: 2
     paths:
         - sources
-    scanFiles:
-        - dependencies/magpierss/extlib/Snoopy.class.inc
-        - dependencies/magpierss/rss_cache.inc
-        - dependencies/magpierss/rss_fetch.inc
-        - dependencies/magpierss/rss_parse.inc
-        - dependencies/magpierss/rss_utils.inc
     excludePaths:
         analyse:
             # Ces fichiers utilisent des alias de classes

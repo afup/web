@@ -117,15 +117,33 @@ tests à la fin de l'exécution de la suite de test.
 
 Si par la suite, vous souhaitez lancer un test, il faut bien penser à les allumer à nouveau.
 
-### Test unitaires
+### Tests unitaires
 
-Les tests unitaires sont écrit via PHPUnit.
+Les tests unitaires sont écrits via PHPUnit.
 
 Il faut se connecter au container via `make console` puis :
 
 ```bash
-./bin/phpunit
+./bin/phpunit --testsuite unit
 ```
+
+Une alternative est d'utiliser `make test` dans le container, attention cette commande
+exécute également [PHP-Cs-Fixer](#php-cs-fixer).
+
+### Tests d'intégration
+
+Ces tests sont écrits via PHPUnit et utilisent le kernel de Symfony : https://symfony.com/doc/current/testing.html#integration-tests
+
+Pour les lancer, il faut se connecter au container via `make console` puis :
+
+```bash
+./bin/phpunit --testsuite integration
+```
+
+Une alternative est d'utiliser la commande `make test-integration`, attention cette commande arrête les containeurs de
+tests à la fin de l'exécution de la suite de test.
+
+Si par la suite, vous souhaitez lancer un test, il faut bien penser à les allumer à nouveau.
 
 ## Qualité du code
 

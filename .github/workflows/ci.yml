@@ -32,7 +32,7 @@ jobs:
         run: composer install --no-scripts
 
       - name: Tests - Unit
-        run: ./bin/phpunit
+        run: ./bin/phpunit --testsuite unit
 
   lint:
     name: "Linter"
@@ -128,3 +128,27 @@ jobs:
         with:
           name: Functional tests - deprecated log - report
           path: var/logs/test.deprecations_grouped.log
+
+  integration:
+    name: "Integration tests"
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Docker images.
+        uses: ScribeMD/docker-cache@0.5.0
+        with:
+          key: |
+            docker-${{ runner.os }}-${{ hashFiles(
+              'compose.yml',
+              'docker/dockerfiles/apachephp/Dockerfile',
+              'docker/dockerfiles/mysql/Dockerfile',
+              'docker/dockerfiles/mysqltest/Dockerfile'
+            ) }}
+
+      - name: Delete symfony cache
+        run: rm -rf var/cache/test
+
+      - name: Tests - Integration
+        run: make test-integration-ci
