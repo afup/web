@@ -41,7 +41,7 @@ Feature: Administration - Évènements - Inscriptions
     Then I should see "Exports"
     And I follow "Exporter les inscriptions pour les badges"
     Then the response status code should be 200
-    And the response header "Content-disposition" should match '#^attachment; filename="inscriptions_forum_.*.csv"#'
+    And the response header "Content-disposition" should match '#^attachment; filename=inscriptions_forum_.*.csv#'
 
   Scenario: Export CSV: Inscrits aux 4 derniers évènements
     Given I am logged in as admin and on the Administration
@@ -57,4 +57,4 @@ Feature: Administration - Évènements - Inscriptions
     Then I should see "Exports"
     And I follow "Exporter les inscrits aux 4 derniers évènements"
     Then the response status code should be 200
-    And the response header "Content-disposition" should match '#^attachment; filename="inscriptions_([0-9]*)_derniers_events.csv"#'
+    And the response header "Content-disposition" should match '#^attachment; filename=inscriptions_([0-9]*)_derniers_events.csv#'

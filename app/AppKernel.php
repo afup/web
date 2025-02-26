@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use AppBundle\AppBundle;
 use CCMBenchmark\TingBundle\TingBundle;
-use Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle;
 use Ekino\Bundle\NewRelicBundle\EkinoNewRelicBundle;
 use EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle;
 use JMS\SerializerBundle\JMSSerializerBundle;
@@ -28,7 +27,6 @@ class AppKernel extends Kernel
             new SecurityBundle(),
             new TwigBundle(),
             new MonologBundle(),
-            new DoctrineCacheBundle(),
             new TingBundle(),
             new KnpUOAuth2ClientBundle(),
             new AppBundle(),

@@ -340,8 +340,7 @@ class MemberShipController extends AbstractController
             $invitationRepository->save($invitation);
             $this->addFlash('success', 'Votre compte a été créé !');
 
-            $event = new NewMemberEvent($user);
-            $this->eventDispatcher->dispatch($event::NAME, $event);
+            $this->eventDispatcher->dispatch(new NewMemberEvent($user));
 
             return $this->redirectToRoute('member_index');
         }
@@ -396,8 +395,7 @@ class MemberShipController extends AbstractController
 
             if ($lastCotisation === false && $account['type'] == UserRepository::USER_TYPE_PHYSICAL) {
                 $user = $userRepository->get($account['id']);
-                $event = new NewMemberEvent($user);
-                $this->eventDispatcher->dispatch($event::NAME, $event);
+                $this->eventDispatcher->dispatch(new NewMemberEvent($user));
             }
 
             $cotisations->validerReglementEnLigne($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId());
