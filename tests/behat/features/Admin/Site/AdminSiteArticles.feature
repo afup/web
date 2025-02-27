@@ -69,3 +69,16 @@ Feature: Administration - Partie Site
     And I fill in "raccourci" with "un mauvais raccourci"
     And I press "Ajouter"
     Then I should see "Ne doit pas contenir d'espace"
+
+  Scenario: Ajout d'un article avec des émojis
+    Given I am logged in as admin and on the Administration
+    And I follow "Articles"
+    When I follow "Ajouter"
+    And I fill in "titre" with "Le titre qui envoi 🚀"
+    And I fill in "contenu" with "Pour un contenu rigolo 🤣"
+    And I fill in "raccourci" with "url-article-emojis"
+    And I select "Actualités" from "id_site_rubrique"
+    And I select "9" from "position"
+    And I press "Ajouter"
+    When I should see "Liste des articles"
+    Then the ".content table" element should contain "Le titre qui envoi 🚀"
