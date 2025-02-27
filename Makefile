@@ -59,7 +59,7 @@ docker-down:
 
 ### Démarrer un bash dans le container PHP
 console:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm cliphp bash
+	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) exec -u localUser -it apachephp bash
 
 ##@ Quality
 
@@ -85,7 +85,7 @@ test-functional: data config htdocs/uploads tmp
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest mailcatcher
 	make clean-test-deprecated-log
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm cliphp ./bin/behat
+	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp ./bin/behat
 	make var/logs/test.deprecations_grouped.log
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
 
@@ -110,12 +110,12 @@ hooks: .git/hooks/pre-commit .git/hooks/post-checkout
 
 .git/hooks/pre-commit: Makefile
 	echo "#!/bin/sh" > .git/hooks/pre-commit
-	echo "docker compose run --rm  cliphp make test" >> .git/hooks/pre-commit
+	echo "docker compose run --rm -u localUser apachephp make test" >> .git/hooks/pre-commit
 	chmod +x .git/hooks/pre-commit
 
 .git/hooks/post-checkout: Makefile
 	echo "#!/bin/sh" > .git/hooks/post-checkout
-	echo "docker compose run --rm  cliphp make vendor" >> .git/hooks/post-checkout
+	echo "docker compose run --rm -u localUser apachephp make vendor" >> .git/hooks/post-checkout
 	chmod +x .git/hooks/post-checkout
 
 
@@ -145,12 +145,12 @@ composer.phar:
 
 init-db:
 	make reset-db
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm cliphp make db-migrations
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm cliphp make db-seed
+	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm -u localUser apachephp make db-migrations
+	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm -u localUser apachephp make db-seed
 
 config:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm cliphp make vendors
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm cliphp make assets
+	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp make vendors
+	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp make assets
 
 data:
 	mkdir data

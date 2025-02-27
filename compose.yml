@@ -64,28 +64,6 @@ services:
       dbtest:
         condition: service_healthy
 
-  cliphp:
-    build:
-      context: ./docker/dockerfiles/apachephp
-      args:
-        uid: ${CURRENT_UID:-1001}
-        gid: "1001"
-        ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
-    env_file:
-      .env
-    user: localUser
-    volumes:
-      - ./data/composer:/home/localUser/.composer
-      - ./:/var/www/html
-    links:
-      - db
-      - apachephp
-      - mailcatcher
-      - apachephptest
-      - dbtest
-      - statictestresources
-    command: "false"
-
   mailcatcher:
     image: dockage/mailcatcher:0.9.0
 
