@@ -30,15 +30,30 @@ class Session extends AbstractSeed
                 'plannifie' => 1,
                 'needs_mentoring' => 0,
                 'youtube_id' => 'MseSkWbhxV8',
-                'video_has_fr_subtitles' => 0,
-                'video_has_en_subtitles' => 0,
+                'video_has_fr_subtitles' => 1,
+                'video_has_en_subtitles' => 1,
                 'slides_url' => 'https://speakerdeck.com/caporaldead/jouons-tous-ensemble-a-un-petit-jeu',
-                'blog_post_url' => '',
+                'blog_post_url' => 'https://mon-blog.com/post/123',
+                'interview_url' => 'https://mon-blog.com/interview/456',
+                'openfeedback_path' => 'eaJnyMXD3oNfhrrnBYDT/2019-06-27/100',
                 'language_code' => 'fr',
                 'markdown' => 1,
                 'joindin' => 24041,
                 'date_publication' => null,
                 'has_allowed_to_sharing_with_local_offices' => 1,
+                'transcript' => <<<EOF
+                1
+                00:00:28,440 --> 00:00:29,900
+                Merci.
+                
+                2
+                00:00:29,920 --> 00:00:31,660
+                Merci.
+                
+                3
+                00:00:31,680 --> 00:00:33,340
+                Bonjour, bonjour à toutes et à tous.
+                EOF
             ],
             [
                 'session_id' => self::ID_SESSIONS[1],
