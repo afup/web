@@ -17,6 +17,8 @@ class Tweet implements NotifyPropertyInterface
 
     private ?\DateTime $createdAt = null;
 
+    private ?string $socialNetwork = null;
+
     public function getId(): ?string
     {
         return $this->id;
@@ -52,6 +54,19 @@ class Tweet implements NotifyPropertyInterface
     {
         $this->propertyChanged('createdAt', $this->createdAt, $createdAt);
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getSocialNetwork(): ?string
+    {
+        return $this->socialNetwork;
+    }
+
+    public function setSocialNetwork(?string $socialNetwork): self
+    {
+        $this->propertyChanged('socialNetwork', $this->socialNetwork, $socialNetwork);
+        $this->socialNetwork = $socialNetwork;
 
         return $this;
     }
