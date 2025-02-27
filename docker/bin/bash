@@ -1,2 +1,2 @@
 #!/bin/bash
-docker compose run --rm cliphp /bin/bash
+docker compose exec -u localUser -it apachephp bash
