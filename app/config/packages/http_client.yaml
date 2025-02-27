@@ -9,3 +9,5 @@ framework:
                 base_uri: 'https://api.meetup.com'
                 headers:
                     Content-Type: 'application/json'
+            http_client.bluesky:
+                base_uri: 'https://bsky.social'

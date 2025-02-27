@@ -9,6 +9,8 @@ parameters:
     app.badge_dir: "%kernel.project_dir%/../htdocs/uploads/badges"
     app.members_logo_dir: "%kernel.project_dir%/../htdocs/uploads/members_logo"
     app.general_meetings_dir: "%kernel.project_dir%/../htdocs/uploads/general_meetings_reports"
+    bluesky.api.identifier: "%bluesky_api_identifier%"
+    bluesky.api.app_password: "%bluesky_api_app_password%"
 
 services:
 #    service_name:
@@ -16,6 +18,10 @@ services:
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
     _defaults:
         public: true
+
+    _instanceof:
+        AppBundle\SocialNetwork\Transport:
+            tags: [ 'app.social_network.transport' ]
 
     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
         public:    false
@@ -284,6 +290,11 @@ services:
         class: AppBundle\Association\Model\Repository\CompanyMemberRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\CompanyMemberRepository]
+
+    AppBundle\Event\Model\Repository\PlanningRepository:
+        class: AppBundle\Event\Model\Repository\PlanningRepository
+        factory: [ "@ting", get ]
+        arguments: [ AppBundle\Event\Model\Repository\PlanningRepository ]
 
     AppBundle\Security\LegacyAuthenticator:
         autowire: true
@@ -740,4 +751,23 @@ services:
             $httpClient: '@PlanetePHP\SymfonyFeedClient'
             $feedRepository: '@PlanetePHP\FeedRepository'
             $feedArticleRepository: '@PlanetePHP\FeedArticleRepository'
+            $logger: '@logger'
+
+    AppBundle\SocialNetwork\Bluesky\BlueskyTransport:
+        arguments:
+            $httpClient: '@http_client.bluesky'
+            $apiIdentifier: '%bluesky.api.identifier%'
+            $apiAppPassword: '%bluesky.api.app_password%'
+
+    AppBundle\VideoNotifier\HistoryRepository:
+        arguments:
+            $connection: '@Doctrine\DBAL\Connection'
+
+    AppBundle\VideoNotifier\Engine:
+        arguments:
+            $transports: !tagged_iterator app.social_network.transport
+            $planningRepository: '@AppBundle\Event\Model\Repository\PlanningRepository'
+            $talkRepository: '@AppBundle\Event\Model\Repository\TalkRepository'
+            $speakerRepository: '@AppBundle\Event\Model\Repository\SpeakerRepository'
+            $historyRepository: '@AppBundle\VideoNotifier\HistoryRepository'
             $logger: '@logger'

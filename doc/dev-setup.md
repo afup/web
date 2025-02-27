@@ -241,3 +241,14 @@ GOOGLE_MAPS_API_KEY=<Clé API Google>
 ```
 
 Puis dans `API et services` activer l'API `Geocoding API`.
+
+### Bluesky
+
+Pour pouvoir poster des replays sur Bluesky, il faut créer un mot de passe d'application : https://bsky.app/settings/app-passwords
+
+Ensuite, il faut configurer l'identifier et ce mot de passe dans le fichier `.env` :
+
+```dotenv
+BLUESKY_API_IDENTIFIER=example.bsky.social
+BLUESKY_API_APP_PASSWORD=my-app-passwod
+```
