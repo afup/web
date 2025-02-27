@@ -9,6 +9,7 @@ $finder = (new PhpCsFixer\Finder())
         __DIR__ . '/sources',
         __DIR__ . '/tests',
     ])
+    ->exclude('cache/templates')
 ;
 
 return (new PhpCsFixer\Config())
