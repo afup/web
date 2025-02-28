@@ -26,6 +26,7 @@ Feature: Administration - Partie GitHub Users
     When I fill in "github_user[user]" with "<username>"
     And I <afupCrew> "github_user[afupCrew]"
     And I press "Sauvegarder"
+    And print last response
     Then I should see "Un autre compte existe avec cette information: <username>"
 
     Examples:

@@ -21,7 +21,6 @@ security:
             anonymous: ~
             pattern: ^(/admin/|/event/\w+/tickets|/association/techletter|/member)
             provider: legacy_user
-            logout_on_user_change: true
             logout:
                 path:   /admin/logout
                 target: /
@@ -35,7 +34,6 @@ security:
         github_secured_area:
             pattern: ^(/event/.*/(vote|cfp|speaker-infos)|/connect/github/check|/event/speaker-infos)
             provider: github_user
-            logout_on_user_change: true
             guard:
                 authenticators:
                     - '%github_authenticator%'
@@ -44,7 +42,6 @@ security:
         main:
             anonymous: ~
             context: share_context
-            logout_on_user_change: true
 
     access_control:
         - { path: ^/event/vote/, roles: ROLE_GITHUB }
