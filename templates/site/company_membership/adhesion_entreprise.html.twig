@@ -1,0 +1,168 @@
+{% extends 'admin/association/membership/_base.html.twig' %}
+
+{% block page_title %}Adhésion entreprise à l'AFUP{% endblock %}
+
+{% block submenu %}
+    {{ render(controller(
+        'AppBundle\\Controller\\Website\\SecondaryMenuController::display',
+        { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ASSOCIATION') }
+    )) }}
+{% endblock %}
+
+{% block page_content %}
+    <article id="company-membership">
+        <p>
+            Ce formulaire est réservé aux entreprises. Vous êtes un particulier ou un indépendant ?
+            Retrouvez le <a href="{{ url('member_membership') }}">formulaire d'adhésion dédié</a>.
+        </p>
+        {{ form_start(form) }}
+        <fieldset>
+            <legend>Société</legend>
+            <div>
+                {{ form_row(form.companyName) }}
+                {{ form_row(form.siret) }}
+                {{ form_row(form.address) }}
+                {{ form_row(form.zipcode) }}
+                {{ form_row(form.city) }}
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Contact administratif</legend>
+            <div>
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.phone) }}
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Membres rattachés</legend>
+            <div>
+                <p>Chaque membre va recevoir une invitation lui permettant de créer son compte, rattaché à votre compte entreprise.</p>
+                {{ form_row(form.maxMembers) }}
+                <div id="company_member_invitations" data-prototype="{{ form_widget(form.invitations.vars.prototype)|e('html_attr') }}">
+                    {% for invitation in form.invitations %}
+                        <div>
+                            {{ form_row(invitation.email) }}
+                            {{ form_row(invitation.manager) }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {{ form_row(form.invitations) }}
+            </div>
+
+
+        </fieldset>
+
+        <fieldset>
+            <div>
+                {{ form_row(form.recaptcha) }}
+            </div>
+        </fieldset>
+
+        <div class="right">
+            {{ form_widget(form.save, {attr: { "class": "button button--call-to-action"}}) }}
+        </div>
+
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+
+
+        <script type="text/javascript">
+            // keep track of how many email fields have been rendered
+            var emailCount = {{ form.invitations|length }};
+
+            document.querySelector('#company_member_maxMembers').onchange = function(e)
+            {
+                var numberOfMembers = parseInt(this.value, 10); // Number of wanted invitations
+                var invitations = document.querySelector('#company_member_invitations');
+
+                var numberOfInvitations = invitations.children.length; // Number of displayed invitations
+
+                if (numberOfMembers == numberOfInvitations) {
+                    return;
+                }
+                if (numberOfMembers > numberOfInvitations) {
+                    for (var i = numberOfInvitations; i < numberOfMembers; i++) {
+                        addInvitation();
+                    }
+                }
+                if (numberOfMembers < numberOfInvitations) {
+                    for (var i = numberOfInvitations; i > numberOfMembers; i--) {
+                        removeInvitation();
+                    }
+                }
+            };
+
+            var addInvitation = function() {
+                var emailList = document.querySelector('#company_member_invitations');
+
+                // grab the prototype template
+                var newWidget = emailList.getAttribute('data-prototype');
+                // replace the "__name__" used in the id and name of the prototype
+                // with a number that's unique to your emails
+                // end name attribute looks like name="contact[emails][2]"
+                newWidget = newWidget.replace(/__name__label__/g, 'Membre #' + (emailCount+1));
+                newWidget = newWidget.replace(/__name__/g, emailCount);
+                emailCount++;
+
+                // create a new list element and add it to the list
+                var newDiv = document.createElement('div');
+                newDiv.innerHTML = newWidget;
+                emailList.appendChild(newDiv.childNodes[0]);
+            };
+
+            var removeInvitation = function()
+            {
+                var emailList = document.querySelector('#company_member_invitations');
+                emailList.removeChild(emailList.lastChild);
+            }
+            document.querySelector('#company_member_maxMembers').onchange();
+
+            // First member MUST be a manager
+            document.querySelector('#company_member_invitations_0_manager').setAttribute('checked', 'checked');
+            document.querySelector('#company_member_invitations_0_manager').setAttribute('disabled', 'disabled');
+            document.querySelector('#company_member_invitations_0_email').setAttribute('required', 'required');
+
+        </script>
+
+        <p>Si vous rencontrez le moindre problème, n'hésitez pas à contacter l'AFUP par email: bonjour (at) afup.org.</p>
+        <h2>Questions fréquentes</h2>
+        <ul>
+            <li>
+                <h3>Pourquoi adhérer à l'AFUP ?</h3>
+                <p>
+                    Adhérer à l'AFUP pour une entreprise du monde PHP, c'est soutenir la communauté du langage sur lequel
+                    reposent ses outils, assurant une dynamique positive à l'écosystème. C'est également la possibilité
+                    pour vos développeurs de bénéficier des mailing lists réservées aux membres et faire partie d'un
+                    réseau de professionnels.
+                </p>
+            </li>
+            <li>
+                <h3>Comment régler l'adhésion ?</h3>
+                <p>
+                    L'adhésion peut être réglée par carte bancaire, virement ou chèque.
+                    Seule l'adhésion par carte bancaire permet une adhésion immédiate. Dans le cas des autres modes de paiement,
+                    l'adhésion est activée lors de la réception du paiement.
+                </p>
+            </li>
+            <li>
+                <h3>Comment gérer les membres rattachés à mon compte ?</h3>
+                <p>
+                    Vous devez toujours avoir au moins un membre ayant les droits de gestion sur votre compte.
+                    Ce dernier pourra gérer les membres rattachés, effectuer le règlement des adhésions et collecter les factures.
+                </p>
+            </li>
+            <li>
+                <h3>Comment est faite la reconduction ?</h3>
+                <p>
+                    L'adhésion à l'AFUP est réalisée pour un an à partir de l'enregistrement de votre cotisation.
+                    Un mois avant l'échéance, nous vous avertirons que votre adhésion arrive à expiration.
+                    Vous pourrez alors choisir de régler à nouveau votre adhésion ou la laisser expirer.
+                    15 jours après expiration de votre adhésion, si celle-ci n'a pas été renouvelée, les comptes
+                    de vos membres seront désactivés, ils perdront alors tous les avantages de votre adhésion.
+                </p>
+            </li>
+        </ul>
+    </article>
+{% endblock %}

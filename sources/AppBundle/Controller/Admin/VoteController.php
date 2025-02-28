@@ -50,7 +50,7 @@ class VoteController extends AbstractController
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
         if (!$event->isVoteAvailable()) {
-            return $this->render(':event:cfp/closed.html.twig', ['event' => $event]);
+            return $this->render('event/cfp/closed.html.twig', ['event' => $event]);
         }
 
         /**

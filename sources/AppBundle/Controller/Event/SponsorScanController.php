@@ -43,7 +43,7 @@ class SponsorScanController extends AbstractController
         $scanRepository = $this->repositoryFactory->get(SponsorScanRepository::class);
         $scans = $scanRepository->getBySponsorTicket($sponsorTicket);
 
-        return $this->render(':event/sponsor:scan.html.twig', [
+        return $this->render('event/sponsor/scan.html.twig', [
             'event' => $event,
             'sponsorTicket' => $sponsorTicket,
             'scans' => $scans,
@@ -73,7 +73,7 @@ class SponsorScanController extends AbstractController
             ]);
         }
 
-        return $this->render(':event/sponsor:scan_new.html.twig', [
+        return $this->render('event/sponsor/scan_new.html.twig', [
             'event' => $event,
             'form' => $form->createView(),
         ]);

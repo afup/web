@@ -1,0 +1,43 @@
+{% extends 'admin/association/membership/_base.html.twig' %}
+
+{% block submenu %}
+    {% include 'admin/association/membership/_company_menu.html.twig' with {
+        current: "contact"
+    } only %}
+{% endblock %}
+
+{% block page_title %}Mon adhésion entreprise à l'AFUP{% endblock %}
+
+{% block page_content %}
+    <div class="afup-form">
+        {{ form_start(form) }}
+        <fieldset>
+            <legend>Société</legend>
+            <div class="afup-form-container">
+                {{ form_row(form.companyName) }}
+                {{ form_row(form.siret) }}
+                {{ form_row(form.address) }}
+                {{ form_row(form.zipcode) }}
+                {{ form_row(form.city) }}
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Contact administratif</legend>
+            <div class="afup-form-container">
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.phone) }}
+            </div>
+        </fieldset>
+
+        <div class="right">
+            {{ form_widget(form.save, {"attr": { "class": "button button--call-to-action"}}) }}
+        </div>
+
+        {{ form_widget(form) }}
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

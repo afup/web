@@ -24,7 +24,7 @@ class StaticController extends AbstractController
 
     public function offices(): Response
     {
-        return $this->view->render(':site:offices.html.twig', [
+        return $this->view->render('site/offices.html.twig', [
             'antennes' => (new AntennesCollection())->getAllSortedByLabels(),
         ]);
     }
@@ -65,7 +65,7 @@ class StaticController extends AbstractController
 
     public function superApero(): Response
     {
-        return $this->view->render(':site:superapero.html.twig', [
+        return $this->view->render('site/superapero.html.twig', [
             'aperos' => $this->getAperos($this->superAperoCsvUrl),
         ]);
     }

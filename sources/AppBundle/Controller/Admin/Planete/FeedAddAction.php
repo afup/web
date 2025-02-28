@@ -63,7 +63,7 @@ class FeedAddAction
             $this->flashBag->add('error', 'Une erreur est survenue lors de l\'ajout du flux');
         }
 
-        return new Response($this->twig->render(':admin/planete:feed_add.html.twig', [
+        return new Response($this->twig->render('admin/planete/feed_add.html.twig', [
             'form' => $form->createView(),
         ]));
     }

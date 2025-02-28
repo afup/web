@@ -50,7 +50,7 @@ class GetMenuAction
             }
         }
 
-        return new Response($this->twig->render(':admin:menu.html.twig', [
+        return new Response($this->twig->render('admin/menu.html.twig', [
             'pages' => $this->backOfficePages,
             'current_group_key' => $currentGroupKey,
             'current_element_key' => $currentElementKey,

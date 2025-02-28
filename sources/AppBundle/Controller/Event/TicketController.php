@@ -119,7 +119,7 @@ class TicketController extends AbstractController
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
 
-        return $this->render(':event/ticket:sponsor_home.html.twig', ['event' => $event]);
+        return $this->render('event/ticket/sponsor_home.html.twig', ['event' => $event]);
     }
 
     public function sponsorTicketForm(Request $request, $eventSlug)
@@ -165,7 +165,7 @@ class TicketController extends AbstractController
             // Et qu'il n'y a plus d'invitation
             // ou que la date du sponsoring est pas passée
             if ($ticket->getId() === null && ($sponsorTicket->getPendingInvitations() <= 0 || $event->getDateEndSalesSponsorToken() < new \DateTime())) {
-                return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
+                return $this->render('event/ticket/sold_out.html.twig', ['event' => $event]);
             }
 
             $sponsorTicketHelper->addTicketToSponsor($sponsorTicket, $ticket);
@@ -214,7 +214,7 @@ class TicketController extends AbstractController
         $event = $this->eventActionHelper->getEvent($eventSlug);
 
         if ($event->getDateEndSales() < new \DateTime()) {
-            return $this->render(':event/ticket:sold_out.html.twig', ['event' => $event]);
+            return $this->render('event/ticket/sold_out.html.twig', ['event' => $event]);
         }
 
         $purchaseFactory = $this->purchaseTypeFactory;
@@ -313,7 +313,7 @@ class TicketController extends AbstractController
             $this->logger->addWarning(
                 sprintf('Invoice %s already paid, cannot show the paymentAction', $invoiceRef)
             );
-            return $this->render(':event/ticket:payment_already_done.html.twig', ['event' => $event]);
+            return $this->render('event/ticket/payment_already_done.html.twig', ['event' => $event]);
         }
 
         $amount = $invoice->getAmount();
@@ -454,7 +454,7 @@ class TicketController extends AbstractController
 
         $payboxResponse = PayboxResponseFactory::createFromRequest($request);
 
-        return $this->render(':event/ticket:paybox_redirect.html.twig', [
+        return $this->render('event/ticket/paybox_redirect.html.twig', [
             'event' => $event,
             'invoice' => $invoice,
             'payboxResponse' => $payboxResponse,

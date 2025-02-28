@@ -1,0 +1,52 @@
+{% extends 'admin/association/membership/_base.html.twig' %}
+
+{% block submenu %}
+    {% include 'admin/association/membership/_member_menu.html.twig' with {
+        current: "contact"
+    } only %}
+{% endblock %}
+
+{% block page_title %}Mes coordonnées{% endblock %}
+
+{% block page_content %}
+
+    <div class="afup-form">
+        {{ form_start(form) }}
+        <p class="note">
+            *&nbsp;Indique un champ obligatoire
+        </p>
+        <fieldset>
+            <legend>Informations</legend>
+            <div class="afup-form-container">
+                {{ form_errors(form) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.address) }}
+                {{ form_row(form.zipcode) }}
+                {{ form_row(form.city) }}
+                {{ form_row(form.country) }}
+                {{ form_row(form.phone) }}
+                {{ form_row(form.mobilephone) }}
+                {{ form_row(form.nearest_office) }}
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Identifiants de connexion</legend>
+            <div class="afup-form-container">
+                {{ form_row(form.username) }}
+
+                <p class="note">
+                    Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le changer
+                </p>
+                {{ form_row(form.plainPassword.first) }}
+                {{ form_row(form.plainPassword.second) }}
+            </div>
+        </fieldset>
+
+        <div class="right">
+            {{ form_widget(form.save, {"attr": {"class": "button button--call-to-action"}}) }}
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

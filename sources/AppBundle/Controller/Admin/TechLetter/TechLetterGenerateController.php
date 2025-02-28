@@ -165,7 +165,7 @@ class TechLetterGenerateController extends AbstractController
 
             $mailContent = $this
                 ->render(
-                    ':admin/techletter:mail_template.html.twig',
+                    'admin/techletter/mail_template.html.twig',
                     [
                         'tech_letter' => $techLetter,
                         'preview' => false
@@ -214,7 +214,7 @@ class TechLetterGenerateController extends AbstractController
         }
 
         return $this->render(
-            ':admin/techletter:generate.html.twig',
+            'admin/techletter/generate.html.twig',
             [
                 'title' => "Veille de l'AFUP",
                 'sending' => $sending,
@@ -286,7 +286,7 @@ class TechLetterGenerateController extends AbstractController
         $techLetter = Techletter\TechLetterFactory::createTechLetterFromJson($sending->getTechletter());
 
         $message = new Message($subject, null, new MailUser($this->techletterTestEmailAddress));
-        $this->mailer->renderTemplate($message,':admin/techletter:mail_template.html.twig', [
+        $this->mailer->renderTemplate($message,'admin/techletter/mail_template.html.twig', [
             'tech_letter' => $techLetter,
             'preview' => false,
         ]);

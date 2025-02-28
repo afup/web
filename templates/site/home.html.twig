@@ -1,0 +1,117 @@
+{% extends 'site/base.html.twig' %}
+
+{% import _self as home_macros %}
+
+{% macro home_feuille(feuille) %}
+    <h2>{{ feuille.nom }}</h2>
+    {% if feuille.image %}
+        <a href="{{ feuille.lien }}"><img alt="{{ feuille.image_alt }}" src="/templates/site/images/{{ feuille.image }}" /></a>
+    {% endif %}
+    {% if feuille.alt %}
+        <p>{{ feuille.alt }}</p>
+    {% endif %}
+    <a href="{{ feuille.lien }}" title="Voir plus : {{ feuille.nom }}" class="home-view-more">Voir plus <i class="fa fa-arrow-right"></i></a>
+{% endmacro %}
+
+{% block content %}
+    <div class="mw1400p center home" id="container">
+        <div class="line" id="main">
+
+            <div class="container">
+                <div class="col-md-12">
+                    <h1>AFUP : Association Française des Utilisateurs de PHP</h1>
+                    <blockquote>
+                        Apéros, rendez-vous et cycle de conférences, l'<abbr title="Association Française des Utilisateurs de PHP">AFUP</abbr>
+                        est au cœur de la communauté PHP depuis 2000.
+                        L'AFUP vise à favoriser l’échange d’expertises et la diffusion des connaissances auprès de la communauté.
+                    </blockquote>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="col-md-6">
+                    <h2>Actualités</h2>
+                    <ul class="home-list home-list__actualites">
+                        {% for actualite in actualites %}
+                            <li class="{% if loop.first %} home-list-item_first {% endif %}">
+                                <a href="{{ path('news_display', {code: actualite.code}) }}">
+                                    <span class="home-list-date">{{ actualite.date|date('d/m') }}</span>
+                                    {% if loop.first  %}
+                                        <span class="home-actualite-title">{{ actualite.titre }}</span>
+                                        <div class="home-list-chapeau-container">
+                                            <p>
+                                                {{ actualite.getChapeau|raw }}
+                                                <span class="home-read-more">Lire plus <i class="fa fa-arrow-right"></i></span>
+                                            </p>
+                                        </div>
+                                    {% else %}
+                                        {{ actualite.titre }}
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <a href="{{ path('news_list')}}" class="home-view-more" title="Voir plus : d'autres actualités">Voir plus <i class="fa fa-arrow-right"></i></a>
+                </div>
+
+                <div class="col-md-6">
+                    {% if premiere_feuille %}
+                        {{ home_macros.home_feuille(premiere_feuille) }}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="col-md-6">
+                    <h2>Dans les antennes</h2>
+                    <ul class="home-list">
+                        {% for meetup in meetups %}
+                            <li>
+                                <a href="{{ meetup.event_url }}">
+                                    <span class="home-list-date">{{ meetup.timestamp|date('d/m') }}</span>
+                                    {{ meetup.office.label }} - {{ meetup.label }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <a href="{{ path('meetups_list') }}" class="home-view-more" title="Voir plus : meetups dans les antennes">Voir plus <i class="fa fa-arrow-right"></i></a>
+                </div>
+
+                <div class="col-md-6">
+                    {% if deuxieme_feuille %}
+                        {{ home_macros.home_feuille(deuxieme_feuille) }}
+                    {% elseif talk %}
+                        <h2>Le talk du jour</h2>
+                        <a href="{{ path('talks_show', { id: talk.getId(), slug: talk.getSlug()}) }}" class="home-talk-of-the-day">
+                            <img class="" src="https://img.youtube.com/vi/{{ talk.youtubeId }}/hqdefault.jpg" title="{{ talk.getTitle }}" alt="" /><br />
+                            <span class="home-actualite-title">{{ talk.getTitle }}</span>
+                        </a>
+
+                    {% endif %}
+                </div>
+            </div>
+
+            {% set autres_feuilles_container_open = 0 %}
+            {% for feuille in autres_feuilles %}
+                {% if loop.index is odd %}
+                    {% set autres_feuilles_container_open = 1 %}
+                    <div class="container">
+                {% endif %}
+
+                <div class="col-md-6">
+                    {{ home_macros.home_feuille(feuille) }}
+                </div>
+
+                {% if loop.index is even %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% if autres_feuilles_container_open %}
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'admin/association/membership/_base.html.twig' %}
+
+{% block submenu %}
+    {% include 'site/_members_menu.html.twig' with {
+        current: "compagnies"
+    } only %}
+{% endblock %}
+
+{% block page_title %}{{ company_member.companyName }}{% endblock %}
+
+{% block title %}{{ company_member.companyName }} est adhérente à l'AFUP{% endblock %}
+
+{% block body_css %}migrated-page{% endblock %}
+
+{% set logo_url = path('company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) %}
+
+{% block metas %}
+    {{ parent() }}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@afup" />
+    <meta name="twitter:title" content="AFUP - Profil entreprise - {{ company_member.companyName }}" />
+    <meta name="twitter:description" content="{{ company_member.description|truncate(200) }}" />
+    <meta name="twitter:image" content="{{ app.request.getSchemeAndHttpHost() }}{{ logo_url }}" />
+{% endblock %}
+
+{% block page_content %}
+
+    <h2>L'entreprise</h2>
+    <div class="container">
+        <div class="col-md-4">
+            <img src="{{ logo_url }}" alt="" />
+        </div>
+        <div class="col-md-8">
+            {{ company_member.description|nl2br }}
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: 30px;">
+        <div class="col-md-8">
+            <div class="txtcenter">
+                {% if company_member.websiteUrl %}
+                    <a class="button-inverted {% if not company_member.careersPageUrl and not company_member.contactPageUrl %}button--call-to-action{% endif %}"
+                       href="{{ company_member.websiteUrl }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                    >Site web</a>
+                {% endif %}
+
+                {% if company_member.careersPageUrl %}
+                    <a class="button-inverted button--call-to-action"
+                       href="{{ company_member.careersPageUrl }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                    >Page de recrutement</a>
+                {% endif %}
+
+                {% if company_member.contactPageUrl %}
+                <a class="button-inverted {% if not company_member.careersPageUrl %}button--call-to-action{% endif %}"
+                   href="{{ company_member.contactPageUrl }}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                >Page de contact</a>
+                {% endif %}
+            </div>
+
+            <h2>Présente dans les antennes</h2>
+            <div class="container">
+                {% for antenne in antennes %}
+                    <div class="col-md-3 col-sm-12 member-badge">
+                        <img src="{{ antenne.logoUrl }}" alt="" /><br />
+                        {{ antenne.label }}
+                    </div>
+                {% else %}
+                    <div class="col-md-12">
+                        {{ company_member.companyName }} n'a pas renseigné d'antenne à proximité.
+                    </div>
+                {% endfor %}
+            </div>
+
+
+            {% if badges|length > 0 %}
+            <h2>Badges</h2>
+
+            <div class="container">
+                {% for badge in badges %}
+                <div class="col-md-3 col-sm-12 member-badge">
+                    <img src="/images/badges/{{ badge }}.png" alt="Badge {{badge }}">
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>
+        {% if company_member.cleanedTwitterHandle %}
+        <div class="col-md-4">
+            <a class="twitter-timeline button-inverted button--call-to-action"
+               data-lang="fr"
+               data-chrome="noheader,nofooter,noborders"
+               data-height="800"
+               data-dnt="true"
+               data-theme="light"
+               href="https://twitter.com/{{ company_member.cleanedTwitterHandle }}"
+            ><i class="fa fa-twitter"></i> Voir @{{ company_member.cleanedTwitterHandle }}</a>
+            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
