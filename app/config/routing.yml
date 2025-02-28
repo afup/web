@@ -70,7 +70,7 @@ feed_rss:
     defaults: { _controller: AppBundle\Controller\Website\RssFeedController }
 
 presta_sitemap:
-    resource: "@PrestaSitemapBundle/Resources/config/routing.yml"
+    resource: "@PrestaSitemapBundle/config/routing.yml"
 
 global:
     resource: "routing/global.yml"

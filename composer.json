@@ -34,7 +34,7 @@
     "pear/pear": "^1.10",
     "phpmailer/phpmailer": "5.2.9",
     "phpoffice/phpspreadsheet": "^1.6",
-    "presta/sitemap-bundle": "^1.5",
+    "presta/sitemap-bundle": "3.3.0",
     "robmorgan/phinx": "^0.9.2",
     "sabre/vobject": "^4.1",
     "setasign/fpdf": "^1.8",
