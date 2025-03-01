@@ -65,7 +65,7 @@ console:
 
 ### (Dans Docker) Tests unitaires
 test:
-	./bin/atoum
+	./bin/phpunit
 	./bin/php-cs-fixer fix --dry-run -vv
 
 ### (Dans Docker) Tests fonctionnels
