@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -29,15 +28,9 @@ class TicketSpecialPriceType extends AbstractType
             ])
             ->add('dateStart', DateType::class, [
                 'label' => 'Date de début',
-                'constraints' => [
-                    new Date()
-                ]
             ])
             ->add('dateEnd', DateType::class, [
                 'label' => 'Date de fin',
-                'constraints' => [
-                    new Date()
-                ]
             ])
             ->add('price', IntegerType::class, [
                 'label' => 'Prix (TTC)',

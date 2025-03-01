@@ -194,7 +194,7 @@ services:
             -  { name: twig.extension }
 
     AppBundle\Twig\AssetsExtension:
-        arguments: ["%kernel.root_dir%"]
+        arguments: ["%kernel.project_dir%"]
         tags:
             -  { name: twig.extension }
 
@@ -231,13 +231,13 @@ services:
 
     AppBundle\CFP\PhotoStorage:
         arguments:
-          - "%kernel.root_dir%/../htdocs/uploads/speakers"
+          - "%kernel.project_dir%/../htdocs/uploads/speakers"
           - "/uploads/speakers"
-          - "%kernel.root_dir%/../htdocs"
+          - "%kernel.project_dir%/../htdocs"
 
     AppBundle\SpeakerInfos\SpeakersExpensesStorage:
         arguments:
-            - "%kernel.root_dir%/../htdocs/uploads/speaker_expenses"
+            - "%kernel.project_dir%/../htdocs/uploads/speaker_expenses"
             - "/uploads/speaker_expenses"
 
     AppBundle\Event\Form\SpeakerFormDataFactory:
