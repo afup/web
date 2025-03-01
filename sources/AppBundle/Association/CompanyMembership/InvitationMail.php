@@ -13,7 +13,7 @@ use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InvitationMail
 {
