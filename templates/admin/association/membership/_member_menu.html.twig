@@ -1,0 +1,29 @@
+{% include 'site/secondary_menu.html.twig' with {
+    menu: [
+        {
+            "nom" : "Accueil",
+            "lien": path('member_index'),
+            'is_active': current == "home",
+        },
+        {
+            "nom" : "Coordonnées",
+            "lien": path('member_contact'),
+            'is_active': current == "contact",
+        },
+        {
+            "nom": "Cotisations",
+            "lien": path('member_membership_fee'),
+            "is_active": current == "membershipfee"
+        },
+        {
+            "nom": "Veille",
+            "lien": path('member_techletter'),
+            "is_active": current == "techletter",
+        },
+        {
+            "nom": "Assemblée générale",
+            "lien": path('member_general_meeting'),
+            "is_active": current == "generalmeeting",
+        }
+    ]
+} only %}

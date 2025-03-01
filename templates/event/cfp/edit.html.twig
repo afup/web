@@ -1,0 +1,71 @@
+{% extends 'event/cfp/base.html.twig' %}
+{% block content %}
+    <div class="col-md-8">
+        <h2>CFP: {{ event.title }}</h2>
+        {% if talk.id %}
+            <h3>{{ 'Modifier ma proposition'|trans }}</h3>
+        {% else %}
+            <h3>{{ 'Nouvelle proposition'|trans }}</h3>
+        {% endif %}
+        {{ form(form) }}
+        <p>* {{ 'code_of_conduct_warning'|trans }}</p>
+        <p>{{ "Vous pouvez éditer votre proposition jusqu'à la fin du CFP."|trans }}</p>
+        <h3>{{ 'Conférenciers'|trans }}</h3>
+        <ul>
+            {% for speaker in speakers %}
+                <li>{{ speaker.firstname~' '~speaker.lastname }}</li>
+            {% endfor %}
+        </ul>
+        {% if invitations.count > 0 %}
+            <h3>{{ 'Invitations en attente'|trans }}</h3>
+            <ul>
+                {% for invitation in invitations %}
+                    <li>{{ invitation['asi'].email }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <h3>{{ 'Faire cette conférence à plusieurs'|trans }}</h3>
+        <p>{{ "Si vous présentez ce sujet à plusieurs, vous pouvez inviter d'autres conférenciers via le formulaire ci-dessous."|trans }}</p>
+        {{ form(invitationForm) }}
+
+        {% if votes.count > 0 %}
+            <h3>{{ 'Votes'|trans }} ({{ votes.count }})</h3>
+            <p>{{ "Retrouvez ici les votes déposés sur cette proposition. Ils peuvent vous aider à l'améliorer si nécessaire."|trans }}</p>
+            {% include 'common/star.html.twig' %}
+            <div class="cfp--votes">
+                <ul>
+                    {% for vote in votes %}
+                        <li>
+                            {% if vote.githubUser.afupCrew == true %}
+                                <p class="cfp--vote-afup" title="{{ 'Ce commentaire a été déposé par un membre du staff'|trans|e('html_attr') }}">AFUP</p>
+                            {% endif %}
+                            <p>{{ vote.submittedOn|localizeddate }}</p>
+                            <div class="event--vote-stars">
+                                <div style="display: inline-block">
+                                    <div class="stars">
+                                        {% for i in 5..1 %}
+                                            <a class="star {% if vote.vote >= i %}is-selected{% endif %}" href="#"><svg><use xlink:href="#star"></use></svg></a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <p>{{ vote.comment }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+    </div>
+    {{ sidebar|raw }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+		var simplemde = new SimpleMDE({
+			spellChecker: false,
+			hideIcons: ['side-by-side', 'fullscreen']
+		});
+    </script>
+{% endblock %}

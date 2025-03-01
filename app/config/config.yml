@@ -330,8 +330,6 @@ framework:
     csrf_protection: ~
     validation:      { enable_annotations: true }
     #serializer:      { enable_annotations: true }
-    templating:
-        engines: ['twig']
     default_locale:  "%locale%"
     trusted_hosts:   ~
     session:
@@ -350,6 +348,7 @@ twig:
     globals:
       photo_storage: '@AppBundle\CFP\PhotoStorage'
     form_themes: ['form_theme.html.twig']
+    exception_controller: null
 
 ting:
     connections:

@@ -1,0 +1,61 @@
+{% extends 'site/base.html.twig' %}
+
+{% block title %}La veille de l'AFUP{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/glyphicons.css') }}" media="screen" />
+    <link rel="stylesheet" href="{{ asset('css/techletter.css') }}" media="screen" />
+{% endblock %}
+
+{% block content %}
+{{ render(controller(
+    'AppBundle\\Controller\\Website\\SecondaryMenuController::display',
+    { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_NOS_ACTIONS') }
+)) }}
+
+<div class="techletter-subscription" id="container">
+
+    <div class="techletter-subscription--header">
+        <div class="techletter-subscription-capture">
+            <img src="{{ asset('images/techletter/sample.png') }}" alt="La veille de l'AFUP" />
+        </div>
+        <div class="techletter-subscription-header-content">
+            <h1>Simplifiez votre veille sur PHP.</h1>
+            <p>
+                Tous les 15 jours, recevez les infos à ne pas rater, sélectionnées par les experts de l'AFUP.<br />
+            </p>
+            <p>
+                <a class="banner-button" href="{{ path('member_techletter') }}">&gt;&gt; Je m'inscris &lt;&lt;</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="techletter-subscription-body">
+        <div class="techletter-subscription-argument">
+            <h2 class="h3-like">Le meilleur de PHP, directement par mail</h2>
+            <p>
+                Une sélection drastique est effectuée en amont, afin de vous permettre d'accéder aux meilleurs articles
+                du moment.<br />Ne perdez plus de temps à aller de lien en lien et concentrez-vous sur votre métier.
+            </p>
+        </div>
+
+        <div class="techletter-subscription-argument">
+            <h2 class="h3-like">Un avantage exclusif pour nos membres</h2>
+            <p>
+                Seuls les membres AFUP peuvent accéder à ce concentré de veille qui couvre l'essentiel de
+                l'actualité de PHP et des technologies connexes.
+            </p>
+        </div>
+
+        <div class="techletter-subscription-argument">
+            <h2 class="h3-like">Prérequis</h2>
+            <p>
+                Pour recevoir cette veille il faut être membre à jour de cotisation et cliquer sur le <a href="{{ path('member_techletter') }}">bouton d'inscription</a>
+                dans l'espace membres.
+            </p>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

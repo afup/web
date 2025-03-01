@@ -90,7 +90,7 @@ class CompanyPublicProfileController extends AbstractController
         }
 
         return $this->render(
-            ':site:member/company_public_profile.html.twig',
+            'site/member/company_public_profile.html.twig',
             [
                 'form' => $form->createView(),
                 'company_member' => $companyMember,

@@ -1,0 +1,20 @@
+{% extends 'admin/association/membership/_base.html.twig' %}
+
+{% block submenu %}
+    {% include 'admin/association/membership/_member_menu.html.twig' with {
+        current: "generalmeeting"
+    } only %}
+{% endblock %}
+
+{% block page_title %}Ma participation à l'Assemblée Générale du {{ latest_date|date('d/m/Y') }}{% endblock %}
+
+{% block page_content %}
+
+    <p class="erreur">
+        La date d'échéance de votre dernière cotisation précède la date de la prochaine assemblée générale.<br>
+        <br>
+        Vous ne pourrez donc pas voter lors de cette assemblée générale.<br>
+        <br>Vous pouvez dès à présent régler votre cotisation via <a href="{{ path('member_membership_fee') }}">"Ma cotisation"</a>
+    </p>
+
+{% endblock %}

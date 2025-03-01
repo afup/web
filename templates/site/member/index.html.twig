@@ -1,0 +1,261 @@
+{% extends 'admin/association/membership/_base.html.twig' %}
+
+{% block submenu %}
+    {% include 'site/secondary_menu.html.twig' with {
+        menu: [
+            {
+                "nom" : "Accueil",
+                "lien": path('member_index'),
+                'is_active': true,
+            },
+        ]
+    } only %}
+{% endblock %}
+
+{% block page_title %}Espace membre{% endblock %}
+
+{% block page_content %}
+
+    {% if display_link_to_general_meeting_vote %}
+    <a class="button-inverted button__medium button--call-to-action"
+       href="{{ path('member_general_meeting') }}"
+       style="display: block; font-size: 2rem"
+    >
+        Voter lors de l'assemblée générale
+    </a>
+    {% endif %}
+
+    <h2>Mon compte</h2>
+
+    <style>
+        .member-index-item--description {
+            margin: 15px 0 0 0;
+            padding: 0 30px 0 0;
+            font-style: italic;
+        }
+    </style>
+
+    <div class="member-index">
+
+        <div class="container">
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('member_contact') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-user"></i>
+                    </a>
+                    <span class="member-index-item--title">Mes coordonnées</span> : {{ user.label }}
+                    <div class="member-index-item--link">
+                        <a class="button-inverted button__medium" href="{{ href }}"
+                           title="Modifier les coordonnées">Modifier</a>
+                    </div>
+                    <div class="member-index-item--description">
+                        Modifiez votre adresse de facturation et votre adresse email, changez votre mot de passe
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('member_membership_fee') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-dollar"></i>
+                    </a>
+                    <span class="member-index-item--title">Cotisations</span>
+                    {% if membershipfee_end_date %}
+                        :
+                        <span style="{% if membership_fee_call_to_update %}color:#ed0678; font-weight: bold{% endif %}">
+                            {% if has_up_to_date_membership_fee %}
+                                expire le
+                            {% else %}
+                                a expirée le
+                            {% endif %}
+                            {{ membershipfee_end_date|date('d/m/Y') }}
+                        </span>
+                    {% endif %}
+                    <div class="member-index-item--link">
+                        <a class="button-inverted button__medium {% if not has_up_to_date_membership_fee %} button--call-to-action{% endif %}" href="{{ href }}">
+                            {% if has_up_to_date_membership_fee %}Consulter{% else %}Se mettre à jour{% endif %}
+                        </a>
+                    </div>
+                    <div class="member-index-item--description">
+                        Renouvelez votre adhésion, retrouvez l’historique de vos cotisations, téléchargez vos factures.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container">
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('member_techletter') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-bullhorn"></i>
+                    </a>
+                    <span class="member-index-item--title"> Veille de l'AFUP</span> : {% if has_member_subscribed_to_techletter %}inscrit(e){% else %}non inscrit{% endif %}
+                    <div class="member-index-item--link">
+                        <a class="button-inverted button__medium {% if not has_member_subscribed_to_techletter %}button--call-to-action{% endif %}" href="{{ href }}">
+                            {% if has_member_subscribed_to_techletter %}Consulter{% else %}Gérer mon abonnement{% endif %}
+                        </a>
+                    </div>
+                    <div class="member-index-item--description">
+                        Profitez de cet avantage exclusif réservé à nos membres : recevez 2 fois par mois notre veille dédiée à PHP, effectuée par notre pôle d’expert·e·s.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('member_general_meeting') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-comments"></i>
+                    </a>
+                    <span class="member-index-item--title">Assemblée générale</span>
+                    <div class="member-index-item--link">
+                        {%  if has_general_meeting_planned %}
+                            <a class="button-inverted button__medium {% if not has_user_rspved_to_next_general_meeting %}button--call-to-action{% endif %}" href="{{ href }}">Indiquer ma présence</a>
+                        {% else %}
+                            <a class="button-inverted button__medium" href="{{ href }}">Comptes-rendus</a>
+                        {% endif %}
+                    </div>
+                    <div class="member-index-item--description">
+                        L’AG annuelle de l’association se tient chaque mois de février. Le moment venu, indiquez votre présence ou donnez votre pouvoir à un·e autre membre.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('member_contact') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-map-marker"></i>
+                    </a>
+                    <span class="member-index-item--title">Antenne la plus proche</span> :
+                    {% if office_label %}
+                        {{ office_label }}
+                    {% else %}
+                        Aucune
+                    {% endif %}
+                    <div class="member-index-item--link">
+                        <a class="button-inverted button__medium {% if not office_label %}button--call-to-action{% endif %}" href="{{ href }}">{% if office_label %}Modifier{% else %}Définir{% endif %}</a>
+                    </div>
+                    <div class="member-index-item--description">
+                        Indiquez l’antenne AFUP la plus proche de chez vous : une information qui sera notamment utile pour votre badge lors du Forum PHP !
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            {% if user.canRequestSlackInvite or user.slackInviteRequested %}
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    <i class="fa fa-slack"></i> <span class="member-index-item--title">Slack membres AFUP</span>
+                    <div class="member-index-item--link">
+                        {% if user.canRequestSlackInvite %}
+                            <a class="button-inverted button__medium button--call-to-action" href="{{ path('member_slack_invite') }}">Recevoir l'invitation</a>
+                        {% elseif user.slackInviteRequested %}
+                            <a class="button-inverted button__medium" href="https://afup-membres.slack.com/" target="afup-slack">Accéder</a>
+                        {% endif %}
+                    </div>
+                    <div class="member-index-item--description">
+                        Rejoignez notre Slack réservé à nos membres, pour discuter PHP, poster vos recherches d’emploi et profiter d’un espace privilégié pour échanger avec la communauté.
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+
+
+        {% if is_granted('ROLE_COMPANY_MANAGER') %}
+        <h2>
+            Mon compte société
+        </h2>
+
+        <div class="container">
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('member_company') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-building"></i>
+                    </a>
+                    <span class="member-index-item--title">Coordonnées</span>
+                    <div class="member-index-item--link">
+                        <a class="button-inverted button__medium" title="Modifier les coordonnées"
+                           href="{{ href }}">Modifier</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('member_company_members') %}
+                    <a href="{{ href }}">
+                        <i class="fa fa-users"></i>
+                    </a>
+                    <span class="member-index-item--title">Personnes rattachées</span>
+                    <div class="member-index-item--link">
+                        <a class="button-inverted button__medium" title="Modifier les personnes rattachées"
+                           href="{{ path('member_company_members') }}">Modifier</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="member-index-item">
+                    {% set href = path('member_company_public_profile') %}
+                    <a href="">
+                        <i class="fa fa-address-card"></i>
+                    </a>
+                    <span class="member-index-item--title">Profil public</span>
+                    <div class="member-index-item--link">
+                        <a class="button-inverted button__medium" title="Modifier le profil public"
+                           href="{{ href }}">Modifier</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+
+    <h2>Restons en contact</h2>
+
+    <div class="container">
+        Plusieurs façons de rester au fait des activités de l’association et ainsi, de profiter au mieux de votre adhésion :
+        <ul>
+            <li>La newsletter des activités de l’AFUP sort le premier mardi de chaque mois. Assurez-vous qu’elle ne parte pas dans vos spams ;</li>
+            <li>Visitez régulièrement <a href="{{ path('home') }}">notre site</a> ou vous abonner à <a href="{{ path('feed_rss') }}">nos flux RSS</a> ;</li>
+            <li>Nous suivre sur les réseaux sociaux <a href="https://twitter.com/afup">Twitter</a> et/ou <a href="https://mastodon.online/@afup">Mastodon</a> ; </li>
+            <li>Consulter la <a href="/association/antennes">liste des antennes</a> afin de suivre leur activité.</li>
+        </ul>
+    </div>
+
+
+    {% if badges %}
+        <h2>Badges</h2>
+
+        <div class="container">
+        {% for badge in badges %}
+                <div class="col-md-3 col-sm-12 member-badge">
+                    {% if badge.id is defined %}
+                        <img title="{{ badge.tooltip }}"
+                             src="{{ path('badge_image', {id: badge.id })}}" alt="Badge">
+                    {% else %}
+                        <img title="{{ badge.tooltip }}"
+                             src="/images/badges/{{ badge.code }}.png" alt="Badge {{ badge.code }}">
+                    {% endif %}
+                </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock %}

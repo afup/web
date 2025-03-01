@@ -20,7 +20,7 @@ class Mail
 
         return new Mailer(
             new NullLogger(),
-            new Environment(new FilesystemLoader(self::PROJECT_DIR . '/app/Resources/views/')),
+            new Environment(new FilesystemLoader(self::PROJECT_DIR . '/templates/')),
             PhpMailerAdapter::createFromConfiguration($configuration),
             $configuration
         );
