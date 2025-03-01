@@ -22,6 +22,25 @@ class TweetRepository extends Repository implements MetadataInitializer
     }
 
     /**
+     * @param array<Talk> $talks
+     * @return array<int, int>
+     */
+    public function getNumberOfTweetsPerTalk(array $talks): array
+    {
+        $query = $this->getPreparedQuery('SELECT id_session, COUNT(id_session) AS quantity FROM tweet WHERE id_session IN(:ids) GROUP BY id_session');
+
+        $query->setParams([
+            'ids' => array_values(array_map(fn (Talk $talk) => $talk->getId(), $talks)),
+        ]);
+
+        $res = $query->query($this->getCollection(new HydratorArray()));
+
+        var_dump($res);
+
+        return [];
+    }
+
+    /**
      *
      * @return Metadata
      */
@@ -54,6 +73,11 @@ class TweetRepository extends Repository implements MetadataInitializer
                     'unserialize' => ['unSerializeUseFormat' => false]
                 ]
 
+            ])
+            ->addField([
+                'columnName' => 'social_network',
+                'fieldName' => 'socialNetwork',
+                'type' => 'string',
             ])
         ;
 
