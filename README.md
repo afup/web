@@ -74,7 +74,7 @@ Lancement des tests unitaires :
 - Se connecter dans le conteneur php `docker/bin/bash`
 - Lancer les tests et valider le code :
 ```
-	./bin/atoum
+	./bin/phpunit
 	./bin/php-cs-fixer fix --dry-run -vv
 ```
 - Une alternative est d'utiliser la commande `make test` qui effectuer la même action.

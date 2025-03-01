@@ -32,7 +32,7 @@ jobs:
         run: composer install --no-scripts
 
       - name: Tests - Unit
-        run: ./bin/atoum
+        run: ./bin/phpunit
 
   lint:
     name: "Linter"
