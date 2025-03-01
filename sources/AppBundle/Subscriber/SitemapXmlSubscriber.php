@@ -15,6 +15,7 @@ use AppBundle\Site\Model\Repository\ArticleRepository;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
 use Presta\SitemapBundle\Service\UrlContainerInterface;
+use Presta\SitemapBundle\Sitemap\Url\GoogleVideo;
 use Presta\SitemapBundle\Sitemap\Url\GoogleVideoUrlDecorator;
 use Presta\SitemapBundle\Sitemap\Url\UrlConcrete;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -34,7 +35,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            SitemapPopulateEvent::ON_SITEMAP_POPULATE => 'populate',
+            SitemapPopulateEvent::class => 'populate',
         ];
     }
 
@@ -67,14 +68,15 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
             $urls->addUrl($url,'talks');
 
             if ($talk->hasYoutubeId()) {
-                $urlVideo = new GoogleVideoUrlDecorator(
-                    $url,
+                $video = new GoogleVideo(
                     sprintf('https://img.youtube.com/vi/%s/0.jpg', $talk->getYoutubeId()),
                     $talk->getTitle(),
                     strip_tags(html_entity_decode($talk->getDescription())),
-                    ['player_loc' => $talk->getYoutubeUrl()]
+                    ['player_location' => $talk->getYoutubeUrl()]
                 );
-                $urls->addUrl($urlVideo,'video');
+                $decoratedUrl = new GoogleVideoUrlDecorator($url);
+                $decoratedUrl->addVideo($video);
+                $urls->addUrl($decoratedUrl,'video');
             }
         }
     }
