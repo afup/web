@@ -22,7 +22,7 @@ final class SlackNotifierTest extends TestCase
         $mockResponse = new MockResponse();
         $client = new MockHttpClient([$mockResponse]);
 
-        $messageFactory = new MessageFactory(new Translator(null));
+        $messageFactory = new MessageFactory(new Translator('fr'));
 
         $notifier = new SlackNotifier(
             'http://fake-slack-endpoint',
