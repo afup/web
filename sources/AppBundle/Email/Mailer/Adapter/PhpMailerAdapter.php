@@ -7,21 +7,16 @@ namespace AppBundle\Email\Mailer\Adapter;
 use Afup\Site\Utils\Configuration;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\Message;
-use PHPMailer;
+use PHPMailer\PHPMailer\PHPMailer;
 use UnexpectedValueException;
 
 class PhpMailerAdapter implements MailerAdapter
 {
-    /** @var string|null */
-    private $smtpServer;
-    /** @var string|null */
-    private $tls;
-    /** @var string|null */
-    private $username;
-    /** @var string|null */
-    private $password;
-    /** @var string|null */
-    private $port;
+    private ?string $smtpServer;
+    private ?string $tls;
+    private ?string $username;
+    private ?string $password;
+    private ?string $port;
 
     public function __construct($smtpServer, $tls, $username, $password, $port)
     {
@@ -72,10 +67,8 @@ class PhpMailerAdapter implements MailerAdapter
 
     /**
      * Génération et configuration de l'objet PHPMailer
-     *
-     * @return PHPMailer objet mailer configuré
      */
-    private function createPhpMailer(): \PHPMailer
+    private function createPhpMailer(): PHPMailer
     {
         // Exceptions gérées
         $mailer = new PHPMailer(true);
