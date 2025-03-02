@@ -133,15 +133,11 @@ compose.override.yml:
 
 vendors: vendor node_modules
 
-vendor: composer.phar composer.lock
-	php composer.phar install --no-scripts
+vendor: composer.lock
+	composer install --no-scripts
 
 node_modules:
 	npm install --legacy-peer-deps
-
-composer.phar:
-    # You may replace the commit hash by whatever the last commit hash is on https://github.com/composer/getcomposer.org/commits/main
-	curl https://raw.githubusercontent.com/composer/getcomposer.org/46c42b8248e157b4f77acf5150dacba6aeb60901/web/installer | php -- --2.2
 
 init-db:
 	make reset-db
