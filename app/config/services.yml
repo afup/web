@@ -6,9 +6,9 @@ parameters:
         oauth_access_token_secret: "%twitter_oauth_access_token_secret%"
         consumer_key: "%twitter_consumer_key%"
         consumer_secret: "%twitter_consumer_secret%"
-    app.badge_dir: "%kernel.project_dir%/htdocs/uploads/badges"
-    app.members_logo_dir: "%kernel.project_dir%/htdocs/uploads/members_logo"
-    app.general_meetings_dir: "%kernel.project_dir%/htdocs/uploads/general_meetings_reports"
+    app.badge_dir: "%kernel.project_dir%/../htdocs/uploads/badges"
+    app.members_logo_dir: "%kernel.project_dir%/../htdocs/uploads/members_logo"
+    app.general_meetings_dir: "%kernel.project_dir%/../htdocs/uploads/general_meetings_reports"
 
 services:
 #    service_name:
@@ -46,12 +46,12 @@ services:
     AppBundle\Controller\Admin\Site\AddRubriqueAction:
         autowire: true
         arguments :
-            $storageDir: '%kernel.project_dir%/htdocs/templates/site/images'
+            $storageDir: '%kernel.project_dir%/../htdocs/templates/site/images'
 
     AppBundle\Controller\Admin\Site\EditRubriqueAction:
         autowire: true
         arguments :
-            $storageDir: '%kernel.project_dir%/htdocs/templates/site/images'
+            $storageDir: '%kernel.project_dir%/../htdocs/templates/site/images'
 
     AppBundle\Controller\Admin\Members\BadgeNewAction:
         autowire: true
