@@ -423,4 +423,4 @@ ewz_recaptcha:
 
 
 ekino_new_relic:
-    log_exceptions: true
+    exceptions: true
