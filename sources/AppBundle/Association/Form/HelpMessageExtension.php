@@ -22,8 +22,8 @@ class HelpMessageExtension extends AbstractTypeExtension
         $resolver->setDefaults(['help' => null]);
     }
 
-    public function getExtendedType()
+    public static function getExtendedTypes(): array
     {
-        return FormType::class;
+        return [FormType::class];
     }
 }

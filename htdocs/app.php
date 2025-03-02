@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Composer\Autoload\ClassLoader;
-use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
 $isDevEnv = isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'dev';
@@ -24,7 +23,6 @@ if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv || $isTestEnv) {
 
     /** @var ClassLoader $loader */
     $loader = require __DIR__ . '/../vendor/autoload.php';
-    Debug::enable();
 
     $kernel = $isDevEnv ? new AppKernel('dev', true) : new AppKernel('test', true);
 } else {

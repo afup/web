@@ -8,12 +8,12 @@ use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Mailchimp\Mailchimp;
 use AppBundle\Mailchimp\Runner;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateMailchimpMembersCommand extends ContainerAwareCommand
+class UpdateMailchimpMembersCommand extends Command
 {
     private Mailchimp $mailchimp;
     private RepositoryFactory $ting;
@@ -28,9 +28,7 @@ class UpdateMailchimpMembersCommand extends ContainerAwareCommand
         $this->ting = $ting;
         parent::__construct();
     }
-    /**
-     * @see Command
-     */
+
     protected function configure(): void
     {
         $this

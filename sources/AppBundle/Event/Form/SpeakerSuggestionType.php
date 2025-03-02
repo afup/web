@@ -27,7 +27,7 @@ class SpeakerSuggestionType extends AbstractType
                     'constraints' => [
                         new NotBlank(),
                         new Length(['max' => 254]),
-                        new Email(['checkMX' => true]),
+                        new Email(),
                     ],
                 ]
             )
