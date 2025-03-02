@@ -13,7 +13,7 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\SponsorTicket;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SponsorTokenMail
 {
@@ -53,10 +53,10 @@ class SponsorTokenMail
             $subjectLabel = "mail.sponsorTicketLastCall.subject";
         }
 
-        $text = $this->translator->transChoice(
+        $text = $this->translator->trans(
             $textLabel,
-            $sponsorTicket->getMaxInvitations(),
             [
+                '%count%' => $sponsorTicket->getMaxInvitations(),
                 '%token%' => $sponsorTicket->getToken(),
                 '%places%' => $sponsorTicket->getMaxInvitations(),
                 '%event%' => $event->getTitle(),
