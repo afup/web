@@ -15,5 +15,6 @@ default:
       sessions:
         default:
           goutte:
-            guzzle_parameters:
-              verify: false
+            server_parameters:
+              verify_peer: false
+              verify_host: false
