@@ -41,106 +41,60 @@ class Talk implements NotifyPropertyInterface
     private ?\DateTime $submittedOn = null;
 
     /**
-     * @var string
      * @Assert\NotBlank()
      */
-    private $title;
+    private string $title = '';
 
     /**
-     * @var string
      * @Assert\NotBlank()
      */
-    private $abstract;
+    private string $abstract = '';
 
-    /**
-     * @var string
-     */
-    private $staffNotes;
+    private ?string $staffNotes = null;
 
     private bool $scheduled = false;
 
     /**
-     * @var int
      * @Assert\NotBlank()
      * @Assert\Choice(choices = {1, 2, 3}, message = "Choose a valid type")
      */
-    private $type = self::TYPE_FULL_LONG;
+    private int $type = self::TYPE_FULL_LONG;
 
     /**
-     * @var int
      * @Assert\NotBlank()
      * @Assert\Choice(choices = {0, 1, 2, 3}, message = "Choose a valid skill requirement")
      */
-    private $skill = self::SKILL_NA;
+    private int $skill = self::SKILL_NA;
 
-    /**
-     * @var bool
-     */
-    private $withWorkshop = false;
+    private bool $withWorkshop = false;
 
-    /**
-     * @var string
-     */
-    private $workshopAbstract;
+    private ?string $workshopAbstract = null;
 
-    /**
-     * @var bool
-     */
-    private $needsMentoring = false;
+    private bool $needsMentoring = false;
 
-    /**
-     * @var string|null
-     */
-    private $youTubeId;
+    private ?string $youTubeId = null;
 
     private bool $videoHasFrSubtitles = false;
 
     private bool $videoHasEnSubtitles = false;
 
-    /**
-     * @var string|null
-     */
-    private $slidesUrl;
+    private ?string $slidesUrl = null;
 
-    /**
-     * @var string|null
-     */
-    private $blogPostUrl;
+    private ?string $blogPostUrl = null;
 
-    /**
-     * @var string|null
-     */
-    private $interviewUrl;
+    private ?string $interviewUrl = null;
 
-    /**
-     * @var string|null
-     */
-    private $joindinId;
+    private ?int $joindinId = null;
 
-    /**
-     * @var string|null
-     */
-    private $openfeedbackPath;
+    private ?string $openfeedbackPath = null;
 
-    /**
-     * @var string|null
-     */
-    private $languageCode;
+    private ?string $languageCode = null;
 
-    /**
-     * @var string|null
-     */
-    private $tweets;
+    private ?string $tweets = null;
 
-    /**
-     * @var string|null
-     */
-    private $transcript;
+    private ?string $transcript = null;
 
-    /**
-     * @var string|null
-     */
-    private $verbatim;
+    private ?string $verbatim = null;
 
     private bool $useMarkdown = true;
 
@@ -157,12 +111,8 @@ class Talk implements NotifyPropertyInterface
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id): self
+    public function setId(int $id): self
     {
-        $id = (int) $id;
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
         return $this;
@@ -176,20 +126,13 @@ class Talk implements NotifyPropertyInterface
         return $this->forumId;
     }
 
-    /**
-     * @param int $forumId
-     */
-    public function setForumId($forumId): self
+    public function setForumId(?int $forumId): self
     {
-        $forumId = (int) $forumId;
         $this->propertyChanged('forumId', $this->forumId, $forumId);
         $this->forumId = $forumId;
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getSubmittedOn(): ?\DateTime
     {
         return $this->submittedOn;
@@ -202,56 +145,36 @@ class Talk implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     */
-    public function setTitle($title): self
+    public function setTitle(string $title): self
     {
         $this->propertyChanged('title', $this->title, $title);
         $this->title = $title;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getAbstract()
+    public function getAbstract(): string
     {
         return $this->abstract;
     }
 
-    /**
-     * @param string $abstract
-     */
-    public function setAbstract($abstract): self
+    public function setAbstract(string $abstract): self
     {
         $this->propertyChanged('abstract', $this->abstract, $abstract);
         $this->abstract = $abstract;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getStaffNotes()
+    public function getStaffNotes(): ?string
     {
         return $this->staffNotes;
     }
 
-    /**
-     * @param string $staffNotes
-     *
-     * @return $this
-     */
-    public function setStaffNotes($staffNotes): self
+    public function setStaffNotes(?string $staffNotes): self
     {
         $this->propertyChanged('staffNotes', $this->staffNotes, $staffNotes);
         $this->staffNotes = $staffNotes;
@@ -259,9 +182,6 @@ class Talk implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): ?string
     {
         return preg_replace("/NIVEAU : .*\n/", "", $this->getAbstract());
@@ -272,48 +192,31 @@ class Talk implements NotifyPropertyInterface
         return $this->scheduled;
     }
 
-    /**
-     * @param boolean $scheduled
-     */
-    public function setScheduled($scheduled): self
+    public function setScheduled(bool $scheduled): self
     {
-        $scheduled = (bool) $scheduled;
-
         $this->propertyChanged('scheduled', $this->scheduled, $scheduled);
         $this->scheduled = $scheduled;
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getType()
+    public function getType(): int
     {
         return $this->type;
     }
 
-    /**
-     * @param int $type
-     */
-    public function setType($type): self
+    public function setType(int $type): self
     {
         $this->propertyChanged('type', $this->type, $type);
         $this->type = $type;
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getSkill()
+    public function getSkill(): int
     {
         return $this->skill;
     }
 
-    /**
-     * @param int $skill
-     */
-    public function setSkill($skill): self
+    public function setSkill(int $skill): self
     {
         $this->propertyChanged('skill', $this->skill, $skill);
         $this->skill = $skill;
@@ -330,20 +233,12 @@ class Talk implements NotifyPropertyInterface
         return 'type.' . $this->type;
     }
 
-    /**
-     * @return bool
-     */
-    public function getWithWorkshop()
+    public function getWithWorkshop(): bool
     {
         return $this->withWorkshop;
     }
 
-    /**
-     * @param bool $withWorkshop
-     *
-     * @return $this
-     */
-    public function setWithWorkshop($withWorkshop): self
+    public function setWithWorkshop(bool $withWorkshop): self
     {
         $this->propertyChanged('withWorkshop', $this->withWorkshop, $withWorkshop);
         $this->withWorkshop = $withWorkshop;
@@ -351,38 +246,24 @@ class Talk implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getWorkshopAbstract()
+    public function getWorkshopAbstract(): ?string
     {
         return $this->workshopAbstract;
     }
 
-    /**
-     * @param string $workshopAbstract
-     */
-    public function setWorkshopAbstract($workshopAbstract): self
+    public function setWorkshopAbstract(?string $workshopAbstract): self
     {
         $this->propertyChanged('workshopAbstract', $this->workshopAbstract, $workshopAbstract);
         $this->workshopAbstract = $workshopAbstract;
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function getNeedsMentoring()
+    public function getNeedsMentoring(): bool
     {
         return $this->needsMentoring;
     }
 
-    /**
-     * @param bool $needsMentoring
-     *
-     * @return $this
-     */
-    public function setNeedsMentoring($needsMentoring): self
+    public function setNeedsMentoring(bool $needsMentoring): self
     {
         $this->propertyChanged('needsMentoring', $this->needsMentoring, $needsMentoring);
         $this->needsMentoring = $needsMentoring;
@@ -390,22 +271,12 @@ class Talk implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getYoutubeId()
+    public function getYoutubeId(): ?string
     {
-        if (empty($this->youTubeId)) {
-            return null;
-        }
-
         return $this->youTubeId;
     }
 
-    /**
-     * @param int $youtubeId
-     */
-    public function setYoutubeId($youtubeId): self
+    public function setYoutubeId(?string $youtubeId): self
     {
         $this->propertyChanged('youtubeId', $this->youTubeId, $youtubeId);
         $this->youTubeId = $youtubeId;
@@ -427,10 +298,7 @@ class Talk implements NotifyPropertyInterface
         return 'https://www.youtube.com/watch?v=' . $this->getYoutubeId();
     }
 
-    /**
-     * @return int
-     */
-    public function getSlidesUrl()
+    public function getSlidesUrl(): ?string
     {
         if (empty($this->slidesUrl)) {
             return null;
@@ -439,10 +307,7 @@ class Talk implements NotifyPropertyInterface
         return $this->slidesUrl;
     }
 
-    /**
-     * @param int $slidesUrl
-     */
-    public function setSlidesUrl($slidesUrl): self
+    public function setSlidesUrl(?string $slidesUrl): self
     {
         $this->propertyChanged('slidesUrl', $this->slidesUrl, $slidesUrl);
         $this->slidesUrl = $slidesUrl;
@@ -455,10 +320,7 @@ class Talk implements NotifyPropertyInterface
         return null !== $this->getSlidesUrl();
     }
 
-    /**
-     * @return int
-     */
-    public function getJoindinId()
+    public function getJoindinId(): ?int
     {
         if (0 === $this->joindinId) {
             return null;
@@ -467,10 +329,7 @@ class Talk implements NotifyPropertyInterface
         return $this->joindinId;
     }
 
-    /**
-     * @param int $joindInId
-     */
-    public function setJoindinId($joindInId): self
+    public function setJoindinId(?int $joindInId): self
     {
         $this->propertyChanged('joindinId', $this->joindinId, $joindInId);
         $this->joindinId = $joindInId;
@@ -492,18 +351,12 @@ class Talk implements NotifyPropertyInterface
         return '/talks/' . $this->getUrlKey() . '/joindin';
     }
 
-    /**
-     * @return string|null
-     */
-    public function getOpenfeedbackPath()
+    public function getOpenfeedbackPath(): ?string
     {
         return $this->openfeedbackPath;
     }
 
-    /**
-     * @param string|null $openfeedbackPath
-     */
-    public function setOpenfeedbackPath($openfeedbackPath): self
+    public function setOpenfeedbackPath(?string $openfeedbackPath): self
     {
         $this->openfeedbackPath = $openfeedbackPath;
 
@@ -524,22 +377,12 @@ class Talk implements NotifyPropertyInterface
         return 'https://openfeedback.io/' . $this->getOpenfeedbackPath();
     }
 
-    /**
-     * @return int
-     */
-    public function getBlogPostUrl()
+    public function getBlogPostUrl(): ?string
     {
-        if (empty($this->blogPostUrl)) {
-            return null;
-        }
-
         return $this->blogPostUrl;
     }
 
-    /**
-     * @param int $blogPostUrl
-     */
-    public function setBlogPostUrl($blogPostUrl): self
+    public function setBlogPostUrl(?string $blogPostUrl): self
     {
         $this->propertyChanged('blogPostUrl', $this->blogPostUrl, $blogPostUrl);
         $this->blogPostUrl = $blogPostUrl;
@@ -552,22 +395,12 @@ class Talk implements NotifyPropertyInterface
         return null !== $this->getBlogPostUrl();
     }
 
-    /**
-     * @return int
-     */
-    public function getInterviewUrl()
+    public function getInterviewUrl(): ?string
     {
-        if (empty($this->interviewUrl)) {
-            return null;
-        }
-
         return $this->interviewUrl;
     }
 
-    /**
-     * @param int $interviewUrl
-     */
-    public function setInterviewUrl($interviewUrl): self
+    public function setInterviewUrl(?string $interviewUrl): self
     {
         $this->propertyChanged('interviewUrl', $this->interviewUrl, $interviewUrl);
         $this->interviewUrl = $interviewUrl;
@@ -594,6 +427,9 @@ class Talk implements NotifyPropertyInterface
         return $this->getId() . '-' . $this->getSlug();
     }
 
+    /**
+     * @return array<self::TYPE_*, string>
+     */
     public static function getTypeLabelsByKey(): array
     {
         return [
@@ -608,12 +444,7 @@ class Talk implements NotifyPropertyInterface
         ];
     }
 
-    /**
-     * @return string
-     *
-     * @throws \Exception
-     */
-    public function getTypeLabel()
+    public function getTypeLabel(): string
     {
         $type = $this->getType();
         $mapping = self::getTypeLabelsByKey();
@@ -632,6 +463,9 @@ class Talk implements NotifyPropertyInterface
         return $type != self::TYPE_CLINIC && $type != self::TYPE_SPEAKER_INTRODUCTIONS && $this->getScheduled();
     }
 
+    /**
+     * @return array<self::LANGUAGE_CODE_*, string>
+     */
     public static function getLanguageLabelsByKey(): array
     {
         return [
@@ -640,12 +474,7 @@ class Talk implements NotifyPropertyInterface
         ];
     }
 
-    /**
-     * @return string
-     *
-     * @throws \Exception
-     */
-    public function getLanguageLabel()
+    public function getLanguageLabel(): string
     {
         $languageCde = $this->getLanguageCode();
         $mapping = self::getLanguageLabelsByKey();
@@ -657,18 +486,12 @@ class Talk implements NotifyPropertyInterface
         return $mapping[$languageCde];
     }
 
-    /**
-     * @return int
-     */
-    public function getLanguageCode()
+    public function getLanguageCode(): ?string
     {
         return $this->languageCode;
     }
 
-    /**
-     * @param int $languageCode
-     */
-    public function setLanguageCode($languageCode): self
+    public function setLanguageCode(?string $languageCode): self
     {
         $this->propertyChanged('languageCode', $this->languageCode, $languageCode);
         $this->languageCode = $languageCode;
@@ -681,12 +504,8 @@ class Talk implements NotifyPropertyInterface
         return $this->useMarkdown;
     }
 
-    /**
-     * @param bool $useMarkdown
-     */
-    public function setUseMarkdown($useMarkdown): self
+    public function setUseMarkdown(bool $useMarkdown): self
     {
-        $useMarkdown = (bool) $useMarkdown;
         $this->propertyChanged('useMarkdown', $this->useMarkdown, $useMarkdown);
         $this->useMarkdown = $useMarkdown;
         return $this;
@@ -697,14 +516,8 @@ class Talk implements NotifyPropertyInterface
         return $this->videoHasEnSubtitles;
     }
 
-    /**
-     * @param bool $videoHasEnSubtitles
-     *
-     * @return $this
-     */
-    public function setVideoHasEnSubtitles($videoHasEnSubtitles): self
+    public function setVideoHasEnSubtitles(bool $videoHasEnSubtitles): self
     {
-        $videoHasEnSubtitles = (bool) $videoHasEnSubtitles;
         $this->propertyChanged('useMarkdown', $this->videoHasEnSubtitles, $videoHasEnSubtitles);
         $this->videoHasEnSubtitles = $videoHasEnSubtitles;
 
@@ -716,81 +529,53 @@ class Talk implements NotifyPropertyInterface
         return $this->videoHasFrSubtitles;
     }
 
-    /**
-     * @param bool $videoHasFrSubtitles
-     *
-     * @return $this
-     */
-    public function setVideoHasFrSubtitles($videoHasFrSubtitles): self
+    public function setVideoHasFrSubtitles(bool $videoHasFrSubtitles): self
     {
-        $videoHasFrSubtitles = (bool) $videoHasFrSubtitles;
         $this->propertyChanged('useMarkdown', $this->videoHasFrSubtitles, $videoHasFrSubtitles);
         $this->videoHasFrSubtitles = $videoHasFrSubtitles;
 
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getTweets()
+    public function getTweets(): ?string
     {
         return $this->tweets;
     }
 
-    /**
-     * @param string|null $tweets
-     *
-     * @return $this
-     */
-    public function setTweets($tweets): self
+    public function setTweets(?string $tweets): self
     {
         $this->tweets = $tweets;
 
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getTranscript()
+    public function getTranscript(): ?string
     {
         return $this->transcript;
     }
 
-    /**
-     * @param string|null $transcript
-     *
-     * @return $this
-     */
-    public function setTranscript($transcript): self
+    public function setTranscript(?string $transcript): self
     {
         $this->transcript = $transcript;
 
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getVerbatim()
+    public function getVerbatim(): ?string
     {
         return $this->verbatim;
     }
 
-    /**
-     * @param string|null $verbatim
-     *
-     * @return $this
-     */
-    public function setVerbatim($verbatim): self
+    public function setVerbatim(?string $verbatim): self
     {
         $this->verbatim = $verbatim;
 
         return $this;
     }
 
-
+    /**
+     * @return array<string>
+     */
     public function getTweetsHasArray(): array
     {
         if (!$this->getTweets()) {
