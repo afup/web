@@ -12,7 +12,7 @@ class CreditMutuel implements Importer
 
     private ?\SplFileObject $file = null;
 
-    public function initialize($filePath): void
+    public function initialize(string $filePath): void
     {
         $this->file = new \SplFileObject($filePath, 'r');
         $this->file->setCsvControl(';');
@@ -30,10 +30,7 @@ class CreditMutuel implements Importer
         return count($firstLine) === 6 && $firstLine[1] === 'Date de valeur';
     }
 
-    /**
-     * @return Operation[]
-     */
-    public function extract()
+    public function extract(): \Generator
     {
         $nbLineByDate = [];
         foreach ($this->file as $i => $data) {

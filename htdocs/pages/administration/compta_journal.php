@@ -5,7 +5,6 @@ declare(strict_types=1);
 // Impossible to access the file itself
 use Afup\Site\Comptabilite\Comptabilite;
 use Afup\Site\Utils\Logs;
-use AppBundle\Compta\Importer\CaisseEpargne;
 use AppBundle\Compta\Importer\CreditMutuel;
 use AppBundle\Compta\Importer\CreditMutuelLivret;
 use AppBundle\Compta\Importer\Factory;
@@ -595,7 +594,6 @@ elseif ($action === 'download_attachment') {
     $formulaire->addElement('header', null          , 'Import CSV');
     $formulaire->addElement('file', 'fichiercsv', 'Fichier banque');
     $formulaire->addElement('select', 'banque', 'Banque', [
-        CaisseEpargne::CODE => "Caisse d'Épargne",
         CreditMutuel::CODE => 'Crédit Mutuel - Compte Courant',
         CreditMutuelLivret::CODE => 'Crédit Mutuel - Livret',
     ]);
