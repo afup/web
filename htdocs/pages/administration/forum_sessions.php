@@ -89,8 +89,8 @@ if ($action == 'lister') {
         if (isset($session['joindin']) && $session['joindin'] > 0) {
             $talk = new Talk();
             $talk->setTitle($session['titre']);
-            $talk->setId($session['session_id']);
-            $talk->setJoindinId($session['joindin']);
+            $talk->setId((int) $session['session_id']);
+            $talk->setJoindinId((int) $session['joindin']);
             $session['joindin_url'] = $talk->getJoindinUrl();
         }
     }
