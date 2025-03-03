@@ -142,10 +142,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     private $membershipReason;
 
-    /**
-     * @var \Datetime
-     */
-    private $lastSubscription;
+    private \DateTimeImmutable $lastSubscription;
 
     /**
      * @return int
@@ -530,14 +527,15 @@ class CompanyMember implements NotifyPropertyInterface
         return $this->twitterHandle;
     }
 
-    /**
-     * @return bool|string
-     */
-    public function getCleanedTwitterHandle()
+    public function getCleanedTwitterHandle(): ?string
     {
         $twitter = (string) $this->getTwitterHandle();
         $twitter = trim($twitter, '@');
         $twitter = preg_replace('!^https?://twitter.com/!', '', $twitter);
+
+        if (!is_string($twitter)) {
+            return null;
+        }
 
         if (trim($twitter) === '') {
             return null;
@@ -619,10 +617,7 @@ class CompanyMember implements NotifyPropertyInterface
         return $slugify->slugify($this->getCompanyName());
     }
 
-    /**
-     * @return \Datetime
-     */
-    public function getLastSubscription()
+    public function getLastSubscription(): \DateTimeImmutable
     {
         return $this->lastSubscription;
     }

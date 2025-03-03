@@ -130,7 +130,7 @@ class Planning implements NotifyPropertyInterface
     }
 
     /**
-     * @param int $isKeynote
+     * @param bool $isKeynote
 
      * @return $this
      */
