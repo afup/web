@@ -602,10 +602,7 @@ class Speaker implements NotifyPropertyInterface
         return $this->hotelNights;
     }
 
-    /**
-     * @return array
-     */
-    public function getHotelNightsArray()
+    public function getHotelNightsArray(): ?array
     {
         if (null === $this->hotelNights) {
             return null;

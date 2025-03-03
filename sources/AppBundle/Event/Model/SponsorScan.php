@@ -57,7 +57,7 @@ class SponsorScan implements NotifyPropertyInterface
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getSponsorTicketId()
     {
@@ -65,7 +65,7 @@ class SponsorScan implements NotifyPropertyInterface
     }
 
     /**
-     * @param string $sponsorTicketId
+     * @param int $sponsorTicketId
      * @return $this
      */
     public function setSponsorTicketId($sponsorTicketId): self
