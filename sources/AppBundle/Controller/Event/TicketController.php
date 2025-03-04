@@ -38,11 +38,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class TicketController extends AbstractController
 {
-    private CsrfTokenManagerInterface $csrfTokenManager;
     /** @var SessionInterface&Session $session */
     private SessionInterface $session;
     private EventDispatcherInterface $eventDispatcher;
@@ -59,9 +57,8 @@ class TicketController extends AbstractController
     private TicketRepository $ticketRepository;
     private PayboxFactory $payboxFactory;
     private EventActionHelper $eventActionHelper;
-    public function __construct(CsrfTokenManagerInterface $csrfTokenManager, SessionInterface $session, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger, RepositoryFactory $repositoryFactory, ActionThrottling $actionThrottling, TicketFactory $ticketFactory, SponsorTicketHelper $sponsorTicketHelper, Emails $emails, PurchaseTypeFactory $purchaseTypeFactory, InvoiceRepository $invoiceRepository, LegacyModelFactory $legacyModelFactory, TicketRepository $ticketRepository, PayboxFactory $payboxFactory, EventActionHelper $eventActionHelper)
+    public function __construct(SessionInterface $session, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger, RepositoryFactory $repositoryFactory, ActionThrottling $actionThrottling, TicketFactory $ticketFactory, SponsorTicketHelper $sponsorTicketHelper, Emails $emails, PurchaseTypeFactory $purchaseTypeFactory, InvoiceRepository $invoiceRepository, LegacyModelFactory $legacyModelFactory, TicketRepository $ticketRepository, PayboxFactory $payboxFactory, EventActionHelper $eventActionHelper)
     {
-        $this->csrfTokenManager = $csrfTokenManager;
         $this->session = $session;
         $this->eventDispatcher = $eventDispatcher;
         $this->logger = $logger;
@@ -86,9 +83,8 @@ class TicketController extends AbstractController
         }
 
         if ($request->isMethod(Request::METHOD_POST)) {
-            $csrf = $this->csrfTokenManager->getToken('sponsor_ticket');
             $errors = [];
-            if ($csrf->getValue() !== $request->get('_csrf_token')) {
+            if (!$this->isCsrfTokenValid('sponsor_ticket', $request->request->get('_csrf_token'))) {
                 $errors[] = 'Jeton anti csrf invalide';
             } elseif ($request->request->has('sponsor_token') === false) {
                 $errors[] = 'Token absent';
@@ -310,7 +306,7 @@ class TicketController extends AbstractController
         }
 
         if ($invoice->getStatus() === Ticket::STATUS_PAID) {
-            $this->logger->addWarning(
+            $this->logger->warning(
                 sprintf('Invoice %s already paid, cannot show the paymentAction', $invoiceRef)
             );
             return $this->render('event/ticket/payment_already_done.html.twig', ['event' => $event]);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Afup\Site\Utils;
 
-use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -22,7 +21,6 @@ class SymfonyKernel
         $debug = false;
 
         if (isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] === 'dev') {
-            Debug::enable(E_WARNING);
             $debug = true;
             $env = 'dev';
         }

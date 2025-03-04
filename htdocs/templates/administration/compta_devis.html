@@ -30,12 +30,14 @@
 
     <div class="ui bottom attached segment">
     {if $ecritures}
+        {assign var=tri value=$smarty.get.tri|default:''}
+        {assign var=sens value=$smarty.get.sens|default:''}
     <table class="ui table striped compact celled afup-tab-filterable">
         <thead>
         <tr>
             <!-- th width="20px">&nbsp;</th -->
-            <th data-tf-filter-type="input"><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
-            <th data-tf-filter-type="input"><a href="index.php?page=compta_devis&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
+            <th data-tf-filter-type="input"><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $sens == 'asc' && $tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
+            <th data-tf-filter-type="input"><a href="index.php?page=compta_devis&amp;tri=evenement&amp;sens={if $sens == 'asc' && $tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
             <th data-tf-filter-type="input">Ville</th>
             <th data-tf-filter-type="input">Ref client</th>
             <th data-tf-filter-type="input">Numero devis</th>
