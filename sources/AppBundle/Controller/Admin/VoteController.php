@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Association\Model\User;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\VoteType;
@@ -125,7 +126,9 @@ class VoteController extends AbstractController
         }
 
         $vote = new Vote();
-        $vote->setUser($this->getUser()->getId());
+        if ($this->getUser() instanceof User) {
+            $vote->setUser($this->getUser()->getId());
+        }
 
         $form = $this->createVoteForm($eventSlug, $talkId, $vote);
         $form->handleRequest($request);

@@ -19,6 +19,10 @@ declare(strict_types=1);
  * @group    Bootstraps
  */
 
+if (defined('AFUP_CHEMIN_RACINE')) {
+    return;
+}
+
 // racine de l'application (pas du document root !)
 use Afup\Site\Corporate\_Site_Base_De_Donnees;
 use Afup\Site\Utils\Configuration;

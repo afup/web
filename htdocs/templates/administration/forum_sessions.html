@@ -50,25 +50,28 @@
 
 <div class="ui segment">
     <form method="GET" name="filtre">
+        {assign var=tri value=$smarty.get.tri|default:''}
+        {assign var=sens value=$smarty.get.sens|default:''}
+        {assign var=filtre value=$smarty.get.filtre|default:''|stripslashes}
         <input type="hidden" name="page" value="forum_sessions" />
-        <input type="hidden" name="tri"  value="{$smarty.get.tri|default:''}" />
-        <input type="hidden" name="sens" value="{$smarty.get.sens|default:''}" />
+        <input type="hidden" name="tri"  value="{$tri}" />
+        <input type="hidden" name="sens" value="{$sens}" />
         <input type="hidden" name="id_forum" value="{$id_forum}" />
         <div class="ui form">
             <div class="inline fields">
                 <div class="field">
                     <label>Titre</label>
-                    <input type="text" name="filtre" value="{$smarty.get.filtre|default:''|stripslashes}">
+                    <input type="text" name="filtre" value="{$filtre}">
                 </div>
                 <div class="field">
                     <div class="ui checkbox">
-                        <input type="checkbox" name="filtre_needs_mentoring" id="filtre_needs_mentoring" value="1" {if $smarty.get.filtre_needs_mentoring} checked="checked" {/if}>
+                        <input type="checkbox" name="filtre_needs_mentoring" id="filtre_needs_mentoring" value="1" {if $smarty.get.filtre_needs_mentoring|default:''} checked="checked" {/if}>
                         <label for="filtre_needs_mentoring">Afficher seulement les conférences dont le speaker a demandé un accompagnement</label>
                     </div>
                 </div>
                 <div class="field">
                     <div class="ui checkbox">
-                        <input type="checkbox" name="filtre_planned" id="filtre_planned" value="1" {if $smarty.get.filtre_planned} checked="checked" {/if}>
+                        <input type="checkbox" name="filtre_planned" id="filtre_planned" value="1" {if $smarty.get.filtre_planned|default:''} checked="checked" {/if}>
                         <label for="filtre_planned">Afficher seulement les conférences plannifiées</label>
                     </div>
                 </div>
@@ -92,8 +95,8 @@
     <table class="ui table striped compact celled">
         <thead>
         <tr>
-            <th align="left"><a href="index.php?page=forum_sessions&amp;tri=s.date_soumission&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 's.date_soumission'}desc{else}asc{/if}">Soumission</a></th>
-            <th align="left"><a href="index.php?page=forum_sessions&amp;tri=s.titre&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 's.titre'}desc{else}asc{/if}">Titre</a></th>
+            <th align="left"><a href="index.php?page=forum_sessions&amp;tri=s.date_soumission&amp;sens={if $sens == 'asc' && $tri == 's.date_soumission'}desc{else}asc{/if}">Soumission</a></th>
+            <th align="left"><a href="index.php?page=forum_sessions&amp;tri=s.titre&amp;sens={if $sens == 'asc' && $tri == 's.titre'}desc{else}asc{/if}">Titre</a></th>
             <th>Speaker(s)</th>
             {if $votant}
             <th>Nb votants</th>
