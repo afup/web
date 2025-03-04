@@ -192,8 +192,12 @@ class Talk implements NotifyPropertyInterface
         return $this->scheduled;
     }
 
-    public function setScheduled(bool $scheduled): self
+    public function setScheduled(?bool $scheduled): self
     {
+        if (null === $scheduled) {
+            $scheduled = false;
+        }
+
         $this->propertyChanged('scheduled', $this->scheduled, $scheduled);
         $this->scheduled = $scheduled;
         return $this;
