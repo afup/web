@@ -49,7 +49,7 @@ class StaticController extends AbstractController
             [$code, $meeetupId, $content] = $row;
 
             $apero = [
-                'code' => $code,
+                'code' => mb_strtolower($code),
                 'content' => $content,
             ];
 
