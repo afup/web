@@ -422,4 +422,4 @@ ewz_recaptcha:
   private_key: "%recaptcha_private_key%"
 
 ekino_new_relic:
-  logging: true
+  lexceptions: true
