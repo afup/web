@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use AppBundle\AppBundle;
 use CCMBenchmark\TingBundle\TingBundle;
-use Ekino\Bundle\NewRelicBundle\EkinoNewRelicBundle;
+use Ekino\NewRelicBundle\EkinoNewRelicBundle;
 use EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle;
