@@ -23,7 +23,6 @@
     "excelwebzone/recaptcha-bundle": "^1.5",
     "ezyang/htmlpurifier": "^4.10",
     "friendsofpear/pear_exception": "0.0.*",
-    "guzzlehttp/guzzle": "^6.5",
     "j7mbo/twitter-api-php": "^1.0",
     "jms/serializer-bundle": "5.*",
     "knpuniversity/oauth2-client-bundle": "^1.4",
