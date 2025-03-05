@@ -17,9 +17,9 @@ planningPHPTourApp.controller('planningCtrl', ['$scope','$http', '$rootScope', '
     $scope.events = [];
 
     //Chargement des conférences
-    $http.get($('body').data('planning-url')).success(function(data) {
+    $http.get($('body').data('planning-url')).then(function(response) {
         //Save Data
-        $scope.confs = data;
+        $scope.confs = response.data;
 
         //Mave Event
         $scope.events = fullCalendarService.getEventList($scope.confs);
