@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Command;
 
-use function GuzzleHttp\Psr7\parse_query;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,7 +31,7 @@ EOF;
 
         $query = $parsedUrl['query'];
 
-        $params = parse_query($query);
+        parse_str($query, $params);
 
         $callBackParameters = [
             'total' => $params['total'],
@@ -41,7 +40,6 @@ EOF;
             'transaction' => $params['transaction'],
             'status' => $params['status'],
         ];
-
 
         $url = 'https://apachephp:80/association/paybox-callback?' . http_build_query($callBackParameters);
 
