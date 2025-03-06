@@ -7,6 +7,7 @@ namespace AppBundle\Controller\Website\Member;
 use AppBundle\Association\Form\CompanyPublicProfile;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Model\User;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -28,9 +29,11 @@ class CompanyPublicProfileController extends AbstractController
          * @var CompanyMemberRepository $companyRepository
          */
         $companyRepository = $this->repositoryFactory->get(CompanyMemberRepository::class);
-        /** @var CompanyMember $companyMember */
-        $companyMember = $companyRepository->get($this->getUser()->getCompanyId());
-
+        $companyMember = null;
+        if ($this->getUser() instanceof User) {
+            /** @var CompanyMember $companyMember */
+            $companyMember = $companyRepository->get($this->getUser()->getCompanyId());
+        }
 
         if ($companyMember === null) {
             throw $this->createNotFoundException("Company member not found");

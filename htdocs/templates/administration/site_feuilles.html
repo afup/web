@@ -17,13 +17,15 @@
         </a>
     </div>
 
+    {assign var=tri value=$smarty.get.tri|default:''}
+    {assign var=sens value=$sens|default:''}
     <table class="ui table striped compact celled">
         <thead>
         <tr>
-            <th style="text-align: left"><a href="index.php?page=site_feuilles&amp;tri=date&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date'}desc{else}asc{/if}">Date</a></th>
-            <th style="text-align: left"><a href="index.php?page=site_feuilles&amp;tri=nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'nom'}desc{else}asc{/if}">Nom</a></th>
-            <th class="center aligned"><a href="index.php?page=site_feuilles&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}">Etat</a></th>
-            <th class="right aligned"><a href="index.php?page=site_feuilles&amp;tri=pos&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'pos'}desc{else}asc{/if}">Position</a></th>
+            <th style="text-align: left"><a href="index.php?page=site_feuilles&amp;tri=date&amp;sens={if $sens == 'asc' && $tri == 'date'}desc{else}asc{/if}">Date</a></th>
+            <th style="text-align: left"><a href="index.php?page=site_feuilles&amp;tri=nom&amp;sens={if $sens == 'asc' && $tri == 'nom'}desc{else}asc{/if}">Nom</a></th>
+            <th class="center aligned"><a href="index.php?page=site_feuilles&amp;tri=etat&amp;sens={if $sens == 'asc' && $tri == 'etat'}desc{else}asc{/if}">Etat</a></th>
+            <th class="right aligned"><a href="index.php?page=site_feuilles&amp;tri=pos&amp;sens={if $sens == 'asc' && $tri == 'pos'}desc{else}asc{/if}">Position</a></th>
             <th></th>
         </tr>
         </thead>

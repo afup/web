@@ -142,7 +142,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     private $membershipReason;
 
-    private \DateTimeImmutable $lastSubscription;
+    private ?\DateTimeImmutable $lastSubscription = null;
 
     /**
      * @return int
@@ -617,7 +617,7 @@ class CompanyMember implements NotifyPropertyInterface
         return $slugify->slugify($this->getCompanyName());
     }
 
-    public function getLastSubscription(): \DateTimeImmutable
+    public function getLastSubscription(): ?\DateTimeImmutable
     {
         return $this->lastSubscription;
     }

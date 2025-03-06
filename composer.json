@@ -83,6 +83,12 @@
       "sources/Afup/Bootstrap/commonStart.php"
     ]
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Afup\\Site\\Tests\\": "tests/unit/Afup/",
+      "AppBundle\\Tests\\": "tests/unit/AppBundle/"
+    }
+  },
   "license": "MIT",
   "authors": [
     {
@@ -92,13 +98,12 @@
   ],
   "minimum-stability": "stable",
   "require-dev": {
-    "atoum/atoum": "^4.0",
-    "atoum/stubs": "^2.5",
     "behat/behat": "^3.15",
     "behat/mink-goutte-driver": "^2.0",
     "friends-of-behat/mink-extension": "^2.7",
     "friendsofphp/php-cs-fixer": "~2",
     "ifsnop/mysqldump-php": "^2.12",
+    "phpunit/phpunit": "^9.6",
     "rector/rector": "^2.0",
     "smalot/pdfparser": "^0.19.0"
   },

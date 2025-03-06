@@ -316,7 +316,7 @@ elseif ($action === 'export') {
     $locale = localeconv();
 
     foreach ($journal as $line) {
-        $total = number_format($line['montant'], 2, $locale['decimal_point'], $locale['thousands_sep']);
+        $total = number_format((float) $line['montant'], 2, $locale['decimal_point'], $locale['thousands_sep']);
         fputcsv(
             $fp,
             [
