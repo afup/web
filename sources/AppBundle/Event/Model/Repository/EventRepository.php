@@ -8,8 +8,6 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Ticket;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
-use CCMBenchmark\Ting\Exception;
-use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
@@ -165,6 +163,27 @@ SQL;
         return $events->first();
     }
 
+    public function getLastYearEvent(Event $event): Event
+    {
+        // Recherche de l'année dans le nom
+        preg_match('#\d{4}#', $event->getTitle(), $matches);
+        if (!$matches) {
+            return $this->getLastEvent();
+        }
+
+        $year = (int) $matches[0];
+        $lastYear = $year - 1;
+        $searchTitle = str_replace((string) $year, (string) $lastYear, $event->getTitle());
+
+        // Recherche par nom (N-1)
+        $lastYearEvent = $this->getBy(['title' => $searchTitle])->first();
+        if (!$lastYearEvent) {
+            $lastYearEvent = $this->getPreviousEvents(1)->first();
+        }
+
+        return $lastYearEvent;
+    }
+
     /**
      * @param int $eventCount
      *
@@ -176,23 +195,6 @@ SQL;
         $query->setParams(['limit' => $eventCount]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
-    }
-
-    /**
-     * @param ?int $excludedEventId
-     *
-     * @throws QueryException
-     * @throws Exception
-     */
-    public function getAllEventsExcept(int $excludedEventId = null): CollectionInterface
-    {
-        if($excludedEventId === null) {
-            return $this->getAll();
-        }
-
-        return  $this->getQuery('SELECT * FROM afup_forum WHERE id <> :id ORDER BY date_debut DESC')
-            ->setParams(['id' => $excludedEventId])
-            ->query($this->getCollection(new HydratorSingleObject()));
     }
 
     /**

@@ -3,6 +3,10 @@
         <div class="ui form">
             <div class="inline fields">
                 <div class="field">
+                    {{ form_label(form.event_id, 'Évènement') }}
+                    {{ form_widget(form.event_id, {attr: {onchange:'this.form.submit(); return false;'}}) }}
+                </div>
+                <div class="field">
                     {{ form_label(form.compared_event_id, 'Comparer à') }}
                     {{ form_widget(form.compared_event_id, {attr: {onchange:'this.form.submit(); return false;'}}) }}
                 </div>
