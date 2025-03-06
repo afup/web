@@ -9,17 +9,17 @@ use AppBundle\Event\Model\Meetup;
 use AppBundle\Indexation\Meetups\GraphQL\QueryGroupsResponse;
 use CuyZ\Valinor\Mapper\Source\Source;
 use CuyZ\Valinor\MapperBuilder;
-use GuzzleHttp\Client;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class MeetupClient
 {
     private const QUANTITY_PAST_EVENTS = 2;
     private const QUANTITY_UPCOMING_EVENTS = 10;
 
-    private Client $httpClient;
+    private HttpClientInterface $httpClient;
     private AntennesCollection $antennesCollection;
 
-    public function __construct(Client $httpClient, AntennesCollection $antennesCollection)
+    public function __construct(HttpClientInterface $httpClient, AntennesCollection $antennesCollection)
     {
         $this->httpClient = $httpClient;
         $this->antennesCollection = $antennesCollection;
@@ -30,7 +30,7 @@ final class MeetupClient
      */
     public function getEvents(): array
     {
-        $response = $this->httpClient->request('POST', 'https://api.meetup.com/gql', [
+        $response = $this->httpClient->request('POST', '/gql', [
             'body' => json_encode([
                 'query' => $this->getEventsQuery(),
                 'variables' => [
@@ -38,9 +38,6 @@ final class MeetupClient
                     'quantityPast' => self::QUANTITY_PAST_EVENTS,
                 ],
             ]),
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
         ]);
 
         /** @var QueryGroupsResponse $groupResponse */
@@ -48,7 +45,7 @@ final class MeetupClient
             ->allowSuperfluousKeys()
             ->supportDateFormats('Y-m-d\TH:iP')
             ->mapper()
-            ->map(QueryGroupsResponse::class, Source::json($response->getBody()->getContents()));
+            ->map(QueryGroupsResponse::class, Source::array($response->toArray()));
 
         $meetups = [];
 
