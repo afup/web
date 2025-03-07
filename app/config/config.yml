@@ -1,425 +1,426 @@
 imports:
-  - { resource: config.php }
-  - { resource: security.yml }
-  - { resource: services.yml }
+    - { resource: config.php }
+    - { resource: security.yml }
+    - { resource: services.yml }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-  locale: fr
-  github_authenticator: "AppBundle\\Security\\MyGithubAuthenticator"
-  app.pages_backoffice:
-    accueil:
-      nom: "Accueil"
-      niveau: "ROLE_MEMBER_EXPIRED"
-      url: "/admin"
-      extra_routes:
-        - admin_home
-    membres:
-      nom: "Membres"
-      niveau: "ROLE_ADMIN"
-      icon: "user"
-      elements:
-        personnes_physiques:
-          nom: "Personnes physiques"
-          niveau: "ROLE_ADMIN"
-          url: "/admin/members/users"
-          extra_routes:
-            - admin_slack_members_check
-            - admin_members_user_list
-            - admin_members_user_add
-            - admin_members_user_edit
+    locale: fr
+    github_authenticator: "AppBundle\\Security\\MyGithubAuthenticator"
+    app.pages_backoffice:
+        accueil:
+            nom: 'Accueil'
+            niveau: 'ROLE_MEMBER_EXPIRED'
+            url: '/admin'
+            extra_routes:
+                - admin_home
+        membres:
+            nom: 'Membres'
+            niveau: 'ROLE_ADMIN'
+            icon: 'user'
+            elements:
+                personnes_physiques:
+                    nom: 'Personnes physiques'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/users'
+                    extra_routes:
+                        - admin_slack_members_check
+                        - admin_members_user_list
+                        - admin_members_user_add
+                        - admin_members_user_edit
 
-        personnes_morales:
-          nom: "Personnes morales"
-          niveau: "ROLE_ADMIN"
-        relances_personnes_physiques:
-          nom: "Relances cotisations"
-          niveau: "ROLE_ADMIN"
-          url: "/admin/association/relances/1"
-          extra_routes:
-            - admin_relances
-        reporting:
-          nom: "Reporting"
-          niveau: "ROLE_ADMIN"
-          url: "/admin/members/reporting"
-          extra_routes:
-            - admin_members_reporting
-        badges:
-          nom: "Badges"
-          niveau: "ROLE_ADMIN"
-          url: "/admin/members/badges"
-          extra_routes:
-            - admin_members_badges_index
-            - admin_members_badges_new
-        assemblee_generale:
-          nom: "Assemblée générale"
-          niveau: "ROLE_ADMIN"
-          url: "/admin/members/general_meeting"
-          extra_routes:
-            - admin_members_general_meeting
-            - admin_members_general_meeting_prepare
-            - admin_members_general_meeting_edit
-            - admin_members_general_meeting_reports
-        assemblee_generale_votes:
-          nom: "Assemblée générale - votes"
-          niveau: "ROLE_ADMIN"
-          url: "/admin/members/general_meeting_vote"
-          extra_routes:
-            - admin_members_general_vote_list
-            - admin_members_general_question_add
-            - admin_members_general_question_edit
-    veille:
-      nom: "Veille"
-      niveau: "ROLE_VEILLE"
-      icon: "bullhorn"
-      elements:
-        veille_ generer_campagne:
-          nom: "Campagnes"
-          niveau: "ROLE_VEILLE"
-          url: "/admin/techletter"
-          extra_routes:
-            - admin_techletter_index
-            - admin_techletter_generate
-        techletter:
-          nom: "Abonnés"
-          niveau: "ROLE_ADMIN"
-          url: "/admin/techletter/members"
-          extra_routes:
-            - admin_techletter_members
-        history:
-          nom: "Historique"
-          niveau: "ROLE_VEILLE"
-          url: "/admin/techletter/history"
-          extra_routes:
-            - admin_techletter_history
-    site:
-      nom: "Site"
-      niveau: "ROLE_SITE"
-      icon: "paint brush"
-      elements:
-        site_feuilles:
-          nom: "Feuilles"
-          niveau: "ROLE_SITE"
-        site_rubriques:
-          nom: "Rubriques"
-          niveau: "ROLE_SITE"
-          url: "/admin/site/rubriques"
-          extra_routes:
-            - admin_site_rubriques_list
-            - admin_site_rubriques_add
-            - admin_site_rubriques_edit
-        site_articles:
-          nom: "Articles"
-          niveau: "ROLE_SITE"
-    antenne:
-      nom: "Antennes AFUP"
-      niveau: "ROLE_ANTENNE"
-      elements:
-        rendez_vous:
-          nom: "Rendez-vous"
-          niveau: "ROLE_ANTENNE"
+                personnes_morales:
+                    nom: 'Personnes morales'
+                    niveau: 'ROLE_ADMIN'
+                relances_personnes_physiques:
+                    nom: 'Relances cotisations'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/association/relances/1'
+                    extra_routes:
+                        - admin_relances
+                reporting:
+                    nom: 'Reporting'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/reporting'
+                    extra_routes:
+                        - admin_members_reporting
+                badges:
+                    nom: 'Badges'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/badges'
+                    extra_routes:
+                        - admin_members_badges_index
+                        - admin_members_badges_new
+                assemblee_generale:
+                    nom: 'Assemblée générale'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/general_meeting'
+                    extra_routes:
+                        - admin_members_general_meeting
+                        - admin_members_general_meeting_prepare
+                        - admin_members_general_meeting_edit
+                        - admin_members_general_meeting_reports
+                assemblee_generale_votes:
+                    nom: 'Assemblée générale - votes'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/general_meeting_vote'
+                    extra_routes:
+                        - admin_members_general_vote_list
+                        - admin_members_general_question_add
+                        - admin_members_general_question_edit
+        veille:
+            nom: "Veille"
+            niveau: "ROLE_VEILLE"
+            icon: 'bullhorn'
+            elements:
+                veille_ generer_campagne:
+                    nom: "Campagnes"
+                    niveau: "ROLE_VEILLE"
+                    url: '/admin/techletter'
+                    extra_routes:
+                        - admin_techletter_index
+                        - admin_techletter_generate
+                techletter:
+                    nom: 'Abonnés'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/techletter/members'
+                    extra_routes:
+                        - admin_techletter_members
+                history:
+                    nom: 'Historique'
+                    niveau: 'ROLE_VEILLE'
+                    url: '/admin/techletter/history'
+                    extra_routes:
+                        - admin_techletter_history
+        site:
+            nom: 'Site'
+            niveau: 'ROLE_SITE'
+            icon: "paint brush"
+            elements:
+                site_feuilles:
+                    nom: 'Feuilles'
+                    niveau: 'ROLE_SITE'
+                site_rubriques:
+                    nom: 'Rubriques'
+                    niveau: 'ROLE_SITE'
+                    url : '/admin/site/rubriques'
+                    extra_routes:
+                        - admin_site_rubriques_list
+                        - admin_site_rubriques_add
+                        - admin_site_rubriques_edit
+                site_articles:
+                    nom: 'Articles'
+                    niveau: 'ROLE_SITE'
         antenne:
-          nom: "Liste des antennes"
-          niveau: "ROLE_ANTENNE"
-    forum:
-      nom: "Évènements"
-      niveau: "ROLE_FORUM"
-      icon: "globe"
-      elements:
-        forum_gestion:
-          nom: "Gestion évènements"
-          niveau: "ROLE_ADMIN"
-          url: "/admin/event/list"
-          extra_routes:
-            - admin_event_list
-        forum_salle:
-          nom: "Salles"
-          niveau: "ROLE_ADMIN"
-          url: "/admin/event/room"
-          extra_routes:
-            - admin_event_room
-        forum_suivi:
-          nom: "Suivi"
-          niveau: "ROLE_FORUM"
-          url: "/admin/event/stats"
-          extra_routes:
-            - admin_event_stats
-        forum_inscriptions:
-          nom: "Inscriptions"
-          niveau: "ROLE_FORUM"
-        forum_pending_bankwires:
-          nom: "Virements en attente"
-          niveau: "ROLE_ADMIN"
-          url: "/admin/event/bankwires"
-          extra_routes:
-            - admin_event_pending_bankwires
-        admin_event_sponsor_ticket:
-          nom: "Tokens sponsors"
-          niveau: "ROLE_ADMIN"
-          url: "/admin/event/sponsor"
-          extra_routes:
-            - admin_event_sponsor_ticket
-        admin_event_special_price:
-          nom: "Tokens visiteurs"
-          niveau: "ROLE_ADMIN"
-          url: "/admin/event/special_price"
-          extra_routes:
-            - admin_event_special_price
-        admin_event_prices:
-          nom: "Tarifications"
-          niveau: "ROLE_FORUM"
-          url: "/admin/event/prices"
-          extra_routes:
-            - admin_event_prices
-            - admin_event_prices_add
-            - admin_event_prices_edit
-        forum_facturation:
-          nom: "Factures d'évènement"
-          niveau: "ROLE_ADMIN"
-        forum_sessions:
-          nom: "Conférences"
-          niveau: "ROLE_FORUM"
-        forum_vote_github:
-          nom: "Votes visiteurs"
-          niveau: "ROLE_FORUM"
-          url: "/admin/vote/"
-          extra_routes:
-            - admin_vote
-        forum_conferenciers:
-          nom: "Speakers"
-          niveau: "ROLE_FORUM"
-          url: "/admin/speaker/"
-          extra_routes:
-            - admin_speaker_list
-            - admin_speaker_add
-            - admin_speaker_edit
-        admin_event_speakers_management:
-          nom: "Venue speakers"
-          niveau: "ROLE_FORUM"
-          url: "/admin/event/speakers-management"
-          extra_routes:
-            - admin_event_speakers_management
-        admin_event_speakers_expenses:
-          nom: "Justificatifs speakers"
-          niveau: "ROLE_FORUM"
-          url: "/admin/event/speakers-expenses"
-          extra_routes:
-            - admin_event_speakers_expenses
-        forum_planning:
-          nom: "Planning"
-          niveau: "ROLE_FORUM"
-        admin_github_user_list:
-          nom: "Github Users"
-          url: "/admin/event/github-user"
-          extra_routes:
-            - admin_github_user_add
-            - admin_github_user_list
-    tresorerie:
-      nom: "Trésorerie"
-      niveau: "ROLE_ADMIN"
-      icon: "money bill alternate"
-      elements:
-        compta_devis:
-          nom: "Devis"
-          niveau: "ROLE_ADMIN"
-        compta_facture:
-          nom: "Factures"
-          niveau: "ROLE_ADMIN"
-        compta_journal:
-          nom: "Journal"
-          niveau: "ROLE_ADMIN"
-        compta_banque:
-          nom: "Compte banques"
-          niveau: "ROLE_ADMIN"
-        compta_synthese:
-          nom: "Synthese évènement"
-          niveau: "ROLE_ADMIN"
-        compta_balance:
-          nom: "Balance comptable"
-          niveau: "ROLE_ADMIN"
-        compta_bilan:
-          nom: "Bilan"
-          niveau: "ROLE_ADMIN"
-        compta_conf_evenement:
-          nom: "Configuration"
-          niveau: "ROLE_ADMIN"
-          extra_pages:
-            - compta_conf_categorie
-            - compta_conf_operation
-            - compta_conf_reglement
-            - compta_conf_compte
-            - compta_conf_regle
-        compta_recherche:
-          nom: "Recherche comptable"
-          niveau: "ROLE_ADMIN"
-    planete:
-      nom: "Planète PHP FR"
-      niveau: "ROLE_ADMIN"
-      icon: "rss"
-      elements:
-        planete_flux:
-          nom: "Flux"
-          niveau: "ROLE_ADMIN"
-          url: "/admin/planete/feeds"
-          extra_routes:
-            - admin_planete_feed_list
-            - admin_planete_feed_add
-            - admin_planete_feed_edit
+            nom: 'Antennes AFUP'
+            niveau: 'ROLE_ANTENNE'
+            elements:
+                rendez_vous:
+                    nom: 'Rendez-vous'
+                    niveau: 'ROLE_ANTENNE'
+                antenne:
+                    nom: 'Liste des antennes'
+                    niveau: 'ROLE_ANTENNE'
+        forum:
+            nom: 'Évènements'
+            niveau: 'ROLE_FORUM'
+            icon: "globe"
+            elements:
+                forum_gestion:
+                    nom: 'Gestion évènements'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/list'
+                    extra_routes:
+                        - admin_event_list
+                forum_salle:
+                    nom: 'Salles'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/room'
+                    extra_routes:
+                        - admin_event_room
+                forum_suivi:
+                    nom: 'Suivi'
+                    niveau: 'ROLE_FORUM'
+                    url: '/admin/event/stats'
+                    extra_routes:
+                        - admin_event_stats
+                forum_inscriptions:
+                    nom: 'Inscriptions'
+                    niveau: 'ROLE_FORUM'
+                forum_pending_bankwires:
+                    nom: 'Virements en attente'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/bankwires'
+                    extra_routes:
+                        - admin_event_pending_bankwires
+                admin_event_sponsor_ticket:
+                    nom: 'Tokens sponsors'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/sponsor'
+                    extra_routes:
+                        - admin_event_sponsor_ticket
+                admin_event_special_price:
+                    nom: 'Tokens visiteurs'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/special_price'
+                    extra_routes:
+                        - admin_event_special_price
+                admin_event_prices:
+                    nom: 'Tarifications'
+                    niveau: 'ROLE_FORUM'
+                    url: '/admin/event/prices'
+                    extra_routes:
+                        - admin_event_prices
+                        - admin_event_prices_add
+                        - admin_event_prices_edit
+                forum_facturation:
+                    nom: "Factures d'évènement"
+                    niveau: 'ROLE_ADMIN'
+                forum_sessions:
+                    nom: 'Conférences'
+                    niveau: 'ROLE_FORUM'
+                forum_vote_github:
+                    nom: 'Votes visiteurs'
+                    niveau: 'ROLE_FORUM'
+                    url: '/admin/vote/'
+                    extra_routes:
+                        - admin_vote
+                forum_conferenciers:
+                    nom: 'Speakers'
+                    niveau: 'ROLE_FORUM'
+                    url: '/admin/speaker/'
+                    extra_routes:
+                        - admin_speaker_list
+                        - admin_speaker_add
+                        - admin_speaker_edit
+                admin_event_speakers_management:
+                    nom: 'Venue speakers'
+                    niveau: 'ROLE_FORUM'
+                    url: '/admin/event/speakers-management'
+                    extra_routes:
+                        - admin_event_speakers_management
+                admin_event_speakers_expenses:
+                    nom: 'Justificatifs speakers'
+                    niveau: 'ROLE_FORUM'
+                    url: '/admin/event/speakers-expenses'
+                    extra_routes:
+                        - admin_event_speakers_expenses
+                forum_planning:
+                    nom: 'Planning'
+                    niveau: 'ROLE_FORUM'
+                admin_github_user_list:
+                    nom: 'Github Users'
+                    url: '/admin/event/github-user'
+                    extra_routes:
+                        - admin_github_user_add
+                        - admin_github_user_list
+        tresorerie:
+            nom: 'Trésorerie'
+            niveau: 'ROLE_ADMIN'
+            icon: "money bill alternate"
+            elements:
+                compta_devis:
+                    nom: 'Devis'
+                    niveau: 'ROLE_ADMIN'
+                compta_facture:
+                    nom: 'Factures'
+                    niveau: 'ROLE_ADMIN'
+                compta_journal:
+                    nom: 'Journal'
+                    niveau: 'ROLE_ADMIN'
+                compta_banque:
+                    nom: 'Compte banques'
+                    niveau: 'ROLE_ADMIN'
+                compta_synthese:
+                    nom: 'Synthese évènement'
+                    niveau: 'ROLE_ADMIN'
+                compta_balance:
+                    nom: 'Balance comptable'
+                    niveau: 'ROLE_ADMIN'
+                compta_bilan:
+                    nom: 'Bilan'
+                    niveau: 'ROLE_ADMIN'
+                compta_conf_evenement:
+                    nom: 'Configuration'
+                    niveau: 'ROLE_ADMIN'
+                    extra_pages:
+                        - compta_conf_categorie
+                        - compta_conf_operation
+                        - compta_conf_reglement
+                        - compta_conf_compte
+                        - compta_conf_regle
+                compta_recherche:
+                    nom: 'Recherche comptable'
+                    niveau: 'ROLE_ADMIN'
+        planete:
+            nom: 'Planète PHP FR'
+            niveau: 'ROLE_ADMIN'
+            icon: "rss"
+            elements:
+                planete_flux:
+                    nom: 'Flux'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/planete/feeds'
+                    extra_routes:
+                      - admin_planete_feed_list
+                      - admin_planete_feed_add
+                      - admin_planete_feed_edit
 
-        planete_billet:
-          nom: "Billets"
-          niveau: "ROLE_ADMIN"
-          url: "/admin/planete/feed-articles"
-          extra_routes:
-            - admin_planete_feed_article_list
-    divers:
-      nom: "Divers"
-      niveau: "ROLE_ADMIN"
-      icon: "tag"
-      elements:
-        membre_administrateur:
-          nom: "Administrateurs du site"
-          niveau: "ROLE_ADMIN"
-        logs:
-          nom: "Logs"
-          niveau: "ROLE_ADMIN"
-        forum_partenaire:
-          nom: "Sponsors/Partenaires"
-          niveau: "ROLE_ADMIN"
-        healthcheck:
-          nom: "Healthcheck"
-          niveau: "ROLE_ADMIN"
-          url: "/admin/healthcheck"
-    connexion:
-      nom: "Connexion"
-      masquee: true
-      niveau: "ROLE_USER"
-    inscription:
-      nom: "Inscription"
-      masquee: true
-      niveau: "ROLE_USER"
-  paybox_ips:
-    - "194.2.122.158"
-    - "194.2.122.190"
-    - "194.2.160.64"
-    - "194.2.160.66"
-    - "194.2.160.75"
-    - "194.2.160.80"
-    - "194.2.160.82"
-    - "194.2.160.91"
-    - "195.101.99.73"
-    - "195.101.99.76"
-    - "195.25.67.0"
-    - "195.25.67.11"
-    - "195.25.67.2"
-    - "195.25.67.22"
-    - "195.25.7.146"
-    - "195.25.7.157"
-    - "195.25.7.159"
-    - "195.25.7.166"
+                planete_billet:
+                    nom: 'Billets'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/planete/feed-articles'
+                    extra_routes:
+                      - admin_planete_feed_article_list
+        divers:
+            nom: 'Divers'
+            niveau: 'ROLE_ADMIN'
+            icon: "tag"
+            elements:
+                membre_administrateur:
+                    nom: 'Administrateurs du site'
+                    niveau: 'ROLE_ADMIN'
+                logs:
+                    nom: 'Logs'
+                    niveau: 'ROLE_ADMIN'
+                forum_partenaire:
+                    nom: 'Sponsors/Partenaires'
+                    niveau: 'ROLE_ADMIN'
+                healthcheck:
+                    nom: 'Healthcheck'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/healthcheck'
+        connexion:
+            nom: 'Connexion'
+            masquee: true
+            niveau: 'ROLE_USER'
+        inscription:
+            nom: 'Inscription'
+            masquee: true
+            niveau: 'ROLE_USER'
+    paybox_ips:
+        - '194.2.122.158'
+        - '194.2.122.190'
+        - '194.2.160.64'
+        - '194.2.160.66'
+        - '194.2.160.75'
+        - '194.2.160.80'
+        - '194.2.160.82'
+        - '194.2.160.91'
+        - '195.101.99.73'
+        - '195.101.99.76'
+        - '195.25.67.0'
+        - '195.25.67.11'
+        - '195.25.67.2'
+        - '195.25.67.22'
+        - '195.25.7.146'
+        - '195.25.7.157'
+        - '195.25.7.159'
+        - '195.25.7.166'
 
 framework:
-  #esi:             ~
-  translator:
-    fallbacks: ["%locale%"]
-    enabled: true
-    default_path: "%kernel.project_dir%/../translations"
-  secret: "%secret%"
-  router:
-    resource: "%kernel.project_dir%/config/routing.yml"
-    strict_requirements: ~
-  form: ~
-  csrf_protection: ~
-  validation: { enable_annotations: true }
-  #serializer:      { enable_annotations: true }
-  default_locale: "%locale%"
-  trusted_hosts: ~
-  session:
-    # https://symfony.com/doc/4.x/session/database.html#store-sessions-in-a-relational-database-mariadb-mysql-postgresql
-    handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
-    # 24 heures
-    gc_maxlifetime: 86400
-  fragments: ~
-  http_method_override: true
-  assets: ~
+    #esi:             ~
+    translator:
+        fallbacks: ["%locale%"]
+        enabled: true
+        default_path: "%kernel.project_dir%/../translations"
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.project_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    #serializer:      { enable_annotations: true }
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    session:
+        # https://symfony.com/doc/4.x/session/database.html#store-sessions-in-a-relational-database-mariadb-mysql-postgresql
+        handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        # 24 heures
+        gc_maxlifetime: 86400
+    fragments:       ~
+    http_method_override: true
+    assets: ~
 
 # Twig Configuration
 twig:
-  debug: "%kernel.debug%"
-  strict_variables: "%kernel.debug%"
-  globals:
-    photo_storage: '@AppBundle\CFP\PhotoStorage'
-  form_themes: ["form_theme.html.twig"]
-  exception_controller: null
-  default_path: "%kernel.project_dir%/../templates"
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    globals:
+      photo_storage: '@AppBundle\CFP\PhotoStorage'
+    form_themes: ['form_theme.html.twig']
+    exception_controller: null
+    default_path: "%kernel.project_dir%/../templates"
 
 ting:
-  connections:
-    main:
-      namespace: CCMBenchmark\Ting\Driver\Mysqli
-      charset: utf8mb4
-      master:
-        host: "%database_host%"
-        port: "%database_port%"
-        user: "%database_user%"
-        password: "%database_password%"
+    connections:
+        main:
+            namespace: CCMBenchmark\Ting\Driver\Mysqli
+            charset: utf8mb4
+            master:
+                host:     "%database_host%"
+                port:     "%database_port%"
+                user:     "%database_user%"
+                password: "%database_password%"
 
-  databases_options:
-    "%database_name%":
-      timezone: "%database_timezone%"
+    databases_options:
+        "%database_name%":
+            timezone: "%database_timezone%"
 
-  repositories:
-    event:
-      namespace: AppBundle\Event\Model\Repository
-      directory: "@AppBundle/Event/Model/Repository"
-      options:
-        default:
-          connection: main
-          database: "%database_name%"
-    site:
-      namespace: AppBundle\Site\Model\Repository
-      directory: "@AppBundle/Site/Model/Repository"
-      options:
-        default:
-          connection: main
-          database: "%database_name%"
+    repositories:
+        event:
+            namespace : AppBundle\Event\Model\Repository
+            directory : "@AppBundle/Event/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: '%database_name%'
+        site:
+            namespace : AppBundle\Site\Model\Repository
+            directory : "@AppBundle/Site/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: '%database_name%'
 
-    association:
-      namespace: AppBundle\Association\Model\Repository
-      directory: "@AppBundle/Association/Model/Repository"
-      options:
-        default:
-          connection: main
-          database: "%database_name%"
-    throttling:
-      namespace: AppBundle\Security\ActionThrottling
-      directory: "@AppBundle/Security/ActionThrottling"
-      options:
-        default:
-          connection: main
-          database: "%database_name%"
-    techletter:
-      namespace: AppBundle\TechLetter\Model\Repository
-      directory: "@AppBundle/TechLetter/Model/Repository"
-      options:
-        default:
-          connection: main
-          database: "%database_name%"
+        association:
+            namespace : AppBundle\Association\Model\Repository
+            directory : "@AppBundle/Association/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: '%database_name%'
+        throttling:
+            namespace : AppBundle\Security\ActionThrottling
+            directory : "@AppBundle/Security/ActionThrottling"
+            options:
+                default:
+                    connection: main
+                    database: '%database_name%'
+        techletter:
+            namespace: AppBundle\TechLetter\Model\Repository
+            directory: "@AppBundle/TechLetter/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: "%database_name%"
 
 knpu_oauth2_client:
-  clients:
-    # will create a service: knpu.oauth2.client.facebook_main
-    github_main:
-      type: github
-      client_id: "%github_client_id%"
-      client_secret: "%github_client_secret%"
-      # see below
-      redirect_route: connection_github_check
+    clients:
+        # will create a service: knpu.oauth2.client.facebook_main
+        github_main:
+            type: github
+            client_id: "%github_client_id%"
+            client_secret: "%github_client_secret%"
+            # see below
+            redirect_route: connection_github_check
 
 ewz_recaptcha:
-  public_key: "%recaptcha_public_key%"
-  private_key: "%recaptcha_private_key%"
+    public_key: '%recaptcha_public_key%'
+    private_key: '%recaptcha_private_key%'
+
 
 ekino_new_relic:
-  exceptions: true
+    exceptions: true
