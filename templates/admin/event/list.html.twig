@@ -5,7 +5,7 @@
     <h2>Liste des évènements</h2>
 
     <div class="ui menu">
-        <a href="/pages/administration/index.php?page=forum_gestion&amp;action=ajouter" class="item">
+        <a href="{{ path('admin_event_new') }}" class="item">
             <div data-tooltip="Ajouter un forum" data-position="bottom left">
                 <i class="icon plus square"></i>
                 Ajouter
@@ -43,7 +43,7 @@
                 <td>{{ event.date_fin_appel_conferencier|date("d/m/Y H:i:s") }}</td>
                 <td>{{ event.date_fin_vente|date("d/m/Y H:i:s") }}</td>
                 <td style="text-align: right" nowrap="nowrap">
-                    <a href="/pages/administration/index.php?page=forum_gestion&amp;action=modifier&amp;id={{ event.id }}"
+                    <a href="{{ path('admin_event_edit', {'id': event.id}) }}"
                        data-tooltip="Modifier le forum {{ event.titre }}"
                        data-position="left center"
                        class="compact ui icon button"

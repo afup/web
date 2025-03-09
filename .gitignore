@@ -30,6 +30,8 @@ node_modules
 js_dist
 # uploads
 /htdocs/uploads
+/htdocs/docs
+!/htdocs/docs/.gitkeep
 
 /build/
 /var/*
