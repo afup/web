@@ -133,6 +133,8 @@ parameters:
                     url: '/admin/event/list'
                     extra_routes:
                         - admin_event_list
+                        - admin_event_new
+                        - admin_event_edit
                 forum_salle:
                     nom: 'Salles'
                     niveau: 'ROLE_ADMIN'

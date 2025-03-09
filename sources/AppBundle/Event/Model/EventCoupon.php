@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -53,7 +55,7 @@ class EventCoupon implements NotifyPropertyInterface
     /**
      * @param int|null $id
      */
-    public function setId($id)
+    public function setId($id): void
     {
         $this->id = $id;
     }
@@ -69,7 +71,7 @@ class EventCoupon implements NotifyPropertyInterface
     /**
      * @param int|null $idEvent
      */
-    public function setIdEvent($idEvent)
+    public function setIdEvent($idEvent): void
     {
         $this->propertyChanged('idEvent', $this->idEvent, $idEvent);
         $this->idEvent = $idEvent;
@@ -86,7 +88,7 @@ class EventCoupon implements NotifyPropertyInterface
     /**
      * @param string|null $text
      */
-    public function setText($text)
+    public function setText($text): void
     {
         $this->propertyChanged('text', $this->text, $text);
         $this->text = $text;

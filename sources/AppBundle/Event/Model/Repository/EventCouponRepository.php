@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
@@ -42,18 +44,17 @@ class EventCouponRepository extends Repository implements MetadataInitializer
         return $metadata;
     }
 
-    public function changeCouponForEvent(array $coupons, Event $event)
+    public function changeCouponForEvent(Event $event, array $coupons): void
     {
-        if ($event->getId() === null) {
-            throw new \Exception("Impossible d'ajouter des coupons a un événement sans ID");
-        }
-        $sql = 'DELETE FROM afup_forum_coupon WHERE id_forum = :id';
-        $query = $this->getQuery($sql);
-        $query->setParams(['id' => $event->getId()]);
+        $query = $this->getQuery('DELETE FROM afup_forum_coupon WHERE id_forum = :id');
+        $query->setParams([
+            'id' => $event->getId()
+        ]);
         $query->execute();
 
         foreach ($coupons as $coupon) {
-            if (is_string($coupon) === false || empty($coupon) === true) {
+            $coupon = trim($coupon);
+            if (empty($coupon) === true) {
                 continue;
             }
             $this->save(EventCoupon::initForEventAndCoupon($event, $coupon));
@@ -62,12 +63,18 @@ class EventCouponRepository extends Repository implements MetadataInitializer
 
     public function couponsListForEvent(Event $event)
     {
-        if ($event->getId() === null) {
-            throw new \Exception("Impossible de lire les coupons d'un événement sans ID");
-        }
-        $sql = 'SELECT * FROM afup_forum_coupon WHERE id_forum = :id';
-        $query = $this->getQuery($sql);
-        $query->setParams(['id' => $event->getId()]);
+        $query = $this->getQuery('SELECT * FROM afup_forum_coupon WHERE id_forum = :id');
+        $query->setParams([
+            'id' => $event->getId()
+        ]);
         return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    public function couponsListForEventImploded(Event $event, string $separator = ', '): string
+    {
+        $eventCoupons = $this->couponsListForEvent($event);
+        $array = array_map(static fn (EventCoupon $coupon) => $coupon->getText(), iterator_to_array($eventCoupons));
+
+        return implode($separator, $array);
     }
 }
