@@ -18,7 +18,7 @@
     "cocur/slugify": "^2.3",
     "cuyz/valinor": "^0.17.1",
     "doctrine/dbal": "^2.5",
-    "ekino/newrelic-bundle": "^1.4",
+    "ekino/newrelic-bundle": "^2.4",
     "erusev/parsedown": "^1.6",
     "excelwebzone/recaptcha-bundle": "^1.5",
     "ezyang/htmlpurifier": "^4.10",

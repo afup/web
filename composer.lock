@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e257cda91cf6e8773891beb1115dc2d8",
+    "content-hash": "8559490d44b790b1c7405c4ad17957c9",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -1739,44 +1739,53 @@
         },
         {
             "name": "ekino/newrelic-bundle",
-            "version": "1.4.0",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ekino/EkinoNewRelicBundle.git",
-                "reference": "92877a9ba014401d635da4890ca0f5b2d9df1c59"
+                "reference": "aa29fd8e1f2086402d0112e0194b9bdc910e5345"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ekino/EkinoNewRelicBundle/zipball/92877a9ba014401d635da4890ca0f5b2d9df1c59",
-                "reference": "92877a9ba014401d635da4890ca0f5b2d9df1c59",
+                "url": "https://api.github.com/repos/ekino/EkinoNewRelicBundle/zipball/aa29fd8e1f2086402d0112e0194b9bdc910e5345",
+                "reference": "aa29fd8e1f2086402d0112e0194b9bdc910e5345",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3"
+                "php": "^7.1 | ^8.0",
+                "symfony/config": "^3.4|^4.0|^5.0|^6.0",
+                "symfony/console": "^3.4|^4.0|^5.0|^6.0",
+                "symfony/dependency-injection": "^3.4|^4.0|^5.0|^6.0",
+                "symfony/event-dispatcher": "^3.4|^4.0|^5.0|^6.0",
+                "symfony/http-kernel": "^3.4|^4.0|^5.0|^6.0"
             },
             "conflict": {
-                "twig/twig": "<1.26"
+                "twig/twig": "<1.32"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8",
-                "silex/silex": "^1.0",
-                "symfony/console": "^2.7|^3.0",
-                "symfony/framework-bundle": "^2.7|^3.0",
-                "twig/twig": "^1.26|^2.0"
+                "matthiasnoback/symfony-dependency-injection-test": "^3.1|^4.0",
+                "symfony/debug": ">3.4.21",
+                "symfony/framework-bundle": "^3.4|^4.0|^5.0|^6.0",
+                "symfony/monolog-bundle": "^3.2",
+                "symfony/phpunit-bridge": "^5.3",
+                "twig/twig": "^1.32|^2.4"
             },
             "suggest": {
-                "sonata-project/block-bundle": "2.2.*@dev"
+                "symfony/monolog-bundle": "^3.2"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Ekino\\Bundle\\NewRelicBundle\\": ""
-                }
+                    "Ekino\\NewRelicBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -1798,9 +1807,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ekino/EkinoNewRelicBundle/issues",
-                "source": "https://github.com/ekino/EkinoNewRelicBundle/tree/master"
+                "source": "https://github.com/ekino/EkinoNewRelicBundle/tree/2.4.0"
             },
-            "time": "2017-11-18T15:48:56+00:00"
+            "time": "2022-03-25T09:15:31+00:00"
         },
         {
             "name": "erusev/parsedown",
