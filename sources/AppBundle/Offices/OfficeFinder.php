@@ -121,6 +121,10 @@ class OfficeFinder
         $localOfficesDistance = [];
 
         foreach ($this->antennesCollection->getAll() as $antenne) {
+            if (null === $antenne->map) {
+                continue;
+            }
+
             $localOfficesDistance[$antenne->code] = $this->haversineGreatCircleDistance(
                 $coordinates->getLatitude(),
                 $coordinates->getLongitude(),
