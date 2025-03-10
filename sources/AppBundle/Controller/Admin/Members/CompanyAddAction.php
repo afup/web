@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members;
 
 use Afup\Site\Logger\DbLoggerTrait;
@@ -21,18 +23,12 @@ class CompanyAddAction
 {
     use DbLoggerTrait;
 
-    /** @var FormFactoryInterface */
-    private $formFactory;
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var Environment */
-    private $twig;
-    /** @var CompanyMemberRepository */
-    private $companyMemberRepository;
-    /** @var CompanyEditFormDataFactory */
-    private $companyEditFormDataFactory;
+    private FormFactoryInterface $formFactory;
+    private FlashBagInterface $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
+    private Environment $twig;
+    private CompanyMemberRepository $companyMemberRepository;
+    private CompanyEditFormDataFactory $companyEditFormDataFactory;
 
     public function __construct(
         CompanyMemberRepository $companyMemberRepository,

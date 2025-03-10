@@ -604,12 +604,6 @@ services:
         arguments:
           - 'Afup\Site\Association\Cotisations'
 
-    Afup\Site\Association\Personnes_Morales:
-        class: Afup\Site\Association\Personnes_Morales
-        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
-        arguments:
-            - 'Afup\Site\Association\Personnes_Morales'
-
     AppBundle\Event\Form\PurchaseType:
         autowire: true
         tags:

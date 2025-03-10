@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members;
 
 use Afup\Site\Logger\DbLoggerTrait;
@@ -16,12 +18,9 @@ class CompanyDeleteAction
 {
     use DbLoggerTrait;
 
-    /** @var FlashBagInterface */
-    private $flashBag;
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-    /** @var CompanyMemberRepository */
-    private $companyMemberRepository;
+    private FlashBagInterface $flashBag;
+    private UrlGeneratorInterface $urlGenerator;
+    private CompanyMemberRepository $companyMemberRepository;
 
     public function __construct(
         CompanyMemberRepository $companyMemberRepository,

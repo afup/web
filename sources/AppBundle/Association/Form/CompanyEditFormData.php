@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Form;
 
 use AppBundle\Association\Model\CompanyMember;
@@ -52,12 +54,11 @@ class CompanyEditFormData
      */
     public $cellphone;
     /**
-     * @var Assert\NotBlank()
-     * @var Assert\Luhn()
+     * @Assert\NotBlank()
      */
     public $siret;
     /**
-     * @var Assert\NotBlank()
+     * @Assert\NotBlank()
      * @Assert\Choice(choices={3, 6, 9, 12, 15, 18})
      */
     public $maxMembers = 3;

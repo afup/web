@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Controller\Admin\Members;
 
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
@@ -9,10 +11,8 @@ use Twig\Environment;
 
 class CompanyListAction
 {
-    /** @var CompanyMemberRepository */
-    private $companyMemberRepository;
-    /** @var Environment */
-    private $twig;
+    private CompanyMemberRepository $companyMemberRepository;
+    private Environment $twig;
 
     public function __construct(
         CompanyMemberRepository $companyMemberRepository,

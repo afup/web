@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Form;
 
 use Afup\Site\Utils\Pays;
@@ -15,15 +17,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CompanyEditType extends AbstractType
 {
-    /** @var Pays */
-    private $pays;
+    private Pays $pays;
 
     public function __construct(Pays $pays)
     {
         $this->pays = $pays;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('companyName', TextType::class, [
@@ -126,7 +127,7 @@ class CompanyEditType extends AbstractType
             ->add('save', SubmitType::class, ['label' => 'Ajouter']);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => CompanyEditFormData::class,
