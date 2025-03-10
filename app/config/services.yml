@@ -469,6 +469,11 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\EventRepository]
 
+    AppBundle\Event\Model\Repository\EventCouponRepository:
+        class: AppBundle\Event\Model\Repository\EventCouponRepository
+        factory: ["@ting", get]
+        arguments: [AppBundle\Event\Model\Repository\EventCouponRepository]
+
     AppBundle\Event\Model\Repository\EventStatsRepository:
         autowire: true
 

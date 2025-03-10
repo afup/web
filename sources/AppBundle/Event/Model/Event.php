@@ -96,7 +96,7 @@ class Event implements NotifyPropertyInterface
      */
     private $waitingListUrl;
 
-    private ?bool $hasPricesDefinedWithVat = null;
+    private bool $hasPricesDefinedWithVat = true;
 
     /**
      * @return int
@@ -166,10 +166,7 @@ class Event implements NotifyPropertyInterface
         return $this->dateStart;
     }
 
-    /**
-     * @return Event
-     */
-    public function setDateStart(DateTime $dateStart): self
+    public function setDateStart(?DateTime $dateStart = null): self
     {
         $this->propertyChanged('dateStart', $this->dateStart, $dateStart);
         $this->dateStart = $dateStart;
@@ -371,6 +368,7 @@ class Event implements NotifyPropertyInterface
      */
     public function setCFP($CFP): self
     {
+        $this->propertyChanged('cfp', json_encode($this->CFP), json_encode($CFP));
         $this->CFP = $CFP;
         return $this;
     }
@@ -645,7 +643,12 @@ class Event implements NotifyPropertyInterface
 
     public function hasPricesDefinedWithVat(): bool
     {
-        return (bool) $this->hasPricesDefinedWithVat;
+        return $this->hasPricesDefinedWithVat;
+    }
+
+    public function gethasPricesDefinedWithVat(): bool
+    {
+        return $this->hasPricesDefinedWithVat;
     }
 
     /**
@@ -701,6 +704,12 @@ class Event implements NotifyPropertyInterface
     {
         return is_file(self::getInscriptionAttachmentFilepath($eventPath));
     }
+
+    public static function getInscriptionAttachmentPublicPath(string $eventPath): string
+    {
+        return '/uploads/mail_inscription_attachment/' . $eventPath . '.pdf';
+    }
+
 
     public static function getSponsorFileDir(): string
     {
