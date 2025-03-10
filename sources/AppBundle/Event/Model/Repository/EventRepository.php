@@ -163,6 +163,27 @@ SQL;
         return $events->first();
     }
 
+    public function getLastYearEvent(Event $event): Event
+    {
+        // Recherche de l'année dans le nom
+        preg_match('#\d{4}#', $event->getTitle(), $matches);
+        if (!$matches) {
+            return $this->getLastEvent();
+        }
+
+        $year = (int) $matches[0];
+        $lastYear = $year - 1;
+        $searchTitle = str_replace((string) $year, (string) $lastYear, $event->getTitle());
+
+        // Recherche par nom (N-1)
+        $lastYearEvent = $this->getBy(['title' => $searchTitle])->first();
+        if (!$lastYearEvent) {
+            $lastYearEvent = $this->getPreviousEvents(1)->first();
+        }
+
+        return $lastYearEvent;
+    }
+
     /**
      * @param int $eventCount
      *

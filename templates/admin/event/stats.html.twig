@@ -2,10 +2,9 @@
 
 {% block content %}
     <h2>Suivi</h2>
-    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
+    {% include 'admin/event/compare_event.html.twig' with {form: event_compare_form} only %}
 
     {% if event == null %}
-
         <div class="ui placeholder segment">
             <div class="ui icon header">
                 <i class="meh outline icon"></i>
