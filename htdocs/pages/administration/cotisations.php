@@ -33,7 +33,7 @@ if ($_GET['type_personne'] == AFUP_PERSONNES_PHYSIQUES) {
 } else {
     $company = $companyMemberRepository->get($_GET['id_personne']);
     Assertion::notNull($company);
-    $personne = ['nom' => $company->getLastName(), 'prenom' => $company->getFirstName()];
+    $personne = ['nom' => $company->getLastName(), 'prenom' => $company->getFirstName(), 'raison_sociale' => $company->getCompanyName()];
 }
 $smarty->assign('type_personne', $_GET['type_personne']);
 $smarty->assign('id_personne'  , $_GET['id_personne']);

@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AppBundle\Association\Form;
 
 use AppBundle\Association\Model\CompanyMember;
 
 class CompanyEditFormDataFactory
 {
-    /** @return CompanyEditFormData */
-    public function fromCompany(CompanyMember $companyMember)
+    public function fromCompany(CompanyMember $companyMember): CompanyEditFormData
     {
         $data = new CompanyEditFormData();
         $data->firstname = $companyMember->getFirstName();
@@ -27,7 +28,7 @@ class CompanyEditFormDataFactory
         return $data;
     }
 
-    public function toCompany(CompanyEditFormData $data, CompanyMember $companyMember)
+    public function toCompany(CompanyEditFormData $data, CompanyMember $companyMember): void
     {
         $companyMember->setFirstName($data->firstname);
         $companyMember->setLastName($data->lastname);

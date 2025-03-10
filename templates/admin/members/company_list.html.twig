@@ -73,7 +73,7 @@
                         </td>
                         <td class="{% if not isActive %}disabled{% endif %}" style="text-align: center">{{ activeMembers[company.id]|default(0) }}</td>
                         <td style="text-align: right">
-                            <a href="index.php?page=cotisations&amp;type_personne={{ constant('AFUP_PERSONNES_MORALES') }}&amp;id_personne={{ company.id }}"
+                            <a href="/pages/administration/index.php?page=cotisations&amp;type_personne={{ constant('AFUP_PERSONNES_MORALES') }}&amp;id_personne={{ company.id }}"
                                data-position="left center"
                                data-tooltip="Gérer les cotisations de {{ company.companyName }}"
                                class="compact ui green icon button">

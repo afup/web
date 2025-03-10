@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website;
 
 use Afup\Site\Association\Cotisations;
-use Afup\Site\Association\Personnes_Morales;
 use Afup\Site\Droits;
 use Afup\Site\Logger\DbLoggerTrait;
 use Afup\Site\Utils\Logs;
@@ -75,6 +74,7 @@ class MemberShipController extends AbstractController
     private CsrfTokenManagerInterface $csrfTokenManager;
     private UserFactory $userFactory;
     private UserRepository $userRepository;
+    private CompanyMemberRepository $companyMemberRepository;
     private UserService $userService;
     private GuardAuthenticatorHandler $guardAuthenticatorHandler;
     private LegacyAuthenticator $legacyAuthenticator;
@@ -97,6 +97,7 @@ class MemberShipController extends AbstractController
                                 CsrfTokenManagerInterface $csrfTokenManager,
                                 UserFactory $userFactory,
                                 UserRepository $userRepository,
+                                CompanyMemberRepository $companyMemberRepository,
                                 UserService $userService,
                                 GuardAuthenticatorHandler $guardAuthenticatorHandler,
                                 LegacyAuthenticator $legacyAuthenticator,
@@ -119,6 +120,7 @@ class MemberShipController extends AbstractController
         $this->csrfTokenManager = $csrfTokenManager;
         $this->userFactory = $userFactory;
         $this->userRepository = $userRepository;
+        $this->companyMemberRepository = $companyMemberRepository;
         $this->userService = $userService;
         $this->guardAuthenticatorHandler = $guardAuthenticatorHandler;
         $this->legacyAuthenticator = $legacyAuthenticator;
@@ -497,10 +499,9 @@ class MemberShipController extends AbstractController
 
         if ($user->getCompanyId() > 0) {
             $id_personne = $user->getCompanyId();
-            $personne_morale = new Personnes_Morales($bdd);
             $type_personne = AFUP_PERSONNES_MORALES;
             $prefixe = 'Personne morale';
-            $montant = $personne_morale->getMembershipFee($id_personne);
+            $montant = $this->companyMemberRepository->findById($id_personne);
             if ($isSubjectedToVat) {
                 $montant *= 1 + Utils::MEMBERSHIP_FEE_VAT_RATE;
             }

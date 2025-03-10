@@ -9,9 +9,9 @@ use Afup\Site\Droits;
 use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\PDF_Facture;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use Afup\Site\Utils\Utils;
 use Afup\Site\Utils\Vat;
+use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\Email\Mailer\Attachment;
@@ -223,7 +223,8 @@ class Cotisations
                 'nom' => $company->getLastName(),
                 'prenom' => $company->getFirstName(),
                 'email' => $company->getEmail(),
-            ];        } else {
+            ];
+        } else {
             $user = $userRepository->get($account['id']);
             Assertion::notNull($user);
             $infos = [
@@ -526,8 +527,8 @@ class Cotisations
                 'prenom'=> $user->getFirstName(),
                 'email'=> $user->getEmail(),
             ];
-            $patternPrefix = $contactPhysique['nom'];
         }
+        $patternPrefix = $contactPhysique['nom'];
 
         $corps = "Bonjour,<br />";
         $corps .= "<p>Veuillez trouver ci-joint la facture correspondant à votre adhésion à l'AFUP.</p>";
@@ -702,7 +703,7 @@ class Cotisations
         return false;
     }
 
-    public function setCompanyMemberRepository(CompanyMemberRepository $companyMemberRepository)
+    public function setCompanyMemberRepository(CompanyMemberRepository $companyMemberRepository): void
     {
         $this->companyMemberRepository = $companyMemberRepository;
     }

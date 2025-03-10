@@ -7,9 +7,9 @@ namespace AppBundle\Association\Model\Repository;
 use AppBundle\Association\Model\CompanyMember;
 use Assert\Assertion;
 use Aura\SqlQuery\Common\SelectInterface;
+use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorArray;
-use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -77,9 +77,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
         ];
         Assertion::keyExists($sorts, $sort);
         $queryBuilder = $this->getQueryBuilderWithCompleteCompanyMember()
-            ->orderBy(array_map(static function ($field) use ($direction) {
-                return $field . ' ' . $direction;
-            }, $sorts[$sort]));
+            ->orderBy(array_map(static fn ($field) => $field . ' ' . $direction, $sorts[$sort]));
 
         // On filtre sur tous les mots possibles. Donc plus on a de mots dans la recherche plus on aura de résultats.
         // Mais ça peut aussi permettre de trouver des personnes en entrant par exemple "Prénom email" dans le champ de recherche :
@@ -107,9 +105,9 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @return array<int, int
+     * @return array<int, int>
      */
-    public function countActiveByCompany()
+    public function countActiveByCompany(): array
     {
         $result = [];
         $query = $this->getQuery('SELECT id_personne_morale, COUNT(id) AS nb FROM afup_personnes_physiques GROUP BY id_personne_morale');
@@ -120,7 +118,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
         return $result;
     }
 
-    public function remove(CompanyMember $companyMember)
+    public function remove(CompanyMember $companyMember): void
     {
         $nbCotisations = (int) $this->getQuery('SELECT COUNT(*) nb FROM afup_cotisations WHERE type_personne = :memberType AND id_personne = :id')
             ->setParams(['memberType' => AFUP_PERSONNES_MORALES, 'id' => $companyMember->getId()])
