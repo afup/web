@@ -39,27 +39,13 @@ define('AFUP_COTISATIONS_PAIEMENT_REFUSE', 3);
  */
 class Cotisations
 {
-    /**
-     * Instance de la couche d'abstraction à la base de données
-     * @var Base_De_Donnees
-     */
-    private $_bdd;
+    private Base_De_Donnees $_bdd;
 
-    /**
-     * @var Droits|null
-     */
-    private $_droits;
+    private ?Droits $_droits;
 
-    /** @var CompanyMemberRepository */
-    private $companyMemberRepository;
+    private ?CompanyMemberRepository $companyMemberRepository = null;
 
-    /**
-     * Constructeur.
-     *
-     * @param object $bdd Instance de la couche d'abstraction à la base de données
-     * @return void
-     */
-    public function __construct(&$bdd, $droits = null)
+    public function __construct(Base_De_Donnees $bdd, Droits $droits = null)
     {
         $this->_bdd = $bdd;
         $this->_droits = $droits;
@@ -217,7 +203,7 @@ class Cotisations
         if (AFUP_PERSONNES_MORALES == $account['type']) {
             $invoiceNumber = substr($cmd, 1);
             $cotisation = $this->getByInvoice($invoiceNumber);
-            $company = $this->companyMemberRepository->get($cotisation['id_personne']);
+            $company = $this->companyMemberRepository ? $this->companyMemberRepository->get($cotisation['id_personne']) : null;
             Assertion::notNull($company);
             $infos = [
                 'nom' => $company->getLastName(),
@@ -512,7 +498,7 @@ class Cotisations
         $personne = $this->obtenir($id_cotisation, 'type_personne, id_personne');
 
         if ($personne['type_personne'] == AFUP_PERSONNES_MORALES) {
-            $company = $this->companyMemberRepository->get($personne['id_personne']);
+            $company = $this->companyMemberRepository ? $this->companyMemberRepository->get($personne['id_personne']) : null;
             Assertion::notNull($company);
             $contactPhysique = [
                 'nom'=> $company->getLastName(),

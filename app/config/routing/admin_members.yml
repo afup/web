@@ -32,11 +32,16 @@ admin_members_company_list:
 
 admin_members_company_add:
   path: /companies/add
-  defaults: {_controller: AppBundle\Controller\Admin\Members\CompanyAddAction}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Members\CompanyAction
+    id: null
 
 admin_members_company_edit:
-  path: /companies/edit
-  defaults: {_controller: AppBundle\Controller\Admin\Members\CompanyEditAction}
+  path: /companies/edit/{id}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Members\CompanyAction
+    requirements:
+      id: \d+
 
 admin_members_company_delete:
   path: /companies/delete

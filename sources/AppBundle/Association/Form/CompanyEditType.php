@@ -37,7 +37,7 @@ class CompanyEditType extends AbstractType
             ])
             ->add('siret', TextType::class, [
                 'label' => 'SIRET',
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'size' => 30,
                     'maxlength' => 40,
@@ -51,7 +51,7 @@ class CompanyEditType extends AbstractType
                     'rows' => 10,
                 ],
             ])
-            ->add('zipcode', TextType::class, [
+            ->add('zipCode', TextType::class, [
                 'label' => 'Code postal',
                 'required' => true,
                 'attr' => [
@@ -67,12 +67,12 @@ class CompanyEditType extends AbstractType
                     'maxlength' => 50,
                 ],
             ])
-            ->add('countryId', ChoiceType::class, [
+            ->add('country', ChoiceType::class, [
                 'label' => 'Pays',
                 'required' => true,
                 'choices' => array_flip($this->pays->obtenirPays()),
             ])
-            ->add('lastname', TextType::class, [
+            ->add('lastName', TextType::class, [
                 'label' => 'Nom',
                 'required' => true,
                 'attr' => [
@@ -80,7 +80,7 @@ class CompanyEditType extends AbstractType
                     'maxlength' => 40,
                 ],
             ])
-            ->add('firstname', TextType::class, [
+            ->add('firstName', TextType::class, [
                 'label' => 'Prénom',
                 'required' => true,
                 'attr' => [
@@ -124,13 +124,13 @@ class CompanyEditType extends AbstractType
                 'label' => 'Membres max',
                 'choices' => array_combine($maxMembers = range(3, 18, 3), $maxMembers),
             ])
-            ->add('save', SubmitType::class, ['label' => 'Ajouter']);
+            ->add('save', SubmitType::class, ['label' => 'Soumettre']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => CompanyEditFormData::class,
+            'data_class' => CompanyMember::class,
         ]);
     }
 }

@@ -1,0 +1,39 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% form_theme form 'form_theme_admin.html.twig' %}
+
+{% block content %}
+    <h2>Modifier une personne morale</h2>
+
+    <div class="ui menu">
+        <a href="/pages/administration/index.php?page=cotisations&amp;type_personne={{ constant('AFUP_PERSONNES_MORALES') }}&amp;id_personne={{ company.id }}"
+           class="item">
+            <i class="money bill icon"></i>
+            Voir les cotisations
+        </a>
+    </div>
+    {% include 'admin/members/company/form.html.twig' %}
+
+    <div class="ui segment">
+        <h2 class="ui header">Personnes physiques associées</h2>
+        <div class="ui clearing divider"></div>
+        <div class="ui list">
+            {# @var user \AppBundle\Association\Model\User #}
+            {% for user in users %}
+                <div class="item">
+                    <i class="user icon"></i>
+                    <div class="content">
+                        {% if user.status == constant('AppBundle\\Association\\Model\\User::STATUS_ACTIVE') %}
+                            <span class="ui mini green label">Actif</span>
+                        {% else %}
+                            <span class="ui mini red label">Inactif</span>
+                        {% endif %}
+                        <a href="{{ path('admin_members_user_edit', {id: user.id}) }}">
+                            {{ user.lastName }} {{ user.firstName }}
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

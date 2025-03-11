@@ -44,12 +44,13 @@ class CompanyMember implements NotifyPropertyInterface
 
     /**
      * @var string
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Raison sociale manquante")
      */
     private $companyName;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $siret;
 
@@ -88,7 +89,7 @@ class CompanyMember implements NotifyPropertyInterface
     /**
      * @var int
      */
-    private $status = self::STATUS_PENDING;
+    private $status = self::STATUS_ACTIVE;
 
     /**
      * @var int

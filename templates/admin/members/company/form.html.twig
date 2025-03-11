@@ -1,0 +1,61 @@
+
+{{ form_start(form) }}
+<div class="ui segment">
+    <h2 class="ui header">Informations</h2>
+    <div class="ui clearing divider"></div>
+    <div>
+        <div class="ui form">
+            {{ form_row(form.companyName) }}
+            {{ form_row(form.siret) }}
+            {{ form_row(form.address) }}
+            {{ form_row(form.zipCode) }}
+            {{ form_row(form.city) }}
+            {{ form_row(form.country) }}
+        </div>
+    </div>
+</div>
+
+<div class="ui segment">
+    <h2 class="ui header">Contact administratif</h2>
+    <div class="ui clearing divider"></div>
+    <div>
+        <div class="ui form">
+            {{ form_row(form.lastName, {attr: {'data-role': 'field-lastname'}}) }}
+            {{ form_row(form.firstName, {attr: {'data-role': 'field-firstname'}}) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.phone) }}
+            {{ form_row(form.cellphone) }}
+        </div>
+    </div>
+</div>
+
+<div class="ui segment">
+    <h2 class="ui header">Paramètres</h2>
+    <div class="ui clearing divider"></div>
+    <div>
+        <div class="ui form">
+            {{ form_row(form.status) }}
+            {{ form_row(form.maxMembers) }}
+            <div class="inline fields ui grid">
+                <div class="three wide column"></div>
+                <div class="field nine wide column">
+                    Nombre de membres rattachés autorisé par la cotisation
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui segment">
+    <div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                <div class="three wide column"></div>
+                <div class="field nine wide column">
+                    {{ form_row(form.save, {attr: {class: "ui primary button"}}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}

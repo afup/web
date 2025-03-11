@@ -42,6 +42,7 @@ $smarty->assign('personne', $personne);
 // Cotisations
 
 $cotisations = new Cotisations($bdd);
+$cotisations->setCompanyMemberRepository($companyMemberRepository);
 
 if ($action == 'lister') {
     $smarty->assign('cotisations', $cotisations->obtenirListe($_GET['type_personne'], $_GET['id_personne']));
