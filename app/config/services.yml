@@ -399,12 +399,6 @@ services:
     AppBundle\Association\Factory\UserFactory:
         autowire: true
 
-    AppBundle\Association\Form\CompanyEditFormDataFactory:
-        autowire: true
-
-    AppBundle\Offices\OfficesCollection:
-      autowire: true
-
     AppBundle\Antennes\AntennesCollection:
         autowire: true
 
@@ -599,10 +593,11 @@ services:
           - 'Afup\Site\Forum\Inscriptions'
 
     Afup\Site\Association\Cotisations:
-        class: Afup\Site\Association\Cotisations
         factory: ['@AppBundle\LegacyModelFactory', 'createObject']
         arguments:
           - 'Afup\Site\Association\Cotisations'
+        calls:
+          - [setCompanyMemberRepository, ['@AppBundle\Association\Model\Repository\CompanyMemberRepository']]
 
     AppBundle\Event\Form\PurchaseType:
         autowire: true

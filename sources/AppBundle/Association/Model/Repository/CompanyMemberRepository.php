@@ -142,7 +142,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
         $result = [];
         $query = $this->getQuery('SELECT id, raison_sociale FROM afup_personnes_morales ORDER BY raison_sociale');
         foreach ($query->query($this->getCollection(new HydratorArray())) as $row) {
-            $result[(int) $row['id']] = $row['raison_sociale'];
+            $result[(int) $row['id']] = sprintf('%s (id : %d)', $row['raison_sociale'], $row['id']);
         }
 
         return $result;

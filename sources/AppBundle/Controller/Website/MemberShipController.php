@@ -378,6 +378,7 @@ class MemberShipController extends AbstractController
          * @var Cotisations $cotisations
          */
         $cotisations = $this->legacyModelFactory->createObject(Cotisations::class);
+        $cotisations->setCompanyMemberRepository($this->companyMemberRepository);
         $logs = $this->legacyModelFactory->createObject(Logs::class);
 
         $status = $payboxResponse->getStatus();
@@ -542,7 +543,9 @@ class MemberShipController extends AbstractController
 
     private function getCotisations(): Cotisations
     {
-        return new Cotisations($GLOBALS['AFUP_DB'], $this->getDroits());
+        $cotisation =  new Cotisations($GLOBALS['AFUP_DB'], $this->getDroits());
+        $cotisation->setCompanyMemberRepository($this->companyMemberRepository);
+        return $cotisation;
     }
 
     public function membershipFeeDownload(Request $request): BinaryFileResponse

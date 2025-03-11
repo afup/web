@@ -67,7 +67,7 @@ function voirPersonneMorale() {
     if (id == 0) { // Si aucune personne morale a été choisie
         alert('Choisissez une personne morale, pour visiter sa fiche.');
     } else { // On redirige vers la personne morale choisie
-        document.location.href = '/admin/members/companies/edit?id=' + select[0].options[select[0].selectedIndex].value;
+        document.location.href = '/admin/members/companies/edit/' + select[0].options[select[0].selectedIndex].value;
     }
 }
 
