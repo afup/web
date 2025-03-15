@@ -317,15 +317,12 @@ services:
     AppBundle\Slack\MessageFactory:
         autowire: true
 
-    app.slack.http_client:
-        class: GuzzleHttp\Client
-
     AppBundle\Notifier\SlackNotifier:
         arguments:
             $postUrl: "%slack_url%"
             $messageFactory: '@AppBundle\Slack\MessageFactory'
             $serializer: '@jms_serializer.serializer'
-            $httpClient: '@app.slack.http_client'
+            $httpClient: '@http_client'
 
     AppBundle\Routing\LegacyRouter:
         autowire: true
@@ -723,20 +720,11 @@ services:
         autowire: true
         public: true
 
-    app.github.http_client:
-        class: GuzzleHttp\Client
-        arguments:
-            $config:
-                base_uri: https://api.github.com/
-
     AppBundle\Github\GithubClient:
         arguments:
-            $githubClient: '@app.github.http_client'
-
-    app.meetup.http_client:
-        class: GuzzleHttp\Client
+            $githubClient: '@http_client.github'
 
     AppBundle\Indexation\Meetups\MeetupClient:
         arguments:
-            $httpClient: '@app.meetup.http_client'
+            $httpClient: '@http_client.meetup'
             $antennesCollection: '@AppBundle\Antennes\AntennesCollection'

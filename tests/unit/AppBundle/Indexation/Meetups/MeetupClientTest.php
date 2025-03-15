@@ -6,18 +6,18 @@ namespace AppBundle\Tests\Indexation\Meetups;
 
 use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Indexation\Meetups\MeetupClient;
-use GuzzleHttp\Client;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpClient\MockHttpClient;
+use Symfony\Component\HttpClient\Response\MockResponse;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final class MeetupClientTest extends TestCase
 {
     /**
      * @dataProvider failureDataProvider
      */
-    public function testFailure(Response $response, string $expectedExceptionMessage): void
+    public function testFailure(MockResponse $response, string $expectedExceptionMessage): void
     {
         $httpClient = $this->makeGuzzleMockClient($response);
 
@@ -32,22 +32,20 @@ final class MeetupClientTest extends TestCase
     public function failureDataProvider(): \Generator
     {
         yield [
-            'response' => new Response(500),
-            'exception' => "Server error: `POST https://api.meetup.com/gql` resulted in a `500 Internal Server Error` response",
+            'response' => new MockResponse('', ['http_code' => 500]),
+            'exception' => 'HTTP 500 returned for "http://fakemeetup/gql".',
         ];
 
         yield [
-            'response' => new Response(200, [], 'invalid json'),
-            'exception' => 'The given value is not a valid JSON entry.',
+            'response' => new MockResponse('invalid json'),
+            'exception' => 'Syntax error for "http://fakemeetup/gql".',
         ];
     }
 
     public function testReturnsValidResponse(): void
     {
         $httpClient = $this->makeGuzzleMockClient(
-            new Response(
-                200,
-                [],
+            new MockResponse(
                 json_encode([
                     'data' => [
                         'lyon' => [
@@ -140,12 +138,8 @@ final class MeetupClientTest extends TestCase
         self::assertEquals('Lieu 2', $antennes[3]->getLocation());
     }
 
-    private function makeGuzzleMockClient(Response $response): Client
+    private function makeGuzzleMockClient(ResponseInterface $response): HttpClientInterface
     {
-        return new Client([
-            'handler' => HandlerStack::create(
-                new MockHandler([$response])
-            )
-        ]);
+        return new MockHttpClient([$response], 'http://fakemeetup');
     }
 }
