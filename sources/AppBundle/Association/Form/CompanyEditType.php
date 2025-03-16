@@ -37,7 +37,7 @@ class CompanyEditType extends AbstractType
             ])
             ->add('siret', TextType::class, [
                 'label' => 'SIRET',
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'size' => 30,
                     'maxlength' => 40,
