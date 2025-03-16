@@ -671,6 +671,7 @@ class CompanyMember implements NotifyPropertyInterface
     /** @param string|null $cellphone */
     public function setCellphone($cellphone): void
     {
+        $this->propertyChanged('cellphone', $this->cellphone, $cellphone);
         $this->cellphone = $cellphone;
     }
 }

@@ -18,7 +18,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 use InvalidArgumentException;
 
 /**
- * @method CompanyMember|null get($primariesKeyValue, $forceMaster = false)
+ * @extends Repository<CompanyMember>
  */
 class CompanyMemberRepository extends Repository implements MetadataInitializer
 {
@@ -258,6 +258,11 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'telephone_fixe',
                 'fieldName' => 'phone',
+                'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'telephone_portable',
+                'fieldName' => 'cellphone',
                 'type' => 'string',
             ])
             ->addField([
