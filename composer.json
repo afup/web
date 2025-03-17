@@ -38,9 +38,20 @@
     "sabre/vobject": "^4.1",
     "setasign/fpdf": "^1.8",
     "smarty/smarty": "^5.4",
-    "symfony/monolog-bundle": "*",
-    "symfony/symfony": "^4.4",
+    "symfony/asset": "^5.4",
+    "symfony/console": "^5.4",
+    "symfony/expression-language": "^5.4",
+    "symfony/form": "^5.4",
+    "symfony/framework-bundle": "^5.4",
+    "symfony/intl": "^5.4",
+    "symfony/monolog-bundle": "^3.1",
+    "symfony/security-bundle": "^5.4",
+    "symfony/translation": "^5.4",
+    "symfony/twig-bundle": "^5.4",
+    "symfony/validator": "^5.4",
+    "symfony/yaml": "^5.4",
     "twig/extensions": "^1.4",
+    "twig/twig": "^2.16",
     "willdurand/geocoder": "^3.3",
     "znk3r/html_common": "*",
     "znk3r/html_quickform": "4.0.2"
@@ -104,7 +115,9 @@
     "ifsnop/mysqldump-php": "^2.12",
     "phpunit/phpunit": "^9.6",
     "rector/rector": "^2.0",
-    "smalot/pdfparser": "^0.19.0"
+    "smalot/pdfparser": "^0.19.0",
+    "symfony/debug-bundle": "^5.4",
+    "symfony/web-profiler-bundle": "^5.4"
   },
   "repositories": [
     {
