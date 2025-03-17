@@ -55,11 +55,11 @@ Feature: Administration - Évènements - Gestions Évènements
     And I fill in "event[coupons]" with "FREE_FORUM2027,SUPER_FORUM2027"
     And I press "Soumettre"
     Then I should see "Évènement ajouté"
-    And I should see "Informations générales"
-    Then the "event[title]" field should contain "Forum AFUP 2027"
-    Then the "event[seats]" field should contain "999"
-    Then the "event[dateStart]" field should contain "2027-03-03"
-    Then the "event[dateEnd]" field should contain "2027-03-05"
+    And I should see "Liste des évènements"
+    And I should see "Forum AFUP 2027"
+    And I should see "999"
+    And I should see "03/03/2027"
+    And I should see "05/03/2027"
 
   Scenario: Suppression d'un évènement vide
     Given I am logged in as admin and on the Administration

@@ -75,7 +75,7 @@ class EventAction
             }
 
             $this->flashBag->add('notice', 'Évènement ' . ($id ? 'modifié' : 'ajouté'));
-            return new RedirectResponse($this->urlGenerator->generate('admin_event_edit', ['id' => $event->getId()]));
+            return new RedirectResponse($this->urlGenerator->generate('admin_event_list'));
         }
 
         $sponsorFilePathFR = Event::hasSponsorFile($event->getPath(), 'fr') ? Event::getSponsorFilePublicPath($event->getPath(), 'fr') : null;
@@ -93,9 +93,8 @@ class EventAction
 
     private function moveSponsorFile(Event $event, FormInterface $form, string $language): void
     {
-        /** @var ?UploadedFile $uploadedFile */
         $uploadedFile = $form->get('sponsor_file_' . $language)->getData();
-        if ($uploadedFile) {
+        if ($uploadedFile instanceof UploadedFile) {
             $dir = Event::getSponsorFileDir();
             if (!is_dir($dir) && !mkdir($dir) && !is_dir($dir)) {
                 throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
@@ -107,9 +106,8 @@ class EventAction
 
     private function moveRegistrationEmailFile(Event $event, FormInterface $form): void
     {
-        /** @var ?UploadedFile $uploadedFile */
         $uploadedFile = $form->get('registration_email_file')->getData();
-        if ($uploadedFile) {
+        if ($uploadedFile instanceof UploadedFile) {
             $dir = Event::getInscriptionAttachmentDir();
             if (!is_dir($dir) && !mkdir($dir) && !is_dir($dir)) {
                 throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
