@@ -44,12 +44,13 @@ class CompanyMember implements NotifyPropertyInterface
 
     /**
      * @var string
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Raison sociale manquante")
      */
     private $companyName;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $siret;
 
@@ -82,10 +83,13 @@ class CompanyMember implements NotifyPropertyInterface
      */
     private $phone;
 
+    /** @var string|null */
+    private $cellphone;
+
     /**
      * @var int
      */
-    private $status = self::STATUS_PENDING;
+    private $status = self::STATUS_ACTIVE;
 
     /**
      * @var int
@@ -656,5 +660,18 @@ class CompanyMember implements NotifyPropertyInterface
         $this->membershipReason = $membershipReason;
 
         return $this;
+    }
+
+    /** @return string|null */
+    public function getCellphone()
+    {
+        return $this->cellphone;
+    }
+
+    /** @param string|null $cellphone */
+    public function setCellphone($cellphone): void
+    {
+        $this->propertyChanged('cellphone', $this->cellphone, $cellphone);
+        $this->cellphone = $cellphone;
     }
 }

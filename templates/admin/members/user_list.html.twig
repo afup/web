@@ -122,7 +122,7 @@
                                 </a>
                             {% else %}
                                 <a id="modifier_moral_{{ user.id }}"
-                                   href="/pages/administration/index.php?page=personnes_morales&amp;action=modifier&amp;id={{ user.companyId }}"
+                                   href="{{ path('admin_members_company_edit', {id: user.companyId}) }}"
                                    data-position="left center"
                                    data-tooltip="Accéder à la fiche de la personne morale"
                                    class="compact ui icon button"

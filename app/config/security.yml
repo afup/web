@@ -51,6 +51,7 @@ security:
         - { path: ^/admin/company, roles: ROLE_COMPANY_MANAGER }
         - { path: ^/admin/members/badges, roles: ROLE_ADMIN }
         - { path: ^/admin/members/users, roles: ROLE_ADMIN }
+        - { path: ^/admin/members/companies, roles: ROLE_ADMIN }
         - { path: ^/admin/event/speakers-management, roles: ROLE_FORUM }
         - { path: ^/admin/event, roles: ROLE_ADMIN }
         - { path: ^/admin/vote, roles: ROLE_ADMIN }

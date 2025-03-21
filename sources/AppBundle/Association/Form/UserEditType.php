@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Form;
 
-use Afup\Site\Association\Personnes_Morales;
 use Afup\Site\Utils\Pays;
+use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -25,14 +25,14 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserEditType extends AbstractType
 {
-    private Personnes_Morales $personnesMorales;
+    private CompanyMemberRepository $companyMemberRepository;
     private Pays $pays;
 
     public function __construct(
-        Personnes_Morales $personnesMorales,
+        CompanyMemberRepository $companyMemberRepository,
         Pays $pays
     ) {
-        $this->personnesMorales = $personnesMorales;
+        $this->companyMemberRepository = $companyMemberRepository;
         $this->pays = $pays;
     }
 
@@ -43,7 +43,7 @@ class UserEditType extends AbstractType
             ->add('companyId', ChoiceType::class, [
                 'label' => 'Personne morale',
                 'required' => false,
-                'choices' => array_flip($this->personnesMorales->obtenirListe('id, CONCAT(raison_sociale, " (id : ", id, ")")', 'raison_sociale', true)),
+                'choices' => array_flip($this->companyMemberRepository->getList()),
             ])
             ->add('civility', ChoiceType::class, [
                 'label' => 'Civilité',

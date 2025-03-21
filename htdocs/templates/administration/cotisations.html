@@ -13,12 +13,12 @@
             </div>
         </a>
         {if $type_personne == 0}
-            <a href="/admin/members/users/edit?id={$id_personne}" class="item">
+            <a href="/admin/members/users/edit/{$id_personne}" class="item">
                 <i class="user icon"></i>
                 Voir la fiche de la personne physique
             </a>
         {else}
-            <a href="index.php?page=personnes_morales&amp;action=modifier&amp;id={$id_personne}" class="item" >
+            <a href="/admin/members/companies/edit/{$id_personne}" class="item" >
                 <i class="building icon"></i>
                 Voir la fiche de la personne morale
             </a>
