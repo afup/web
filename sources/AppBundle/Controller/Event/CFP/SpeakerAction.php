@@ -15,8 +15,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -29,11 +28,9 @@ class SpeakerAction
     private PhotoStorage $photoStorage;
     private SpeakerRepository $speakerRepository;
     private FormFactoryInterface $formFactory;
-    private SessionInterface $session;
     private TranslatorInterface $translator;
     private SidebarRenderer $sidebarRenderer;
     private EventActionHelper $eventActionHelper;
-    private FlashBagInterface $flashBag;
 
     public function __construct(
         EventActionHelper $eventActionHelper,
@@ -42,8 +39,6 @@ class SpeakerAction
         FormFactoryInterface $formFactory,
         SpeakerFactory $speakerFactory,
         SpeakerRepository $speakerRepository,
-        SessionInterface $session,
-        FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         PhotoStorage $photoStorage,
         SidebarRenderer $sidebarRenderer
@@ -54,11 +49,9 @@ class SpeakerAction
         $this->photoStorage = $photoStorage;
         $this->speakerRepository = $speakerRepository;
         $this->formFactory = $formFactory;
-        $this->session = $session;
         $this->translator = $translator;
         $this->sidebarRenderer = $sidebarRenderer;
         $this->eventActionHelper = $eventActionHelper;
-        $this->flashBag = $flashBag;
     }
 
     public function __invoke(Request $request)
@@ -83,10 +76,12 @@ class SpeakerAction
                 $this->speakerRepository->save($speaker);
             }
 
-            $this->flashBag->add('success', $this->translator->trans('Profil sauvegardé.'));
-            if ($this->session->has('pendingInvitation')) {
-                $url = $this->urlGenerator->generate('cfp_invite', $this->session->get('pendingInvitation'));
-                $this->session->remove('pendingInvitation');
+            /** @var Session $session */
+            $session = $request->getSession();
+            $session->getFlashBag()->add('success', $this->translator->trans('Profil sauvegardé.'));
+            if ($session->has('pendingInvitation')) {
+                $url = $this->urlGenerator->generate('cfp_invite', $session->get('pendingInvitation'));
+                $session->remove('pendingInvitation');
             } else {
                 $url = $this->urlGenerator->generate('cfp_speaker', ['eventSlug' => $event->getPath()]);
             }

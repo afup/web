@@ -21,21 +21,21 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class VoteController extends AbstractController
 {
     private ?FormBuilderInterface $formBuilder = null;
-    private SessionInterface $session;
+    private RequestStack $requestStack;
     private EventDispatcherInterface $eventDispatcher;
     private RepositoryFactory $repositoryFactory;
     private SlackNotifier $slackNotifier;
     private EventActionHelper $eventActionHelper;
-    public function __construct(SessionInterface $session, EventDispatcherInterface $eventDispatcher, RepositoryFactory $repositoryFactory, SlackNotifier $slackNotifier, EventActionHelper $eventActionHelper)
+    public function __construct(RequestStack $requestStack, EventDispatcherInterface $eventDispatcher, RepositoryFactory $repositoryFactory, SlackNotifier $slackNotifier, EventActionHelper $eventActionHelper)
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->eventDispatcher = $eventDispatcher;
         $this->repositoryFactory = $repositoryFactory;
         $this->slackNotifier = $slackNotifier;
@@ -61,9 +61,9 @@ class VoteController extends AbstractController
 
         // Get a random list of unrated talks
         if ($all === false) {
-            $talks = $talkRepository->getNewTalksToRate($event, $this->getUser(), crc32($this->session->getId()), $page);
+            $talks = $talkRepository->getNewTalksToRate($event, $this->getUser(), crc32($this->requestStack->getSession()->getId()), $page);
         } else {
-            $talks = $talkRepository->getAllTalksAndRatingsForUser($event, $this->getUser(), crc32($this->session->getId()), $page);
+            $talks = $talkRepository->getAllTalksAndRatingsForUser($event, $this->getUser(), crc32($this->requestStack->getSession()->getId()), $page);
         }
 
         $vote = new Vote();

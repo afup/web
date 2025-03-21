@@ -13,8 +13,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
@@ -25,8 +24,6 @@ class UserAddAction
     private UserRepository $userRepository;
     private UserService $userService;
     private FormFactoryInterface $formFactory;
-    private SessionInterface $session;
-    private FlashBagInterface $flashBag;
     private UrlGeneratorInterface $urlGenerator;
     private Environment $twig;
 
@@ -34,25 +31,23 @@ class UserAddAction
         UserRepository $userRepository,
         UserService $userService,
         FormFactoryInterface $formFactory,
-        SessionInterface $session,
-        FlashBagInterface $flashBag,
         UrlGeneratorInterface $urlGenerator,
         Environment $twig
     ) {
         $this->userRepository = $userRepository;
         $this->userService = $userService;
         $this->formFactory = $formFactory;
-        $this->session = $session;
-        $this->flashBag = $flashBag;
         $this->urlGenerator = $urlGenerator;
         $this->twig = $twig;
     }
 
     public function __invoke(Request $request)
     {
-        if ($this->session->has('generer_personne_physique')) {
-            $user = $this->fromSession($this->session->get('generer_personne_physique'));
-            $this->session->remove('generer_personne_physique');
+        /** @var Session $session */
+        $session = $request->getSession();
+        if ($session->has('generer_personne_physique')) {
+            $user = $this->fromSession($session->get('generer_personne_physique'));
+            $session->remove('generer_personne_physique');
         } else {
             $user = new User();
             $user->setRoles([]);
@@ -70,7 +65,7 @@ class UserAddAction
 
             $this->userRepository->create($user);
             $this->log('Ajout de la personne physique ' . $user->getFirstName() . ' ' . $user->getLastName());
-            $this->flashBag->add('notice', 'La personne physique a été ajoutée');
+            $session->getFlashBag()->add('notice', 'La personne physique a été ajoutée');
 
             return new RedirectResponse($this->urlGenerator->generate('admin_members_user_list', ['filter' => $user->getEmail()]));
         }

@@ -36,13 +36,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class TicketController extends AbstractController
 {
-    /** @var SessionInterface&Session $session */
-    private SessionInterface $session;
     private EventDispatcherInterface $eventDispatcher;
     /** @var LoggerInterface&Logger  */
     private LoggerInterface $logger;
@@ -57,9 +54,8 @@ class TicketController extends AbstractController
     private TicketRepository $ticketRepository;
     private PayboxFactory $payboxFactory;
     private EventActionHelper $eventActionHelper;
-    public function __construct(SessionInterface $session, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger, RepositoryFactory $repositoryFactory, ActionThrottling $actionThrottling, TicketFactory $ticketFactory, SponsorTicketHelper $sponsorTicketHelper, Emails $emails, PurchaseTypeFactory $purchaseTypeFactory, InvoiceRepository $invoiceRepository, LegacyModelFactory $legacyModelFactory, TicketRepository $ticketRepository, PayboxFactory $payboxFactory, EventActionHelper $eventActionHelper)
+    public function __construct(EventDispatcherInterface $eventDispatcher, LoggerInterface $logger, RepositoryFactory $repositoryFactory, ActionThrottling $actionThrottling, TicketFactory $ticketFactory, SponsorTicketHelper $sponsorTicketHelper, Emails $emails, PurchaseTypeFactory $purchaseTypeFactory, InvoiceRepository $invoiceRepository, LegacyModelFactory $legacyModelFactory, TicketRepository $ticketRepository, PayboxFactory $payboxFactory, EventActionHelper $eventActionHelper)
     {
-        $this->session = $session;
         $this->eventDispatcher = $eventDispatcher;
         $this->logger = $logger;
         $this->repositoryFactory = $repositoryFactory;
@@ -78,8 +74,11 @@ class TicketController extends AbstractController
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
 
-        if ($request->getSession()->has('sponsor_ticket_id') === true) {
-            $request->getSession()->remove('sponsor_ticket_id');
+        /** @var Session $session */
+        $session = $request->getSession();
+
+        if ($session->has('sponsor_ticket_id') === true) {
+            $session->remove('sponsor_ticket_id');
         }
 
         if ($request->isMethod(Request::METHOD_POST)) {
@@ -105,13 +104,13 @@ class TicketController extends AbstractController
                     $errors[] = 'Ce token n\'existe pas.';
                     $this->actionThrottling->log('sponsor_token', $request->getClientIp(), null);
                 } else {
-                    $request->getSession()->set('sponsor_ticket_id', $sponsorTicket->getId());
+                    $session->set('sponsor_ticket_id', $sponsorTicket->getId());
                     $this->actionThrottling->clearLogsForIp('sponsor_token', $request->getClientIp());
 
                     return $this->redirectToRoute('sponsor_ticket_form', ['eventSlug' => $eventSlug]);
                 }
             }
-            $this->session->getFlashBag()->setAll(['error' => $errors]);
+            $session->getFlashBag()->setAll(['error' => $errors]);
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
 
