@@ -83,10 +83,7 @@ class Speaker implements NotifyPropertyInterface
      */
     private $twitter;
 
-    /**
-     * @var string
-     */
-    private $mastodon;
+    private ?string $mastodon = null;
 
     private ?string $bluesky = null;
 
@@ -381,9 +378,9 @@ class Speaker implements NotifyPropertyInterface
         return (string) $this->twitter;
     }
 
-    public function getMastodon(): string
+    public function getMastodon(): ?string
     {
-        return (string) $this->mastodon;
+        return $this->mastodon;
     }
 
     public function getBluesky(): ?string
@@ -417,6 +414,11 @@ class Speaker implements NotifyPropertyInterface
     public function getUsernameMastodon(): string
     {
         $mastodon = $this->getMastodon();
+
+        if ($mastodon === null) {
+            return '';
+        }
+
         if (strpos($mastodon, '@') === false) {
             return '';
         }
@@ -430,7 +432,13 @@ class Speaker implements NotifyPropertyInterface
         if ($this->getUsernameMastodon() === '' || $this->getUsernameMastodon() === '0') {
             return '';
         }
+
         $mastodon = $this->getMastodon();
+
+        if ($mastodon === null) {
+            return '';
+        }
+
         if (preg_match('#https?://@(.+)@(.+)#', $mastodon, $matches)) {
             return sprintf('https://%s/@%s', $matches[2], $matches[1]);
         }
