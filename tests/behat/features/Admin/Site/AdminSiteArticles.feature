@@ -40,7 +40,7 @@ Feature: Administration - Partie Site
     When I should see "Liste des articles"
     Then the ".content table" element should contain "Le titre de l'article"
     # vérification de l'article sur le site publique
-    When I go to "/news/2-url-article"
+    When I go to "/news/16-url-article"
     Then I should see "Le titre de l'article"
     Then I should see "Le chapeau de l'article"
     Then I should see "Le contenu de l'article"
