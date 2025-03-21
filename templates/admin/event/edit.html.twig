@@ -1,0 +1,27 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Modifier un évènement</h2>
+    <div class="ui menu">
+        <a href="{{ path('admin_event_send_test_mail_inscription', {id: event.id}) }}" class="item">
+            <i class=" icon mail"></i>
+            Envoyer un test du mail d'inscription sur bureau@afup.org
+        </a>
+        <div class="ui simple dropdown item" tabindex="0">
+            <i class="icon linkify"></i>
+            <span class="text">Accès rapides</span>
+            <i class="dropdown icon"></i>
+            <div class="menu hidden" tabindex="-1">
+                <a class="item" target="_blank" href="{{ path('cfp', {eventSlug: event.path}) }}">CFP</a>
+                <a class="item" target="_blank" href="{{ path('ticket', {eventSlug: event.path}) }}">Billeterie</a>
+                <a class="item" target="_blank" href="{{ path('sponsor_leads', {eventSlug: event.path}) }}">Devenir sponsor</a>
+                <a class="item" target="_blank" href="{{ path('openfeedback_json', {eventSlug: event.path}) }}">Export vers Openfeedback</a>
+            </div>
+        </div>
+    </div>
+
+    {% include 'admin/event/form.html.twig' %}
+{% endblock %}
+
+
+

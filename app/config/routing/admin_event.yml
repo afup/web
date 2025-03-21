@@ -8,6 +8,19 @@ admin_event_delete:
   requirements:
     id: \d+
 
+admin_event_new:
+  path: /new
+  defaults:
+    _controller: AppBundle\Controller\Admin\Event\EventAction
+    id: null
+
+admin_event_edit:
+  path: /edit/{id}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Event\EventAction
+  requirements:
+    id: \d+
+
 admin_event_room:
   path: /room
   defaults: {_controller: AppBundle\Controller\Admin\Event\RoomAction}
@@ -64,8 +77,10 @@ admin_event_speaker_infos:
   defaults: {_controller: AppBundle\Controller\Admin\Event\SpeakerInfosAction }
 
 admin_event_send_test_mail_inscription:
-  path: /send-test-mail-inscription
+  path: /send-test-mail-inscription/{id}
   defaults: {_controller: AppBundle\Controller\Admin\Event\SendTestInscriptionEmailAction }
+  requirements:
+    id: \d+
 
 admin_event_badges:
   path: /badges
