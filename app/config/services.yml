@@ -679,9 +679,7 @@ services:
             - {name: form.type}
 
     AppBundle\Subscriber\SitemapXmlSubscriber:
-        arguments:
-            - "@router"
-            - "@ting"
+        autowire: true
         tags:
             - { name: "kernel.event_subscriber", priority: 100 }
 

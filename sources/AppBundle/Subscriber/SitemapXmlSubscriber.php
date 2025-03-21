@@ -8,6 +8,7 @@ use Afup\Site\Corporate\Branche;
 use Afup\Site\Corporate\Feuille;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Controller\Website\NewsController;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Model\Article;
@@ -23,10 +24,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SitemapXmlSubscriber implements EventSubscriberInterface
 {
-    private RepositoryFactory $ting;
     private UrlGeneratorInterface $urlGenerator;
+    private RepositoryFactory $ting;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, RepositoryFactory $ting)
+    public function __construct(UrlGeneratorInterface $urlGenerator,
+                                RepositoryFactory $ting)
     {
         $this->urlGenerator = $urlGenerator;
         $this->ting = $ting;
@@ -83,8 +85,10 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
 
     public function registerNewsUrls(UrlContainerInterface $urls): void
     {
+        $articleRepository = $this->ting->get(ArticleRepository::class);
+
         /** @var Article[] $news */
-        $news = $this->ting->get(ArticleRepository::class)->findAllPublishedNews();
+        $news = $articleRepository->findAllPublishedNews();
 
         foreach ($news as $article) {
             $urls->addUrl(
@@ -95,6 +99,23 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                         UrlGeneratorInterface::ABSOLUTE_URL
                     ),
                     $article->getPublishedAt()
+                ),
+                'news'
+            );
+        }
+
+        $total = $articleRepository->countPublishedNews([]);
+        $byPage = NewsController::ARTICLES_PER_PAGE;
+        $lastPage = ceil($total / $byPage);
+
+        for ($page = max($lastPage, 1); $page <= $lastPage; $page++) {
+            $urls->addUrl(
+                new UrlConcrete(
+                    $this->urlGenerator->generate(
+                        'news_list',
+                        ['page' => $page],
+                        UrlGeneratorInterface::ABSOLUTE_URL
+                    )
                 ),
                 'news'
             );

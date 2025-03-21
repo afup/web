@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class NewsController extends AbstractController
 {
-    private const ARTICLES_PER_PAGE = 5;
+    public const ARTICLES_PER_PAGE = 5;
 
     private ViewRenderer $view;
     private AuthorizationCheckerInterface $authorizationChecker;
