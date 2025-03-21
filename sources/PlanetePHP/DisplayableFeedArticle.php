@@ -10,7 +10,7 @@ class DisplayableFeedArticle
     private $title;
     /** @var string */
     private $url;
-    /** @var int */
+    /** @var string */
     private $update;
     /** @var string */
     private $author;
@@ -24,7 +24,7 @@ class DisplayableFeedArticle
     /**
      * @param string $title
      * @param string $url
-     * @param int    $update
+     * @param string $update
      * @param string $author
      * @param string $content
      * @param string $feedName

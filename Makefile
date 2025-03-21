@@ -65,8 +65,12 @@ console:
 
 ### (Dans Docker) Tests unitaires
 test:
-	./bin/phpunit
+	./bin/phpunit --testsuite unit
 	./bin/php-cs-fixer fix --dry-run -vv
+
+### (Dans Docker) Tests d'intégration
+test-integration:
+	./bin/phpunit --testsuite integration
 
 ### (Dans Docker) Tests fonctionnels
 behat:
@@ -88,6 +92,14 @@ test-functional: data config htdocs/uploads tmp
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp ./bin/behat
 	make var/logs/test.deprecations_grouped.log
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
+
+### Tests d'intégration avec start/stop des images docker
+test-integration-ci:
+	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest
+	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest
+	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp make vendor
+	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp ./bin/phpunit --testsuite integration
+	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest
 
 ### Analyse PHPStan
 phpstan:
