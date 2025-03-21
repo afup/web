@@ -14,9 +14,10 @@ use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Twig\ViewRenderer;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends AbstractController
@@ -26,21 +27,21 @@ class HomeController extends AbstractController
     private ViewRenderer $view;
     private LoggerInterface $logger;
     private RepositoryFactory $repositoryFactory;
-    private AdapterInterface $traceableAdapter;
+    private CacheItemPoolInterface $cache;
     private SearchClient $client;
     private bool $homeAlgoliaEnabled;
 
     public function __construct(ViewRenderer $view,
                                 LoggerInterface $logger,
                                 RepositoryFactory $repositoryFactory,
-                                AdapterInterface $traceableAdapter,
+                                CacheItemPoolInterface $cache,
                                 SearchClient $client,
                                 bool $homeAlgoliaEnabled)
     {
         $this->view = $view;
         $this->logger = $logger;
         $this->repositoryFactory = $repositoryFactory;
-        $this->traceableAdapter = $traceableAdapter;
+        $this->cache = $cache;
         $this->client = $client;
         $this->homeAlgoliaEnabled = $homeAlgoliaEnabled;
     }
@@ -80,19 +81,18 @@ class HomeController extends AbstractController
             return [];
         }
 
-        $cache = $this->traceableAdapter;
         $cacheKey = 'home_algolia_meetups';
 
         try {
-            $cacheItem = $cache->getItem($cacheKey);
+            $cacheItem = $this->cache->getItem($cacheKey);
             if (!$cacheItem->isHit()) {
                 $cacheItem->expiresAfter(new \DateInterval('P1D'));
                 $cacheItem->set($this->doGetLatestMeetups());
-                $cache->save($cacheItem);
+                $this->cache->save($cacheItem);
             }
 
             return $cacheItem->get();
-        } catch (AlgoliaException $e) {
+        } catch (AlgoliaException|InvalidArgumentException $e) {
             $this->logger->error($e->getMessage());
             return [];
         }

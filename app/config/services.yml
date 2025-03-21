@@ -193,7 +193,7 @@ services:
         arguments: [AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository]
 
     AppBundle\Twig\TwigExtension:
-        arguments: ['@AppBundle\Routing\LegacyRouter', "@Parsedown", '@AppBundle\Email\Parsedown', "@service_container"]
+        arguments: ['@AppBundle\Routing\LegacyRouter', "@Parsedown", '@AppBundle\Email\Parsedown', "%google_analytics_enabled%", "%google_analytics_id%"]
         tags:
             -  { name: twig.extension }
 
