@@ -1,0 +1,51 @@
+{% extends 'admin/association/membership/_base.html.twig' %}
+
+{% block submenu %}
+    {% include 'admin/association/membership/_member_menu.html.twig' with {
+        current: "mygroups"
+    } only %}
+
+{% endblock %}
+
+{% block page_title %}Listes de diffusion{% endblock %}
+
+{% block page_content %}
+    <p>
+        L'AFUP propose de nombreuses mailing lists pour que les membres de la communauté PHP puissent échanger.
+        Si certaines listes sont réservées aux membres, les listes des antennes sont ouvertes à tous les membres de l'AFUP.
+    </p>
+
+    <div class="afup-form">
+        <form method="post" class="mailinglists--form">
+
+            {% if error is not null %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+
+            {% set label='' %}
+            {% for list in lists %}
+                {% if label != list.categoryLabel %}
+                    {% if not loop.first %}
+                        <hr />
+                    {% endif %}
+                    {% set label=list.categoryLabel %}
+                    <h3>{{ label }}</h3>
+                {% endif %}
+                <h4>{{ list.name }} ({{ list.email }})</h4>
+                <p>{{ list.description }}</p>
+                {% if list.membersOnly and app.user.hasRole('ROLE_MEMBER_EXPIRED') %}
+                    <button disabled>Cette mailing list est réservée aux membres de l'AFUP.</button>
+                {% elseif list.email == 'membres@afup.org' %}
+                    <button disabled>Vous ne pouvez pas vous désabonner de cette liste.</button>
+                {% elseif error is not null %}
+                    <p class="error">{{ error }}</p>
+                {% elseif subscriptions[list.email] is defined and subscriptions[list.email] %}
+                    <button name="unsubscribe" class="button button-inverted" value="{{ list.id }}">Me désabonner</button>
+                {% else %}
+                    <button name="subscribe" class="button button--call-to-action" value="{{ list.id }}">M'abonner</button>
+                {% endif %}
+            {% endfor %}
+            <input type="hidden" name="token" value="{{ csrf_token }}" />
+        </form>
+    </div>
+{% endblock %}

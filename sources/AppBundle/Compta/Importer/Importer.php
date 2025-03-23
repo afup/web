@@ -6,23 +6,14 @@ namespace AppBundle\Compta\Importer;
 
 interface Importer
 {
-    /**
-     * @param string $filePath
-     */
-    public function initialize($filePath): void;
+    public function initialize(string $filePath): void;
+
+    public function validate(): bool;
 
     /**
-     * @return boolean
+     * @return \Generator<int, Operation>
      */
-    public function validate();
+    public function extract(): \Generator;
 
-    /**
-     * @return Operation[]
-     */
-    public function extract();
-
-    /**
-     * @return int
-     */
-    public function getCompteId();
+    public function getCompteId(): int;
 }

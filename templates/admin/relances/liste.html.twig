@@ -1,0 +1,68 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Relance des cotisations</h2>
+    <table class="ui table striped compact celled">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Société</th>
+                <th class="center aligned">Statut mail</th>
+                <th>Type relance</th>
+                <th>Date relance</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for log in logs %}
+            <tr class="{% if loop.index is even %}even{% endif %}">
+                <td>{{ log.app.firstname }} {{ log.app.lastname }}</td>
+                <td>{% if log.apm is not null %}{{ log.apm.companyName }}{% else %}¤{% endif %}</td>
+                <td class="center aligned">
+                    {% if log.asrl.mailSent %}
+                        <span class="ui green label">Ok</span>
+                    {% else %}
+                        <span class="ui red label">Erreur</span>
+                    {% endif %}
+                </td>
+                <td>{{ log.asrl.reminderKey }}</td>
+                <td>{{ log.asrl.reminderDate|date('d/m/Y') }}</td>
+                <td class="right aligned">
+                    <a data-position="left center"
+                       class="compact ui green icon button"
+                       {% if log.apm is not null %}
+                           href="/pages/administration/index.php?page=cotisations&amp;type_personne=1&amp;id_personne={{ log.apm.id }}"
+                           data-tooltip="Gérer les cotisations de {{ log.apm.companyName }}"
+                        {% else %}
+                           href="/pages/administration/index.php?page=cotisations&amp;type_personne=0&amp;id_personne={{ log.app.id }}"
+                           data-tooltip="Gérer les cotisations de {{ log.app.firstname }} {{ log.app.lastname }}"
+                        {% endif %}
+                    >
+                        <i class="money bill alternate icon"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="ui center aligned clearing segment">
+        {% if logs.count > limit %}
+            <div class="ui right floated segment">
+                <a href="{{ url('admin_relances', { page: page + 1 }) }}" class="ui right labeled icon button">
+                    <i class="right chevron icon"></i>
+                    Page suivante
+
+                </a>
+            </div>
+        {% endif %}
+        {% if page > 1 %}
+            <div class="ui left floated segment">
+                <a href="{{ url('admin_relances', { page: page - 1 }) }}" class="ui labeled icon button">
+                    <i class="left chevron icon"></i>
+                    Page précédente
+                </a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

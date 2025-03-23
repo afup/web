@@ -16,7 +16,7 @@ use AppBundle\Event\Model\Vote;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use Assert\Assertion;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MessageFactory
 {

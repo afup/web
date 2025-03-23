@@ -59,7 +59,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     private $level = self::LEVEL_MEMBER;
 
     /**
-     * @var int
+     * @var string
      */
     private $levelModules = '00000';
 
@@ -136,7 +136,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     private $hash;
 
     /**
-     * @var \Datetime
+     * @var \DateTimeImmutable
      */
     private $lastSubscription;
 
@@ -304,7 +304,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getLevelModules()
     {
@@ -312,7 +312,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     }
 
     /**
-     * @param int $levelModules
+     * @param string $levelModules
      */
     public function setLevelModules($levelModules): self
     {
@@ -540,7 +540,7 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     }
 
     /**
-     * @return \Datetime
+     * @return \DateTimeImmutable
      */
     public function getLastSubscription()
     {

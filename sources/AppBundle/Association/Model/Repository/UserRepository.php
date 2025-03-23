@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use UnexpectedValueException;
 
 /**
- * @method User|null get($primariesKeyValue, $forceMaster = false)
+ * @extends Repository<User>
  */
 class UserRepository extends Repository implements MetadataInitializer, UserProviderInterface
 {

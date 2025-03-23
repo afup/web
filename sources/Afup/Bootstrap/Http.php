@@ -68,7 +68,7 @@ $smarty->setTemplateDir([
 $smarty->setCompileDir(AFUP_CHEMIN_RACINE . 'cache/templates');
 $smarty->compile_id    = $sous_site;
 $smarty->use_sub_dirs  = true;
-$smarty->compile_check = true;
+$smarty->compile_check = Smarty::COMPILECHECK_ON;
 $smarty->registerPlugin("modifier","stripslashes", "stripslashes");
 $smarty->registerPlugin("modifier","floatval", "floatval");
 

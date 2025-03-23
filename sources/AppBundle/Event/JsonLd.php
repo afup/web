@@ -54,10 +54,11 @@ class JsonLd
                 /**
                  * @var Speaker $speaker
                  */
+                $url = $this->photoStorage->getUrl($speaker);
                 $performers[] = [
                     '@type' => 'Person',
                     'name' => $speaker->getLabel(),
-                    'image' => $this->packages->getUrl($this->photoStorage->getUrl($speaker)),
+                    'image' => $url ? $this->packages->getUrl($url) : '',
                     'url' => $speaker->getTwitter() !== null ? 'https://twitter.com/' . $speaker->getTwitter() : null
                 ];
             }

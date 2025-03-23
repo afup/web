@@ -48,7 +48,7 @@ class Emails
 
         $message->addAttachment($this->getAttachementIcsInscription($event, $recipient));
 
-        $this->mailer->renderTemplate($message, ':admin/event:mail_inscription.html.twig', [
+        $this->mailer->renderTemplate($message, 'admin/event/mail_inscription.html.twig', [
             'event' => $event,
             'recipient' => $recipient,
             'content' => $mailContent,

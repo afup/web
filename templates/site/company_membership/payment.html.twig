@@ -1,0 +1,42 @@
+{% extends 'admin/association/membership/_base.html.twig' %}
+{% block page_content %}
+    <article id="company-membership-payment">
+        <h1>Adhésion entreprise à l'AFUP</h1>
+        <h2>Adhésion enregistrée !</h2>
+        <p>
+            Votre inscription a bien été enregistrée ! Il ne vous reste plus qu'à régler votre cotisation.
+        </p>
+        <p>
+            Montant de la cotisation: {{ invoice.montant }} Euros
+        </p>
+        <h2>Facture disponible</h2>
+
+        <p>
+            <a href="{{ url('company_membership_invoice', {invoiceNumber: invoice.numero_facture, token: invoice.token}) }}" class="button">Télécharger la facture</a>
+        </p>
+        <h2>Régler votre cotisation par Carte Bleue</h2>
+        {{ paybox|raw }}
+        <h2>Régler votre cotisation par chèque</h2>
+        <p>Libellez le chèque à cet ordre: {{ afup.raison_sociale }}. Indiquez au dos le numéro de facture: {{ invoice.numero_facture }}</p>
+        <address>
+            {{ afup.raison_sociale }}<br />
+            {{ afup.adresse }}<br />
+            {{ afup.code_postal }} {{ afup.ville }}
+        </address>
+        <h2>Régler votre cotisation par virement bancaire</h2>
+        <p>
+            Lors d'un règlement par virement bancaire, indiquez ce libellé: {{ invoice.numero_facture }}.
+        </p>
+        <table>
+            <tr>
+                <th>IBAN</th><th>BIC/SWIFT</th>
+            </tr>
+            <tr>
+                <td>{{ bankAccount.getIban }}</td><td>{{ bankAccount.getBic }}</td>
+            </tr>
+        </table>
+
+
+        <p>Si vous rencontrez le moindre problème, n'hésitez pas à contacter l'AFUP par email: bonjour (at) afup.org.</p>
+    </article>
+{% endblock %}

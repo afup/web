@@ -1,0 +1,81 @@
+{% extends 'site/base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/grid.css') }}" media="all" />
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />
+    <style type="text/css">
+        h1 {
+            text-align: center;
+        }
+
+        h1 img {
+            max-height: 80px;
+        }
+
+        @media (max-width: 992px) {
+            h1 img {
+                display: block;
+                margin: 10px auto;
+            }
+        }
+    </style>
+    <meta property="og:title" content="AFUP - Super-apéro PHP" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="{{ app.request.getSchemeAndHttpHost() }}{{ path('superapero') }}" />
+    <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() }}/images/super_apero_php-300x213.png" />
+    <meta property="og:description" content="Super Apéro PHP, l’apéro avec une cape organisé dans les antennes AFUP" />
+    <meta property="og:site_name" content="AFUP" />
+{% endblock %}
+
+{% block content %}
+    <div class="mw1400p center" id="container">
+        <div class="line" id="main">
+            <h1>
+                <img src="https://identity.afup.org/assets/apero_php/logo_apero_php.png" alt="" />
+                Super-apéro PHP
+                <img src="https://identity.afup.org/assets/apero_php/logo_apero_php.png" alt="" />
+            </h1>
+
+            <h2 style="text-align: center">Des apéros PHP le même jour dans toutes les antennes !</h2>
+
+            <blockquote>
+                <p>Bloquez votre soirée du jeudi 20 mars et rendez-vous dans votre antenne locale pour une soirée de conférences et d'échanges, où toute la communauté PHP sera invitée à lever son verre pour célébrer le langage !</p>
+            </blockquote>
+
+            {% for apero in aperos %}
+                {% if loop.index is odd %}
+                    <div class="container">
+                {% endif %}
+
+                <div class="col-md-6">
+                    <div class="container">
+                        <div class="col-md-2">
+                            <img src="{{ office_logo(apero.code) }}" alt="" />
+                        </div>
+                        <div class="col-md-10">
+                            <h3>{{ office_name(apero.code) }}</h3>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="col-md-{% if apero.meetup_id is defined %}8{% else %}12{% endif %}">
+                            {{ apero.content|raw }}
+                        </div>
+                        {% if apero.meetup_id is defined %}
+                        <div class="col-md-4">
+                                <a href="https://www.meetup.com/fr-FR/{{ office_meetup_urlname(apero.code) }}/events/{{ apero.meetup_id }}/" class="button">S'inscrire</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if loop.index is even %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            {% if aperos|length is odd %}
+                </div>
+            {% endif %}
+    </div>
+{% endblock %}
+

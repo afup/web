@@ -73,7 +73,8 @@ class Runner
     }
 
     /**
-     * @return array<Meetup>
+     * @param CollectionInterface<Meetup> $meetupsCollection
+     * @return list<array>
      */
     public function transformMeetupsForIndexation(CollectionInterface $meetupsCollection): array
     {

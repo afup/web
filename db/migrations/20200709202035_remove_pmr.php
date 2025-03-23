@@ -30,6 +30,9 @@ class RemovePmr extends AbstractMigration
      */
     public function change(): void
     {
-        $this->table('afup_inscription_forum')->removeColumn('mobilite_reduite');
+        $this
+            ->table('afup_inscription_forum')
+            ->removeColumn('mobilite_reduite')
+            ->save();
     }
 }

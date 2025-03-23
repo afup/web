@@ -12,7 +12,7 @@ use AppBundle\Email\Mailer\Message;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Lead;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SponsorshipLeadMail
 {

@@ -69,7 +69,7 @@ class LeadController extends AbstractController
     public function postLead($eventSlug): Response
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
-        return $this->render(':event/sponsorship_file:thanks.html.twig', ['event' => $event]);
+        return $this->render('event/sponsorship_file/thanks.html.twig', ['event' => $event]);
     }
 
     /**

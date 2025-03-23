@@ -12,6 +12,7 @@ use AppBundle\Event\Model\Room;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -95,7 +96,7 @@ class RoomAction
     }
 
     /**
-     * @return Form[]
+     * @return FormInterface[]
      */
     private function getFormsForRooms(CollectionInterface $rooms): array
     {

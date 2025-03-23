@@ -54,10 +54,10 @@
             </thead>
             <tbody>
             {foreach from=$forum_tarifs item=forum_tarif key=forum_tarif_key}
-            {assign var=inscrits value=$statistiques.types_inscriptions.inscrits[$forum_tarif_key]}
-            {assign var=confirmes value=$statistiques.types_inscriptions.confirmes[$forum_tarif_key]}
-            {assign var=payants value=$statistiques.types_inscriptions.payants[$forum_tarif_key]}
-            {assign var=montant value=$statistiques.types_inscriptions.payants[$forum_tarif_key]*$forum_tarif}
+            {assign var=inscrits value=$statistiques.types_inscriptions.inscrits[$forum_tarif_key]|default:0}
+            {assign var=confirmes value=$statistiques.types_inscriptions.confirmes[$forum_tarif_key]|default:0}
+            {assign var=payants value=$statistiques.types_inscriptions.payants[$forum_tarif_key]|default:0}
+            {assign var=montant value=$statistiques.types_inscriptions.payants[$forum_tarif_key]|default:0*$forum_tarif}
             {assign var=inscrits_total value=$inscrits_total+$inscrits}
             {assign var=confirmes_total value=$confirmes_total+$confirmes}
             {assign var=payants_total value=$payants_total+$payants}
@@ -121,17 +121,19 @@
 
     <div class="ui segment">
       <form method="GET" name="filtre">
-
+          {assign var=tri value=$smarty.get.tri|default:''}
+          {assign var=sens value=$smarty.get.sens|default:''}
+          {assign var=filtre value=$smarty.get.filtre|default:''|stripslashes}
           <input type="hidden" name="page" value="forum_inscriptions" />
-          <input type="hidden" name="tri"  value="{$smarty.get.tri|default:''}" />
-          <input type="hidden" name="sens" value="{$smarty.get.sens|default:''}" />
+          <input type="hidden" name="tri"  value="{$tri}" />
+          <input type="hidden" name="sens" value="{$sens}" />
           <input type="hidden" name="id_forum" value="{$id_forum}" />
 
           <div class="ui form">
               <div class="inline fields">
                   <div class="field">
                       <label>Recherche</label>
-                      <input type="text" name="filtre" value="{$smarty.get.filtre|default:''|stripslashes}">
+                      <input type="text" name="filtre" value="{$filtre}">
                   </div>
                   <div class="field">
                       <input type="submit" value="Filtrer" name="submit_filtre" class="ui button">
@@ -144,11 +146,11 @@
     <table class="ui table striped compact celled">
         <thead>
         <tr class="{cycle values="odd,even"}">
-            <th align="left"><a href="index.php?page=forum_inscriptions&amp;tri=i.date&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'i.date'}desc{else}asc{/if}">Date</a></th>
-            <th align="left"><a href="index.php?page=forum_inscriptions&amp;tri=i.nom&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'i.nom'}desc{else}asc{/if}">Nom Prénom</a></th>
-            <th align="left"><a href="index.php?page=forum_inscriptions&amp;tri=f.societe&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'f.societe'}desc{else}asc{/if}">Société (facturation)</a></th>
-            <th align="left"><a href="index.php?page=forum_inscriptions&amp;tri=i.type_inscription&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'i.type_inscription'}desc{else}asc{/if}">Type</a></th>
-            <th><a href="index.php?page=forum_inscriptions&amp;tri=i.etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'i.etat'}desc{else}asc{/if}">Etat</a></th>
+            <th align="left"><a href="index.php?page=forum_inscriptions&amp;tri=i.date&amp;sens={if $sens == 'asc' && $tri == 'i.date'}desc{else}asc{/if}">Date</a></th>
+            <th align="left"><a href="index.php?page=forum_inscriptions&amp;tri=i.nom&amp;sens={if $sens == 'asc' && $tri == 'i.nom'}desc{else}asc{/if}">Nom Prénom</a></th>
+            <th align="left"><a href="index.php?page=forum_inscriptions&amp;tri=f.societe&amp;sens={if $sens == 'asc' && $tri == 'f.societe'}desc{else}asc{/if}">Société (facturation)</a></th>
+            <th align="left"><a href="index.php?page=forum_inscriptions&amp;tri=i.type_inscription&amp;sens={if $sens == 'asc' && $tri == 'i.type_inscription'}desc{else}asc{/if}">Type</a></th>
+            <th><a href="index.php?page=forum_inscriptions&amp;tri=i.etat&amp;sens={if $sens == 'asc' && $tri == 'i.etat'}desc{else}asc{/if}">Etat</a></th>
             <th align="left">Règ.</th>
             <th title="Applicable uniquement aux tarifs afup">Statut cotisation</th>
             <th>&nbsp;</th>

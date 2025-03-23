@@ -21,15 +21,18 @@
 
 <div class="ui segment">
     <form method="GET" name="filtre">
+        {assign var=tri value=$smarty.get.tri|default:''}
+        {assign var=sens value=$smarty.get.sens|default:''}
+        {assign var=filtre value=$smarty.get.filtre|default:''|stripslashes}
         <input type="hidden" name="page" value="forum_facturation" />
-        <input type="hidden" name="tri"  value="{$smarty.get.tri|default:''}" />
-        <input type="hidden" name="sens" value="{$smarty.get.sens|default:''}" />
+        <input type="hidden" name="tri"  value="{$tri}" />
+        <input type="hidden" name="sens" value="{$sens}" />
         <input type="hidden" name="id_forum" value="{$id_forum}" />
         <div class="ui form">
             <div class="inline fields">
                 <div class="field">
                     <label>Recherche</label>
-                    <input type="text" name="filtre" value="{$smarty.get.filtre|default:''|stripslashes}">
+                    <input type="text" name="filtre" value="{$filtre}">
                 </div>
                 <div class="field">
                     <input type="submit" value="Filtrer" class="ui button" name="submit_filtre" />
@@ -41,12 +44,12 @@
     <table class="ui table striped compact celled">
         <thead>
             <tr>
-                <th><a href="index.php?page=forum_facturation&amp;tri=date_facture&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_facture'}desc{else}asc{/if}">Date facture</a></th>
-                <th><a href="index.php?page=forum_facturation&amp;tri=date_facture&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'reference'}desc{else}asc{/if}">Référence</a></th>
-                <th><a href="index.php?page=forum_facturation&amp;tri=societe&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'societe'}desc{else}asc{/if}">Société / personne physique</a></th>
-                <th class="right aligned"><a href="index.php?page=forum_facturation&amp;tri=montant&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'montant'}desc{else}asc{/if}">Montant</a></th>
-                <th class="center aligned"><a href="index.php?page=forum_facturation&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}">Etat</a></th>
-                <th class="center aligned"><a href="index.php?page=forum_facturation&amp;tri=facturation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}">Facturation</a></th>
+                <th><a href="index.php?page=forum_facturation&amp;tri=date_facture&amp;sens={if $sens == 'asc' && $tri == 'date_facture'}desc{else}asc{/if}">Date facture</a></th>
+                <th><a href="index.php?page=forum_facturation&amp;tri=date_facture&amp;sens={if $sens == 'asc' && $tri == 'reference'}desc{else}asc{/if}">Référence</a></th>
+                <th><a href="index.php?page=forum_facturation&amp;tri=societe&amp;sens={if $sens == 'asc' && $tri == 'societe'}desc{else}asc{/if}">Société / personne physique</a></th>
+                <th class="right aligned"><a href="index.php?page=forum_facturation&amp;tri=montant&amp;sens={if $sens == 'asc' && $tri == 'montant'}desc{else}asc{/if}">Montant</a></th>
+                <th class="center aligned"><a href="index.php?page=forum_facturation&amp;tri=etat&amp;sens={if $sens == 'asc' && $tri == 'etat'}desc{else}asc{/if}">Etat</a></th>
+                <th class="center aligned"><a href="index.php?page=forum_facturation&amp;tri=facturation&amp;sens={if $sens == 'asc' && $tri == 'etat'}desc{else}asc{/if}">Facturation</a></th>
                 <th></th>
             </tr>
         </thead>

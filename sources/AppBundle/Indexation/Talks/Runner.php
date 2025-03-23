@@ -11,6 +11,8 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Model\Talk;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 
 class Runner
@@ -81,7 +83,7 @@ class Runner
     }
 
     /**
-     * @return Planning[]
+     * @return CollectionInterface<Planning>
      */
     protected function getAllPlannings()
     {
@@ -94,6 +96,7 @@ class Runner
             return null;
         }
 
+        /** @var Talk|null $talk */
         $talk = $this->ting->get(TalkRepository::class)->get($planning->getTalkId());
 
         if (null === $talk || !$talk->isDisplayedOnHistory()) {

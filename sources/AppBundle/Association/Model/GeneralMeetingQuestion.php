@@ -54,9 +54,6 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;

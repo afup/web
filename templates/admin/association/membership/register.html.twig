@@ -1,0 +1,41 @@
+{% extends 'admin/association/membership/_base.html.twig' %}
+
+{% block page_title %}Formulaire d'inscription à l'AFUP{% endblock %}
+
+{% block submenu %}
+    {{ render(controller(
+        'AppBundle\\Controller\\Website\\SecondaryMenuController::display',
+        { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ASSOCIATION') }
+    )) }}
+{% endblock %}
+
+{% block page_content %}
+<article id="company-membership">
+    {{ form_start(form) }}
+    <fieldset>
+        <legend>Information</legend>
+        <div>
+            {{ form_errors(form) }}
+            {{ form_row(form.civility) }}
+            {{ form_row(form.userCommonInfo.lastName) }}
+            {{ form_row(form.userCommonInfo.firstName) }}
+            {{ form_row(form.userCommonInfo.username) }}
+            {{ form_row(form.userCommonInfo.email) }}
+            {{ form_row(form.userCommonInfo.address) }}
+            {{ form_row(form.userCommonInfo.zipcode) }}
+            {{ form_row(form.userCommonInfo.city) }}
+            {{ form_row(form.country) }}
+            {{ form_row(form.userCommonInfo.phone) }}
+            {{ form_row(form.mobilephone) }}
+            {{ form_row(form.nearestOffice) }}
+            <div>
+                {{ form_widget(form.userCommonInfo.password) }}
+            </div>
+        </div>
+    </fieldset>
+    <div class="right">
+        {{ form_widget(form.userCommonInfo.save, {attr: { "class": "button button--call-to-action"}}) }}
+    </div>
+    {{ form_end(form) }}
+</article>
+{% endblock %}

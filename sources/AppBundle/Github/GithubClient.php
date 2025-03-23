@@ -7,33 +7,29 @@ namespace AppBundle\Github;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Github\Exception\UnableToFindGithubUserException;
 use AppBundle\Github\Exception\UnableToGetGithubUserInfosException;
-use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class GithubClient
 {
-    private Client $githubClient;
+    private HttpClientInterface $httpClient;
 
-    public function __construct(Client $githubClient)
+    public function __construct(HttpClientInterface $githubClient)
     {
-        $this->githubClient = $githubClient;
+        $this->httpClient = $githubClient;
     }
 
     /**
      * @param string $username
-     *
      *
      * @throws UnableToFindGithubUserException
      * @throws UnableToGetGithubUserInfosException
      */
     public function getUserInfos($username): GithubUser
     {
-        $response = $this->githubClient->get("/users/{$username}", [
-            RequestOptions::HEADERS => [
-                'Accept' => 'application/vnd.github.v3+json',
+        $response = $this->httpClient->request('GET', "/users/$username", [
+            'headers' => [
                 'User-Agent' => 'afup',
             ],
-            RequestOptions::HTTP_ERRORS => false,
         ]);
 
         if ($response->getStatusCode() === 404) {
@@ -41,12 +37,12 @@ class GithubClient
         }
 
         if ($response->getStatusCode() === 200) {
-            return GithubUser::fromApi(json_decode($response->getBody()->getContents(), true));
+            return GithubUser::fromApi($response->toArray());
         }
 
         throw new UnableToGetGithubUserInfosException(
             $response->getStatusCode(),
-            $response->getBody()->getContents()
+            $response->getContent()
         );
     }
 }

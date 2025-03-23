@@ -6,7 +6,8 @@ namespace AppBundle\Controller\Admin\Event;
 
 use Afup\Site\Forum\Inscriptions;
 use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Event\Form\EventSelectType;
+use AppBundle\Event\Form\EventCompareSelectType;
+use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
@@ -26,6 +27,7 @@ class StatsAction
     private EventStatsRepository $eventStatsRepository;
     private FormFactoryInterface $formFactory;
     private Environment $twig;
+    private EventRepository $eventRepository;
 
     public function __construct(
         EventActionHelper $eventActionHelper,
@@ -34,6 +36,7 @@ class StatsAction
         TicketTypeRepository $ticketTypeRepository,
         EventStatsRepository $eventStatsRepository,
         FormFactoryInterface $formFactory,
+        EventRepository $eventRepository,
         Environment $twig
     ) {
         $this->eventActionHelper = $eventActionHelper;
@@ -42,25 +45,28 @@ class StatsAction
         $this->ticketTypeRepository = $ticketTypeRepository;
         $this->eventStatsRepository = $eventStatsRepository;
         $this->formFactory = $formFactory;
+        $this->eventRepository = $eventRepository;
         $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response
     {
-        $id = $request->query->get('id');
-        $comparedEventId = $request->query->get('compared_event_id');
-
-        $event = $this->eventActionHelper->getEventById($id);
-
-        $legacyInscriptions = $this->legacyModelFactory->createObject(Inscriptions::class);
-
-        $comparedSerieName = 'n-1';
-        if ($comparedEventId) {
+        $event = $this->eventActionHelper->getEventById($request->query->get('event_id'));
+        if ($comparedEventId = $request->query->get('compared_event_id')) {
             $comparedEvent = $this->eventActionHelper->getEventById($comparedEventId, false);
-            $comparedSerieName = $comparedEvent->getTitle();
+        } else {
+            $comparedEvent = $this->eventRepository->getLastYearEvent($event);
         }
 
-        $stats = $legacyInscriptions->obtenirSuivi($event->getId(), $comparedEventId);
+        $comparedEventForm = $this->formFactory->create(EventCompareSelectType::class, [
+            'event_id' => $event->getId(),
+            'compared_event_id' => $comparedEvent->getId(),
+        ], [
+            'events' => $this->eventRepository->getAll()
+        ]);
+
+        $legacyInscriptions = $this->legacyModelFactory->createObject(Inscriptions::class);
+        $stats = $legacyInscriptions->obtenirSuivi($event->getId(), $comparedEvent->getId());
         $ticketsDayOne = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_ONE, $event);
         $ticketsDayTwo = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_TWO, $event);
 
@@ -93,7 +99,7 @@ class StatsAction
                     'data' => array_values(array_map(static fn ($item) => $item['n'], $stats['suivi'])),
                 ],
                 [
-                    'name' => $comparedSerieName,
+                    'name' => $comparedEvent->getTitle(),
                     'data' => array_values(array_map(static fn ($item) => $item['n_1'], $stats['suivi'])),
                 ],
             ],
@@ -153,11 +159,11 @@ class StatsAction
             'pieChartConf' => $pieChartConf,
             'stats' => $stats,
             'seats' => [
-                'available' => $event === null ? null: $event->getSeats(),
+                'available' => $event->getSeats(),
                 'one' => $ticketsDayOne,
                 'two' => $ticketsDayTwo,
             ],
-            'event_select_form' => $this->formFactory->create(EventSelectType::class, $event)->createView(),
+            'event_compare_form' => $comparedEventForm->createView(),
         ]));
     }
 }

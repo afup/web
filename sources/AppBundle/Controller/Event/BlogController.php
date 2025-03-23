@@ -41,7 +41,7 @@ class BlogController extends AbstractController
         $now = new \DateTime();
 
         return $this->render(
-            ':blog:program.html.twig',
+            'blog/program.html.twig',
             [
                 'talks' => iterator_to_array($talks),
                 'event' => $event,
@@ -148,7 +148,7 @@ class BlogController extends AbstractController
 
 
         return $this->render(
-            ':blog:planning.html.twig',
+            'blog/planning.html.twig',
                 [
                     'planning' => $eventPlanning,
                     'events' => $events,
@@ -183,7 +183,7 @@ class BlogController extends AbstractController
         }
 
         return $this->render(
-            ':blog:talk.html.twig',
+            'blog/talk.html.twig',
             [
                 'talks_infos' => $talksInfos,
                 'speakers' => $speakers,
@@ -204,7 +204,7 @@ class BlogController extends AbstractController
         $jsonld = $this->jsonLd->getDataForEvent($event);
 
         return $this->render(
-            ':blog:speakers.html.twig',
+            'blog/speakers.html.twig',
             [
                 'speakers' => iterator_to_array($speakers),
                 'event' => $event,

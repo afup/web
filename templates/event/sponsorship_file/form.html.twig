@@ -1,0 +1,42 @@
+{% extends 'event/ticket/base.html.twig' %}
+
+{% block title %}{{ 'Become a sponsor'|trans }} - Afup{% endblock %}
+
+{% set menu = {'main': {'route' : 'ticket', 'title': 'Become a sponsor'}} %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/css/tickets.css') }}" />
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-8">
+        <h1>{{ 'Devenir sponsor'|trans }}</h1>
+        <div class="sponsor--become-talk">
+            {{ event.getBecomeSponsorText|markdown }}
+        </div>
+
+    </div>
+    <div class="sponsor--become-form col-md-4">
+        {{ form_start(leadForm) }}
+        <fieldset>
+            <legend>{{ 'Recevoir notre dossier'|trans }}</legend>
+            <div class="fieldset--inner">
+                {{ form_row(leadForm.firstname) }}
+                {{ form_row(leadForm.lastname) }}
+                {{ form_row(leadForm.email) }}
+                {{ form_row(leadForm.phone) }}
+                {{ form_row(leadForm.company) }}
+                {{ form_row(leadForm.poste) }}
+                {{ form_row(leadForm.website) }}
+                {{ form_row(leadForm.language) }}
+                {{ form_row(leadForm.recaptcha) }}
+                {{ form_errors(leadForm) }}
+                <div class="sponsor--become-submit">
+                    <input type="submit" value="{{ 'Recevoir le dossier'|trans }}" />
+                </div>
+            </div>
+        </fieldset>
+        {{ form_end(leadForm) }}
+    </div>
+{% endblock %}

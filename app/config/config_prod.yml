@@ -11,6 +11,7 @@ monolog:
     handlers:
         main:
             type:         fingers_crossed
+            excluded_http_codes: [404]
             action_level: error
             handler:      nested
         nested:

@@ -1,0 +1,149 @@
+{% extends 'site/base.html.twig' %}
+
+{% block title %}Devenir membre de l'AFUP{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />
+    <link rel="stylesheet" href="{{ asset('css/argument-list.css') }}" media="all" />
+{% endblock %}
+
+{% block content %}
+{{ render(controller(
+    'AppBundle\\Controller\\Website\\SecondaryMenuController::display',
+    { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ASSOCIATION') }
+)) }}
+<div class="mw1400p center" id="container">
+    <div class="line" id="main">
+        <h1>Association</h1>
+        <h2>Devenir membre de l'AFUP</h2>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="reset-table-style argument-list">
+                    <thead>
+                    <tr>
+                        <td colspan="2">En adhérant vous soutenez les activités de l'association, et notamment :</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Le fonctionnement de l'association tout au long de l'année</td>
+                        <td>L'organisation des Forum PHP et AFUP Day</td>
+                    </tr>
+                    <tr>
+                        <td>L'organisation annuelle du baromètre des salaires en PHP</td>
+                        <td>La mise en ligne gratuite des conférences captées au Forum PHP</td>
+                    </tr>
+                    <tr>
+                        <td>Le programme de mentorat</td>
+                        <td>La compilation d'articles de blog en français autour de PHP</td>
+                    </tr>
+                    <tr>
+                        <td>Le support des évènements locaux via les antennes</td>
+                        <td>Le programme d'accompagnement des speakers</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <table class="reset-table-style argument-list argument-list--primary">
+                    <thead>
+                        <tr>
+                            <td>Particulier</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="/images/badges/membrephysique-badges.png" alt="Membre AFUP" /></td>
+                        </tr>
+                        <tr>
+                            <td>Soutien des activités de l'association</td>
+                        </tr>
+                        <tr>
+                            <td>Abonnement à la newsletter Veille de l'AFUP</td>
+                        </tr>
+                        <tr>
+                            <td>Tarif préférentiel sur le ticket d’entrée au Forum PHP</td>
+                        </tr>
+                        <tr>
+                            <td>Accès au Slack Membres AFUP : channels des antennes locales, channel dédié à l’emploi, channel d’entraide</td>
+                        </tr>
+                        <tr>
+                            <td class="argument-list__strong">
+                                {{ membership_fee_natural_person }}€ TTC / an / pour une personne<br />
+                                <a href="{{ url('member_membership') }}" class="button button--call-to-action">Adhérer en tant que particulier</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p class="txtcenter">
+                    L'inscription se fait directement sur la page dédiée. Elle coûte {{ membership_fee_natural_person }} euros TTC pour 12 mois.
+                </p>
+
+            </div>
+            <div class="col-md-6">
+
+                <table class="reset-table-style argument-list argument-list--primary">
+                    <thead>
+                    <tr>
+                        <td>Entreprise</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><img src="/images/badges/membremoral-badges.png" alt="" /></td>
+                    </tr>
+                    <tr>
+                        <td>Plus grand soutien des activités de l'association</td>
+                    </tr>
+                    <tr>
+                        <td>Tous les avantages de l’adhésion particuliers</td>
+                    </tr>
+                    <tr>
+                        <td>Possibilité de changer les personnes associées à la cotisation à n'importe quel moment</td>
+                    </tr>
+                    <tr>
+                        <td>Une page dédiée à votre entreprise dans notre annuaire des sociétés adhérentes sur le site de l’AFUP afin de montrer votre engagement et promouvoir vos offres</td>
+                    </tr>
+                    <tr>
+                        <td class="argument-list__strong">
+                            {{ membership_fee_legal_entity }}€ HT / an / 3 employé(e)s<br />
+                            <a href="{{ url('company_membership') }}" class="button button--call-to-action">Adhérer en tant qu'entreprise</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <p class="txtcenter">
+                    Une préinscription est à réaliser en suivant le lien ci-dessus. L'équipe trésorerie vous recontactera pour finaliser ensuite l'inscription.
+                    Le montant de la cotisation est de {{ membership_fee_legal_entity }} euros HT par tranche de 3 employés pour 12 mois.
+                </p>
+
+            </div>
+        </div>
+
+
+
+        <h2>Modes de paiement</h2>
+
+        <p>
+            Le paiement d'une adhésion professionnelle peut se faire soit par carte bancaire ou par virement. Pour les particuliers, seul le paiement par carte bancaire est disponible.<br />
+            L'adhésion nécessite l'acceptation pleine et sans réserve du <a href="{{ path('cms_page_display', {code: '21-reglement-interieur'}) }}">règlement intérieur</a> et du <a href="{{ path('cms_page_display', {code: '986-code-de-conduite'}) }}">code de conduite</a>.
+        </p>
+        
+        <h2>Questions</h2>
+
+        <p>
+            Pour toutes questions, notre <a href="{{ path('cms_page_display', {code: '1012-faq'}) }}" title="FAQ">FAQ</a> est disponible.
+        </p>
+    </div>
+</div>
+{% endblock %}

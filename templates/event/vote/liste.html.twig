@@ -1,0 +1,35 @@
+{% extends 'event/cfp/base.html.twig' %}
+
+{% block content %}
+
+    <div class="col-md-8">
+        <h2>CFP: {{ event.title }}</h2>
+        <h3>{% if all %}{{ 'Toutes les conférences à noter'|trans }}{% else %}{{ 'Les nouvelles conférences à noter'|trans }}{% endif %}</h3>
+
+        {% if numberOfTalks == 0 %}
+            <p>{{ 'Il n\'y a plus aucune conférence à noter !'|trans }}</p>
+        {% else %}
+            {% include 'common/star.html.twig' %}
+
+            {% for talk in talks|slice(0, 10) %}
+                {% include 'event/vote/talk.html.twig' %}
+            {% endfor %}
+
+            <div class="clear">&nbsp;</div>
+            <div class="event-pagination">
+                {% if page > 1 %}
+                    <div class="event-pagination--prev"><a href="{{ url(route, {page: page-1, eventSlug: event.path}) }}">« {{ 'Page précédente'|trans }}</a></div>
+                {% endif %}
+                {% if numberOfTalks > 10 %}
+                    <div class="event-pagination--next"><a href="{{ url(route, {page: page+1, eventSlug: event.path}) }}">{{ 'Page suivante'|trans }} »</a></div>
+                {% endif %}
+            </div>
+
+            <div style="clear:both; padding-top:50px;">
+                <p>{{ 'Les conférences vous sont présentées dans un ordre pseudo-aléatoire consistant pour l\'ensemble de votre session.'|trans }}</p>
+                <p><i>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></i></p>
+            </div>
+        {% endif %}
+    </div>
+    {% include 'event/vote/sidebar.html.twig' %}
+{% endblock %}

@@ -37,7 +37,7 @@ class CompanyPublicProfileListController extends AbstractController
             return $a <=> $b;
         });
 
-        return $this->view->render(':site:company_public_profile_list.html.twig', [
+        return $this->view->render('site/company_public_profile_list.html.twig', [
             'company_member_list' => $displayableCompanies,
         ]);
     }

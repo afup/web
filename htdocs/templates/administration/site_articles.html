@@ -12,15 +12,18 @@
 
     <div class="ui segment">
         <form method="GET" name="filtre">
+            {assign var=tri value=$smarty.get.tri|default:''}
+            {assign var=sens value=$smarty.get.sens|default:''}
+            {assign var=filtre value=$smarty.get.filtre|default:''|stripslashes}
             <input type="hidden" name="page" value="site_articles" />
-            <input type="hidden" name="tri"  value="{$smarty.get.tri|default:''}" />
-            <input type="hidden" name="sens" value="{$smarty.get.sens|default:''}" />
+            <input type="hidden" name="tri"  value="{$tri}" />
+            <input type="hidden" name="sens" value="{$sens}" />
 
             <div class="ui form">
                 <div class="inline fields">
                     <div class="field">
                         <label>Recherche</label>
-                        <input type="text" name="filtre" value="{$smarty.get.filtre|default:''|stripslashes}">
+                        <input type="text" name="filtre" value="{$filtre}">
                     </div>
                     <div class="field">
                         <input type="submit" value="Filtrer" name="submit_filtre" class="ui button" />
@@ -33,18 +36,18 @@
             <thead>
             <tr>
                 <th>
-                    <a href="index.php?page=site_articles&amp;tri=date&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date'}desc{else}asc{/if}">Date</a>
+                    <a href="index.php?page=site_articles&amp;tri=date&amp;sens={if $sens == 'asc' && $tri == 'date'}desc{else}asc{/if}">Date</a>
                 </th>
                 <th data-tf-filter-type="input">
-                    <a href="index.php?page=site_articles&amp;tri=titre&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'titre'}desc{else}asc{/if}">Titre</a>
+                    <a href="index.php?page=site_articles&amp;tri=titre&amp;sens={if $sens == 'asc' && $tri == 'titre'}desc{else}asc{/if}">Titre</a>
                 </th>
                 <th data-tf-filter-type="select">
-                    <a href="index.php?page=site_articles&amp;tri=nom_rubrique&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'titre'}desc{else}asc{/if}">Rubrique</a>
+                    <a href="index.php?page=site_articles&amp;tri=nom_rubrique&amp;sens={if $sens == 'asc' && $tri == 'titre'}desc{else}asc{/if}">Rubrique</a>
                 </th>
                 <th data-tf-filter-type="select">Thème</th>
                 <th data-tf-filter-type="select">Forum</th>
                 <th class="center aligned" data-tf-filter-type="select">
-                    <a href="index.php?page=site_articles&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}" >Etat</a>
+                    <a href="index.php?page=site_articles&amp;tri=etat&amp;sens={if $sens == 'asc' && $tri == 'etat'}desc{else}asc{/if}">Etat</a>
                 </th>
                 <th></th>
             </tr>

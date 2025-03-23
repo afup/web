@@ -7,7 +7,6 @@ namespace AppBundle\Indexation\Meetups;
 use AppBundle\Antennes\Antenne;
 use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Event\Model\Meetup;
-use Exception;
 
 class Transformer
 {
@@ -21,11 +20,9 @@ class Transformer
     }
 
     /**
-     *
      * @return array
-     * @throws Exception
      */
-    public function transform(Meetup $meetup): ?array
+    public function transform(Meetup $meetup): array
     {
         $codeOffice = $meetup->getAntenneName();
         $antenne = $this->antennesCollection->findByCode($codeOffice);

@@ -1,0 +1,60 @@
+{% extends 'event/base.html.twig' %}
+
+{% block content %}
+
+    <div class="col-md-12">
+        <h2>{% trans %}Suggérer un·e conférencier·e{% endtrans %}</h2>
+
+        <div class="col-md-6 speaker-suggestion-description">
+
+            À chaque évènement, le pôle conférences travaille dur pour vous proposer des sujets pointus, novateurs, enrichissants, présentés par des speakers reconnus comme de nouvelles têtes, aux univers et aux backgrounds variés.<br />
+            <br />
+            Pour y parvenir, tout au long de l’année le pôle conférences invite spontanément des orateurs à venir nous rejoindre pour un prochain évènement. À l’approche du cycle de conférences suivant, il diffuse aussi un appel à conférences (notre prochain CFP est d’ailleurs en ligne, <a href="{{ url('cfp', {eventSlug: event.path}) }}">répondez-y !</a>).<br />
+            <br />
+            Mais cette année, nous souhaitons ouvrir une troisième possibilité : faites-nous part de vos envies, partagez avec nous vos idées de conférencier·e à contacter ! Que vous le/la connaissiez, que vous rêviez de l’écouter, ou que vous ayez déjà assisté à une de ses conférences, parlez-nous de cet·te orateur·trice : nous étudierons chaque suggestion en vue d’une invitation ou d’un appel à participation au CFP. Renseignez le formulaire ci-contre pour nous faire vos suggestions de speakers.<br />
+            <br />
+            Nous espérons ainsi toujours mieux vous satisfaire, tout en favorisant la diversité dans nos programmes et la variété des sujets abordés.<br />
+        </div>
+
+        <div class="col-md-6">
+            {{ form_start(form, { attr: { class: 'speaker-suggestion-form' }}) }}
+
+            <div class="form-line">
+                {{ form_errors(form.suggester_email) }}
+                {{ form_label(form.suggester_email) }}
+                {{ form_widget(form.suggester_email) }}
+            </div>
+
+            <div class="form-line">
+                {{ form_errors(form.suggester_name) }}
+                {{ form_label(form.suggester_name) }}
+                {{ form_widget(form.suggester_name) }}
+            </div>
+
+            <div class="form-line">
+                {{ form_errors(form.suggester_name) }}
+                {{ form_label(form.speaker_name) }}
+                {{ form_widget(form.speaker_name) }}
+            </div>
+
+            <div class="form-line">
+                {{ form_errors(form.comment) }}
+                {{ form_label(form.comment) }}
+                {{ form_widget(form.comment) }}
+            </div>
+
+            <div class="speaker-suggestion-form__comment-help">
+                {% trans %}Dans le commentaire, vous pouvez nous indiquer pourquoi vous souhaiteriez voir ce/cette conférencier(ère), ainsi que d'éventuels moyens pour le/la contacter ou des liens vers des slides/conférences précédements données.{% endtrans %}
+            </div>
+
+            <div class="txtcenter">
+                {{ form_widget(form.save) }}
+            </div>
+
+            {{ form_end(form) }}
+
+
+        </div>
+    </div>
+
+{% endblock %}

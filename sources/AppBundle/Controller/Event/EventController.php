@@ -37,13 +37,13 @@ class EventController extends AbstractController
         $events = $eventRepository->getNextEvents();
 
         if ($events === null) {
-            return $this->render(':event:none.html.twig');
+            return $this->render('event/none.html.twig');
         } elseif ($events->count() === 1) {
             $event = $events->first();
             return new RedirectResponse($this->generateUrl('event', ['eventSlug' => $event->getPath()]), Response::HTTP_TEMPORARY_REDIRECT);
         }
 
-        return $this->render(':event:switch.html.twig', ['events' => $events]);
+        return $this->render('event/switch.html.twig', ['events' => $events]);
     }
 
     public function speakerInfosIndex()
@@ -55,7 +55,7 @@ class EventController extends AbstractController
         $event = $eventRepository->getNextEventForGithubUser($this->getUser());
 
         if ($event === null) {
-            return $this->render(':event:none.html.twig');
+            return $this->render('event/none.html.twig');
         }
 
         return new RedirectResponse($this->generateUrl('speaker-infos', ['eventSlug' => $event->getPath()]), Response::HTTP_TEMPORARY_REDIRECT);
@@ -72,13 +72,13 @@ class EventController extends AbstractController
 
         if ($event->getDateEndCallForPapers() < $currentDate) {
             if (!$event->isVoteAvailable()) {
-                return $this->render(':event/cfp:closed.html.twig', ['event' => $event]);
+                return $this->render('event/cfp/closed.html.twig', ['event' => $event]);
             }
 
-            return $this->render(':event/cfp:vote_only.html.twig', ['event' => $event, 'talks' => $talks['talks'], 'votes' => $votes['votes']]);
+            return $this->render('event/cfp/vote_only.html.twig', ['event' => $event, 'talks' => $talks['talks'], 'votes' => $votes['votes']]);
         }
 
-        return $this->render(':event:home.html.twig', ['event' => $event, 'talks' => $talks['talks'], 'votes' => $votes['votes']]);
+        return $this->render('event/home.html.twig', ['event' => $event, 'talks' => $talks['talks'], 'votes' => $votes['votes']]);
     }
 
     /**
@@ -129,7 +129,7 @@ class EventController extends AbstractController
             throw $this->createNotFoundException('Event not found');
         }
 
-        return $this->render(':event:calendar.html.twig', ['event' => $event]);
+        return $this->render('event/calendar.html.twig', ['event' => $event]);
     }
 
     /**

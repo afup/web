@@ -1,0 +1,47 @@
+{% extends 'admin/base_with_header.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/forms_company.css') }}" media="all"/>
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />
+{% endblock %}
+{% block content %}
+
+    <h2>Nouveau badge</h2>
+
+    <div class="ui menu">
+        <a href="{{ path('admin_members_badges_index') }}" class="item">
+            <i class="icon reply"></i>
+            Retour liste des badges
+        </a>
+    </div>
+
+    <div class="ui segment">
+        {{ form_start(form) }}
+        <h2 class="ui header">Nouveau badge</h2>
+        <div class="ui clearing divider"></div>
+
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.label, null, {label_attr: {class: "three wide column"}}) }}
+                <div class="field seven wide column">
+                    {{ form_widget(form.label) }}
+                    {{ form_errors(form.label) }}
+                </div>
+            </div>
+            <div class="inline fields ui grid">
+                {{ form_label(form.image, null, {label_attr: {class: "three wide column"}}) }}
+                <div class="field seven wide column">
+                    {{ form_widget(form.image) }}
+                    {{ form_errors(form.image) }}
+                </div>
+            </div>
+            <div class="inline fields ui grid">
+                <div class="three wide column"></div>
+                <div class="field seven wide column">
+                    {{ form_widget(form.save, {attr: {class: "ui primary button"}}) }}
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

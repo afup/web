@@ -1,0 +1,54 @@
+{% extends 'admin/association/membership/_base.html.twig' %}
+
+{% block submenu %}
+    {% include 'site/_members_menu.html.twig' with {
+        current: "compagnies"
+    } only %}
+{% endblock %}
+
+{% block title %}Les entreprises adhérentes à l'AFUP{% endblock %}
+
+{% block page_title %}Entreprises adhérentes{% endblock %}
+
+{% block page_content %}
+
+    <blockquote>
+        Ces entreprises soutiennent l'association et la communauté PHP française en étant adhérentes à l'AFUP.
+    </blockquote>
+
+    <table class="company-list">
+        <tbody>
+
+            {% for group in company_member_list|batch(3, false) %}
+                <tr>
+                {% for company_member in group %}
+                    <td>
+                        {% if company_member %}
+                        <a href="{{ path('company_public_profile', { id: company_member.id, slug: company_member.slug}) }}"
+                            title="Profil de l'entreprise {{ company_member.companyName }}">
+                            {% set logo_url = path('company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) %}
+                            <img src="{{ logo_url }}" alt="" />
+                        </a>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                </tr>
+
+                <tr>
+                {% for company_member in group %}
+                    <td>
+                        {% if company_member %}
+                        <a href="{{ path('company_public_profile', { id: company_member.id, slug: company_member.slug}) }}"
+                           title="Profile de l'entreprise {{ company_member.companyName }}">
+                            {{ company_member.companyName }}
+                        </a>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -11,11 +11,11 @@ use Twig\TwigFunction;
 
 class AssetsExtension extends AbstractExtension implements GlobalsInterface
 {
-    private $kernelRootDir;
+    private $kernelProjectDir;
 
-    public function __construct($kernelRootDir)
+    public function __construct($kernelProjectDir)
     {
-        $this->kernelRootDir = $kernelRootDir;
+        $this->kernelProjectDir = $kernelProjectDir;
     }
 
     /**
@@ -25,7 +25,7 @@ class AssetsExtension extends AbstractExtension implements GlobalsInterface
     {
         return [
             new TwigFunction('asset_md5_start', function (string $url) {
-                $path = $this->kernelRootDir . '/../htdocs/' . $url;
+                $path = $this->kernelProjectDir . '/../htdocs/' . $url;
 
                 return substr(md5_file($path), 0, 8);
             }, ['is_safe' => ['html']])

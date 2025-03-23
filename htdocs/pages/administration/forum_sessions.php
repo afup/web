@@ -66,7 +66,7 @@ if ($action == 'lister') {
 
     $listeSessions = $forum_appel->obtenirListeSessions($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre,$list_type, $needsMentoring, $planned);
     $moi = $droits->obtenirIdentifiant();
-    $votant = in_array($_SESSION['afup_login'], []);
+    $votant = in_array($_SESSION['afup_login'] ?? '', []);
     $maxVotant = count([]);
     foreach ($listeSessions as &$session) {
         $session['conferencier'] = $forum_appel->obtenirConferenciersPourSession($session['session_id']);
@@ -89,8 +89,8 @@ if ($action == 'lister') {
         if (isset($session['joindin']) && $session['joindin'] > 0) {
             $talk = new Talk();
             $talk->setTitle($session['titre']);
-            $talk->setId($session['session_id']);
-            $talk->setJoindinId($session['joindin']);
+            $talk->setId((int) $session['session_id']);
+            $talk->setJoindinId((int) $session['joindin']);
             $session['joindin_url'] = $talk->getJoindinUrl();
         }
     }

@@ -12,14 +12,17 @@
 
     <div class="ui segment">
         <form method="GET" name="filtre">
+            {assign var=tri value=$smarty.get.tri|default:''}
+            {assign var=sens value=$smarty.get.sens|default:''}
+            {assign var=filtre value=$smarty.get.filtre|default:''|stripslashes}
             <input type="hidden" name="page" value="personnes_morales" />
-            <input type="hidden" name="tri"  value="{$smarty.get.tri|default:''}" />
-            <input type="hidden" name="sens" value="{$smarty.get.sens|default:''}" />
+            <input type="hidden" name="tri"  value="{$tri}" />
+            <input type="hidden" name="sens" value="{$sens}" />
             <div class="ui form">
                 <div class="inline fields">
                     <div class="field">
                         <label>Recherche</label>
-                        <input type="text" name="filtre" value="{$smarty.get.filtre|default:''|stripslashes}">
+                        <input type="text" name="filtre" value="{$filtre}">
                     </div>
                     <div class="field">
                         <div class="ui checkbox">
@@ -39,9 +42,9 @@
             <thead>
                 <tr>
                     <!-- th width="20px">&nbsp;</th -->
-                    <th align="left"><a href="index.php?page=personnes_morales&amp;tri=raison_sociale&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'raison_sociale'}desc{else}asc{/if}">Raison sociale</a></th>
-                    <th style="text-align: center"><a href="index.php?page=personnes_morales&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}asc{else}desc{/if}">Etat</a></th>
-                    <th style="text-align: center;"><a href="index.php?page=personnes_morales&amp;tri=actifs&amp;sens={if $smarty.get.sens == 'desc' && $smarty.get.tri == 'actifs'}desc{else}asc{/if}">Actifs</a></th>
+                    <th align="left"><a href="index.php?page=personnes_morales&amp;tri=raison_sociale&amp;sens={if $sens == 'asc' && $tri == 'raison_sociale'}desc{else}asc{/if}">Raison sociale</a></th>
+                    <th style="text-align: center"><a href="index.php?page=personnes_morales&amp;tri=etat&amp;sens={if $sens == 'asc' && $tri == 'etat'}asc{else}desc{/if}">Etat</a></th>
+                    <th style="text-align: center;"><a href="index.php?page=personnes_morales&amp;tri=actifs&amp;sens={if $sens == 'desc' && $tri == 'actifs'}desc{else}asc{/if}">Actifs</a></th>
                     <th>&nbsp;</th>
                 </tr>
             </thead>
@@ -100,7 +103,7 @@
             <div class="inline">
                 {if $also_display_active }
                 {else}
-                <a class="ui button" href="index.php?page=personnes_morales&amp;action={$action}&tri={$smarty.get.tri}&sens={$smarty.get.sens}&filtre={$smarty.get.filtre|stripslashes}{if $needs_up_to_date_membersip_checkbox}&needs_up_to_date_membership=on{/if}&also_display_inactive=on">Afficher aussi les personnes morales inactives</a>
+                <a class="ui button" href="index.php?page=personnes_morales&amp;action={$action}&tri={$tri}&sens={$sens}&filtre={$smarty.get.filtre|stripslashes}{if $needs_up_to_date_membersip_checkbox}&needs_up_to_date_membership=on{/if}&also_display_inactive=on">Afficher aussi les personnes morales inactives</a>
                 {/if}
             </div>
         </div>

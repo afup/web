@@ -6,19 +6,11 @@ namespace AppBundle\Compta\Importer;
 
 class Factory
 {
-    /**
-     * @param string $code
-     * @param string $code
-     * @return Importer
-     */
-    public function create($filePath, $code)
+    public function create(string $filePath, string $code): Importer
     {
         switch ($code) {
             case CreditMutuel::CODE:
                 $importer = new CreditMutuel();
-                break;
-            case CaisseEpargne::CODE:
-                $importer = new CaisseEpargne();
                 break;
             case CreditMutuelLivret::CODE:
                 $importer = new CreditMutuelLivret();

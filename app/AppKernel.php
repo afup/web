@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 use AppBundle\AppBundle;
 use CCMBenchmark\TingBundle\TingBundle;
-use Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle;
-use Ekino\Bundle\NewRelicBundle\EkinoNewRelicBundle;
+use Ekino\NewRelicBundle\EkinoNewRelicBundle;
 use EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle;
@@ -21,14 +20,13 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class AppKernel extends Kernel
 {
-    public function registerBundles()
+    public function registerBundles(): array
     {
         $bundles = [
             new FrameworkBundle(),
             new SecurityBundle(),
             new TwigBundle(),
             new MonologBundle(),
-            new DoctrineCacheBundle(),
             new TingBundle(),
             new KnpUOAuth2ClientBundle(),
             new AppBundle(),
@@ -46,23 +44,23 @@ class AppKernel extends Kernel
         return $bundles;
     }
 
-    public function getRootDir()
+    public function getProjectDir(): string
     {
         return __DIR__;
     }
 
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return dirname(__DIR__) . '/var/cache/' . $this->getEnvironment();
     }
 
-    public function getLogDir()
+    public function getLogDir(): string
     {
         return dirname(__DIR__) . '/var/logs';
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load($this->getRootDir() . '/config/config_' . $this->getEnvironment() . '.yml');
+        $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
     }
 }

@@ -1,7 +1,0 @@
-{% extends ':event:base.html.twig' %}
-
-{% block title %}{{ 'Billetterie'|trans }} - Afup{% endblock %}
-
-{% if menu is not defined %}
-    {% set menu = {'main': {'route' : 'sponsor_ticket_home', 'title': 'Billetterie sponsors'}} %}
-{% endif %}

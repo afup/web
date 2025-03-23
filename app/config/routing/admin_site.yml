@@ -17,6 +17,3 @@ admin_site_rubriques_delete:
   defaults: {_controller: AppBundle\Controller\Admin\Site\DeleteRubriqueAction}
   requirements:
     id: '\d+'
-    token: '[a-zA-Z0-9_-]+'
-
-  

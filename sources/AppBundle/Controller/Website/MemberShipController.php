@@ -340,8 +340,7 @@ class MemberShipController extends AbstractController
             $invitationRepository->save($invitation);
             $this->addFlash('success', 'Votre compte a été créé !');
 
-            $event = new NewMemberEvent($user);
-            $this->eventDispatcher->dispatch($event::NAME, $event);
+            $this->eventDispatcher->dispatch(new NewMemberEvent($user));
 
             return $this->redirectToRoute('member_index');
         }
@@ -355,14 +354,17 @@ class MemberShipController extends AbstractController
     public function slackInviteRequest(): RedirectResponse
     {
         $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException("Vous n'êtes pas connecté");
+        }
         if (!$user->canRequestSlackInvite()) {
             throw $this->createAccessDeniedException("Vous n'êtes pas autorité à demander une invitation");
         }
-        $this->legacyClient->invite($this->getUser()->getEmail());
+        $this->legacyClient->invite($user->getEmail());
         $this->addFlash('success', 'Un email vous a été envoyé pour rejoindre le Slack des membres !');
         $user->setSlackInviteStatus(User::SLACK_INVITE_STATUS_REQUESTED);
         $this->repositoryFactory->get(UserRepository::class)->save($user);
-        $this->log('Demande invitation slack', $this->getUser());
+        $this->log('Demande invitation slack', $user);
         return $this->redirectToRoute('admin_home');
     }
 
@@ -396,8 +398,7 @@ class MemberShipController extends AbstractController
 
             if ($lastCotisation === false && $account['type'] == UserRepository::USER_TYPE_PHYSICAL) {
                 $user = $userRepository->get($account['id']);
-                $event = new NewMemberEvent($user);
-                $this->eventDispatcher->dispatch($event::NAME, $event);
+                $this->eventDispatcher->dispatch(new NewMemberEvent($user));
             }
 
             $cotisations->validerReglementEnLigne($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId());
@@ -799,7 +800,8 @@ class MemberShipController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        if ($this->getUser()->hasRole('ROLE_MEMBER_EXPIRED')) {
+        if ($this->getUser() instanceof User
+            && $this->getUser()->hasRole('ROLE_MEMBER_EXPIRED')) {
             throw $this->createNotFoundException();
         }
 
@@ -836,6 +838,10 @@ class MemberShipController extends AbstractController
 
     public function techletter(): Response
     {
+        if (!$this->getUser() instanceof User) {
+            throw $this->createNotFoundException();
+        }
+
         return $this->view->render('site/member/techletter.html.twig', [
             'subscribed' => $this->repositoryFactory->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($this->getUser()),
             'feeUpToDate' => ($this->getUser() !== null && $this->getUser()->getLastSubscription() > new \DateTime()),
@@ -847,14 +853,12 @@ class MemberShipController extends AbstractController
     public function techletterSubscribe(Request $request): RedirectResponse
     {
         $user = $this->getUser();
-        $token = $this->csrfTokenManager->getToken('techletter_subscription');
+        if (!$user instanceof User) {
+            throw $this->createNotFoundException();
+        }
 
-        if (
-            $user === null
-            || $user->getLastSubscription() < new \DateTime()
-            || $request->request->has('_csrf_token') === false
-            || $request->request->get('_csrf_token') !== $token->getValue()
-        ) {
+        if (!$this->isCsrfTokenValid('techletter_subscription', $request->request->get('_csrf_token'))
+            || $user->getLastSubscription() < new \DateTime()) {
             throw $this->createAccessDeniedException('You cannot subscribe to the techletter');
         }
 

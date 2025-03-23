@@ -55,7 +55,7 @@ class SponsorScanRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'sponsor_ticket_id',
                 'fieldName' => 'sponsorTicketId',
-                'type' => 'string'
+                'type' => 'int'
             ])
             ->addField([
                 'columnName' => 'ticket_id',

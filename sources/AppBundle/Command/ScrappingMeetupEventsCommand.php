@@ -51,6 +51,7 @@ class ScrappingMeetupEventsCommand extends Command
         try {
             $meetups = $this->meetupClient->getEvents();
 
+            /** @var MeetupRepository $meetupRepository */
             $meetupRepository = $this->ting->get(MeetupRepository::class);
 
             $io->progressStart(count($meetups));
@@ -59,11 +60,20 @@ class ScrappingMeetupEventsCommand extends Command
 
                 $id = $meetup->getId();
                 $existingMeetup = $meetupRepository->get($id);
-                if (!$existingMeetup) {
-                    $meetupRepository->save($meetup);
-                } else {
-                    $io->note(sprintf('Meetup id %d déjà en base.', $id));
+
+                // Si le meetup est déjà présent en base, il est mis à jour.
+                if ($existingMeetup) {
+                    $existingMeetup->setTitle($meetup->getTitle());
+                    $existingMeetup->setDescription($meetup->getDescription());
+                    $existingMeetup->setLocation($meetup->getLocation());
+                    $existingMeetup->setDate($meetup->getDate());
+
+                    // On doit remplacer la variable, car l'ORM a une référence vers l'instance récupérée
+                    // via le get et pas celle de la boucle.
+                    $meetup = $existingMeetup;
                 }
+
+                $meetupRepository->save($meetup);
             }
 
             $io->progressFinish();

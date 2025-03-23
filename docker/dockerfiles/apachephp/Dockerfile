@@ -51,3 +51,6 @@ RUN sed --in-place "s/User \${APACHE_RUN_USER}/User localUser/" /etc/apache2/apa
     a2ensite 000-default && \
     a2enmod rewrite ssl && \
     echo "date.timezone=Europe/Paris" >> "/usr/local/etc/php/php.ini"
+
+# Installing Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer

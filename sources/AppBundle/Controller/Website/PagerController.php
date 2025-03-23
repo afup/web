@@ -31,7 +31,7 @@ class PagerController extends AbstractController
         }
 
         return $this->render(
-            ':site:pager.html.twig',
+            'site/pager.html.twig',
             [
                 'nb_pages' => $nbPages,
                 'displayed_pages' => $displayedPages,

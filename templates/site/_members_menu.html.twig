@@ -1,0 +1,9 @@
+{% include 'site/secondary_menu.html.twig' with {
+    menu: [
+        {
+            "nom" : "Entreprises",
+            "lien": path('company_public_profile_list'),
+            'is_active': current == "compagnies",
+        },
+    ]
+} only %}

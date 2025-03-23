@@ -23,7 +23,7 @@ class SecondaryMenuController extends AbstractController
         $menu = $branche->feuillesEnfants($request->get('feuille_id'));
 
         return $this->render(
-            ':site:secondary_menu.html.twig',
+            'site/secondary_menu.html.twig',
             [
                 'menu' => $this->prepareMenu($this->requestStack->getMasterRequest(), $menu),
             ]

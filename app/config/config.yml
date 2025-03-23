@@ -2,6 +2,7 @@ imports:
     - { resource: config.php }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: packages/http_client.yaml }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -321,17 +322,18 @@ parameters:
 
 framework:
     #esi:             ~
-    translator:      { fallbacks: ["%locale%"], enabled: true }
+    translator:
+        fallbacks: ["%locale%"]
+        enabled: true
+        default_path: "%kernel.project_dir%/../translations"
     secret:          "%secret%"
     router:
-        resource: "%kernel.root_dir%/config/routing.yml"
+        resource: "%kernel.project_dir%/config/routing.yml"
         strict_requirements: ~
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
     #serializer:      { enable_annotations: true }
-    templating:
-        engines: ['twig']
     default_locale:  "%locale%"
     trusted_hosts:   ~
     session:
@@ -350,6 +352,8 @@ twig:
     globals:
       photo_storage: '@AppBundle\CFP\PhotoStorage'
     form_themes: ['form_theme.html.twig']
+    exception_controller: null
+    default_path: "%kernel.project_dir%/../templates"
 
 ting:
     connections:
@@ -420,4 +424,4 @@ ewz_recaptcha:
 
 
 ekino_new_relic:
-    log_exceptions: true
+    exceptions: true

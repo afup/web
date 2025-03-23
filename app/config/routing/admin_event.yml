@@ -7,7 +7,6 @@ admin_event_delete:
   defaults: {_controller: AppBundle\Controller\Admin\Event\RemoveEventAction}
   requirements:
     id: \d+
-    token: '[a-zA-Z0-9_-]+'
 
 admin_event_room:
   path: /room

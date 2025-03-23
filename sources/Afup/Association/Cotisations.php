@@ -592,7 +592,7 @@ class Cotisations
         $date_debut = $this->_bdd->obtenirUn($requete);
 
         if ($date_debut !== false) {
-            return $date_debut;
+            return (int) $date_debut;
         } else {
             return time();
         }

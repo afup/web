@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Call For Papers - Afup{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/css/grid.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/vote.css') }}?1">
+    <link rel="stylesheet" href="{{ asset('templates/site/css/global-menu.css') }}" media="all" />
+{% endblock %}
+
+{% block header %}
+    {% include 'event/menu.html.twig' %}
+{% endblock %}
