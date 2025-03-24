@@ -9,6 +9,7 @@ use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\JoinHydrator;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
+use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -279,6 +280,37 @@ class TalkRepository extends Repository implements MetadataInitializer
         )->setParams(['date_fin' => $dateTime->format('U')]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
+     * @param array<int> $talkIds
+     * @return CollectionInterface<Talk>
+     */
+    public function findList(array $talkIds): CollectionInterface
+    {
+        /** @var SelectInterface $qb */
+        $qb = $this->getQueryBuilder(self::QUERY_SELECT);
+
+        $placeholders = [];
+        $parameters = [];
+        foreach ($talkIds as $index => $id) {
+            $placeholders[] = ":id{$index}";
+            $parameters["id{$index}"] = $id;
+        }
+
+
+        $qb->from('afup_sessions')
+            ->cols(['*'])
+            ->where("session_id IN (" . implode(', ', $placeholders) . ")");
+
+        foreach ($parameters as $placeholder => $value) {
+            $qb->bindValue($placeholder, $value);
+        }
+
+        return $this
+            ->getQuery($qb->getStatement())
+            ->setParams($qb->getBindValues())
+            ->query($this->getCollection(new HydratorSingleObject()));
     }
 
     /**

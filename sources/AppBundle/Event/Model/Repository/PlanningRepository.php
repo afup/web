@@ -6,7 +6,9 @@ namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Talk;
+use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -35,6 +37,27 @@ class PlanningRepository extends Repository implements MetadataInitializer
         }
 
         return $plannings->first();
+    }
+
+    /**
+     * @return CollectionInterface<Planning>
+     */
+    public function findNonKeynotesSince(\DateTime $since): CollectionInterface
+    {
+        /** @var SelectInterface $qb */
+        $qb = $this->getQueryBuilder(self::QUERY_SELECT);
+
+        $qb->from('afup_forum_planning')
+            ->cols(['*'])
+            ->where('keynote = 0')
+            ->where('debut >= :since');
+
+        return $this
+            ->getPreparedQuery($qb->getStatement())
+            ->setParams([
+                'since' => $since->getTimestamp(),
+            ])
+            ->query($this->getCollection(new HydratorSingleObject()));
     }
 
     /**
