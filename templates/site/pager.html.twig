@@ -8,7 +8,7 @@
             {% endif %}
             {% if current_page > 1 %}
                 <li class="ais-pagination--item ais-pagination--item__previous">
-                    <a class="ais-pagination--link" href="{{ path('news_list', {page: current_page - 1}|merge(extra_parameters)) }}"><i class="fa fa-angle-left"></i></a>
+                    <a rel="prev" class="ais-pagination--link" href="{{ path('news_list', {page: current_page - 1}|merge(extra_parameters)) }}"><i class="fa fa-angle-left"></i></a>
                 </li>
             {% endif %}
             {% for page in displayed_pages %}
@@ -18,7 +18,7 @@
             {% endfor %}
             {% if current_page < nb_pages %}
                 <li class="ais-pagination--item ais-pagination--item__next">
-                    <a class="ais-pagination--link" href="{{ path('news_list', {page: current_page + 1}|merge(extra_parameters)) }}"><i class="fa fa-angle-right"></i></a>
+                    <a rel="next" class="ais-pagination--link" href="{{ path('news_list', {page: current_page + 1}|merge(extra_parameters)) }}"><i class="fa fa-angle-right"></i></a>
                 </li>
             {% endif %}
             {% if current_page < nb_pages %}

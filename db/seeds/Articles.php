@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use AppBundle\Site\Model\Rubrique;
+use Cocur\Slugify\Slugify;
 use Phinx\Seed\AbstractSeed;
 
 class Articles extends AbstractSeed
@@ -31,6 +32,21 @@ EOF;
                 'etat' => 1,
             ],
         ];
+
+        $slugger = Slugify::create();
+        $faker = Faker\Factory::create();
+        for ($i = 1; $i < 15; $i++) {
+            $titre = $faker->text(80);
+            $data[] = [
+                'titre' => $titre,
+                'chapeau' => $faker->text(200),
+                'contenu' => '<p>' . implode('</p><p>', $faker->paragraphs(10)) . '</p>',
+                'raccourci' => $slugger->slugify($titre),
+                'id_site_rubrique' => Rubrique::ID_RUBRIQUE_ACTUALITES,
+                'date' => $faker->unixTime(new DateTime('2017-12-31T23:59:59')),
+                'etat' => 1,
+            ];
+        }
 
         $table = $this->table('afup_site_article');
         $table->truncate();

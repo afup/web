@@ -113,6 +113,7 @@
   "require-dev": {
     "behat/behat": "^3.15",
     "behat/mink-goutte-driver": "^2.0",
+    "fakerphp/faker": "^1.24",
     "friends-of-behat/mink-extension": "^2.7",
     "friendsofphp/php-cs-fixer": "~2",
     "ifsnop/mysqldump-php": "^2.12",
