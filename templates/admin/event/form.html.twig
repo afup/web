@@ -1,0 +1,151 @@
+{% form_theme form 'form_theme_admin.html.twig' %}
+
+{% macro wysiwyg(field) %}
+    <div class="inline fields ui grid">
+        {{ form_label(field) }}
+        <div class="field nine wide column">
+            <div style="width: 100%">
+                {{ form_errors(field) }}
+                {{ form_widget(field) }}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro file_path_link(path, text) %}
+    {% if path %}
+        <div class="inline fields ui grid">
+            <div class="three wide column right aligned"></div>
+            <div class="field nine wide column">
+                <a href="{{ path }}" target="_blank">{{ text }}</a>
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+
+    {{ form_start(form, {'attr': {novalidate: true}}) }}
+    {{ form_errors(form) }}
+    <div class="ui segment">
+        <h2 class="ui header">Informations générales</h2>
+        <div class="ui clearing divider"></div>
+
+        <div class="ui form">
+            {{ form_row(form.title) }}
+            {{ form_row(form.path) }}
+        </div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                <label class="three wide column">
+                </label>
+                <div class="field seven wide column">
+                    <i>Le path sert également à déterminer le nom du template de mail à utiliser sur mandrill, sous la forme confirmation-inscription-{PATH}</i>
+                </div>
+            </div>
+        </div>
+        <div class="ui form">
+            {{ form_row(form.logoUrl) }}
+            {{ form_row(form.seats) }}
+            {{ form_row(form.placeName) }}
+            {{ form_row(form.placeAddress) }}
+            {{ form_row(form.pricesDefinedWithVat) }}
+            <div class="ui clearing divider"></div>
+            {{ form_row(form.dateStart) }}
+            {{ form_row(form.dateEnd) }}
+            <div class="ui clearing divider"></div>
+            {{ form_row(form.dateEndCallForProjects) }}
+            {{ form_row(form.dateEndCallForPapers) }}
+            <div class="ui clearing divider"></div>
+            {{ form_row(form.voteEnabled) }}
+            {{ form_row(form.dateEndVote) }}
+            <div class="ui clearing divider"></div>
+            {{ form_row(form.datePlanningAnnouncement) }}
+        </div>
+    </div>
+
+    <div class="ui segment">
+        <h2 class="ui header">Inscriptions</h2>
+        <div class="ui clearing divider"></div>
+
+        <div class="ui form">
+            {{ form_row(form.dateEndPreSales) }}
+            {{ form_row(form.dateEndSales) }}
+            {{ form_row(form.waitingListUrl) }}
+            <div class="ui clearing divider"></div>
+            {{ _self.wysiwyg(form.cfp.mail_inscription_content) }}
+            {{ _self.wysiwyg(form.registration_email_file) }}
+            {{ _self.file_path_link(registration_email_file_path, "Voir le fichier joint à l'email d'inscription") }}
+        </div>
+    </div>
+
+    <div class="ui segment">
+        <h2 class="ui header">Speakers</h2>
+        <div class="ui clearing divider"></div>
+
+        <div class="ui form">
+            {{ _self.wysiwyg(form.cfp.cfp_fr) }}
+            {{ _self.wysiwyg(form.cfp.cfp_en) }}
+            {{ form_row(form.cfp.speaker_management_fr) }}
+            {{ form_row(form.cfp.speaker_management_en) }}
+            {{ form_row(form.speakersDinerEnabled) }}
+            {{ form_row(form.accomodationEnabled) }}
+            {{ form_row(form.dateEndSpeakersDinerInfosCollection) }}
+            {{ form_row(form.dateEndHotelInfosCollection) }}
+        </div>
+    </div>
+
+
+    <div class="ui segment">
+        <h2 class="ui header">Sponsors</h2>
+        <div class="ui clearing divider"></div>
+
+        <div class="ui form">
+            {{ _self.wysiwyg(form.cfp.become_sponsor_description) }}
+            {{ form_row(form.cfp.sponsor_management_fr) }}
+            {{ form_row(form.cfp.sponsor_management_en) }}
+            {{ _self.wysiwyg(form.cfp.become_sponsor_description) }}
+
+            {{ form_row(form.sponsor_file_fr) }}
+            {{ _self.file_path_link(sponsor_file_path_fr, 'Voir le dossier de sponsoring (FR)') }}
+
+            {{ form_row(form.sponsor_file_en) }}
+            {{ _self.file_path_link(sponsor_file_path_en, 'Voir le dossier de sponsoring (EN)') }}
+        </div>
+    </div>
+
+    <div class="ui form">
+    </div>
+    <div class="ui segment">
+        <h2 class="ui header">Coupons</h2>
+        <div class="ui clearing divider"></div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                {{ form_label(form.coupons, null,{'label_attr': {'class': 'three wide column right aligned'}}) }}
+                <div class="field nine wide column">
+                    <div class="ui input">
+                        {{ form_errors(form.coupons) }}
+                        {{ form_widget(form.coupons) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                <label class="three wide column">
+                </label>
+                <div class="seven wide column">
+                    <input name="soumettre" value="Soumettre" type="submit" class="ui primary button">
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="ui segment">
+        <p><span class="obligatoire">*</span> indique un champ obligatoire</p>
+    </div>
+    {{ form_end(form) }}
+
+
+
