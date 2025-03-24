@@ -40,8 +40,7 @@
             <table class="ui table striped compact celled">
                 <thead>
                 <tr>
-                    <!-- th width="20px">&nbsp;</th -->
-                    <th align="left"><a href="{{ path('admin_members_company_list', {
+                    <th><a href="{{ path('admin_members_company_list', {
                             sort: 'name',
                             direction: direction == 'asc' and sort == 'name' ?  'desc' : 'asc',
                         }) }}">Raison sociale</a></th>
