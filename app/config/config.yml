@@ -344,6 +344,10 @@ framework:
     fragments:       ~
     http_method_override: true
     assets: ~
+    exceptions:
+        Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
+            log_level: debug
+            status_code: 404
 
 # Twig Configuration
 twig:
