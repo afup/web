@@ -31,6 +31,9 @@ services:
         autowire: true
         autoconfigure: true
 
+    AppBundle\Clock\NativeClock: ~
+    Psr\Clock\ClockInterface: '@AppBundle\Clock\NativeClock'
+
     AppBundle\Command\UpdateMailchimpMembersCommand:
         autoconfigure: true
         autowire: true
@@ -718,10 +721,6 @@ services:
     PlanetePHP\FeedArticleRepository:
         autowire: true
 
-    PlanetePHP\FeedCrawler:
-        autowire: true
-        public: true
-
     AppBundle\Github\GithubClient:
         arguments:
             $githubClient: '@http_client.github'
@@ -730,3 +729,15 @@ services:
         arguments:
             $httpClient: '@http_client.meetup'
             $antennesCollection: '@AppBundle\Antennes\AntennesCollection'
+
+    PlanetePHP\SymfonyFeedClient:
+        arguments:
+            $httpClient: '@http_client'
+
+    PlanetePHP\FeedCrawler:
+        arguments:
+            $clock: '@Psr\Clock\ClockInterface'
+            $httpClient: '@PlanetePHP\SymfonyFeedClient'
+            $feedRepository: '@PlanetePHP\FeedRepository'
+            $feedArticleRepository: '@PlanetePHP\FeedArticleRepository'
+            $logger: '@logger'

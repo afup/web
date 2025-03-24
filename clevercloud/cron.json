@@ -1,5 +1,5 @@
 [
-  "0 * * * * $ROOT/clevercloud/scripts/deduplicate_cron.sh /usr/bin/php $ROOT/htdocs/robots/planete/explorateur.php",
+  "0 * * * * $ROOT/clevercloud/scripts/deduplicate_cron.sh /usr/bin/php $ROOT/bin/console --env=prod indexing:planete",
   "0 5 * * * $ROOT/clevercloud/scripts/deduplicate_cron.sh /usr/bin/php $ROOT/bin/console --env=prod subscription:reminder",
   "0 23 * * * $ROOT/clevercloud/scripts/deduplicate_cron.sh /usr/bin/php $ROOT/bin/console --env=prod mailchimp:update-members",
   "0 22 * * * $ROOT/clevercloud/scripts/deduplicate_cron.sh /usr/bin/php $ROOT/bin/console --env=prod indexing:meetups --run-scraping",

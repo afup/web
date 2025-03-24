@@ -6,8 +6,6 @@ namespace PlanetePHP;
 
 use Assert\Assertion;
 use Doctrine\DBAL\Connection;
-use HTMLPurifier;
-use HTMLPurifier_Config;
 use PDO;
 
 class FeedArticleRepository
@@ -78,52 +76,8 @@ class FeedArticleRepository
     }
 
     /**
-     * @param string $content
-     * @param string $url
-     * @param int    $characters
-     *
-     * @return string
+     * @return array<DisplayableFeedArticle>
      */
-    public function truncateContent($content, $url, $characters = 3000)
-    {
-        $truncatedContent = $content;
-        $isTruncated = false;
-        if (mb_strlen($content) > $characters) {
-            $lastPeriod = mb_strpos($content, '.', $characters);
-            if ($lastPeriod) {
-                $isTruncated = true;
-                $truncatedContent = mb_substr($content, 0, $lastPeriod + 1);
-            }
-        }
-
-        $config = HTMLPurifier_Config::createDefault();
-        $config->set('Core.Encoding', 'UTF-8');
-        $config->set('HTML.Doctype', 'HTML 4.01 Transitional');
-        $purifier = new HTMLPurifier($config);
-        $truncatedContent = $purifier->purify($truncatedContent);
-
-        if ($isTruncated) {
-            $truncatedContent .= sprintf('<p><a class="btn" href="%s">Voir la suite</a></p>', $url);
-        }
-
-        return $truncatedContent;
-    }
-
-    /**
-     * @param int    $page
-     * @param string $format
-     *
-     * @return DisplayableFeedArticle[]
-     */
-    public function findLatestTruncated($page = 0, $format = DATE_ATOM): array
-    {
-        return array_map(function (DisplayableFeedArticle $article): DisplayableFeedArticle {
-            $article->setContent($this->truncateContent($article->getContent(), $article->getUrl()));
-
-            return $article;
-        }, $this->findLatest($page, $format));
-    }
-
     public function findLatest($page = 0, $format = DATE_ATOM, $nombre = 10): array
     {
         $query = $this->connection->prepare('SELECT b.titre, b.url, b.maj, b.auteur, b.contenu, f.nom feed_name, f.url feed_url
@@ -221,6 +175,9 @@ class FeedArticleRepository
         ), $rows);
     }
 
+    /**
+     * @return array<DisplayableFeedArticle>
+     */
     private function hydrateDisplayable(array $rows, $format = DATE_ATOM): array
     {
         return array_map(static fn (array $row): DisplayableFeedArticle => new DisplayableFeedArticle(
