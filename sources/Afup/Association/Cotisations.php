@@ -11,6 +11,7 @@ use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\PDF_Facture;
 use Afup\Site\Utils\Utils;
 use Afup\Site\Utils\Vat;
+use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\Email\Mailer\Attachment;
@@ -38,24 +39,13 @@ define('AFUP_COTISATIONS_PAIEMENT_REFUSE', 3);
  */
 class Cotisations
 {
-    /**
-     * Instance de la couche d'abstraction à la base de données
-     * @var Base_De_Donnees
-     */
-    private $_bdd;
+    private Base_De_Donnees $_bdd;
 
-    /**
-     * @var Droits|null
-     */
-    private $_droits;
+    private ?Droits $_droits;
 
-    /**
-     * Constructeur.
-     *
-     * @param object $bdd Instance de la couche d'abstraction à la base de données
-     * @return void
-     */
-    public function __construct(&$bdd, $droits = null)
+    private ?CompanyMemberRepository $companyMemberRepository = null;
+
+    public function __construct(Base_De_Donnees $bdd, Droits $droits = null)
     {
         $this->_bdd = $bdd;
         $this->_droits = $droits;
@@ -213,8 +203,13 @@ class Cotisations
         if (AFUP_PERSONNES_MORALES == $account['type']) {
             $invoiceNumber = substr($cmd, 1);
             $cotisation = $this->getByInvoice($invoiceNumber);
-            $personnes = new Personnes_Morales($this->_bdd);
-            $infos = $personnes->obtenir($cotisation['id_personne'], 'nom, prenom, email');
+            $company = $this->companyMemberRepository ? $this->companyMemberRepository->get($cotisation['id_personne']) : null;
+            Assertion::notNull($company);
+            $infos = [
+                'nom' => $company->getLastName(),
+                'prenom' => $company->getFirstName(),
+                'email' => $company->getEmail(),
+            ];
         } else {
             $user = $userRepository->get($account['id']);
             Assertion::notNull($user);
@@ -503,9 +498,13 @@ class Cotisations
         $personne = $this->obtenir($id_cotisation, 'type_personne, id_personne');
 
         if ($personne['type_personne'] == AFUP_PERSONNES_MORALES) {
-            $personnePhysique = new Personnes_Morales($this->_bdd);
-            $contactPhysique = $personnePhysique->obtenir($personne['id_personne'], 'nom, prenom, email, raison_sociale');
-            $patternPrefix = $contactPhysique['raison_sociale'];
+            $company = $this->companyMemberRepository ? $this->companyMemberRepository->get($personne['id_personne']) : null;
+            Assertion::notNull($company);
+            $contactPhysique = [
+                'nom'=> $company->getLastName(),
+                'prenom'=> $company->getFirstName(),
+                'email'=> $company->getEmail(),
+            ];
         } else {
             $user = $userRepository->get($personne['id_personne']);
             Assertion::notNull($user);
@@ -514,8 +513,8 @@ class Cotisations
                 'prenom'=> $user->getFirstName(),
                 'email'=> $user->getEmail(),
             ];
-            $patternPrefix = $contactPhysique['nom'];
         }
+        $patternPrefix = $contactPhysique['nom'];
 
         $corps = "Bonjour,<br />";
         $corps .= "<p>Veuillez trouver ci-joint la facture correspondant à votre adhésion à l'AFUP.</p>";
@@ -688,5 +687,10 @@ class Cotisations
         }
 
         return false;
+    }
+
+    public function setCompanyMemberRepository(CompanyMemberRepository $companyMemberRepository): void
+    {
+        $this->companyMemberRepository = $companyMemberRepository;
     }
 }

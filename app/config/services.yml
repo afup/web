@@ -550,6 +550,10 @@ services:
         autowire: true
         autoconfigure: true
 
+    AppBundle\Association\Form\CompanyEditType:
+        autowire: true
+        autoconfigure: true
+
     AppBundle\Event\Form\TicketType:
         autowire: true
         tags:
@@ -589,16 +593,11 @@ services:
           - 'Afup\Site\Forum\Inscriptions'
 
     Afup\Site\Association\Cotisations:
-        class: Afup\Site\Association\Cotisations
         factory: ['@AppBundle\LegacyModelFactory', 'createObject']
         arguments:
           - 'Afup\Site\Association\Cotisations'
-
-    Afup\Site\Association\Personnes_Morales:
-        class: Afup\Site\Association\Personnes_Morales
-        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
-        arguments:
-            - 'Afup\Site\Association\Personnes_Morales'
+        calls:
+          - [setCompanyMemberRepository, ['@AppBundle\Association\Model\Repository\CompanyMemberRepository']]
 
     AppBundle\Event\Form\PurchaseType:
         autowire: true

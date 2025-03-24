@@ -26,6 +26,27 @@ admin_members_user_export:
   path: /users/export
   defaults: {_controller: AppBundle\Controller\Admin\Members\UserExportAction}
 
+admin_members_company_list:
+  path: /companies
+  defaults: {_controller: AppBundle\Controller\Admin\Members\CompanyListAction}
+
+admin_members_company_add:
+  path: /companies/add
+  defaults:
+    _controller: AppBundle\Controller\Admin\Members\CompanyAction
+    id: null
+
+admin_members_company_edit:
+  path: /companies/edit/{id}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Members\CompanyAction
+    requirements:
+      id: \d+
+
+admin_members_company_delete:
+  path: /companies/delete
+  defaults: {_controller: AppBundle\Controller\Admin\Members\CompanyDeleteAction}
+
 admin_members_user_badge_new:
   path: /user_badge/new
   defaults: {_controller: AppBundle\Controller\Admin\Members\UserBadgeNewAction}

@@ -1,0 +1,122 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Liste des personnes morales</h2>
+
+    <div class="ui menu">
+        <a href="{{ path('admin_members_company_add') }}" class="item">
+            <div data-tooltip="Ajouter une personne morale" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+    </div>
+
+    <div class="ui segment">
+        <form method="GET" name="filtre">
+            <input type="hidden" name="sort" value="{{ sort }}"/>
+            <input type="hidden" name="direction" value="{{ direction }}"/>
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Recherche</label>
+                        <input type="text" name="filter" value="{{ filter }}">
+                    </div>
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" tabindex="0" class="hidden" name="alsoDisplayInactive"
+                                   {% if not onlyDisplayActive %}checked="checked"{% endif %}>
+                            <label>Afficher aussi les membres inactifs</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="Filtrer" class="ui button" name="submit_filtre"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        {% if companies %}
+            <table class="ui table striped compact celled">
+                <thead>
+                <tr>
+                    <th><a href="{{ path('admin_members_company_list', {
+                            sort: 'name',
+                            direction: direction == 'asc' and sort == 'name' ?  'desc' : 'asc',
+                        }) }}">Raison sociale</a></th>
+                    <th style="text-align: center"><a href="{{ path('admin_members_company_list', {
+                            sort: 'status',
+                            direction: direction == 'asc' and sort == 'status' ?  'desc' : 'asc',
+                        }) }}">Etat</a></th>
+                    <th style="text-align: center;"><a href="{{ path('admin_members_company_list', {
+                            sort: 'active',
+                            direction: direction == 'asc' and sort == 'active' ?  'desc' : 'asc',
+                        }) }}">Actifs</a></th>
+                    <th>&nbsp;</th>
+                </tr>
+                </thead>
+                {% for company in companies %}
+                    {# @var company \AppBundle\Association\Model\CompanyMember #}
+                    {% set isActive = company.status == constant('AppBundle\\Association\\Model\\CompanyMember::STATUS_ACTIVE') %}
+                    {% set isPending = company.status == constant('AppBundle\\Association\\Model\\CompanyMember::STATUS_PENDING') %}
+                    <tr class="{{ loop.index % 2 ? 'odd' : 'even' }} {% if isActive %}actif{% elseif isPending %}non_finalise{% else %}inactif{% endif %}">
+                        <td class="{% if not isActive %}disabled{% endif %}">{{ company.companyName }}</td>
+                        <td style="text-align: center">
+                            {% if isActive %}
+                                <div class="ui label green">Actif</div>
+                            {% elseif isPending %}
+                                Non finalisé
+                            {% else %}
+                                <div class="ui label red">Inactif</div>
+                            {% endif %}
+                        </td>
+                        <td class="{% if not isActive %}disabled{% endif %}" style="text-align: center">{{ activeMembers[company.id]|default(0) }}</td>
+                        <td style="text-align: right">
+                            <a href="/pages/administration/index.php?page=cotisations&amp;type_personne={{ constant('AFUP_PERSONNES_MORALES') }}&amp;id_personne={{ company.id }}"
+                               data-position="left center"
+                               data-tooltip="Gérer les cotisations de {{ company.companyName }}"
+                               class="compact ui green icon button">
+                                <i class="money bill alernate icon"></i>
+                            </a>
+
+                            <a href="{{ path('admin_members_company_edit', {id: company.id}) }}"
+                               data-position="left center"
+                               data-tooltip="Modifier la fiche de {{ company.companyName }}"
+                               class="compact ui icon button">
+                                <i class="pencil alernate icon"></i>
+                            </a>
+
+                            <a href="{{ path('admin_members_company_delete', {id: company.id}) }}"
+                               data-position="left center"
+                               data-tooltip="Supprimer la fiche de {{ company.companyName }}"
+                               class="compact ui red icon button confirmable"
+                               data-confirmable-label="Etes-vous sûr de vouloir supprimer la fiche de {{ company.companyName }} ?">
+                                <i class="trash icon"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <div class="ui placeholder segment">
+                <div class="ui icon header">
+                    <i class="meh outline icon"></i>
+                    Aucune personne morale
+                </div>
+                <div class="inline">
+                    {% if onlyDisplayActive %}
+                        <a class="ui button"
+                           href="{{ path('admin_members_company_list', {
+                               sort: sort,
+                               direction: direction,
+                               filter: filter,
+                               alsoDisplayInactive: true
+                           }) }}">
+                            Afficher aussi les personnes morales inactives
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

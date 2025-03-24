@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\UserMembership;
 
-use Afup\Site\Association\Personnes_Morales;
+use AppBundle\Association\Model\CompanyMember;
+use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 
 class StatisticsComputer
 {
     private UserRepository $userRepository;
-    private Personnes_Morales $personnesMorales;
+    private CompanyMemberRepository $companyMemberRepository;
 
-    public function __construct(UserRepository $userRepository, Personnes_Morales $personnesMorales)
+    public function __construct(UserRepository $userRepository, CompanyMemberRepository $companyMemberRepository)
     {
         $this->userRepository = $userRepository;
-        $this->personnesMorales = $personnesMorales;
+        $this->companyMemberRepository = $companyMemberRepository;
     }
 
     public function computeStatistics(): Statistics
@@ -37,7 +38,7 @@ class StatisticsComputer
                 $statistics->usersCountWithoutCompanies++;
             }
         }
-        $statistics->companiesCount = $this->personnesMorales->obtenirNombrePersonnesMorales('1');
+        $statistics->companiesCount = $this->companyMemberRepository->countByStatus(CompanyMember::STATUS_ACTIVE);
 
         return $statistics;
     }

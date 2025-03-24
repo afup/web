@@ -1,0 +1,8 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% form_theme form 'form_theme_admin.html.twig' %}
+
+{% block content %}
+    <h2>Ajouter une personne morale</h2>
+    {% include 'admin/members/company/form.html.twig' %}
+{% endblock %}

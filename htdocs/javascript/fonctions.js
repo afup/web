@@ -63,12 +63,11 @@ function soumettreUneSeuleFois(formulaire) {
 function voirPersonneMorale() { 
     // On choisit l'élément qui contient l'id de la personne morale
     var select = document.getElementsByName('id_personne_morale'); // On définit l'url où se situe la fiche d'une personne morale
-    var url = 'index.php?page=personnes_morales&action=modifier&id='; // On définit l'id de la fiche à visiter
     var id = select[0].options[select[0].selectedIndex].value;
     if (id == 0) { // Si aucune personne morale a été choisie
         alert('Choisissez une personne morale, pour visiter sa fiche.');
     } else { // On redirige vers la personne morale choisie
-        document.location.href = url + select[0].options[select[0].selectedIndex].value;
+        document.location.href = '/admin/members/companies/edit/' + select[0].options[select[0].selectedIndex].value;
     }
 }
 
