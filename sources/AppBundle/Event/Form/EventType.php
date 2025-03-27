@@ -132,6 +132,7 @@ class EventType extends AbstractType
             ->add('pricesDefinedWithVat', CheckboxType::class, [
                 'label' => 'Prix définis en incluant la TVA (définis en TTC) ',
                 'required' => false,
+                'disabled' => true,
             ])
             ->add('registration_email_file', FileType::class, [
                 'label' => ' Pièce jointe du mail d\'inscription',
