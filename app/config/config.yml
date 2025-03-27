@@ -435,3 +435,4 @@ ewz_recaptcha:
 
 ekino_new_relic:
     exceptions: true
+    deprecations: false
