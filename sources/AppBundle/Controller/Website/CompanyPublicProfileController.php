@@ -99,7 +99,7 @@ class CompanyPublicProfileController extends AbstractController
             $antennes[] = $antenne;
         }
 
-        usort($antennes, fn (Antenne $a, Antenne $b) => $a->label <=> $b->label);
+        usort($antennes, fn (Antenne $a, Antenne $b): int => $a->label <=> $b->label);
 
         return $antennes;
     }

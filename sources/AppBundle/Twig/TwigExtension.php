@@ -24,8 +24,7 @@ class TwigExtension extends AbstractExtension implements GlobalsInterface
                                 \Parsedown $emailParsedown,
                                 string $googleAnalyticsEnabled,
                                 string $googleAnalyticsId
-    )
-    {
+    ) {
         $this->legacyRouter = $legacyRouter;
         $this->parsedown = $parsedown;
         $this->emailParsedown = $emailParsedown;

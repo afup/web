@@ -55,7 +55,7 @@ class QrCodesGeneratorCommand extends Command
 
             if (count($tickets) === 0) {
                 $io->text('Aucun nouveau code à générer');
-                return 0;
+                return Command::SUCCESS;
             }
 
             $io->progressStart(count($tickets));
@@ -81,6 +81,6 @@ class QrCodesGeneratorCommand extends Command
         }
 
         $io->success('Terminé avec succès');
-        return 0;
+        return Command::SUCCESS;
     }
 }

@@ -25,7 +25,7 @@ class SecondaryMenuController extends AbstractController
         return $this->render(
             'site/secondary_menu.html.twig',
             [
-                'menu' => $this->prepareMenu($this->requestStack->getMasterRequest(), $menu),
+                'menu' => $this->prepareMenu($this->requestStack->getMainRequest(), $menu),
             ]
         );
     }

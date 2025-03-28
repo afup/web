@@ -50,6 +50,6 @@ EOF;
 
         $output->writeln("Appel au callback de paiement de cotisation effectué");
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

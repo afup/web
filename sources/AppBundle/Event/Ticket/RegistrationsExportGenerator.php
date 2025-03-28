@@ -12,7 +12,7 @@ use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Offices\OfficeFinder;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class RegistrationsExportGenerator
 {
@@ -87,7 +87,7 @@ class RegistrationsExportGenerator
 
             try {
                 $user = $this->userRepository->loadUserByUsername($ticket->getEmail());
-            } catch (UsernameNotFoundException $exception) {
+            } catch (UserNotFoundException $exception) {
                 $user = null;
             }
 

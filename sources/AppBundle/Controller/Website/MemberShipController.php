@@ -391,7 +391,7 @@ class MemberShipController extends AbstractController
             return new Response();
         } elseif ($status === '00117') {
             $etat = AFUP_COTISATIONS_PAIEMENT_ANNULE;
-        } elseif (substr($status, 0, 3) === '001') {
+        } elseif (str_starts_with($status, '001')) {
             $etat = AFUP_COTISATIONS_PAIEMENT_REFUSE;
         }
 

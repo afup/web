@@ -33,6 +33,6 @@ class SynchMembersCommand extends Command
             ->setLogger($this->logger)
             ->synchronize();
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

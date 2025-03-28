@@ -388,7 +388,7 @@ class Rubrique
         $page = $params['page'] ?? 1;
         $url = $this->route();
         if ($page != 1) {
-            if (strpos($url, '?') === false) {
+            if (!str_contains($url, '?')) {
                 $url .= '?';
             } else {
                 $url .= '&';

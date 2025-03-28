@@ -45,7 +45,7 @@ class ScrappingMeetupEventsCommand extends Command
         if (!$this->lock()) {
             $io->warning('La commande est déjà en cours d\'exécution dans un autre processus.');
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         try {
@@ -79,7 +79,7 @@ class ScrappingMeetupEventsCommand extends Command
             $io->progressFinish();
             $io->success('Terminé avec succès');
 
-            return 1;
+            return Command::FAILURE;
         } catch (\Exception $e) {
             throw new \Exception('Problème lors du scraping ou de la sauvegarde des évènements Meetup', $e->getCode(), $e);
         }

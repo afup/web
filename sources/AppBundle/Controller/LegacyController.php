@@ -46,13 +46,14 @@ class LegacyController extends AbstractController
         $pages = $this->backOfficePages;
         /** @var Session $session */
         $session = $this->requestStack->getSession();
+        $flashBag = $session->getFlashBag();
         if ($_GET['page'] == 'index' || !file_exists(__DIR__ . '/../../../htdocs/pages/administration/' . $_GET['page'] . '.php')) {
             return $this->redirectToRoute('admin_home');
         }
         // On vérifie que l'utilisateur a le droit d'accéder à la page
         $droits->chargerToutesLesPages($pages);
         if (!$droits->verifierDroitSurLaPage($_GET['page'])) {
-            $session->getFlashBag()->add('error', "Vous n'avez pas le droit d'accéder à\u{a0}cette page");
+            $flashBag->add('error', "Vous n'avez pas le droit d'accéder à\u{a0}cette page");
             return $this->redirectToRoute('admin_home');
         }
         // Initialisation de AFUP_Log
@@ -60,10 +61,10 @@ class LegacyController extends AbstractController
         require_once __DIR__ . '/../../../htdocs/pages/administration/' . $_GET['page'] . '.php';
         // On gère des infos popups
         if (isset($_SESSION['flash']['message'])) {
-            $session->getFlashBag()->add('notice', $_SESSION['flash']['message']);
+            $flashBag->add('notice', $_SESSION['flash']['message']);
         }
         if (isset($_SESSION['flash']['erreur'])) {
-            $session->getFlashBag()->add('error', $_SESSION['flash']['erreur']);
+            $flashBag->add('error', $_SESSION['flash']['erreur']);
         }
         unset($_SESSION['flash']);
         // Récupération du contenu de la page généré par smarty

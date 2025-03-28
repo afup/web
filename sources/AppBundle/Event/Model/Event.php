@@ -617,7 +617,7 @@ class Event implements NotifyPropertyInterface
 
     public function isAfupDay(): bool
     {
-        return substr($this->getTitle(), 0, 8) == 'AFUP Day';
+        return str_starts_with($this->getTitle(), 'AFUP Day');
     }
 
     /**
@@ -687,7 +687,7 @@ class Event implements NotifyPropertyInterface
 
     public function isOnline(): bool
     {
-        return false !== strpos($this->getPath(), 'enligne');
+        return str_contains($this->getPath(), 'enligne');
     }
 
     public static function getInscriptionAttachmentDir(): string
