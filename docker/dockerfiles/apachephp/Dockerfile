@@ -38,7 +38,7 @@ RUN apt-get update && \
         intl \
         pcntl \
     && \
-    if [ "$ENABLE_XDEBUG" = "true" ]; then pecl install xdebug-2.6.1 && docker-php-ext-enable xdebug; fi && \
+    if [ "$ENABLE_XDEBUG" = "true" ]; then pecl install xdebug-3.4.2 && docker-php-ext-enable xdebug; fi && \
     apt-get autoremove --purge -y && \
     rm -rf /var/lib/apt/lists/*
 

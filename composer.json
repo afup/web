@@ -3,7 +3,7 @@
   "description": "Main repository for afup website",
   "type": "project",
   "require": {
-    "php": "7.4.* | 8.2.*",
+    "php": "7.4.* | 8.1.*",
     "ext-curl": "*",
     "ext-dom": "*",
     "ext-gd": "*",
@@ -22,12 +22,16 @@
     "erusev/parsedown": "^1.6",
     "excelwebzone/recaptcha-bundle": "^1.5",
     "friendsofpear/pear_exception": "0.0.*",
+    "geocoder-php/google-maps-provider": "^4.7",
+    "j7mbo/twitter-api-php": "^1.0",
     "jms/serializer-bundle": "5.*",
     "knpuniversity/oauth2-client-bundle": "^1.4",
     "laminas/laminas-feed": "^2.18",
     "league/iso3166": "^4.0",
     "league/oauth2-github": "^0.2.1",
     "myclabs/php-enum": "^1.8",
+    "nojimage/twitter-text-php": "1.1.*",
+    "nyholm/psr7": "^1.8",
     "pacely/mailchimp-apiv3": "^1.0",
     "pear/pear": "^1.10",
     "phpmailer/phpmailer": "^6.9",
@@ -57,7 +61,6 @@
     "symfony/yaml": "^5.4",
     "twig/extensions": "^1.4",
     "twig/twig": "^2.16",
-    "willdurand/geocoder": "^3.3",
     "znk3r/html_common": "*",
     "znk3r/html_quickform": "4.0.2"
   },
@@ -74,7 +77,10 @@
   "config": {
     "bin-dir": "bin",
     "secure-http": false,
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
   },
   "extra": {
     "symfony-app-dir": "app",
