@@ -28,7 +28,7 @@ class GetMenuAction
 
     public function __invoke(): Response
     {
-        $masterRequest = $this->requestStack->getMasterRequest();
+        $masterRequest = $this->requestStack->getMainRequest();
         Assertion::notNull($masterRequest);
         $page = $masterRequest->query->get('page');
         $route = $masterRequest->get('_route');

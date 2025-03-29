@@ -40,6 +40,6 @@ class UpdateCompanyMemberStateCommand extends Command
             $companyMemberRepository->save($companyMember);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

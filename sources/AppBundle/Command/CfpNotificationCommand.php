@@ -68,6 +68,6 @@ class CfpNotificationCommand extends Command
             $this->slackNotifier->sendMessage($message);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

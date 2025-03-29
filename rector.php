@@ -18,13 +18,18 @@ return RectorConfig::configure()
         __DIR__ . '/htdocs/cache',
     ])
     ->withPhp74Sets()
-    ->withTypeCoverageLevel(PHP_INT_MAX)
-    ->withDeadCodeLevel(PHP_INT_MAX)
-    ->withCodeQualityLevel(PHP_INT_MAX)
+    ->withTypeCoverageLevel(10)
+    ->withDeadCodeLevel(10)
+    ->withCodeQualityLevel(10)
     ->withImportNames(true, true, false)
-    ->withSymfonyContainerXml(__DIR__ . '/var/cache/dev/appDevDebugProjectContainer.xml')
+    ->withSymfonyContainerXml(__DIR__ . '/var/cache/dev/AppKernelDevDebugContainer.xml')
     ->withSets([
         SymfonySetList::SYMFONY_44,
+        SymfonySetList::SYMFONY_50,
+        SymfonySetList::SYMFONY_51,
+        SymfonySetList::SYMFONY_52,
+        SymfonySetList::SYMFONY_53,
+        SymfonySetList::SYMFONY_54,
         SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
         TwigSetList::TWIG_UNDERSCORE_TO_NAMESPACE

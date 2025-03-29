@@ -21,7 +21,7 @@ class EventCompareSelectType extends AbstractType
         $builder
             ->add('event_id', ChoiceType::class, [
                 'choices' => $choices,
-                'group_by' => static fn ($choice, $key) => self::groupBy($key),
+                'group_by' => static fn ($choice, $key): string => self::groupBy($key),
             ])
             ->add('compared_event_id', ChoiceType::class, [
                 'choices' => $choices,
@@ -32,7 +32,7 @@ class EventCompareSelectType extends AbstractType
 
                     return [];
                 },
-                'group_by' => static fn ($choice, $key) => self::groupBy($key),
+                'group_by' => static fn ($choice, $key): string => self::groupBy($key),
             ])
             ->setMethod(Request::METHOD_GET);
     }
@@ -70,7 +70,7 @@ class EventCompareSelectType extends AbstractType
     {
         /** @var array<Event> $data */
         $data = iterator_to_array($events);
-        usort($data, static fn (Event $a, Event $b) => $a->getDateStart() <= $b->getDateStart());
+        usort($data, static fn (Event $a, Event $b): bool => $a->getDateStart() <= $b->getDateStart());
 
         $choices = [];
         foreach ($data as $event) {

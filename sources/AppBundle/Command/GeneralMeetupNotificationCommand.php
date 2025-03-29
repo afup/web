@@ -51,6 +51,6 @@ class GeneralMeetupNotificationCommand extends Command
             ));
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

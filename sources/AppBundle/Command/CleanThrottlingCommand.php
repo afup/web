@@ -29,6 +29,6 @@ class CleanThrottlingCommand extends Command
     {
         $this->actionThrottling->clearOldLogs();
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

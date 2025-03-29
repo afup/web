@@ -13,8 +13,8 @@ class OfficesExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('office_name', fn ($code) => (new AntennesCollection())->findByCode($code)->label),
-            new TwigFunction('office_logo', fn ($code) => (new AntennesCollection())->findByCode($code)->logoUrl),
+            new TwigFunction('office_name', fn ($code): string => (new AntennesCollection())->findByCode($code)->label),
+            new TwigFunction('office_logo', fn ($code): string => (new AntennesCollection())->findByCode($code)->logoUrl),
             new TwigFunction('office_meetup_urlname', fn ($code) => (new AntennesCollection())->findByCode($code)->meetup->urlName),
         ];
     }

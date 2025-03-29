@@ -67,7 +67,7 @@ final class ArticlesController
             return '';
         }
 
-        if (substr($url, 0, 4) !== 'http') {
+        if (!str_starts_with($url, 'http')) {
             $feedUrl = rtrim($article->getFeedUrl(), '/');
             $articleUrl = ltrim($url, '/');
 

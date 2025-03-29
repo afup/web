@@ -21,7 +21,7 @@ use Exception;
 use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use UnexpectedValueException;
@@ -40,7 +40,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
      * @return User
      * @throws QueryException
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername(string $username)
     {
         $queryBuilder = $this->getQueryBuilderWithCompleteUser();
         $queryBuilder
@@ -56,7 +56,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->query($this->getCollection($this->getHydratorForUser()));
 
         if ($result->count() === 0) {
-            throw new UsernameNotFoundException(sprintf('Could not find the user with login "%s"', $username));
+            throw new UserNotFoundException(sprintf('Could not find the user with login "%s"', $username));
         }
 
         return $result->first();
@@ -78,7 +78,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->query($this->getCollection($this->getHydratorForUser()));
 
         if ($result->count() === 0) {
-            throw new UsernameNotFoundException(sprintf('Could not find the user with email "%s"', $email));
+            throw new UserNotFoundException(sprintf('Could not find the user with email "%s"', $email));
         }
 
         return $result->first();
@@ -98,7 +98,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->query($this->getCollection($this->getHydratorForUser()));
 
         if ($result->count() === 0) {
-            throw new UsernameNotFoundException(sprintf('Could not find the user with hash "%s"', $hash));
+            throw new UserNotFoundException(sprintf('Could not find the user with hash "%s"', $hash));
         }
 
         return $result->first();
@@ -467,7 +467,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         return $this->loadUserByUsername($user->getUsername());
     }
 
-    public function supportsClass($class)
+    public function supportsClass(string $class)
     {
         return $class === User::class;
     }

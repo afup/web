@@ -419,7 +419,7 @@ class Speaker implements NotifyPropertyInterface
             return '';
         }
 
-        if (strpos($mastodon, '@') === false) {
+        if (!str_contains($mastodon, '@')) {
             return '';
         }
 
@@ -449,7 +449,7 @@ class Speaker implements NotifyPropertyInterface
     public function getCleanedMastodon(): string
     {
         $mastodon = $this->getMastodon();
-        if (strpos($mastodon, '@') === false) {
+        if (!str_contains($mastodon, '@')) {
             return '';
         }
 
@@ -482,7 +482,7 @@ class Speaker implements NotifyPropertyInterface
         if ($bluesky !== null) {
             $bluesky = str_replace('https://bsky.app/profile/', '', $bluesky);
 
-            if (substr($bluesky, 0, 1) === '@') {
+            if (str_starts_with($bluesky, '@')) {
                 $bluesky = substr($bluesky, 1);
             }
         }

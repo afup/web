@@ -404,7 +404,7 @@ class FeatureContext implements Context
     {
         $pageContent = $this->pdfPages[$page] ?? null;
 
-        if (false === strpos($pageContent, $expectedContent)) {
+        if (!str_contains($pageContent, $expectedContent)) {
             throw new ExpectationException(
                 sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent),
                 $this->minkContext->getSession()->getDriver()
@@ -427,7 +427,7 @@ class FeatureContext implements Context
 
         $pageContent = $this->pdfPages[$page];
 
-        if (false !== strpos($pageContent, $expectedContent)) {
+        if (str_contains($pageContent, $expectedContent)) {
             throw new ExpectationException(
                 sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent),
                 $this->minkContext->getSession()->getDriver()
@@ -545,7 +545,7 @@ class FeatureContext implements Context
         }
 
         $content = file_get_contents(self::MAILCATCHER_URL . '/messages/' . $foundEmails[0]['id'] . '.plain');
-        if (false === strpos($content, $arg1)) {
+        if (!str_contains($content, $arg1)) {
             throw new ExpectationException(
                 sprintf(
                     'The email content does not contain the expected URL "%s" (expected "%s")',

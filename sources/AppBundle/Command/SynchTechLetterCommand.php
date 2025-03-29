@@ -34,6 +34,6 @@ class SynchTechLetterCommand extends Command
            ->synchronize()
         ;
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

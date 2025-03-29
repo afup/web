@@ -18,7 +18,6 @@ use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /** @var LegacyController $this */
@@ -37,7 +36,7 @@ $ticketEventTypeRepository = $this->get(TicketEventTypeRepository::class);
 $ticketTypeAvailability = $this->get(TicketTypeAvailability::class);
 $invoiceService = $this->get(InvoiceService::class);
 $invoiceRepository = $this->get(InvoiceRepository::class);
-$session = $this->get(SessionInterface::class);
+$session = $this->get('session');
 $urlGenerator = $this->get(UrlGeneratorInterface::class);
 
 function updateGlobalsForTarif(

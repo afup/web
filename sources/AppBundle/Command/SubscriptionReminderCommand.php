@@ -106,7 +106,7 @@ class SubscriptionReminderCommand extends Command
             $this->handleReminders($output, $reminder, $users, $dryRun);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function handleReminders(

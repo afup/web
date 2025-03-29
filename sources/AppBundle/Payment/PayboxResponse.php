@@ -95,6 +95,6 @@ class PayboxResponse
 
     public function isErrorCode(): bool
     {
-        return substr($this->status, 0, 3) === '001';
+        return str_starts_with($this->status, '001');
     }
 }

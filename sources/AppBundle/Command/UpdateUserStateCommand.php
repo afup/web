@@ -39,6 +39,6 @@ class UpdateUserStateCommand extends Command
             $userRepository->save($user);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

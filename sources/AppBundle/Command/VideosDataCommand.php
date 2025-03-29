@@ -83,6 +83,6 @@ class VideosDataCommand extends Command
 
         $output->writeln(json_encode($data, JSON_PRETTY_PRINT));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

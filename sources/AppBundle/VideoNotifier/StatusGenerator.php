@@ -91,7 +91,7 @@ final class StatusGenerator
     private function buildMentionsText(array $speakers): string
     {
         $mentions = array_map(
-            fn (Speaker $speaker) => $this->socialNetwork->getSpeakerHandle($speaker) ?? $speaker->getLabel(),
+            fn (Speaker $speaker): string => $this->socialNetwork->getSpeakerHandle($speaker) ?? $speaker->getLabel(),
             $speakers,
         );
 
