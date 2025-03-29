@@ -5,32 +5,23 @@ declare(strict_types=1);
 namespace AppBundle\VideoNotifier;
 
 use AppBundle\Event\Model\Talk;
-use Doctrine\DBAL\Connection;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-final class HistoryRepository
+/**
+ * @extends ServiceEntityRepository<HistoryEntry>
+ */
+final class HistoryRepository extends ServiceEntityRepository
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->connection = $connection;
+        parent::__construct($registry, HistoryEntry::class);
     }
 
-    public function insert(HistoryEntry $entry): void
+    public function insert(HistoryEntry $history): void
     {
-        $this->connection->createQueryBuilder()
-            ->insert('video_notifier_history')
-            ->values([
-                'talk_id' => '?',
-                'status_id_bluesky' => '?',
-                'status_id_mastodon' => '?',
-            ])
-            ->setParameters([
-                $entry->getTalkId(),
-                $entry->getStatusIdBluesky(),
-                $entry->getStatusIdMastodon(),
-            ])
-            ->execute();
+        $this->getEntityManager()->persist($history);
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -39,20 +30,19 @@ final class HistoryRepository
      */
     public function getNumberOfStatusesPerTalk(array $talks): array
     {
-        $rows = ($qb = $this->connection->createQueryBuilder())
-            ->from('video_notifier_history', 'h')
-            ->select('h.talk_id', 'COUNT(h.id) AS quantity')
+        $rows = ($qb = $this->createQueryBuilder('h'))
+            ->select('h.talkId', 'COUNT(h.id) AS quantity')
             ->where(
-                $qb->expr()->in('h.talk_id', array_map(fn (Talk $talk) => $talk->getId(), $talks))
+                $qb->expr()->in('h.talkId', array_map(fn (Talk $talk) => $talk->getId(), $talks))
             )
-            ->groupBy('h.talk_id')
-            ->execute()
-            ->fetchAllAssociative();
+            ->groupBy('h.talkId')
+            ->getQuery()
+            ->execute();
 
         $map = [];
 
         foreach ($rows as $row) {
-            $map[$row['talk_id']] = $row['quantity'];
+            $map[$row['talkId']] = $row['quantity'];
         }
 
         return $map;
