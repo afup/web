@@ -6,7 +6,6 @@ namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Event\Model\Repository\EventRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Twig\Environment;
@@ -15,19 +14,17 @@ class ListAction
 {
     private EventRepository $eventRepository;
     private Environment $twig;
-    private RequestStack $requestStack;
 
-    public function __construct(EventRepository $eventRepository, Environment $twig, RequestStack $requestStack)
+    public function __construct(EventRepository $eventRepository, Environment $twig)
     {
         $this->eventRepository = $eventRepository;
         $this->twig = $twig;
-        $this->requestStack = $requestStack;
     }
 
     public function __invoke(Request $request): Response
     {
         /** @var Session $session */
-        $session = $this->requestStack->getSession();
+        $session = $request->getSession();
         //TODO : à supprimer quand les actions via le formulaire auront été migée
         if (isset($_SESSION['flash']['message'])) {
             $session->getFlashBag()->add('notice', $_SESSION['flash']['message']);
