@@ -1,11 +1,6 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
-    twitter_api_settings:
-        oauth_access_token: "%twitter_oauth_access_token%"
-        oauth_access_token_secret: "%twitter_oauth_access_token_secret%"
-        consumer_key: "%twitter_consumer_key%"
-        consumer_secret: "%twitter_consumer_secret%"
     app.badge_dir: "%kernel.project_dir%/../htdocs/uploads/badges"
     app.members_logo_dir: "%kernel.project_dir%/../htdocs/uploads/members_logo"
     app.general_meetings_dir: "%kernel.project_dir%/../htdocs/uploads/general_meetings_reports"
@@ -350,10 +345,6 @@ services:
 
     AppBundle\Joindin\JoindinTalk:
         arguments: ["@cache.system"]
-
-    TwitterAPIExchange:
-        class: TwitterAPIExchange
-        arguments: ["%twitter_api_settings%"]
 
     # API/Client Meetup techletter
     app.mailchimp_techletter_client:
