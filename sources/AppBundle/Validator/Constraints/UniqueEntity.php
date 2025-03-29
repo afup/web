@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Validator\Constraints;
 
+use CCMBenchmark\Ting\Repository\Repository;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -15,21 +16,18 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueEntity extends Constraint
 {
-    public $message = 'Another entity exists for this data: {{ data }}';
-    public $repository;
-    public $fields = [];
+    public string $message = 'Another entity exists for this data: {{ data }}';
+    public Repository $repository;
 
-    public function getTargets()
+    /** @var array<string> */
+    public array $fields = [];
+
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function getRequiredOptions()
-    {
-        return ['fields', 'repository'];
-    }
-
-    public function getDefaultOption()
+    public function getRequiredOptions(): array
     {
         return ['fields', 'repository'];
     }
