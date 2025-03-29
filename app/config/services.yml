@@ -654,7 +654,7 @@ services:
 
     geocoder_provider_google_maps:
         class: Geocoder\Provider\GoogleMaps\GoogleMaps
-        arguments: ['@Http\Client\HttpClient', null, "%google_maps_api_key%"]
+        arguments: ['@Psr\Http\Client\ClientInterface', null, "%google_maps_api_key%"]
 
     AppBundle\Offices\OfficeFinder:
         arguments: ['@geocoder']
