@@ -648,14 +648,16 @@ services:
     AppBundle\Event\JsonLd:
         autowire: true
 
+    geocoder:
+        class: Geocoder\StatefulGeocoder
+        arguments: ['@geocoder_provider_google_maps']
+
+    geocoder_provider_google_maps:
+        class: Geocoder\Provider\GoogleMaps\GoogleMaps
+        arguments: ['@Psr\Http\Client\ClientInterface', null, "%google_maps_api_key%"]
+
     AppBundle\Offices\OfficeFinder:
-        arguments: ['@Geocoder\Provider\GoogleMaps']
-
-    Geocoder\Provider\GoogleMaps:
-        arguments: ['@Ivory\HttpAdapter\CurlHttpAdapter', null, null, true, "%google_maps_api_key%"]
-
-    Ivory\HttpAdapter\CurlHttpAdapter:
-        public: false
+        arguments: ['@geocoder']
 
     AppBundle\Association\UserMembership\StatisticsComputer:
         autowire: true

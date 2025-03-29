@@ -30,7 +30,7 @@ parameters:
 services:
     AppBundle\Offices\OfficeFinder:
         class: AppBundle\Offices\NullOfficeFinder
-        arguments: [ '@Geocoder\Provider\GoogleMaps' ]
+        arguments: ['@geocoder']
 
 ewz_recaptcha:
     enabled: false

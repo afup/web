@@ -7,7 +7,6 @@ namespace AppBundle\Offices;
 use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Invoice;
-use Geocoder\Exception\NoResult;
 use Geocoder\Geocoder;
 use Geocoder\Model\AddressCollection;
 use Geocoder\Model\Coordinates;
@@ -90,10 +89,8 @@ class OfficeFinder
     private function geocodeAddresses(array $addresses): ?AddressCollection
     {
         foreach ($addresses as $address) {
-            try {
-                return $this->geocode($address);
-            } catch (NoResult $noResult) {
-                continue;
+            if ($result = $this->geocode($address)) {
+                return $result;
             }
         }
 
