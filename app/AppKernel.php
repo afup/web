@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use AppBundle\AppBundle;
 use CCMBenchmark\TingBundle\TingBundle;
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Ekino\NewRelicBundle\EkinoNewRelicBundle;
 use EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle;
 use JMS\SerializerBundle\JMSSerializerBundle;
@@ -34,6 +35,7 @@ class AppKernel extends Kernel
             new PrestaSitemapBundle(),
             new EWZRecaptchaBundle(),
             new EkinoNewRelicBundle(),
+            new DoctrineBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
