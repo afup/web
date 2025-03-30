@@ -31,20 +31,17 @@ class TechletterController extends AbstractController
         return $this->view->render('site/techletter/index.html.twig');
     }
 
-    /**
-     * @return Response
-     */
-    public function webhook(Request $request)
+    public function webhook(Request $request): Response
     {
         if ($request->get('webhook_key') !== $this->mailchimpTechletterWebhookKey) {
             return new Response('ko', Response::HTTP_UNAUTHORIZED);
         }
 
-        if (Request::METHOD_GET == $request->getMethod()) {
+        if (Request::METHOD_GET === $request->getMethod()) {
             return new Response('ok');
         }
 
-        if ($request->get('type') == 'unsubscribe') {
+        if ($request->get('type') === 'unsubscribe') {
             $techletterUnsubscriptionRepository = $this->repositoryFactory->get(TechletterUnsubscriptionsRepository::class);
             $techletterUnsubscription = $techletterUnsubscriptionRepository->createFromWebhookData($request->get('data', []));
             $techletterUnsubscriptionRepository->save($techletterUnsubscription);

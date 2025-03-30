@@ -348,7 +348,7 @@ services:
 
     # API/Client Meetup techletter
     app.mailchimp_techletter_client:
-        class: Mailchimp\Mailchimp
+        class: DrewM\MailChimp\MailChimp
         arguments: ["%mailchimp_techletter_api_key%"]
         public: false
     app.mailchimp_techletter_api:
@@ -358,7 +358,7 @@ services:
 
     # API/Client Meetup
     app.mailchimp_client:
-        class: Mailchimp\Mailchimp
+        class: DrewM\MailChimp\MailChimp
         arguments: ["%mailchimp_api_key%"]
         public: false
     app.mailchimp_api:

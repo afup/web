@@ -180,7 +180,7 @@ class TechLetterGenerateController extends AbstractController
             $response = $this->mailchimp->createCampaign(
                 $this->mailchimpTechletterList,
                 [
-                    'template_id' => $template->get('id'),
+                    'template_id' => $template['id'],
                     'from_name' => "Pôle Veille de l'AFUP",
                     'reply_to' => 'pole-veille@afup.org',
                     'subject_line' => $subject,
