@@ -36,7 +36,7 @@ final class VideoNotifierCommand extends Command
 
         if (null === $entry) {
             $io->warning('Aucun talk posté');
-            return 0;
+            return Command::SUCCESS;
         }
 
         $io->success('Talk posté');
@@ -50,6 +50,6 @@ final class VideoNotifierCommand extends Command
             );
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

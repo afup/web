@@ -41,7 +41,7 @@ class Parser
                 $currentText .= ' ' . $cue->getText();
             }
 
-            if (substr($currentText, -1) == '.') {
+            if (str_ends_with($currentText, '.')) {
                 $parsedContent[] = [
                     'start' => $currentStart,
                     'text' => $currentText,

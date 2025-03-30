@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace AppBundle\Twig;
 
 use AppBundle\Routing\LegacyRouter;
-use Psr\Container\ContainerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
@@ -17,14 +16,20 @@ class TwigExtension extends AbstractExtension implements GlobalsInterface
     private LegacyRouter $legacyRouter;
     private \Parsedown $parsedown;
     private \Parsedown $emailParsedown;
-    private ContainerInterface $container;
+    private string $googleAnalyticsEnabled;
+    private string $googleAnalyticsId;
 
-    public function __construct(LegacyRouter $legacyRouter, \Parsedown $parsedown, \Parsedown $emailParsedown, ContainerInterface $container)
-    {
+    public function __construct(LegacyRouter $legacyRouter,
+                                \Parsedown $parsedown,
+                                \Parsedown $emailParsedown,
+                                string $googleAnalyticsEnabled,
+                                string $googleAnalyticsId
+    ) {
         $this->legacyRouter = $legacyRouter;
         $this->parsedown = $parsedown;
         $this->emailParsedown = $emailParsedown;
-        $this->container = $container;
+        $this->googleAnalyticsEnabled = $googleAnalyticsEnabled;
+        $this->googleAnalyticsId = $googleAnalyticsId;
     }
 
     public function getFunctions(): array
@@ -55,8 +60,8 @@ class TwigExtension extends AbstractExtension implements GlobalsInterface
     {
         return [
             'legacy_router' => $this->legacyRouter,
-            'google_analytics_enabled' => $this->container->getParameter('google_analytics_enabled'),
-            'google_analytics_id' => $this->container->getParameter('google_analytics_id')
+            'google_analytics_enabled' => $this->googleAnalyticsEnabled,
+            'google_analytics_id' => $this->googleAnalyticsId
         ];
     }
 

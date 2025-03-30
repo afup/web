@@ -50,7 +50,7 @@ class IndexMeetupsCommand extends Command
         $runner = new Runner($this->searchClient, $meetupRepository);
         $runner->run();
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function runScraping(OutputInterface $output): void

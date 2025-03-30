@@ -159,7 +159,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
 
         $leafs = $branche->feuillesEnfants($id);
         foreach ($leafs as $leaf) {
-            if (!$leaf['lien'] || 0 !== strpos($leaf['lien'], 'http')) {
+            if (!$leaf['lien'] || !str_starts_with($leaf['lien'], 'http')) {
                 continue;
             }
 

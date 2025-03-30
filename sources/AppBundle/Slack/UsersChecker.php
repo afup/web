@@ -6,7 +6,7 @@ namespace AppBundle\Slack;
 
 use AppBundle\Association\Model\Repository\UserRepository;
 use CCMBenchmark\Ting\Query\QueryException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UsersChecker
 {
@@ -69,7 +69,7 @@ class UsersChecker
                             $result[] = $userInfo;
                         }
                     }
-                } catch (UsernameNotFoundException $e) {
+                } catch (UserNotFoundException $e) {
                     //User Not found ! A supprimer de slack !
                     $result[] = $userInfo;
                 }

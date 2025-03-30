@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use AppBundle\Site\Model\Rubrique;
 use Cocur\Slugify\Slugify;
+use Faker\Factory;
 use Phinx\Seed\AbstractSeed;
 
 class Articles extends AbstractSeed
@@ -34,7 +35,7 @@ EOF;
         ];
 
         $slugger = Slugify::create();
-        $faker = Faker\Factory::create();
+        $faker = Factory::create();
         for ($i = 1; $i < 15; $i++) {
             $titre = $faker->text(80);
             $data[] = [

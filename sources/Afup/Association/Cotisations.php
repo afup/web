@@ -245,7 +245,7 @@ class Cotisations
         $verif = substr($cmd, strlen($cmd) - 3, strlen($cmd));
         $result = false;
 
-        if (substr($cmd, 0, 1) === 'F') {
+        if (str_starts_with($cmd, 'F')) {
             // This is an invoice ==> we dont have to create a new cotisation, just update the existing one
             $invoiceNumber = substr($cmd, 1);
             $cotisation = $this->getByInvoice($invoiceNumber);

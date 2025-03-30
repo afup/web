@@ -64,6 +64,6 @@ class UpdateMailchimpMembersCommand extends Command
             $output->writeln("Pas d'erreur durant le traitement");
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

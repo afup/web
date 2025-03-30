@@ -115,7 +115,7 @@ class Page
                 }
             }
 
-            if (false !== strpos($url, (string) $feuille['lien'])) {
+            if (str_contains($url, (string) $feuille['lien'])) {
                 $isCurrent = true;
             }
 
@@ -123,7 +123,7 @@ class Page
                 $enfants = $branche->feuillesEnfants($feuille['id']);
                 foreach ($enfants as $feuilleEnfant) {
                     foreach ($branche->feuillesEnfants($feuilleEnfant['id']) as $feuillesEnfant2) {
-                        if (false !== strpos($url, (string) $feuillesEnfant2['lien'])) {
+                        if (str_contains($url, (string) $feuillesEnfant2['lien'])) {
                             $isCurrent = true;
                         }
                     }

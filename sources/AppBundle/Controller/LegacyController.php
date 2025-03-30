@@ -8,9 +8,9 @@ namespace AppBundle\Controller;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -18,18 +18,17 @@ class LegacyController extends AbstractController
 {
     private TokenStorageInterface $tokenStorage;
     private AuthorizationCheckerInterface $authorizationChecker;
-    /** @var SessionInterface&Session $session */
-    private SessionInterface $session;
+    private RequestStack $requestStack;
     private array $backOfficePages;
 
     public function __construct(TokenStorageInterface $tokenStorage,
                                 AuthorizationCheckerInterface $authorizationChecker,
-                                SessionInterface $session,
+                                RequestStack $requestStack,
                                 array $backOfficePages)
     {
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->backOfficePages = $backOfficePages;
     }
     public function void()
@@ -45,7 +44,9 @@ class LegacyController extends AbstractController
         global $smarty, $bdd, $conf, $droits, $AFUP_Tarifs_Forum_Lib, $AFUP_Tarifs_Forum, $debug, $translator, $services;
         $droits = Utils::fabriqueDroits($this->tokenStorage, $this->authorizationChecker);
         $pages = $this->backOfficePages;
-        $flashBag = $this->session->getFlashBag();
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+        $flashBag = $session->getFlashBag();
         if ($_GET['page'] == 'index' || !file_exists(__DIR__ . '/../../../htdocs/pages/administration/' . $_GET['page'] . '.php')) {
             return $this->redirectToRoute('admin_home');
         }

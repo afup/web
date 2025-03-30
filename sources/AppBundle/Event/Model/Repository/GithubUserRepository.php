@@ -13,7 +13,7 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -96,11 +96,11 @@ class GithubUserRepository extends Repository implements MetadataInitializer, Us
     /**
      * @inheritDoc
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername(string $username)
     {
         $user = $this->getOneBy(['login' => $username]);
         if ($user === null) {
-            throw new UsernameNotFoundException();
+            throw new UserNotFoundException();
         }
         return $user;
     }
@@ -123,7 +123,7 @@ class GithubUserRepository extends Repository implements MetadataInitializer, Us
     /**
      * @inheritDoc
      */
-    public function supportsClass($class)
+    public function supportsClass(string $class)
     {
         return ($class === GithubUser::class);
     }

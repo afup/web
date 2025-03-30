@@ -116,11 +116,9 @@ final class Engine
 
         $talks = array_filter(
             iterator_to_array($this->talkRepository->findList($talkIds)),
-            function (Talk $talk) {
-                return $talk->isDisplayedOnHistory()
-                    && $talk->hasYoutubeId()
-                    && in_array($talk->getType(), self::VALID_TALK_TYPES, true);
-            }
+            fn (Talk $talk): bool => $talk->isDisplayedOnHistory()
+                && $talk->hasYoutubeId()
+                && in_array($talk->getType(), self::VALID_TALK_TYPES, true)
         );
 
         if (empty($talks)) {
@@ -166,6 +164,6 @@ final class Engine
             return $talks;
         }
 
-        return array_filter($talks, fn (Talk $talk) => ($quantities[$talk->getId()] ?? 0) !== $maxCount);
+        return array_filter($talks, fn (Talk $talk): bool => ($quantities[$talk->getId()] ?? 0) !== $maxCount);
     }
 }

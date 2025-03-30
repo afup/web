@@ -307,7 +307,7 @@ Cordialement,
 <div id="my-letter" style="display:none;">
 Chère/Cher #NAME#,
 
-Vous êtes inscrit(e) pour le {$forum.titre} avec une place au tarif AFUP, or soit votre adhésion est expirée, soit votre inscription a été realisée avec une adresse email différente de celle utilisée pour votre adhésion.
+Vous êtes inscrit(e) pour le {$forum.titre|default:'#FORUM_TITLE#'} avec une place au tarif AFUP, or soit votre adhésion est expirée, soit votre inscription a été realisée avec une adresse email différente de celle utilisée pour votre adhésion.
 
 J'ai besoin de vous pour régler ce soucis.
 
@@ -315,17 +315,17 @@ Si votre adhésion est en cours et valide, je vous invite à m'en faire part par
 
 Sans situation régulière à la remise de votre badge lors de votre venue sur le lieu, la régularisation du tarif de votre place vous sera demandée afin de pouvoir participer à notre évènement.
 
-Si vous souhaitez pouvoir accéder au {$forum.titre} plusieurs solutions s'offrent à vous :
+Si vous souhaitez pouvoir accéder au {$forum.titre|default:'#FORUM_TITLE#'} plusieurs solutions s'offrent à vous :
 
 – Si vous êtes déjà adhérent mais que votre adhésion n'est pas à jour alors je vous invite à la mettre à jour via votre compte : http://afup.dev/pages/administration/index.php?page=membre_cotisation.
-– Soit vous payez la différence de 100€ entre le tarif AFUP et le tarif public par carte de crédit : https://afup.org/pages/event-payment/?ref=ins-#REF#&forum={$forum.id}.
+– Soit vous payez la différence de 100€ entre le tarif AFUP et le tarif public par carte de crédit : https://afup.org/pages/event-payment/?ref=ins-#REF#&forum={$forum.id|default:'#FORUM_ID#'}.
 – Soit vous adhérez personnellement à l'AFUP pour un montant de 25€ : https://afup.org/association/devenir-membre. N'oubliez pas de payer la cotisation une fois l'inscription effectuée afin de valider celle-ci.
 – Soit vous adhérez par le biais de votre entreprise à l'AFUP pour un montant de 100€ par tranche de 3 personnes : https://afup.org/association/devenir-membre.
 – Soit vous régularisez le matin même lors de votre venue, mais cette solution n'est évidemment pas à privilégier.
 
 Nous vous invitons à réagir rapidement à cet email et à prendre les dispositions nécessaires pour régulariser la situation avant de venir récupérer votre badge.
 
-En l'absence de régularisation, l'accès au {$forum.titre} vous serait refusé, et votre place perdue.
+En l'absence de régularisation, l'accès au {$forum.titre|default:'#FORUM_TITLE#'} vous serait refusé, et votre place perdue.
 
 Bien cordialement,
 

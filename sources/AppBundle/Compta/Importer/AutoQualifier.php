@@ -59,7 +59,7 @@ class AutoQualifier
         $operationQualified['montant_ht_soumis_tva_20'] = null;
 
         foreach ($this->rules as $rule) {
-            if (($operation->isCredit() === (bool) $rule['is_credit'] || is_null($rule['is_credit'])) && false !== strpos($operationQualified['description'], (string) $rule['condition'])) {
+            if (($operation->isCredit() === (bool) $rule['is_credit'] || is_null($rule['is_credit'])) && str_contains($operationQualified['description'], (string) $rule['condition'])) {
                 if (null !== $rule['event_id']) {
                     $operationQualified['evenement'] = $rule['event_id'];
                 }

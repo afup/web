@@ -11,7 +11,7 @@ $path = dirname(__FILE__, 3);
 $envFile = is_file($path . '/.env') ? $path . '/.env' : $path . '/.env.dist';
 $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 foreach ($lines as $line) {
-    if (strpos(trim($line), '#') === 0) {
+    if (str_starts_with(trim($line), '#')) {
         continue;
     }
 

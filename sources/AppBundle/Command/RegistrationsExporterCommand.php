@@ -36,13 +36,13 @@ class RegistrationsExporterCommand extends Command
     {
         if (null === ($event = $this->eventRepository->getNextEvent())) {
             $output->writeln('No event found');
-            return 0;
+            return Command::SUCCESS;
         }
 
         $file = new \SplFileObject($input->getArgument('file'), 'w+');
 
         $this->exportGenerator->export($event, $file);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
