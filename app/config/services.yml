@@ -710,6 +710,9 @@ services:
             - {url: 'mysql://%database_user%:%database_password%@%database_host%:%database_port%/%database_name%?charset=utf8mb4'}
             - '@Doctrine\DBAL\Configuration'
 
+    AppBundle\Doctrine\DoctrineConnection:
+        autowire: true
+
     Symfony\Component\Routing\Generator\UrlGeneratorInterface:
         alias: 'router'
         public: true
@@ -748,14 +751,9 @@ services:
             $apiAppPassword: '%bluesky.api.app_password%'
 
     AppBundle\VideoNotifier\HistoryRepository:
-        arguments:
-            $connection: '@Doctrine\DBAL\Connection'
+        autowire: true
 
     AppBundle\VideoNotifier\Engine:
+        autowire: true
         arguments:
             $transports: !tagged_iterator app.social_network.transport
-            $planningRepository: '@AppBundle\Event\Model\Repository\PlanningRepository'
-            $talkRepository: '@AppBundle\Event\Model\Repository\TalkRepository'
-            $speakerRepository: '@AppBundle\Event\Model\Repository\SpeakerRepository'
-            $historyRepository: '@AppBundle\VideoNotifier\HistoryRepository'
-            $logger: '@logger'
