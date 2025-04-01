@@ -48,7 +48,7 @@ class HtmlSitemapController extends AbstractController
 
         $pages = [];
         foreach ($leafs as $leaf) {
-            if (!$leaf['lien'] || 0 === strpos($leaf['lien'], 'http')) {
+            if (!$leaf['lien'] || str_starts_with($leaf['lien'], 'http')) {
                 continue;
             }
             $pages[] = [
