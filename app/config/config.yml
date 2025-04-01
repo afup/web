@@ -239,9 +239,6 @@ parameters:
                 compta_banque:
                     nom: 'Compte banques'
                     niveau: 'ROLE_ADMIN'
-                compta_synthese:
-                    nom: 'Synthese évènement'
-                    niveau: 'ROLE_ADMIN'
                 compta_conf_evenement:
                     nom: 'Configuration'
                     niveau: 'ROLE_ADMIN'
