@@ -245,9 +245,6 @@ parameters:
                 compta_balance:
                     nom: 'Balance comptable'
                     niveau: 'ROLE_ADMIN'
-                compta_bilan:
-                    nom: 'Bilan'
-                    niveau: 'ROLE_ADMIN'
                 compta_conf_evenement:
                     nom: 'Configuration'
                     niveau: 'ROLE_ADMIN'
