@@ -242,9 +242,6 @@ parameters:
                 compta_synthese:
                     nom: 'Synthese évènement'
                     niveau: 'ROLE_ADMIN'
-                compta_balance:
-                    nom: 'Balance comptable'
-                    niveau: 'ROLE_ADMIN'
                 compta_conf_evenement:
                     nom: 'Configuration'
                     niveau: 'ROLE_ADMIN'
