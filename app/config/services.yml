@@ -26,11 +26,21 @@ services:
               db_password: '%database_password%'
               lock_mode: !php/const Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler::LOCK_NONE
 
-
     AppBundle\Command\:
         resource: '../../sources/AppBundle/Command/*'
         autowire: true
         autoconfigure: true
+
+    AppBundle\Controller\:
+        resource: '../../sources/AppBundle/Controller/*'
+        autowire: true
+        autoconfigure: true
+
+    PlanetePHP\:
+        resource: '../../sources/PlanetePHP'
+        autowire: true
+        autoconfigure: true
+        public: false
 
     AppBundle\Clock\NativeClock: ~
     Psr\Clock\ClockInterface: '@AppBundle\Clock\NativeClock'
@@ -41,11 +51,6 @@ services:
         arguments:
             $mailchimp: '@app.mailchimp_api'
             $mailchimpMembersList: "%mailchimp_members_list%"
-
-    AppBundle\Controller\:
-        resource: '../../sources/AppBundle/Controller/*'
-        autowire: true
-        autoconfigure: true
 
     AppBundle\Controller\Admin\Site\AddRubriqueAction:
         autowire: true
@@ -714,12 +719,6 @@ services:
         alias: 'router'
         public: true
 
-    PlanetePHP\FeedRepository:
-        autowire: true
-
-    PlanetePHP\FeedArticleRepository:
-        autowire: true
-
     AppBundle\Github\GithubClient:
         arguments:
             $githubClient: '@http_client.github'
@@ -728,18 +727,6 @@ services:
         arguments:
             $httpClient: '@http_client.meetup'
             $antennesCollection: '@AppBundle\Antennes\AntennesCollection'
-
-    PlanetePHP\SymfonyFeedClient:
-        arguments:
-            $httpClient: '@http_client'
-
-    PlanetePHP\FeedCrawler:
-        arguments:
-            $clock: '@Psr\Clock\ClockInterface'
-            $httpClient: '@PlanetePHP\SymfonyFeedClient'
-            $feedRepository: '@PlanetePHP\FeedRepository'
-            $feedArticleRepository: '@PlanetePHP\FeedArticleRepository'
-            $logger: '@logger'
 
     AppBundle\SocialNetwork\Bluesky\BlueskyTransport:
         arguments:
