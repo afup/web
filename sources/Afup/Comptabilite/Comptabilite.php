@@ -639,55 +639,6 @@ SQL;
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-    /**
-     * @param string|int $idevenement
-     * @param string|int $idoperation
-     * @return array|false|mixed
-     */
-    public function obtenirSyntheseEvenement($idevenement, $idoperation = 1)
-    {
-        $requete = 'SELECT ';
-        $requete .= 'compta.*, ';
-        $requete .= 'compta_categorie.id, compta_categorie.categorie   ';
-        $requete .= 'FROM  ';
-        $requete .= 'compta,  ';
-        $requete .= 'compta_categorie ';
-        $requete .= 'WHERE  ';
-        $requete .= 'compta.idevenement = \'' . $idevenement . '\' ';
-        $requete .= 'AND compta.idoperation = \'' . $idoperation . '\' ';
-        $requete .= 'AND compta.idcategorie = compta_categorie.id ';
-        $requete .= 'ORDER BY ';
-        $requete .= 'compta_categorie.categorie, ';
-        $requete .= 'compta.date_ecriture ';
-
-        return $this->_bdd->obtenirTous($requete);
-    }
-
-
-    /**
-     * @param string|int $idevenement
-     * @param string|int $idoperation
-     * @return int|mixed
-     */
-    public function obtenirTotalSyntheseEvenement($idevenement, $idoperation = 1)
-    {
-        $requete = 'SELECT ';
-        $requete .= 'compta.montant ';
-        $requete .= 'FROM  ';
-        $requete .= 'compta  ';
-        $requete .= 'WHERE  ';
-        $requete .= 'compta.idevenement = \'' . $idevenement . '\' ';
-        $requete .= 'AND compta.idoperation = \'' . $idoperation . '\' ';
-
-        $data = $this->_bdd->obtenirTous($requete);
-
-        $total = 0;
-        foreach ($data as $row) {
-            $total += $row['montant'];
-        }
-        return $total;
-    }
-
     public function supprimerEcriture(string $id)
     {
         $requete = 'DELETE FROM compta WHERE id=' . $id;
