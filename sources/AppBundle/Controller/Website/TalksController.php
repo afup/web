@@ -49,8 +49,7 @@ class TalksController extends AbstractController
         $title = 'Historique des conférences de l\'AFUP';
         if (isset($request->get('fR')['speakers.label'][0])) {
             $title = 'Les vidéos de ' . $request->get('fR')['speakers.label'][0];
-        }
-        if (isset($request->get('fr')['event.title'][0])) {
+        } elseif (isset($request->get('fr')['event.title'][0])) {
             $title = $request->get('fR')['event.title'][0] . ' les vidéos';
         }
 
