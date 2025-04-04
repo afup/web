@@ -9,7 +9,11 @@ use Afup\Site\Corporate\Feuille;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Controller\Website\NewsController;
+use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Model\Article;
 use AppBundle\Site\Model\Repository\ArticleRepository;
@@ -44,6 +48,8 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
     public function populate(SitemapPopulateEvent $event): void
     {
         $this->registerTalksUrls($event->getUrlContainer());
+        $this->registerSpeakersTalksUrls($event->getUrlContainer());
+        $this->registerEventsTalksUrls($event->getUrlContainer());
         $this->registerNewsUrls($event->getUrlContainer());
         $this->registerMembers($event->getUrlContainer());
         $this->registerDefaultPages($event->getUrlContainer());
@@ -83,6 +89,41 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
         }
     }
 
+    public function registerSpeakersTalksUrls(UrlContainerInterface $urls): void
+    {
+        /** @var Speaker[] $speakers */
+        $speakers = $this->ting->get(SpeakerRepository::class)->getAll();
+        foreach ($speakers as $speaker) {
+            $url = new UrlConcrete(
+                $this->urlGenerator->generate(
+                    'talks_list',
+                    ['fR' => ['speakers.label' => [$speaker->getLabel()]]],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ),
+            );
+            $urls->addUrl($url,'talks');
+        }
+    }
+
+    public function registerEventsTalksUrls(UrlContainerInterface $urls): void
+    {
+        /** @var Event[] $events */
+        $events = $this->ting->get(EventRepository::class)->getAll();
+        foreach ($events as $event) {
+            $url = new UrlConcrete(
+                $this->urlGenerator->generate(
+                    'talks_list',
+                    ['fR' => ['event.title' => [$event->getTitle()]]],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ),
+                $event->getDateEnd(),
+                UrlConcrete::CHANGEFREQ_DAILY,
+                1
+            );
+            $urls->addUrl($url,'talks');
+        }
+    }
+
     public function registerNewsUrls(UrlContainerInterface $urls): void
     {
         $articleRepository = $this->ting->get(ArticleRepository::class);
@@ -98,7 +139,9 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                         ['code' => $article->getSlug(),],
                         UrlGeneratorInterface::ABSOLUTE_URL
                     ),
-                    $article->getPublishedAt()
+                    $article->getPublishedAt(),
+                    UrlConcrete::CHANGEFREQ_DAILY,
+                    1
                 ),
                 'news'
             );
