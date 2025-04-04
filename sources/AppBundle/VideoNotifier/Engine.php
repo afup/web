@@ -11,6 +11,7 @@ use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\SocialNetwork\Transport;
 use Exception;
+use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
 
 final class Engine
@@ -27,6 +28,7 @@ final class Engine
     private SpeakerRepository $speakerRepository;
     private HistoryRepository $historyRepository;
     private LoggerInterface $logger;
+    private ClockInterface $clock;
 
     /**
      * @param iterable<Transport> $transports
@@ -37,7 +39,8 @@ final class Engine
         TalkRepository $talkRepository,
         SpeakerRepository $speakerRepository,
         HistoryRepository $historyRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ClockInterface $clock
     ) {
         $this->transports = $transports;
         $this->planningRepository = $planningRepository;
@@ -45,6 +48,7 @@ final class Engine
         $this->speakerRepository = $speakerRepository;
         $this->historyRepository = $historyRepository;
         $this->logger = $logger;
+        $this->clock = $clock;
     }
 
     public function run(): ?HistoryEntry
@@ -101,7 +105,7 @@ final class Engine
     {
         $minimumEventDate = new \DateTime('-2 years');
 
-        $plannings = $this->planningRepository->findNonKeynotesSince($minimumEventDate);
+        $plannings = $this->planningRepository->findNonKeynotesBetween($minimumEventDate, $this->clock->now());
 
         $talkIds = [];
 

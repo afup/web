@@ -42,7 +42,7 @@ class PlanningRepository extends Repository implements MetadataInitializer
     /**
      * @return CollectionInterface<Planning>
      */
-    public function findNonKeynotesSince(\DateTime $since): CollectionInterface
+    public function findNonKeynotesBetween(\DateTimeInterface $since, \DateTimeInterface $until): CollectionInterface
     {
         /** @var SelectInterface $qb */
         $qb = $this->getQueryBuilder(self::QUERY_SELECT);
@@ -50,12 +50,15 @@ class PlanningRepository extends Repository implements MetadataInitializer
         $qb->from('afup_forum_planning')
             ->cols(['*'])
             ->where('keynote = 0')
-            ->where('debut >= :since');
+            ->where('debut >= :since')
+            ->where('debut < :until')
+        ;
 
         return $this
             ->getPreparedQuery($qb->getStatement())
             ->setParams([
                 'since' => $since->getTimestamp(),
+                'until' => $until->getTimestamp(),
             ])
             ->query($this->getCollection(new HydratorSingleObject()));
     }
