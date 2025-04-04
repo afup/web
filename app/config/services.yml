@@ -739,10 +739,6 @@ services:
             $connection: '@Doctrine\DBAL\Connection'
 
     AppBundle\VideoNotifier\Engine:
+        autowire: true
         arguments:
             $transports: !tagged_iterator app.social_network.transport
-            $planningRepository: '@AppBundle\Event\Model\Repository\PlanningRepository'
-            $talkRepository: '@AppBundle\Event\Model\Repository\TalkRepository'
-            $speakerRepository: '@AppBundle\Event\Model\Repository\SpeakerRepository'
-            $historyRepository: '@AppBundle\VideoNotifier\HistoryRepository'
-            $logger: '@logger'
