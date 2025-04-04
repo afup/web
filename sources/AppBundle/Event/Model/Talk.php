@@ -290,7 +290,7 @@ class Talk implements NotifyPropertyInterface
 
     public function hasYoutubeId(): bool
     {
-        return null !== $this->getYoutubeId();
+        return null !== $this->getYoutubeId() && '' !== $this->getYoutubeId();
     }
 
     public function getYoutubeUrl(): ?string
