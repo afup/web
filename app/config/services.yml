@@ -18,6 +18,9 @@ services:
         AppBundle\SocialNetwork\Transport:
             tags: [ 'app.social_network.transport' ]
 
+        CCMBenchmark\Ting\Repository\Repository:
+            tags: [ 'app.vendor.ting_repository' ]
+
     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
         public:    false
         arguments:
@@ -177,26 +180,6 @@ services:
         autowire: true
         autoconfigure: true
 
-    AppBundle\Event\Model\Repository\GithubUserRepository:
-        class: AppBundle\Event\Model\Repository\GithubUserRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\GithubUserRepository]
-
-    AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository:
-        class: AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository
-        factory: ['@ting', get]
-        arguments: [AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository]
-
-    AppBundle\Event\Model\Repository\RoomRepository:
-        class: AppBundle\Event\Model\Repository\RoomRepository
-        factory: ['@ting', get]
-        arguments: [AppBundle\Event\Model\Repository\RoomRepository]
-
-    AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository:
-        class: AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository
-        factory: ['@ting', get]
-        arguments: [AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository]
-
     AppBundle\Twig\TwigExtension:
         arguments: ['@AppBundle\Routing\LegacyRouter', "@Parsedown", '@AppBundle\Email\Parsedown', "%google_analytics_enabled%", "%google_analytics_id%"]
         tags:
@@ -223,11 +206,6 @@ services:
         arguments: [ "%kernel.default_locale%" ]
         tags:
             - { name: kernel.event_listener, event: kernel.request, priority: 100 }
-
-    AppBundle\Event\Model\Repository\SpeakerRepository:
-        class: AppBundle\Event\Model\Repository\SpeakerRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\SpeakerRepository]
 
     AppBundle\CFP\SpeakerFactory:
         arguments: ["@security.token_storage", '@AppBundle\Event\Model\Repository\SpeakerRepository']
@@ -259,42 +237,6 @@ services:
         class: Twig_Extensions_Extension_Intl
         tags:
             - { name: twig.extension }
-
-    AppBundle\Association\Model\Repository\UserRepository:
-        class: AppBundle\Association\Model\Repository\UserRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Association\Model\Repository\UserRepository]
-
-
-    AppBundle\Event\Model\Repository\TalkRepository:
-        class: AppBundle\Event\Model\Repository\TalkRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\TalkRepository]
-
-    AppBundle\Event\Model\Repository\TalkInvitationRepository:
-        class: AppBundle\Event\Model\Repository\TalkInvitationRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\TalkInvitationRepository]
-
-    AppBundle\Event\Model\Repository\TalkToSpeakersRepository:
-        class: AppBundle\Event\Model\Repository\TalkToSpeakersRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\TalkToSpeakersRepository]
-
-    AppBundle\Event\Model\Repository\VoteRepository:
-        class: AppBundle\Event\Model\Repository\VoteRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\VoteRepository]
-
-    AppBundle\Association\Model\Repository\CompanyMemberRepository:
-        class: AppBundle\Association\Model\Repository\CompanyMemberRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Association\Model\Repository\CompanyMemberRepository]
-
-    AppBundle\Event\Model\Repository\PlanningRepository:
-        class: AppBundle\Event\Model\Repository\PlanningRepository
-        factory: [ "@ting", get ]
-        arguments: [ AppBundle\Event\Model\Repository\PlanningRepository ]
 
     AppBundle\Security\LegacyAuthenticator:
         autowire: true
@@ -432,36 +374,6 @@ services:
     CCMBenchmark\Ting\UnitOfWork: '@ting.unitofwork'
     KnpU\OAuth2ClientBundle\Client\ClientRegistry: '@knpu.oauth2.registry'
 
-    AppBundle\Security\ActionThrottling\LogRepository:
-        class: AppBundle\Security\ActionThrottling\LogRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Security\ActionThrottling\LogRepository]
-
-    AppBundle\Event\Model\Repository\InvoiceRepository:
-        class: AppBundle\Event\Model\Repository\InvoiceRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\InvoiceRepository]
-
-    AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository:
-        class: AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository]
-
-    AppBundle\Association\Model\Repository\GeneralMeetingResponseRepository:
-        class: AppBundle\Association\Model\Repository\GeneralMeetingResponseRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Association\Model\Repository\GeneralMeetingResponseRepository]
-
-    AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository:
-        class: AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository]
-
-    AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository:
-        class: AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository]
-
     AppBundle\Security\ActionThrottling\ActionThrottling:
         autowire: true
 
@@ -471,72 +383,8 @@ services:
     AppBundle\Event\Model\InvoiceFactory:
         autowire: true
 
-    AppBundle\Event\Model\Repository\EventRepository:
-        class: AppBundle\Event\Model\Repository\EventRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\EventRepository]
-
-    AppBundle\Event\Model\Repository\EventCouponRepository:
-        class: AppBundle\Event\Model\Repository\EventCouponRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\EventCouponRepository]
-
     AppBundle\Event\Model\Repository\EventStatsRepository:
         autowire: true
-
-    AppBundle\Event\Model\Repository\BadgeRepository:
-        class: AppBundle\Event\Model\Repository\BadgeRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\BadgeRepository]
-
-    AppBundle\Event\Model\Repository\UserBadgeRepository:
-        class: AppBundle\Event\Model\Repository\UserBadgeRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\UserBadgeRepository]
-
-    AppBundle\Event\Model\Repository\SponsorTicketRepository:
-        class: AppBundle\Event\Model\Repository\SponsorTicketRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\SponsorTicketRepository]
-
-    AppBundle\Event\Model\Repository\TicketRepository:
-        class: AppBundle\Event\Model\Repository\TicketRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\TicketRepository]
-
-    AppBundle\Event\Model\Repository\TicketTypeRepository:
-        class: AppBundle\Event\Model\Repository\TicketTypeRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\TicketTypeRepository]
-
-    AppBundle\Event\Model\Repository\TicketEventTypeRepository:
-        class: AppBundle\Event\Model\Repository\TicketEventTypeRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\TicketEventTypeRepository]
-
-    AppBundle\Event\Model\Repository\TicketSpecialPriceRepository:
-        class: AppBundle\Event\Model\Repository\TicketSpecialPriceRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Event\Model\Repository\TicketSpecialPriceRepository]
-
-    AppBundle\Site\Model\Repository\RubriqueRepository:
-        class: AppBundle\Site\Model\Repository\RubriqueRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Site\Model\Repository\RubriqueRepository]
-
-
-
-
-    AppBundle\Site\Model\Repository\ArticleRepository:
-        class: AppBundle\Site\Model\Repository\ArticleRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\Site\Model\Repository\ArticleRepository]
-
-    AppBundle\TechLetter\Model\Repository\SendingRepository:
-        class: AppBundle\TechLetter\Model\Repository\SendingRepository
-        factory: ["@ting", get]
-        arguments: [AppBundle\TechLetter\Model\Repository\SendingRepository]
-
 
     AppBundle\Site\Form\RubriqueType:
         autowire: true
