@@ -4,33 +4,35 @@ declare(strict_types=1);
 
 namespace AppBundle\VideoNotifier;
 
+use AppBundle\Doctrine\DoctrineConnection;
 use AppBundle\Event\Model\Talk;
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Query\QueryBuilder;
 
 final class HistoryRepository
 {
-    private Connection $connection;
+    private DoctrineConnection $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(DoctrineConnection $connection)
     {
         $this->connection = $connection;
     }
 
     public function insert(HistoryEntry $entry): void
     {
-        $this->connection->createQueryBuilder()
-            ->insert('video_notifier_history')
-            ->values([
-                'talk_id' => '?',
-                'status_id_bluesky' => '?',
-                'status_id_mastodon' => '?',
-            ])
-            ->setParameters([
-                $entry->getTalkId(),
-                $entry->getStatusIdBluesky(),
-                $entry->getStatusIdMastodon(),
-            ])
-            ->execute();
+        $this->connection->statement(
+            fn (QueryBuilder $qb) => $qb
+                ->insert('video_notifier_history')
+                ->values([
+                    'talk_id' => '?',
+                    'status_id_bluesky' => '?',
+                    'status_id_mastodon' => '?',
+                ])
+                ->setParameters([
+                    $entry->getTalkId(),
+                    $entry->getStatusIdBluesky(),
+                    $entry->getStatusIdMastodon(),
+                ]),
+        );
     }
 
     /**
@@ -39,20 +41,21 @@ final class HistoryRepository
      */
     public function getNumberOfStatusesPerTalk(array $talks): array
     {
-        $rows = ($qb = $this->connection->createQueryBuilder())
-            ->from('video_notifier_history', 'h')
-            ->select('h.talk_id', 'COUNT(h.id) AS quantity')
-            ->where(
-                $qb->expr()->in('h.talk_id', array_map(fn (Talk $talk): ?int => $talk->getId(), $talks))
-            )
-            ->groupBy('h.talk_id')
-            ->execute()
-            ->fetchAllAssociative();
+        $results = $this->connection->mapMany(
+            CountResult::class,
+            fn (QueryBuilder $qb) => $qb
+                ->from('video_notifier_history', 'h')
+                ->select('h.talk_id', 'COUNT(h.id) AS quantity')
+                ->where(
+                    $qb->expr()->in('h.talk_id', array_map(fn (Talk $talk): ?int => $talk->getId(), $talks))
+                )
+                ->groupBy('h.talk_id')
+        );
 
         $map = [];
 
-        foreach ($rows as $row) {
-            $map[$row['talk_id']] = $row['quantity'];
+        foreach ($results as $result) {
+            $map[$result->talkId] = $result->quantity;
         }
 
         return $map;
