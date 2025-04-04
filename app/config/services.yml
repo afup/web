@@ -36,6 +36,18 @@ services:
         autowire: true
         autoconfigure: true
 
+    AppBundle\Antennes\:
+        resource: '../../sources/AppBundle/Antennes/'
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    AppBundle\Association\:
+        resource: '../../sources/AppBundle/Association/'
+        autowire: true
+        autoconfigure: true
+        public: false
+
     PlanetePHP\:
         resource: '../../sources/PlanetePHP'
         autowire: true
@@ -215,7 +227,7 @@ services:
         autowire: true
 
     AppBundle\Association\Form\HelpMessageExtension:
-        class: AppBundle\Association\Form\HelpMessageExtension
+        autowire: true
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
@@ -310,10 +322,6 @@ services:
     AppBundle\LegacyModelFactory:
         autowire: true
 
-
-    AppBundle\Association\CompanyMembership\SubscriptionManagement:
-        autowire: true
-
     AppBundle\Payment\PayboxFactory:
         autowire: true
         arguments: ["@router", "%paybox_domain_server%", "%paybox_secret_key%", "%paybox_site%", "%paybox_rang%", "%paybox_identifiant%"]
@@ -396,21 +404,6 @@ services:
 
     AppBundle\Email\Emails:
         arguments: ['@AppBundle\Email\Mailer\Mailer']
-
-    AppBundle\Association\CompanyMembership\InvitationMail:
-        autowire: true
-
-    AppBundle\Association\CompanyMembership\UserCompany:
-        autowire: true
-
-    AppBundle\Association\UserMembership\UserService:
-        autowire: true
-
-    AppBundle\Association\Factory\UserFactory:
-        autowire: true
-
-    AppBundle\Antennes\AntennesCollection:
-        autowire: true
 
     AppBundle\Mailchimp\EventEventSubscriber:
         arguments:
@@ -555,15 +548,6 @@ services:
         autowire: true
         arguments: ["%qr_code_salt%"]
 
-
-    AppBundle\Association\Form\UserEditType:
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\Association\Form\CompanyEditType:
-        autowire: true
-        autoconfigure: true
-
     AppBundle\Event\Form\TicketType:
         autowire: true
         tags:
@@ -664,15 +648,6 @@ services:
     AppBundle\Offices\OfficeFinder:
         arguments: ['@geocoder']
 
-    AppBundle\Association\UserMembership\StatisticsComputer:
-        autowire: true
-
-    AppBundle\Association\UserMembership\SeniorityComputer:
-        arguments: ['@Afup\Site\Association\Cotisations']
-
-    AppBundle\Association\UserMembership\BadgesComputer:
-        arguments: ['@AppBundle\Association\UserMembership\SeniorityComputer', '@AppBundle\Event\Model\Repository\EventRepository', '@AppBundle\Event\Model\Repository\UserBadgeRepository', '@AppBundle\Association\Model\Repository\GeneralMeetingResponseRepository']
-
     AppBundle\Event\Ticket\RegistrationsExportGenerator:
         arguments: ['@AppBundle\Offices\OfficeFinder', '@AppBundle\Association\UserMembership\SeniorityComputer', '@AppBundle\Event\Model\Repository\TicketRepository', '@AppBundle\Event\Model\Repository\InvoiceRepository', '@AppBundle\Association\Model\Repository\UserRepository']
 
@@ -688,9 +663,7 @@ services:
           - {name: form.type}
 
     AppBundle\Association\Form\UserBadgeType:
-        arguments:
-            - '@AppBundle\Event\Model\Repository\BadgeRepository'
-            - '@AppBundle\Event\Model\Repository\UserBadgeRepository'
+        autowire: true
         tags:
             - {name: form.type}
 
@@ -700,7 +673,7 @@ services:
             - { name: "kernel.event_subscriber", priority: 100 }
 
     AppBundle\Association\Form\ContactDetailsType:
-        arguments: ['@Afup\Site\Utils\Pays']
+        autowire: true
         tags: [form.type]
 
     Twig_Extensions_Extension_Text:
@@ -724,9 +697,9 @@ services:
             $githubClient: '@http_client.github'
 
     AppBundle\Indexation\Meetups\MeetupClient:
+        autowire: true
         arguments:
             $httpClient: '@http_client.meetup'
-            $antennesCollection: '@AppBundle\Antennes\AntennesCollection'
 
     AppBundle\SocialNetwork\Bluesky\BlueskyTransport:
         arguments:
