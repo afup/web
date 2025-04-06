@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use AppBundle\AppBundle;
+use AppBundle\DependencyInjection\TingRepositoryPass;
 use CCMBenchmark\TingBundle\TingBundle;
 use Ekino\NewRelicBundle\EkinoNewRelicBundle;
 use EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle;
@@ -16,6 +17,7 @@ use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Bundle\WebProfilerBundle\WebProfilerBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 
 class AppKernel extends Kernel
@@ -62,5 +64,10 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
+    }
+
+    protected function build(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new TingRepositoryPass());
     }
 }
