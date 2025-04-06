@@ -26,27 +26,23 @@ services:
               db_password: '%database_password%'
               lock_mode: !php/const Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler::LOCK_NONE
 
-    AppBundle\Command\:
-        resource: '../../sources/AppBundle/Command/*'
+    AppBundle\:
+        resource: '../../sources/AppBundle/'
         autowire: true
         autoconfigure: true
+        public: false
+
+    AppBundle\Command\:
+        resource: '../../sources/AppBundle/Command/'
+        autowire: true
+        autoconfigure: true
+        public: true
 
     AppBundle\Controller\:
-        resource: '../../sources/AppBundle/Controller/*'
+        resource: '../../sources/AppBundle/Controller/'
         autowire: true
         autoconfigure: true
-
-    AppBundle\Antennes\:
-        resource: '../../sources/AppBundle/Antennes/'
-        autowire: true
-        autoconfigure: true
-        public: false
-
-    AppBundle\Association\:
-        resource: '../../sources/AppBundle/Association/'
-        autowire: true
-        autoconfigure: true
-        public: false
+        public: true
 
     PlanetePHP\:
         resource: '../../sources/PlanetePHP'
@@ -54,8 +50,20 @@ services:
         autoconfigure: true
         public: false
 
-    AppBundle\Clock\NativeClock: ~
     Psr\Clock\ClockInterface: '@AppBundle\Clock\NativeClock'
+
+    ### Pages legacy - DEBUT
+
+    AppBundle\Event\Ticket\TicketTypeAvailability:
+        autowire: true
+
+    AppBundle\Event\Invoice\InvoiceService:
+        autowire: true
+
+    AppBundle\Event\Model\Repository\EventStatsRepository:
+        autowire: true
+
+    ### Pages legacy - FIN
 
     AppBundle\Command\UpdateMailchimpMembersCommand:
         autoconfigure: true
@@ -166,29 +174,6 @@ services:
         arguments:
             $backOfficePages: '%app.pages_backoffice%'
 
-    AppBundle\GeneralMeeting\GeneralMeetingRepository:
-        autowire: true
-
-    AppBundle\Security\MyGithubAuthenticator:
-        autowire: true
-
-    AppBundle\Security\TestGithubAuthenticator:
-        autowire: true
-
-    AppBundle\Indexation\Talks\Runner:
-        autowire: true
-
-    AppBundle\Event\Speaker\SpeakerPage:
-        autowire: true
-
-    AppBundle\Event\Form\EventSelectType:
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\Event\Form\SpeakerType:
-        autowire: true
-        autoconfigure: true
-
     AppBundle\Event\Model\Repository\GithubUserRepository:
         class: AppBundle\Event\Model\Repository\GithubUserRepository
         factory: ["@ting", get]
@@ -223,9 +208,6 @@ services:
         tags:
             -  { name: twig.extension }
 
-    AppBundle\Twig\ViewRenderer:
-        autowire: true
-
     AppBundle\Association\Form\HelpMessageExtension:
         autowire: true
         tags:
@@ -242,7 +224,9 @@ services:
         arguments: [AppBundle\Event\Model\Repository\SpeakerRepository]
 
     AppBundle\CFP\SpeakerFactory:
-        arguments: ["@security.token_storage", '@AppBundle\Event\Model\Repository\SpeakerRepository']
+        autowire: true
+        arguments:
+            $tokenStorage: '@security.token_storage'
 
     AppBundle\Security\TalkVoter:
         arguments: ['@AppBundle\Event\Model\Repository\SpeakerRepository']
@@ -252,20 +236,14 @@ services:
 
     AppBundle\CFP\PhotoStorage:
         arguments:
-          - "%kernel.project_dir%/../htdocs/uploads/speakers"
-          - "/uploads/speakers"
-          - "%kernel.project_dir%/../htdocs"
+            $basePath: "%kernel.project_dir%/../htdocs/uploads/speakers"
+            $publicPath: "/uploads/speakers"
+            $legacyBasePath: "%kernel.project_dir%/../htdocs"
 
     AppBundle\SpeakerInfos\SpeakersExpensesStorage:
         arguments:
             - "%kernel.project_dir%/../htdocs/uploads/speaker_expenses"
             - "/uploads/speaker_expenses"
-
-    AppBundle\Event\Form\SpeakerFormDataFactory:
-      autowire: true
-
-    AppBundle\Event\Invoice\InvoiceService:
-      autowire: true
 
     Twig_Extensions_Extension_Intl:
         class: Twig_Extensions_Extension_Intl
@@ -276,7 +254,6 @@ services:
         class: AppBundle\Association\Model\Repository\UserRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\UserRepository]
-
 
     AppBundle\Event\Model\Repository\TalkRepository:
         class: AppBundle\Event\Model\Repository\TalkRepository
@@ -308,19 +285,10 @@ services:
         factory: [ "@ting", get ]
         arguments: [ AppBundle\Event\Model\Repository\PlanningRepository ]
 
-    AppBundle\Security\LegacyAuthenticator:
-        autowire: true
-
-    AppBundle\Security\LegacyHashAuthenticator:
-        autowire: true
-
     AppBundle\Validator\Constraints\UniqueEntityValidator:
         autowire: true
         tags:
             - { name: validator.constraint_validator }
-
-    AppBundle\LegacyModelFactory:
-        autowire: true
 
     AppBundle\Payment\PayboxFactory:
         autowire: true
@@ -333,21 +301,12 @@ services:
         autowire: true
         arguments: ["%slack_membre_token%", "%slack_api_url%"]
 
-    AppBundle\Slack\UsersChecker:
-        autowire: true
-
-    AppBundle\Slack\MessageFactory:
-        autowire: true
-
     AppBundle\Notifier\SlackNotifier:
         arguments:
             $postUrl: "%slack_url%"
             $messageFactory: '@AppBundle\Slack\MessageFactory'
             $serializer: '@jms_serializer.serializer'
             $httpClient: '@http_client'
-
-    AppBundle\Routing\LegacyRouter:
-        autowire: true
 
     Algolia\AlgoliaSearch\SearchClient:
         factory: [ Algolia\AlgoliaSearch\SearchClient, create ]
@@ -394,16 +353,10 @@ services:
     Afup\Site\Utils\Configuration:
         autowire: true
 
-    AppBundle\Email\Mailer\Mailer:
-        autowire: true
-
     AppBundle\Email\Mailer\Adapter\MailerAdapter:
       class: AppBundle\Email\Mailer\Adapter\PhpMailerAdapter
       factory: [AppBundle\Email\Mailer\Adapter\PhpMailerAdapter, createFromConfiguration]
       arguments: ['@Afup\Site\Utils\Configuration']
-
-    AppBundle\Email\Emails:
-        arguments: ['@AppBundle\Email\Mailer\Mailer']
 
     AppBundle\Mailchimp\EventEventSubscriber:
         arguments:
@@ -411,15 +364,6 @@ services:
             - "%mailchimp_members_list%"
         tags:
           - { name: kernel.event_listener, event: user.disabled, method: onUserDisabled }
-
-    AppBundle\Model\CollectionFilter:
-        autowire: true
-
-    AppBundle\Event\Talk\InvitationFormHandler:
-      autowire: true
-
-    AppBundle\Event\Talk\TalkFormHandler:
-      autowire: true
 
     CCMBenchmark\TingBundle\Repository\RepositoryFactory: '@ting'
     CCMBenchmark\Ting\UnitOfWork: '@ting.unitofwork'
@@ -455,15 +399,6 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository]
 
-    AppBundle\Security\ActionThrottling\ActionThrottling:
-        autowire: true
-
-    AppBundle\Event\Model\TicketFactory:
-        autowire: true
-
-    AppBundle\Event\Model\InvoiceFactory:
-        autowire: true
-
     AppBundle\Event\Model\Repository\EventRepository:
         class: AppBundle\Event\Model\Repository\EventRepository
         factory: ["@ting", get]
@@ -473,9 +408,6 @@ services:
         class: AppBundle\Event\Model\Repository\EventCouponRepository
         factory: ["@ting", get]
         arguments: [AppBundle\Event\Model\Repository\EventCouponRepository]
-
-    AppBundle\Event\Model\Repository\EventStatsRepository:
-        autowire: true
 
     AppBundle\Event\Model\Repository\BadgeRepository:
         class: AppBundle\Event\Model\Repository\BadgeRepository
@@ -517,9 +449,6 @@ services:
         factory: ["@ting", get]
         arguments: [AppBundle\Site\Model\Repository\RubriqueRepository]
 
-
-
-
     AppBundle\Site\Model\Repository\ArticleRepository:
         class: AppBundle\Site\Model\Repository\ArticleRepository
         factory: ["@ting", get]
@@ -529,20 +458,6 @@ services:
         class: AppBundle\TechLetter\Model\Repository\SendingRepository
         factory: ["@ting", get]
         arguments: [AppBundle\TechLetter\Model\Repository\SendingRepository]
-
-
-    AppBundle\Site\Form\RubriqueType:
-        autowire: true
-        autoconfigure: true
-
-    AppBundle\Event\Ticket\SponsorTicketHelper:
-        autowire: true
-
-    AppBundle\Event\Ticket\SponsorTokenMail:
-        autowire: true
-
-    AppBundle\Event\Ticket\TicketTypeAvailability:
-        autowire: true
 
     AppBundle\Event\Ticket\QrCodeGenerator:
         autowire: true
@@ -557,10 +472,6 @@ services:
         autowire: true
         tags:
           - {name: form.type}
-
-    AppBundle\Planete\FeedFormType:
-        autowire: true
-        autoconfigure: true
 
     Afup\Site\Forum\AppelConferencier:
         class: Afup\Site\Forum\AppelConferencier
@@ -618,23 +529,8 @@ services:
         tags:
           - { name: validator.constraint_validator }
 
-    AppBundle\Event\Ticket\PurchaseTypeFactory:
-        autowire: true
-
-    AppBundle\Event\Sponsorship\SponsorshipLeadMail:
-        arguments: ['@AppBundle\Email\Mailer\Mailer', "@translator", "@logger"]
-
-    AppBundle\Event\AnonymousExport:
-        autowire: true
-
     Parsedown:
         class: Parsedown
-        autowire: true
-
-    AppBundle\Email\Parsedown:
-        autowire: true
-
-    AppBundle\Event\JsonLd:
         autowire: true
 
     geocoder:
@@ -650,12 +546,6 @@ services:
 
     AppBundle\Event\Ticket\RegistrationsExportGenerator:
         arguments: ['@AppBundle\Offices\OfficeFinder', '@AppBundle\Association\UserMembership\SeniorityComputer', '@AppBundle\Event\Model\Repository\TicketRepository', '@AppBundle\Event\Model\Repository\InvoiceRepository', '@AppBundle\Association\Model\Repository\UserRepository']
-
-    AppBundle\Event\Talk\ExportGenerator:
-        arguments: ['@AppBundle\Event\Model\Repository\TalkRepository']
-
-    AppBundle\Event\Speaker\ExportGenerator:
-        arguments: ['@AppBundle\Event\Model\Repository\TalkRepository']
 
     AppBundle\SpeakerInfos\Form\HotelReservationType:
         arguments: ["@translator"]
@@ -706,10 +596,6 @@ services:
             $httpClient: '@http_client.bluesky'
             $apiIdentifier: '%bluesky.api.identifier%'
             $apiAppPassword: '%bluesky.api.app_password%'
-
-    AppBundle\VideoNotifier\HistoryRepository:
-        arguments:
-            $connection: '@Doctrine\DBAL\Connection'
 
     AppBundle\VideoNotifier\Engine:
         autowire: true
