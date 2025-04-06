@@ -42,7 +42,6 @@ class Base_De_Donnees
         if ($this->link === null) {
             $this->link = mysqli_connect($this->config['host'], $this->config['user'], $this->config['password'], null, (int) $this->config['port']) or die('Connexion à la base de données impossible');
             mysqli_set_charset($this->link, "utf8mb4");
-            mysqli_query($this->link, "SET time_zone = '" . getenv('DATABASE_TIMEZONE') . "'");
             $this->selectionnerBase($this->config['database']);
         }
         return $this->link;

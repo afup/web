@@ -368,10 +368,6 @@ ting:
                 user:     "%database_user%"
                 password: "%database_password%"
 
-    databases_options:
-        "%database_name%":
-            timezone: "%database_timezone%"
-
     repositories:
         event:
             namespace : AppBundle\Event\Model\Repository
