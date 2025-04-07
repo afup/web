@@ -13,58 +13,36 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
 {
     use NotifyProperty;
 
-    /**
-     * @var int
-     */
-    private $id;
+    private ?int $id = null;
 
-    /**
-     * @var int
-     */
-    private $githubId;
+    private ?int $githubId = null;
 
-    /**
-     * @var string
-     */
-    private $login;
+    private string $login = '';
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name = '';
 
-    /**
-     * @var string
-     */
-    private $company;
+    private ?string $company = null;
 
-    /**
-     * @var string
-     */
-    private $profileUrl;
+    private string $profileUrl = '';
 
-    /**
-     * @var string
-     */
-    private $avatarUrl;
+    private string $avatarUrl = '';
 
-    /**
-     * @var bool
-     */
-    private $afupCrew = false;
+    private bool $afupCrew = false;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function __toString()
+    {
+        return $this->getLabel();
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getLabel()
+    public function getLabel(): string
     {
         $label = $this->login;
-        if (null !== $this->name) {
+        if ($this->name) {
             $label .= " ({$this->name})";
         }
 
@@ -84,145 +62,97 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
         return $githubUser;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getGithubId()
+    public function getGithubId(): ?int
     {
         return $this->githubId;
     }
 
-    /**
-     * @param int $githubId
-     */
-    public function setGithubId($githubId): self
+    public function setGithubId(int $githubId): self
     {
         $this->propertyChanged('githubId', $this->githubId, $githubId);
         $this->githubId = $githubId;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getLogin()
+    public function getLogin(): string
     {
         return $this->login;
     }
 
-    /**
-     * @param string $login
-     */
-    public function setLogin($login): self
+    public function setLogin(string $login): self
     {
         $this->propertyChanged('login', $this->login, $login);
         $this->login = $login;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName($name): self
+    public function setName(string $name): self
     {
         $this->propertyChanged('name', $this->name, $name);
         $this->name = $name;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getCompany()
+    public function getCompany(): ?string
     {
         return $this->company;
     }
 
-    /**
-     * @param string $company
-     */
-    public function setCompany($company): self
+    public function setCompany(?string $company): self
     {
         $this->propertyChanged('company', $this->company, $company);
         $this->company = $company;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getProfileUrl()
+    public function getProfileUrl(): string
     {
         return $this->profileUrl;
     }
 
-    /**
-     * @param string $profileUrl
-     */
-    public function setProfileUrl($profileUrl): self
+    public function setProfileUrl(string $profileUrl): self
     {
         $this->propertyChanged('profileUrl', $this->profileUrl, $profileUrl);
         $this->profileUrl = $profileUrl;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getAvatarUrl()
+    public function getAvatarUrl(): string
     {
         return $this->avatarUrl;
     }
 
-    /**
-     * @param string $avatarUrl
-     */
-    public function setAvatarUrl($avatarUrl): self
+    public function setAvatarUrl(string $avatarUrl): self
     {
         $this->propertyChanged('avatarUrl', $this->avatarUrl, $avatarUrl);
         $this->avatarUrl = $avatarUrl;
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getAfupCrew()
+    public function getAfupCrew(): bool
     {
         return $this->afupCrew;
     }
 
-    /**
-     * @param boolean $afupCrew
-     */
-    public function setAfupCrew($afupCrew): self
+    public function setAfupCrew(bool $afupCrew): self
     {
         $this->afupCrew = $afupCrew;
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getRoles()
+    public function getRoles(): array
     {
         $roles = ['ROLE_GITHUB'];
         if ($this->afupCrew === true) {
@@ -231,66 +161,37 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
         return $roles;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return null;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->getLogin();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function eraseCredentials(): void
     {
     }
-    /***************
-     * Serializable
-     **************/
 
-
-    /**
-     * @inheritDoc
-     */
-    public function serialize()
+    public function serialize(): ?string
     {
         return serialize(['id' => $this->id]);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function unserialize($serialized): void
     {
         $user = unserialize($serialized);
         $this->id = $user['id'];
     }
 
-    /***************
-     * EquatableInterface
-     ***************/
-
-    /**
-     * @inheritDoc
-     */
-    public function isEqualTo(UserInterface $user)
+    public function isEqualTo(UserInterface $user): bool
     {
         /**
          * @var self $user

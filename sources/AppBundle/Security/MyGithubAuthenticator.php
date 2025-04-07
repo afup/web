@@ -44,9 +44,8 @@ class MyGithubAuthenticator extends SocialAuthenticator
         $githubUser = $this->getGithubClient()
             ->fetchUserFromToken($credentials);
 
-        // 1) have they logged in with Github before? Easy!
+        // 1) have they logged in with GitHub before? Easy!
         $user = $this->githubUserRepository->getOneBy(['githubId' => $githubUser->getId()]);
-
         if ($user === null) {
             $user = new GithubUser();
         }
@@ -72,33 +71,21 @@ class MyGithubAuthenticator extends SocialAuthenticator
             ->getClient('github_main');
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): JsonResponse
     {
         $data = [
             'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
-
-            // or to translate this message
-            // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
         ];
 
         return new JsonResponse($data, Response::HTTP_FORBIDDEN);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
     {
         return new RedirectResponse($request->getSession()->get('_security.github_secured_area.target_path'));
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, AuthenticationException $authException = null): RedirectResponse
     {
         return new RedirectResponse($this->router->generate('connection_github'));
     }
