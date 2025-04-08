@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Form;
 
+use AppBundle\Event\Form\Support\EventHelper;
 use AppBundle\Event\Model\Event;
 use CCMBenchmark\Ting\Repository\Collection;
 use Symfony\Component\Form\AbstractType;
@@ -14,6 +15,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EventCompareSelectType extends AbstractType
 {
+    private EventHelper $eventHelper;
+
+    public function __construct()
+    {
+        $this->eventHelper = new EventHelper();
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $eventId = $builder->getData()['event_id'];
@@ -21,29 +29,20 @@ class EventCompareSelectType extends AbstractType
         $builder
             ->add('event_id', ChoiceType::class, [
                 'choices' => $choices,
-                'group_by' => static fn ($choice, $key): string => self::groupBy($key),
+                'group_by' => fn ($choice, string $key): string => $this->eventHelper->groupByYear($key),
             ])
             ->add('compared_event_id', ChoiceType::class, [
                 'choices' => $choices,
-                'choice_attr' => function ($choice, $key, $value) use ($eventId) {
+                'choice_attr' => function ($choice) use ($eventId) {
                     if ($choice === $eventId) {
                         return ['disabled' => true];
                     }
 
                     return [];
                 },
-                'group_by' => static fn ($choice, $key): string => self::groupBy($key),
+                'group_by' => fn ($choice, string $key): string => $this->eventHelper->groupByYear($key),
             ])
             ->setMethod(Request::METHOD_GET);
-    }
-
-    private static function groupBy($key): string
-    {
-        if (preg_match('/\d{4}/', $key, $matches)) {
-            return $matches[0];
-        }
-
-        return '';
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -63,19 +62,21 @@ class EventCompareSelectType extends AbstractType
     }
 
     /**
-     * @param Collection<Event> $events
+     * @param Collection<Event> $eventCollection
      * @return array<string,int>
      */
-    private function buildChoices(Collection $events): array
+    private function buildChoices(Collection $eventCollection): array
     {
-        /** @var array<Event> $data */
-        $data = iterator_to_array($events);
-        usort($data, static fn (Event $a, Event $b): bool => $a->getDateStart() <= $b->getDateStart());
+        $events = $this->eventHelper->sortEventsByStartDate(
+            iterator_to_array($eventCollection),
+        );
 
         $choices = [];
-        foreach ($data as $event) {
+
+        foreach ($events as $event) {
             $choices[$event->getTitle()] = $event->getId();
         }
+
         return $choices;
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Form;
 
+use AppBundle\Event\Form\Support\EventHelper;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use Symfony\Component\Form\AbstractType;
@@ -16,10 +17,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class EventSelectType extends AbstractType
 {
     private EventRepository $eventRepository;
+    private EventHelper $eventHelper;
 
     public function __construct(EventRepository $eventRepository)
     {
         $this->eventRepository = $eventRepository;
+        $this->eventHelper = new EventHelper();
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -30,7 +33,10 @@ class EventSelectType extends AbstractType
                     'choice_label' => 'title',
                     'choice_value' => 'id',
                     'data' => $options['data'] ?? null,
-                    'choices' => $this->eventRepository->getAll()
+                    'choices' => $this->eventHelper->sortEventsByStartDate(
+                        iterator_to_array($this->eventRepository->getAll()),
+                    ),
+                    'group_by' => fn (Event $choice): string => $this->eventHelper->groupByYear($choice),
                 ]
             )
             ->setMethod(Request::METHOD_GET)
