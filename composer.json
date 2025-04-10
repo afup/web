@@ -50,7 +50,6 @@
     "symfony/lock": "^5.4",
     "symfony/mime": "^5.4",
     "symfony/monolog-bundle": "^3.1",
-    "symfony/polyfill-php80": "^1.31",
     "symfony/security-bundle": "^5.4",
     "symfony/string": "^5.4",
     "symfony/translation": "^5.4",

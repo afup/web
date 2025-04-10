@@ -14,7 +14,7 @@
 
         <div class="ui green segment">
             <form method="GET" name="forum">
-                <input type="hidden" name="compte" value="{$smarty.get.compte}" />
+                <input type="hidden" name="compte" value="{$smarty.get.compte|default:''}" />
                 <input type="hidden" name="page" value="compta_banque" />
                 <div class="ui form">
                     <div class="inline fields">

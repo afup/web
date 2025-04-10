@@ -44,7 +44,7 @@ if (false !== $ccReverseProxyIps) {
 
 Request::setTrustedProxies(
     $proxies,
-    Request::HEADER_X_FORWARDED_ALL
+    Request::HEADER_X_FORWARDED_FOR
 );
 
 $response = $kernel->handle($request);

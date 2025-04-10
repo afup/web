@@ -80,79 +80,108 @@ services:
 
     AppBundle\Controller\Admin\Site\AddRubriqueAction:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments :
             $storageDir: '%kernel.project_dir%/../htdocs/templates/site/images'
 
     AppBundle\Controller\Admin\Site\EditRubriqueAction:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments :
             $storageDir: '%kernel.project_dir%/../htdocs/templates/site/images'
 
     AppBundle\Controller\Admin\Members\BadgeNewAction:
         autowire: true
+        autoconfigure: true
         arguments:
             $storageDir: '%app.badge_dir%'
 
     AppBundle\Controller\Website\BadgeController:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments:
             $storageDir: '%app.badge_dir%'
 
     AppBundle\Controller\Website\HomeController:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments:
             $homeAlgoliaEnabled: '%home_algolia_enabled%'
 
     AppBundle\Controller\Website\MeetupsController:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments:
             $algoliaAppId: '%algolia_app_id%'
             $algoliaFrontendApikey: '%algolia_frontend_api_key%'
 
     AppBundle\Controller\Website\CompanyPublicProfileController:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments:
             $storageDir: '%app.members_logo_dir%'
 
     AppBundle\Controller\Website\Member\CompanyPublicProfileController:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments:
             $storageDir: '%app.members_logo_dir%'
 
     AppBundle\Controller\Website\MemberShipController:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments:
             $storageDir: '%app.general_meetings_dir%'
 
     AppBundle\Controller\Website\NewsController:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments:
             $projectDir: '%kernel.project_dir%'
 
     AppBundle\Controller\Website\NewsletterController:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments:
             $mailchimp: '@app.mailchimp_api'
             $mailchimpSubscribersList: '%mailchimp_subscribers_list%'
 
     AppBundle\Controller\Website\StaticController:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments:
             $superAperoCsvUrl: '%super_apero_csv_url%'
 
     AppBundle\Controller\Website\TalksController:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments:
             $algoliaAppId: '%algolia_app_id%'
             $algoliaFrontendApikey: '%algolia_frontend_api_key%'
 
     AppBundle\Controller\Website\TechletterController:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments:
             $mailchimpTechletterWebhookKey: '%mailchimp_techletter_webhook_key%'
 
     AppBundle\Controller\Website\TechnoWatchController:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments:
             $technoWatchCalendarKey: '%techno_watch_calendar_key%'
             $technoWatchCalendarUrl: '%techno_watch_calendar_url%'
@@ -164,6 +193,8 @@ services:
 
     AppBundle\Controller\Admin\TechLetter\TechLetterGenerateController:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments:
             $mailchimp: '@app.mailchimp_techletter_api'
             $techletterTestEmailAddress: '%techletter_test_email_address%'
