@@ -87,7 +87,7 @@ class EventRepository extends Repository implements MetadataInitializer
     public function getList($id = null)
     {
         $sql = <<<ENDSQL
-SELECT f.id, f.titre, f.path, f.nb_places, f.date_debut, f.date_fin, f.date_fin_appel_conferencier, f.date_fin_vente, IF(count(s.session_id) + count(i.id)>0, 0, 1) as est_supprimable
+SELECT f.id, f.titre, f.path, f.nb_places, f.date_debut, f.date_fin, f.date_fin_appel_conferencier, f.date_fin_vente, f.archived_at, IF(count(s.session_id) + count(i.id)>0, 0, 1) as est_supprimable
 FROM afup_forum f
 LEFT JOIN afup_sessions s ON (f.id = s.id_forum)
 LEFT JOIN afup_inscription_forum i ON (f.id = i.id_forum)
@@ -205,6 +205,13 @@ SQL;
     public function getByPath($path)
     {
         return $this->getBy(['path' => $path])->first();
+    }
+
+    public function getAllActive(): CollectionInterface
+    {
+        $query = $this->getQuery('SELECT * FROM afup_forum WHERE archived_at IS NULL');
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])
@@ -388,6 +395,11 @@ SQL;
                 'fieldName' => 'transportInformationEnabled',
                 'type' => 'bool',
                 'serializer' => Boolean::class
+            ])
+            ->addField([
+                'columnName' => 'archived_at',
+                'fieldName' => 'archivedAt',
+                'type' => 'datetime',
             ])
         ;
 

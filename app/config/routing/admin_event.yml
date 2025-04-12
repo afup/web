@@ -89,3 +89,15 @@ admin_event_badges:
 admin_event_previous_registrations:
   path: /previous_registrations
   defaults: {_controller: AppBundle\Controller\Admin\Event\PreviousRegistrationsAction }
+
+admin_event_archive:
+  path: /archive/{id}
+  defaults: { _controller: AppBundle\Controller\Admin\Event\ArchiveAction }
+  requirements:
+    id: \d+
+
+admin_event_restore:
+  path: /restore/{id}
+  defaults: { _controller: AppBundle\Controller\Admin\Event\RestoreAction }
+  requirements:
+    id: \d+

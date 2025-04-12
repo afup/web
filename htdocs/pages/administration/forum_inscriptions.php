@@ -121,7 +121,7 @@ if ($action == 'lister') {
         ],
     ]);
 
-    $smarty->assign('forums', $forum->obtenirListe());
+    $smarty->assign('forums', $forum->obtenirListActive());
     $smarty->assign('inscriptions', $forum_inscriptions->obtenirListe($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre));
     $smarty->assign('finForum', (new \DateTime($forumData['date_fin']))->format('U'));
     $smarty->assign('now', (new \DateTime())->format('U'));

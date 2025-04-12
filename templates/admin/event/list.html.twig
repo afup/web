@@ -32,9 +32,11 @@
         </thead>
         <tbody>
         {% for event in events %}
-            <tr>
+            <tr class="{% if event.archived_at %}warning{% endif %}">
                 <td>
-                    <strong>{{ event.titre }}</strong>
+                    <strong {% if event.archived_at %}data-tooltip="Archivé depuis le {{ event.archived_at|date("d/m/Y") }}" data-position="top left"{% endif %}>
+                        {{ event.titre }}
+                    </strong>
                 </td>
                 <td>{{ event.path }}</td>
                 <td class="right aligned">{{ event.nb_places }}</td>
