@@ -2,6 +2,17 @@
 
 {% block content %}
     <h2>Modifier un évènement</h2>
+
+    {% if event.archivedAt %}
+        <div class="ui warning message">
+            <div class="header">
+                Cet évènement est archivé depuis le {{ event.archivedAt|date("d/m/Y") }}
+            </div>
+
+            Les données sont encore là, mais il n'est plus affiché sur les autres pages de la section Évènements.
+        </div>
+    {% endif %}
+
     <div class="ui menu">
         <a href="{{ path('admin_event_send_test_mail_inscription', {id: event.id}) }}" class="item">
             <i class=" icon mail"></i>
@@ -18,10 +29,25 @@
                 <a class="item" target="_blank" href="{{ path('openfeedback_json', {eventSlug: event.path}) }}">Export vers Openfeedback</a>
             </div>
         </div>
+
+        <div class="right menu">
+            {% if event.archivedAt %}
+                <a href="{{ path('admin_event_restore', {id: event.id}) }}" class="item">
+                    <div data-tooltip="Restaurer un évènement l'affiche à nouveau dans le sélecteur des différentes pages" data-position="bottom right">
+                        <i class="icon archive"></i>
+                        Restaurer cet évènement
+                    </div>
+                </a>
+            {% else %}
+                <a href="{{ path('admin_event_archive', {id: event.id}) }}" class="item">
+                    <div data-tooltip="Archiver un évènement le masque dans le sélecteur des différentes pages" data-position="bottom right">
+                        <i class="icon archive"></i>
+                        Archiver cet évènement
+                    </div>
+                </a>
+            {% endif %}
+        </div>
     </div>
 
     {% include 'admin/event/form.html.twig' %}
 {% endblock %}
-
-
-
