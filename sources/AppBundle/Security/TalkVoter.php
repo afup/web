@@ -23,7 +23,7 @@ class TalkVoter extends Voter
     /**
      * @inheritDoc
      */
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         if ($attribute !== 'edit' || !$subject instanceof Talk) {
             return false;
@@ -32,10 +32,7 @@ class TalkVoter extends Voter
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         if (!$user instanceof GithubUser) {

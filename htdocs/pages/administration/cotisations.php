@@ -5,10 +5,7 @@ declare(strict_types=1);
 // Impossible to access the file itself
 use Afup\Site\Association\Cotisations;
 use Afup\Site\Utils\Logs;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
-use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Controller\LegacyController;
-use AppBundle\Email\Mailer\Mailer;
 use Assert\Assertion;
 
 /** @var LegacyController $this */
@@ -17,8 +14,9 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$userRepository = $this->get(UserRepository::class);
-$companyMemberRepository = $this->get(CompanyMemberRepository::class);
+$userRepository = $this->userRepository;
+$companyMemberRepository = $this->companyMemberRepository;
+$mailer = $this->mailer;
 
 $action = verifierAction(['lister', 'ajouter', 'modifier', 'supprimer', 'telecharger_facture', 'envoyer_facture']);
 $smarty->assign('action', $action);
@@ -49,7 +47,7 @@ if ($action == 'lister') {
 } elseif ($action == 'telecharger_facture') {
     $cotisations->genererFacture($_GET['id']);
 } elseif ($action == 'envoyer_facture') {
-    if ($cotisations->envoyerFacture($_GET['id'], $this->get(Mailer::class), $userRepository)) {
+    if ($cotisations->envoyerFacture($_GET['id'], $mailer, $userRepository)) {
         Logs::log('Envoi par email de la facture pour la cotisation n°' . $_GET['id']);
         afficherMessage('La facture a été envoyée', 'index.php?page=cotisations&action=lister&type_personne=' . $_GET['type_personne'] . '&id_personne=' . $_GET['id_personne']);
     } else {
