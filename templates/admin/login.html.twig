@@ -7,11 +7,11 @@
 {% block page_content %}
 
     <div class="afup-form afup-form--miniform">
-        <form method="post" onsubmit="return soumettreUneSeuleFois(this);">
-            {% if error is not null %}<p class="erreur">{{ error }}</p>{% endif %}
-
+        <form method="post">
             <fieldset>
                 <h1>Connexion</h1>
+                {% if error is not null %}<div class="flash flash-error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>{% endif %}
+
                 <div class="afup-form-container">
                     <div>
                         <label for="utilisateur">Email ou nom d'utilisateur</label>
@@ -30,6 +30,7 @@
                     </div>
                 </div>
                 <input  type="hidden" name="connexion" value="1" />
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
             </fieldset>
 
             {% if target_path is not null %}

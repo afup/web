@@ -32,7 +32,7 @@ class GithubUserRepository extends Repository implements MetadataInitializer, Us
             ->addField([
                 'columnName' => 'id',
                 'fieldName' => 'id',
-                'primary'       => true,
+                'primary' => true,
                 'autoincrement' => true,
                 'type' => 'int'
             ])
@@ -71,8 +71,7 @@ class GithubUserRepository extends Repository implements MetadataInitializer, Us
                 'fieldName' => 'afupCrew',
                 'type' => 'bool',
                 'serializer' => Boolean::class
-            ])
-        ;
+            ]);
 
         return $metadata;
     }
@@ -90,7 +89,12 @@ class GithubUserRepository extends Repository implements MetadataInitializer, Us
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
-    public function loadUserByUsername(string $username): UserInterface
+    public function loadUserByIdentifier(string $identifier): GithubUser
+    {
+        return $this->loadUserByUsername($identifier);
+    }
+
+    public function loadUserByUsername(string $username): GithubUser
     {
         $user = $this->getOneBy(['login' => $username]);
         if ($user === null) {

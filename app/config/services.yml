@@ -13,6 +13,8 @@ services:
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
     _defaults:
         public: true
+        bind:
+            $formLoginAuthenticator: '@security.authenticator.form_login.legacy_secured_area'
 
     _instanceof:
         AppBundle\SocialNetwork\Transport:
@@ -244,6 +246,11 @@ services:
         arguments: ['@AppBundle\Event\Model\Repository\SpeakerRepository']
         tags:
           - { name: security.voter }
+        public: false
+
+    AppBundle\Security\LegacyHasher:
+        autowire: true
+        autoconfigure: true
         public: false
 
     AppBundle\CFP\PhotoStorage:

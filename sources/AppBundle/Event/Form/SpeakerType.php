@@ -92,9 +92,12 @@ class SpeakerType extends AbstractType
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent): void {
             $speaker = $formEvent->getData();
-            $user = $this->tokenStorage->getToken()->getUser();
+            $user = null;
+            if ($this->tokenStorage->getToken() instanceof TokenStorageInterface) {
+                $user = $this->tokenStorage->getToken()->getUser();
+            }
 
-            if ($speaker instanceof Speaker && $speaker->getId() === null && $user instanceof GithubUser) {
+            if ($user instanceof GithubUser && $speaker instanceof Speaker && $speaker->getId() === null) {
                 $previousSpeakerInfos = $this->speakerRepository->getFromLastEventAndUserId($speaker->getEventId(), $user->getId());
                 if ($previousSpeakerInfos instanceof Speaker) {
                     $speaker->setCivility($previousSpeakerInfos->getCivility());
