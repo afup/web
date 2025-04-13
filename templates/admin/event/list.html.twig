@@ -53,7 +53,7 @@
                         <i class="pencil alernate icon"></i>
                     </a>
 
-                    {% if  event.est_supprimable == '1' %}
+                    {% if event.est_supprimable %}
                         <a href="{{ path('admin_event_delete', {'id': event.id, 'token': token_delete}) }}"
                            data-position="left center"
                            data-tooltip="Supprimer le forum {{ event.titre }}"
