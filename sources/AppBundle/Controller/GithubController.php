@@ -7,9 +7,7 @@ namespace AppBundle\Controller;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 class GithubController extends AbstractController
 {
@@ -20,9 +18,8 @@ class GithubController extends AbstractController
     }
     /**
      * Link to this controller to start the "connect" process
-     *
      */
-    public function connect()
+    public function connect(): RedirectResponse
     {
         return $this->clientRegistry
             ->getClient('github_main')
@@ -30,11 +27,9 @@ class GithubController extends AbstractController
     }
 
     /**
-     * Github redirects to back here afterwards
-     *
-     * @return Response
+     * GitHub redirects to back here afterwards
      */
-    public function connectCheck()
+    public function connectCheck(): RedirectResponse
     {
         return new RedirectResponse($this->generateUrl('connection_github'));
     }
