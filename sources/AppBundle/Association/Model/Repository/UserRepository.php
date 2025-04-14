@@ -10,7 +10,6 @@ use AppBundle\Event\Model\Badge;
 use Assert\Assertion;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
-use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -22,6 +21,7 @@ use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use UnexpectedValueException;
@@ -29,18 +29,18 @@ use UnexpectedValueException;
 /**
  * @extends Repository<User>
  */
-class UserRepository extends Repository implements MetadataInitializer, UserProviderInterface
+class UserRepository extends Repository implements MetadataInitializer, UserProviderInterface, PasswordUpgraderInterface
 {
     const USER_TYPE_PHYSICAL = 0;
     const USER_TYPE_COMPANY = 1;
     const USER_TYPE_ALL = 2;
 
-    /**
-     * @param string $username
-     * @return User
-     * @throws QueryException
-     */
-    public function loadUserByUsername(string $username)
+    public function loadUserByIdentifier(string $identifier): User
+    {
+        return $this->loadUserByUsername($identifier);
+    }
+
+    public function loadUserByUsername(string $username): User
     {
         $queryBuilder = $this->getQueryBuilderWithCompleteUser();
         $queryBuilder
@@ -55,14 +55,23 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ])
             ->query($this->getCollection($this->getHydratorForUser()));
 
-        if ($result->count() === 0) {
+        if (!$result || $result->count() === 0) {
             throw new UserNotFoundException(sprintf('Could not find the user with login "%s"', $username));
         }
 
         return $result->first();
     }
 
-    public function loadUserByEmaiOrAlternateEmail($email)
+    /**
+     * @param User $user
+     */
+    public function upgradePassword(UserInterface $user, string $newHashedPassword): void
+    {
+        $user->setPassword($newHashedPassword);
+        $this->save($user);
+    }
+
+    public function loadUserByEmailOrAlternateEmail($email)
     {
         $queryBuilder = $this->getQueryBuilderWithCompleteUser();
         $queryBuilder

@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
@@ -27,6 +28,7 @@ class UserEditAction
     private UrlGeneratorInterface $urlGenerator;
     private FlashBagInterface $flashBag;
     private Environment $twig;
+    private UserPasswordHasherInterface $passwordHasher;
 
     public function __construct(
         UserRepository $userRepository,
@@ -34,7 +36,8 @@ class UserEditAction
         FormFactoryInterface $formFactory,
         UrlGeneratorInterface $urlGenerator,
         FlashBagInterface $flashBag,
-        Environment $twig
+        Environment $twig,
+        UserPasswordHasherInterface $passwordHasher
     ) {
         $this->userRepository = $userRepository;
         $this->userBadgeRepository = $userBadgeRepository;
@@ -42,6 +45,7 @@ class UserEditAction
         $this->urlGenerator = $urlGenerator;
         $this->flashBag = $flashBag;
         $this->twig = $twig;
+        $this->passwordHasher = $passwordHasher;
     }
 
     public function __invoke(Request $request)
@@ -57,8 +61,9 @@ class UserEditAction
             // Save password if not empty
             $newPassword = $request->request->get($form->getName())['plainPassword']['first'];
             if ($newPassword) {
-                $user->setPlainPassword($newPassword);
+                $user->setPassword($this->passwordHasher->hashPassword($user, $newPassword));
             }
+
             $this->userRepository->edit($user);
             $this->log('Modification de la personne physique ' . $user->getFirstName() . ' ' . $user->getLastName() . ' (' . $user->getId() . ')');
             // Redirection sur la liste filtrée

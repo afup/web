@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
@@ -26,19 +27,22 @@ class UserAddAction
     private FormFactoryInterface $formFactory;
     private UrlGeneratorInterface $urlGenerator;
     private Environment $twig;
+    private UserPasswordHasherInterface $passwordHasher;
 
     public function __construct(
         UserRepository $userRepository,
         UserService $userService,
         FormFactoryInterface $formFactory,
         UrlGeneratorInterface $urlGenerator,
-        Environment $twig
+        Environment $twig,
+        UserPasswordHasherInterface $passwordHasher
     ) {
         $this->userRepository = $userRepository;
         $this->userService = $userService;
         $this->formFactory = $formFactory;
         $this->urlGenerator = $urlGenerator;
         $this->twig = $twig;
+        $this->passwordHasher = $passwordHasher;
     }
 
     public function __invoke(Request $request)
@@ -60,7 +64,8 @@ class UserAddAction
                 $user->setCompanyId(0);
             }
             if (null === $user->getPassword()) {
-                $user->setPlainPassword($this->userService->generateRandomPassword());
+                $newPassword = $this->userService->generateRandomPassword();
+                $user->setPassword($this->passwordHasher->hashPassword($user, $newPassword));
             }
 
             $this->userRepository->create($user);

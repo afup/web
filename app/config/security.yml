@@ -1,15 +1,24 @@
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/book/security.html
 security:
+    # https://symfony.com/doc/current/security/authenticator_manager.html
+    enable_authenticator_manager: true
+
+    password_hashers:
+        legacy:
+            id: 'AppBundle\Security\LegacyHasher'
+
+        AppBundle\Association\Model\User:
+            algorithm: sodium
+            migrate_from:
+                - legacy
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        github_user:
+        github_users:
             id: 'AppBundle\Event\Model\Repository\GithubUserRepository'
-        legacy_user:
+        database_users:
             id: 'AppBundle\Association\Model\Repository\UserRepository'
-        in_memory:
-            memory: ~
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -18,34 +27,33 @@ security:
             security: false
 
         legacy_secured_area:
-            anonymous: ~
             pattern: ^(/admin/|/event/\w+/tickets|/association/techletter|/member)
-            provider: legacy_user
+            provider: database_users
             logout:
                 path:   /admin/logout
                 target: /
-            guard:
-                authenticators:
-                    - 'AppBundle\Security\LegacyAuthenticator'
-                    - 'AppBundle\Security\LegacyHashAuthenticator'
-                entry_point: 'AppBundle\Security\LegacyAuthenticator'
+            form_login:
+                username_parameter: utilisateur
+                password_parameter: mot_de_passe
+                login_path: admin_login
+                check_path: admin_login
+                default_target_path: /member/
+                enable_csrf: true
             context: share_context
 
         github_secured_area:
             pattern: ^(/event/.*/(vote|cfp|speaker-infos)|/connect/github/check|/event/speaker-infos)
-            provider: github_user
-            guard:
-                authenticators:
-                    - '%github_authenticator%'
-                entry_point: '%github_authenticator%'
+            provider: github_users
+            custom_authenticators:
+                - "%github_authenticator%"
 
         main:
-            anonymous: ~
             context: share_context
 
     access_control:
         - { path: ^/event/vote/, roles: ROLE_GITHUB }
-        - { path: ^/admin/(login|register|password), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^(/event/.*/(vote|cfp|speaker-infos)|/connect/github/check|/event/speaker-infos), roles: ROLE_GITHUB }
+        - { path: ^/admin/(login|register|password), roles: PUBLIC_ACCESS }
         - { path: ^/admin/techletter/members, roles: ROLE_ADMIN }
         - { path: ^/admin/techletter, roles: ROLE_VEILLE }
         - { path: ^/admin/company, roles: ROLE_COMPANY_MANAGER }
@@ -64,7 +72,7 @@ security:
         - { path: ^/admin/, roles: ROLE_MEMBER_EXPIRED }
         - { path: ^/blog, allow_if: "request.getClientIp() in ['217.70.189.71', '127.0.0.1', '192.168.42.1'] or request.server.get('ALLOW_BLOG_FROM_ALL') == 1 or request.headers.get('x-afup-blog-api-key') == '%blog_api_key%'" }
         - { path: ^/blog, roles: ROLE_NO_ACCESS }
-        - { path: ^/(event/\w+/tickets|association)paybox-callback, roles: IS_AUTHENTICATED_ANONYMOUSLY, ips: "%paybox_ips%" }
+        - { path: ^/(event/\w+/tickets|association)paybox-callback, roles: PUBLIC_ACCESS, ips: "%paybox_ips%" }
         - { path: ^/(event/\w+/tickets|association)paybox-callback, roles: ROLE_SUPER_ADMIN }
         - { path: ^/(event/\w+/tickets|association)paybox-callback, roles: ROLE_NO_ACCESS }
 

@@ -11,6 +11,7 @@ use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UserService
@@ -20,17 +21,20 @@ class UserService
     private UrlGeneratorInterface $urlGenerator;
     private string $sender = MailUser::DEFAULT_SENDER_EMAIL;
     private Cotisations $cotisations;
+    private UserPasswordHasherInterface $passwordHasher;
 
     public function __construct(
         UserRepository $userRepository,
         Mailer $mailer,
         UrlGeneratorInterface $urlGenerator,
-        Cotisations $cotisations
+        Cotisations $cotisations,
+        UserPasswordHasherInterface $passwordHasher
     ) {
         $this->userRepository = $userRepository;
         $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
         $this->cotisations = $cotisations;
+        $this->passwordHasher = $passwordHasher;
     }
 
     public function generateRandomPassword(): string
@@ -41,7 +45,7 @@ class UserService
     public function resetPassword(User $user): void
     {
         $newPassword = $this->generateRandomPassword();
-        $user->setPlainPassword($newPassword);
+        $user->setPassword($this->passwordHasher->hashPassword($user, $newPassword));
         $this->userRepository->save($user);
 
         $login = $user->getUsername();
@@ -69,7 +73,7 @@ BODY
      */
     public function resetPasswordForEmail($email): void
     {
-        $user = $this->userRepository->loadUserByEmaiOrAlternateEmail($email);
+        $user = $this->userRepository->loadUserByEmailOrAlternateEmail($email);
         if (null !== $user) {
             $this->resetPassword($user);
         }

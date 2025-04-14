@@ -9,13 +9,14 @@ use AppBundle\Association\NotifiableInterface;
 use AppBundle\Validator\Constraints as AppAssert;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @AppAssert\UniqueEntity(fields={"username"}, repository="\AppBundle\Association\Model\Repository\UserRepository")
  * @AppAssert\UniqueEntity(fields={"email"}, repository="\AppBundle\Association\Model\Repository\UserRepository")
  */
-class User implements NotifyPropertyInterface, UserInterface, \Serializable, NotifiableInterface
+class User implements NotifyPropertyInterface, NotifiableInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
     use NotifyProperty;
 
@@ -250,6 +251,17 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     }
 
     /**
+     *
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
+    }
+
+    /**
      * @param string $username
      */
     public function setUsername($username): self
@@ -260,9 +272,11 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     }
 
     /**
-     * @return string
+     * This method can be removed in Symfony 6.0 - is not needed for apps that do not check user passwords.
+     *
+     * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -275,14 +289,6 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         $this->propertyChanged('password', $this->password, $password);
         $this->password = $password;
         return $this;
-    }
-
-    /**
-     * @param string $password
-     */
-    public function setPlainPassword($password): void
-    {
-        $this->setPassword(md5($password));
     }
 
     /**
@@ -714,6 +720,10 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
         return $this;
     }
 
+    /**
+     * @deprecated
+     * This method can be removed in Symfony 6.0 - is not needed for apps that do not check user passwords.
+     */
     public function getSalt()
     {
         return null;
@@ -723,21 +733,20 @@ class User implements NotifyPropertyInterface, UserInterface, \Serializable, Not
     {
     }
 
-    public function serialize()
+    public function __serialize(): array
     {
-        return serialize([
+        return [
             'id' => $this->id,
             'username' => $this->username,
             'password' => $this->password
-        ]);
+        ];
     }
 
-    public function unserialize($serialized): void
+    public function __unserialize($serialized): void
     {
-        $array = unserialize($serialized);
-        $this->id = $array['id'];
-        $this->username = $array['username'];
-        $this->password = $array['password'];
+        $this->id = $serialized['id'];
+        $this->username = $serialized['username'];
+        $this->password = $serialized['password'];
     }
 
     public function getDirectoryLevel()

@@ -176,6 +176,17 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
         return $this->getLogin();
     }
 
+    /**
+     *
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return $this->getLogin();
+    }
+
     public function eraseCredentials(): void
     {
     }
