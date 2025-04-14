@@ -29,7 +29,6 @@ use AppBundle\Payment\PayboxResponse;
 use AppBundle\Payment\PayboxResponseFactory;
 use AppBundle\Security\ActionThrottling\ActionThrottling;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
-use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -41,7 +40,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class TicketController extends AbstractController
 {
     private EventDispatcherInterface $eventDispatcher;
-    /** @var LoggerInterface&Logger  */
     private LoggerInterface $logger;
     private RepositoryFactory $repositoryFactory;
     private ActionThrottling $actionThrottling;
@@ -54,6 +52,7 @@ class TicketController extends AbstractController
     private TicketRepository $ticketRepository;
     private PayboxFactory $payboxFactory;
     private EventActionHelper $eventActionHelper;
+
     public function __construct(EventDispatcherInterface $eventDispatcher, LoggerInterface $logger, RepositoryFactory $repositoryFactory, ActionThrottling $actionThrottling, TicketFactory $ticketFactory, SponsorTicketHelper $sponsorTicketHelper, Emails $emails, PurchaseTypeFactory $purchaseTypeFactory, InvoiceRepository $invoiceRepository, LegacyModelFactory $legacyModelFactory, TicketRepository $ticketRepository, PayboxFactory $payboxFactory, EventActionHelper $eventActionHelper)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -70,6 +69,7 @@ class TicketController extends AbstractController
         $this->payboxFactory = $payboxFactory;
         $this->eventActionHelper = $eventActionHelper;
     }
+
     public function sponsorTicket(Request $request, $eventSlug)
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
