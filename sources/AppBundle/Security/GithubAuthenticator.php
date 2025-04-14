@@ -22,7 +22,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
-class MyGithubAuthenticator extends OAuth2Authenticator implements AuthenticationEntryPointInterface
+class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationEntryPointInterface
 {
     private ClientRegistry $clientRegistry;
     private GithubUserRepository $githubUserRepository;
@@ -44,7 +44,6 @@ class MyGithubAuthenticator extends OAuth2Authenticator implements Authenticatio
             new UserBadge($accessToken->getToken(), function () use ($accessToken, $client) {
                 /** @var GithubResourceOwner $githubUser */
                 $githubUser = $client->fetchUserFromToken($accessToken);
-
 
                 // 1) have they logged in with GitHub before? Easy!
                 $user = $this->githubUserRepository->getOneBy(['githubId' => $githubUser->getId()]);

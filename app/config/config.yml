@@ -8,7 +8,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
-    github_authenticator: "AppBundle\\Security\\MyGithubAuthenticator"
+    github_authenticator: "AppBundle\\Security\\GithubAuthenticator"
     app.pages_backoffice:
         accueil:
             nom: 'Accueil'

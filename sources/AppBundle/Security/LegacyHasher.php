@@ -33,6 +33,6 @@ class LegacyHasher implements PasswordHasherInterface
     public function needsRehash(string $hashedPassword): bool
     {
         // Check if a password hash would benefit from rehashing
-        return false;
+        return strlen($hashedPassword) === 32;
     }
 }
