@@ -18,14 +18,17 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<Ticket>
+ */
 class TicketRepository extends Repository implements MetadataInitializer
 {
     /**
      * @param string $reference
      *
-     * @return CollectionInterface&iterable<Ticket>
+     * @return CollectionInterface<Ticket>&iterable<Ticket>
      */
-    public function getByReference($reference)
+    public function getByReference($reference): CollectionInterface
     {
         return $this->getBy(['reference' => $reference]);
     }
@@ -163,9 +166,9 @@ class TicketRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @return Ticket[]
+     * @return CollectionInterface<Ticket>&iterable<Ticket>
      */
-    public function getByEvent(Event $event)
+    public function getByEvent(Event $event): CollectionInterface
     {
         $sql = 'SELECT afup_inscription_forum.*
         FROM afup_inscription_forum
@@ -179,9 +182,9 @@ class TicketRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @return Ticket[]
+     * @return CollectionInterface<Ticket>&iterable<Ticket>
      */
-    public function getByEmptyQrCodes()
+    public function getByEmptyQrCodes(): CollectionInterface
     {
         $sql = 'SELECT afup_inscription_forum.*
         FROM afup_inscription_forum
