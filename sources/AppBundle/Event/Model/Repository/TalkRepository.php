@@ -191,7 +191,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     /**
      * @param bool $applyPublicationdateFilters
      *
-     * @return CollectionInterface&iterable<array{talk: Talk, speaker: Speaker, room: mixed, planning: mixed, aggregation: array<string, mixed>}>
+     * @return CollectionInterface&iterable<array{talk: Talk, speaker: Speaker, room: mixed, planning: mixed, ".aggregation": array<string, mixed>}>
      * @throws QueryException
      */
     public function getByEventWithSpeakers(Event $event, $applyPublicationdateFilters = true)
@@ -203,7 +203,7 @@ class TalkRepository extends Repository implements MetadataInitializer
      * @param list<Event> $events
      * @param bool $applyPublicationdateFilters
      *
-     * @return CollectionInterface&iterable<array{talk: Talk, speaker: Speaker, room: mixed, planning: mixed, aggregation: array<string, mixed>}>
+     * @return CollectionInterface&iterable<array{talk: Talk, speaker: Speaker, room: mixed, planning: mixed, ".aggregation": array<string, mixed>}>
      * @throws QueryException
      */
     public function getByEventsWithSpeakers(array $events, $applyPublicationdateFilters = true)
