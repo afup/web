@@ -13,8 +13,6 @@ services:
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
     _defaults:
         public: true
-        bind:
-            $formLoginAuthenticator: '@security.authenticator.form_login.legacy_secured_area'
 
     _instanceof:
         AppBundle\SocialNetwork\Transport:
@@ -142,6 +140,7 @@ services:
         public: false
         arguments:
             $storageDir: '%app.general_meetings_dir%'
+            $formLoginAuthenticator: '@security.authenticator.form_login.legacy_secured_area'
 
     AppBundle\Controller\Website\NewsController:
         autowire: true
