@@ -424,7 +424,7 @@ class MemberShipController extends AbstractController
         $userForm->handleRequest($request);
         if ($userForm->isSubmitted() && $userForm->isValid()) {
             // Save password if not empty
-            $newPassword = $request->request->get($userForm->getName())['plainPassword']['first'];
+            $newPassword = $userForm->get('plainPassword')->getViewData()['first'];
             if ($newPassword) {
                 $hash = $this->passwordHasher->hashPassword($user, $newPassword);
                 $user->setPassword($hash);

@@ -59,7 +59,7 @@ class UserEditAction
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // Save password if not empty
-            $newPassword = $request->request->get($form->getName())['plainPassword']['first'];
+            $newPassword = $form->get('plainPassword')->getViewData()['first'];
             if ($newPassword) {
                 $user->setPassword($this->passwordHasher->hashPassword($user, $newPassword));
             }

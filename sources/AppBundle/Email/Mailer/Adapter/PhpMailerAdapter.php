@@ -79,7 +79,7 @@ class PhpMailerAdapter implements MailerAdapter
             $mailer->SMTPAuth = false;
         }
         if (null !== $this->tls && $this->tls !== '0') {
-            $mailer->SMTPAuth = $this->tls;
+            $mailer->SMTPAuth = true;
             $mailer->SMTPSecure = 'tls';
         }
         if ($this->username) {
@@ -89,7 +89,7 @@ class PhpMailerAdapter implements MailerAdapter
             $mailer->Password = $this->password;
         }
         if ($this->port) {
-            $mailer->Port = $this->port;
+            $mailer->Port = (int) $this->port;
         }
 
         return $mailer;
