@@ -9,52 +9,35 @@ use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Twig\ViewRenderer;
-use Assert\Assertion;
 use Exception;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Security;
 
-class CompanyController
+class CompanyController extends AbstractController
 {
     private CompanyMemberRepository $companyMemberRepository;
     private ViewRenderer $view;
-    private FormFactoryInterface $formFactory;
-    private FlashBagInterface $flashBag;
-    private UrlGeneratorInterface $urlGenerator;
-    private Security $security;
 
     public function __construct(
         CompanyMemberRepository $companyMemberRepository,
-        ViewRenderer            $view,
-        FormFactoryInterface    $formFactory,
-        FlashBagInterface       $flashBag,
-        UrlGeneratorInterface   $urlGenerator,
-        Security                $security
+        ViewRenderer            $view
     ) {
         $this->companyMemberRepository = $companyMemberRepository;
         $this->view = $view;
-        $this->formFactory = $formFactory;
-        $this->flashBag = $flashBag;
-        $this->urlGenerator = $urlGenerator;
-        $this->security = $security;
     }
 
     public function __invoke(Request $request)
     {
-        /** @var User $user */
-        $user = $this->security->getUser();
-        Assertion::isInstanceOf($user, User::class);
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException();
+        }
         $company = $this->companyMemberRepository->get($user->getCompanyId());
         if ($company === null) {
-            throw new NotFoundHttpException('Company not found');
+            throw $this->createNotFoundException('Company not found');
         }
 
-        $subscribeForm = $this->formFactory->create(AdminCompanyMemberType::class, $company);
+        $subscribeForm = $this->createForm(AdminCompanyMemberType::class, $company);
         $subscribeForm->handleRequest($request);
 
         if ($subscribeForm->isSubmitted() && $subscribeForm->isValid()) {
@@ -62,12 +45,12 @@ class CompanyController
             $member = $subscribeForm->getData();
             try {
                 $this->companyMemberRepository->save($member);
-                $this->flashBag->add('notice', 'Les modifications ont bien été enregistrées.');
+                $this->addFlash('notice', 'Les modifications ont bien été enregistrées.');
             } catch (Exception $exception) {
-                $this->flashBag->add('error', 'Une erreur est survenue. Merci de nous contacter.');
+                $this->addFlash('error', 'Une erreur est survenue. Merci de nous contacter.');
             }
 
-            return new RedirectResponse($this->urlGenerator->generate('member_company'));
+            return $this->redirectToRoute('member_company');
         }
 
         return $this->view->render('admin/association/membership/company.html.twig', [

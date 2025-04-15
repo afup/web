@@ -9,43 +9,31 @@ use AppBundle\Association\Form\UserEditType;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\UserService;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
-class UserAddAction
+class UserAddAction extends AbstractController
 {
     use DbLoggerTrait;
 
     private UserRepository $userRepository;
     private UserService $userService;
-    private FormFactoryInterface $formFactory;
-    private UrlGeneratorInterface $urlGenerator;
-    private Environment $twig;
     private UserPasswordHasherInterface $passwordHasher;
 
     public function __construct(
         UserRepository $userRepository,
         UserService $userService,
-        FormFactoryInterface $formFactory,
-        UrlGeneratorInterface $urlGenerator,
-        Environment $twig,
         UserPasswordHasherInterface $passwordHasher
     ) {
         $this->userRepository = $userRepository;
         $this->userService = $userService;
-        $this->formFactory = $formFactory;
-        $this->urlGenerator = $urlGenerator;
-        $this->twig = $twig;
         $this->passwordHasher = $passwordHasher;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         /** @var Session $session */
         $session = $request->getSession();
@@ -57,7 +45,7 @@ class UserAddAction
             $user->setRoles([]);
         }
 
-        $form = $this->formFactory->create(UserEditType::class, $user);
+        $form = $this->createForm(UserEditType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$user->getCompanyId()) {
@@ -70,14 +58,16 @@ class UserAddAction
 
             $this->userRepository->create($user);
             $this->log('Ajout de la personne physique ' . $user->getFirstName() . ' ' . $user->getLastName());
-            $session->getFlashBag()->add('notice', 'La personne physique a été ajoutée');
+            $this->addFlash('notice', 'La personne physique a été ajoutée');
 
-            return new RedirectResponse($this->urlGenerator->generate('admin_members_user_list', ['filter' => $user->getEmail()]));
+            return $this->redirectToRoute('admin_members_user_list', [
+                'filter' => $user->getEmail()
+            ]);
         }
 
-        return new Response($this->twig->render('admin/members/user_add.html.twig', [
+        return $this->render('admin/members/user_add.html.twig', [
             'form' => $form->createView(),
-        ]));
+        ]);
     }
 
     private function fromSession(array $session): User

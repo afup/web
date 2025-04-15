@@ -15,12 +15,11 @@ use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Ticket;
 use DateTime;
 use Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class SpeakerRegisterAction
+class SpeakerRegisterAction extends AbstractController
 {
     use DbLoggerTrait;
 
@@ -30,8 +29,6 @@ class SpeakerRegisterAction
     private TicketRepository $ticketRepository;
     private InvoiceService $invoiceService;
     private InvoiceRepository $invoiceRepository;
-    private FlashBagInterface $flashBag;
-    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         SpeakerRepository $speakerRepository,
@@ -39,17 +36,13 @@ class SpeakerRegisterAction
         TalkRepository $talkRepository,
         TicketRepository $ticketRepository,
         InvoiceService $invoiceService,
-        InvoiceRepository $invoiceRepository,
-        FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator
+        InvoiceRepository $invoiceRepository
     ) {
         $this->speakerRepository = $speakerRepository;
         $this->eventActionHelper = $eventActionHelper;
         $this->talkRepository = $talkRepository;
         $this->ticketRepository = $ticketRepository;
         $this->invoiceRepository = $invoiceRepository;
-        $this->flashBag = $flashBag;
-        $this->urlGenerator = $urlGenerator;
         $this->invoiceService = $invoiceService;
     }
 
@@ -88,7 +81,7 @@ class SpeakerRegisterAction
                 try {
                     $this->ticketRepository->save($ticket);
                 } catch (Exception $e) {
-                    $this->flashBag->add('error', 'Une erreur est survenue lors de l\'ajout de l\'inscription');
+                    $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout de l\'inscription');
 
                     return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list'));
                 }
@@ -115,14 +108,18 @@ class SpeakerRegisterAction
                     $this->log('Ajout inscription conférencier ' . $speaker->getId());
                     $nbSpeakers++;
                 } catch (Exception $e) {
-                    $this->flashBag->add('error', 'Une erreur est survenue lors de l\'ajout de la facturation');
+                    $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout de la facturation');
 
-                    return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list', ['eventId' => $event->getId()]));
+                    return $this->redirectToRoute('admin_speaker_list', [
+                        'eventId' => $event->getId()
+                    ]);
                 }
             }
         }
-        $this->flashBag->add('notice', $nbSpeakers . ' conférenciers ont été ajoutés dans les inscriptions');
+        $this->addFlash('notice', $nbSpeakers . ' conférenciers ont été ajoutés dans les inscriptions');
 
-        return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list', ['eventId' => $event->getId()]));
+        return $this->redirectToRoute('admin_speaker_list', [
+            'eventId' => $event->getId()
+        ]);
     }
 }

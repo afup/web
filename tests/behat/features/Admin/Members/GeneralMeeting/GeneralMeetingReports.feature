@@ -17,8 +17,8 @@ Feature: Administration - Partie Assemblée Générale CR
     And I should see "2014-02-15_CR AG AFUP 2013-2014"
 
     # Ajout
-    And I attach the file "test_file1.pdf" to "report_file"
-    And I press "report[submit]"
+    And I attach the file "test_file1.pdf" to "form_file"
+    And I press "form[submit]"
     Then the ".content .message" element should contain "Le compte rendu a correctement été ajouté."
     And I should see "test_file1"
 

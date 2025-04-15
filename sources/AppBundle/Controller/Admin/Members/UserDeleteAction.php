@@ -8,46 +8,39 @@ use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Association\Model\Repository\UserRepository;
 use Exception;
 use InvalidArgumentException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class UserDeleteAction
+class UserDeleteAction extends AbstractController
 {
     use DbLoggerTrait;
 
     private UserRepository $userRepository;
-    private FlashBagInterface $flashBag;
-    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
-        UserRepository $userRepository,
-        FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator
+        UserRepository $userRepository
     ) {
         $this->userRepository = $userRepository;
-        $this->flashBag = $flashBag;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function __invoke(Request $request): RedirectResponse
     {
         $user = $this->userRepository->get($request->query->get('id'));
         if (null === $user) {
-            throw new NotFoundHttpException('Utilisateur non trouvé');
+            throw $this->createNotFoundException('Utilisateur non trouvé');
         }
+
         try {
             $this->userRepository->remove($user);
             $this->log('Suppression de la personne physique ' . $user->getId());
-            $this->flashBag->add('notice', 'La personne physique a été supprimée');
+            $this->addFlash('notice', 'La personne physique a été supprimée');
         } catch (InvalidArgumentException $e) {
-            $this->flashBag->add('error', $e->getMessage());
+            $this->addFlash('error', $e->getMessage());
         } catch (Exception $e) {
-            $this->flashBag->add('error', 'Une erreur est survenue lors de la suppression de la personne physique');
+            $this->addFlash('error', 'Une erreur est survenue lors de la suppression de la personne physique');
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('admin_members_user_list'));
+        return $this->redirectToRoute('admin_members_user_list');
     }
 }

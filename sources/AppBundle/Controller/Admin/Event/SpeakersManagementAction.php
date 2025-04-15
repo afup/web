@@ -9,34 +9,26 @@ use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\SpeakerInfos\SpeakersExpensesStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
 
 class SpeakersManagementAction extends AbstractController
 {
     private EventActionHelper $eventActionHelper;
     private SpeakerRepository $speakerRepository;
-    private FormFactoryInterface $formFactory;
-    private Environment $twig;
     private SpeakersExpensesStorage $speakersExpensesStorage;
 
     public function __construct(
         EventActionHelper $eventActionHelper,
         SpeakerRepository $speakerRepository,
-        FormFactoryInterface $formFactory,
-        Environment $twig,
         SpeakersExpensesStorage $speakersExpensesStorage
     ) {
         $this->eventActionHelper = $eventActionHelper;
         $this->speakerRepository = $speakerRepository;
-        $this->twig = $twig;
-        $this->formFactory = $formFactory;
         $this->speakersExpensesStorage = $speakersExpensesStorage;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $id = $request->query->get('id');
 
@@ -51,11 +43,10 @@ class SpeakersManagementAction extends AbstractController
             }
         }
 
-
-        return new Response($this->twig->render('admin/event/speakers_management.html.twig', [
+        return $this->render('admin/event/speakers_management.html.twig', [
             'event' => $event,
             'speakers' => $speakers,
-            'event_select_form' => $this->formFactory->create(EventSelectType::class, $event)->createView(),
-        ]));
+            'event_select_form' => $this->createForm(EventSelectType::class, $event)->createView(),
+        ]);
     }
 }

@@ -6,27 +6,19 @@ namespace AppBundle\Controller\Admin\Planete;
 
 use Afup\Site\Logger\DbLoggerTrait;
 use PlanetePHP\FeedRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class FeedDeleteAction
+class FeedDeleteAction extends AbstractController
 {
     use DbLoggerTrait;
 
     private FeedRepository $feedRepository;
-    private UrlGeneratorInterface $urlGenerator;
-    private FlashBagInterface $flashBag;
 
-    public function __construct(
-        FeedRepository $feedRepository,
-        UrlGeneratorInterface $urlGenerator,
-        FlashBagInterface $flashBag
-    ) {
+    public function __construct(FeedRepository $feedRepository)
+    {
         $this->feedRepository = $feedRepository;
-        $this->urlGenerator = $urlGenerator;
-        $this->flashBag = $flashBag;
     }
 
     public function __invoke(Request $request): RedirectResponse
@@ -34,11 +26,11 @@ class FeedDeleteAction
         $id = $request->query->get('id');
         if ($this->feedRepository->delete($id)) {
             $this->log('Suppression du flux ' . $id);
-            $this->flashBag->add('notice', 'Le flux a été supprimé');
+            $this->addFlash('notice', 'Le flux a été supprimé');
         } else {
-            $this->flashBag->add('error', 'Une erreur est survenue lors de la suppression du flux');
+            $this->addFlash('error', 'Une erreur est survenue lors de la suppression du flux');
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('admin_planete_feed_list'));
+        return $this->redirectToRoute('admin_planete_feed_list');
     }
 }

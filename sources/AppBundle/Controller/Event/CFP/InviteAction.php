@@ -11,17 +11,14 @@ use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\TalkInvitation;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class InviteAction
+class InviteAction extends AbstractController
 {
     private TalkRepository $talkRepository;
-    private UrlGeneratorInterface $urlGenerator;
     private SpeakerFactory $speakerFactory;
     private TranslatorInterface $translator;
     private TalkInvitationRepository $talkInvitationRepository;
@@ -31,14 +28,12 @@ class InviteAction
     public function __construct(
         EventActionHelper $eventActionHelper,
         TalkRepository $talkRepository,
-        UrlGeneratorInterface $urlGenerator,
         SpeakerFactory $speakerFactory,
         TalkInvitationRepository $talkInvitationRepository,
         TalkToSpeakersRepository $talkToSpeakersRepository,
         TranslatorInterface $translator
     ) {
         $this->talkRepository = $talkRepository;
-        $this->urlGenerator = $urlGenerator;
         $this->speakerFactory = $speakerFactory;
         $this->translator = $translator;
         $this->talkInvitationRepository = $talkInvitationRepository;
@@ -56,29 +51,30 @@ class InviteAction
         /** @var Talk $talk */
         $talk = $this->talkRepository->get($talkId);
         if ($invitation === null || $talk === null || $talk->getForumId() !== $event->getId()) {
-            throw new NotFoundHttpException('Invitation or talk not found');
+            throw $this->createNotFoundException('Invitation or talk not found');
         }
         $speaker = $this->speakerFactory->getSpeaker($event);
-        /** @var Session $session */
-        $session = $request->getSession();
-        if ($speaker->getId() === null) {
-            $session->getFlashbag()->add('error', $this->translator->trans('Vous devez remplir votre profil conférencier afin de pouvoir accepter une invitation.'));
-            $session->set('pendingInvitation', ['talkId' => $talkId, 'token' => $token, 'eventSlug' => $event->getPath()]);
 
-            return new RedirectResponse($this->urlGenerator->generate('cfp_speaker', ['eventSlug' => $event->getPath()]));
+        if ($speaker->getId() === null) {
+            $this->addFlash('error', $this->translator->trans('Vous devez remplir votre profil conférencier afin de pouvoir accepter une invitation.'));
+            $this->addFlash('pendingInvitation', ['talkId' => $talkId, 'token' => $token, 'eventSlug' => $event->getPath()]);
+
+            return $this->redirectToRoute('cfp_speaker', [
+                'eventSlug' => $event->getPath()
+            ]);
         }
 
         if ($invitation->getState() === TalkInvitation::STATE_PENDING) {
             $invitation->setState(TalkInvitation::STATE_ACCEPTED);
-            $session->getFlashbag()->add('success', $this->translator->trans('Vous etes désormais co-conférencier !'));
+            $this->addFlash('success', $this->translator->trans('Vous etes désormais co-conférencier !'));
             // Save co-speaker
             $this->talkInvitationRepository->save($invitation);
             $this->talkToSpeakersRepository->addSpeakerToTalk($talk, $speaker);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('cfp_edit', [
+        return $this->redirectToRoute('cfp_edit', [
             'eventSlug' => $event->getPath(),
             'talkId' => $talkId,
-        ]));
+        ]);
     }
 }

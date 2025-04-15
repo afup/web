@@ -9,43 +9,25 @@ use AppBundle\Site\Form\RubriqueType;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
 use AppBundle\Site\Model\Rubrique;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
 class AddRubriqueAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private FlashBagInterface $flashBag;
-
-    private UrlGeneratorInterface $urlGenerator;
-
-    private Environment $twig;
-
     private RubriqueRepository $rubriqueRepository;
-
-    /** @var string */
-    private $storageDir;
+    private string $storageDir;
 
     public function __construct(
         RubriqueRepository $rubriqueRepository,
-        Environment $twig,
-        UrlGeneratorInterface $urlGenerator,
-        FlashBagInterface $flashBag,
-        $storageDir
+        string $storageDir
     ) {
         $this->rubriqueRepository =  $rubriqueRepository;
-        $this->twig = $twig;
-        $this->urlGenerator = $urlGenerator;
-        $this->flashBag = $flashBag;
         $this->storageDir = $storageDir;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $rubrique = new Rubrique();
         $form = $this->createForm(RubriqueType::class, $rubrique);
@@ -63,15 +45,17 @@ class AddRubriqueAction extends AbstractController
             }
             $this->rubriqueRepository->save($rubrique);
             $this->log('Ajout de la rubrique ' . $rubrique->getNom());
-            $this->flashBag->add('notice', 'La rubrique ' . $rubrique->getNom() . ' a été ajoutée');
-            return new RedirectResponse($this->urlGenerator->generate('admin_site_rubriques_list', ['filter' => $rubrique->getNom()]));
+            $this->addFlash('notice', 'La rubrique ' . $rubrique->getNom() . ' a été ajoutée');
+            return $this->redirectToRoute('admin_site_rubriques_list', [
+                'filter' => $rubrique->getNom()
+            ]);
         }
 
-        return new Response($this->twig->render('admin/site/rubrique_form.html.twig', [
+        return $this->render('admin/site/rubrique_form.html.twig', [
             'form' => $form->createView(),
             'formTitle' => 'Ajouter une rubrique',
             'icone' => false,
             'submitLabel' => 'Ajouter',
-        ]));
+        ]);
     }
 }

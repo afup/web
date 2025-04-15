@@ -13,8 +13,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RoomType extends AbstractType
 {
+    private string $name = 'room';
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $this->name = $options['block_prefix'];
         $builder
             ->add('name', TextType::class)
         ;
@@ -23,7 +26,13 @@ class RoomType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Room::class
+            'data_class' => Room::class,
+            'block_prefix' => ''
         ]);
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return $this->name ? : parent::getBlockPrefix();
     }
 }

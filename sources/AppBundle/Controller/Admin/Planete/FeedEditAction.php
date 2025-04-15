@@ -8,36 +8,18 @@ use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Planete\FeedFormData;
 use AppBundle\Planete\FeedFormType;
 use PlanetePHP\FeedRepository;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
-class FeedEditAction
+class FeedEditAction extends AbstractController
 {
     use DbLoggerTrait;
 
     private FeedRepository $feedRepository;
-    private FormFactoryInterface $formFactory;
-    private UrlGeneratorInterface $urlGenerator;
-    private FlashBagInterface $flashBag;
-    private Environment $twig;
 
-    public function __construct(
-        FeedRepository $feedRepository,
-        FormFactoryInterface $formFactory,
-        UrlGeneratorInterface $urlGenerator,
-        FlashBagInterface $flashBag,
-        Environment $twig
-    ) {
+    public function __construct(FeedRepository $feedRepository)
+    {
         $this->feedRepository = $feedRepository;
-        $this->formFactory = $formFactory;
-        $this->urlGenerator = $urlGenerator;
-        $this->flashBag = $flashBag;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request)
@@ -50,7 +32,7 @@ class FeedEditAction
         $data->url = $feed->getUrl();
         $data->userId = $feed->getUserId();
         $data->status = $feed->getStatus();
-        $form = $this->formFactory->create(FeedFormType::class, $data);
+        $form = $this->createForm(FeedFormType::class, $data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $ok = $this->feedRepository->update(
@@ -64,15 +46,15 @@ class FeedEditAction
 
             if ($ok) {
                 $this->log(sprintf("Modification du flux %s (%d)", $data->name, $id));
-                $this->flashBag->add('notice', 'Le flux a été modifié');
+                $this->addFlash('notice', 'Le flux a été modifié');
 
-                return new RedirectResponse($this->urlGenerator->generate('admin_planete_feed_list'));
+                return $this->redirectToRoute('admin_planete_feed_list');
             }
-            $this->flashBag->add('error', 'Une erreur est survenue lors de la modification du flux');
+            $this->addFlash('error', 'Une erreur est survenue lors de la modification du flux');
         }
 
-        return new Response($this->twig->render('admin/planete/feed_edit.html.twig', [
+        return $this->render('admin/planete/feed_edit.html.twig', [
             'form' => $form->createView(),
-        ]));
+        ]);
     }
 }

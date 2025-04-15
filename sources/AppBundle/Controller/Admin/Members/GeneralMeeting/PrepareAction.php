@@ -8,51 +8,39 @@ use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\GeneralMeeting\PrepareFormType;
 use DateTime;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Twig\Environment;
 
-class PrepareAction
+class PrepareAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private FormFactoryInterface $formFactory;
-    private FlashBagInterface $flashBag;
-    private Environment $twig;
     private GeneralMeetingRepository $generalMeetingRepository;
 
     public function __construct(
-        GeneralMeetingRepository $generalMeetingRepository,
-        FormFactoryInterface $formFactory,
-        FlashBagInterface $flashBag,
-        Environment $twig
+        GeneralMeetingRepository $generalMeetingRepository
     ) {
         $this->generalMeetingRepository = $generalMeetingRepository;
-        $this->formFactory = $formFactory;
-        $this->flashBag = $flashBag;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request)
     {
-        $form = $this->formFactory->create(PrepareFormType::class, ['date' => new DateTime()]);
+        $form = $this->createForm(PrepareFormType::class, ['date' => new DateTime()]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             if ($this->generalMeetingRepository->prepare($data['date'], $data['description'])) {
                 $this->log('Ajout de la préparation des personnes physiques à l\'assemblée générale');
-                $this->flashBag->add('notice', 'La préparation des personnes physiques a été ajoutée');
+                $this->addFlash('notice', 'La préparation des personnes physiques a été ajoutée');
 
                 return new RedirectResponse($request->getRequestUri());
             }
-            $this->flashBag->add('error', 'Une erreur est survenue lors de la préparation des personnes physiques');
+            $this->addFlash('error', 'Une erreur est survenue lors de la préparation des personnes physiques');
         }
 
-        return new Response($this->twig->render('admin/members/general_meeting/prepare.html.twig', [
+        return $this->render('admin/members/general_meeting/prepare.html.twig', [
             'form' => $form->createView(),
-        ]));
+        ]);
     }
 }
