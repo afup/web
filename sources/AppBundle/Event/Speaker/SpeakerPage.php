@@ -167,7 +167,7 @@ class SpeakerPage
     /**
      * @param Talk[] $talks
      *
-     * @return Talk[]
+     * @return array<array{talk: Talk, speaker: Speaker, room: mixed, planning: mixed, ".aggregation": array<string, mixed>}>
      */
     protected function addTalkInfos(Event $event, array $talks): array
     {

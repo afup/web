@@ -1,14 +1,8 @@
 parameters:
     phpVersion: 70400 # PHP 7.4
-    level: 2
+    level: 3
     paths:
         - sources
-    excludePaths:
-        analyse:
-            # Ces fichiers utilisent des alias de classes
-            - sources/AppBundle/Twig/AssetsExtension.php
-            - sources/AppBundle/Twig/TwigExtension.php
-
     stubFiles:
             - tests/stubs/Ting/Repository/Repository.php.stub
             - tests/stubs/Ting/Repository/RepositoryFactory.php.stub
