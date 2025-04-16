@@ -59,8 +59,8 @@ class TechLetterFactoryTest extends TestCase
                 null,
                 null,
                 [
-                    new Article('https://example.com/fr', 'Example en français', 'example.com', 2, 'Lorem ipsum', 'fr'),
-                    new Article('https://example.com/en', 'Example with default language', 'example.com', 2, 'Lorem ipsum', 'en'),
+                    new Article('https://example.com/fr', 'Example en français', 'example.com', '2', 'Lorem ipsum', 'fr'),
+                    new Article('https://example.com/en', 'Example with default language', 'example.com', '2', 'Lorem ipsum', 'en'),
                 ],
                 [],
             ),
@@ -108,8 +108,8 @@ class TechLetterFactoryTest extends TestCase
                     DateTimeImmutable::createFromFormat('Y-m-d', '2025-03-17'),
                 ),
                 [
-                    new Article('https://example.com/fr', 'Example en français', 'example.com', 2, 'Lorem ipsum', 'fr'),
-                    new Article('https://example.com/en', 'Example with default language', 'example.com', 2, 'Lorem ipsum', 'en'),
+                    new Article('https://example.com/fr', 'Example en français', 'example.com', '2', 'Lorem ipsum', 'fr'),
+                    new Article('https://example.com/en', 'Example with default language', 'example.com', '2', 'Lorem ipsum', 'en'),
                 ],
                 [
                     new Project('https://github.com/afup/planete', 'afup/planete', 'Le code source de planete-php.fr'),

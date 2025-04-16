@@ -6,40 +6,23 @@ namespace AppBundle\TechLetter\Model;
 
 class News implements \JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @var string
-     */
-    private $title;
+    private string $url;
+    private string $title;
     private \DateTimeImmutable $date;
 
-    /**
-     * @param string $url
-     * @param string $title
-     */
-    public function __construct($url, $title, \DateTimeImmutable $date)
+    public function __construct(string $url, string $title, \DateTimeImmutable $date)
     {
         $this->url = $url;
         $this->title = $title;
         $this->date = $date;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -49,7 +32,7 @@ class News implements \JsonSerializable
         return $this->date;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'url' => $this->url,
