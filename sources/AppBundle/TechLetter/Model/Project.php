@@ -6,61 +6,33 @@ namespace AppBundle\TechLetter\Model;
 
 class Project implements \JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $url;
+    private string $url;
+    private string $name;
+    private string $description;
 
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $description;
-
-    /**
-     * @param string $url
-     * @param string $name
-     * @param string $description
-     */
-    public function __construct($url, $name, $description)
+    public function __construct(string $url, string $name, string $description)
     {
         $this->url = $url;
         $this->name = $name;
         $this->description = $description;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'url' => $this->url,

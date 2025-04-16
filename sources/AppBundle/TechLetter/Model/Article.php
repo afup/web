@@ -6,44 +6,17 @@ namespace AppBundle\TechLetter\Model;
 
 class Article implements \JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $url;
+    private string $url;
+    private string $title;
+    private string $host;
 
-    /**
-     * @var string
-     */
-    private $title;
+    /** @var numeric-string */
+    private string $readingTime;
 
-    /**
-     * @var string
-     */
-    private $host;
+    private string $excerpt;
+    private string $language;
 
-    /**
-     * @var int
-     */
-    private $readingTime;
-
-    /**
-     * @var string
-     */
-    private $excerpt;
-
-    /**
-     * @var string
-     */
-    private $language;
-
-    /**
-     * @param string $url
-     * @param string $title
-     * @param string $host
-     * @param int $readingTime
-     * @param string $excerpt
-     */
-    public function __construct($url, $title, $host, $readingTime, $excerpt, $language)
+    public function __construct(string $url, string $title, string $host, string $readingTime, string $excerpt, string $language)
     {
         $this->url = $url;
         $this->title = $title;
@@ -53,58 +26,37 @@ class Article implements \JsonSerializable
         $this->language = $language;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
-    public function getHost()
+    public function getHost(): string
     {
         return $this->host;
     }
 
-    /**
-     * @return int
-     */
-    public function getReadingTime()
+    public function getReadingTime(): string
     {
         return $this->readingTime;
     }
 
-    /**
-     * @return string
-     */
-    public function getExcerpt()
+    public function getExcerpt(): string
     {
         return $this->excerpt;
     }
 
-    /**
-     * @return string
-     */
-    public function getLanguage()
+    public function getLanguage(): string
     {
         return $this->language;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'url' => $this->url,
