@@ -86,8 +86,8 @@
         <div class="ui form">
             {{ _self.wysiwyg(form.cfp.cfp_fr) }}
             {{ _self.wysiwyg(form.cfp.cfp_en) }}
-            {{ form_row(form.cfp.speaker_management_fr) }}
-            {{ form_row(form.cfp.speaker_management_en) }}
+            {{ _self.wysiwyg(form.cfp.speaker_management_fr) }}
+            {{ _self.wysiwyg(form.cfp.speaker_management_en) }}
             {{ form_row(form.speakersDinerEnabled) }}
             {{ form_row(form.accomodationEnabled) }}
             {{ form_row(form.dateEndSpeakersDinerInfosCollection) }}
@@ -102,8 +102,8 @@
 
         <div class="ui form">
             {{ _self.wysiwyg(form.cfp.become_sponsor_description) }}
-            {{ form_row(form.cfp.sponsor_management_fr) }}
-            {{ form_row(form.cfp.sponsor_management_en) }}
+            {{ _self.wysiwyg(form.cfp.sponsor_management_fr) }}
+            {{ _self.wysiwyg(form.cfp.sponsor_management_en) }}
 
             {{ form_row(form.sponsor_file_fr) }}
             {{ _self.file_path_link(sponsor_file_path_fr, 'Voir le dossier de sponsoring (FR)') }}
