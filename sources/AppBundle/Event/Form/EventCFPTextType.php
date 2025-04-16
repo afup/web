@@ -25,32 +25,27 @@ class EventCFPTextType extends AbstractType
             ])
             ->add('speaker_management_fr', TextareaType::class, [
                 'label' => 'Infos speakers (fr)',
-                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'tinymce'],
+                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'simplemde'],
                 'required' => false,
             ])
             ->add('speaker_management_en', TextareaType::class, [
                 'label' => 'Infos speakers (en)',
-                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'tinymce'],
+                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'simplemde'],
                 'required' => false,
             ])
             ->add('sponsor_management_fr', TextareaType::class, [
                 'label' => 'Infos sponsors (fr)',
-                'attr' => ['rows' => 5,'cols' => 50, 'class' => 'tinymce'],
+                'attr' => ['rows' => 5,'cols' => 50, 'class' => 'simplemde'],
                 'required' => false,
             ])
             ->add('sponsor_management_en', TextareaType::class, [
                 'label' => 'Infos sponsors (en)',
-                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'tinymce'],
+                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'simplemde'],
                 'required' => false,
             ])
             ->add('mail_inscription_content', TextareaType::class, [
                 'label' => 'Contenu mail inscription',
                 'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'simplemde'],
-                'required' => false,
-            ])
-            ->add('sponsor_management_en', TextareaType::class, [
-                'label' => 'Infos sponsors (en)',
-                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'tinymce'],
                 'required' => false,
             ])
             ->add('become_sponsor_description', TextareaType::class, [
