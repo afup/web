@@ -9,7 +9,6 @@ use AppBundle\Email\Emails;
 use AppBundle\Email\Mailer\MailUserFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 class SendTestInscriptionEmailAction extends AbstractController
 {
@@ -24,7 +23,7 @@ class SendTestInscriptionEmailAction extends AbstractController
         $this->emails = $emails;
     }
 
-    public function __invoke(int $id, Request $request): RedirectResponse
+    public function __invoke(int $id): RedirectResponse
     {
         $event = $this->eventActionHelper->getEventById($id);
         $this->emails->sendInscription($event, MailUserFactory::bureau());
