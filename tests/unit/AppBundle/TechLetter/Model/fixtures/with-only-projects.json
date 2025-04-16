@@ -1,0 +1,14 @@
+{
+    "projects": [
+        {
+            "url": "https://github.com/afup/planete",
+            "name": "afup/planete",
+            "description": "Le code source de planete-php.fr"
+        },
+        {
+            "url": "https://github.com/afup/barometre",
+            "name": "afup/barometre",
+            "description": "Le code source de barometre.afup.org"
+        }
+    ]
+}

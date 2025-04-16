@@ -1,0 +1,41 @@
+{
+    "firstNews": {
+        "url": "https://afup.org/news/1222-forum-php-2024-exceptionnel",
+        "title": "Un Forum PHP 2024 exceptionnel !",
+        "date": "2024-10-21"
+    },
+    "secondNews": {
+        "url": "https://afup.org/news/1231-enquete2025-barometre-des-salaires-PHP-ouverte",
+        "title": "L’enquête 2025 du baromètre des salaires en PHP est ouverte",
+        "date": "2025-03-17"
+    },
+    "articles": [
+        {
+            "url": "https://example.com/fr",
+            "title": "Example en français",
+            "host": "example.com",
+            "readingTime": "2",
+            "excerpt": "Lorem ipsum",
+            "language": "fr"
+        },
+        {
+            "url": "https://example.com/en",
+            "title": "Example with default language",
+            "host": "example.com",
+            "readingTime": "2",
+            "excerpt": "Lorem ipsum"
+        }
+    ],
+    "projects": [
+        {
+            "url": "https://github.com/afup/planete",
+            "name": "afup/planete",
+            "description": "Le code source de planete-php.fr"
+        },
+        {
+            "url": "https://github.com/afup/barometre",
+            "name": "afup/barometre",
+            "description": "Le code source de barometre.afup.org"
+        }
+    ]
+}
