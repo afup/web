@@ -79,12 +79,8 @@ class Runner
     public function transformMeetupsForIndexation(CollectionInterface $meetupsCollection): array
     {
         $meetupsArray = [];
-        /** @var Meetup $meetup */
         foreach ($meetupsCollection as $meetup) {
-            if (null === ($transformedMeetup = $this->transformer->transform($meetup))) {
-                continue;
-            }
-            $meetupsArray[] = $transformedMeetup;
+            $meetupsArray[] = $this->transformer->transform($meetup);
         }
 
         return $meetupsArray;
