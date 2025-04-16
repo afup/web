@@ -6,10 +6,10 @@ home:
 
 become_sponsor_latest:
   path: /become-sponsor
-  defaults: { _controller: AppBundle\Controller\Event\LeadController:becomeSponsorLatest }
+  defaults: { _controller: AppBundle\Controller\Event\LeadController::becomeSponsorLatest }
 
 sitemap:
   path: /plan-du-site
-  defaults: { _controller: AppBundle\Controller\Website\HtmlSitemapController:display }
+  defaults: { _controller: AppBundle\Controller\Website\HtmlSitemapController::display }
   options:
     sitemap: true

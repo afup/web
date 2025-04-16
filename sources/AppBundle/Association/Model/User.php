@@ -641,13 +641,13 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return ($this->companyId !== null && $this->companyId > 0);
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         $defaultRoles = ['ROLE_USER'];
         if ($this->lastSubscription < new \DateTime()) {
             $defaultRoles = ['ROLE_MEMBER_EXPIRED'];
         }
-        if ($this->level == self::LEVEL_ADMIN) {
+        if ($this->level === self::LEVEL_ADMIN) {
             $defaultRoles[] = 'ROLE_SUPER_ADMIN';
         }
         if (isset($this->levelModules[0]) && (int) $this->levelModules[0] > 0) {

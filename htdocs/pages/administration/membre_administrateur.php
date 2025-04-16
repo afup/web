@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 // Impossible to access the file itself
-use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Controller\LegacyController;
 
 /** @var LegacyController $this */
@@ -12,7 +11,8 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$userRepository = $this->get(UserRepository::class);
+$userRepository = $this->userRepository;
+
 $action = verifierAction(['lister', 'detail', 'rechercher']);
 $smarty->assign('action', $action);
 

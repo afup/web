@@ -112,13 +112,13 @@ final class StatusGenerator
 
     private function buildThumbnailUrl(Talk $talk): ?string
     {
-        $youTubeId = $talk->getYoutubeId();
+        $youtubeId = $talk->getYoutubeId();
 
-        if ($youTubeId === null) {
+        if ($youtubeId === null) {
             return null;
         }
 
-        return sprintf('https://i.ytimg.com/vi_webp/%s/maxresdefault.webp', $youTubeId);
+        return sprintf('https://i.ytimg.com/vi_webp/%s/maxresdefault.webp', $youtubeId);
     }
 
     private function isTextTooLong(string $text): bool

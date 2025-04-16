@@ -209,6 +209,8 @@ services:
 
     AppBundle\Controller\LegacyController:
         autowire: true
+        autoconfigure: true
+        public: false
         arguments:
             $backOfficePages: '%app.pages_backoffice%'
 

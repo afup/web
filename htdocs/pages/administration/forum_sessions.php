@@ -8,9 +8,6 @@ use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Pays;
 use AppBundle\Controller\LegacyController;
-use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
-use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use Assert\Assertion;
 
@@ -25,8 +22,9 @@ $tris_valides = ['s.titre', 's.date_soumission'];
 $sens_valides = ['asc' , 'desc'];
 $smarty->assign('action', $action);
 
-$eventRepository = $this->get(EventRepository::class);
-$speakerRepository = $this->get(SpeakerRepository::class);
+$eventRepository = $this->eventRepository;
+$speakerRepository = $this->speakerRepository;
+$talkRepository = $this->talkRepository;
 
 $forum = new Forum($bdd);
 $forum_appel = new AppelConferencier($bdd);
@@ -113,7 +111,7 @@ if ($action == 'lister') {
     if ($action != 'ajouter') {
         $champs = $forum_appel->obtenirSession($_GET['id']);
 
-        $talk = $this->get('ting')->get(TalkRepository::class)->get($_GET['id']);
+        $talk = $talkRepository->get($_GET['id']);
 
         $formulaire->setDefaults($champs);
 

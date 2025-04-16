@@ -7,8 +7,6 @@ use Afup\Site\Forum\Facturation;
 use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Logs;
 use AppBundle\Controller\LegacyController;
-use AppBundle\Event\Invoice\InvoiceService;
-use AppBundle\Event\Model\Repository\InvoiceRepository;
 
 /** @var LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -16,9 +14,8 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
-$invoiceRepository = $this->get(InvoiceRepository::class);
-/** @var InvoiceService $invoiceService */
-$invoiceService = $this->get(InvoiceService::class);
+$invoiceRepository = $this->invoiceRepository;
+$invoiceService = $this->invoiceService;
 
 $action = verifierAction(['lister', 'telecharger_devis', 'telecharger_facture', 'envoyer_facture', 'facturer_facture', 'supprimer_facture', 'changer_date_reglement']);
 $tris_valides = ['date_facture', 'email', 'societe', 'etat'];

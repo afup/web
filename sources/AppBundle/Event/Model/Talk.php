@@ -72,7 +72,7 @@ class Talk implements NotifyPropertyInterface
 
     private bool $needsMentoring = false;
 
-    private ?string $youTubeId = null;
+    private ?string $youtubeId = null;
 
     private bool $videoHasFrSubtitles = false;
 
@@ -277,13 +277,13 @@ class Talk implements NotifyPropertyInterface
 
     public function getYoutubeId(): ?string
     {
-        return $this->youTubeId;
+        return $this->youtubeId;
     }
 
     public function setYoutubeId(?string $youtubeId): self
     {
-        $this->propertyChanged('youtubeId', $this->youTubeId, $youtubeId);
-        $this->youTubeId = $youtubeId;
+        $this->propertyChanged('youtubeId', $this->youtubeId, $youtubeId);
+        $this->youtubeId = $youtubeId;
 
         return $this;
     }
