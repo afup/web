@@ -162,14 +162,6 @@ final class BlueskyTransport implements Transport
             return null;
         }
 
-        if (count($matches) !== 4) {
-            return null;
-        }
-
-        if (!is_string($matches[3])) {
-            return null;
-        }
-
         return $matches[3];
     }
 }
