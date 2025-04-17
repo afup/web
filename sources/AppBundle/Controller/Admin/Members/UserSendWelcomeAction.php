@@ -8,47 +8,39 @@ use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\UserMembership\UserService;
 use Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class UserSendWelcomeAction
+class UserSendWelcomeAction extends AbstractController
 {
     use DbLoggerTrait;
 
     private UserRepository $userRepository;
     private UserService $userService;
-    private FlashBagInterface $flashBag;
-    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         UserRepository $userRepository,
-        UserService $userService,
-        FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator
+        UserService $userService
     ) {
         $this->userRepository = $userRepository;
         $this->userService = $userService;
-        $this->flashBag = $flashBag;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function __invoke(Request $request): RedirectResponse
     {
         $user = $this->userRepository->get($request->query->get('id'));
         if (null === $user) {
-            throw new NotFoundHttpException('Personne physique non trouvée');
+            throw $this->createNotFoundException('Personne physique non trouvée');
         }
         try {
             $this->userService->sendWelcomeEmail($user);
             $this->log('Envoi d\'un message de bienvenue à la personne physique ' . $user->getId());
-            $this->flashBag->add('notice', 'Un mail de bienvenue a été envoyé à la personne physique');
+            $this->addFlash('notice', 'Un mail de bienvenue a été envoyé à la personne physique');
         } catch (Exception $e) {
-            $this->flashBag->add('error', 'Une erreur est survenue lors de l\'envoi du mail de bienvenue à la personne physique');
+            $this->addFlash('error', 'Une erreur est survenue lors de l\'envoi du mail de bienvenue à la personne physique');
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('admin_members_user_list'));
+        return $this->redirectToRoute('admin_members_user_list');
     }
 }

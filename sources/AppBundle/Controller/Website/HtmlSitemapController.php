@@ -14,17 +14,15 @@ use AppBundle\Twig\ViewRenderer;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class HtmlSitemapController extends AbstractController
 {
-    private UrlGeneratorInterface $urlGenerator;
     private ViewRenderer $view;
     private RepositoryFactory $repositoryFactory;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, ViewRenderer $view, RepositoryFactory $repositoryFactory)
-    {
-        $this->urlGenerator = $urlGenerator;
+    public function __construct(ViewRenderer $view,
+                                RepositoryFactory $repositoryFactory
+    ) {
         $this->view = $view;
         $this->repositoryFactory = $repositoryFactory;
     }
@@ -70,7 +68,7 @@ class HtmlSitemapController extends AbstractController
 
         $members = [];
         foreach ($displayableCompanies as $member) {
-            $url = $this->urlGenerator->generate('company_public_profile', [
+            $url = $this->generateUrl('company_public_profile', [
                 'id' => $member->getId(),
                 'slug' => $member->getSlug(),
             ]);
@@ -90,7 +88,7 @@ class HtmlSitemapController extends AbstractController
         $news = [];
         $newsList = $repository->findAllPublishedNews();
         foreach ($newsList as $newsItem) {
-            $url = $this->urlGenerator->generate('news_display', [
+            $url = $this->generateUrl('news_display', [
                 'code' => $newsItem->getSlug(),
             ]);
 
@@ -112,7 +110,7 @@ class HtmlSitemapController extends AbstractController
 
         /** @var Talk $talk */
         foreach ($talkList as $talk) {
-            $url = $this->urlGenerator->generate(
+            $url = $this->generateUrl(
                 'talks_show',
                 ['id' => $talk->getId(), 'slug' => $talk->getSlug()]
             );

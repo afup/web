@@ -8,31 +8,24 @@ use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Ticket\SponsorTokenMail;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class SendLastCallSponsorTokenAction
+class SendLastCallSponsorTokenAction extends AbstractController
 {
     private EventActionHelper $eventActionHelper;
     private SponsorTicketRepository $sponsorTicketRepository;
     private SponsorTokenMail $sponsorTokenMail;
-    private UrlGeneratorInterface $urlGenerator;
-    private FlashBagInterface $flashBag;
 
     public function __construct(
         EventActionHelper $eventActionHelper,
         SponsorTicketRepository $sponsorTicketRepository,
-        SponsorTokenMail $sponsorTokenMail,
-        FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator
+        SponsorTokenMail $sponsorTokenMail
     ) {
         $this->eventActionHelper = $eventActionHelper;
         $this->sponsorTicketRepository = $sponsorTicketRepository;
         $this->sponsorTokenMail = $sponsorTokenMail;
-        $this->flashBag = $flashBag;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function __invoke(Request $request): RedirectResponse
@@ -49,8 +42,10 @@ class SendLastCallSponsorTokenAction
             }
         }
 
-        $this->flashBag->add('notice', sprintf('%s mails de relance ont été envoyés', $mailSent));
+        $this->addFlash('notice', sprintf('%s mails de relance ont été envoyés', $mailSent));
 
-        return new RedirectResponse($this->urlGenerator->generate('admin_event_sponsor_ticket', ['id' => $event->getId()]));
+        return $this->redirectToRoute('admin_event_sponsor_ticket', [
+            'id' => $event->getId()
+        ]);
     }
 }

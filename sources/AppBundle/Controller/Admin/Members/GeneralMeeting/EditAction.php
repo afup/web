@@ -8,62 +8,45 @@ use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\GeneralMeeting\PrepareFormType;
 use DateTime;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
-class EditAction
+class EditAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private FormFactoryInterface $formFactory;
-    private FlashBagInterface $flashBag;
-    private Environment $twig;
     private GeneralMeetingRepository $generalMeetingRepository;
-    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
-        GeneralMeetingRepository $generalMeetingRepository,
-        FormFactoryInterface $formFactory,
-        FlashBagInterface $flashBag,
-        Environment $twig,
-        UrlGeneratorInterface $urlGenerator
-    ) {
+        GeneralMeetingRepository $generalMeetingRepository)
+    {
         $this->generalMeetingRepository = $generalMeetingRepository;
-        $this->formFactory = $formFactory;
-        $this->flashBag = $flashBag;
-        $this->twig = $twig;
-        $this->urlGenerator = $urlGenerator;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $date = new DateTime('@' . $request->query->get('date'));
 
         $generaleMeeting = $this->generalMeetingRepository->findOneByDate($date);
         if (null === $generaleMeeting) {
-            throw new NotFoundHttpException(sprintf('General meeting with date "%d" not found', $date->getTimestamp()));
+            throw $this->createNotFoundException(sprintf('General meeting with date "%d" not found', $date->getTimestamp()));
         }
-        $form = $this->formFactory->create(PrepareFormType::class, $generaleMeeting, ['without_date' => true]);
+        $form = $this->createForm(PrepareFormType::class, $generaleMeeting, ['without_date' => true]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
             $this->generalMeetingRepository->save($generaleMeeting['date'], $data['description']);
 
-            $this->flashBag->add('success', 'Description enregistrée');
-            return new RedirectResponse($this->urlGenerator->generate('admin_members_general_meeting_edit', [
+            $this->addFlash('success', 'Description enregistrée');
+            return $this->redirectToRoute('admin_members_general_meeting_edit', [
                 'date' => $date->getTimestamp()
-            ]));
+            ]);
         }
 
-        return new Response($this->twig->render('admin/members/general_meeting/edit.html.twig', [
+        return $this->render('admin/members/general_meeting/edit.html.twig', [
             'form' => $form->createView(),
-        ]));
+        ]);
     }
 }

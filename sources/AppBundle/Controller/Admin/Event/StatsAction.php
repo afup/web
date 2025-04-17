@@ -13,20 +13,17 @@ use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\LegacyModelFactory;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
 
-class StatsAction
+class StatsAction extends AbstractController
 {
     private EventActionHelper $eventActionHelper;
     private LegacyModelFactory $legacyModelFactory;
     private TicketRepository $ticketRepository;
     private TicketTypeRepository $ticketTypeRepository;
     private EventStatsRepository $eventStatsRepository;
-    private FormFactoryInterface $formFactory;
-    private Environment $twig;
     private EventRepository $eventRepository;
 
     public function __construct(
@@ -35,18 +32,14 @@ class StatsAction
         TicketRepository $ticketRepository,
         TicketTypeRepository $ticketTypeRepository,
         EventStatsRepository $eventStatsRepository,
-        FormFactoryInterface $formFactory,
-        EventRepository $eventRepository,
-        Environment $twig
+        EventRepository $eventRepository
     ) {
         $this->eventActionHelper = $eventActionHelper;
         $this->legacyModelFactory = $legacyModelFactory;
         $this->ticketRepository = $ticketRepository;
         $this->ticketTypeRepository = $ticketTypeRepository;
         $this->eventStatsRepository = $eventStatsRepository;
-        $this->formFactory = $formFactory;
         $this->eventRepository = $eventRepository;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response
@@ -58,7 +51,7 @@ class StatsAction
             $comparedEvent = $this->eventRepository->getLastYearEvent($event);
         }
 
-        $comparedEventForm = $this->formFactory->create(EventCompareSelectType::class, [
+        $comparedEventForm = $this->createForm(EventCompareSelectType::class, [
             'event_id' => $event->getId(),
             'compared_event_id' => $comparedEvent->getId(),
         ], [
@@ -152,7 +145,7 @@ class StatsAction
             ],
         ];
 
-        return new Response($this->twig->render('admin/event/stats.html.twig', [
+        return $this->render('admin/event/stats.html.twig', [
             'title' => 'Suivi inscriptions',
             'event' => $event,
             'chartConf' => $chart,
@@ -164,6 +157,6 @@ class StatsAction
                 'two' => $ticketsDayTwo,
             ],
             'event_compare_form' => $comparedEventForm->createView(),
-        ]));
+        ]);
     }
 }

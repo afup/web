@@ -6,29 +6,17 @@ namespace AppBundle\Controller\Admin\Members\GeneralMeetingVote;
 
 use AppBundle\Association\Model\GeneralMeetingQuestion;
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class CloseAction
+class CloseAction extends AbstractController
 {
-    private FlashBagInterface $flashBag;
-
     private GeneralMeetingQuestionRepository $generalMeetingQuestionRepository;
 
-    private UrlGeneratorInterface $urlGenerator;
-
-    public function __construct(
-        GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
-        FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator
-    ) {
-        $this->flashBag = $flashBag;
+    public function __construct(GeneralMeetingQuestionRepository $generalMeetingQuestionRepository)
+    {
         $this->generalMeetingQuestionRepository = $generalMeetingQuestionRepository;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function __invoke(Request $request): RedirectResponse
@@ -39,17 +27,19 @@ class CloseAction
         $question = $this->generalMeetingQuestionRepository->get($questionId);
 
         if (null === $question) {
-            throw new NotFoundHttpException(sprintf("Question %d not found", $questionId));
+            throw $this->createNotFoundException(sprintf("Question %d not found", $questionId));
         }
 
         if (false === $question->hasStatusOpened()) {
-            throw new AccessDeniedHttpException("Only questions with status opened can be opened");
+            throw $this->createAccessDeniedException("Only questions with status opened can be opened");
         }
 
         $this->generalMeetingQuestionRepository->close($question);
 
-        $this->flashBag->add('notice', 'Le vote a été fermée');
+        $this->addFlash('notice', 'Le vote a été fermée');
 
-        return new RedirectResponse($this->urlGenerator->generate('admin_members_general_vote_list', ['date' => $question->getDate()->format('U')]));
+        return $this->redirectToRoute('admin_members_general_vote_list', [
+            'date' => $question->getDate()->format('U')
+        ]);
     }
 }

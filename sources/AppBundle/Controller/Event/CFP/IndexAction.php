@@ -13,18 +13,14 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use DateTime;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
-class IndexAction
+class IndexAction extends AbstractController
 {
     const MAX_EVENTS_HISTORY = 50;
     private TalkRepository $talkRepository;
-    private UrlGeneratorInterface $urlGenerator;
-    private Environment $twig;
     private SpeakerFactory $speakerFactory;
     private PhotoStorage $photoStorage;
     private SidebarRenderer $sidebarRenderer;
@@ -35,15 +31,11 @@ class IndexAction
         EventActionHelper $eventActionHelper,
         EventRepository $eventRepository,
         TalkRepository $talkRepository,
-        UrlGeneratorInterface $urlGenerator,
-        Environment $twig,
         SpeakerFactory $speakerFactory,
         PhotoStorage $photoStorage,
         SidebarRenderer $sidebarRenderer
     ) {
         $this->talkRepository = $talkRepository;
-        $this->urlGenerator = $urlGenerator;
-        $this->twig = $twig;
         $this->speakerFactory = $speakerFactory;
         $this->photoStorage = $photoStorage;
         $this->sidebarRenderer = $sidebarRenderer;
@@ -51,12 +43,12 @@ class IndexAction
         $this->eventRepository = $eventRepository;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
         $now = new DateTime();
         if ($event->getDateEndCallForPapers() < $now && $event->getDateEndVote() > $now) {
-            return new RedirectResponse($this->urlGenerator->generate('event_index'));
+            return $this->redirectToRoute('event_index');
         }
         $speaker = $this->speakerFactory->getSpeaker($event);
         $eventTalkList = new EventTalkList($event);
@@ -78,13 +70,13 @@ class IndexAction
         // Remove events with no talks submitted
         $previousEventTalkLists = array_filter($previousEventTalkLists, static fn (EventTalkList $previousEventTalkList): bool => [] !== $previousEventTalkList->getTalks());
 
-        return new Response($this->twig->render('event/cfp/home.html.twig', [
+        return $this->render('event/cfp/home.html.twig', [
             'event' => $event,
             'eventTalkList' => $eventTalkList,
             'previousEventTalkLists' => $previousEventTalkLists,
             'speaker' => $speaker,
             'speakerPhoto' => $this->photoStorage->getUrl($speaker),
             'sidebar' => $this->sidebarRenderer->render($event),
-        ]));
+        ]);
     }
 }

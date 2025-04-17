@@ -4,38 +4,18 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members\GeneralMeeting;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Twig\Environment;
 
-class ReportsAction
+class ReportsAction extends AbstractController
 {
-    private Environment $twig;
-    private FlashBagInterface $flashBag;
-    private UrlGeneratorInterface $urlGenerator;
-    private FormFactoryInterface $formFactory;
-
-    public function __construct(Environment           $twig,
-                                FlashBagInterface     $flashBag,
-                                UrlGeneratorInterface $urlGenerator,
-                                FormFactoryInterface  $formFactory)
-    {
-        $this->twig = $twig;
-        $this->flashBag = $flashBag;
-        $this->urlGenerator = $urlGenerator;
-        $this->formFactory = $formFactory;
-    }
-
     public function __invoke(Request $request): Response
     {
         $basePath = 'uploads/general_meetings_reports/';
@@ -44,11 +24,11 @@ class ReportsAction
         if ($fileToDelete = $request->query->get('file')) {
             $fileToDelete = $basePath . basename($fileToDelete);
             if (is_file($fileToDelete) && unlink($fileToDelete)) {
-                $this->flashBag->add('notice', 'Le compte rendu a correctement été supprimé.');
+                $this->addFlash('notice', 'Le compte rendu a correctement été supprimé.');
             } else {
-                $this->flashBag->add('error', 'Le compte rendu n\'a pas été supprimé.');
+                $this->addFlash('error', 'Le compte rendu n\'a pas été supprimé.');
             }
-            return new RedirectResponse($this->urlGenerator->generate($request->attributes->get('_route')));
+            return $this->redirectToRoute($request->attributes->get('_route'));
         }
 
         // add
@@ -58,11 +38,11 @@ class ReportsAction
             /** @var UploadedFile $reportFile */
             $reportFile = $form->get('file')->getData();
             if ($reportFile->move($basePath, $reportFile->getClientOriginalName())) {
-                $this->flashBag->add('notice', 'Le compte rendu a correctement été ajouté.');
+                $this->addFlash('notice', 'Le compte rendu a correctement été ajouté.');
             } else {
-                $this->flashBag->add('error', 'Le compte rendu n\'a pas été ajouté.');
+                $this->addFlash('error', 'Le compte rendu n\'a pas été ajouté.');
             }
-            return new RedirectResponse($this->urlGenerator->generate($request->attributes->get('_route')));
+            return $this->redirectToRoute($request->attributes->get('_route'));
         }
 
         $files = glob($basePath . '*.pdf');
@@ -77,10 +57,10 @@ class ReportsAction
             $reports[] = $report;
         }
 
-        return new Response($this->twig->render('admin/members/general_meeting/reports.html.twig', [
+        return $this->render('admin/members/general_meeting/reports.html.twig', [
             'form' => $form->createView(),
             'reports' => $reports
-        ]));
+        ]);
     }
 
     private function humanFilesize($bytes): string
@@ -93,7 +73,7 @@ class ReportsAction
 
     private function buildForm(): FormInterface
     {
-        return $this->formFactory->createNamed('report')
+        return $this->createFormBuilder()
             ->add('file', FileType::class, [
                 'label' => 'Fichier',
                 'required' => true,
@@ -111,6 +91,6 @@ class ReportsAction
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Envoyer',
-            ]);
+            ])->getForm();
     }
 }

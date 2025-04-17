@@ -13,55 +13,37 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;
 use Assert\Assertion;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
-class SpeakerAddAction
+class SpeakerAddAction extends AbstractController
 {
     use DbLoggerTrait;
 
     private EventRepository $eventRepository;
     private SpeakerRepository $speakerRepository;
-    private FormFactoryInterface $formFactory;
-    private FlashBagInterface $flashBag;
-    private UrlGeneratorInterface $urlGenerator;
     private PhotoStorage $photoStorage;
-    private Environment $twig;
 
     public function __construct(
         EventRepository $eventRepository,
         SpeakerRepository $speakerRepository,
-        FormFactoryInterface $formFactory,
-        FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator,
-        PhotoStorage $photoStorage,
-        Environment $twig
+        PhotoStorage $photoStorage
     ) {
         $this->eventRepository = $eventRepository;
         $this->speakerRepository = $speakerRepository;
-        $this->formFactory = $formFactory;
-        $this->flashBag = $flashBag;
-        $this->urlGenerator = $urlGenerator;
         $this->photoStorage = $photoStorage;
-        $this->twig = $twig;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         /** @var Event $event */
         $event = $this->eventRepository->get($request->query->get('eventId'));
         Assertion::notNull($event);
         $data = new SpeakerFormData();
-        $form = $this->formFactory->create(
-            SpeakerType::class,
-            $data,
-            [SpeakerType::OPT_USER_GITHUB => true]
-        );
+        $form = $this->createForm(SpeakerType::class, $data, [
+            SpeakerType::OPT_USER_GITHUB => true
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $speaker = new Speaker();
@@ -85,14 +67,17 @@ class SpeakerAddAction
                 $this->speakerRepository->save($speaker);
             }
             $this->log('Ajout du conférencier de ' . $speaker->getFirstname() . ' ' . $speaker->getLastname());
-            $this->flashBag->add('notice', 'Le conférencier a été ajouté');
 
-            return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list', ['eventId' => $event->getId()]));
+            $this->addFlash('notice', 'Le conférencier a été ajouté');
+
+            return $this->redirectToRoute('admin_speaker_list', [
+                'eventId' => $event->getId()
+            ]);
         }
 
-        return new Response($this->twig->render('admin/speaker/add.html.twig', [
+        return $this->render('admin/speaker/add.html.twig', [
             'event' => $event,
             'form' => $form->createView(),
-        ]));
+        ]);
     }
 }

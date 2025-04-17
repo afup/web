@@ -16,15 +16,10 @@ use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use Assert\Assertion;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
-class SpeakerEditAction
+class SpeakerEditAction extends AbstractController
 {
     use DbLoggerTrait;
 
@@ -34,31 +29,19 @@ class SpeakerEditAction
     private EventRepository $eventRepository;
     private PhotoStorage $photoStorage;
     private SpeakerFormDataFactory $speakerFormDataFactory;
-    private FormFactoryInterface $formFactory;
-    private FlashBagInterface $flashBag;
-    private Environment $twig;
-    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         SpeakerRepository $speakerRepository,
         TalkRepository $talkRepository,
         EventRepository $eventRepository,
         PhotoStorage $photoStorage,
-        SpeakerFormDataFactory $speakerFormDataFactory,
-        FormFactoryInterface $formFactory,
-        FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator,
-        Environment $twig
+        SpeakerFormDataFactory $speakerFormDataFactory
     ) {
         $this->speakerRepository = $speakerRepository;
         $this->talkRepository = $talkRepository;
         $this->eventRepository = $eventRepository;
         $this->photoStorage = $photoStorage;
         $this->speakerFormDataFactory = $speakerFormDataFactory;
-        $this->formFactory = $formFactory;
-        $this->flashBag = $flashBag;
-        $this->urlGenerator = $urlGenerator;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request)
@@ -70,7 +53,7 @@ class SpeakerEditAction
         $event = $this->eventRepository->get($speaker->getEventId());
         Assertion::notNull($event);
         $data = $this->speakerFormDataFactory->fromSpeaker($speaker);
-        $form = $this->formFactory->create(SpeakerType::class, $data, [
+        $form = $this->createForm(SpeakerType::class, $data, [
             SpeakerType::OPT_PHOTO_REQUIRED => null === $speaker->getPhoto(),
             SpeakerType::OPT_USER_GITHUB => true,
         ]);
@@ -117,12 +100,15 @@ class SpeakerEditAction
             }
             $this->speakerRepository->save($speaker);
             $this->log('Modification du conférencier de ' . $speaker->getFirstname() . ' ' . $speaker->getLastname() . ' (' . $speaker->getId() . ')');
-            $this->flashBag->add('notice', 'Le conférencier a été modifié');
 
-            return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list', ['eventId' => $event->getId()]));
+            $this->addFlash('notice', 'Le conférencier a été modifié');
+
+            return $this->redirectToRoute('admin_speaker_list', [
+                'eventId' => $event->getId()
+            ]);
         }
 
-        return new Response($this->twig->render('admin/speaker/edit.html.twig', [
+        return $this->render('admin/speaker/edit.html.twig', [
             'speakerId' => $speaker->getId(),
             'eventId' => $event->getId(),
             'gravatar' => Utils::get_gravatar($speaker->getEmail(), 90),
@@ -131,6 +117,6 @@ class SpeakerEditAction
             'talks' => $talks,
             'photo' => $photo,
             'originalPhoto' => $originalPhoto,
-        ]));
+        ]);
     }
 }

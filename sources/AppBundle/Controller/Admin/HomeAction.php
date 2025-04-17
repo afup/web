@@ -12,21 +12,16 @@ use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use Assert\Assertion;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Security;
-use Twig\Environment;
 
-class HomeAction
+class HomeAction extends AbstractController
 {
     private EventRepository $eventRepository;
     private EventStatsRepository $eventStatsRepository;
     private TicketEventTypeRepository $ticketEventTypeRepository;
     private TechletterSubscriptionsRepository $techletterSubscriptionsRepository;
     private StatisticsComputer $statisticsComputer;
-    private UrlGeneratorInterface $urlGenerator;
-    private Security $security;
-    private Environment $twig;
     private GeneralMeetingRepository $generalMeetingRepository;
 
     public function __construct(
@@ -35,19 +30,13 @@ class HomeAction
         TicketEventTypeRepository $ticketEventTypeRepository,
         TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
         GeneralMeetingRepository $generalMeetingRepository,
-        StatisticsComputer $statisticsComputer,
-        UrlGeneratorInterface $urlGenerator,
-        Security $security,
-        Environment $twig
+        StatisticsComputer $statisticsComputer
     ) {
         $this->eventRepository = $eventRepository;
         $this->eventStatsRepository = $eventStatsRepository;
         $this->ticketEventTypeRepository = $ticketEventTypeRepository;
         $this->techletterSubscriptionsRepository = $techletterSubscriptionsRepository;
         $this->statisticsComputer = $statisticsComputer;
-        $this->urlGenerator = $urlGenerator;
-        $this->security = $security;
-        $this->twig = $twig;
         $this->generalMeetingRepository = $generalMeetingRepository;
     }
 
@@ -55,7 +44,7 @@ class HomeAction
     {
         $nextevents = $this->eventRepository->getNextEvents();
         $cards = [];
-        if ($this->security->isGranted('ROLE_FORUM') && $nextevents) {
+        if ($this->isGranted('ROLE_FORUM') && $nextevents) {
             foreach ($nextevents as $event) {
                 $stats = $this->eventStatsRepository->getStats($event->getId());
                 $info = [];
@@ -82,17 +71,17 @@ class HomeAction
             }
         }
 
-        if ($this->security->isGranted(('ROLE_ADMIN'))) {
+        if ($this->isGranted(('ROLE_ADMIN'))) {
             $cards[] = [
                 'title' => 'Abonnements à la veille',
                 'statistics' => ['Abonnements' => $this->techletterSubscriptionsRepository->countAllSubscriptionsWithUser()],
-                'url' => $this->urlGenerator->generate('admin_techletter_members'),
+                'url' => $this->generateUrl('admin_techletter_members'),
             ];
         }
         /** @var User $user */
-        $user = $this->security->getUser();
+        $user = $this->getUser();
         Assertion::isInstanceOf($user, User::class);
-        if ($this->security->isGranted(('ROLE_ADMIN'))) {
+        if ($this->isGranted(('ROLE_ADMIN'))) {
             $statistics = $this->statisticsComputer->computeStatistics();
             $cards[] = [
                 'title' => 'Membres',
@@ -104,7 +93,7 @@ class HomeAction
                     'label' => 'Membres',
                     'value' => $statistics->usersCount,
                 ],
-                'url' => $this->urlGenerator->generate('admin_members_reporting'),
+                'url' => $this->generateUrl('admin_members_reporting'),
             ];
 
             $latestDate = $this->generalMeetingRepository->getLatestDate();
@@ -119,14 +108,14 @@ class HomeAction
                         'label' => 'Quorum',
                         'value' => $this->generalMeetingRepository->obtenirEcartQuorum($latestDate, $statistics->usersCount),
                     ],
-                    'url' => $this->urlGenerator->generate('admin_members_general_meeting'),
+                    'url' => $this->generateUrl('admin_members_general_meeting'),
                 ];
             }
         }
 
-        return new Response($this->twig->render('admin/home.html.twig', [
+        return $this->render('admin/home.html.twig', [
             'user_label' => $user->getLabel(),
             'cards' => $cards,
-        ]));
+        ]);
     }
 }

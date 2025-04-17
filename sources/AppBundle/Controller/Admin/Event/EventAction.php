@@ -8,54 +8,37 @@ use AppBundle\Event\Form\EventType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventCouponRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
-class EventAction
+class EventAction extends AbstractController
 {
-    private FormFactoryInterface $formFactory;
-    private Environment $twig;
     private EventRepository $eventRepository;
-    private FlashBagInterface $flashBag;
-    private UrlGeneratorInterface $urlGenerator;
     private EventCouponRepository $couponRepository;
 
-    public function __construct(
-        FormFactoryInterface $formFactory,
-        Environment $twig,
-        EventRepository $eventRepository,
-        EventCouponRepository $couponRepository,
-        FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator
+    public function __construct(EventRepository $eventRepository,
+                                EventCouponRepository $couponRepository
     ) {
-        $this->formFactory = $formFactory;
-        $this->twig = $twig;
         $this->eventRepository = $eventRepository;
-        $this->flashBag = $flashBag;
-        $this->urlGenerator = $urlGenerator;
         $this->couponRepository = $couponRepository;
     }
 
-    public function __invoke(Request $request, $id)
+    public function __invoke(Request $request, $id): Response
     {
         $event = new Event();
 
         if ($id) {
             $event = $this->eventRepository->get($id);
             if ($event === null) {
-                $this->flashBag->add('error', 'Évènement non trouvé');
-                return new RedirectResponse($this->urlGenerator->generate('admin_event_list'));
+                $this->addFlash('error', 'Évènement non trouvé');
+                return $this->redirectToRoute('admin_event_list');
             }
         }
 
-        $form = $this->formFactory->create(EventType::class, $event);
+        $form = $this->createForm(EventType::class, $event);
 
         if ($event->getId() && $couponsImploded = $this->couponRepository->couponsListForEventImploded($event)) {
             $form->get('coupons')->setData($couponsImploded);
@@ -74,21 +57,21 @@ class EventAction
                 $this->couponRepository->changeCouponForEvent($event, $eventCoupons);
             }
 
-            $this->flashBag->add('notice', 'Évènement ' . ($id ? 'modifié' : 'ajouté'));
-            return new RedirectResponse($this->urlGenerator->generate('admin_event_list'));
+            $this->addFlash('notice', 'Évènement ' . ($id ? 'modifié' : 'ajouté'));
+            return $this->redirectToRoute('admin_event_list');
         }
 
         $sponsorFilePathFR = Event::hasSponsorFile($event->getPath(), 'fr') ? Event::getSponsorFilePublicPath($event->getPath(), 'fr') : null;
         $sponsorFilePathEN = Event::hasSponsorFile($event->getPath(), 'en') ? Event::getSponsorFilePublicPath($event->getPath(), 'en') : null;
         $registrationEmailFilePath = Event::hasInscriptionAttachment($event->getPath()) ? Event::getInscriptionAttachmentPublicPath($event->getPath()) : null;
 
-        return new Response($this->twig->render('admin/event/' . ($id ? 'edit' : 'add') . '.html.twig', [
+        return $this->render('admin/event/' . ($id ? 'edit' : 'add') . '.html.twig', [
             'form' => $form->createView(),
             'event' => $event,
             'sponsor_file_path_fr' => $sponsorFilePathFR,
             'sponsor_file_path_en' => $sponsorFilePathEN,
             'registration_email_file_path' => $registrationEmailFilePath,
-        ]));
+        ]);
     }
 
     private function moveSponsorFile(Event $event, FormInterface $form, string $language): void

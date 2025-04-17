@@ -15,19 +15,15 @@ use AppBundle\TechLetter\Model as Techletter;
 use AppBundle\TechLetter\Model\News;
 use AppBundle\TechLetter\Model\Repository\SendingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class TechLetterGenerateController extends AbstractController
 {
     private SendingRepository $sendingRepository;
-    private FormFactoryInterface $formFactory;
-    private UrlGeneratorInterface $urlGenerator;
     private TechletterSubscriptionsRepository $techletterSubscriptionsRepository;
     private Mailer $mailer;
     private Mailchimp $mailchimp;
@@ -37,16 +33,12 @@ class TechLetterGenerateController extends AbstractController
     public function __construct(
         SendingRepository $sendingRepository,
         TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
-        FormFactoryInterface $formFactory,
-        UrlGeneratorInterface $urlGenerator,
         Mailer $mailer,
         Mailchimp $mailchimp,
         string $techletterTestEmailAddress,
         string $mailchimpTechletterList
     ) {
         $this->sendingRepository = $sendingRepository;
-        $this->formFactory = $formFactory;
-        $this->urlGenerator = $urlGenerator;
         $this->techletterSubscriptionsRepository = $techletterSubscriptionsRepository;
         $this->mailer = $mailer;
         $this->mailchimp = $mailchimp;
@@ -57,16 +49,16 @@ class TechLetterGenerateController extends AbstractController
     public function index(Request $request)
     {
         $techLetters = $this->sendingRepository->getAllOrderedByDateDesc();
-        $form = $this->formFactory->create(SendingType::class);
+        $form = $this->createForm(SendingType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $techletter = $form->getData();
             $this->sendingRepository->save($techletter);
 
-            return new RedirectResponse($this->urlGenerator->generate('admin_techletter_generate', [
+            return $this->redirectToRoute('admin_techletter_generate', [
                 'techletterId' => $techletter->getId(),
-            ]));
+            ]);
         }
 
         return $this->render('admin/techletter/index.html.twig', [
