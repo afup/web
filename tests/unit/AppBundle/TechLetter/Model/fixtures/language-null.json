@@ -1,0 +1,12 @@
+{
+    "articles": [
+        {
+            "url": "https://example.com",
+            "title": "Example avec language à null",
+            "host": "example.com",
+            "readingTime": "2",
+            "excerpt": "Lorem ipsum",
+            "language": null
+        }
+    ]
+}
