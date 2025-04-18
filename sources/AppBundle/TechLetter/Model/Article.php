@@ -6,6 +6,8 @@ namespace AppBundle\TechLetter\Model;
 
 class Article implements \JsonSerializable
 {
+    private const DEFAULT_LANGUAGE = 'en';
+
     private string $url;
     private string $title;
     private string $host;
@@ -16,14 +18,14 @@ class Article implements \JsonSerializable
     private string $excerpt;
     private string $language;
 
-    public function __construct(string $url, string $title, string $host, string $readingTime, string $excerpt, string $language)
+    public function __construct(string $url, string $title, string $host, string $readingTime, string $excerpt, ?string $language = self::DEFAULT_LANGUAGE)
     {
         $this->url = $url;
         $this->title = $title;
         $this->host = $host;
         $this->readingTime = $readingTime;
         $this->excerpt = $excerpt;
-        $this->language = $language;
+        $this->language = $language ?? self::DEFAULT_LANGUAGE;
     }
 
     public function getUrl(): string
