@@ -25,6 +25,9 @@
                 padding: 20px;
             }
 
+            .scrollable-content {
+                overflow-y: scroll;
+            }
 
             .full-height > .toc .menu {
                 border-radius: 0;
@@ -91,7 +94,7 @@
                     </div>
                 </div>
 
-                <div class="content">
+                <div class="content scrollable-content">
                     {% for bag in ['notice', 'success', 'error'] %}
                         {% for flash_message in app.session.flashBag.get(bag)%}
                             {% if bag == 'error'%}
