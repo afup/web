@@ -38,7 +38,7 @@ final class EventHelper
      */
     public function sortEventsByStartDate(array $events): array
     {
-        usort($events, static fn (Event $a, Event $b): bool => $a->getDateStart() <= $b->getDateStart());
+        usort($events, static fn (Event $a, Event $b): int => $a->getDateStart() <=> $b->getDateStart());
 
         return $events;
     }

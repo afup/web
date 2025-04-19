@@ -366,7 +366,7 @@ SQL;
             ])
             ->addField([
                 'columnName' => 'text',
-                'fieldName' => 'cfp',
+                'fieldName' => 'CFP',
                 'type' => 'json',
                 'serializer_options' => [
                     'unserialize' => ['assoc' => true],
