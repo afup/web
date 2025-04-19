@@ -122,7 +122,7 @@
     "behat/mink-goutte-driver": "^2.0",
     "fakerphp/faker": "^1.24",
     "friends-of-behat/mink-extension": "^2.7",
-    "friendsofphp/php-cs-fixer": "~2",
+    "friendsofphp/php-cs-fixer": "^3.75",
     "ifsnop/mysqldump-php": "^2.12",
     "phpunit/phpunit": "^9.6",
     "rector/rector": "^2.0",

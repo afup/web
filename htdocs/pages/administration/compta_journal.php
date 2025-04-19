@@ -258,13 +258,11 @@ if ($action == 'lister') {
 
 
     $smarty->assign('formulaire', genererFormulaire($formulaire));
-}
-
-/*
- * This action allows the admin to export the full period in a CSV file.
- * This is really useful when you need to filter by columns using Excel.
- */
-elseif ($action === 'export') {
+} elseif ($action === 'export') {
+    /*
+     * This action allows the admin to export the full period in a CSV file.
+     * This is really useful when you need to filter by columns using Excel.
+     */
     $journal = $compta->obtenirJournal('', $periode_debut, $periode_fin, !$alsoDisplayClassifed);
 
     // Pointer to output
@@ -368,8 +366,7 @@ elseif ($action === 'export') {
  *
  * This action is added to perform Ajax updates directly on the "journal" list
  * in order to improve utilization.
- */
-elseif ($action === 'modifier_colonne') {
+ */ elseif ($action === 'modifier_colonne') {
     try {
         // Bad request?
         if (!isset($_POST['val']) || !isset($_GET['column']) || !isset($_GET['id']) || !($line = $compta->obtenir((int) $_GET['id']))) {
@@ -453,8 +450,7 @@ elseif ($action === 'modifier_colonne') {
  * and a unique identifier to keep it safe.
  * If the line already has an attachment, we remove it before saving
  * the new one in the line.
- */
-elseif ($action === 'upload_attachment') {
+ */ elseif ($action === 'upload_attachment') {
     try {
         // Bad request?
         if (!isset($_GET['id']) || !($line = $compta->obtenir((int) $_GET['id']))) {
@@ -549,8 +545,7 @@ elseif ($action === 'upload_attachment') {
 
 /**
  * Download a line attachment
- */
-elseif ($action === 'download_attachment') {
+ */ elseif ($action === 'download_attachment') {
     try {
         // Bad request?
         if (!isset($_GET['id']) || !($line = $compta->obtenir((int) $_GET['id']))) {

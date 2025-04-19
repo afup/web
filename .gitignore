@@ -15,7 +15,6 @@ deps.lock
 */*.bak
 .vagrant
 /default
-.php_cs.cache
 
 /htdocs/cache
 /tmp/

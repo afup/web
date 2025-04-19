@@ -477,7 +477,8 @@ CODE_HTML;
                             }
                             if (false === $bSeance && !$bKeynote):
                                     $sTable .= "<td>&nbsp;</td>";
-                            endif; else:
+                            endif;
+                            else:
                                 $aRowSpan[$idSalle]--;
                             endif;
                         }
