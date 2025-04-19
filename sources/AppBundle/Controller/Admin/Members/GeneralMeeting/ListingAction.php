@@ -27,7 +27,7 @@ class ListingAction
         Assertion::notNull($latestDate);
         $selectedDate = $latestDate;
         if ($request->query->has('date')) {
-            $selectedDate = DateTimeImmutable::createFromFormat('d/m/Y', $request->query->get('date'));
+            $selectedDate = DateTimeImmutable::createFromFormat('d/m/Y', (string) $request->query->get('date'));
         }
         $attendees = $this->generalMeetingRepository->getAttendees($selectedDate);
         $filename = tempnam(sys_get_temp_dir(), 'assemblee_generale');

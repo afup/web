@@ -629,7 +629,7 @@ class CompanyMember implements NotifyPropertyInterface
     public function setLastSubscription(?string $sub): void
     {
         if ($sub !== null) {
-            $this->lastSubscription = \DateTimeImmutable::createFromFormat('U', $sub);
+            $this->lastSubscription = new \DateTimeImmutable('@' . $sub);
         }
     }
 

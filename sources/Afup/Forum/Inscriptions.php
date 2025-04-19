@@ -92,7 +92,7 @@ SQL;
         }
 
         $now = new \DateTime();
-        $dateForum = \DateTime::createFromFormat('U', $forum->obtenir($idForum)['date_fin_vente']);
+        $dateForum = new \DateTimeImmutable('@' . $forum->obtenir($idForum)['date_fin_vente']);
 
         $daysToEndOfSales = 0;
         if ($dateForum >= $now) {

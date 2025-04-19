@@ -330,7 +330,7 @@ class Facture
         $pays = new Pays($this->_bdd);
 
         $dateDevis = isset($coordonnees['date_devis']) && !empty($coordonnees['date_devis'])
-            ? \DateTimeImmutable::createFromFormat('Y-m-d', $coordonnees['date_devis'])
+            ? \DateTimeImmutable::createFromFormat('Y-m-d', (string) $coordonnees['date_devis'])
             : new \DateTimeImmutable();
 
         $isSubjectedToVat = Vat::isSubjectedToVat($dateDevis);
@@ -528,7 +528,7 @@ class Facture
         $pays = new Pays($this->_bdd);
 
         $dateFacture = isset($coordonnees['date_facture']) && !empty($coordonnees['date_facture'])
-            ? \DateTimeImmutable::createFromFormat('Y-m-d', $coordonnees['date_facture'])
+            ? \DateTimeImmutable::createFromFormat('Y-m-d', (string) $coordonnees['date_facture'])
             : new \DateTimeImmutable();
 
         $bankAccountFactory = new BankAccountFactory();

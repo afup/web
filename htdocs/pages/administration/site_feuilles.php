@@ -69,7 +69,7 @@ if ($action == 'lister') {
     $formulaire->addElement('text'	  , 'nom'                  , 'Nom'       , ['size' => 60, 'maxlength' => 255]);
     $formulaire->addElement('text'	  , 'lien'                 , 'Lien'      , ['size' => 60, 'maxlength' => 255]);
     $formulaire->addElement('text'	  , 'alt'                  , 'Description', ['size' => 60, 'maxlength' => 255]);
-    $file =& $formulaire->addElement('file', 'nouvelle-image'  , 'Image');
+    $file = $formulaire->addElement('file', 'nouvelle-image'  , 'Image');
     $formulaire->addElement('static'  , 'note'                 , ''          , '<img src="../../templates/site/images/' . $feuille->image . '" />');
     $formulaire->addElement('text'	  , 'image_alt'            , 'Texte alternatif pour l\'image', ['size' => 60, 'maxlength' => 255]);
     $formulaire->addElement('hidden'  , 'image');
