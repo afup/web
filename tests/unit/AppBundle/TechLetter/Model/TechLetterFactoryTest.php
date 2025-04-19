@@ -18,10 +18,14 @@ class TechLetterFactoryTest extends TestCase
     /**
      * @dataProvider jsonDatProvider
      */
-    public function testCreateTechLetterFromJson(string $jsonFilePath, TechLetter $expectedTechLetter): void
+    public function testCreateTechLetterFromJson(?string $jsonFilePath, TechLetter $expectedTechLetter): void
     {
-        $json = file_get_contents($jsonFilePath);
-        self::assertIsString($json);
+        $json = null;
+
+        if ($jsonFilePath !== null) {
+            $json = file_get_contents($jsonFilePath);
+            self::assertIsString($json);
+        }
 
         $actualTechLetter = TechLetterFactory::createTechLetterFromJson($json);
 
@@ -30,6 +34,11 @@ class TechLetterFactoryTest extends TestCase
 
     public function jsonDatProvider(): Generator
     {
+        yield 'null' => [
+            'json' => null,
+            'letter' => new TechLetter(),
+        ];
+
         yield 'empty' => [
             'json' => __DIR__ . '/fixtures/empty.json',
             'letter' => new TechLetter(),
@@ -66,13 +75,25 @@ class TechLetterFactoryTest extends TestCase
             ),
         ];
 
+        yield 'language-null' => [
+            'json' => __DIR__ . '/fixtures/language-null.json',
+            'letter' => new TechLetter(
+                null,
+                null,
+                [
+                    new Article('https://example.com', 'Example avec language à null', 'example.com', '2', 'Lorem ipsum', 'en'),
+                ],
+                [],
+            ),
+        ];
+
         yield 'with-only-first-news' => [
             'json' => __DIR__ . '/fixtures/with-only-first-news.json',
             'letter' => new TechLetter(
                 new News(
                     'https://afup.org/news/1222-forum-php-2024-exceptionnel',
                     'Un Forum PHP 2024 exceptionnel !',
-                    DateTimeImmutable::createFromFormat('Y-m-d', '2024-10-21'),
+                    DateTimeImmutable::createFromFormat('!Y-m-d', '2024-10-21'),
                 ),
                 null,
                 [],
@@ -87,7 +108,7 @@ class TechLetterFactoryTest extends TestCase
                 new News(
                     'https://afup.org/news/1231-enquete2025-barometre-des-salaires-PHP-ouverte',
                     'L’enquête 2025 du baromètre des salaires en PHP est ouverte',
-                    DateTimeImmutable::createFromFormat('Y-m-d', '2025-03-17'),
+                    DateTimeImmutable::createFromFormat('!Y-m-d', '2025-03-17'),
                 ),
                 [],
                 [],
@@ -100,12 +121,12 @@ class TechLetterFactoryTest extends TestCase
                 new News(
                     'https://afup.org/news/1222-forum-php-2024-exceptionnel',
                     'Un Forum PHP 2024 exceptionnel !',
-                    DateTimeImmutable::createFromFormat('Y-m-d', '2024-10-21'),
+                    DateTimeImmutable::createFromFormat('!Y-m-d', '2024-10-21'),
                 ),
                 new News(
                     'https://afup.org/news/1231-enquete2025-barometre-des-salaires-PHP-ouverte',
                     'L’enquête 2025 du baromètre des salaires en PHP est ouverte',
-                    DateTimeImmutable::createFromFormat('Y-m-d', '2025-03-17'),
+                    DateTimeImmutable::createFromFormat('!Y-m-d', '2025-03-17'),
                 ),
                 [
                     new Article('https://example.com/fr', 'Example en français', 'example.com', '2', 'Lorem ipsum', 'fr'),
