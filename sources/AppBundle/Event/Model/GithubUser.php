@@ -9,7 +9,7 @@ use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializable, EquatableInterface
+class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInterface
 {
     use NotifyProperty;
 
@@ -191,15 +191,18 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, \Serializabl
     {
     }
 
-    public function serialize(): ?string
+    public function __serialize(): array
     {
-        return serialize(['id' => $this->id]);
+        return [
+            'id' => $this->id,
+            'login' => $this->login,
+        ];
     }
 
-    public function unserialize($serialized): void
+    public function __unserialize($serialized): void
     {
-        $user = unserialize($serialized);
-        $this->id = $user['id'];
+        $this->id = $serialized['id'];
+        $this->login = $serialized['login'];
     }
 
     public function isEqualTo(UserInterface $user): bool

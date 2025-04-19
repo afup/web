@@ -407,7 +407,7 @@ if ($action == 'lister') {
             if (is_numeric($valeurs['date_reglement'])) {
                 $paymentDate = new DateTime('@' . $valeurs['date_reglement']);
             } else {
-                $paymentDate = null !== $valeurs['date_reglement'] ? DateTime::createFromFormat('U', $valeurs['date_reglement']) : null;
+                $paymentDate = null !== $valeurs['date_reglement'] ? new DateTime('@' . $valeurs['date_reglement']) : null;
             }
             $invoiceService->handleInvoicing($valeurs['reference'],
                                                     $valeurs['type_reglement'],

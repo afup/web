@@ -603,7 +603,7 @@ class Cotisations
      */
     public function finProchaineCotisation($cotisation = false): DateTime
     {
-        $endSubscription = $cotisation === false ? new DateTime() : DateTime::createFromFormat('U', $cotisation['date_fin']);
+        $endSubscription = $cotisation === false ? new DateTime() : new \DateTime('@' . $cotisation['date_fin']);
         $base = $now = new DateTime();
 
         $year = new DateInterval('P1Y');
