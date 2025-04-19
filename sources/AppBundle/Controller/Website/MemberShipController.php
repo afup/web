@@ -260,7 +260,7 @@ class MemberShipController extends AbstractController
         return $this->view->render('site/company_membership/payment.html.twig', [
             'paybox' => $paybox,
             'invoice' => $invoice,
-            'bankAccount' => $bankAccountFactory->createApplyableAt(\DateTimeImmutable::createFromFormat('U', $invoice['date_debut'])),
+            'bankAccount' => $bankAccountFactory->createApplyableAt(new \DateTimeImmutable('@' . $invoice['date_debut'])),
             'afup' => [
                 'raison_sociale' => AFUP_RAISON_SOCIALE,
                 'adresse' => AFUP_ADRESSE,

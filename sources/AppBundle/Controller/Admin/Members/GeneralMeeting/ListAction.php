@@ -7,7 +7,6 @@ namespace AppBundle\Controller\Admin\Members\GeneralMeeting;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use Assert\Assertion;
-use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -48,7 +47,7 @@ class ListAction
         }
         $selectedDate = $latestDate;
         if ($request->query->has('date')) {
-            $selectedDate = DateTimeImmutable::createFromFormat('U', $request->get('date')) ?: null;
+            $selectedDate = new \DateTimeImmutable('@' . $request->get('date')) ?: null;
         }
         $attendees = null !== $selectedDate ? $this->generalMeetingRepository->getAttendees($selectedDate, $sort, $direction) : [];
 

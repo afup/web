@@ -129,7 +129,7 @@ class Facturation
         $pays = new Pays($this->_bdd);
 
         $dateFacture = isset($facture['date_facture']) && !empty($facture['date_facture'])
-            ? \DateTimeImmutable::createFromFormat('U', $facture['date_facture'])
+            ? new \DateTimeImmutable('@' . $facture['date_facture'])
             : new \DateTimeImmutable();
 
         $bankAccountFactory = new BankAccountFactory();
@@ -228,7 +228,7 @@ class Facturation
         // Construction du PDF
 
         $dateFacture = isset($facture['date_facture']) && !empty($facture['date_facture'])
-            ? \DateTimeImmutable::createFromFormat('U', $facture['date_facture'])
+            ? new \DateTimeImmutable('@' . $facture['date_facture'])
             : new \DateTimeImmutable();
 
 
