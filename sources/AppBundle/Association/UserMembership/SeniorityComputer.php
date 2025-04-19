@@ -54,8 +54,8 @@ class SeniorityComputer
 
         $years = [];
         foreach ($cotisations as $coti) {
-            $from = \DateTimeImmutable::createFromFormat('U', $coti['date_debut']);
-            $to = \DateTimeImmutable::createFromFormat('U', $coti['date_fin']);
+            $from = new \DateTimeImmutable('@' . $coti['date_debut']);
+            $to = new \DateTimeImmutable('@' . $coti['date_fin']);
             $to = min($now, $to);
             $diffs[] = $from->diff($to);
             $years[] = $from->format('Y');

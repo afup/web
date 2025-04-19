@@ -32,7 +32,7 @@ ORDER BY apag.date DESC
 SQL
         );
 
-        return array_map(static fn (array $row) => DateTimeImmutable::createFromFormat('U', $row['date']), $query->fetchAll());
+        return array_map(static fn (array $row) => new DateTimeImmutable('@' . $row['date']), $query->fetchAll());
     }
 
     /**
@@ -43,7 +43,7 @@ SQL
         $query = $this->connection->executeQuery('SELECT MAX(date) maxDate FROM afup_presences_assemblee_generale LIMIT 1');
         $row = $query->fetch();
 
-        return null !== $row['maxDate'] ? DateTimeImmutable::createFromFormat('U', $row['maxDate']) : null;
+        return null !== $row['maxDate'] ? new DateTimeImmutable('@' . $row['maxDate']) : null;
     }
 
     public function hasGeneralMeetingPlanned(DateTimeInterface $currentDate = null): bool
@@ -78,11 +78,11 @@ SQL
         return is_array($row) ? new GeneralMeeting(
             (int) $row['id'],
             (int) $row['id_personne_physique'],
-            DateTimeImmutable::createFromFormat('U', $row['date']),
+            new DateTimeImmutable('@' . $row['date']),
             (int) $row['presence'],
             (int) $row['id_personne_avec_pouvoir'],
-            $row['date_consultation'] ? DateTimeImmutable::createFromFormat('U', $row['date_consultation']) : null,
-            $row['date_modification'] ? DateTimeImmutable::createFromFormat('U', $row['date_modification']) : null
+            $row['date_consultation'] ? new \DateTimeImmutable('@' . $row['date_consultation']) : null,
+            $row['date_modification'] ? new \DateTimeImmutable('@' . $row['date_modification']) : null
         ) : null;
     }
 
@@ -103,7 +103,7 @@ SQL
         $row = $query->fetch();
 
         return is_array($row) ? [
-            'date' => DateTime::createFromFormat('U', $row['date']),
+            'date' => new \DateTimeImmutable('@' . $row['date']),
             'description' => $row['description']
         ] : null;
     }
@@ -194,7 +194,7 @@ SQL
             $row['nom'],
             $row['prenom'],
             $row['nearest_office'],
-            $row['date_consultation'] ? DateTimeImmutable::createFromFormat('U', $row['date_consultation']) : null,
+            $row['date_consultation'] ? new \DateTimeImmutable('@' . $row['date_consultation']) : null,
             (int) $row['presence'],
             $row['power_id'] ? (int) $row['power_id'] : null,
             $row['power_lastname'],
@@ -400,7 +400,7 @@ SQL
             $row['nom'],
             $row['prenom'],
             $row['nearest_office'],
-            $row['date_consultation'] ? DateTimeImmutable::createFromFormat('U', $row['date_consultation']) : null,
+            $row['date_consultation'] ? new \DateTimeImmutable('@' . $row['date_consultation']) : null,
             (int) $row['presence'],
             $row['power_id'] ? (int) $row['power_id'] : null,
             $row['power_lastname'],
