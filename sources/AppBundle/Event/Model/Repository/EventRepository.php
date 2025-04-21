@@ -334,7 +334,8 @@ SQL;
                 'fieldName' => 'dateEndSalesSponsorToken',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
             ->addField([
