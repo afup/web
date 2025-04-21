@@ -46,7 +46,7 @@ class MemberController extends AbstractController
 
         $dateFinCotisation = null;
         if ($cotisation) {
-            $dateFinCotisation = \DateTime::createFromFormat('U', $cotisation['date_fin']);
+            $dateFinCotisation = new \DateTimeImmutable('@' . $cotisation['date_fin']);
         }
 
         $daysBeforeMembershipExpiration = $user->getDaysBeforeMembershipExpiration();

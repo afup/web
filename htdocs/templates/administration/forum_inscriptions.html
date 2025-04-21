@@ -72,7 +72,7 @@
               <td class="right aligned">{$confirmes}</td>
               <td class="right aligned">{$payants}</td>
               <td class="right aligned"> {$montant}</td>
-              <td class="right aligned"> {$forum_tarifs_restantes[$forum_tarif_key]}</td>
+              <td class="right aligned"> {$forum_tarifs_restantes[$forum_tarif_key]|default:''}</td>
 
             </tr>
             {/if}

@@ -100,5 +100,7 @@
     {else}
         <h2>Modifier une cotisation</h2>
     {/if}
-    {include file="formulaire.html"}
+    {if $action != 'telecharger_facture'}
+        {include file="formulaire.html"}
+    {/if}
 {/if}
