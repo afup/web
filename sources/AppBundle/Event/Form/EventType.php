@@ -109,6 +109,11 @@ class EventType extends AbstractType
                 'label' => 'Date annonce planning',
                 'required' => false,
             ])
+            ->add('dateEndSalesSponsorToken', DateTimeType::class, [
+                'widget' => 'single_text',
+                'label' => 'Date fin saisie token sponsor',
+                'required' => false,
+            ])
             ->add('cfp', EventCFPTextType::class, [
                 'label' => false
             ])
