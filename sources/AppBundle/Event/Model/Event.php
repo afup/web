@@ -370,7 +370,7 @@ class Event implements NotifyPropertyInterface
      */
     public function setCFP($CFP): self
     {
-        $this->propertyChanged('cfp', json_encode($this->CFP), json_encode($CFP));
+        $this->propertyChanged('CFP', json_encode($this->CFP), json_encode($CFP));
         $this->CFP = $CFP;
         return $this;
     }
