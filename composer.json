@@ -3,7 +3,7 @@
   "description": "Main repository for afup website",
   "type": "project",
   "require": {
-    "php": "7.4.* | 8.1.*",
+    "php": "8.2.*",
     "ext-curl": "*",
     "ext-dom": "*",
     "ext-gd": "*",
@@ -14,9 +14,10 @@
     "algolia/algoliasearch-client-php": "^3.4",
     "beberlei/assert": "^2.9",
     "captioning/captioning": "^2.6",
-    "ccmbenchmark/ting_bundle": "^3.7",
+    "ccmbenchmark/ting_bundle": "3.8.*",
     "cocur/slugify": "^2.3",
     "cuyz/valinor": "^0.17.1",
+    "cweagans/composer-patches": "^1.7",
     "doctrine/dbal": "^2.5",
     "drewm/mailchimp-api": "^2.5",
     "ekino/newrelic-bundle": "^2.4",
@@ -34,6 +35,7 @@
     "pear/pear": "^1.10",
     "phpmailer/phpmailer": "^6.9",
     "phpoffice/phpspreadsheet": "^1.6",
+    "pimple/pimple": "^3.5",
     "presta/sitemap-bundle": "3.3.0",
     "psr/clock": "^1.0",
     "robmorgan/phinx": "^0.14.0",
@@ -76,10 +78,21 @@
     "secure-http": false,
     "sort-packages": true,
     "allow-plugins": {
+      "cweagans/composer-patches": true,
       "php-http/discovery": true
     }
   },
   "extra": {
+    "patches": {
+      "ccmbenchmark/ting_bundle": [
+        "patches/ccmbenchmark-ting-bundle-src-tingbundle-datacollector-tingcachedatacollector-php.patch",
+        "patches/ccmbenchmark-ting-bundle-src-tingbundle-datacollector-tingdriverdatacollector-php.patch"
+      ],
+      "znk3r/html_quickform": [
+        "patches/znk3r-html-quickform-html-quickform-date-php.patch",
+        "patches/znk3r-html-quickform-html-quickform-php.patch"
+      ]
+    },
     "symfony-app-dir": "app",
     "symfony-web-dir": "htdocs",
     "symfony-bin-dir": "bin",
@@ -128,7 +141,8 @@
     "rector/rector": "^2.0",
     "smalot/pdfparser": "^0.19.0",
     "symfony/debug-bundle": "^5.4",
-    "symfony/web-profiler-bundle": "^5.4"
+    "symfony/web-profiler-bundle": "^5.4",
+    "symplify/vendor-patches": "^11.4"
   },
   "repositories": [
     {
@@ -141,7 +155,9 @@
           "type": "zip"
         },
         "autoload": {
-          "classmap": ["HTML/"]
+          "classmap": [
+            "HTML/"
+          ]
         }
       }
     },
@@ -155,7 +171,9 @@
           "type": "zip"
         },
         "autoload": {
-          "classmap": ["HTML/"]
+          "classmap": [
+            "HTML/"
+          ]
         }
       }
     },
@@ -170,7 +188,8 @@
         },
         "autoload": {
           "classmap": [
-            "PEAR.php", "PEAR/"
+            "PEAR.php",
+            "PEAR/"
           ]
         }
       }
@@ -182,6 +201,9 @@
     "symfony/polyfill-php56": "*",
     "symfony/polyfill-php72": "*",
     "symfony/polyfill-php73": "*",
-    "symfony/polyfill-php74": "*"
+    "symfony/polyfill-php74": "*",
+    "symfony/polyfill-php80": "*",
+    "symfony/polyfill-php81": "*",
+    "symfony/polyfill-php82": "*"
   }
 }
