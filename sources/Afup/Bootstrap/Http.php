@@ -38,7 +38,7 @@ if (getenv('SYMFONY_ENV') === 'prod') {
     ini_set('error_reporting',  (string) (E_ALL ^ E_WARNING ^ E_NOTICE));
     ini_set('display_errors', '0');
 } else {
-    ini_set('error_reporting', (string) E_ALL);
+    ini_set('error_reporting', (string) E_ALL ^ E_DEPRECATED);
     ini_set('display_errors', '1');
 }
 ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . __DIR__ . '/../../../dependencies/PEAR/');
