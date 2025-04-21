@@ -124,7 +124,7 @@ if ($action == 'lister') {
             } else {
                 Logs::log('Modification du planning de la session de ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('Le planning de la session a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=forum_planning&action=lister');
+            afficherMessage('Le planning de la session a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=forum_planning&action=lister&id_forum=' . $valeurs['id_forum']);
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' du planning de la session');
         }
