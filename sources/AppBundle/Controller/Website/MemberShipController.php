@@ -502,7 +502,7 @@ class MemberShipController extends AbstractController
             $id_personne = $user->getCompanyId();
             $type_personne = AFUP_PERSONNES_MORALES;
             $prefixe = 'Personne morale';
-            $montant = $this->companyMemberRepository->findById($id_personne);
+            $montant = AFUP_COTISATION_PERSONNE_MORALE;
             if ($isSubjectedToVat) {
                 $montant *= 1 + Utils::MEMBERSHIP_FEE_VAT_RATE;
             }

@@ -498,22 +498,12 @@ class FeatureContext implements Context
     public function iShouldReceiveAnEmail(): void
     {
         $content = file_get_contents(self::MAILCATCHER_URL . '/messages');
-        $decodedContent = json_decode($content, true);
+        $emails = json_decode($content, true);
 
-        $foundEmails = [];
-        foreach ($decodedContent as $mail) {
-            $foundEmails[] = [
-                'to' => $mail['to'],
-                'subject' => $mail['subject'],
-            ];
-        }
-
-        if (count($foundEmails) !== 1) {
+        if (count($emails) !== 1) {
             throw new ExpectationException(
-                sprintf(
-                    'The email has not been received "%s" (expected "%s")',
-                    var_export($foundEmails, true),
-                )
+                'The email has not been received.',
+                $this->minkContext->getSession()->getDriver()
             );
         }
     }
@@ -530,17 +520,15 @@ class FeatureContext implements Context
         foreach ($decodedContent as $mail) {
             $foundEmails[] = [
                 'id' => $mail['id'],
-                'to' => $mail['to'],
+                'to' => $mail['to'] ?? $mail['recipients'][0],
                 'subject' => $mail['subject'],
             ];
         }
 
         if (count($foundEmails) !== 1) {
             throw new ExpectationException(
-                sprintf(
-                    'The email has not been received "%s" (expected "%s")',
-                    var_export($foundEmails, true),
-                )
+                'The email has not been received.',
+                $this->minkContext->getSession()->getDriver()
             );
         }
 
@@ -551,7 +539,7 @@ class FeatureContext implements Context
                     'The email content does not contain the expected URL "%s" (expected "%s")',
                     $content,
                     $arg1
-                )
+                ), $this->minkContext->getSession()->getDriver()
             );
         }
     }
