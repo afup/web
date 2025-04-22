@@ -114,7 +114,7 @@ class EventType extends AbstractType
                 'label' => 'Date fin saisie token sponsor',
                 'required' => false,
             ])
-            ->add('cfp', EventCFPTextType::class, [
+            ->add('CFP', EventCFPTextType::class, [
                 'label' => false
             ])
             ->add('speakersDinerEnabled', CheckboxType::class, [

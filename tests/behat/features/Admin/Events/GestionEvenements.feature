@@ -42,14 +42,14 @@ Feature: Administration - Évènements - Gestions Évènements
     And I fill in "event[dateEndHotelInfosCollection]" with "2027-03-01 16:00:00"
     And I fill in "event[datePlanningAnnouncement]" with "2027-03-01 16:00:00"
     And I fill in "event[waitingListUrl]" with "https://afup.org/home"
-    And I fill in "event[cfp][cfp_fr]" with "Appel de candidatures - conférenciers(ères)"
-    And I fill in "event[cfp][cfp_en]" with "Call for applications - speakers"
-    And I fill in "event[cfp][speaker_management_fr]" with "Conférenciers(ères), venez, vous serez très bien pris en charge !"
-    And I fill in "event[cfp][speaker_management_en]" with "Speakers, come, you will be very well taken care of!"
-    And I fill in "event[cfp][sponsor_management_fr]" with "**Sponsors**, venez, vous serez très visible !"
-    And I fill in "event[cfp][sponsor_management_en]" with "**Sponsors**, come, you will be very visible!"
-    And I fill in "event[cfp][become_sponsor_description]" with "Le super email de sponsoring"
-    And I fill in "event[cfp][mail_inscription_content]" with "Le super email d'inscription"
+    And I fill in "event[CFP][cfp_fr]" with "Appel de candidatures - conférenciers(ères)"
+    And I fill in "event[CFP][cfp_en]" with "Call for applications - speakers"
+    And I fill in "event[CFP][speaker_management_fr]" with "Conférenciers(ères), venez, vous serez très bien pris en charge !"
+    And I fill in "event[CFP][speaker_management_en]" with "Speakers, come, you will be very well taken care of!"
+    And I fill in "event[CFP][sponsor_management_fr]" with "**Sponsors**, venez, vous serez très visible !"
+    And I fill in "event[CFP][sponsor_management_en]" with "**Sponsors**, come, you will be very visible!"
+    And I fill in "event[CFP][become_sponsor_description]" with "Le super email de sponsoring"
+    And I fill in "event[CFP][mail_inscription_content]" with "Le super email d'inscription"
     And I check "event[speakersDinerEnabled]"
     And I check "event[accomodationEnabled]"
     And I fill in "event[coupons]" with "FREE_FORUM2027,SUPER_FORUM2027"
@@ -84,7 +84,7 @@ Feature: Administration - Évènements - Gestions Évènements
   Scenario: Si on tente d'en envoyer un mail de test sans contenu, on a un message d'erreur
     Given I am logged in as admin and on the Administration
     When I go to "/admin/event/edit/1"
-    And I fill in "event[cfp][mail_inscription_content]" with ""
+    And I fill in "event[CFP][mail_inscription_content]" with ""
     And I press "Soumettre"
     When I go to "/admin/event/edit/1"
     Then I should see "Modifier un évènement"
@@ -94,7 +94,7 @@ Feature: Administration - Évènements - Gestions Évènements
   Scenario: On arrive bien à ajouter un contenu de mail d'inscription
     Given I am logged in as admin and on the Administration
     When I go to "/admin/event/edit/1"
-    And I fill in "event[cfp][mail_inscription_content]" with "Infos à propos de l'évènement"
+    And I fill in "event[CFP][mail_inscription_content]" with "Infos à propos de l'évènement"
     And I press "Soumettre"
     Then I should see "Évènement modifié"
 
