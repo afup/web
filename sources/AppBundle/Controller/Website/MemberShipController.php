@@ -502,7 +502,11 @@ class MemberShipController extends AbstractController
             $id_personne = $user->getCompanyId();
             $type_personne = AFUP_PERSONNES_MORALES;
             $prefixe = 'Personne morale';
-            $montant = AFUP_COTISATION_PERSONNE_MORALE;
+
+            if (!$company = $this->companyMemberRepository->findById($id_personne)) {
+                throw $this->createNotFoundException('La personne morale n\'existe pas');
+            }
+            $montant = $company->getMembershipFee();
             if ($isSubjectedToVat) {
                 $montant *= 1 + Utils::MEMBERSHIP_FEE_VAT_RATE;
             }
