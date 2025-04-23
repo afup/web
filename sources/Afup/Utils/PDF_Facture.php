@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Afup\Site\Utils;
 
+use Afup\Site\Comptabilite\PDF;
 use AppBundle\Compta\BankAccount\BankAccount;
 
-class PDF_Facture extends \FPDF
+class PDF_Facture extends PDF
 {
     /**
      * The Afup\Site\Utils\Configuration object
@@ -66,12 +67,12 @@ class PDF_Facture extends \FPDF
         $this->Cell(60, 5, AFUP_RAISON_SOCIALE);
         $this->Ln();
         $this->SetFont('Arial', '', 10);
-        $this->Cell(130, 5, utf8_decode('Association Française des Utilisateurs de PHP'));
+        $this->Cell(130, 5, 'Association Française des Utilisateurs de PHP');
         $yFinAdresse = $this->GetY();
 
 
         $this->SetFont('Arial', '', 12);
-        $this->MultiCell(60, 5, utf8_decode(AFUP_ADRESSE));
+        $this->MultiCell(60, 5, AFUP_ADRESSE);
         $this->Ln();
         $this->SetFont('Arial', '', 10);
         $this->Cell(130, 5, 'https://afup.org');
@@ -81,7 +82,7 @@ class PDF_Facture extends \FPDF
         $this->SetFont('Arial', '', 12);
         $this->SetY($yFinAdresse);
         $this->Ln();
-        $this->Cell(60, 5, AFUP_CODE_POSTAL . ' ' . utf8_decode(AFUP_VILLE));
+        $this->Cell(60, 5, AFUP_CODE_POSTAL . ' ' . AFUP_VILLE);
         $this->Ln();
         $this->Cell(130, 5);
         $this->Cell(60, 5, 'Email : ' . AFUP_EMAIL);
@@ -129,14 +130,14 @@ class PDF_Facture extends \FPDF
 
         $this->SetY(-30);
         $this->SetFont('Arial', 'B', 6);
-        $this->Cell(0, 3, utf8_decode('AFUP, Association Française des Utilisateurs de PHP'), 0, 0, 'C');
+        $this->Cell(0, 3, 'AFUP, Association Française des Utilisateurs de PHP', 0, 0, 'C');
         $this->Ln();
         $this->SetFont('Arial', '', 6);
-        $this->Cell(0, 3, utf8_decode($address), 0, 0, 'C');
+        $this->Cell(0, 3, $address, 0, 0, 'C');
         $this->Ln();
 
         $this->SetFont('Arial', 'B', 6);
-        $this->Cell(170, 3, utf8_decode('N°') . ' SIRET', 0, 0, 'C');
+        $this->Cell(170, 3, 'N°' . ' SIRET', 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
         $this->Cell(-140, 3, AFUP_SIRET, 0, 0, 'C');
         $this->Ln();
@@ -152,12 +153,12 @@ class PDF_Facture extends \FPDF
         $this->Cell(-95, 3, $this->bankAccount->getGuichet(), 0, 0, 'C');
 
         $this->SetFont('Arial', 'B', 6);
-        $this->Cell(111, 3, utf8_decode('N° Cpte'), 0, 0, 'C');
+        $this->Cell(111, 3, 'N° Cpte', 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
         $this->Cell(-88, 3, $this->bankAccount->getCompte(), 0, 0, 'C');
 
         $this->SetFont('Arial', 'B', 6);
-        $this->Cell(107, 3, utf8_decode('Clé'), 0, 0, 'C');
+        $this->Cell(107, 3, 'Clé', 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
         $this->Cell(-99, 3, $this->bankAccount->getCle(), 0, 0, 'C');
 
@@ -177,7 +178,7 @@ class PDF_Facture extends \FPDF
             $this->Ln();
 
             $this->SetFont('Arial', 'B', 6);
-            $this->Cell(155, 3, utf8_decode('Numéro de TVA intracommunautaire'), 0, 0, 'C');
+            $this->Cell(155, 3, 'Numéro de TVA intracommunautaire', 0, 0, 'C');
             $this->SetFont('Arial', null, 6);
             $this->Cell(-60, 3, AFUP_NUMERO_TVA, 0, 0, 'C');
         }

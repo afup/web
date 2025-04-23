@@ -34,7 +34,7 @@ class ListingAction
         $pdf = new PDF_AG();
         $pdf->setFooterTitle('Assemblée générale ' . $selectedDate->format('d/m/Y'));
         $pdf->prepareContent($attendees);
-        $pdf->Output($filename, 'F');
+        $pdf->Output($filename, 'F', true);
         $response = new BinaryFileResponse($filename);
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'assemblee_generale.pdf');
 

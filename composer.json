@@ -38,7 +38,7 @@
     "psr/clock": "^1.0",
     "robmorgan/phinx": "^0.14.0",
     "sabre/vobject": "^4.1",
-    "setasign/fpdf": "^1.8",
+    "setasign/tfpdf": "^1.33",
     "smarty/smarty": "^5.4",
     "symfony/asset": "^5.4",
     "symfony/console": "^5.4",
