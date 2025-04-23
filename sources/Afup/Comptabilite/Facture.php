@@ -352,42 +352,42 @@ class Facture
         $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(10);
         $pdf->setx(120);
-        $pdf->MultiCell(130, 5, utf8_decode($coordonnees['societe']) . "\n" .
-            utf8_decode($coordonnees['service']) . "\n" .
-            utf8_decode($coordonnees['adresse']) . "\n" .
-            utf8_decode($coordonnees['code_postal']) . " " .
-            utf8_decode($coordonnees['ville']) . "\n" .
-            utf8_decode($pays->obtenirNom($coordonnees['id_pays'])) .
-            ($coordonnees['tva_intra'] ? ("\n" . utf8_decode('N° TVA Intracommunautaire : ' . $coordonnees['tva_intra'])) : null)
+        $pdf->MultiCell(130, 5, $coordonnees['societe'] . "\n" .
+            $coordonnees['service'] . "\n" .
+            $coordonnees['adresse'] . "\n" .
+            $coordonnees['code_postal'] . " " .
+            $coordonnees['ville'] . "\n" .
+            $pays->obtenirNom($coordonnees['id_pays']) .
+            ($coordonnees['tva_intra'] ? ("\n" . 'N° TVA Intracommunautaire : ' . $coordonnees['tva_intra']) : null)
         );
 
         $pdf->Ln(10);
         $pdf->SetFont('Arial', 'BU', 10);
-        $pdf->Cell(0, 5, utf8_decode('Devis n° ' . $reference), 0, 0, "C");
+        $pdf->Cell(0, 5, 'Devis n° ' . $reference, 0, 0, "C");
         $pdf->SetFont('Arial', '', 10);
         if ($coordonnees['ref_clt1'] || $coordonnees['ref_clt2'] || $coordonnees['ref_clt3']) {
             $pdf->Ln(15);
-            $pdf->Cell(40, 5, utf8_decode('Repère(s) : '));
+            $pdf->Cell(40, 5, 'Repère(s) : ');
         }
 
         if ($coordonnees['ref_clt1']) {
             $pdf->setx(30);
-            $pdf->Cell(100, 5, utf8_decode($coordonnees['ref_clt1']));
+            $pdf->Cell(100, 5, $coordonnees['ref_clt1']);
             $pdf->Ln(5);
         }
         if ($coordonnees['ref_clt2']) {
             $pdf->setx(30);
-            $pdf->Cell(100, 5, utf8_decode($coordonnees['ref_clt2']));
+            $pdf->Cell(100, 5, $coordonnees['ref_clt2']);
             $pdf->Ln(5);
         }
         if ($coordonnees['ref_clt3']) {
             $pdf->setx(30);
-            $pdf->Cell(100, 5, utf8_decode($coordonnees['ref_clt3']));
+            $pdf->Cell(100, 5, $coordonnees['ref_clt3']);
             $pdf->Ln(5);
         }
         $pdf->Ln(10);
 
-        $pdf->MultiCell(180, 5, utf8_decode("Comme convenu, nous vous prions de trouver votre devis"));
+        $pdf->MultiCell(180, 5, "Comme convenu, nous vous prions de trouver votre devis");
 
         // Cadre
         $pdf->Ln(5);
@@ -409,7 +409,7 @@ class Facture
                 break;
             case 'EUR':
             default:
-                $devise = utf8_decode(' ');
+                $devise = ' €';
                 break;
         }
 
@@ -433,15 +433,15 @@ class Facture
                     $x += 30;
                     $pdf->SetXY($x, $y);
 
-                    $pdf->MultiCell(60, 5, utf8_decode($detail['designation']), 'T');
+                    $pdf->MultiCell(60, 5, $detail['designation'], 'T');
 
                     $x += 60;
                     $pdf->SetXY($x, $y);
-                    $pdf->MultiCell(20, 5, utf8_decode($detail['quantite']), 'T', 0, "C");
+                    $pdf->MultiCell(20, 5, $detail['quantite'], 'T', 0, "C");
 
                     $x += 20;
                     $pdf->SetXY($x, $y);
-                    $pdf->MultiCell(20, 5, utf8_decode($detail['tva'] . '%'), 'T', 'C', "C");
+                    $pdf->MultiCell(20, 5, $detail['tva'] . '%', 'T', 'C', "C");
                     if (!isset($vatAmounts[$detail['tva']])) {
                         $vatAmounts[$detail['tva']] = 0;
                     }
@@ -458,9 +458,9 @@ class Facture
                     $pdf->MultiCell(30, 5, $this->formatFactureValue($montantTtc, $isSubjectedToVat) . $devise, 'T', 0, "R");
                 } else {
                     $pdf->Cell(30, 5, $detail['ref'], 1);
-                    $pdf->Cell(80, 5, utf8_decode($detail['designation']), 1);
-                    $pdf->Cell(20, 5, utf8_decode($detail['quantite']), 1, 0, "C");
-                    $pdf->Cell(30, 5, utf8_decode($detail['pu']) . $devise, 1, 0, "R");
+                    $pdf->Cell(80, 5, $detail['designation'], 1);
+                    $pdf->Cell(20, 5, $detail['quantite'], 1, 0, "C");
+                    $pdf->Cell(30, 5, $detail['pu'] . $devise, 1, 0, "R");
                     $pdf->Cell(30, 5, $montantHt . $devise, 1, 0, "R");
                 }
 
@@ -503,13 +503,13 @@ class Facture
         $pdf->Cell(10, 5, 'Observations : ');
         $pdf->Ln(5);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->MultiCell(130, 5, utf8_decode($coordonnees['observation']));
+        $pdf->MultiCell(130, 5, $coordonnees['observation']);
 
         if (is_null($chemin)) {
-            $pdf->Output('Devis - ' . $coordonnees['societe'] . ' - ' . $coordonnees['date_devis'] . '.pdf', 'D');
+            $pdf->Output('Devis - ' . $coordonnees['societe'] . ' - ' . $coordonnees['date_devis'] . '.pdf', 'D', true);
             exit(0);
         } else {
-            $pdf->Output($chemin, 'F');
+            $pdf->Output($chemin, 'F', true);
         }
     }
 
@@ -551,41 +551,41 @@ class Facture
         $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(10);
         $pdf->setx(120);
-        $pdf->MultiCell(130, 5, utf8_decode($coordonnees['societe']) . "\n" .
-            utf8_decode($coordonnees['service']) . "\n" .
-            utf8_decode($coordonnees['adresse']) . "\n" .
-            utf8_decode($coordonnees['code_postal']) . "\n" .
-            utf8_decode($coordonnees['ville']) . "\n" .
-            utf8_decode($pays->obtenirNom($coordonnees['id_pays'])) .
-            ($coordonnees['tva_intra'] ? ("\n" . utf8_decode('N° TVA Intracommunautaire : ' . $coordonnees['tva_intra'])) : null));
+        $pdf->MultiCell(130, 5, $coordonnees['societe'] . "\n" .
+            $coordonnees['service'] . "\n" .
+            $coordonnees['adresse'] . "\n" .
+            $coordonnees['code_postal'] . "\n" .
+            $coordonnees['ville'] . "\n" .
+            $pays->obtenirNom($coordonnees['id_pays']) .
+            ($coordonnees['tva_intra'] ? ("\n" . 'N° TVA Intracommunautaire : ' . $coordonnees['tva_intra']) : null));
 
         $pdf->Ln(10);
         $pdf->SetFont('Arial', 'BU', 10);
-        $pdf->Cell(0, 5, utf8_decode('Facture n° ' . $reference), 0, 0, "C");
+        $pdf->Cell(0, 5, 'Facture n° ' . $reference, 0, 0, "C");
         $pdf->SetFont('Arial', '', 10);
 
         if ($coordonnees['ref_clt1'] || $coordonnees['ref_clt2'] || $coordonnees['ref_clt3']) {
             $pdf->Ln(15);
-            $pdf->Cell(40, 5, utf8_decode('Repère(s) : '));
+            $pdf->Cell(40, 5, 'Repère(s) : ');
         }
         if ($coordonnees['ref_clt1']) {
             $pdf->setx(30);
-            $pdf->Cell(100, 5, utf8_decode($coordonnees['ref_clt1']));
+            $pdf->Cell(100, 5, $coordonnees['ref_clt1']);
             $pdf->Ln(5);
         }
         if ($coordonnees['ref_clt2']) {
             $pdf->setx(30);
-            $pdf->Cell(100, 5, utf8_decode($coordonnees['ref_clt2']));
+            $pdf->Cell(100, 5, $coordonnees['ref_clt2']);
             $pdf->Ln(5);
         }
         if ($coordonnees['ref_clt3']) {
             $pdf->setx(30);
-            $pdf->Cell(100, 5, utf8_decode($coordonnees['ref_clt3']));
+            $pdf->Cell(100, 5, $coordonnees['ref_clt3']);
             $pdf->Ln(5);
         }
         $pdf->Ln(10);
 
-        $pdf->MultiCell(180, 5, utf8_decode("Comme convenu, nous vous prions de trouver votre facture"));
+        $pdf->MultiCell(180, 5, "Comme convenu, nous vous prions de trouver votre facture");
         // Cadre
         $pdf->Ln(5);
         $pdf->SetFillColor(200, 200, 200);
@@ -606,7 +606,7 @@ class Facture
                 break;
             case 'EUR':
             default:
-                $devise = utf8_decode(' ');
+                $devise = ' €';
                 break;
         }
         $yInitial = $pdf->getY();
@@ -629,16 +629,16 @@ class Facture
                 $x += 30;
                 $pdf->SetXY($x, $y);
                 $designationLength = $isSubjectedToVat ? 60 : 80;
-                $pdf->MultiCell($designationLength, 5, utf8_decode($detail['designation']), 'T');
+                $pdf->MultiCell($designationLength, 5, $detail['designation'], 'T');
 
                 $x += $designationLength;
                 $pdf->SetXY($x, $y);
-                $pdf->MultiCell(20, 5, utf8_decode($detail['quantite']), 'T', 0, "C");
+                $pdf->MultiCell(20, 5, $detail['quantite'], 'T', 0, "C");
 
                 if ($isSubjectedToVat) {
                     $x += 20;
                     $pdf->SetXY($x, $y);
-                    $pdf->MultiCell(20, 5, utf8_decode($detail['tva'] . '%'), 'T', 'C', "C");
+                    $pdf->MultiCell(20, 5, $detail['tva'] . '%', 'T', 'C', "C");
                     if (!isset($vatAmounts[$detail['tva']])) {
                         $vatAmounts[$detail['tva']] = 0;
                     }
@@ -690,20 +690,20 @@ class Facture
         }
 
         $pdf->Ln();
-        $pdf->Cell(10, 5, utf8_decode('Payable à réception'));
+        $pdf->Cell(10, 5, 'Payable à réception');
         $pdf->Ln(10);
         if ($coordonnees['observation']) {
             $pdf->Cell(10, 5, 'Observations : ');
             $pdf->Ln(5);
             $pdf->SetFont('Arial', '', 8);
-            $pdf->MultiCell(130, 5, utf8_decode($coordonnees['observation']));
+            $pdf->MultiCell(130, 5, $coordonnees['observation']);
         }
 
         if (is_null($chemin)) {
-            $pdf->Output('Facture - ' . $coordonnees['societe'] . ' - ' . $coordonnees['date_facture'] . '.pdf', 'D');
+            $pdf->Output('Facture - ' . $coordonnees['societe'] . ' - ' . $coordonnees['date_facture'] . '.pdf', 'D', true);
             exit(0);
         } else {
-            $pdf->Output($chemin, 'F');
+            $pdf->Output($chemin, 'F', true);
         }
     }
 

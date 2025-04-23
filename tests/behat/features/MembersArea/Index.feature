@@ -66,7 +66,7 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "ADH Adhésion AFUP jusqu'au 01/01/2024 30.00 €"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
     Then The page "1" of the PDF should not contain "Numéro de TVA intracommunautaire FR27 500 869 011"
-    Then the checksum of the response content should be "083ec4cc142fc0dfd308c67591f00baf"
+    Then the checksum of the response content should be "1dec9efb3a5b5bb12e873627d81c9e9c"
 
   @reloadDbWithTestData @vat
   Scenario: Test d'une facture de cotisation de personne physique à partir de 2024
@@ -91,7 +91,7 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "Total TTC 30,00 €"
     Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
     Then The page "1" of the PDF should contain "Numéro de TVA intracommunautaire FR27 500 869 011"
-    Then the checksum of the response content should be "106d2b461a5e52ef5945ac65241a5138"
+    Then the checksum of the response content should be "388a2cd0bdbdbc0bf1ae8503ab2a4b7c"
 
   @reloadDbWithTestData @vat
   Scenario: Test d'une facture de cotisation de personne morale avant 2024
@@ -112,7 +112,7 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "ADH Adhésion AFUP jusqu'au 02/01/2024 150.00 €"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
     Then The page "1" of the PDF should not contain "Numéro de TVA intracommunautaire FR27 500 869 011"
-    Then the checksum of the response content should be "42053949bbe29abec06acfda09858133"
+    Then the checksum of the response content should be "63abeb3c8a2eb33ef40a7750707b306d"
 
   @reloadDbWithTestData @vat
   Scenario: Test d'une facture de cotisation de personne morale à partir de 2024
@@ -136,7 +136,7 @@ Feature: Espace membre, accueil
     Then The page "1" of the PDF should contain "Total TTC 180,00 €"
     Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
     Then The page "1" of the PDF should contain "Numéro de TVA intracommunautaire FR27 500 869 011"
-    Then the checksum of the response content should be "8ff6ed41f9acb01a9aaa9ef45a343f4f"
+    Then the checksum of the response content should be "d9b4cf683928f3a2510e44cd2b91210c"
 
 
   @reloadDbWithTestData

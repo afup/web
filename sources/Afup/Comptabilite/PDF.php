@@ -4,10 +4,21 @@ declare(strict_types=1);
 
 namespace Afup\Site\Comptabilite;
 
-use FPDF;
+use tFPDF;
 
-class PDF extends FPDF
+class PDF extends tFPDF
 {
+    public function __construct($orientation = 'P', $unit = 'mm', $size = 'A4')
+    {
+        parent::__construct($orientation, $unit, $size);
+
+        define('_SYSTEM_TTFONTS', __DIR__ . '/../../../assets/fonts/');
+        $this->AddFont('Arial','','Arial.ttf',true);
+        $this->AddFont('Arial','B','Arial_Bold.ttf',true);
+        $this->AddFont('Arial','BI','Arial_Bold_Italic.ttf',true);
+        $this->AddFont('Arial','I','Arial_Italic.ttf',true);
+    }
+
     public function Header(): void       //En-tête
     {
         $this->Ln(1);              //Saut de ligne

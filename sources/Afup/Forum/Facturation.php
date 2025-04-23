@@ -150,14 +150,14 @@ class Facturation
 
         // A l'attention du client [adresse]
         $pdf->SetFont('Arial', 'BU', 10);
-        $pdf->Cell(130, 5, utf8_decode('Objet : Devis n°' . $reference));
+        $pdf->Cell(130, 5, 'Objet : Devis n°' . $reference);
         $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(10);
-        $pdf->MultiCell(130, 5, utf8_decode($facture['societe']) . "\n" . utf8_decode($facture['adresse']) . "\n" . utf8_decode($facture['code_postal']) . "\n" . utf8_decode($facture['ville']) . "\n" . utf8_decode($pays->obtenirNom($facture['id_pays'])));
+        $pdf->MultiCell(130, 5, $facture['societe'] . "\n" . $facture['adresse'] . "\n" . $facture['code_postal'] . "\n" . $facture['ville'] . "\n" . $pays->obtenirNom($facture['id_pays']));
 
         $pdf->Ln(15);
 
-        $pdf->MultiCell(180, 5, utf8_decode(sprintf("Devis concernant votre participation au %s organisé par l'Association Française des Utilisateurs de PHP (AFUP).", $facture['event_name'])));
+        $pdf->MultiCell(180, 5, sprintf("Devis concernant votre participation au %s organisé par l'Association Française des Utilisateurs de PHP (AFUP).", $facture['event_name']));
         // Cadre
         $pdf->Ln(10);
         $pdf->SetFillColor(200, 200, 200);
@@ -170,24 +170,24 @@ class Facturation
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
 
-            $pdf->Cell(50, 5, $this->truncate(utf8_decode($inscription['pretty_name']), 27), 1);
-            $pdf->Cell(100, 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);
-            $pdf->Cell(40, 5, utf8_decode($inscription['montant']) . utf8_decode(' '), 1);
+            $pdf->Cell(50, 5, $this->truncate($inscription['pretty_name'], 27), 1);
+            $pdf->Cell(100, 5, $inscription['prenom'] . ' ' . $inscription['nom'], 1);
+            $pdf->Cell(40, 5, $inscription['montant'] . ' €', 1);
             $total += $inscription['montant'];
         }
 
         $pdf->Ln();
         $pdf->SetFillColor(225, 225, 225);
         $pdf->Cell(150, 5, 'TOTAL', 1, 0, 'L', 1);
-        $pdf->Cell(40, 5, $total . utf8_decode(' '), 1, 0, 'L', 1);
+        $pdf->Cell(40, 5, $total . ' €', 1, 0, 'L', 1);
 
         $pdf->Ln(15);
         $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
 
         if (is_null($chemin)) {
-            $pdf->Output('Devis - ' . ($facture['societe'] ?: $facture['nom'] . '_' . $facture['prenom']) . ' - ' . date('Y-m-d_H-i', (int) $facture['date_facture']) . '.pdf', 'D');
+            $pdf->Output('Devis - ' . ($facture['societe'] ?: $facture['nom'] . '_' . $facture['prenom']) . ' - ' . date('Y-m-d_H-i', (int) $facture['date_facture']) . '.pdf', 'D', true);
         } else {
-            $pdf->Output($chemin, 'F');
+            $pdf->Output($chemin, 'F', true);
         }
     }
 
@@ -252,21 +252,21 @@ class Facturation
 
         // A l'attention du client [adresse]
         $pdf->SetFont('Arial', 'BU', 10);
-        $pdf->Cell(130, 5, utf8_decode('Objet : Facture n°' . $reference));
+        $pdf->Cell(130, 5, 'Objet : Facture n°' . $reference);
         $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(10);
-        $pdf->MultiCell(130, 5, utf8_decode($facture['societe']) . "\n" . utf8_decode($facture['adresse']) . "\n" . utf8_decode($facture['code_postal']) . "\n" . utf8_decode($facture['ville']) . "\n" . utf8_decode($pays->obtenirNom($facture['id_pays'])));
+        $pdf->MultiCell(130, 5, $facture['societe'] . "\n" . $facture['adresse'] . "\n" . $facture['code_postal'] . "\n" . $facture['ville'] . "\n" . $pays->obtenirNom($facture['id_pays']));
 
         $pdf->Ln(15);
 
-        $pdf->MultiCell(180, 5, utf8_decode(sprintf("Facture concernant votre participation au %s organisé par l'Association Française des Utilisateurs de PHP (AFUP).", $facture['event_name'])));
+        $pdf->MultiCell(180, 5, sprintf("Facture concernant votre participation au %s organisé par l'Association Française des Utilisateurs de PHP (AFUP).", $facture['event_name']));
 
         if ($facture['informations_reglement']) {
             $pdf->Ln(10);
-            $pdf->Cell(32, 5, utf8_decode('Référence client : '));
+            $pdf->Cell(32, 5, 'Référence client : ');
             $infos = explode("\n", $facture['informations_reglement']);
             foreach ($infos as $info) {
-                $pdf->Cell(100, 5, utf8_decode($info));
+                $pdf->Cell(100, 5, $info);
                 $pdf->Ln();
                 $pdf->Cell(32, 5);
             }
@@ -299,19 +299,19 @@ class Facturation
             }
 
 
-            $pdf->Cell(50, 5, $this->truncate(utf8_decode($inscription['pretty_name']), 27), 1);
-            $pdf->Cell(100 - ($isSubjectedToVat ? 35 : 0), 5, utf8_decode($inscription['prenom']) . ' ' . utf8_decode($inscription['nom']), 1);
+            $pdf->Cell(50, 5, $this->truncate($inscription['pretty_name'], 27), 1);
+            $pdf->Cell(100 - ($isSubjectedToVat ? 35 : 0), 5, $inscription['prenom'] . ' ' . $inscription['nom'], 1);
             $pdf->Cell(
                 $isSubjectedToVat ? 30 : 40, 5,
-                utf8_decode($this->formatFactureValue($isSubjectedToVat ? $montantHt : $montant, $isSubjectedToVat)) . utf8_decode(' '),
+                $this->formatFactureValue($isSubjectedToVat ? $montantHt : $montant, $isSubjectedToVat) . ' €',
                 1,
                 0,
                 $isSubjectedToVat ? 'R' : ''
             );
 
             if ($isSubjectedToVat) {
-                $pdf->Cell(15, 5, utf8_decode('10%'), 1, 0, 'C');
-                $pdf->Cell(30, 5, utf8_decode($this->formatFactureValue($montant, $isSubjectedToVat)) . utf8_decode(' '), 1, 0, 'R');
+                $pdf->Cell(15, 5, '10%', 1, 0, 'C');
+                $pdf->Cell(30, 5, $this->formatFactureValue($montant, $isSubjectedToVat) . ' €', 1, 0, 'R');
             }
 
             $totalHt += $montantHt;
@@ -321,8 +321,8 @@ class Facturation
         if ($facture['type_reglement'] == 1) { // Paiement par chèque
             $pdf->Ln();
             $pdf->Cell(50, 5, 'FRAIS', 1);
-            $pdf->Cell(100, 5, utf8_decode('Paiement par chèque'), 1);
-            $pdf->Cell(40, 5, '25' . utf8_decode(' '), 1);
+            $pdf->Cell(100, 5, 'Paiement par chèque', 1);
+            $pdf->Cell(40, 5, '25' . ' €', 1);
             $total += 25;
         }
 
@@ -335,12 +335,12 @@ class Facturation
             $pdf->Ln();
             $pdf->SetFillColor(225, 225, 225);
             $pdf->Cell(160, 5, 'Total HT', 1, 0, 'R', 1);
-            $pdf->Cell(30, 5, $this->formatFactureValue($totalHt, $isSubjectedToVat) . utf8_decode(' '), 1, 0, 'R', 1);
+            $pdf->Cell(30, 5, $this->formatFactureValue($totalHt, $isSubjectedToVat) . ' €', 1, 0, 'R', 1);
 
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
             $pdf->Cell(160, 5, 'Total TVA 10%', 1, 0, 'R', 1);
-            $pdf->Cell(30, 5, $this->formatFactureValue($total - $totalHt, $isSubjectedToVat) . utf8_decode(' '), 1, 0, 'R', 1);
+            $pdf->Cell(30, 5, $this->formatFactureValue($total - $totalHt, $isSubjectedToVat) . ' €', 1, 0, 'R', 1);
         }
 
         $pdf->Ln();
@@ -356,7 +356,7 @@ class Facturation
         );
         $pdf->Cell(
             40 - ($isSubjectedToVat ? 10 : 0), 5,
-            $this->formatFactureValue($total, $isSubjectedToVat) . utf8_decode(' '),
+            $this->formatFactureValue($total, $isSubjectedToVat) . ' €',
             1,
             0,
             $isSubjectedToVat ? 'R' : 'L',
@@ -379,7 +379,7 @@ class Facturation
             $pdf->SetTextColor(255, 0, 0);
             $pdf->Cell(130, 5);
             if ($facture['type_reglement'] != Ticket::PAYMENT_NONE) {
-                $pdf->Cell(60, 5, utf8_decode('Payé ' . $type . ' le ' . date('d/m/Y', (int) $facture['date_reglement'])));
+                $pdf->Cell(60, 5, 'Payé ' . $type . ' le ' . date('d/m/Y', (int) $facture['date_reglement']));
             }
             $pdf->SetTextColor(0, 0, 0);
         }
@@ -389,9 +389,9 @@ class Facturation
         }
 
         if (is_null($chemin)) {
-            $pdf->Output('Facture - ' . ($facture['societe'] ?: $facture['nom'] . '_' . $facture['prenom']) . ' - ' . date('Y-m-d_H-i', (int) $facture['date_facture']) . '.pdf', 'D');
+            $pdf->Output('Facture - ' . ($facture['societe'] ?: $facture['nom'] . '_' . $facture['prenom']) . ' - ' . date('Y-m-d_H-i', (int) $facture['date_facture']) . '.pdf', 'D', true);
         } else {
-            $pdf->Output($chemin, 'F');
+            $pdf->Output($chemin, 'F', true);
         }
 
         return $reference;

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Afup\Site\Utils;
 
+use Afup\Site\Comptabilite\PDF;
 use AppBundle\GeneralMeeting\Attendee;
 
-class PDF_AG extends \FPDF
+class PDF_AG extends PDF
 {
     const CELL_HEIGHT = 7;
     private $footerTitle = '';
@@ -72,7 +73,7 @@ class PDF_AG extends \FPDF
         $widths = [65, 20, 65, 35];
 
         foreach ($row as $pos => $value) {
-            $this->Cell($widths[$pos], self::CELL_HEIGHT, utf8_decode($value), 1);
+            $this->Cell($widths[$pos], self::CELL_HEIGHT, $value, 1);
         }
     }
 
@@ -80,7 +81,7 @@ class PDF_AG extends \FPDF
     {
         $this->SetY(-15);
         $this->SetFont('Arial', 'I', 8);
-        $this->Cell(0, 10, utf8_decode($this->getFooterTitle()) . ' - Page ' . $this->PageNo(), 0, 0, 'C');
+        $this->Cell(0, 10, $this->getFooterTitle() . ' - Page ' . $this->PageNo(), 0, 0, 'C');
     }
 
     public function getFooterTitle()

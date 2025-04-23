@@ -125,7 +125,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     Then The page "1" of the PDF should contain "Repère(s) :  Forum PHP 2024"
     Then The page "1" of the PDF should contain "Comme convenu, nous vous prions de trouver votre facture"
     Then The page "1" of the PDF should contain "Type Description Quantite TVA Prix HT Total TTC"
-    Then The page "1" of the PDF should contain "forum_php_2024 Forum PHP 2024 - Sponsoring"
+    Then The page "1" of the PDF should contain "forum_php_2024 Forum  PHP  2024  -  Sponsoring"
     Then The page "1" of the PDF should contain "Bronze 1.00 20.00% 1 000,00 € 1 200,00 €"
     Then The page "1" of the PDF should contain "TOTAL HT 1 000,00 €"
     Then The page "1" of the PDF should contain "Total TVA 20.00% 200,00 €"
@@ -151,7 +151,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     Then The page "1" of the PDF should contain "forum_php_2023 Forum PHP 2023 - Sponsoring Bronze 1.00 1000.00 € 1000 €"
     Then The page "1" of the PDF should contain "TOTAL 1000 €"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
-    Then the checksum of the response content should be "1a6219e7d6f9538c3887d042ad293c5f"
+    Then the checksum of the response content should be "c424b17649ae6bfc83bf6791dc1543ab"
 
 
   @reloadDbWithTestData
@@ -170,7 +170,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     Then The page "1" of the PDF should contain "Repère(s) :  Forum PHP 2024"
     Then The page "1" of the PDF should contain "Comme convenu, nous vous prions de trouver votre devis"
     Then The page "1" of the PDF should contain "Type Description Quantite TVA Prix HT Total TTC"
-    Then The page "1" of the PDF should contain "forum_php_2024 Forum PHP 2024 - Sponsoring"
+    Then The page "1" of the PDF should contain "forum_php_2024 Forum  PHP  2024  -  Sponsoring"
     Then The page "1" of the PDF should contain "Bronze 1.00 20.00% 1 000,00 € 1 200,00 €"
     Then The page "1" of the PDF should contain "TOTAL HT 1 000,00 €"
     Then The page "1" of the PDF should contain "Total TVA 20.00% 200,00 €"
