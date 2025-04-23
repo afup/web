@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 $isDevEnv = isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'dev';
 $isTestEnv = isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'test';
 
-ini_set('error_reporting', (string) E_ALL ^ E_DEPRECATED);
-
 if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv || $isTestEnv) {
     if (!$isDevEnv && !$isTestEnv
         &&

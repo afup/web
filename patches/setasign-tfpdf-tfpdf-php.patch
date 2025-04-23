@@ -1,0 +1,11 @@
+--- /dev/null
++++ ../tfpdf.php
+@@ -567,7 +567,7 @@
+ 		$family = $this->FontFamily;
+ 	else
+ 		$family = strtolower($family);
+-	$style = strtoupper($style);
++	$style = strtoupper($style ?? '');
+ 	if(strpos($style,'U')!==false)
+ 	{
+ 		$this->underline = true;
