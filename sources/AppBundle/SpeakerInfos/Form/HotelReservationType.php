@@ -29,12 +29,9 @@ class HotelReservationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /**
-         * @var Event $event
-         */
         $event = $options['event'];
 
-        if (null === $event) {
+        if (!$event instanceof Event) {
             throw new \LogicException('Event has not been defined');
         }
 

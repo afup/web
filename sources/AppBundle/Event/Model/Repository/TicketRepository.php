@@ -153,7 +153,7 @@ class TicketRepository extends Repository implements MetadataInitializer
             ->query($this->getCollection(new HydratorArray()))
         ;
 
-        if ($tickets === null) {
+        if ($tickets->count() === 0) {
             return 0;
         }
 

@@ -23,7 +23,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 class SpeakerRepository extends Repository implements MetadataInitializer
 {
     /**
-     * @return CollectionInterface&iterable<Speaker>
+     * @return CollectionInterface<Speaker>&iterable<Speaker>
      */
     public function getSpeakersByTalk(Talk $talk)
     {

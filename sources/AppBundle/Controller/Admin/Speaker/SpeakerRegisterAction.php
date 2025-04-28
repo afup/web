@@ -83,7 +83,7 @@ class SpeakerRegisterAction extends AbstractController
                 } catch (Exception $e) {
                     $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout de l\'inscription');
 
-                    return new RedirectResponse($this->urlGenerator->generate('admin_speaker_list'));
+                    return $this->redirectToRoute('admin_speaker_list');
                 }
                 try {
                     $this->invoiceService->handleInvoicing(
