@@ -19,7 +19,7 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
 
     private string $login = '';
 
-    private string $name = '';
+    private ?string $name = null;
 
     private ?string $company = null;
 
@@ -93,12 +93,12 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
         return $this;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->propertyChanged('name', $this->name, $name);
         $this->name = $name;
