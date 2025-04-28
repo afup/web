@@ -2,6 +2,8 @@ FROM php:7.0-apache
 
 RUN echo 'deb http://archive.debian.org/debian stretch main' > /etc/apt/sources.list
 
+COPY --from=composer:2.2.25 /usr/bin/composer /usr/bin/composer
+
 ARG ENABLE_XDEBUG=false
 
 ## Update system

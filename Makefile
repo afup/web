@@ -12,7 +12,6 @@ COLOR_TARGET = \033[32m
 COLOR_TITLE = \033[33m
 TEXT_BOLD = \033[1m
 
-.PHONY: help
 .SILENT: help
 help:
 	printf "\n${COLOR_TITLE}Usage:${COLOR_RESET}\n"
@@ -31,7 +30,7 @@ help:
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
-.PHONY: install docker-up docker-stop docker-down test hooks vendors db-seed db-migrations reset-db init console phpstan
+.PHONY: install docker-up docker-stop docker-down test hooks vendors db-seed db-migrations reset-db init console phpstan vendor help node_modules
 
 ##@ Setup
 
@@ -87,11 +86,13 @@ phpstan:
 
 ### Compiler les assets pour la production
 assets:
-	./node_modules/.bin/webpack -p
+	$(DOCKER_COMPOSE_BIN) run --rm -it cliphp ./node_modules/.bin/webpack -p
 
 ### Lancer le watcher pour les assets
 watch:
-	./node_modules/.bin/webpack --progress --colors --watch
+	$(DOCKER_COMPOSE_BIN) up cliphp
+	# Obligé de faire un exec car un run foire l'attachement du terminal et donc les ctrl+c / d ne fonctionne pas
+	$(DOCKER_COMPOSE_BIN) exec -it cliphp ./node_modules/.bin/webpack --progress --colors --watch
 
 ##@ Git
 
@@ -123,24 +124,20 @@ compose.override.yml:
 
 vendors: vendor node_modules
 
-vendor: composer.phar composer.lock
-	php composer.phar install --no-scripts
+vendor:
+	$(DOCKER_COMPOSE_BIN) run --rm cliphp composer install --no-scripts
 
 node_modules:
-	yarn install
-
-composer.phar:
-    # You may replace the commit hash by whatever the last commit hash is on https://github.com/composer/getcomposer.org/commits/main
-	wget https://raw.githubusercontent.com/composer/getcomposer.org/46c42b8248e157b4f77acf5150dacba6aeb60901/web/installer -O - -q | php -- --2.2
+	$(DOCKER_COMPOSE_BIN) run --rm cliphp yarn install
 
 init-db:
 	make reset-db
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm cliphp make db-migrations
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm cliphp make db-seed
+	CURRENT_UID=$(CURRENT_UID) make db-migrations
+	CURRENT_UID=$(CURRENT_UID) make db-seed
 
 config:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm cliphp make vendors
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm cliphp make assets
+	CURRENT_UID=$(CURRENT_UID) make vendors
+	CURRENT_UID=$(CURRENT_UID) make assets
 
 data:
 	mkdir data
@@ -157,7 +154,7 @@ reset-db:
 	echo 'CREATE DATABASE web' | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
 
 db-migrations:
-	php bin/phinx migrate
+	$(DOCKER_COMPOSE_BIN) run -it --rm cliphp bin/phinx migrate
 
 db-seed:
-	php bin/phinx seed:run
+	$(DOCKER_COMPOSE_BIN) run -it --rm cliphp bin/phinx seed:run
