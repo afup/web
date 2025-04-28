@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Validator\Constraints;
 
-use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
@@ -77,9 +76,6 @@ class CorporateMemberValidator extends ConstraintValidator
             return;
         }
 
-        /**
-         * @var CompanyMember $company
-         */
         $company = $this->companyMemberRepository->get($user->getCompanyId());
 
         if ($company === null) {
