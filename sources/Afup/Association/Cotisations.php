@@ -196,27 +196,34 @@ class Cotisations
         return $this->_bdd->obtenirUn($requete);
     }
 
-    public function notifierRegelementEnLigneAuTresorier(string $cmd, string $total, string $autorisation, string $transaction, UserRepository $userRepository): ?bool
+    public function notifierReglementEnLigneAuTresorier(string $cmd, string $total, string $autorisation, string $transaction, UserRepository $userRepository): ?bool
     {
-        $account = $this->getAccountFromCmd($cmd);
-
-        if (AFUP_PERSONNES_MORALES == $account['type']) {
+        if (str_starts_with($cmd, 'F')) {
             $invoiceNumber = substr($cmd, 1);
             $cotisation = $this->getByInvoice($invoiceNumber);
             $company = $this->companyMemberRepository ? $this->companyMemberRepository->get($cotisation['id_personne']) : null;
-            Assertion::notNull($company);
+            if ($company === null) {
+                throw new \RuntimeException(sprintf('Personne morale non trouvée pour "%s"', $cmd));
+            }
             $infos = [
                 'nom' => $company->getLastName(),
                 'prenom' => $company->getFirstName(),
                 'email' => $company->getEmail(),
+                'id' => $cotisation['id_personne'],
+                'type' => AFUP_PERSONNES_MORALES,
             ];
         } else {
-            $user = $userRepository->get($account['id']);
-            Assertion::notNull($user);
+            [$ref, $date, $type_personne, $id_personne, $reste] = explode('-', $cmd, 5);
+            $user = $userRepository->get($id_personne);
+            if ($user === null) {
+                throw new \RuntimeException(sprintf('Personne physique non trouvée pour "%s"', $cmd));
+            }
             $infos = [
                 'nom' => $user->getLastName(),
                 'prenom' => $user->getFirstName(),
                 'email' => $user->getEmail(),
+                'id' => $id_personne,
+                'type' => $type_personne,
             ];
         }
 
@@ -225,7 +232,7 @@ class Cotisations
         $corps = "Bonjour, \n\n";
         $corps .= "Une cotisation annuelle AFUP a été réglée.\n\n";
         $corps .= "Personne : " . $infos['nom'] . " " . $infos['prenom'] . " (" . $infos['email'] . ")\n";
-        $corps .= "URL : " . Site::WEB_PATH . "pages/administration/index.php?page=cotisations&type_personne=" . $account['type'] . "&id_personne=" . $account['id'] . "\n";
+        $corps .= "URL : " . Site::WEB_PATH . "pages/administration/index.php?page=cotisations&type_personne=" . $infos['type'] . "&id_personne=" . $infos['id'] . "\n";
         $corps .= "Commande : " . $cmd . "\n";
         $corps .= "Total : " . $total . "\n";
         $corps .= "Autorisation : " . $autorisation . "\n";
