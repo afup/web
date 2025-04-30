@@ -18,3 +18,6 @@ Feature: Administration - Évènements - Tokens Visiteurs
     Then I should see "Le token a été enregistré"
     Then the ".content h2" element should contain "Tokens visiteurs"
     Then the ".content table" element should contain "Token visiteur de test"
+    # Lien d'un token
+    And I follow "Lien"
+    Then I should see "Spécial Forum * 2€ TTC"
