@@ -96,7 +96,7 @@ class Event implements NotifyPropertyInterface
      */
     private $waitingListUrl;
 
-    private bool $hasPricesDefinedWithVat = true;
+    private bool $hasPricesDefinedWithVat = false;
 
     private ?DateTime $archivedAt = null;
 
