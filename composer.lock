@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "60f5cb07db70215fbf6516f723fa0e25",
+    "content-hash": "bf0901701c7d75eb6af39d0ddc06cb90",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -561,20 +561,20 @@
         },
         {
             "name": "ccmbenchmark/ting_bundle",
-            "version": "3.8.2",
+            "version": "3.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ccmbenchmark/ting_bundle.git",
-                "reference": "97d08a2b415d1fad052911b5bc7e9b8bc4e9a1f1"
+                "reference": "d46b0b60672d192c186708cf8af91f14dceeb4b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ccmbenchmark/ting_bundle/zipball/97d08a2b415d1fad052911b5bc7e9b8bc4e9a1f1",
-                "reference": "97d08a2b415d1fad052911b5bc7e9b8bc4e9a1f1",
+                "url": "https://api.github.com/repos/ccmbenchmark/ting_bundle/zipball/d46b0b60672d192c186708cf8af91f14dceeb4b5",
+                "reference": "d46b0b60672d192c186708cf8af91f14dceeb4b5",
                 "shasum": ""
             },
             "require": {
-                "ccmbenchmark/ting": "^3.10",
+                "ccmbenchmark/ting": "^3.11",
                 "doctrine/cache": "^1.10",
                 "php": ">=8.1",
                 "symfony/config": "^4.4 || ^5.0 || ^6.0 || ^7.0",
@@ -587,6 +587,10 @@
                 "atoum/atoum": "^4.2",
                 "atoum/stubs": "^2.2",
                 "brick/geo": ">=0.5 <=1.0",
+                "symfony/expression-language": "^6.3 || ^7.2",
+                "symfony/security-bundle": "^6.0 || ^7.0",
+                "symfony/security-core": "^6.0 || ^7.0",
+                "symfony/serializer": "^6.0 || ^7.0",
                 "symfony/uid": "^6.0 || ^7.0"
             },
             "type": "symfony-bundle",
@@ -602,9 +606,9 @@
             "description": "Symfony bundle for ccmbenchmark/ting. Provides an interface to use a lightweight datamapper in symfony.",
             "support": {
                 "issues": "https://github.com/ccmbenchmark/ting_bundle/issues",
-                "source": "https://github.com/ccmbenchmark/ting_bundle/tree/3.8.2"
+                "source": "https://github.com/ccmbenchmark/ting_bundle/tree/3.10.1"
             },
-            "time": "2025-01-09T13:10:31+00:00"
+            "time": "2025-04-17T09:54:35+00:00"
         },
         {
             "name": "cocur/slugify",

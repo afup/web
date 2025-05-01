@@ -14,7 +14,7 @@
     "algolia/algoliasearch-client-php": "^3.4",
     "beberlei/assert": "^2.9",
     "captioning/captioning": "^2.6",
-    "ccmbenchmark/ting_bundle": "3.8.*",
+    "ccmbenchmark/ting_bundle": "^3.8",
     "cocur/slugify": "^2.3",
     "cuyz/valinor": "^1.15",
     "cweagans/composer-patches": "^1.7",
@@ -87,10 +87,6 @@
     "patches": {
       "setasign/tfpdf": [
         "patches/setasign-tfpdf-tfpdf-php.patch"
-      ],
-      "ccmbenchmark/ting_bundle": [
-        "patches/ccmbenchmark-ting-bundle-src-tingbundle-datacollector-tingcachedatacollector-php.patch",
-        "patches/ccmbenchmark-ting-bundle-src-tingbundle-datacollector-tingdriverdatacollector-php.patch"
       ],
       "znk3r/html_quickform": [
         "patches/znk3r-html-quickform-html-quickform-date-php.patch",
