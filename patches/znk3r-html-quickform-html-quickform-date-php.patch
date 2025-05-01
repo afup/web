@@ -1,0 +1,11 @@
+--- /dev/null
++++ ../HTML/QuickForm/date.php
+@@ -317,7 +317,7 @@
+         $locale    = $this->_locale[$this->_options['language']];
+         $backslash =  false;
+         for ($i = 0, $length = strlen($this->_options['format']); $i < $length; $i++) {
+-            $sign = $this->_options['format']{$i};
++            $sign = $this->_options['format'][$i];
+             if ($backslash) {
+                 $backslash  = false;
+                 $separator .= $sign;
