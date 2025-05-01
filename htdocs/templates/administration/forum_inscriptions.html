@@ -62,7 +62,7 @@
             {assign var=confirmes_total value=$confirmes_total+$confirmes}
             {assign var=payants_total value=$payants_total+$payants}
             {assign var=montant_total value=$montant_total+$montant}
-            {if $inscrits != ''}
+            {if $inscrits !== 0}
             <tr>
               <td>
                 {$forum_tarifs_lib[$forum_tarif_key]}
