@@ -468,16 +468,16 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->query($this->getCollection(new HydratorSingleObject()));
     }
 
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         if ($this->supportsClass($user::class) === false) {
             throw new UnsupportedUserException(sprintf('Instance of %s not supported', $user::class));
         }
 
-        return $this->loadUserByUsername($user->getUsername());
+        return $this->loadUserByUsername($user->getUserIdentifier());
     }
 
-    public function supportsClass(string $class)
+    public function supportsClass(string $class): bool
     {
         return $class === User::class;
     }
