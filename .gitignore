@@ -1,4 +1,9 @@
+###> env file ###
 .env
+
+###> docker file ###
+docker.env.local
+.docker/data/history
 
 deps.lock
 .idea
