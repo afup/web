@@ -1,9 +1,6 @@
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/book/security.html
 security:
-    # https://symfony.com/doc/current/security/authenticator_manager.html
-    enable_authenticator_manager: true
-
     password_hashers:
         legacy:
             id: 'AppBundle\Security\LegacyHasher'
