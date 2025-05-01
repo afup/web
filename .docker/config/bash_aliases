@@ -1,0 +1,7 @@
+# Global
+alias ll='ls -alh --color'
+alias clean-test-deprecated-log='rm -f var/logs/test.deprecations.log'
+alias groupe-deprecation-log='cat var/logs/test.deprecations.log | cut -d "]" -f 2 | awk '{$$1=$$1};1' | sort | uniq -c | sort -nr > var/logs/test.deprecations_grouped.log'
+
+# Symfony
+alias console='php bin/console'

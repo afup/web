@@ -1,7 +1,22 @@
-# version 1.1
 services:
+  apachephp:
+    build:
+      context: .
+      target: afup_web_dev
+    container_name: afup-web-apachephp
+    env_file:
+      - docker.env
+      - docker.env.local
+      - .env
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - db
+      - mailcatcher
+
   db:
     build: ./docker/dockerfiles/mysql
+    container_name: afup-web-db
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: afup
@@ -10,69 +25,59 @@ services:
     volumes:
       - ./data/mysql:/var/lib/mysql
 
-  dbtest:
-    build: ./docker/dockerfiles/mysqltest
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: afup
-      MYSQL_PASSWORD: afup
-      MYSQL_DATABASE: web
-    volumes:
-      - ./data/mysqltest:/var/lib/mysql
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-      timeout: 20s
-      retries: 10
-
-  apachephp:
-    build:
-      context: ./docker/dockerfiles/apachephp
-      args:
-        uid: ${CURRENT_UID:-1001}
-        gid: "1001"
-        ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
-    environment:
-      SYMFONY_ENV: "dev"
-      HOST_PWD: ${PWD}
-      SYMFONY_IDE: "%env(IDE_USED)%://open?url=file://%%f&line=%%l&/var/www/html/>%env(HOST_PWD)%/"
-    env_file:
-      .env
-    volumes:
-      - ./:/var/www/html
-    links:
-      - db
-      - mailcatcher
-
-  apachephptest:
-    build:
-      context: ./docker/dockerfiles/apachephp
-      args:
-        uid: ${CURRENT_UID:-1001}
-        gid: "1001"
-        ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
-    environment:
-      SYMFONY_ENV: "test"
-      HOST_PWD: ${PWD}
-      SYMFONY_IDE: "%env(IDE_USED)%://open?url=file://%%f&line=%%l&/var/www/html/>%env(HOST_PWD)%/"
-    env_file:
-      .env
-    volumes:
-      - ./:/var/www/html
-    links:
-      - statictestresources
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "https://apachephptest:80" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-    depends_on:
-      dbtest:
-        condition: service_healthy
-
   mailcatcher:
     image: dockage/mailcatcher:0.9.0
+    container_name: afup-web-mailcatcher
 
-  statictestresources:
-    image: nginx:1.25.4
+  node:
+    image: node:22.15-bookworm
+    container_name: afup-web-node
+    working_dir: /var/www/html
     volumes:
-      - ./docker/dockerfiles/statictestresources:/usr/share/nginx/html:ro
+      - ./:/var/www/html
+    profiles: [front] # Avec ce paramètre node n'est pas lancé quand on docker compose up
+
+#  dbtest:
+#    build: ./docker/dockerfiles/mysqltest
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_USER: afup
+#      MYSQL_PASSWORD: afup
+#      MYSQL_DATABASE: web
+#    volumes:
+#      - ./data/mysqltest:/var/lib/mysql
+#    healthcheck:
+#      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+#      timeout: 20s
+#      retries: 10
+
+#  apachephptest:
+#    build:
+#      context: ./docker/dockerfiles/apachephp
+#      args:
+#        uid: ${CURRENT_UID:-1001}
+#        gid: "1001"
+#        ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
+#    environment:
+#      SYMFONY_ENV: "test"
+#      HOST_PWD: ${PWD}
+#      SYMFONY_IDE: "%env(IDE_USED)%://open?url=file://%%f&line=%%l&/var/www/html/>%env(HOST_PWD)%/"
+#    env_file:
+#      .env
+#    volumes:
+#      - ./:/var/www/html
+#    links:
+#      - statictestresources
+#    healthcheck:
+#      test: [ "CMD", "curl", "-f", "https://apachephptest:80" ]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 5
+#    depends_on:
+#      dbtest:
+#        condition: service_healthy
+
+#  statictestresources:
+#    image: nginx:1.25.4
+#    volumes:
+#      - ./docker/dockerfiles/statictestresources:/usr/share/nginx/html:ro
