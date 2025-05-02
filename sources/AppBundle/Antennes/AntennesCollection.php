@@ -94,7 +94,7 @@ final class AntennesCollection
             ),
             new Map(
                 false,
-                'right',
+                LegendAttachment::Right,
                 new City(
                     new Point(330, 440),
                     new Point(270, 500),
@@ -119,7 +119,7 @@ final class AntennesCollection
             ),
             new Map(
                 false,
-                'right',
+                LegendAttachment::Right,
                 new City(
                     new Point(410, 380),
                     new Point(320, 380),
@@ -144,7 +144,7 @@ final class AntennesCollection
             ),
             new Map(
                 false,
-                'left',
+                LegendAttachment::Left,
                 new City(
                     new Point(490, 55),
                     new Point(530, 30),
@@ -175,7 +175,7 @@ final class AntennesCollection
             ),
             new Map(
                 false,
-                'left',
+                LegendAttachment::Left,
                 new City(
                     new Point(630, 130),
                     new Point(660, 140),
@@ -201,7 +201,7 @@ final class AntennesCollection
             ),
             new Map(
                 false,
-                'left',
+                LegendAttachment::Left,
                 new City(
                     new Point(570, 380),
                     new Point(680, 320),
@@ -226,7 +226,7 @@ final class AntennesCollection
             ),
             new Map(
                 false,
-                'top',
+                LegendAttachment::Top,
                 new City(
                     new Point(600, 540),
                     new Point(600, 600),
@@ -251,7 +251,7 @@ final class AntennesCollection
             ),
             new Map(
                 false,
-                'top',
+                LegendAttachment::Top,
                 new City(
                     new Point(530, 520),
                     new Point(470, 590),
@@ -276,7 +276,7 @@ final class AntennesCollection
             ),
             new Map(
                 true,
-                'right',
+                LegendAttachment::Right,
                 new City(
                     new Point(285, 290),
                     new Point(180, 290),
@@ -301,7 +301,7 @@ final class AntennesCollection
             ),
             new Map(
                 false,
-                'right',
+                LegendAttachment::Right,
                 new City(
                     new Point(460, 180),
                     new Point(400, 60),
@@ -326,7 +326,7 @@ final class AntennesCollection
             ),
             new Map(
                 false,
-                'right',
+                LegendAttachment::Right,
                 new City(
                     new Point(365, 330),
                     new Point(285, 360),
@@ -351,7 +351,7 @@ final class AntennesCollection
             ),
             new Map(
                 false,
-                'left',
+                LegendAttachment::Left,
                 new City(
                     new Point(540, 150),
                     new Point(600, 70),
@@ -376,7 +376,7 @@ final class AntennesCollection
             ),
             new Map(
                 false,
-                'bottom',
+                LegendAttachment::Bottom,
                 new City(
                     new Point(285, 220),
                     new Point(150, 220),
@@ -401,7 +401,7 @@ final class AntennesCollection
             ),
             new Map(
                 false,
-                'top',
+                LegendAttachment::Top,
                 new City(
                     new Point(420, 520),
                     new Point(290, 590),
@@ -426,7 +426,7 @@ final class AntennesCollection
             ),
             new Map(
                 false,
-                'left',
+                LegendAttachment::Left,
                 new City(
                     new Point(650, 160),
                     new Point(700, 220),
@@ -469,7 +469,7 @@ final class AntennesCollection
             ),
             new Map(
                 false,
-                'right',
+                LegendAttachment::Right,
                 new City(
                     new Point(380, 270),
                     new Point(240, 90),
