@@ -6,34 +6,24 @@ namespace AppBundle\SocialNetwork;
 
 use AppBundle\Event\Model\Speaker;
 use AppBundle\VideoNotifier\HistoryEntry;
-use MyCLabs\Enum\Enum;
 use function Symfony\Component\String\u;
 
-/**
- * @extends Enum<SocialNetwork::*>
- * @method static SocialNetwork Bluesky()
- * @method static SocialNetwork Mastodon()
- */
-final class SocialNetwork extends Enum
+enum SocialNetwork: string
 {
-    private const Bluesky = 'bluesky';
-    private const Mastodon = 'mastodon';
+    case Bluesky = 'bluesky';
+    case Mastodon = 'mastodon';
 
     public function statusMaxLength(): int
     {
-        switch ($this->value) {
-            case self::Bluesky:
-                return 300;
-            case self::Mastodon:
-                return 500;
-            default:
-                return 280;
-        }
+        return match ($this) {
+            self::Bluesky => 300,
+            self::Mastodon => 500,
+        };
     }
 
     public function getSpeakerHandle(Speaker $speaker): ?string
     {
-        if ($this->value === self::Bluesky) {
+        if ($this === self::Bluesky) {
             $handle = $speaker->getBluesky();
         } else {
             $handle = $speaker->getMastodon();
@@ -48,7 +38,7 @@ final class SocialNetwork extends Enum
 
     public function setStatusId(HistoryEntry $historyEntry, StatusId $statusId): void
     {
-        if ($this->value === self::Bluesky) {
+        if ($this === self::Bluesky) {
             $historyEntry->setStatusIdBluesky($statusId->value);
             return;
         }
