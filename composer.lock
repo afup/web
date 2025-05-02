@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d50fb707a7afb362a175427f584436f5",
+    "content-hash": "210103a0df20b4c77f8a82f8c08cced2",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -755,35 +755,39 @@
         },
         {
             "name": "cuyz/valinor",
-            "version": "0.17.1",
+            "version": "1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CuyZ/Valinor.git",
-                "reference": "8dbd01df82bf3eaf57246d1493d54b958b00f900"
+                "reference": "c3cb63a35bb0c0b1b130117cd8962def1ede9e6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CuyZ/Valinor/zipball/8dbd01df82bf3eaf57246d1493d54b958b00f900",
-                "reference": "8dbd01df82bf3eaf57246d1493d54b958b00f900",
+                "url": "https://api.github.com/repos/CuyZ/Valinor/zipball/c3cb63a35bb0c0b1b130117cd8962def1ede9e6f",
+                "reference": "c3cb63a35bb0c0b1b130117cd8962def1ede9e6f",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0",
-                "doctrine/annotations": "^1.11",
-                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0",
-                "psr/simple-cache": "^1.0 || ^2.0"
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
+                "psr/simple-cache": "^1.0 || ^2.0 || ^3.0"
+            },
+            "conflict": {
+                "phpstan/phpstan": "<1.0 || >= 3.0",
+                "vimeo/psalm": "<5.0 || >=7.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.4",
-                "infection/infection": "^0.26",
+                "infection/infection": "^0.27",
                 "marcocesarato/php-conventional-changelog": "^1.12",
                 "mikey179/vfsstream": "^1.6.10",
-                "phpstan/phpstan": "^1.3",
-                "phpstan/phpstan-phpunit": "^1.0",
-                "phpstan/phpstan-strict-rules": "^1.0",
-                "phpunit/phpunit": "^9.5",
-                "rector/rector": "^0.12.23",
-                "vimeo/psalm": "^4.18.1"
+                "phpbench/phpbench": "^1.3",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpunit/phpunit": "^10.5",
+                "rector/rector": "^2.0",
+                "vimeo/psalm": "^5.0"
             },
             "type": "library",
             "autoload": {
@@ -817,7 +821,7 @@
             ],
             "support": {
                 "issues": "https://github.com/CuyZ/Valinor/issues",
-                "source": "https://github.com/CuyZ/Valinor/tree/0.17.1"
+                "source": "https://github.com/CuyZ/Valinor/tree/1.15.0"
             },
             "funding": [
                 {
@@ -825,7 +829,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-18T09:52:40+00:00"
+            "time": "2025-03-30T22:35:46+00:00"
         },
         {
             "name": "cweagans/composer-patches",
@@ -877,30 +881,30 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "1.14.4",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "253dca476f70808a5aeed3a47cc2cc88c5cab915"
+                "reference": "901c2ee5d26eb64ff43c47976e114bf00843acf7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/253dca476f70808a5aeed3a47cc2cc88c5cab915",
-                "reference": "253dca476f70808a5aeed3a47cc2cc88c5cab915",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/901c2ee5d26eb64ff43c47976e114bf00843acf7",
+                "reference": "901c2ee5d26eb64ff43c47976e114bf00843acf7",
                 "shasum": ""
             },
             "require": {
-                "doctrine/lexer": "^1 || ^2",
+                "doctrine/lexer": "^2 || ^3",
                 "ext-tokenizer": "*",
-                "php": "^7.1 || ^8.0",
+                "php": "^7.2 || ^8.0",
                 "psr/cache": "^1 || ^2 || ^3"
             },
             "require-dev": {
-                "doctrine/cache": "^1.11 || ^2.0",
-                "doctrine/coding-standard": "^9 || ^12",
-                "phpstan/phpstan": "~1.4.10 || ^1.10.28",
+                "doctrine/cache": "^2.0",
+                "doctrine/coding-standard": "^10",
+                "phpstan/phpstan": "^1.10.28",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
-                "symfony/cache": "^4.4 || ^5.4 || ^6.4 || ^7",
+                "symfony/cache": "^5.4 || ^6.4 || ^7",
                 "vimeo/psalm": "^4.30 || ^5.14"
             },
             "suggest": {
@@ -947,9 +951,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/annotations/issues",
-                "source": "https://github.com/doctrine/annotations/tree/1.14.4"
+                "source": "https://github.com/doctrine/annotations/tree/2.0.2"
             },
-            "time": "2024-09-05T10:15:52+00:00"
+            "time": "2024-09-05T10:17:24+00:00"
         },
         {
             "name": "doctrine/cache",
