@@ -19,7 +19,7 @@ class StatusGeneratorTest extends TestCase
         self::expectException(\InvalidArgumentException::class);
         self::expectExceptionMessage('Aucun speaker pour le talk');
 
-        $generator = new StatusGenerator(SocialNetwork::Bluesky());
+        $generator = new StatusGenerator(SocialNetwork::Bluesky);
 
         $generator->generate(new Talk(), []);
     }
@@ -44,8 +44,8 @@ class StatusGeneratorTest extends TestCase
     public function textTooLongDataProvider(): \Generator
     {
         yield [
-            SocialNetwork::Bluesky(),
-            (new Talk())->setTitle($this->faker()->realText(SocialNetwork::Bluesky()->statusMaxLength() * 2)),
+            SocialNetwork::Bluesky,
+            (new Talk())->setTitle($this->faker()->realText(SocialNetwork::Bluesky->statusMaxLength() * 2)),
             [
                 (new Speaker())->setBluesky($this->faker()->domainName()),
             ],
@@ -53,8 +53,8 @@ class StatusGeneratorTest extends TestCase
         ];
 
         yield [
-            SocialNetwork::Mastodon(),
-            (new Talk())->setTitle($this->faker()->realText(SocialNetwork::Mastodon()->statusMaxLength() * 2)),
+            SocialNetwork::Mastodon,
+            (new Talk())->setTitle($this->faker()->realText(SocialNetwork::Mastodon->statusMaxLength() * 2)),
             [
                 (new Speaker())->setMastodon($this->faker()->domainName()),
             ],
@@ -81,7 +81,7 @@ class StatusGeneratorTest extends TestCase
     public function validStatusDataProvider(): \Generator
     {
         yield 'mastodon full case' => [
-            SocialNetwork::Mastodon(),
+            SocialNetwork::Mastodon,
             (new Talk())
                 ->setId(123)
                 ->setTitle('Lorem ipsum dolor si amet')
@@ -106,7 +106,7 @@ class StatusGeneratorTest extends TestCase
         ];
 
         yield '1 speaker with username' => [
-            SocialNetwork::Bluesky(),
+            SocialNetwork::Bluesky,
             (new Talk())
                 ->setId(123)
                 ->setTitle('Lorem ipsum dolor si amet')
@@ -127,7 +127,7 @@ class StatusGeneratorTest extends TestCase
         ];
 
         yield '1 speaker without username' => [
-            SocialNetwork::Bluesky(),
+            SocialNetwork::Bluesky,
             (new Talk())
                 ->setId(123)
                 ->setTitle('Lorem ipsum dolor si amet')
@@ -148,7 +148,7 @@ class StatusGeneratorTest extends TestCase
         ];
 
         yield '2 speakers' => [
-            SocialNetwork::Bluesky(),
+            SocialNetwork::Bluesky,
             (new Talk())
                 ->setId(123)
                 ->setTitle('Lorem ipsum dolor si amet')
@@ -170,7 +170,7 @@ class StatusGeneratorTest extends TestCase
         ];
 
         yield '3+ speakers' => [
-            SocialNetwork::Bluesky(),
+            SocialNetwork::Bluesky,
             (new Talk())
                 ->setId(123)
                 ->setTitle('Lorem ipsum dolor si amet')
@@ -193,7 +193,7 @@ class StatusGeneratorTest extends TestCase
         ];
 
         yield 'title a bit too long 1' => [
-            SocialNetwork::Bluesky(),
+            SocialNetwork::Bluesky,
             (new Talk())
                 ->setId(123)
                 ->setTitle('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium architecto assumenda consequuntur corporis dolorem doloremque eaque magnam mollitia necessitatibus neque nesciunt, obcaecati odio odit quam, repellat repellendus.')
@@ -214,7 +214,7 @@ class StatusGeneratorTest extends TestCase
         ];
 
         yield 'title a bit too long 2' => [
-            SocialNetwork::Bluesky(),
+            SocialNetwork::Bluesky,
             (new Talk())
                 ->setId(123)
                 ->setTitle('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium architecto assumenda consequuntur corporis dolorem doloremque eaque magnam mollitia necessitatibus neque nesciunt, obcaecati odio odit quam, repellat repellendus magnam.')
@@ -235,7 +235,7 @@ class StatusGeneratorTest extends TestCase
         ];
 
         yield 'title with consecutive spaces' => [
-            SocialNetwork::Bluesky(),
+            SocialNetwork::Bluesky,
             (new Talk())
                 ->setId(123)
                 ->setTitle('  Lorem    ipsum ')

@@ -30,7 +30,7 @@ final class BlueskyTransport implements Transport
 
     public function socialNetwork(): SocialNetwork
     {
-        return SocialNetwork::Bluesky();
+        return SocialNetwork::Bluesky;
     }
 
     public function send(Status $status): ?StatusId

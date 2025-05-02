@@ -25,25 +25,25 @@ class SocialNetworkTest extends TestCase
     public function speakerHandleDataProvider(): \Generator
     {
         yield 'bluesky without @ prefix' => [
-            SocialNetwork::Bluesky(),
+            SocialNetwork::Bluesky,
             (new Speaker())->setBluesky('foo.bar'),
             '@foo.bar',
         ];
 
         yield 'bluesky with @ prefix' => [
-            SocialNetwork::Bluesky(),
+            SocialNetwork::Bluesky,
             (new Speaker())->setBluesky('@foo.bar'),
             '@foo.bar',
         ];
 
         yield 'mastodon without @ prefix' => [
-            SocialNetwork::Mastodon(),
+            SocialNetwork::Mastodon,
             (new Speaker())->setMastodon('foo.bar'),
             '@foo.bar',
         ];
 
         yield 'mastodon with @ prefix' => [
-            SocialNetwork::Mastodon(),
+            SocialNetwork::Mastodon,
             (new Speaker())->setMastodon('@foo.bar'),
             '@foo.bar',
         ];
@@ -53,7 +53,7 @@ class SocialNetworkTest extends TestCase
     {
         $entry = new HistoryEntry(123);
 
-        SocialNetwork::Bluesky()->setStatusId($entry, new StatusId('abcd'));
+        SocialNetwork::Bluesky->setStatusId($entry, new StatusId('abcd'));
 
         self::assertEquals('abcd', $entry->getStatusIdBluesky());
         self::assertNull($entry->getStatusIdMastodon());
@@ -63,7 +63,7 @@ class SocialNetworkTest extends TestCase
     {
         $entry = new HistoryEntry(123);
 
-        SocialNetwork::Mastodon()->setStatusId($entry, new StatusId('abcd'));
+        SocialNetwork::Mastodon->setStatusId($entry, new StatusId('abcd'));
 
         self::assertEquals('abcd', $entry->getStatusIdMastodon());
         self::assertNull($entry->getStatusIdBluesky());

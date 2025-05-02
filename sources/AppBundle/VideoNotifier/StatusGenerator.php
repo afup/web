@@ -63,7 +63,7 @@ final class StatusGenerator
         if ($this->isTextTooLong($text)) {
             throw new \LengthException(sprintf(
                 "Statut généré pour %s trop long",
-                $this->socialNetwork->getValue(),
+                $this->socialNetwork->value,
             ));
         }
 

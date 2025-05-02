@@ -84,7 +84,7 @@ final class Engine
                 // On ignore les erreurs pour pouvoir tenter avec un autre transport
                 $this->logger->error(sprintf(
                     '[video-notifier] %s error: %s',
-                    $transport->socialNetwork()->getValue(),
+                    $transport->socialNetwork()->value,
                     $e->getMessage(),
                 ));
             }

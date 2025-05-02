@@ -30,7 +30,6 @@
     "laminas/laminas-feed": "^2.18",
     "league/iso3166": "^4.0",
     "league/oauth2-github": "^3.1",
-    "myclabs/php-enum": "^1.8",
     "nyholm/psr7": "^1.8",
     "pear/pear": "^1.10",
     "phpmailer/phpmailer": "^6.9",
