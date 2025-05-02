@@ -27,7 +27,7 @@ final readonly class HistoryRepository
                 $entry->getStatusIdBluesky(),
                 $entry->getStatusIdMastodon(),
             ])
-            ->execute();
+            ->executeStatement();
     }
 
     /**
@@ -43,7 +43,7 @@ final readonly class HistoryRepository
                 $qb->expr()->in('h.talk_id', array_map(fn (Talk $talk): ?int => $talk->getId(), $talks))
             )
             ->groupBy('h.talk_id')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         $map = [];

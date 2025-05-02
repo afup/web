@@ -6,7 +6,7 @@ namespace PlanetePHP;
 
 use Assert\Assertion;
 use Doctrine\DBAL\Connection;
-use PDO;
+use Doctrine\DBAL\ParameterType;
 
 class FeedArticleRepository
 {
@@ -23,18 +23,16 @@ class FeedArticleRepository
     public function count(): int
     {
         $query = $this->connection->prepare('SELECT COUNT(b.id) FROM afup_planete_billet b');
-        $query->execute();
 
-        return intval($query->fetchColumn());
+        return intval($query->executeQuery()->fetchOne());
     }
 
     public function countRelevant(): int
     {
         $query = $this->connection->prepare('SELECT COUNT(b.id) FROM afup_planete_billet b WHERE b.etat = :status');
         $query->bindValue('status', self::RELEVANT);
-        $query->execute();
 
-        return intval($query->fetchColumn());
+        return intval($query->executeQuery()->fetchOne());
     }
 
     /**
@@ -60,7 +58,7 @@ class FeedArticleRepository
             ->orderBy($sorts[$sort], $direction)
             ->setMaxResults($limit);
 
-        return $this->hydrate($qb->execute()->fetchAll());
+        return $this->hydrate($qb->executeQuery()->fetchAllAssociative());
     }
 
     public function save(FeedArticle $billet)
@@ -86,11 +84,10 @@ class FeedArticleRepository
             LIMIT :start, :length
         ');
         $query->bindValue('status', self::RELEVANT);
-        $query->bindValue('start', $page * $nombre, PDO::PARAM_INT);
-        $query->bindValue('length', $nombre, PDO::PARAM_INT);
-        $query->execute();
+        $query->bindValue('start', $page * $nombre, ParameterType::INTEGER);
+        $query->bindValue('length', $nombre, ParameterType::INTEGER);
 
-        return $this->hydrateDisplayable($query->fetchAll(), $format);
+        return $this->hydrateDisplayable($query->executeQuery()->fetchAllAssociative(), $format);
     }
 
     public function isRelevant($content): int
@@ -108,15 +105,14 @@ class FeedArticleRepository
     {
         $query = $this->connection->prepare('SELECT id FROM afup_planete_billet WHERE clef = :key');
         $query->bindValue('key', $key);
-        $query->execute();
-        $row = $query->fetch();
+        $row = $query->executeQuery()->fetchAssociative();
 
         return is_array($row) ? $row['id'] : null;
     }
 
     private function update(FeedArticle $billet, $id = null)
     {
-        return $this->connection->executeUpdate('UPDATE afup_planete_billet
+        $statement = $this->connection->prepare('UPDATE afup_planete_billet
             SET afup_planete_flux_id = :feedId,
                 clef= :key,
                 titre = :title,
@@ -126,35 +122,40 @@ class FeedArticleRepository
                 resume = :summary,
                 contenu = :content,
                 etat = :status
-            WHERE id = :id', [
-            'id' => $id ?: $billet->getId(),
-            'feedId' => $billet->getFeedId(),
-            'key' => $billet->getKey(),
-            'title' => $billet->getTitle(),
-            'url' => $billet->getUrl(),
-            'update' => $billet->getUpdate(),
-            'author' => $billet->getAuthor(),
-            'summary' => $billet->getSummary(),
-            'content' => $billet->getContent(),
-            'status' => $billet->getStatus(),
-        ]);
+            WHERE id = :id');
+
+        $statement->bindValue('feedId', $billet->getFeedId());
+        $statement->bindValue('key', $billet->getKey());
+        $statement->bindValue('title', $billet->getTitle());
+        $statement->bindValue('url', $billet->getUrl());
+        $statement->bindValue('update', $billet->getUpdate());
+        $statement->bindValue('author', $billet->getAuthor());
+        $statement->bindValue('summary', $billet->getSummary());
+        $statement->bindValue('content', $billet->getContent());
+        $statement->bindValue('status', $billet->getStatus());
+
+        $statement->bindValue('id', $id ?: $billet->getId());
+
+        return $statement->executeStatement();
     }
 
     private function insert(FeedArticle $billet)
     {
-        return $this->connection->executeUpdate('INSERT INTO afup_planete_billet 
+        $statement = $this->connection->prepare('INSERT INTO afup_planete_billet 
             (afup_planete_flux_id, clef, titre, url, maj, auteur, resume, contenu, etat) 
-            VALUES (:feedId, :key, :title, :url, :update, :author, :summary, :content, :status)', [
-            'feedId' => $billet->getFeedId(),
-            'key' => $billet->getKey(),
-            'title' => $billet->getTitle(),
-            'url' => $billet->getUrl(),
-            'update' => $billet->getUpdate(),
-            'author' => $billet->getAuthor(),
-            'summary' => $billet->getSummary(),
-            'content' => $billet->getContent(),
-            'status' => $billet->getStatus(),
-        ]);
+            VALUES (:feedId, :key, :title, :url, :update, :author, :summary, :content, :status)');
+
+        $statement->bindValue('feedId', $billet->getFeedId());
+        $statement->bindValue('key', $billet->getKey());
+        $statement->bindValue('title', $billet->getTitle());
+        $statement->bindValue('url', $billet->getUrl());
+        $statement->bindValue('update', $billet->getUpdate());
+        $statement->bindValue('author', $billet->getAuthor());
+        $statement->bindValue('summary', $billet->getSummary());
+        $statement->bindValue('content', $billet->getContent());
+        $statement->bindValue('status', $billet->getStatus());
+
+        return $statement->executeStatement();
     }
 
     private function hydrate(array $rows): array
