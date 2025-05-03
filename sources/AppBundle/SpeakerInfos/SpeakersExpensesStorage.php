@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace AppBundle\SpeakerInfos;
 
-use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Speaker;
 use Psr\Log\LoggerInterface;
@@ -15,17 +14,15 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class SpeakersExpensesStorage
+final class SpeakersExpensesStorage
 {
-    private string $basePath;
     private Filesystem $filesystem;
-    private EventRepository $eventRepository;
 
-    public function __construct(string $basePath, EventRepository $eventRepository)
-    {
-        $this->basePath = $basePath;
+    public function __construct(private readonly string $basePath,
+                                private readonly EventRepository $eventRepository,
+                                private readonly LoggerInterface $logger
+    ) {
         $this->filesystem = new Filesystem();
-        $this->eventRepository = $eventRepository;
     }
 
     public function store(UploadedFile $file, Speaker $speaker): string
@@ -71,26 +68,22 @@ class SpeakersExpensesStorage
         return $files;
     }
 
-    public function cleanFiles(LoggerInterface $logger, $duration = 'P12M'): void
+    public function cleanFiles($duration = 'P12M'): void
     {
         $beforeDate = new \DateTime();
         $beforeDate->sub(new \DateInterval($duration));
 
-        $logger->info(sprintf('Speakers Expenses Storages clean before "%s"', $beforeDate->format('Y-m-d')));
+        $this->logger->info(sprintf('Speakers Expenses Storage clean before "%s"', $beforeDate->format('Y-m-d')));
 
         $events = $this->eventRepository->getPreviousEventsBefore($beforeDate);
-
-        /** @var Event $event */
         foreach ($events as $event) {
-            $logger->info(sprintf('Event "%s" #%d [%s]: ', $event->getTitle(), $event->getId(), $event->getDateStart()->format('Y-m-d')));
+            $this->logger->info(sprintf('Event "%s" #%d [%s]: ', $event->getTitle(), $event->getId(), $event->getDateStart()->format('Y-m-d')));
 
             $directory = $this->basePath . '/' . $event->getId();
 
             if ($this->filesystem->exists($directory)) {
                 $this->filesystem->remove($directory);
-                $logger->info(sprintf('Removing "%s" directory OK', $directory));
-            } else {
-                $logger->info(sprintf('Directory "%s" does not exists', $directory));
+                $this->logger->info(sprintf('Removing "%s" directory OK', $directory));
             }
         }
     }

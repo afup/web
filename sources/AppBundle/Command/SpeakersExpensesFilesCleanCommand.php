@@ -5,29 +5,22 @@ declare(strict_types=1);
 namespace AppBundle\Command;
 
 use AppBundle\SpeakerInfos\SpeakersExpensesStorage;
-use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'speaker:expenses-files-clean')]
 class SpeakersExpensesFilesCleanCommand extends Command
 {
-    private SpeakersExpensesStorage $speakersExpensesStorage;
-    private LoggerInterface $logger;
-    protected function configure(): void
+    public function __construct(private readonly SpeakersExpensesStorage $speakersExpensesStorage)
     {
-        $this->setName('speaker:expenses-files-clean');
-    }
-    public function __construct(SpeakersExpensesStorage $speakersExpensesStorage, LoggerInterface $logger)
-    {
-        $this->speakersExpensesStorage = $speakersExpensesStorage;
-        $this->logger = $logger;
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->speakersExpensesStorage->cleanFiles($this->logger);
+        $this->speakersExpensesStorage->cleanFiles();
 
         return self::SUCCESS;
     }
