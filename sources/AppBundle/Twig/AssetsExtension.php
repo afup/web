@@ -5,23 +5,19 @@ declare(strict_types=1);
 
 namespace AppBundle\Twig;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Twig\Extension\AbstractExtension;
-use Twig\Extension\GlobalsInterface;
 use Twig\TwigFunction;
 
-class AssetsExtension extends AbstractExtension implements GlobalsInterface
+class AssetsExtension extends AbstractExtension
 {
-    private $kernelProjectDir;
-
-    public function __construct($kernelProjectDir)
-    {
-        $this->kernelProjectDir = $kernelProjectDir;
+    public function __construct(
+        #[Autowire('%kernel.project_dir%')]
+        private string $kernelProjectDir,
+    ) {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('asset_md5_start', function (string $url) {
@@ -35,10 +31,5 @@ class AssetsExtension extends AbstractExtension implements GlobalsInterface
     public function getName(): string
     {
         return 'assets';
-    }
-
-    public function getGlobals(): array
-    {
-        return [];
     }
 }

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Twig;
 
-use AppBundle\Routing\LegacyRouter;
+use Parsedown;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
@@ -13,23 +13,14 @@ use Twig\TwigFunction;
 
 class TwigExtension extends AbstractExtension implements GlobalsInterface
 {
-    private LegacyRouter $legacyRouter;
-    private \Parsedown $parsedown;
-    private \Parsedown $emailParsedown;
-    private string $googleAnalyticsEnabled;
-    private string $googleAnalyticsId;
-
-    public function __construct(LegacyRouter $legacyRouter,
-                                \Parsedown $parsedown,
-                                \Parsedown $emailParsedown,
-                                string $googleAnalyticsEnabled,
-                                string $googleAnalyticsId
+    public function __construct(
+        private Parsedown $parsedown,
+        private Parsedown $emailParsedown,
+        #[Autowire('%google_analytics_enabled%')]
+        private string $googleAnalyticsEnabled,
+        #[Autowire('%google_analytics_id%')]
+        private string $googleAnalyticsId,
     ) {
-        $this->legacyRouter = $legacyRouter;
-        $this->parsedown = $parsedown;
-        $this->emailParsedown = $emailParsedown;
-        $this->googleAnalyticsEnabled = $googleAnalyticsEnabled;
-        $this->googleAnalyticsId = $googleAnalyticsId;
     }
 
     public function getFunctions(): array
@@ -59,9 +50,8 @@ class TwigExtension extends AbstractExtension implements GlobalsInterface
     public function getGlobals(): array
     {
         return [
-            'legacy_router' => $this->legacyRouter,
             'google_analytics_enabled' => $this->googleAnalyticsEnabled,
-            'google_analytics_id' => $this->googleAnalyticsId
+            'google_analytics_id' => $this->googleAnalyticsId,
         ];
     }
 
