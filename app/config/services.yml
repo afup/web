@@ -214,20 +214,6 @@ services:
         arguments:
             $backOfficePages: '%app.pages_backoffice%'
 
-    AppBundle\Twig\TwigExtension:
-        arguments: ['@AppBundle\Routing\LegacyRouter', "@Parsedown", '@AppBundle\Email\Parsedown', "%google_analytics_enabled%", "%google_analytics_id%"]
-        tags:
-            -  { name: twig.extension }
-
-    AppBundle\Twig\AssetsExtension:
-        arguments: ["%kernel.project_dir%"]
-        tags:
-            -  { name: twig.extension }
-
-    AppBundle\Twig\OfficesExtension:
-        tags:
-            -  { name: twig.extension }
-
     AppBundle\Association\Form\HelpMessageExtension:
         autowire: true
         tags:

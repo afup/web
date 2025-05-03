@@ -10,7 +10,7 @@ use Twig\TwigFunction;
 
 class OfficesExtension extends AbstractExtension
 {
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('office_name', fn ($code): string => (new AntennesCollection())->findByCode($code)->label),
