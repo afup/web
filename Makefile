@@ -1,4 +1,3 @@
--include .env
 default: help
 
 # Variables
@@ -12,56 +11,50 @@ COLOR_TARGET = \033[32m
 COLOR_TITLE = \033[33m
 TEXT_BOLD = \033[1m
 
-.PHONY: help
-.SILENT: help
-help:
-	printf "\n${COLOR_TITLE}Usage:${COLOR_RESET}\n"
-	printf "  ${COLOR_TARGET}make${COLOR_RESET} [target]\n"
-	printf "\n"
-	awk '/^[\w\.@%-]+:/i { \
-		helpMessage = match(lastLine, /^### (.*)/); \
-		if (helpMessage) { \
-			helpCommand = substr($$1, 0, index($$1, ":") - 1); \
-			helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
-			printf "  ${COLOR_TARGET}%-30s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
-		} \
-	} \
-	/^##@.+/ { \
-		printf "\n${TEXT_BOLD}${COLOR_TITLE}%s${COLOR_RESET}\n", substr($$0, 5); \
-	} \
-	{ lastLine = $$0 }' $(MAKEFILE_LIST)
+##@ Setup 📜
+### Installer le projet from scratch
+install:
+	cp -n .env.dist .env && cp -n docker.env docker.env.local && cp -n .docker/data/history.dist .docker/data/history && cp -n compose.override.yml-dist compose.override.yml
+	mkdir -p ./htdocs/uploads -p ./tmp
 
-.PHONY: install docker-up docker-stop docker-down test hooks vendors db-seed db-migrations reset-db init console phpstan
+	$(DOCKER_COMPOSE_BIN) up -d --build
 
-##@ Setup
+	# Build les assets du projet
+	$(MAKE) --no-print-directory install-assets
+	$(MAKE) --no-print-directory build-assets
 
-### Installer les dépendences (composer, npm)
-install: vendors
+	# Reset la base de donnée
+	cat ./.docker/mysql/reset-db.sql | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
 
-### Initialisation générale (config, bdd)
-init: htdocs/uploads
-	make config
-	make init-db
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp php bin/phinx migrate
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp php bin/phinx seed:run
 
-##@ Docker
+### Supprime les volumes docker, les fichiers et les dossier généré par le projet
+reset:
+	$(DOCKER_COMPOSE_BIN) down --remove-orphans -v
+	rm -f ./.env -f ./docker.env.local -f .docker/data/history -f compose.override.yml
+	sudo rm -rf ./var ./vendor ./node_modules ./htdocs/bundles ./htdocs/docs ./htdocs/uploads ./htdocs/assets ./tmp
 
-### Démarrer les containers
-docker-up: .env var/logs/.docker-build data compose.override.yml
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) up $(DOCKER_UP_OPTIONS)
+### Reinstalle le projet from scratch
+reinstall: reset install
 
-### Stopper les containers
-docker-stop:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop
+##@ Front 💅
+### Install les assets
+install-assets:
+	$(DOCKER_COMPOSE_BIN) run --rm node npm install --legacy-peer-deps
 
-### Supprimer les containers
-docker-down:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) down
+### Build les assets
+build-assets:
+	$(DOCKER_COMPOSE_BIN) run --rm node npm run build
 
-### Démarrer un bash dans le container PHP
-console:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) exec -u localUser -it apachephp bash
+### Permet de build and watch les assets
+watch-assets:
+	$(DOCKER_COMPOSE_BIN) run --rm node npm run watch
 
-##@ Quality
+##@ Quality ✨
+### Installe l'environment de test
+install-test:
+	mkdir -p ./htdocs/uploads -p ./tmp
 
 ### (Dans Docker) Tests unitaires
 test:
@@ -76,13 +69,13 @@ test-integration:
 behat:
 	./bin/behat
 
-### (Dans Docker) PHP CS Fixer (dry run)
+### PHP CS Fixer (dry run)
 cs-lint:
-	./bin/php-cs-fixer fix --dry-run -vv
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp ./bin/php-cs-fixer fix --dry-run -vv
 
-### (Dans Docker) PHP CS Fixer (fix)
+### PHP CS Fixer (fix)
 cs-fix:
-	./bin/php-cs-fixer fix -vv
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp ./bin/php-cs-fixer fix -vv
 
 ### (Dans Docker) Rector (dry run)
 rector: var/cache/dev/AppKernelDevDebugContainer.xml
@@ -113,32 +106,40 @@ test-integration-ci:
 phpstan:
 	docker run -v $(shell pwd):/app --rm ghcr.io/phpstan/phpstan
 
-##@ Frontend
+##@ Docker 🐳
+### Démarrer un bash dans le container PHP
+console:
+	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephp bash
 
-### Compiler les assets pour la production
-.PHONY: assets
-assets:
-	./node_modules/.bin/webpack -p
+##@ Git (En dehors du docker) 🔀
+### Mise en place de git hooks
+hooks: pre-commit post-checkout
 
-### Lancer le watcher pour les assets
-watch:
-	./node_modules/.bin/webpack --progress --colors --watch
-
-##@ Git
-
-### Mise en place de hooks
-hooks: .git/hooks/pre-commit .git/hooks/post-checkout
-
-.git/hooks/pre-commit: Makefile
-	echo "#!/bin/sh" > .git/hooks/pre-commit
-	echo "docker compose run --rm -u localUser apachephp make test" >> .git/hooks/pre-commit
+pre-commit: Makefile
+	cp ./hooks/post-checkout.sh .git/hooks/pre-commit
 	chmod +x .git/hooks/pre-commit
 
-.git/hooks/post-checkout: Makefile
+post-checkout: Makefile
 	echo "#!/bin/sh" > .git/hooks/post-checkout
 	echo "docker compose run --rm -u localUser apachephp make vendor" >> .git/hooks/post-checkout
 	chmod +x .git/hooks/post-checkout
 
+help:
+	printf "\n${COLOR_TITLE}Usage:${COLOR_RESET}\n"
+	printf "  ${COLOR_TARGET}make${COLOR_RESET} [target]\n"
+	printf "\n"
+	awk '/^[\w\.@%-]+:/i { \
+		helpMessage = match(lastLine, /^### (.*)/); \
+		if (helpMessage) { \
+			helpCommand = substr($$1, 0, index($$1, ":") - 1); \
+			helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
+			printf "  ${COLOR_TARGET}%-30s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
+		} \
+	} \
+	/^##@.+/ { \
+		printf "\n${TEXT_BOLD}${COLOR_TITLE}%s${COLOR_RESET}\n", substr($$0, 5); \
+	} \
+	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
 ## Targets cachés
 

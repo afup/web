@@ -4,6 +4,8 @@ services:
       context: .
       target: afup_web_dev
     container_name: afup-web-apachephp
+    environment:
+      SYMFONY_ENV: "dev"
     env_file:
       - docker.env
       - docker.env.local
