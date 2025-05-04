@@ -56,18 +56,20 @@ watch-assets:
 install-test:
 	mkdir -p ./htdocs/uploads -p ./tmp
 
-### (Dans Docker) Tests unitaires
-test:
-	./bin/phpunit --testsuite unit
-	./bin/php-cs-fixer fix --dry-run -vv
+### Lance toute la suite de tests
+tests: cs-lint unit-test test-integration behat
 
-### (Dans Docker) Tests d'intégration
-test-integration:
-	./bin/phpunit --testsuite integration
+### Lance les tests unitaire
+unit-test:
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephptest ./bin/phpunit --testsuite unit
 
-### (Dans Docker) Tests fonctionnels
+### Tests d'intégration
+test-integration: # not work
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephptest ./bin/phpunit --testsuite integration
+
+### Tests fonctionnels
 behat:
-	./bin/behat
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephptest ./bin/behat
 
 ### PHP CS Fixer (dry run)
 cs-lint:
@@ -78,21 +80,20 @@ cs-fix:
 	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp ./bin/php-cs-fixer fix -vv
 
 ### Tests fonctionnels
-test-functional: data config htdocs/uploads tmp
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest mailcatcher
-	make clean-test-deprecated-log
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp ./bin/behat
-	make var/logs/test.deprecations_grouped.log
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
+test-functional:
+	$(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
+	$(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest mailcatcher
+	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephp bash -c "rm -f /var/www/html/var/logs/test.deprecations.log"
+	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephp ./bin/behat
+	$(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
 
 ### Tests d'intégration avec start/stop des images docker
 test-integration-ci:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp make vendor
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp ./bin/phpunit --testsuite integration
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest
+	$(DOCKER_COMPOSE_BIN) stop dbtest apachephptest
+	$(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest
+	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephp composer install --no-scripts
+	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephp ./bin/phpunit --testsuite integration
+	$(DOCKER_COMPOSE_BIN) stop dbtest apachephptest
 
 ### Analyse PHPStan
 phpstan:
@@ -133,57 +134,5 @@ help:
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
-## Targets cachés
-
-var/logs/.docker-build: compose.yml compose.override.yml $(shell find docker -type f)
-	CURRENT_UID=$(CURRENT_UID) ENABLE_XDEBUG=$(ENABLE_XDEBUG) $(DOCKER_COMPOSE_BIN) build
-	touch var/logs/.docker-build
-
-.env:
-	cp .env.dist .env
-
-compose.override.yml:
-	cp compose.override.yml-dist compose.override.yml
-
-vendors: vendor node_modules
-
-vendor: composer.lock
-	composer install --no-scripts
-
-node_modules:
-	npm install --legacy-peer-deps
-
-init-db:
-	make reset-db
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm -u localUser apachephp make db-migrations
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm -u localUser apachephp make db-seed
-
-config:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp make vendors
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp make assets
-
-data:
-	mkdir data
-	mkdir data/composer
-
-htdocs/uploads:
-	mkdir htdocs/uploads
-
-tmp:
-	mkdir -p tmp
-
-reset-db:
-	echo 'DROP DATABASE IF EXISTS web' | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
-	echo 'CREATE DATABASE web' | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
-
-db-migrations:
-	php bin/phinx migrate
-
-db-seed:
-	php bin/phinx seed:run
-
-clean-test-deprecated-log:
-	rm -f var/logs/test.deprecations.log
-
-var/logs/test.deprecations_grouped.log:
-	cat var/logs/test.deprecations.log | cut -d "]" -f 2 | awk '{$$1=$$1};1' | sort | uniq -c | sort -nr > var/logs/test.deprecations_grouped.log
+.PHONY: install tests hooks console phpstan help
+.SILENT: help
