@@ -20,7 +20,7 @@ if [ "$1" = 'apache2-foreground' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console'
           git config --global --add safe.directory /var/www/html
         fi
 
-        composer install --prefer-dist --no-progress --no-interaction --no-scripts
+        mkdir -p var/cache var/logs var/sessions;
     fi
 
     setfacl -R -m u:www-data:rwX -m u:localUser:rwX var

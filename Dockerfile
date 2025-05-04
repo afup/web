@@ -5,8 +5,6 @@ ARG GID=1008
 
 WORKDIR /var/www/html
 
-VOLUME /var/www/html/var
-
 # Update package list and install system dependencies
 RUN apt-get update  \
     && apt-get install -y --no-install-recommends \
@@ -26,7 +24,7 @@ RUN groupadd -g ${GID} localUser && \
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN set -eux; \
-    install-php-extensions @composer zip intl pdo_mysql mysqli gd opcache pcntl \
+    install-php-extensions @composer-2.2.25 zip intl pdo_mysql mysqli gd opcache pcntl \
     ;
 
 COPY --link .docker/php/conf.d/10-app.ini $PHP_INI_DIR/conf.d/
@@ -35,6 +33,17 @@ COPY --link --chmod=755 .docker/php/docker-healthcheck.sh /usr/local/bin/docker-
 HEALTHCHECK --start-period=1m CMD docker-healthcheck
 
 COPY --link --chmod=755 .docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+
+ENTRYPOINT ["docker-entrypoint"]
+CMD ["apache2-foreground"]
+
+FROM afup_web_base AS afup_web_dev
+
+COPY --link .docker/php/conf.d/20-app.dev.ini $PHP_INI_DIR/conf.d/
+
+RUN set -eux; \
+	install-php-extensions xdebug \
+    ;
 
 COPY --link .docker/apache/apache.conf /etc/apache2/sites-available/000-default.conf
 COPY --link .docker/apache/cert/apache.crt /etc/apache2/ssl/apache.crt
@@ -45,22 +54,13 @@ RUN sed --in-place "s/User \${APACHE_RUN_USER}/User localUser/" /etc/apache2/apa
     a2ensite 000-default && \
     a2enmod rewrite ssl
 
-ENTRYPOINT ["docker-entrypoint"]
-CMD ["apache2-foreground"]
+FROM afup_web_base AS afup_web_prod_base
 
-FROM afup_web_base AS afup_web_dev
-
-ENV APP_ENV=dev
-
-COPY --link .docker/php/conf.d/20-app.dev.ini $PHP_INI_DIR/conf.d/
-
-RUN set -eux; \
-	install-php-extensions xdebug \
-    ;
-
-FROM afup_web_base AS afup_web_prod
+VOLUME /var/www/html/var
 
 ENV APP_ENV=prod
+ENV SYMFONY_ENV=prod
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY --link .docker/php/conf.d/20-app.prod.ini $PHP_INI_DIR/conf.d/
@@ -76,9 +76,8 @@ RUN set -eux; \
 COPY --link . ./
 
 RUN set -eux; \
-	mkdir -p var/cache var/log var/sessions; \
+	mkdir -p var/cache var/logs var/sessions; \
 	composer dump-autoload --classmap-authoritative --no-dev; \
-	composer dump-env prod; \
 	composer run-script --no-dev post-install-cmd; \
 	chmod +x bin/console; sync;
 
@@ -88,11 +87,18 @@ WORKDIR /var/www/html
 
 COPY --link ./package.json ./package-lock.json ./webpack.config.js ./
 
-COPY --from=afup_web_prod ./var/www/html/htdocs ./htdocs
-COPY --from=afup_web_prod ./var/www/html/vendor ./vendor
+COPY --from=afup_web_prod_base ./var/www/html/htdocs ./htdocs
+COPY --from=afup_web_prod_base ./var/www/html/sources ./sources
+
+COPY --from=afup_web_prod_base ./var/www/html/vendor ./vendor
 
 ENV NODE_ENV=prod
 
 RUN set -eux; \
     npm install --legacy-peer-deps; \
     npm run build;
+
+FROM afup_web_prod_base AS afup_web_prod
+
+COPY --from=afup_web_assets ./var/www/html/htdocs ./htdocs
+COPY --from=afup_web_assets ./var/www/html/sources ./sources
