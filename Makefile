@@ -69,7 +69,7 @@ test-integration: # not work
 
 ### Tests fonctionnels
 behat:
-	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp ./bin/behat
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephptest ./bin/behat
 
 ### PHP CS Fixer (dry run)
 cs-lint:

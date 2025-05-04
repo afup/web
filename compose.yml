@@ -12,6 +12,10 @@ services:
       - .env
     volumes:
       - ./:/var/www/html
+      # Permet d'avoir un bash history ainsi que des alias bash quand on est dans le container
+      - ./.docker/config/bashrc:/home/localUser/.bashrc
+      - ./.docker/config/bash_aliases:/home/localUser/.bash_aliases
+      - ./.docker/data/history:/home/localUser/.bash_history
     depends_on:
       - db
       - mailcatcher
@@ -39,47 +43,53 @@ services:
       - ./:/var/www/html
     profiles: [front] # Avec ce paramètre node n'est pas lancé quand on docker compose up
 
-#  dbtest:
-#    build: ./docker/dockerfiles/mysqltest
-#    environment:
-#      MYSQL_ROOT_PASSWORD: root
-#      MYSQL_USER: afup
-#      MYSQL_PASSWORD: afup
-#      MYSQL_DATABASE: web
-#    volumes:
-#      - ./data/mysqltest:/var/lib/mysql
-#    healthcheck:
-#      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-#      timeout: 20s
-#      retries: 10
+  dbtest:
+    build: ./docker/dockerfiles/mysqltest
+    container_name: afup-web-db-test
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: afup
+      MYSQL_PASSWORD: afup
+      MYSQL_DATABASE: web
+    volumes:
+      - ./data/mysqltest:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
 
-#  apachephptest:
-#    build:
-#      context: ./docker/dockerfiles/apachephp
-#      args:
-#        uid: ${CURRENT_UID:-1001}
-#        gid: "1001"
-#        ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
-#    environment:
-#      SYMFONY_ENV: "test"
-#      HOST_PWD: ${PWD}
-#      SYMFONY_IDE: "%env(IDE_USED)%://open?url=file://%%f&line=%%l&/var/www/html/>%env(HOST_PWD)%/"
-#    env_file:
-#      .env
-#    volumes:
-#      - ./:/var/www/html
-#    links:
-#      - statictestresources
-#    healthcheck:
-#      test: [ "CMD", "curl", "-f", "https://apachephptest:80" ]
-#      interval: 30s
-#      timeout: 10s
-#      retries: 5
-#    depends_on:
-#      dbtest:
-#        condition: service_healthy
+  apachephptest:
+    build:
+      context: .
+      target: afup_web_dev
+    container_name: afup-web-apachephp-test
+    environment:
+      SYMFONY_ENV: "test"
+      HOST_PWD: ${PWD}
+      SYMFONY_IDE: "%env(IDE_USED)%://open?url=file://%%f&line=%%l&/var/www/html/>%env(HOST_PWD)%/"
+    env_file:
+      - docker.env
+      - docker.env.local
+      - .env
+    volumes:
+      - ./:/var/www/html
+      # Permet d'avoir un bash history ainsi que des alias bash quand on est dans le container
+      - ./.docker/config/bashrc:/localUser/.bashrc
+      - ./.docker/config/bash_aliases:/localUser/.bash_aliases
+      - ./.docker/data/history:/localUser/.bash_history
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "https://apachephptest:80" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    depends_on:
+      dbtest:
+        condition: service_healthy
+      statictestresources:
+        condition: service_started
 
-#  statictestresources:
-#    image: nginx:1.25.4
-#    volumes:
-#      - ./docker/dockerfiles/statictestresources:/usr/share/nginx/html:ro
+  statictestresources:
+    image: nginx:1.25.4
+    container_name: afup-web-static
+    volumes:
+      - ./.docker/data/test/static-resources:/usr/share/nginx/html:ro
