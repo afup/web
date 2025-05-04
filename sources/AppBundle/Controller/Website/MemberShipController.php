@@ -68,84 +68,38 @@ class MemberShipController extends AbstractController
 {
     use DbLoggerTrait;
 
-    private ViewRenderer $view;
-    private EventDispatcherInterface $eventDispatcher;
-    private TokenStorageInterface $tokenStorage;
-    private AuthorizationCheckerInterface $authorizationChecker;
-    private CsrfTokenManagerInterface $csrfTokenManager;
-    private UserFactory $userFactory;
-    private UserRepository $userRepository;
-    private CompanyMemberRepository $companyMemberRepository;
-    private UserService $userService;
-    private UserAuthenticatorInterface $userAuthenticator;
-    private FormLoginAuthenticator $formLoginAuthenticator;
-    private RepositoryFactory $repositoryFactory;
-    private InvitationMail $invitationMail;
-    private SubscriptionManagement $subscriptionManagement;
-    private LegacyModelFactory $legacyModelFactory;
-    private PayboxFactory $payboxFactory;
-    private LegacyClient $legacyClient;
-    private Mailer $mailer;
-    private GeneralMeetingRepository $generalMeetingRepository;
-    private GeneralMeetingQuestionRepository $generalMeetingQuestionRepository;
-    private GeneralMeetingVoteRepository $generalMeetingVoteRepository;
-    private string $storageDir;
-    private UserPasswordHasherInterface $passwordHasher;
-
-    public function __construct(ViewRenderer $view,
-                                EventDispatcherInterface $eventDispatcher,
-                                TokenStorageInterface $tokenStorage,
-                                AuthorizationCheckerInterface $authorizationChecker,
-                                CsrfTokenManagerInterface $csrfTokenManager,
-                                UserFactory $userFactory,
-                                UserRepository $userRepository,
-                                CompanyMemberRepository $companyMemberRepository,
-                                UserService $userService,
-                                UserAuthenticatorInterface $userAuthenticatorInterface,
-                                FormLoginAuthenticator $formLoginAuthenticator,
-                                RepositoryFactory $repositoryFactory,
-                                InvitationMail $invitationMail,
-                                SubscriptionManagement $subscriptionManagement,
-                                LegacyModelFactory $legacyModelFactory,
-                                PayboxFactory $payboxFactory,
-                                LegacyClient $legacyClient,
-                                Mailer $mailer,
-                                GeneralMeetingRepository $generalMeetingRepository,
-                                GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
-                                GeneralMeetingVoteRepository $generalMeetingVoteRepository,
-                                string $storageDir,
-                                UserPasswordHasherInterface $passwordHasher
+    public function __construct(
+        private ViewRenderer $view,
+        private EventDispatcherInterface $eventDispatcher,
+        private TokenStorageInterface $tokenStorage,
+        private AuthorizationCheckerInterface $authorizationChecker,
+        private CsrfTokenManagerInterface $csrfTokenManager,
+        private UserFactory $userFactory,
+        private UserRepository $userRepository,
+        private CompanyMemberRepository $companyMemberRepository,
+        private UserService $userService,
+        private UserAuthenticatorInterface $userAuthenticator,
+        private FormLoginAuthenticator $formLoginAuthenticator,
+        private RepositoryFactory $repositoryFactory,
+        private InvitationMail $invitationMail,
+        private SubscriptionManagement $subscriptionManagement,
+        private LegacyModelFactory $legacyModelFactory,
+        private PayboxFactory $payboxFactory,
+        private LegacyClient $legacyClient,
+        private Mailer $mailer,
+        private GeneralMeetingRepository $generalMeetingRepository,
+        private GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
+        private GeneralMeetingVoteRepository $generalMeetingVoteRepository,
+        private string $storageDir,
+        private UserPasswordHasherInterface $passwordHasher,
     ) {
-        $this->view = $view;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->tokenStorage = $tokenStorage;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->userFactory = $userFactory;
-        $this->userRepository = $userRepository;
-        $this->companyMemberRepository = $companyMemberRepository;
-        $this->userService = $userService;
-        $this->userAuthenticator = $userAuthenticatorInterface;
-        $this->formLoginAuthenticator = $formLoginAuthenticator;
-        $this->repositoryFactory = $repositoryFactory;
-        $this->invitationMail = $invitationMail;
-        $this->subscriptionManagement = $subscriptionManagement;
-        $this->legacyModelFactory = $legacyModelFactory;
-        $this->payboxFactory = $payboxFactory;
-        $this->legacyClient = $legacyClient;
-        $this->mailer = $mailer;
-        $this->generalMeetingRepository = $generalMeetingRepository;
-        $this->generalMeetingQuestionRepository = $generalMeetingQuestionRepository;
-        $this->generalMeetingVoteRepository = $generalMeetingVoteRepository;
-        $this->storageDir = $storageDir;
-        $this->passwordHasher = $passwordHasher;
     }
 
     public function becomeMember(): Response
     {
         return $this->view->render('site/become_member.html.twig', [
             'membership_fee_natural_person' => AFUP_COTISATION_PERSONNE_PHYSIQUE,
-            'membership_fee_legal_entity' => AFUP_COTISATION_PERSONNE_MORALE
+            'membership_fee_legal_entity' => AFUP_COTISATION_PERSONNE_MORALE,
         ]);
     }
 
@@ -171,7 +125,7 @@ class MemberShipController extends AbstractController
         }
 
         return $this->view->render('admin/association/membership/register.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
@@ -179,7 +133,7 @@ class MemberShipController extends AbstractController
     {
         $data = new CompanyMember();
         $data->setInvitations([
-            (new CompanyMemberInvitation())->setManager(true)
+            (new CompanyMemberInvitation())->setManager(true),
         ]);
 
         $subscribeForm = $this->createForm(CompanyMemberType::class, $data);
@@ -226,7 +180,7 @@ class MemberShipController extends AbstractController
         }
 
         return $this->view->render('site/company_membership/adhesion_entreprise.html.twig', [
-            'form' => $subscribeForm->createView()
+            'form' => $subscribeForm->createView(),
         ]);
     }
 
@@ -265,8 +219,8 @@ class MemberShipController extends AbstractController
                 'raison_sociale' => AFUP_RAISON_SOCIALE,
                 'adresse' => AFUP_ADRESSE,
                 'code_postal' => AFUP_CODE_POSTAL,
-                'ville' => AFUP_VILLE
-            ]
+                'ville' => AFUP_VILLE,
+            ],
         ]);
     }
 
@@ -348,7 +302,7 @@ class MemberShipController extends AbstractController
 
         return $this->view->render('site/company_membership/member_invitation.html.twig', [
             'company' => $company,
-            'form' => $userForm->createView()
+            'form' => $userForm->createView(),
         ]);
     }
 
@@ -438,7 +392,7 @@ class MemberShipController extends AbstractController
 
         return $this->view->render('admin/association/membership/member_contact_details.html.twig', [
             'title' => 'Mes coordonnées',
-            'form' => $userForm->createView()
+            'form' => $userForm->createView(),
         ]);
     }
 
@@ -659,15 +613,15 @@ class MemberShipController extends AbstractController
                                 ;
                             }
                         }]
-                    )
-                ]
+                    ),
+                ],
             ])
             ->add('presence', ChoiceType::class, [
                 'expanded' => true,
                 'choices' => [
                     'Je participe' => 1,
-                    'Je ne participe pas' => 2
-                ]
+                    'Je ne participe pas' => 2,
+                ],
             ])
             ->add('id_personne_avec_pouvoir', ChoiceType::class, [
                 'choices' => array_flip($generalMeetingRepository->getPowerSelectionList($latestDate, $user->getUsername())),
@@ -675,7 +629,7 @@ class MemberShipController extends AbstractController
                 'required' => false,
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Confirmer'
+                'label' => 'Confirmer',
             ])
             ->getForm();
 

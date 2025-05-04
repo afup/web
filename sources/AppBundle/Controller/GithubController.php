@@ -11,10 +11,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class GithubController extends AbstractController
 {
-    private ClientRegistry $clientRegistry;
-    public function __construct(ClientRegistry $clientRegistry)
+    public function __construct(private readonly ClientRegistry $clientRegistry)
     {
-        $this->clientRegistry = $clientRegistry;
     }
     /**
      * Link to this controller to start the "connect" process

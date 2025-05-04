@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
+use Rector\Set\ValueObject\LevelSetList;
 use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Set\TwigSetList;
 
@@ -10,14 +12,10 @@ return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/app',
         __DIR__ . '/db',
-        __DIR__ . '/htdocs',
+        __DIR__ . '/htdocs/pages',
         __DIR__ . '/sources',
         __DIR__ . '/tests',
     ])
-    ->withSkip([
-        __DIR__ . '/htdocs/cache',
-    ])
-    ->withPhp74Sets()
     ->withTypeCoverageLevel(10)
     ->withDeadCodeLevel(10)
     ->withCodeQualityLevel(10)
@@ -32,6 +30,7 @@ return RectorConfig::configure()
         SymfonySetList::SYMFONY_54,
         SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
-        TwigSetList::TWIG_UNDERSCORE_TO_NAMESPACE
+        TwigSetList::TWIG_UNDERSCORE_TO_NAMESPACE,
+        LevelSetList::UP_TO_PHP_82
     ])
 ;

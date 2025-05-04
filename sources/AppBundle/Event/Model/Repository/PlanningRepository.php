@@ -80,39 +80,39 @@ class PlanningRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'id_session',
                 'fieldName' => 'talkId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'id_forum',
                 'fieldName' => 'eventId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'debut',
                 'fieldName' => 'start',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
-                ]
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                ],
             ])
             ->addField([
                 'columnName' => 'fin',
                 'fieldName' => 'end',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
-                ]
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                ],
             ])
             ->addField([
                 'columnName' => 'keynote',
                 'fieldName' => 'isKeynote',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
         ;
 

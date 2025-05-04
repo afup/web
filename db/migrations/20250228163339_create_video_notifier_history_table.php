@@ -21,7 +21,7 @@ class CreateVideoNotifierHistoryTable extends AbstractMigration
             ])
             ->addColumn('created_at', 'timestamp', [
                 'default' => 'CURRENT_TIMESTAMP',
-                'update' => ''
+                'update' => '',
             ])
             ->create();
     }

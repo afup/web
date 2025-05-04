@@ -9,11 +9,8 @@ use Psr\Cache\CacheItemPoolInterface;
 
 class JoindinComments
 {
-    private CacheItemPoolInterface $cache;
-
-    public function __construct(CacheItemPoolInterface $cache)
+    public function __construct(private readonly CacheItemPoolInterface $cache)
     {
-        $this->cache = $cache;
     }
 
     public function getCommentsFromTalk(Talk $talk): array
@@ -24,7 +21,7 @@ class JoindinComments
 
         try {
             return $this->getCommmentsFromId($talk->getJoindinId());
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             return [];
         }
     }

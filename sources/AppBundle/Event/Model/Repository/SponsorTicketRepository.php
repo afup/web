@@ -41,58 +41,58 @@ class SponsorTicketRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'company',
                 'fieldName' => 'company',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'token',
                 'fieldName' => 'token',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'contact_email',
                 'fieldName' => 'contactEmail',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'max_invitations',
                 'fieldName' => 'maxInvitations',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'used_invitations',
                 'fieldName' => 'usedInvitations',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'id_forum',
                 'fieldName' => 'idForum',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'created_on',
                 'fieldName' => 'createdOn',
-                'type' => 'datetime'
+                'type' => 'datetime',
             ])
             ->addField([
                 'columnName' => 'edited_on',
                 'fieldName' => 'editedOn',
-                'type' => 'datetime'
+                'type' => 'datetime',
             ])
             ->addField([
                 'columnName' => 'creator_id',
                 'fieldName' => 'creatorId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'qr_codes_scanner_available',
                 'fieldName' => 'qrCodesScannerAvailable',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
         ;
 

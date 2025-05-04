@@ -13,15 +13,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RegistrationsExporterCommand extends Command
 {
-    private EventRepository $eventRepository;
-    private RegistrationsExportGenerator $exportGenerator;
-
-    public function __construct(EventRepository $eventRepository,
-                                RegistrationsExportGenerator $exportGenerator)
-    {
+    public function __construct(
+        private readonly EventRepository $eventRepository,
+        private readonly RegistrationsExportGenerator $exportGenerator,
+    ) {
         parent::__construct();
-        $this->eventRepository = $eventRepository;
-        $this->exportGenerator = $exportGenerator;
     }
 
     protected function configure(): void

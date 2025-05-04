@@ -52,11 +52,11 @@ final class CotisationsTest extends TestCase
         return [
             'Personne Morale' => [
                 'FCOTIS-2023-202',
-                ['type' => UserRepository::USER_TYPE_COMPANY, 'id' => '202']
+                ['type' => UserRepository::USER_TYPE_COMPANY, 'id' => '202'],
             ],
             'Personne physique' => [
                 'C2023-211120232237-0-5-PAUL-431',
-                ['type' => UserRepository::USER_TYPE_PHYSICAL, 'id' => '5']
+                ['type' => UserRepository::USER_TYPE_PHYSICAL, 'id' => '5'],
             ],
         ];
     }

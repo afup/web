@@ -15,11 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewsFiltersType extends AbstractType
 {
-    private ArticleRepository $articleRepository;
-
-    public function __construct(ArticleRepository $articleRepository)
+    public function __construct(private readonly ArticleRepository $articleRepository)
     {
-        $this->articleRepository = $articleRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

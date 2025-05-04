@@ -69,7 +69,7 @@ class PDF extends tFPDF
             $this->SETXY($position, $y);
             $this->Cell($w[0], 6, $row[0], 'LR', 0, 'L', $fill);
 
-            $this->Cell($w[1], 6, substr($row[1], 0, 54), 'LR', 0, 'L', $fill);
+            $this->Cell($w[1], 6, substr((string) $row[1], 0, 54), 'LR', 0, 'L', $fill);
             $this->Cell($w[2], 6, number_format($row[2], 2, ',', ' '), 'LR', 0, 'R', $fill);
 
             $this->Ln();

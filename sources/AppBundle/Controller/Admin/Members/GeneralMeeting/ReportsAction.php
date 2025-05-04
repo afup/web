@@ -59,7 +59,7 @@ class ReportsAction extends AbstractController
 
         return $this->render('admin/members/general_meeting/reports.html.twig', [
             'form' => $form->createView(),
-            'reports' => $reports
+            'reports' => $reports,
         ]);
     }
 
@@ -86,8 +86,8 @@ class ReportsAction extends AbstractController
                             'application/x-pdf',
                         ],
                         'mimeTypesMessage' => 'Uniquement des fichiers PDF.',
-                    ])
-                ]
+                    ]),
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Envoyer',

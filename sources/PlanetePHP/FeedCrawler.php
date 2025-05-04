@@ -11,27 +11,15 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\Exception\ServerException;
 
-final class FeedCrawler
+final readonly class FeedCrawler
 {
-    private ClockInterface $clock;
-    private SymfonyFeedClient $httpClient;
-    private FeedRepository $feedRepository;
-    private FeedArticleRepository $feedArticleRepository;
-    private LoggerInterface $logger;
-
     public function __construct(
-        ClockInterface $clock,
-        SymfonyFeedClient $httpClient,
-        FeedRepository $feedRepository,
-        FeedArticleRepository $feedArticleRepository,
-        LoggerInterface $logger
+        private ClockInterface $clock,
+        private SymfonyFeedClient $httpClient,
+        private FeedRepository $feedRepository,
+        private FeedArticleRepository $feedArticleRepository,
+        private LoggerInterface $logger,
     ) {
-        $this->clock = $clock;
-        $this->httpClient = $httpClient;
-        $this->feedRepository = $feedRepository;
-        $this->feedArticleRepository = $feedArticleRepository;
-        $this->logger = $logger;
-
         Reader::setHttpClient($this->httpClient);
     }
 

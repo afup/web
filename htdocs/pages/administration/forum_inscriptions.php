@@ -41,7 +41,7 @@ function updateGlobalsForTarif(
     TicketEventTypeRepository $ticketEventTypeRepository,
     TicketTypeAvailability $ticketTypeAvailability,
     $forumId,
-    &$membersTickets = []
+    &$membersTickets = [],
 ): array {
     global $AFUP_Tarifs_Forum, $AFUP_Tarifs_Forum_Lib;
     $event = $eventRepository->get($forumId);
@@ -177,7 +177,7 @@ if ($action == 'lister') {
                 'mail_partenaire' => 0,
                 'newsletter_afup' => 0,
                 'newsletter_nexen' => 0,
-                'date_reglement' => (new \DateTime())->format('Y-m-d')
+                'date_reglement' => (new \DateTime())->format('Y-m-d'),
             ]
         );
     } else {
@@ -371,7 +371,7 @@ if ($action == 'lister') {
             try {
                 $ticketRepository->save($ticket);
                 $ok = true;
-            } catch (Exception $e) {
+            } catch (Exception) {
                 $ok = false;
             }
         } else {
@@ -426,7 +426,7 @@ if ($action == 'lister') {
                                                     $valeurs['autorisation'],
                                                     $valeurs['transaction'],
                                                     $valeurs['etat']);
-        } catch (Exception $e) {
+        } catch (Exception) {
             $ok = false;
         }
 

@@ -14,11 +14,8 @@ class AutoQualifier
     const DEFAULT_REGLEMENT = 9;
     const DEFAULT_ATTACHMENT = 0;
 
-    protected $rules = [];
-
-    public function __construct($rules)
+    public function __construct(protected array $rules)
     {
-        $this->rules = $rules;
     }
 
     public function qualify(Operation $operation): array

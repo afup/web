@@ -12,18 +12,11 @@ use Twig\Environment;
 
 class Forum2016PlanningAction
 {
-    private Forum $forum;
-    private AppelConferencier $appelConferencier;
-    private Environment $twig;
-
     public function __construct(
-        Forum $forum,
-        AppelConferencier $appelConferencier,
-        Environment $twig
+        private readonly Forum $forum,
+        private readonly AppelConferencier $appelConferencier,
+        private readonly Environment $twig,
     ) {
-        $this->forum = $forum;
-        $this->appelConferencier = $appelConferencier;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response

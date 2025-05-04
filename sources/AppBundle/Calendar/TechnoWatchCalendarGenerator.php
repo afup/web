@@ -8,20 +8,10 @@ use Sabre\VObject\Component\VCalendar;
 
 class TechnoWatchCalendarGenerator
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    private \DateTime $currentDate;
-
-    /**
-     * @param string $name
-     */
-    public function __construct($name, \DateTime $currentDate)
-    {
-        $this->name = $name;
-        $this->currentDate = $currentDate;
+    public function __construct(
+        private readonly string $name,
+        private readonly \DateTime $currentDate,
+    ) {
     }
 
     /**
@@ -64,11 +54,11 @@ class TechnoWatchCalendarGenerator
         $events = [];
 
         while (false !== ($row = fgetcsv($fp))) {
-            if (trim($row[0]) === '') {
+            if (trim((string) $row[0]) === '') {
                 continue;
             }
 
-            $date = \DateTimeImmutable::createFromFormat('d/m/Y', trim($row[0]));
+            $date = \DateTimeImmutable::createFromFormat('d/m/Y', trim((string) $row[0]));
 
             if (false == $date) {
                 continue;
@@ -80,10 +70,10 @@ class TechnoWatchCalendarGenerator
                 continue;
             }
 
-            $firstChair = trim($row[4]);
-            $secondChair = trim($row[5]);
+            $firstChair = trim((string) $row[4]);
+            $secondChair = trim((string) $row[5]);
 
-            if (strlen($filter) > 0 && ($firstChair != $filter && $secondChair != $filter)) {
+            if (strlen((string) $filter) > 0 && ($firstChair != $filter && $secondChair != $filter)) {
                 continue;
             }
 

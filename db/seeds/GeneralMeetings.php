@@ -21,11 +21,11 @@ class GeneralMeetings extends AbstractSeed
         $data = [
             [
                 'date' => 1635544800,
-                'description' => 'Assemblée octobre 2021'
+                'description' => 'Assemblée octobre 2021',
             ],
             [
                 'date' => $timestamp,
-                'description' => 'Assemblée dans 2 mois'
+                'description' => 'Assemblée dans 2 mois',
             ],
         ];
 
@@ -41,12 +41,12 @@ class GeneralMeetings extends AbstractSeed
             [
                 'id_personne_physique' => '1',
                 'date' => 1635544800,
-                'presence' => 1
+                'presence' => 1,
             ],
             [
                 'id_personne_physique' => '1',
                 'date' => $timestamp,
-                'presence' => 1
+                'presence' => 1,
             ],
         ];
 
@@ -63,12 +63,12 @@ class GeneralMeetings extends AbstractSeed
             [
                 'date' => $timestamp,
                 'label' => 'Une 1ère question. Alors d\'accord ?',
-                'created_at' => '2021-09-01 10:42:42'
+                'created_at' => '2021-09-01 10:42:42',
             ],
             [
                 'date' => $timestamp,
                 'label' => 'Une autre question pertinente. On vote ?',
-                'created_at' => '2021-09-12 10:42:42'
+                'created_at' => '2021-09-12 10:42:42',
             ],
         ];
 

@@ -23,27 +23,14 @@ class SpeakerRegisterAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private SpeakerRepository $speakerRepository;
-    private EventActionHelper $eventActionHelper;
-    private TalkRepository $talkRepository;
-    private TicketRepository $ticketRepository;
-    private InvoiceService $invoiceService;
-    private InvoiceRepository $invoiceRepository;
-
     public function __construct(
-        SpeakerRepository $speakerRepository,
-        EventActionHelper $eventActionHelper,
-        TalkRepository $talkRepository,
-        TicketRepository $ticketRepository,
-        InvoiceService $invoiceService,
-        InvoiceRepository $invoiceRepository
+        private SpeakerRepository $speakerRepository,
+        private EventActionHelper $eventActionHelper,
+        private TalkRepository $talkRepository,
+        private TicketRepository $ticketRepository,
+        private InvoiceService $invoiceService,
+        private InvoiceRepository $invoiceRepository,
     ) {
-        $this->speakerRepository = $speakerRepository;
-        $this->eventActionHelper = $eventActionHelper;
-        $this->talkRepository = $talkRepository;
-        $this->ticketRepository = $ticketRepository;
-        $this->invoiceRepository = $invoiceRepository;
-        $this->invoiceService = $invoiceService;
     }
 
     public function __invoke(Request $request): RedirectResponse
@@ -80,7 +67,7 @@ class SpeakerRegisterAction extends AbstractController
                 $ticket->setInvoiceStatus(Ticket::INVOICE_TODO);
                 try {
                     $this->ticketRepository->save($ticket);
-                } catch (Exception $e) {
+                } catch (Exception) {
                     $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout de l\'inscription');
 
                     return $this->redirectToRoute('admin_speaker_list');
@@ -107,11 +94,11 @@ class SpeakerRegisterAction extends AbstractController
                     );
                     $this->log('Ajout inscription conférencier ' . $speaker->getId());
                     $nbSpeakers++;
-                } catch (Exception $e) {
+                } catch (Exception) {
                     $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout de la facturation');
 
                     return $this->redirectToRoute('admin_speaker_list', [
-                        'eventId' => $event->getId()
+                        'eventId' => $event->getId(),
                     ]);
                 }
             }
@@ -119,7 +106,7 @@ class SpeakerRegisterAction extends AbstractController
         $this->addFlash('notice', $nbSpeakers . ' conférenciers ont été ajoutés dans les inscriptions');
 
         return $this->redirectToRoute('admin_speaker_list', [
-            'eventId' => $event->getId()
+            'eventId' => $event->getId(),
         ]);
     }
 }

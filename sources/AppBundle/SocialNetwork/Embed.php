@@ -9,16 +9,11 @@ namespace AppBundle\SocialNetwork;
  */
 final class Embed
 {
-    public string $url;
-    public string $title;
-    public string $abstract;
-    public ?string $imageUrl;
-
-    public function __construct(string $url, string $title, string $abstract, ?string $imageUrl)
-    {
-        $this->url = $url;
-        $this->title = $title;
-        $this->abstract = $abstract;
-        $this->imageUrl = $imageUrl;
+    public function __construct(
+        public string $url,
+        public string $title,
+        public string $abstract,
+        public ?string $imageUrl,
+    ) {
     }
 }

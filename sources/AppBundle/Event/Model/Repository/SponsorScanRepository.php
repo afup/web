@@ -50,27 +50,27 @@ class SponsorScanRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'sponsor_ticket_id',
                 'fieldName' => 'sponsorTicketId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'ticket_id',
                 'fieldName' => 'ticketId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'created_on',
                 'fieldName' => 'createdOn',
-                'type' => 'datetime'
+                'type' => 'datetime',
             ])
             ->addField([
                 'columnName' => 'deleted_on',
                 'fieldName' => 'deletedOn',
-                'type' => 'datetime'
+                'type' => 'datetime',
             ])
         ;
 

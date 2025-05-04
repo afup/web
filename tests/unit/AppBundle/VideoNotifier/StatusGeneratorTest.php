@@ -31,7 +31,7 @@ class StatusGeneratorTest extends TestCase
         SocialNetwork $socialNetwork,
         Talk $talk,
         array $speakers,
-        string $expectedExceptionMessage
+        string $expectedExceptionMessage,
     ): void {
         self::expectException(\LengthException::class);
         self::expectExceptionMessage($expectedExceptionMessage);
@@ -69,7 +69,7 @@ class StatusGeneratorTest extends TestCase
         SocialNetwork $socialNetwork,
         Talk $talk,
         array $speakers,
-        Status $expectedStatus
+        Status $expectedStatus,
     ): void {
         $generator = new StatusGenerator($socialNetwork);
 

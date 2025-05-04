@@ -32,13 +32,13 @@ class SpeakersExpensesType extends AbstractType
                                 'maxSize' => '2M',
                                 'mimeTypes' => [
                                     'application/pdf',
-                                    'application/x-pdf'
+                                    'application/x-pdf',
                                 ],
-                            ])
-                        ])
+                            ]),
+                        ]),
                     ],
                     'attr' => [
-                        'accept' => '.pdf'
+                        'accept' => '.pdf',
                     ],
                 ]
             )
@@ -49,7 +49,7 @@ class SpeakersExpensesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'csrf_protection' => false
+            'csrf_protection' => false,
         ]);
     }
 }

@@ -10,45 +10,45 @@ class Lead implements \JsonSerializable
 {
     /**
      * @var string
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $firstname;
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $lastname;
 
     /**
      * @var string
-     * @Assert\NotBlank()
-     * @Assert\Email()
      */
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private $email;
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $company;
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $phone;
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $language;
 
     /**
      * @var string
-     * @Assert\Url()
      */
+    #[Assert\Url]
     private $website;
 
     private ?Event $event = null;
@@ -211,7 +211,7 @@ class Lead implements \JsonSerializable
             'website' => $this->website,
             'company' => $this->company,
             'language' => $this->language,
-            'email' => $this->email
+            'email' => $this->email,
         ];
     }
 

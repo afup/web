@@ -78,7 +78,7 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
             'date_start' => $ticketEventType->getDateStart()->format('Y-m-d H:i:s'),
             'date_end' => $ticketEventType->getDateEnd()->format('Y-m-d H:i:s'),
             'description' => $ticketEventType->getDescription(),
-            'max_tickets' => $ticketEventType->getMaxTickets()
+            'max_tickets' => $ticketEventType->getMaxTickets(),
         ]);
 
         return $query->execute();
@@ -119,17 +119,17 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
             ->addField([
                 'columnName' => 'id_tarif',
                 'fieldName' => 'ticketTypeId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'id_event',
                 'fieldName' => 'eventId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'price',
                 'fieldName' => 'price',
-                'type' => 'float'
+                'type' => 'float',
             ])
             ->addField([
                 'columnName' => 'date_start',
@@ -144,12 +144,12 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
             ->addField([
                 'columnName' => 'description',
                 'fieldName' => 'description',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'max_tickets',
                 'fieldName' => 'maxTickets',
-                'type' => 'int'
+                'type' => 'int',
             ])
         ;
 

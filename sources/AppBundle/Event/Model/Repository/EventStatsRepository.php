@@ -15,11 +15,9 @@ class EventStatsRepository
     const DAY_ONE = 'one';
     const DAY_TWO = 'two';
     const DAYS = [self::DAY_ONE, self::DAY_TWO];
-    private Connection $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(private readonly Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     /**

@@ -18,20 +18,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class TicketStatsNotificationCommand extends Command
 {
-    private MessageFactory $messageFactory;
-    private EventStatsRepository $eventStatsRepository;
-    private SlackNotifier $slackNotifier;
-    private RepositoryFactory $ting;
-
-    public function __construct(MessageFactory $messageFactory,
-                                EventStatsRepository $eventStatsRepository,
-                                SlackNotifier $slackNotifier,
-                                RepositoryFactory $ting)
-    {
-        $this->messageFactory = $messageFactory;
-        $this->eventStatsRepository = $eventStatsRepository;
-        $this->slackNotifier = $slackNotifier;
-        $this->ting = $ting;
+    public function __construct(
+        private readonly MessageFactory $messageFactory,
+        private readonly EventStatsRepository $eventStatsRepository,
+        private readonly SlackNotifier $slackNotifier,
+        private readonly RepositoryFactory $ting,
+    ) {
         parent::__construct();
     }
     /**

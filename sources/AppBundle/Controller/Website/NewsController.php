@@ -19,20 +19,12 @@ class NewsController extends AbstractController
 {
     public const ARTICLES_PER_PAGE = 5;
 
-    private ViewRenderer $view;
-    private AuthorizationCheckerInterface $authorizationChecker;
-    private RepositoryFactory $repositoryFactory;
-    private string $projectDir;
-
-    public function __construct(ViewRenderer $view,
-                                AuthorizationCheckerInterface $authorizationChecker,
-                                RepositoryFactory $repositoryFactory,
-                                string $projectDir)
-    {
-        $this->view = $view;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->repositoryFactory = $repositoryFactory;
-        $this->projectDir = $projectDir;
+    public function __construct(
+        private readonly ViewRenderer $view,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly RepositoryFactory $repositoryFactory,
+        private readonly string $projectDir,
+    ) {
     }
 
     public function display($code): Response

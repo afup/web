@@ -15,23 +15,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NewsletterController extends AbstractController
 {
-    private ViewRenderer $view;
-    private Mailchimp $mailchimp;
-    private string $mailchimpSubscribersList;
-
-    public function __construct(ViewRenderer $view,
-                                Mailchimp $mailchimp,
-                                string $mailchimpSubscribersList)
-    {
-        $this->view = $view;
-        $this->mailchimp = $mailchimp;
-        $this->mailchimpSubscribersList = $mailchimpSubscribersList;
+    public function __construct(
+        private readonly ViewRenderer $view,
+        private readonly Mailchimp $mailchimp,
+        private readonly string $mailchimpSubscribersList,
+    ) {
     }
 
     public function subscribeForm(): Response
     {
         return $this->render('site/newsletter/subscribe.html.twig', [
-            'form' => $this->getSubscriberType()->createView()
+            'form' => $this->getSubscriberType()->createView(),
         ]);
     }
 
@@ -47,11 +41,11 @@ class NewsletterController extends AbstractController
                     $subscribeForm->getData()['email']
                 );
                 $success = true;
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 $success = false;
             }
             return $this->view->render('site/newsletter/postsubscribe.html.twig', [
-                'success' => $success
+                'success' => $success,
             ]);
         }
 
@@ -63,7 +57,7 @@ class NewsletterController extends AbstractController
         return $this
             ->createForm(SubscriberType::class, null, [
                 'action' => $this->generateUrl('newsletter_subscribe'),
-                'method' => Request::METHOD_POST
+                'method' => Request::METHOD_POST,
             ])
         ;
     }

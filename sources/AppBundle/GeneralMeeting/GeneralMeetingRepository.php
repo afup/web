@@ -13,11 +13,8 @@ use Doctrine\DBAL\DBALException;
 
 class GeneralMeetingRepository
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private readonly Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     /**
@@ -32,7 +29,7 @@ ORDER BY apag.date DESC
 SQL
         );
 
-        return array_map(static fn (array $row) => new DateTimeImmutable('@' . $row['date']), $query->fetchAll());
+        return array_map(static fn (array $row): \DateTimeImmutable => new DateTimeImmutable('@' . $row['date']), $query->fetchAll());
     }
 
     /**
@@ -104,7 +101,7 @@ SQL
 
         return is_array($row) ? [
             'date' => new \DateTimeImmutable('@' . $row['date']),
-            'description' => $row['description']
+            'description' => $row['description'],
         ] : null;
     }
 

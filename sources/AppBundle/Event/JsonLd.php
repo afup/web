@@ -16,28 +16,13 @@ use Symfony\Component\Asset\Packages;
 
 class JsonLd
 {
-    private TalkRepository $talkRepository;
-
-    private TicketEventTypeRepository $ticketEventTypeRepository;
-
-    private TicketTypeAvailability $ticketTypeAvailability;
-
-    private Packages $packages;
-
-    private PhotoStorage $photoStorage;
-
     public function __construct(
-        TalkRepository $talkRepository,
-        TicketEventTypeRepository $ticketEventTypeRepository,
-        TicketTypeAvailability $ticketTypeAvailability,
-        Packages $packages,
-        PhotoStorage $photoStorage
+        private readonly TalkRepository $talkRepository,
+        private readonly TicketEventTypeRepository $ticketEventTypeRepository,
+        private readonly TicketTypeAvailability $ticketTypeAvailability,
+        private readonly Packages $packages,
+        private readonly PhotoStorage $photoStorage,
     ) {
-        $this->talkRepository = $talkRepository;
-        $this->ticketTypeAvailability = $ticketTypeAvailability;
-        $this->packages = $packages;
-        $this->photoStorage = $photoStorage;
-        $this->ticketEventTypeRepository = $ticketEventTypeRepository;
     }
 
     public function getDataForEvent(Event $event): array
@@ -59,18 +44,18 @@ class JsonLd
                     '@type' => 'Person',
                     'name' => $speaker->getLabel(),
                     'image' => $url ? $this->packages->getUrl($url) : '',
-                    'url' => $speaker->getTwitter() !== null ? 'https://twitter.com/' . $speaker->getTwitter() : null
+                    'url' => $speaker->getTwitter() !== null ? 'https://twitter.com/' . $speaker->getTwitter() : null,
                 ];
             }
 
             $subEvent = [
                 '@type' => 'Event',
                 'name' => $talkInfo['talk']->getTitle(),
-                'description' => html_entity_decode(strip_tags($talkInfo['talk']->getDescription())),
+                'description' => html_entity_decode(strip_tags((string) $talkInfo['talk']->getDescription())),
                 'location' => [
                     '@type' => 'Place',
                     'name' => $talkInfo['room'] ? $talkInfo['room']->getName() : '',
-                    'address' => $event->getPlaceAddress()
+                    'address' => $event->getPlaceAddress(),
                 ],
                 'performers' => $performers,
 
@@ -92,11 +77,11 @@ class JsonLd
 
         $available = [
             '@type' => 'ItemAvailability',
-            'name' => 'In stock'
+            'name' => 'In stock',
         ];
         $notAvailable = [
             '@type' => 'ItemAvailability',
-            'name' => 'Out of stock'
+            'name' => 'Out of stock',
         ];
 
         foreach ($eventTickets as $eventTicket) {
@@ -108,7 +93,7 @@ class JsonLd
                 'price' => $eventTicket->getPrice(),
                 'validFrom' => $eventTicket->getDateStart()->format('c'),
                 'validThrough' => $eventTicket->getDateEnd()->format('c'),
-                'availability' => $this->ticketTypeAvailability->getStock($eventTicket, $event) > 0 ? $available : $notAvailable
+                'availability' => $this->ticketTypeAvailability->getStock($eventTicket, $event) > 0 ? $available : $notAvailable,
             ];
         }
 
@@ -121,20 +106,20 @@ class JsonLd
             'location' => [
                 "@type" => "Place",
                 "name" => $event->getPlaceName(),
-                'address' => $event->getPlaceAddress()
+                'address' => $event->getPlaceAddress(),
             ],
             'isAccessibleForFree' => false,
             'organizer' => [
                 '@type' => 'Organization',
                 'name' => 'AFUP',
                 'logo' => 'https://afup.org/uploads/speakers/17/thumbnails/1754.png', // @todo do not depend of "uploads" folder
-                'url' => 'https://afup.org'
+                'url' => 'https://afup.org',
             ],
             'startDate' => $event->getDateStart()->format('c'),
             'endDate' => $event->getDateEnd()->format('c'),
             'offers' => $offers,
             'image' => 'https://afup.org//templates/site/images/logoFPHP2017-420x207.png',
-            'subEvents' => $subEvents
+            'subEvents' => $subEvents,
         ];
     }
 

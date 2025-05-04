@@ -20,11 +20,8 @@ class HotelReservationType extends AbstractType
 {
     const NIGHT_NONE = 'none';
 
-    private TranslatorInterface $translator;
-
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(private readonly TranslatorInterface $translator)
     {
-        $this->translator = $translator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -73,8 +70,8 @@ class HotelReservationType extends AbstractType
                                     ->addViolation()
                                 ;
                             }
-                        }])
-                    ]
+                        }]),
+                    ],
                 ]
             )
             ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
@@ -85,7 +82,7 @@ class HotelReservationType extends AbstractType
     {
         $resolver->setDefaults([
             'event' => null,
-            'csrf_protection' => false
+            'csrf_protection' => false,
         ]);
     }
 }

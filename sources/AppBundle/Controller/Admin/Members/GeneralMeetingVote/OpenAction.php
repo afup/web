@@ -12,11 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class OpenAction extends AbstractController
 {
-    private GeneralMeetingQuestionRepository $generalMeetingQuestionRepository;
-
-    public function __construct(GeneralMeetingQuestionRepository $generalMeetingQuestionRepository)
+    public function __construct(private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository)
     {
-        $this->generalMeetingQuestionRepository = $generalMeetingQuestionRepository;
     }
 
     public function __invoke(Request $request): RedirectResponse
@@ -39,7 +36,7 @@ class OpenAction extends AbstractController
         $this->addFlash('notice', 'Le vote a été ouvert');
 
         return $this->redirectToRoute('admin_members_general_vote_list', [
-            'date' => $question->getDate()->format('U')
+            'date' => $question->getDate()->format('U'),
         ]);
     }
 }

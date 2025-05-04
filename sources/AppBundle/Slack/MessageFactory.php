@@ -20,14 +20,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MessageFactory
 {
-    private TranslatorInterface $translator;
-
     /**
      * MessageFactory constructor.
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(private readonly TranslatorInterface $translator)
     {
-        $this->translator = $translator;
     }
 
     public function createMessageForVote(Vote $vote): Message

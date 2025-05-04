@@ -19,27 +19,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class StatsAction extends AbstractController
 {
-    private EventActionHelper $eventActionHelper;
-    private LegacyModelFactory $legacyModelFactory;
-    private TicketRepository $ticketRepository;
-    private TicketTypeRepository $ticketTypeRepository;
-    private EventStatsRepository $eventStatsRepository;
-    private EventRepository $eventRepository;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        LegacyModelFactory $legacyModelFactory,
-        TicketRepository $ticketRepository,
-        TicketTypeRepository $ticketTypeRepository,
-        EventStatsRepository $eventStatsRepository,
-        EventRepository $eventRepository
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly LegacyModelFactory $legacyModelFactory,
+        private readonly TicketRepository $ticketRepository,
+        private readonly TicketTypeRepository $ticketTypeRepository,
+        private readonly EventStatsRepository $eventStatsRepository,
+        private readonly EventRepository $eventRepository,
     ) {
-        $this->eventActionHelper = $eventActionHelper;
-        $this->legacyModelFactory = $legacyModelFactory;
-        $this->ticketRepository = $ticketRepository;
-        $this->ticketTypeRepository = $ticketTypeRepository;
-        $this->eventStatsRepository = $eventStatsRepository;
-        $this->eventRepository = $eventRepository;
     }
 
     public function __invoke(Request $request): Response
@@ -55,7 +42,7 @@ class StatsAction extends AbstractController
             'event_id' => $event->getId(),
             'compared_event_id' => $comparedEvent->getId(),
         ], [
-            'events' => $this->eventRepository->getAll()
+            'events' => $this->eventRepository->getAll(),
         ]);
 
         $legacyInscriptions = $this->legacyModelFactory->createObject(Inscriptions::class);

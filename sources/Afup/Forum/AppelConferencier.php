@@ -9,23 +9,10 @@ use AppBundle\Event\Model\Talk;
 
 class AppelConferencier
 {
-    /**
-     * Instance de la couche d'abstraction à la base de données
-     * @var Base_De_Donnees
-     */
-    private $_bdd;
-
     const DEFAULT_JOURNEE = 0;
 
-    /**
-     * Constructeur.
-     *
-     * @param  object $bdd Instance de la couche d'abstraction à la base de données
-     * @return void
-     */
-    public function __construct(&$bdd)
+    public function __construct(private readonly Base_De_Donnees $_bdd)
     {
-        $this->_bdd = $bdd;
     }
 
     public function supprimerSession($id)
@@ -329,7 +316,7 @@ class AppelConferencier
                                   $filtre = false,
                                   $type = 'session',
                                   $needsMentoring = null,
-                                  $planned = null
+                                  $planned = null,
     ) {
         $requete = ' SELECT ';
         $requete .= '  COUNT(co.id) as commentaires_nombre, ';
@@ -422,7 +409,7 @@ class AppelConferencier
         $date_publication = null,
         $tweets = null,
         $transcript = null,
-        $verbatim = null
+        $verbatim = null,
     ) {
         $this->_bdd->executer("SET NAMES utf8mb4");
 
@@ -432,7 +419,7 @@ class AppelConferencier
         $requete .= ' titre = ' . $this->_bdd->echapper($titre) . ', ';
         $requete .= ' abstract = ' . $this->_bdd->echapper($abstract) . ', ';
         $requete .= ' genre = ' . $this->_bdd->echapper($genre) . ', ';
-        if (strlen(trim($joindin)) > 0) {
+        if (strlen(trim((string) $joindin)) > 0) {
             $requete .= ' joindin = ' . $this->_bdd->echapper($joindin) . ', ';
         } else {
             $requete .= ' joindin = NULL, ';
@@ -510,7 +497,7 @@ class AppelConferencier
         int $plannifie = 0,
         int $needs_mentoring = 0,
         int $level = Talk::SKILL_NA,
-        $useMarkdown = false
+        $useMarkdown = false,
     ) {
         $donnees = [
             $this->_bdd->echapper($id_forum),
@@ -522,7 +509,7 @@ class AppelConferencier
             $this->_bdd->echapper($plannifie),
             $this->_bdd->echapper($needs_mentoring),
             $this->_bdd->echapper($level),
-            (int) $useMarkdown
+            (int) $useMarkdown,
         ];
 
         $requete = ' INSERT INTO afup_sessions

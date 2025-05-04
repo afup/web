@@ -15,13 +15,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CompanyPublicProfileController extends AbstractController
 {
-    private RepositoryFactory $repositoryFactory;
-    private string $storageDir;
-
-    public function __construct(RepositoryFactory $repositoryFactory, string $storageDir)
-    {
-        $this->repositoryFactory = $repositoryFactory;
-        $this->storageDir = $storageDir;
+    public function __construct(
+        private readonly RepositoryFactory $repositoryFactory,
+        private readonly string $storageDir,
+    ) {
     }
     public function index(Request $request)
     {

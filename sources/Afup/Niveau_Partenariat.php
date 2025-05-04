@@ -4,23 +4,12 @@ declare(strict_types=1);
 
 namespace Afup\Site;
 
+use Afup\Site\Utils\Base_De_Donnees;
+
 class Niveau_Partenariat
 {
-    /**
-     * Instance de la couche d'abstraction à la base de données
-     * @var     object
-     */
-    private $_bdd;
-
-    /**
-     * Constructeur.
-     *
-     * @param  object $bdd Instance de la couche d'abstraction à la base de données
-     * @return void
-     */
-    public function __construct(&$bdd)
+    public function __construct(private readonly Base_De_Donnees $_bdd)
     {
-        $this->_bdd = $bdd;
     }
 
     /**

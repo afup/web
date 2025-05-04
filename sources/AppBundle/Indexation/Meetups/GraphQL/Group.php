@@ -9,12 +9,9 @@ namespace AppBundle\Indexation\Meetups\GraphQL;
  */
 final class Group
 {
-    public Events $upcomingEvents;
-    public Events $pastEvents;
-
-    public function __construct(Events $upcomingEvents, Events $pastEvents)
-    {
-        $this->upcomingEvents = $upcomingEvents;
-        $this->pastEvents = $pastEvents;
+    public function __construct(
+        public Events $upcomingEvents,
+        public Events $pastEvents,
+    ) {
     }
 }

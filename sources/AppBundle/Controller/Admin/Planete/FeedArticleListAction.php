@@ -11,15 +11,10 @@ use Twig\Environment;
 
 class FeedArticleListAction
 {
-    private FeedArticleRepository $feedArticleRepository;
-    private Environment $twig;
-
     public function __construct(
-        FeedArticleRepository $feedArticleRepository,
-        Environment $twig
+        private readonly FeedArticleRepository $feedArticleRepository,
+        private readonly Environment $twig,
     ) {
-        $this->feedArticleRepository = $feedArticleRepository;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response

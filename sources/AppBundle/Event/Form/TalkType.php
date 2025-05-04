@@ -38,7 +38,7 @@ class TalkType extends AbstractType
                 'choices' => [
                     'Conférence plénière (40 mn)' => Talk::TYPE_FULL_LONG,
                     'Conférence plénière (20 mn)' => Talk::TYPE_FULL_SHORT,
-                ]
+                ],
             ])
             ->add('skill', ChoiceType::class, [
                 'label' => 'Niveau requis',
@@ -47,7 +47,7 @@ class TalkType extends AbstractType
                     'Intermédiaire' => Talk::SKILL_MEDIOR,
                     'Avancé' => Talk::SKILL_SENIOR,
                     'N/A' => Talk::SKILL_NA,
-                ]
+                ],
             ]);
 
         if (!$options[self::IS_AFUP_DAY]) {
@@ -63,13 +63,13 @@ class TalkType extends AbstractType
 
         $builder->add('needsMentoring', CheckboxType::class, [
                 'label' => "Je souhaite profiter du programme d'accompagnement des jeunes speakers",
-                'required' => false
+                'required' => false,
             ])
             ->add('codeOfConduct', CheckboxType::class, [
                 'label' => 'J\'accepte le code de conduite et les conditions générales de participation (1)',
                 'mapped' => false,
                 'required' => true,
-                'data' => $options[self::OPT_COC_CHECKED]
+                'data' => $options[self::OPT_COC_CHECKED],
             ])
             ->add('hasAllowedToSharingWithLocalOffices', ChoiceType::class, [
                 'choices' => [
@@ -79,7 +79,7 @@ class TalkType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'label' => 'Autoriser l’AFUP à transmettre ma proposition de conférence à ses antennes locales ?',
-                'help' => 'cfp_propose_workshop'
+                'help' => 'cfp_propose_workshop',
             ]);
     }
 

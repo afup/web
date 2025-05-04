@@ -14,11 +14,8 @@ class FeedDeleteAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private FeedRepository $feedRepository;
-
-    public function __construct(FeedRepository $feedRepository)
+    public function __construct(private FeedRepository $feedRepository)
     {
-        $this->feedRepository = $feedRepository;
     }
 
     public function __invoke(Request $request): RedirectResponse

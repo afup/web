@@ -467,7 +467,7 @@ services:
 
     AppBundle\Github\GithubClient:
         arguments:
-            $githubClient: '@http_client.github'
+            $httpClient: '@http_client.github'
 
     AppBundle\Indexation\Meetups\MeetupClient:
         autowire: true

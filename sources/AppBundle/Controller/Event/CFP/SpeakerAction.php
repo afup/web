@@ -19,27 +19,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SpeakerAction extends AbstractController
 {
-    private SpeakerFactory $speakerFactory;
-    private PhotoStorage $photoStorage;
-    private SpeakerRepository $speakerRepository;
-    private TranslatorInterface $translator;
-    private SidebarRenderer $sidebarRenderer;
-    private EventActionHelper $eventActionHelper;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        SpeakerFactory $speakerFactory,
-        SpeakerRepository $speakerRepository,
-        TranslatorInterface $translator,
-        PhotoStorage $photoStorage,
-        SidebarRenderer $sidebarRenderer
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly SpeakerFactory $speakerFactory,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly TranslatorInterface $translator,
+        private readonly PhotoStorage $photoStorage,
+        private readonly SidebarRenderer $sidebarRenderer,
     ) {
-        $this->speakerFactory = $speakerFactory;
-        $this->photoStorage = $photoStorage;
-        $this->speakerRepository = $speakerRepository;
-        $this->translator = $translator;
-        $this->sidebarRenderer = $sidebarRenderer;
-        $this->eventActionHelper = $eventActionHelper;
     }
 
     public function __invoke(Request $request): Response
@@ -47,7 +34,7 @@ class SpeakerAction extends AbstractController
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
         if ($event->getDateEndCallForPapers() < new DateTime()) {
             return $this->render('event/cfp/closed.html.twig', [
-                'event' => $event
+                'event' => $event,
             ]);
         }
         $speaker = $this->speakerFactory->getSpeaker($event);
@@ -75,7 +62,7 @@ class SpeakerAction extends AbstractController
             }
 
             return $this->redirectToRoute('cfp_speaker', [
-                'eventSlug' => $event->getPath()
+                'eventSlug' => $event->getPath(),
             ]);
         }
 

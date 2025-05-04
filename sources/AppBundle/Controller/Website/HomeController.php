@@ -24,26 +24,15 @@ class HomeController extends AbstractController
 {
     public const MAX_ARTICLES = 5;
     public const MAX_MEETUPS = 10;
-    private ViewRenderer $view;
-    private LoggerInterface $logger;
-    private RepositoryFactory $repositoryFactory;
-    private CacheItemPoolInterface $cache;
-    private SearchClient $client;
-    private bool $homeAlgoliaEnabled;
 
-    public function __construct(ViewRenderer $view,
-                                LoggerInterface $logger,
-                                RepositoryFactory $repositoryFactory,
-                                CacheItemPoolInterface $cache,
-                                SearchClient $client,
-                                bool $homeAlgoliaEnabled)
-    {
-        $this->view = $view;
-        $this->logger = $logger;
-        $this->repositoryFactory = $repositoryFactory;
-        $this->cache = $cache;
-        $this->client = $client;
-        $this->homeAlgoliaEnabled = $homeAlgoliaEnabled;
+    public function __construct(
+        private readonly ViewRenderer $view,
+        private readonly LoggerInterface $logger,
+        private readonly RepositoryFactory $repositoryFactory,
+        private readonly CacheItemPoolInterface $cache,
+        private readonly SearchClient $client,
+        private readonly bool $homeAlgoliaEnabled,
+    ) {
     }
 
     public function display(): Response

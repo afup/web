@@ -16,12 +16,8 @@ class UserDeleteAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private UserRepository $userRepository;
-
-    public function __construct(
-        UserRepository $userRepository
-    ) {
-        $this->userRepository = $userRepository;
+    public function __construct(private UserRepository $userRepository)
+    {
     }
 
     public function __invoke(Request $request): RedirectResponse
@@ -37,7 +33,7 @@ class UserDeleteAction extends AbstractController
             $this->addFlash('notice', 'La personne physique a été supprimée');
         } catch (InvalidArgumentException $e) {
             $this->addFlash('error', $e->getMessage());
-        } catch (Exception $e) {
+        } catch (Exception) {
             $this->addFlash('error', 'Une erreur est survenue lors de la suppression de la personne physique');
         }
 

@@ -11,12 +11,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class IndexTalksCommand extends Command
 {
-    private Runner $runner;
-
-    public function __construct(Runner $runner)
+    public function __construct(private readonly Runner $runner)
     {
         parent::__construct();
-        $this->runner = $runner;
     }
 
     protected function configure(): void

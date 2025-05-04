@@ -17,20 +17,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class CorporateMemberValidator extends ConstraintValidator
 {
-    private TokenStorageInterface $tokenStorage;
-
-    private CompanyMemberRepository $companyMemberRepository;
-
-    private TicketRepository $ticketRepository;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        CompanyMemberRepository $companyMemberRepository,
-        TicketRepository $ticketRepository
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly CompanyMemberRepository $companyMemberRepository,
+        private readonly TicketRepository $ticketRepository,
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->companyMemberRepository = $companyMemberRepository;
-        $this->ticketRepository = $ticketRepository;
     }
 
     public function validate($tickets, Constraint $constraint): void

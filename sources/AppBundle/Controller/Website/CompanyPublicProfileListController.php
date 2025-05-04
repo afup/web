@@ -13,13 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CompanyPublicProfileListController extends AbstractController
 {
-    private ViewRenderer $view;
-    private RepositoryFactory $repositoryFactory;
-
-    public function __construct(ViewRenderer $view, RepositoryFactory $repositoryFactory)
-    {
-        $this->view = $view;
-        $this->repositoryFactory = $repositoryFactory;
+    public function __construct(
+        private readonly ViewRenderer $view,
+        private readonly RepositoryFactory $repositoryFactory,
+    ) {
     }
 
     public function index(): Response

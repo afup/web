@@ -14,18 +14,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PricesEditAction extends AbstractController
 {
-    private EventActionHelper $eventActionHelper;
-    private TicketTypeRepository $ticketTypeRepository;
-    private TicketEventTypeRepository $ticketEventTypeRepository;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        TicketTypeRepository $ticketTypeRepository,
-        TicketEventTypeRepository $ticketEventTypeRepository
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly TicketTypeRepository $ticketTypeRepository,
+        private readonly TicketEventTypeRepository $ticketEventTypeRepository,
     ) {
-        $this->eventActionHelper = $eventActionHelper;
-        $this->ticketTypeRepository = $ticketTypeRepository;
-        $this->ticketEventTypeRepository = $ticketEventTypeRepository;
     }
 
     public function __invoke(Request $request, $event, $id)
@@ -54,7 +47,7 @@ class PricesEditAction extends AbstractController
             $this->addFlash('notice', 'Le tarif a été modifié');
 
             return $this->redirectToRoute('admin_event_prices', [
-                'id' => $event->getId()
+                'id' => $event->getId(),
             ]);
         }
 

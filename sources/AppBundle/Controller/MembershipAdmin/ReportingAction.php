@@ -11,15 +11,10 @@ use Twig\Environment;
 
 class ReportingAction
 {
-    private StatisticsComputer $statisticsComputer;
-    private Environment $twig;
-
     public function __construct(
-        StatisticsComputer $statisticsComputer,
-        Environment $twig
+        private readonly StatisticsComputer $statisticsComputer,
+        private readonly Environment $twig,
     ) {
-        $this->statisticsComputer = $statisticsComputer;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response

@@ -7,13 +7,10 @@ namespace AppBundle\Controller\Planete;
 use PlanetePHP\FeedRepository;
 use Symfony\Component\HttpFoundation\Response;
 
-final class FeedsController
+final readonly class FeedsController
 {
-    private FeedRepository $feedRepository;
-
-    public function __construct(FeedRepository $feedRepository)
+    public function __construct(private FeedRepository $feedRepository)
     {
-        $this->feedRepository = $feedRepository;
     }
 
     public function __invoke(): Response

@@ -22,40 +22,38 @@ class TalkInvitation implements NotifyPropertyInterface
 
     /**
      * @var int
-     * @Assert\NotBlank()
-     * @Assert\GreaterThan(0)
      */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(0)]
     private $talkId;
 
     /**
      * @var string
-     * @Assert\Email()
-     * @Assert\NotBlank()
      */
+    #[Assert\Email]
+    #[Assert\NotBlank]
     private $email;
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $token;
 
     private ?\DateTime $submittedOn = null;
 
     /**
      * @var int
-     * @Assert\NotBlank()
-     * @Assert\GreaterThan(0)
-     *
-     * Speaker id who sent the invitation
      *
      */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(0)] // Speaker id who sent the invitation
     private $submittedBy;
 
     /**
      * @var int
-     * @Assert\Choice(choices = {0, 1}, message = "Invalid state")
      */
+    #[Assert\Choice(choices: [0, 1], message: 'Invalid state')]
     private $state;
 
     /**

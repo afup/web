@@ -12,18 +12,11 @@ use Twig\Environment;
 
 class BadgeListAction
 {
-    private BadgeRepository $badgeRepository;
-    private UserRepository $userRepository;
-    private Environment $twig;
-
     public function __construct(
-        BadgeRepository $badgeRepository,
-        UserRepository $userRepository,
-        Environment $twig
+        private readonly BadgeRepository $badgeRepository,
+        private readonly UserRepository $userRepository,
+        private readonly Environment $twig,
     ) {
-        $this->badgeRepository = $badgeRepository;
-        $this->userRepository = $userRepository;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response

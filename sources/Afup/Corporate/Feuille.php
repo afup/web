@@ -14,8 +14,6 @@ class Feuille
     const ID_FEUILLE_HEADER = 21;
     const ID_FEUILLE_FOOTER = 38;
     const ID_FEUILLE_NOS_ACTIONS = 96;
-
-    public $id;
     public $id_parent;
     public $nom;
     public $lien;
@@ -32,9 +30,10 @@ class Feuille
      */
     protected $bdd;
 
-    public function __construct($id = 0, $bdd = false)
-    {
-        $this->id = $id;
+    public function __construct(
+        public $id = 0,
+        $bdd = false,
+    ) {
         $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
     }
 

@@ -14,23 +14,17 @@ use Twig\Environment;
  */
 class Mailer
 {
-    private LoggerInterface $logger;
-    private Environment $twig;
-    private MailerAdapter $adapter;
     /** @var string|null */
     private $forcedRecipient;
     /** @var string[] */
-    private array $defaultBccs;
+    private readonly array $defaultBccs;
 
     public function __construct(
-        LoggerInterface $logger,
-        Environment $twig,
-        MailerAdapter $adapter,
-        Configuration $configuration
+        private readonly LoggerInterface $logger,
+        private readonly Environment $twig,
+        private readonly MailerAdapter $adapter,
+        Configuration $configuration,
     ) {
-        $this->logger = $logger;
-        $this->twig = $twig;
-        $this->adapter = $adapter;
         $this->forcedRecipient = $configuration->obtenir('mailer_force_recipients');
         $defaultBccs = $configuration->obtenir('mailer_bcc');
         $this->defaultBccs = is_array($defaultBccs) ? $defaultBccs : [$defaultBccs];

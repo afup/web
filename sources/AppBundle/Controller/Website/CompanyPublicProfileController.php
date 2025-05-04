@@ -17,21 +17,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CompanyPublicProfileController extends AbstractController
 {
-    private ViewRenderer $view;
-    private BadgesComputer $badgesComputer;
-    private RepositoryFactory $repositoryFactory;
-    private string $storageDir;
-
     public function __construct(
-        ViewRenderer $view,
-        BadgesComputer $badgesComputer,
-        RepositoryFactory $repositoryFactory,
-        string $storageDir
+        private readonly ViewRenderer $view,
+        private readonly BadgesComputer $badgesComputer,
+        private readonly RepositoryFactory $repositoryFactory,
+        private readonly string $storageDir,
     ) {
-        $this->view = $view;
-        $this->badgesComputer = $badgesComputer;
-        $this->repositoryFactory = $repositoryFactory;
-        $this->storageDir = $storageDir;
     }
 
     public function index($id, $slug): Response

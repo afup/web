@@ -19,18 +19,11 @@ class UserAddAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private UserRepository $userRepository;
-    private UserService $userService;
-    private UserPasswordHasherInterface $passwordHasher;
-
     public function __construct(
-        UserRepository $userRepository,
-        UserService $userService,
-        UserPasswordHasherInterface $passwordHasher
+        private UserRepository $userRepository,
+        private UserService $userService,
+        private UserPasswordHasherInterface $passwordHasher,
     ) {
-        $this->userRepository = $userRepository;
-        $this->userService = $userService;
-        $this->passwordHasher = $passwordHasher;
     }
 
     public function __invoke(Request $request): Response
@@ -61,7 +54,7 @@ class UserAddAction extends AbstractController
             $this->addFlash('notice', 'La personne physique a été ajoutée');
 
             return $this->redirectToRoute('admin_members_user_list', [
-                'filter' => $user->getEmail()
+                'filter' => $user->getEmail(),
             ]);
         }
 

@@ -18,18 +18,11 @@ class UserEditAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private UserRepository $userRepository;
-    private UserBadgeRepository $userBadgeRepository;
-    private UserPasswordHasherInterface $passwordHasher;
-
     public function __construct(
-        UserRepository $userRepository,
-        UserBadgeRepository $userBadgeRepository,
-        UserPasswordHasherInterface $passwordHasher
+        private UserRepository $userRepository,
+        private UserBadgeRepository $userBadgeRepository,
+        private UserPasswordHasherInterface $passwordHasher,
     ) {
-        $this->userRepository = $userRepository;
-        $this->userBadgeRepository = $userBadgeRepository;
-        $this->passwordHasher = $passwordHasher;
     }
 
     public function __invoke(Request $request): Response
@@ -54,7 +47,7 @@ class UserEditAction extends AbstractController
             $this->addFlash('notice', 'La personne physique a été modifiée');
 
             return $this->redirectToRoute('admin_members_user_list', [
-                'filter' => $user->getEmail()
+                'filter' => $user->getEmail(),
             ]);
         }
 
@@ -62,7 +55,7 @@ class UserEditAction extends AbstractController
         $userBadgeForm = $this->createForm(UserBadgeType::class, [], [
             'user' => $user,
             'action' => $this->generateUrl('admin_members_user_badge_new', [
-                'user_id' => $user->getId()
+                'user_id' => $user->getId(),
             ]),
         ]);
 

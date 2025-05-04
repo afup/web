@@ -13,17 +13,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TechletterController extends AbstractController
 {
-    private ViewRenderer $view;
-    private RepositoryFactory $repositoryFactory;
-    private string $mailchimpTechletterWebhookKey;
-
-    public function __construct(ViewRenderer $view,
-                                RepositoryFactory $repositoryFactory,
-                                string $mailchimpTechletterWebhookKey)
-    {
-        $this->view = $view;
-        $this->repositoryFactory = $repositoryFactory;
-        $this->mailchimpTechletterWebhookKey = $mailchimpTechletterWebhookKey;
+    public function __construct(
+        private readonly ViewRenderer $view,
+        private readonly RepositoryFactory $repositoryFactory,
+        private readonly string $mailchimpTechletterWebhookKey,
+    ) {
     }
 
     public function index(): Response

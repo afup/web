@@ -20,29 +20,29 @@ class SponsorTicket implements NotifyPropertyInterface
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $company;
 
     /**
      * @var string
-     * @Assert\NotBlank()
-     * @Assert\Length(min=30, max=64)
      */
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 30, max: 64)]
     private $token;
 
     /**
      * @var string
-     * @Assert\NotBlank()
-     * @Assert\Email()
      */
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private $contactEmail;
 
     /**
      * @var int
-     * @Assert\NotBlank()
-     * @Assert\Range(min=1, max=20)
      */
+    #[Assert\NotBlank]
+    #[Assert\Range(min: 1, max: 20)]
     private $maxInvitations = 0;
 
     /**

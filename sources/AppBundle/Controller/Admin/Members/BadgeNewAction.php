@@ -14,18 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BadgeNewAction extends AbstractController
 {
-    private BadgeRepository $badgeRepository;
-    private string $storageDir;
-    private Filesystem $filesystem;
-
     public function __construct(
-        BadgeRepository $badgeRepository,
-        Filesystem $filesystem,
-        string $storageDir
+        private readonly BadgeRepository $badgeRepository,
+        private readonly Filesystem $filesystem,
+        private readonly string $storageDir,
     ) {
-        $this->badgeRepository = $badgeRepository;
-        $this->storageDir = $storageDir;
-        $this->filesystem = $filesystem;
     }
 
     public function __invoke(Request $request): Response

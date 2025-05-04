@@ -14,18 +14,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SendLastCallSponsorTokenAction extends AbstractController
 {
-    private EventActionHelper $eventActionHelper;
-    private SponsorTicketRepository $sponsorTicketRepository;
-    private SponsorTokenMail $sponsorTokenMail;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        SponsorTicketRepository $sponsorTicketRepository,
-        SponsorTokenMail $sponsorTokenMail
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly SponsorTicketRepository $sponsorTicketRepository,
+        private readonly SponsorTokenMail $sponsorTokenMail,
     ) {
-        $this->eventActionHelper = $eventActionHelper;
-        $this->sponsorTicketRepository = $sponsorTicketRepository;
-        $this->sponsorTokenMail = $sponsorTokenMail;
     }
 
     public function __invoke(Request $request): RedirectResponse
@@ -45,7 +38,7 @@ class SendLastCallSponsorTokenAction extends AbstractController
         $this->addFlash('notice', sprintf('%s mails de relance ont été envoyés', $mailSent));
 
         return $this->redirectToRoute('admin_event_sponsor_ticket', [
-            'id' => $event->getId()
+            'id' => $event->getId(),
         ]);
     }
 }

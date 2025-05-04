@@ -22,8 +22,8 @@ class GeneralMeetingQuestionFormType extends AbstractType
                 'label' => 'Question',
                 'constraints' => [
                     new NotBlank(),
-                    new Length(['min' => 5, 'max' => 255])
-                ]
+                    new Length(['min' => 5, 'max' => 255]),
+                ],
             ])
             ->add('submit', SubmitType::class);
     }

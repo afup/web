@@ -46,14 +46,14 @@ class Rubriques
     public function obtenirListe(string $champs = '*',
                           string $ordre = 'titre',
                           $filtre = null,
-                          $associatif = false
+                          $associatif = false,
     ) {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
         $requete .= 'FROM';
         $requete .= '  afup_site_rubrique ';
 
-        if ($filtre && trim($filtre) !== '') {
+        if ($filtre && trim((string) $filtre) !== '') {
             $requete .= sprintf(' WHERE afup_site_rubrique.nom LIKE %s ', $this->bdd->echapper('%' . $filtre . '%'));
         }
 

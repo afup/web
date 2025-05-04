@@ -9,13 +9,10 @@ use Laminas\Feed\Reader\Http\Response;
 use Laminas\Feed\Reader\Http\ResponseInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class SymfonyFeedClient implements ClientInterface
+final readonly class SymfonyFeedClient implements ClientInterface
 {
-    private HttpClientInterface $httpClient;
-
-    public function __construct(HttpClientInterface $httpClient)
+    public function __construct(private HttpClientInterface $httpClient)
     {
-        $this->httpClient = $httpClient;
     }
 
     public function get($uri): ResponseInterface

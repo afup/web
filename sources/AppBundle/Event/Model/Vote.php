@@ -14,27 +14,18 @@ class Vote implements NotifyPropertyInterface
 
     private int $id;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\GreaterThan(0)
-     */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(0)]
     private int $sessionId = 0;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\GreaterThan(0)
-     */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(0)]
     private int $user = 0;
 
     private ?string $comment = null;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\GreaterThan(
-     *     value = 0,
-     *     message = "Please set a note !"
-     * )
-     */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(value: 0, message: 'Please set a note !')]
     private int $vote = 0;
 
     private ?\DateTime $submittedOn = null;

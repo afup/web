@@ -13,12 +13,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateCompanyMemberStateCommand extends Command
 {
-    private RepositoryFactory $ting;
-
-    public function __construct(RepositoryFactory $ting)
+    public function __construct(private readonly RepositoryFactory $ting)
     {
         parent::__construct();
-        $this->ting = $ting;
     }
 
     protected function configure(): void

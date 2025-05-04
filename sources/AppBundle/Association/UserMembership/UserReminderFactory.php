@@ -11,14 +11,10 @@ use AppBundle\Email\Mailer\Mailer;
 
 class UserReminderFactory
 {
-    private Mailer $mailer;
-
-    private SubscriptionReminderLogRepository $subscriptionReminderLogRepository;
-
-    public function __construct(Mailer $mailer, SubscriptionReminderLogRepository $subscriptionReminderLogRepository)
-    {
-        $this->mailer = $mailer;
-        $this->subscriptionReminderLogRepository = $subscriptionReminderLogRepository;
+    public function __construct(
+        private readonly Mailer $mailer,
+        private readonly SubscriptionReminderLogRepository $subscriptionReminderLogRepository,
+    ) {
     }
 
     /**

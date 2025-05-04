@@ -38,63 +38,63 @@ class SubscriptionRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'date_debut',
                 'fieldName' => 'startDate',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
-                ]
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                ],
             ])
             ->addField([
                 'columnName' => 'date_fin',
                 'fieldName' => 'endDate',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
-                ]
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                ],
             ])
             ->addField([
                 'columnName' => 'type_personne',
                 'fieldName' => 'userType',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'id_personne',
                 'fieldName' => 'userId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'montant',
                 'fieldName' => 'amount',
-                'type' => 'float'
+                'type' => 'float',
             ])
             ->addField([
                 'columnName' => 'type_reglement',
                 'fieldName' => 'paymentType',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'informations_reglement',
                 'fieldName' => 'paymentDetails',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'numero_facture',
                 'fieldName' => 'invoiceNumber',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'commentaires',
                 'fieldName' => 'comments',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'token',
                 'fieldName' => 'token',
-                'type' => 'string'
+                'type' => 'string',
             ])
         ;
 

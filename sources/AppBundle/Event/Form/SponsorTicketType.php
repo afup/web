@@ -22,17 +22,17 @@ class SponsorTicketType extends AbstractType
                 'label' => 'Civilité',
                 'choices' => [
                     'M.' => 'M.',
-                    'Mme' => 'Mme'
-                ]
+                    'Mme' => 'Mme',
+                ],
             ])
             ->add('firstname', TextType::class, [
-                'label' => 'Prénom'
+                'label' => 'Prénom',
             ])
             ->add('lastname', TextType::class, [
-                'label' => 'Nom'
+                'label' => 'Nom',
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email'
+                'label' => 'Email',
             ]);
 
         if ($options['with_transport']) {
@@ -52,7 +52,7 @@ class SponsorTicketType extends AbstractType
                     'placeholder' => '',
                     'required' => true,
                     'constraints' => [new NotBlank()],
-                    'choices' => array_flip(Ticket::TRANSPORT_DISTANCES)
+                    'choices' => array_flip(Ticket::TRANSPORT_DISTANCES),
                 ]);
         }
     }
@@ -61,7 +61,7 @@ class SponsorTicketType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Ticket::class,
-            'with_transport' => false
+            'with_transport' => false,
         ]);
     }
 }

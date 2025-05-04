@@ -27,18 +27,10 @@ class Droits
      */
     private array $_pages = [];
 
-    private TokenStorageInterface $tokenStorage;
-
-    private AuthorizationCheckerInterface $authorizationChecker;
-
-    /**
-     * Constructeur. Vérifie si l'utilisateur est connecté
-     *
-     */
-    public function __construct(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker)
-    {
-        $this->tokenStorage = $tokenStorage;
-        $this->authorizationChecker = $authorizationChecker;
+    public function __construct(
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+    ) {
     }
 
     /**

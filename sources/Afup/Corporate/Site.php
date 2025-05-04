@@ -35,13 +35,13 @@ class Site
 
     public static function transformer_lien_spip($texte)
     {
-        $texte = preg_replace('`\[(.*?)[[:space:]]*->http://(.*?)\]`', '<a href="http://$2">$1</a>', $texte);
-        return preg_replace('`\[(.*?)->(.*?)\]`', '<a href="http://$2">$1</a>', $texte);
+        $texte = preg_replace('`\[(.*?)[[:space:]]*->http://(.*?)\]`', '<a href="http://$2">$1</a>', (string) $texte);
+        return preg_replace('`\[(.*?)->(.*?)\]`', '<a href="http://$2">$1</a>', (string) $texte);
     }
 
     public static function transformer_liste_spip($texte): string
     {
-        $lignes = explode("\n", $texte);
+        $lignes = explode("\n", (string) $texte);
         foreach ($lignes as &$ligne) {
             $ligne = preg_replace("`^- (.*)`", "<ul>\n<li>\$1</li>\n</ul>", $ligne);
         }
@@ -53,9 +53,9 @@ class Site
     {
         $texte = self::transformer_lien_spip($texte);
         for ($i = 0; $i < 2; $i++) {
-            $texte = preg_replace('`\{\{\{[[:space:]]*(.*?)[[:space:]]*\}\}\}`', '<h3>$1</h3>', $texte);
-            $texte = preg_replace('`\{\{[[:space:]]*(.*?)[[:space:]]*\}\}`', '<strong>$1</strong>', $texte);
-            $texte = preg_replace('`\{[[:space:]]*(.*?)[[:space:]]*\}`', '<em>$1</em>', $texte);
+            $texte = preg_replace('`\{\{\{[[:space:]]*(.*?)[[:space:]]*\}\}\}`', '<h3>$1</h3>', (string) $texte);
+            $texte = preg_replace('`\{\{[[:space:]]*(.*?)[[:space:]]*\}\}`', '<strong>$1</strong>', (string) $texte);
+            $texte = preg_replace('`\{[[:space:]]*(.*?)[[:space:]]*\}`', '<em>$1</em>', (string) $texte);
         }
         return self::transformer_liste_spip($texte);
     }
@@ -97,7 +97,7 @@ class Site
                 $article->chapeau = self::transformer_spip_en_html(($article_spip['chapo']));
                 $article->contenu = self::transformer_spip_en_html(($article_spip['texte']));
                 $article->position = 0;
-                $article->date = strtotime($article_spip['date']);
+                $article->date = strtotime((string) $article_spip['date']);
                 $article->etat = 1;
                 $article->inserer();
                 $nombre_articles++;

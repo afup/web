@@ -11,19 +11,13 @@ use Psr\Log\NullLogger;
 
 class MailchimpSynchronizer
 {
-    private Mailchimp $mailchimp;
-
-    private TechletterSubscriptionsRepository $subscriptionsRepository;
-
-    private string $listId;
-
     private LoggerInterface $logger;
 
-    public function __construct(Mailchimp $mailchimp, TechletterSubscriptionsRepository $subscriptionsRepository, string $listId)
-    {
-        $this->mailchimp = $mailchimp;
-        $this->subscriptionsRepository = $subscriptionsRepository;
-        $this->listId = $listId;
+    public function __construct(
+        private readonly Mailchimp $mailchimp,
+        private readonly TechletterSubscriptionsRepository $subscriptionsRepository,
+        private readonly string $listId,
+    ) {
         $this->logger = new NullLogger();
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Afup\Site\Forum;
 
+use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Mail;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
@@ -18,21 +19,8 @@ use AppBundle\Event\Model\Ticket;
 
 class Facturation
 {
-    /**
-     * Instance de la couche d'abstraction à la base de données
-     * @var     object
-     */
-    private $_bdd;
-
-    /**
-     * Constructeur.
-     *
-     * @param  object $bdd Instance de la couche d'abstraction à la base de données
-     * @return void
-     */
-    public function __construct(&$bdd)
+    public function __construct(private readonly Base_De_Donnees $_bdd)
     {
-        $this->_bdd = $bdd;
     }
 
     /**
@@ -87,9 +75,9 @@ class Facturation
 
     public function creerReference($id_forum, $label): string
     {
-        $label = preg_replace('/[^A-Z0-9_\-\:\.;]/', '', strtoupper(supprimerAccents($label)));
+        $label = preg_replace('/[^A-Z0-9_\-\:\.;]/', '', strtoupper((string) supprimerAccents($label)));
 
-        return 'F' . date('Y') . sprintf('%02d', $id_forum) . '-' . date('dm') . '-' . substr($label, 0, 5) . '-' . substr(md5(date('r') . $label), -5);
+        return 'F' . date('Y') . sprintf('%02d', $id_forum) . '-' . date('dm') . '-' . substr((string) $label, 0, 5) . '-' . substr(md5(date('r') . $label), -5);
     }
 
     public function estFacture($reference)
@@ -197,7 +185,7 @@ class Facturation
             return $value;
         }
 
-        return substr($value, 0, $length) . '...';
+        return substr((string) $value, 0, $length) . '...';
     }
 
     /**
@@ -264,7 +252,7 @@ class Facturation
         if ($facture['informations_reglement']) {
             $pdf->Ln(10);
             $pdf->Cell(32, 5, 'Référence client : ');
-            $infos = explode("\n", $facture['informations_reglement']);
+            $infos = explode("\n", (string) $facture['informations_reglement']);
             foreach ($infos as $info) {
                 $pdf->Cell(100, 5, $info);
                 $pdf->Ln();

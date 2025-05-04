@@ -12,15 +12,11 @@ use Twig\Environment;
 
 class ViewRenderer
 {
-    private Security $security;
-    private RequestStack $requestStack;
-    private Environment $twig;
-
-    public function __construct(Security $security, RequestStack $requestStack, Environment $twig)
-    {
-        $this->security = $security;
-        $this->requestStack = $requestStack;
-        $this->twig = $twig;
+    public function __construct(
+        private readonly Security $security,
+        private readonly RequestStack $requestStack,
+        private readonly Environment $twig,
+    ) {
     }
 
 
@@ -44,7 +40,7 @@ class ViewRenderer
                 'header' => $page->header($requestUri, $this->security->getUser()),
                 'sidebar' => $page->getRightColumn(),
                 'social' => $page->social(),
-                'footer' => $page->footer()
+                'footer' => $page->footer(),
             ];
         }
 

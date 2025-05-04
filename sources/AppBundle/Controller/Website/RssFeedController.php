@@ -12,10 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RssFeedController extends AbstractController
 {
-    private RepositoryFactory $repositoryFactory;
-    public function __construct(RepositoryFactory $repositoryFactory)
+    public function __construct(private readonly RepositoryFactory $repositoryFactory)
     {
-        $this->repositoryFactory = $repositoryFactory;
     }
     public function __invoke(): Response
     {

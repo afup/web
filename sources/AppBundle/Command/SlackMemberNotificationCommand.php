@@ -13,14 +13,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class SlackMemberNotificationCommand extends Command
 {
-    private UsersChecker $usersChecker;
-    private MessageFactory $messageFactory;
-    private SlackNotifier $slackNotifier;
-    public function __construct(UsersChecker $usersChecker, MessageFactory $messageFactory, SlackNotifier $slackNotifier)
-    {
-        $this->usersChecker = $usersChecker;
-        $this->messageFactory = $messageFactory;
-        $this->slackNotifier = $slackNotifier;
+    public function __construct(
+        private readonly UsersChecker $usersChecker,
+        private readonly MessageFactory $messageFactory,
+        private readonly SlackNotifier $slackNotifier,
+    ) {
         parent::__construct();
     }
 

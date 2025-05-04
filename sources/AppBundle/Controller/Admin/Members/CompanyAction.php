@@ -17,15 +17,10 @@ class CompanyAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private CompanyMemberRepository $companyMemberRepository;
-    private UserRepository $userRepository;
-
     public function __construct(
-        CompanyMemberRepository $companyMemberRepository,
-        UserRepository $userRepository
+        private CompanyMemberRepository $companyMemberRepository,
+        private UserRepository $userRepository,
     ) {
-        $this->companyMemberRepository = $companyMemberRepository;
-        $this->userRepository = $userRepository;
     }
 
     public function __invoke(Request $request, ?int $id)
@@ -46,7 +41,7 @@ class CompanyAction extends AbstractController
                 $this->addFlash('notice', 'La personne morale a été ' . ($id ? 'modifiée' : 'ajoutée'));
 
                 return $this->redirectToRoute('admin_members_company_list', ['filter' => $company->getCompanyName()]);
-            } catch (Exception $e) {
+            } catch (Exception) {
                 $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout de la personne morale');
             }
         }

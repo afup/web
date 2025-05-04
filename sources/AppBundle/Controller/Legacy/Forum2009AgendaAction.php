@@ -11,13 +11,10 @@ use Twig\Environment;
 
 class Forum2009AgendaAction
 {
-    private Forum $forum;
-    private Environment $twig;
-
-    public function __construct(Forum $forum, Environment $twig)
-    {
-        $this->forum = $forum;
-        $this->twig = $twig;
+    public function __construct(
+        private readonly Forum $forum,
+        private readonly Environment $twig,
+    ) {
     }
 
     public function __invoke(Request $request): Response

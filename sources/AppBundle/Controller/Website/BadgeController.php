@@ -11,14 +11,10 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class BadgeController extends AbstractController
 {
-    private RepositoryFactory $repositoryFactory;
-    private string $storageDir;
-
-    public function __construct(RepositoryFactory $repositoryFactory,
-                                string $storageDir)
-    {
-        $this->repositoryFactory = $repositoryFactory;
-        $this->storageDir = $storageDir;
+    public function __construct(
+        private readonly RepositoryFactory $repositoryFactory,
+        private readonly string $storageDir,
+    ) {
     }
     public function badge($id)
     {

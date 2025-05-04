@@ -14,11 +14,8 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class HealthcheckController extends AbstractController
 {
-    private RepositoryFactory $ting;
-
-    public function __construct(RepositoryFactory $ting)
+    public function __construct(private readonly RepositoryFactory $ting)
     {
-        $this->ting = $ting;
     }
 
     public function __invoke(): Response
@@ -40,12 +37,12 @@ class HealthcheckController extends AbstractController
                 'php' => $php->format(\DateTime::ATOM),
                 'mysql_bdd' => $mysqlBdd->format(\DateTime::ATOM),
                 'mysql_ting' => $mysqlTing->format(\DateTime::ATOM),
-                'diff' => $diff
+                'diff' => $diff,
             ],
             'versions' => [
                 'php' => phpversion(),
-                'symfony' => Kernel::VERSION
-            ]
+                'symfony' => Kernel::VERSION,
+            ],
         ]);
     }
 }

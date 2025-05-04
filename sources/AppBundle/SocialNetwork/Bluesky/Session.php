@@ -9,12 +9,9 @@ namespace AppBundle\SocialNetwork\Bluesky;
  */
 final class Session
 {
-    public string $did;
-    public string $accessJwt;
-
-    public function __construct(string $did, string $accessJwt)
-    {
-        $this->did = $did;
-        $this->accessJwt = $accessJwt;
+    public function __construct(
+        public string $did,
+        public string $accessJwt,
+    ) {
     }
 }

@@ -16,24 +16,21 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class PhotoStorage
 {
-    private $basePath;
-    private $publicPath;
-    private $legacyBasePath;
-    private Filesystem $filesystem;
+    private readonly Filesystem $filesystem;
 
     const DIR_ORIGINAL = 'originals';
     const DIR_THUMBS = 'thumbnails';
 
     const FORMAT = [
         'originals' => ['width' => 1000, 'height' => 1000],
-        'thumbnails' => ['width' => 90, 'height' => 120]
+        'thumbnails' => ['width' => 90, 'height' => 120],
     ];
 
-    public function __construct($basePath, $publicPath, $legacyBasePath)
-    {
-        $this->basePath = $basePath;
-        $this->publicPath = $publicPath;
-        $this->legacyBasePath = $legacyBasePath;
+    public function __construct(
+        private $basePath,
+        private $publicPath,
+        private $legacyBasePath,
+    ) {
         $this->filesystem = new Filesystem();
     }
 
@@ -146,7 +143,7 @@ class PhotoStorage
         if (file_exists($originalPath) === false) {
             return ;
         }
-        $ext = substr($speaker->getPhoto(), -4);
+        $ext = substr((string) $speaker->getPhoto(), -4);
         $transparent = false;
         // This part is just our old script. We should do better
         if ($ext === '.png') {

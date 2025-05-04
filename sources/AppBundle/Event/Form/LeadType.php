@@ -29,14 +29,14 @@ class LeadType extends AbstractType
             ->add('email', EmailType::class)
             ->add('language', ChoiceType::class, [
                 'choices' => ['fr' => 'fr', 'en' => 'en'],
-                'multiple' => false
+                'multiple' => false,
             ])
             ->add('recaptcha', EWZRecaptchaType::class, [
                 'label' => 'Vérification',
                 'mapped' => false,
                 'constraints' => [
-                    new RecaptchaIsValid()
-                ]
+                    new RecaptchaIsValid(),
+                ],
             ])
         ;
     }
@@ -44,7 +44,7 @@ class LeadType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Lead::class
+            'data_class' => Lead::class,
         ]);
     }
 }

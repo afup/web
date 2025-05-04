@@ -17,14 +17,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HtmlSitemapController extends AbstractController
 {
-    private ViewRenderer $view;
-    private RepositoryFactory $repositoryFactory;
-
-    public function __construct(ViewRenderer $view,
-                                RepositoryFactory $repositoryFactory
+    public function __construct(
+        private readonly ViewRenderer $view,
+        private readonly RepositoryFactory $repositoryFactory,
     ) {
-        $this->view = $view;
-        $this->repositoryFactory = $repositoryFactory;
     }
 
     public function display(): Response
@@ -46,7 +42,7 @@ class HtmlSitemapController extends AbstractController
 
         $pages = [];
         foreach ($leafs as $leaf) {
-            if (!$leaf['lien'] || str_starts_with($leaf['lien'], 'http')) {
+            if (!$leaf['lien'] || str_starts_with((string) $leaf['lien'], 'http')) {
                 continue;
             }
             $pages[] = [
@@ -75,7 +71,7 @@ class HtmlSitemapController extends AbstractController
 
             $members[] = [
                 'name' => $member->getCompanyName(),
-                'url' => $url
+                'url' => $url,
             ];
         }
         return $members;
@@ -94,7 +90,7 @@ class HtmlSitemapController extends AbstractController
 
             $news[] = [
                 'name' => $newsItem->getTitle(),
-                'url' => $url
+                'url' => $url,
             ];
         }
 
@@ -117,7 +113,7 @@ class HtmlSitemapController extends AbstractController
 
             $talks[] = [
                 'name' => $talk->getTitle(),
-                'url' => $url
+                'url' => $url,
             ];
         }
 

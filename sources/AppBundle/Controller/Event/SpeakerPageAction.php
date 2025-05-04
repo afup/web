@@ -10,18 +10,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SpeakerPageAction
 {
-    private SpeakerPage $speakerPage;
-    private SpeakerFactory $speakerFactory;
-    private EventActionHelper $eventActionHelper;
-
     public function __construct(
-        SpeakerPage $speakerPage,
-        SpeakerFactory $speakerFactory,
-        EventActionHelper $eventActionHelper
+        private readonly SpeakerPage $speakerPage,
+        private readonly SpeakerFactory $speakerFactory,
+        private readonly EventActionHelper $eventActionHelper,
     ) {
-        $this->speakerPage = $speakerPage;
-        $this->speakerFactory = $speakerFactory;
-        $this->eventActionHelper = $eventActionHelper;
     }
 
     public function __invoke(Request $request)

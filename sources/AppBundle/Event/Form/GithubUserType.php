@@ -29,10 +29,10 @@ class GithubUserType extends AbstractType
                 'constraints' => [
                     new UniqueEntity([
                         'repository' => $options['github_user_repository'],
-                        'fields' => ['login']
-                    ])
+                        'fields' => ['login'],
+                    ]),
                 ],
-                'invalid_message' => 'Impossible de charger les informations de l\'utilisateur GitHub.'
+                'invalid_message' => 'Impossible de charger les informations de l\'utilisateur GitHub.',
             ])
             ->add('afupCrew', CheckboxType::class, [
                 'required' => false,
@@ -78,7 +78,7 @@ class GithubUserType extends AbstractType
             ->setAllowedTypes('github_user_repository', GithubUserRepository::class)
             ->setRequired([
                 'github_client',
-                'github_user_repository'
+                'github_user_repository',
             ])
         ;
     }

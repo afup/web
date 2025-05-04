@@ -22,27 +22,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class TalksController extends AbstractController
 {
-    private ViewRenderer $view;
-    private RepositoryFactory $repositoryFactory;
-    private JoindinComments $joindinComments;
-    private JoindinTalk $joindinTalk;
-    private string $algoliaAppId;
-    private string $algoliaFrontendApikey;
-
     public function __construct(
-        ViewRenderer $view,
-        RepositoryFactory $repositoryFactory,
-        JoindinComments $joindinComments,
-        JoindinTalk $joindinTalk,
-        string $algoliaAppId,
-        string $algoliaFrontendApikey
+        private readonly ViewRenderer $view,
+        private readonly RepositoryFactory $repositoryFactory,
+        private readonly JoindinComments $joindinComments,
+        private readonly JoindinTalk $joindinTalk,
+        private readonly string $algoliaAppId,
+        private readonly string $algoliaFrontendApikey,
     ) {
-        $this->view = $view;
-        $this->repositoryFactory = $repositoryFactory;
-        $this->joindinComments = $joindinComments;
-        $this->joindinTalk = $joindinTalk;
-        $this->algoliaAppId = $algoliaAppId;
-        $this->algoliaFrontendApikey = $algoliaFrontendApikey;
     }
 
     public function list(Request $request): Response

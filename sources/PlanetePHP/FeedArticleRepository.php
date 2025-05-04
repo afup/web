@@ -13,12 +13,10 @@ class FeedArticleRepository
     const RELEVANT = 1;
     const IRRELEVANT = 0;
     const PERTINENCE_LIST = 'php|afup|pear|pecl|symfony|copix|jelix|wampserver|simpletest|simplexml|zend|pmo|drupal|ovidentia|mvc|magento|chrome|spip|PDO|mock|cake|hiphop|CMS|Framework|typo3|photon|pattern';
-    private Connection $connection;
-    private string $pertinenceRegex;
+    private readonly string $pertinenceRegex;
 
-    public function __construct(Connection $connection)
+    public function __construct(private readonly Connection $connection)
     {
-        $this->connection = $connection;
         $this->pertinenceRegex = '/' . self::PERTINENCE_LIST . '/i';
     }
 
@@ -97,7 +95,7 @@ class FeedArticleRepository
 
     public function isRelevant($content): int
     {
-        $content = strip_tags($content);
+        $content = strip_tags((string) $content);
         $relevant = self::IRRELEVANT;
         if (preg_match($this->pertinenceRegex, $content)) {
             $relevant = self::RELEVANT;

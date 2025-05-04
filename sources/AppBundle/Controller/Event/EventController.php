@@ -19,14 +19,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EventController extends AbstractController
 {
-    private RepositoryFactory $repositoryFactory;
-    private PhotoStorage $photoStorage;
-    private EventActionHelper $eventActionHelper;
-    public function __construct(RepositoryFactory $repositoryFactory, PhotoStorage $photoStorage, EventActionHelper $eventActionHelper)
-    {
-        $this->repositoryFactory = $repositoryFactory;
-        $this->photoStorage = $photoStorage;
-        $this->eventActionHelper = $eventActionHelper;
+    public function __construct(
+        private readonly RepositoryFactory $repositoryFactory,
+        private readonly PhotoStorage $photoStorage,
+        private readonly EventActionHelper $eventActionHelper,
+    ) {
     }
     public function index()
     {

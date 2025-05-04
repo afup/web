@@ -16,15 +16,10 @@ class UserSendWelcomeAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private UserRepository $userRepository;
-    private UserService $userService;
-
     public function __construct(
-        UserRepository $userRepository,
-        UserService $userService
+        private UserRepository $userRepository,
+        private UserService $userService,
     ) {
-        $this->userRepository = $userRepository;
-        $this->userService = $userService;
     }
 
     public function __invoke(Request $request): RedirectResponse
@@ -37,7 +32,7 @@ class UserSendWelcomeAction extends AbstractController
             $this->userService->sendWelcomeEmail($user);
             $this->log('Envoi d\'un message de bienvenue à la personne physique ' . $user->getId());
             $this->addFlash('notice', 'Un mail de bienvenue a été envoyé à la personne physique');
-        } catch (Exception $e) {
+        } catch (Exception) {
             $this->addFlash('error', 'Une erreur est survenue lors de l\'envoi du mail de bienvenue à la personne physique');
         }
 

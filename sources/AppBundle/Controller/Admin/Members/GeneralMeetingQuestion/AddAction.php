@@ -14,15 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AddAction extends AbstractController
 {
-    private GeneralMeetingQuestionRepository $generalMeetingQuestionRepository;
-    private GeneralMeetingRepository $generalMeetingRepository;
-
     public function __construct(
-        GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
-        GeneralMeetingRepository $generalMeetingRepository
+        private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
+        private readonly GeneralMeetingRepository $generalMeetingRepository,
     ) {
-        $this->generalMeetingQuestionRepository = $generalMeetingQuestionRepository;
-        $this->generalMeetingRepository = $generalMeetingRepository;
     }
 
     public function __invoke(Request $request, $date): Response
@@ -44,7 +39,7 @@ class AddAction extends AbstractController
             $this->addFlash('notice', 'La question a été ajoutée');
 
             return $this->redirectToRoute('admin_members_general_vote_list', [
-                'date' =>  $question->getDate()->format('U')
+                'date' =>  $question->getDate()->format('U'),
             ]);
         }
 

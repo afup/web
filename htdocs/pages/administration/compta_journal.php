@@ -338,7 +338,7 @@ if ($action == 'lister') {
                 $line['montant_tva_10'],
                 $line['montant_ht_20'],
                 $line['montant_tva_20'],
-                Comptabilite::getTvaZoneLabel($line['tva_zone'], 'Non définie')
+                Comptabilite::getTvaZoneLabel($line['tva_zone'], 'Non définie'),
             ],
             $csvDelimiter,
             $csvEnclosure
@@ -471,7 +471,7 @@ if ($action == 'lister') {
         }
 
         // The directory
-        $directory = date('Ym', strtotime($line['date_ecriture'])) . DIRECTORY_SEPARATOR;
+        $directory = date('Ym', strtotime((string) $line['date_ecriture'])) . DIRECTORY_SEPARATOR;
         $uploadDirectory = AFUP_CHEMIN_RACINE . 'uploads' . DIRECTORY_SEPARATOR . $directory;
         if (!is_dir($uploadDirectory)) {
             mkdir($uploadDirectory, 0750, true);
@@ -512,7 +512,7 @@ if ($action == 'lister') {
 
         // Move/Rename
         $filename = sprintf('%s.%s',
-            date('Y-m-d', strtotime($line['date_ecriture'])) . '_' . $line['id'] . '_' . substr(sha1_file($_FILES['file']['tmp_name']), 0, 6),
+            date('Y-m-d', strtotime((string) $line['date_ecriture'])) . '_' . $line['id'] . '_' . substr(sha1_file($_FILES['file']['tmp_name']), 0, 6),
             $ext
         );
         $moved = move_uploaded_file(
@@ -623,7 +623,7 @@ if ($action == 'lister') {
     $ligneCompta = $compta->obtenir($idCompta);
     $montantTotal = 0;
 
-    foreach (explode(';', $_GET['montant']) as $montant) {
+    foreach (explode(';', (string) $_GET['montant']) as $montant) {
         $montant = (float) $montant;
         $compta->ajouter($ligneCompta['idoperation'],
             $ligneCompta['idcompte'],

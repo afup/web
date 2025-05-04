@@ -28,36 +28,17 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class MembersController extends AbstractController
 {
-    private CompanyMemberRepository $companyMemberRepository;
-    private UserRepository $userRepository;
-    private CompanyMemberInvitationRepository $companyMemberInvitationRepository;
-    private ViewRenderer $view;
-    private CollectionFilter $collectionFilter;
-    private UserCompany $userCompany;
-    private CsrfTokenManagerInterface $csrfTokenManager;
-    private InvitationMail $invitationMail;
-    private EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        CompanyMemberRepository $companyMemberRepository,
-        UserRepository $userRepository,
-        CompanyMemberInvitationRepository $companyMemberInvitationRepository,
-        ViewRenderer $view,
-        CollectionFilter $collectionFilter,
-        UserCompany $userCompany,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        InvitationMail $invitationMail,
-        EventDispatcherInterface $eventDispatcher
+        private readonly CompanyMemberRepository $companyMemberRepository,
+        private readonly UserRepository $userRepository,
+        private readonly CompanyMemberInvitationRepository $companyMemberInvitationRepository,
+        private readonly ViewRenderer $view,
+        private readonly CollectionFilter $collectionFilter,
+        private readonly UserCompany $userCompany,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private readonly InvitationMail $invitationMail,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
-        $this->companyMemberRepository = $companyMemberRepository;
-        $this->userRepository = $userRepository;
-        $this->companyMemberInvitationRepository = $companyMemberInvitationRepository;
-        $this->view = $view;
-        $this->collectionFilter = $collectionFilter;
-        $this->userCompany = $userCompany;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->invitationMail = $invitationMail;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(Request $request): Response
@@ -125,7 +106,7 @@ class MembersController extends AbstractController
         CompanyMember $company,
         CompanyMemberInvitation $invitation,
         CollectionInterface $users,
-        CollectionInterface $pendingInvitations
+        CollectionInterface $pendingInvitations,
     ): void {
         // Check if there is already a pending invitation for this email and this company
         $matchingUser = $this->collectionFilter->findOne($users, 'getEmail', $invitation->getEmail());
@@ -166,7 +147,7 @@ class MembersController extends AbstractController
 
     private function resendInvitation($emailToSend,
                                       CollectionInterface $pendingInvitations,
-                                      CompanyMember $company
+                                      CompanyMember $company,
     ): void {
         /** @var CompanyMemberInvitation $invitationToSend */
         $invitationToSend = $this->collectionFilter->findOne($pendingInvitations, 'getEmail', $emailToSend);
@@ -179,7 +160,7 @@ class MembersController extends AbstractController
     }
 
     private function promoteUser($emailToPromote,
-                                 CollectionInterface $users
+                                 CollectionInterface $users,
     ): void {
         /** @var User $user */
         $user = $this->collectionFilter->findOne($users, 'getEmail', $emailToPromote);
@@ -192,7 +173,7 @@ class MembersController extends AbstractController
     }
 
     private function disproveUser($emailToDisapprove,
-                                  CollectionInterface $users
+                                  CollectionInterface $users,
     ): void {
         /** @var User $user */
         $user = $this->collectionFilter->findOne($users, 'getEmail', $emailToDisapprove);
@@ -210,7 +191,7 @@ class MembersController extends AbstractController
         }
     }
 
-    private function removeUser($emailToRemove, CollectionInterface $users
+    private function removeUser($emailToRemove, CollectionInterface $users,
     ): void {
         /** @var User $user */
         $user = $this->collectionFilter->findOne($users, 'getEmail', $emailToRemove);

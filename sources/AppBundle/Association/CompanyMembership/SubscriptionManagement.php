@@ -12,11 +12,8 @@ use AppBundle\LegacyModelFactory;
 
 class SubscriptionManagement
 {
-    private LegacyModelFactory $legacyModelFactory;
-
-    public function __construct(LegacyModelFactory $legacyModelFactory)
+    public function __construct(private readonly LegacyModelFactory $legacyModelFactory)
     {
-        $this->legacyModelFactory = $legacyModelFactory;
     }
 
     public function createInvoiceForInscription(CompanyMember $company, $numberOfMembers): array

@@ -1,5 +1,7 @@
 <?php
 
+use PhpCsFixerCustomFixers\Fixer\MultilinePromotedPropertiesFixer;
+
 $finder = (new PhpCsFixer\Finder())
     ->name('*.php')
     ->in([
@@ -12,6 +14,7 @@ $finder = (new PhpCsFixer\Finder())
 ;
 
 return (new PhpCsFixer\Config())
+    ->registerCustomFixers(new PhpCsFixerCustomFixers\Fixers())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PSR2' => true,
@@ -30,7 +33,14 @@ return (new PhpCsFixer\Config())
         'no_unused_imports' => true,
         'no_whitespace_in_blank_line' => true,
         'method_argument_space' => false,
-        'statement_indentation' => false
+        'statement_indentation' => false,
+        MultilinePromotedPropertiesFixer::name() => [
+            'keep_blank_lines' => true,
+            'minimum_number_of_parameters' => 2,
+        ],
+        'trailing_comma_in_multiline' => [
+            'elements' => ['arrays', 'parameters']
+        ],
     ])
     ->setFinder($finder)
     ->setCacheFile(__DIR__.'/var/.php-cs-fixer.cache')

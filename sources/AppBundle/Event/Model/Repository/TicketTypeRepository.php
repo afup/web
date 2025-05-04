@@ -31,52 +31,52 @@ class TicketTypeRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'technical_name',
                 'fieldName' => 'technicalName',
-                'type' => 'string'
+                'type' => 'string',
             ])
 
             ->addField([
                 'columnName' => 'pretty_name',
                 'fieldName' => 'prettyName',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'public',
                 'fieldName' => 'isPublic',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'members_only',
                 'fieldName' => 'isRestrictedToMembers',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'cfp_submitter_only',
                 'fieldName' => 'isRestrictedToCfpSubmitter',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'default_price',
                 'fieldName' => 'defaultPrice',
-                'type' => 'float'
+                'type' => 'float',
             ])
             ->addField([
                 'columnName' => 'active',
                 'fieldName' => 'isActive',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'day',
                 'fieldName' => 'day',
-                'type' => 'string'
+                'type' => 'string',
             ])
         ;
 

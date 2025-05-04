@@ -45,7 +45,7 @@ class GeneralMeetingResponseRepository extends Repository implements MetadataIni
                 'fieldName' => 'date',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                 ],
             ])
             ->addField([

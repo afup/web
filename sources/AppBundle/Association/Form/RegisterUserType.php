@@ -24,23 +24,23 @@ class RegisterUserType extends AbstractType
             ])
             ->add('country', CountryType::class, [
                 'label' => 'Pays',
-                'required' => true
+                'required' => true,
             ])
             ->add('mobilephone', TelType::class, [
                 'label' => 'Portable',
-                'required' => false
+                'required' => false,
             ])
             ->add('nearestOffice', NearestOfficeChoiceType::class, [
-                'required' => false
+                'required' => false,
             ])
             ->add('civility', ChoiceType::class, [
                 'choices' => ['M.' => User::CIVILITE_M, 'Mme' => User::CIVILITE_MME],
-                'required' => true
+                'required' => true,
             ])
         ;
 
         $builder->get('userCommonInfo')->add('phone', TextType::class, [
-            'required' => false
+            'required' => false,
         ]);
     }
 

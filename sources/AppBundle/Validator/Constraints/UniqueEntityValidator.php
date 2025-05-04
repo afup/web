@@ -11,11 +11,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class UniqueEntityValidator extends ConstraintValidator
 {
-    private RepositoryFactory $repositoryFactory;
-
-    public function __construct(RepositoryFactory $repositoryFactory)
+    public function __construct(private readonly RepositoryFactory $repositoryFactory)
     {
-        $this->repositoryFactory = $repositoryFactory;
     }
 
     /**
@@ -28,7 +25,7 @@ class UniqueEntityValidator extends ConstraintValidator
         }
         $repository = $this->repositoryFactory->get($constraint->repository);
 
-        $fields = (array) $constraint->fields;
+        $fields = $constraint->fields;
         $criteria = [];
         foreach ($fields as $field) {
             $propertyName    = 'get' . $field;

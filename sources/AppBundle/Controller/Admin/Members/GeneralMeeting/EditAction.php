@@ -16,12 +16,8 @@ class EditAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private GeneralMeetingRepository $generalMeetingRepository;
-
-    public function __construct(
-        GeneralMeetingRepository $generalMeetingRepository)
+    public function __construct(private GeneralMeetingRepository $generalMeetingRepository)
     {
-        $this->generalMeetingRepository = $generalMeetingRepository;
     }
 
     public function __invoke(Request $request): Response
@@ -41,7 +37,7 @@ class EditAction extends AbstractController
 
             $this->addFlash('success', 'Description enregistrée');
             return $this->redirectToRoute('admin_members_general_meeting_edit', [
-                'date' => $date->getTimestamp()
+                'date' => $date->getTimestamp(),
             ]);
         }
 

@@ -24,24 +24,14 @@ class SpeakerEditAction extends AbstractController
     use DbLoggerTrait;
 
     const ID_FORUM_PHOTO_STORAGE = 16;
-    private SpeakerRepository $speakerRepository;
-    private TalkRepository $talkRepository;
-    private EventRepository $eventRepository;
-    private PhotoStorage $photoStorage;
-    private SpeakerFormDataFactory $speakerFormDataFactory;
 
     public function __construct(
-        SpeakerRepository $speakerRepository,
-        TalkRepository $talkRepository,
-        EventRepository $eventRepository,
-        PhotoStorage $photoStorage,
-        SpeakerFormDataFactory $speakerFormDataFactory
+        private SpeakerRepository $speakerRepository,
+        private TalkRepository $talkRepository,
+        private EventRepository $eventRepository,
+        private PhotoStorage $photoStorage,
+        private SpeakerFormDataFactory $speakerFormDataFactory,
     ) {
-        $this->speakerRepository = $speakerRepository;
-        $this->talkRepository = $talkRepository;
-        $this->eventRepository = $eventRepository;
-        $this->photoStorage = $photoStorage;
-        $this->speakerFormDataFactory = $speakerFormDataFactory;
     }
 
     public function __invoke(Request $request)
@@ -104,7 +94,7 @@ class SpeakerEditAction extends AbstractController
             $this->addFlash('notice', 'Le conférencier a été modifié');
 
             return $this->redirectToRoute('admin_speaker_list', [
-                'eventId' => $event->getId()
+                'eventId' => $event->getId(),
             ]);
         }
 

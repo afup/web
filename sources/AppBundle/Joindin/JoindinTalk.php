@@ -9,11 +9,8 @@ use Psr\Cache\CacheItemPoolInterface;
 
 class JoindinTalk
 {
-    private CacheItemPoolInterface $cache;
-
-    public function __construct(CacheItemPoolInterface $cache)
+    public function __construct(private readonly CacheItemPoolInterface $cache)
     {
-        $this->cache = $cache;
     }
 
 
@@ -25,7 +22,7 @@ class JoindinTalk
 
         try {
             return $this->prepareStubFromJoindinResponse($this->callJoindInApi($talk->getJoindinId()));
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             return null;
         }
     }

@@ -9,14 +9,10 @@ namespace AppBundle\Indexation\Meetups\GraphQL;
  */
 final class Events
 {
-    /** @var list<Edge> */
-    public array $edges;
-
     /**
      * @param list<Edge> $edges
      */
-    public function __construct(array $edges)
+    public function __construct(public array $edges)
     {
-        $this->edges = $edges;
     }
 }

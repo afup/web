@@ -25,12 +25,12 @@ class EventType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Titre de l\'événément',
-                'constraints' => [new Assert\NotBlank(['message' => 'Titre du forum manquant'])]
+                'constraints' => [new Assert\NotBlank(['message' => 'Titre du forum manquant'])],
             ])
             ->add('path', TextType::class, [
                 'label' => 'Chemin du template',
                 'help' => 'Le path sert également à déterminer le nom du template de mail à utiliser sur mandrill, sous la forme confirmation-inscription-{PATH}',
-                'constraints' => [new Assert\NotBlank()]
+                'constraints' => [new Assert\NotBlank()],
             ])
             ->add('logoUrl', UrlType::class, [
                 'label' => 'URL du logo de l\'événement',
@@ -38,7 +38,7 @@ class EventType extends AbstractType
             ])
             ->add('seats', NumberType::class, [
                 'label' => 'Nombre de places',
-                'constraints' => [new Assert\NotBlank(['message' => 'Nombre de places manquant'])]
+                'constraints' => [new Assert\NotBlank(['message' => 'Nombre de places manquant'])],
             ])
             ->add('placeName', TextType::class, [
                 'label' => 'Nom du lieu',
@@ -120,7 +120,7 @@ class EventType extends AbstractType
                 'required' => false,
             ])
             ->add('CFP', EventCFPTextType::class, [
-                'label' => false
+                'label' => false,
             ])
             ->add('speakersDinerEnabled', CheckboxType::class, [
                 'label' => 'Activer le repas des speakers',
@@ -135,7 +135,7 @@ class EventType extends AbstractType
                 'label' => 'Liste des coupons',
                 'attr' => [
                     'placeholder' => 'Ici c\'est une liste de coupons séparées par des virgules',
-                    'title' => 'Ici c\'est une liste de coupons séparées par des virgules'
+                    'title' => 'Ici c\'est une liste de coupons séparées par des virgules',
                 ],
                 'required' => false,
             ])
@@ -149,24 +149,24 @@ class EventType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'constraints' => [
-                    new Assert\File(['mimeTypes'=> 'application/pdf'])
-                ]
+                    new Assert\File(['mimeTypes'=> 'application/pdf']),
+                ],
             ])
             ->add('sponsor_file_fr', FileType::class, [
                 'label' => ' Dossier de sponsoring (FR)',
                 'required' => false,
                 'mapped' => false,
                 'constraints' => [
-                    new Assert\File(['mimeTypes'=> 'application/pdf'])
-                ]
+                    new Assert\File(['mimeTypes'=> 'application/pdf']),
+                ],
             ])
             ->add('sponsor_file_en', FileType::class, [
                 'label' => 'Dossier de sponsoring (EN)',
                 'required' => false,
                 'mapped' => false,
                 'constraints' => [
-                    new Assert\File(['mimeTypes'=> 'application/pdf'])
-                ]
+                    new Assert\File(['mimeTypes'=> 'application/pdf']),
+                ],
             ])
         ;
     }

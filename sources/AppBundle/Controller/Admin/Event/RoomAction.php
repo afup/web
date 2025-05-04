@@ -18,18 +18,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RoomAction extends AbstractController
 {
-    private EventActionHelper $eventActionHelper;
-    private FormFactoryInterface $formFactory;
-    private RoomRepository $roomRepository;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        FormFactoryInterface $formFactory,
-        RoomRepository $roomRepository
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly RoomRepository $roomRepository,
     ) {
-        $this->eventActionHelper = $eventActionHelper;
-        $this->formFactory = $formFactory;
-        $this->roomRepository = $roomRepository;
     }
 
     public function __invoke(Request $request)
@@ -53,7 +46,7 @@ class RoomAction extends AbstractController
                 }
 
                 return $this->redirectToRoute('admin_event_room', [
-                    'id' => $event->getId()
+                    'id' => $event->getId(),
                 ]);
             }
         }
@@ -70,7 +63,7 @@ class RoomAction extends AbstractController
             $this->addFlash('notice', sprintf('La salle "%s" a été ajoutée.', $newRoom->getName()));
 
             return $this->redirectToRoute('admin_event_room', [
-                'id' => $event->getId()
+                'id' => $event->getId(),
             ]);
         }
 

@@ -28,17 +28,17 @@ class EventCouponRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'id',
                 'primary' => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'id_forum',
                 'fieldName' => 'idEvent',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'texte',
                 'fieldName' => 'text',
-                'type' => 'string'
+                'type' => 'string',
             ]);
 
         return $metadata;
@@ -48,12 +48,12 @@ class EventCouponRepository extends Repository implements MetadataInitializer
     {
         $query = $this->getQuery('DELETE FROM afup_forum_coupon WHERE id_forum = :id');
         $query->setParams([
-            'id' => $event->getId()
+            'id' => $event->getId(),
         ]);
         $query->execute();
 
         foreach ($coupons as $coupon) {
-            $coupon = trim($coupon);
+            $coupon = trim((string) $coupon);
             if (empty($coupon) === true) {
                 continue;
             }
@@ -65,7 +65,7 @@ class EventCouponRepository extends Repository implements MetadataInitializer
     {
         $query = $this->getQuery('SELECT * FROM afup_forum_coupon WHERE id_forum = :id');
         $query->setParams([
-            'id' => $event->getId()
+            'id' => $event->getId(),
         ]);
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }

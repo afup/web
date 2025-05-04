@@ -9,12 +9,9 @@ namespace AppBundle\SocialNetwork;
  */
 final class Status
 {
-    public string $text;
-    public ?Embed $embed;
-
-    public function __construct(string $text, ?Embed $embed = null)
-    {
-        $this->text = $text;
-        $this->embed = $embed;
+    public function __construct(
+        public string $text,
+        public ?Embed $embed = null,
+    ) {
     }
 }

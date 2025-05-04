@@ -15,25 +15,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class GeneralMeetupNotificationCommand extends Command
 {
-    private UserRepository $userRepository;
-    private GeneralMeetingRepository $generalMeetingRepository;
-    private MessageFactory $messageFactory;
-    private SlackNotifier $slackNotifier;
-    private UrlGeneratorInterface $urlGenerator;
-
     public function __construct(
-        UserRepository $userRepository,
-        GeneralMeetingRepository $generalMeetingRepository,
-        MessageFactory $messageFactory,
-        SlackNotifier $slackNotifier,
-        UrlGeneratorInterface $urlGenerator
+        private readonly UserRepository $userRepository,
+        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly MessageFactory $messageFactory,
+        private readonly SlackNotifier $slackNotifier,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
         parent::__construct();
-        $this->userRepository = $userRepository;
-        $this->generalMeetingRepository = $generalMeetingRepository;
-        $this->messageFactory = $messageFactory;
-        $this->slackNotifier = $slackNotifier;
-        $this->urlGenerator = $urlGenerator;
     }
 
     protected function configure(): void

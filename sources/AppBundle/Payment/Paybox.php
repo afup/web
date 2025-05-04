@@ -26,12 +26,6 @@ class Paybox
     const TYPE_PAIEMENT = 'CARTE';
     const TYPECARTE = 'CB';
 
-    private $domainServer;
-    private $secretKey;
-    private $site;
-    private $rang;
-    private $identifiant;
-
     private $total = 0;
     private $cmd;
     private $porteur;
@@ -40,14 +34,13 @@ class Paybox
     private $urlRetourAnnule;
     private $urlRepondreA;
 
-    public function __construct($domainServer, $secretKey, $site, $rang, $identifiant)
-    {
-        // la configuration des domainServer est visible ici http://www.paybox.com/espace-integrateur-documentation/la-solution-paybox-system/urls-dappels-et-adresses-ip/
-        $this->domainServer = $domainServer;
-        $this->secretKey = $secretKey;
-        $this->site = $site;
-        $this->rang = $rang;
-        $this->identifiant = $identifiant;
+    public function __construct(
+        private $domainServer,
+        private $secretKey,
+        private $site,
+        private $rang,
+        private $identifiant,
+    ) {
     }
 
     public function generate(\DateTimeInterface $now, PayboxBilling $payboxBilling, $quantity = 1): string
@@ -108,7 +101,7 @@ class Paybox
         $htmlForm = '<form method="POST" action="https://' . $this->domainServer . '/cgi/MYchoix_pagepaiement.cgi">' . PHP_EOL;
         foreach ($sanitizedInputs as $inputKey => $inputValue) {
             if (in_array($inputKey, self::SPECIAL_CHARS_INPUTS)) {
-                $inputValue = htmlspecialchars($inputValue);
+                $inputValue = htmlspecialchars((string) $inputValue);
             }
             $htmlForm .= '  <input type="hidden" name="' . $inputKey . '" value="' . $inputValue . '">' . PHP_EOL;
         }
@@ -165,7 +158,7 @@ class Paybox
 
     private function preparePbxBillingValue($value, int $maxLength, $default)
     {
-        $value = $value ? trim($value) : '';
+        $value = $value ? trim((string) $value) : '';
 
         if ($value === '') {
             $value = $default;

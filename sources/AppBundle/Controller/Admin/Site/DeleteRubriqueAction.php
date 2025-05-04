@@ -8,7 +8,6 @@ use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
@@ -16,19 +15,13 @@ class DeleteRubriqueAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private CsrfTokenManagerInterface $csrfTokenManager;
-
-    private RubriqueRepository $rubriqueRepository;
-
     public function __construct(
-        RubriqueRepository $rubriqueRepository,
-        CsrfTokenManagerInterface $csrfTokenManager
+        private RubriqueRepository $rubriqueRepository,
+        private CsrfTokenManagerInterface $csrfTokenManager,
     ) {
-        $this->rubriqueRepository =  $rubriqueRepository;
-        $this->csrfTokenManager = $csrfTokenManager;
     }
 
-    public function __invoke(int $id, string $token, Request $request): RedirectResponse
+    public function __invoke(int $id, string $token): RedirectResponse
     {
         if (false === $this->csrfTokenManager->isTokenValid(new CsrfToken('rubrique_delete', $token))) {
             $this->addFlash('error', 'Token invalide');

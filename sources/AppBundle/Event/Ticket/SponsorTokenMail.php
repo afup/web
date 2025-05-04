@@ -17,20 +17,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SponsorTokenMail
 {
-    private Mailer $mailer;
-
-    private TranslatorInterface $translator;
-
-    private RouterInterface $router;
-
-    private EventRepository $eventRepository;
-
-    public function __construct(Mailer $mail, TranslatorInterface $translator, RouterInterface $router, EventRepository $eventRepository)
-    {
-        $this->mailer = $mail;
-        $this->translator = $translator;
-        $this->router = $router;
-        $this->eventRepository = $eventRepository;
+    public function __construct(
+        private readonly Mailer $mailer,
+        private readonly TranslatorInterface $translator,
+        private readonly RouterInterface $router,
+        private readonly EventRepository $eventRepository,
+    ) {
     }
 
     /**
@@ -65,7 +57,7 @@ class SponsorTokenMail
                     ['eventSlug' => $event->getPath()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
-                '%endDate%' => $event->getDateEndSalesSponsorToken()->format('d/m/Y')
+                '%endDate%' => $event->getDateEndSalesSponsorToken()->format('d/m/Y'),
             ]
         );
 

@@ -11,14 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TechnoWatchController extends AbstractController
 {
-    private string $technoWatchCalendarKey;
-    private string $technoWatchCalendarUrl;
-
-    public function __construct(string $technoWatchCalendarKey,
-                                string $technoWatchCalendarUrl)
-    {
-        $this->technoWatchCalendarKey = $technoWatchCalendarKey;
-        $this->technoWatchCalendarUrl = $technoWatchCalendarUrl;
+    public function __construct(
+        private readonly string $technoWatchCalendarKey,
+        private readonly string $technoWatchCalendarUrl,
+    ) {
     }
 
     public function calendar(Request $request): Response

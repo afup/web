@@ -11,13 +11,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class PlaneteCrawlFeeds extends Command
 {
-    private FeedCrawler $feedReader;
-
-    public function __construct(FeedCrawler $feedReader)
+    public function __construct(private readonly FeedCrawler $feedReader)
     {
         parent::__construct();
-
-        $this->feedReader = $feedReader;
     }
 
     protected function configure(): void

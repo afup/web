@@ -19,24 +19,14 @@ class SpeakerListAction
 {
     const VALID_SORTS = ['name', 'company'];
     const VALID_DIRECTIONS = ['asc', 'desc'];
-    private EventActionHelper $eventActionHelper;
-    private EventRepository $eventRepository;
-    private SpeakerRepository $speakerRepository;
-    private TalkRepository $talkRepository;
-    private Environment $twig;
 
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        EventRepository $eventRepository,
-        SpeakerRepository $speakerRepository,
-        TalkRepository $talkRepository,
-        Environment $twig
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly EventRepository $eventRepository,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly TalkRepository $talkRepository,
+        private readonly Environment $twig,
     ) {
-        $this->eventActionHelper = $eventActionHelper;
-        $this->eventRepository = $eventRepository;
-        $this->speakerRepository = $speakerRepository;
-        $this->talkRepository = $talkRepository;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response

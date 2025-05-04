@@ -81,22 +81,22 @@ class TicketSpecialPriceRepository extends Repository implements MetadataInitial
             ->addField([
                 'columnName' => 'id',
                 'fieldName' => 'id',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'id_event',
                 'fieldName' => 'eventId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'token',
                 'fieldName' => 'token',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'price',
                 'fieldName' => 'price',
-                'type' => 'float'
+                'type' => 'float',
             ])
             ->addField([
                 'columnName' => 'date_start',
@@ -111,17 +111,17 @@ class TicketSpecialPriceRepository extends Repository implements MetadataInitial
             ->addField([
                 'columnName' => 'description',
                 'fieldName' => 'description',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'created_on',
                 'fieldName' => 'createdOn',
-                'type' => 'datetime'
+                'type' => 'datetime',
             ])
             ->addField([
                 'columnName' => 'creator_id',
                 'fieldName' => 'creatorId',
-                'type' => 'int'
+                'type' => 'int',
             ])
         ;
 

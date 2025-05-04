@@ -12,18 +12,11 @@ use Twig\Environment;
 
 class Forum2016SessionsAction
 {
-    private AppelConferencier $appelConferencier;
-    private TranslatorInterface $translator;
-    private Environment $twig;
-
     public function __construct(
-        AppelConferencier $appelConferencier,
-        TranslatorInterface $translator,
-        Environment $twig
+        private readonly AppelConferencier $appelConferencier,
+        private readonly TranslatorInterface $translator,
+        private readonly Environment $twig,
     ) {
-        $this->appelConferencier = $appelConferencier;
-        $this->translator = $translator;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response
@@ -38,7 +31,7 @@ class Forum2016SessionsAction
         ];
         foreach ($sessions as $session) {
             $session['conferenciers'] = $this->appelConferencier->obtenirConferenciersPourSession($session['session_id']);
-            $session['journees'] = explode(' ', $session['journee']);
+            $session['journees'] = explode(' ', (string) $session['journee']);
 
             if ('27' === date('d', (int) $session['debut'])) {
                 $journees[$day1key][] = $session;

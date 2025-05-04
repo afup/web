@@ -37,7 +37,7 @@ class Accueil
             $colonne .= '<a href="' . $article->route() . '" class="article article-teaser">';
             $colonne .= '<time datetime="' . date('Y-m-d', $article->date) . '">' . date('d|m|y', $article->date) . '</time>';
             $colonne .= '<h2>' . $article->titre . '</h2>';
-            $colonne .= '<p>' . strip_tags($chapeau, '<p><strong>') . '</p>';
+            $colonne .= '<p>' . strip_tags((string) $chapeau, '<p><strong>') . '</p>';
             $colonne .= '</a>';
         }
 

@@ -10,11 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserBadgeDeleteAction
 {
-    private UserBadgeRepository $userBadgeRepository;
-
-    public function __construct(UserBadgeRepository $userBadgeRepository)
+    public function __construct(private readonly UserBadgeRepository $userBadgeRepository)
     {
-        $this->userBadgeRepository = $userBadgeRepository;
     }
 
     public function __invoke(Request $request): RedirectResponse

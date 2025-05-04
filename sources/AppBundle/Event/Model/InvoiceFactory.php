@@ -8,11 +8,8 @@ use AppBundle\Event\Model\Repository\InvoiceRepository;
 
 class InvoiceFactory
 {
-    private InvoiceRepository $invoiceRepository;
-
-    public function __construct(InvoiceRepository $invoiceRepository)
+    public function __construct(private readonly InvoiceRepository $invoiceRepository)
     {
-        $this->invoiceRepository = $invoiceRepository;
     }
 
     public function createInvoiceFromSponsorTicket(SponsorTicket $sponsorTicket)

@@ -13,15 +13,10 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class PreviousRegistrationsAction
 {
-    private EventRepository $eventRepository;
-    private TicketRepository $ticketRepository;
-
     public function __construct(
-        EventRepository $eventRepository,
-        TicketRepository $ticketRepository
+        private readonly EventRepository $eventRepository,
+        private readonly TicketRepository $ticketRepository,
     ) {
-        $this->eventRepository = $eventRepository;
-        $this->ticketRepository = $ticketRepository;
     }
 
     public function __invoke(Request $request): BinaryFileResponse

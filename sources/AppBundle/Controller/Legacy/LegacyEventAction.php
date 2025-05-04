@@ -14,11 +14,8 @@ use Twig\Error\LoaderError;
 
 class LegacyEventAction
 {
-    private Environment $twig;
-
-    public function __construct(Environment $twig)
+    public function __construct(private readonly Environment $twig)
     {
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response
@@ -29,7 +26,7 @@ class LegacyEventAction
             Assertion::inArray($year, [2005, 2006, 2007, 2008, 2009]);
             Assertion::regex($page, '/[a-z0-9_]+/');
             $template = $this->twig->load(sprintf('legacy/forumphp%d/%s.html.twig', $year, $page));
-        } catch (AssertionFailedException|LoaderError $e) {
+        } catch (AssertionFailedException|LoaderError) {
             throw new NotFoundHttpException('Page introuvable');
         }
 

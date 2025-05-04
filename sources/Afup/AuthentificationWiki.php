@@ -17,7 +17,7 @@ class AuthentificationWiki implements AuthentificationInterface
     {
         $wikiUser = [];
         $wikiUser["show_comments"] = "Y";
-        $wikiUser["name"] = ucfirst(strtolower($event["prenom"])) . ucfirst(strtolower($event["nom"]));
+        $wikiUser["name"] = ucfirst(strtolower((string) $event["prenom"])) . ucfirst(strtolower((string) $event["nom"]));
         $wikiUser["email"] = $event["email"];
         $_SESSION["user"] = $wikiUser;
     }

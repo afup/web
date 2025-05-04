@@ -12,20 +12,12 @@ use AppBundle\Event\Model\Repository\UserBadgeRepository;
 
 class BadgesComputer
 {
-    private SeniorityComputer $seniorityComputer;
-
-    private EventRepository $eventRepository;
-
-    private UserBadgeRepository $userBadgeRepository;
-
-    private GeneralMeetingResponseRepository $generalMeetingResponseRepository;
-
-    public function __construct(SeniorityComputer $seniorityComputer, EventRepository $eventRepository, UserBadgeRepository $userBadgeRepository, GeneralMeetingResponseRepository $generalMeetingResponseRepository)
-    {
-        $this->seniorityComputer = $seniorityComputer;
-        $this->eventRepository = $eventRepository;
-        $this->userBadgeRepository = $userBadgeRepository;
-        $this->generalMeetingResponseRepository = $generalMeetingResponseRepository;
+    public function __construct(
+        private readonly SeniorityComputer $seniorityComputer,
+        private readonly EventRepository $eventRepository,
+        private readonly UserBadgeRepository $userBadgeRepository,
+        private readonly GeneralMeetingResponseRepository $generalMeetingResponseRepository,
+    ) {
     }
 
     public function getBadges(User $user): array
@@ -112,7 +104,7 @@ class BadgesComputer
             // identiques pour toutes les villes (cela permet de les créer en amont et
             // en simplifie la maintenance).
             $isolateTownPattern = '/afupday(?P<year>\d{4})/';
-            if (preg_match($isolateTownPattern, $eventInfo['path'], $pathMatches) && $pathMatches['year'] >= 2022) {
+            if (preg_match($isolateTownPattern, (string) $eventInfo['path'], $pathMatches) && $pathMatches['year'] >= 2022) {
                 $code = 'jy-etais-afupday' . $pathMatches['year'];
             }
 

@@ -15,18 +15,12 @@ class ListAction
 {
     const VALID_SORTS = ['nom', 'date_consultation', 'presence', 'personnes_avec_pouvoir_nom'];
     const VALID_DIRECTIONS = ['asc', 'desc'];
-    private UserRepository $userRepository;
-    private GeneralMeetingRepository $generalMeetingRepository;
-    private Environment $twig;
 
     public function __construct(
-        UserRepository $userRepository,
-        GeneralMeetingRepository $generalMeetingRepository,
-        Environment $twig
+        private readonly UserRepository $userRepository,
+        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly Environment $twig,
     ) {
-        $this->userRepository = $userRepository;
-        $this->generalMeetingRepository = $generalMeetingRepository;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response

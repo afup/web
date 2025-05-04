@@ -14,7 +14,7 @@ $forum_facturation = new Facturation($bdd);
 $forumEvent = new Forum($bdd);
 $incriptionType = new InscriptionType();
 
-$query = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_QUERY); // Should be like http://event.afup.org/paiement-confirme?cmd=F201610-0707-CCMBE-68287
+$query = parse_url((string) $_SERVER['HTTP_REFERER'], PHP_URL_QUERY); // Should be like http://event.afup.org/paiement-confirme?cmd=F201610-0707-CCMBE-68287
 parse_str($query, $result); // Should contains cmd=XXXX
 
 if (isset($cmd) === false) {
@@ -29,5 +29,5 @@ echo $twig->render('paiement/payment_tracking.html.twig', [
     'inscriptions' => $inscriptions,
     'invoice' => $invoice,
     'inscriptionType' => $incriptionType,
-    'event' => $event
+    'event' => $event,
 ]);

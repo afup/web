@@ -136,7 +136,7 @@ class Feuilles extends AbstractSeed
                 'children' => [
                     [
                         'nom' => 'Accueil',
-                        'lien' => '/'
+                        'lien' => '/',
                     ],
                     [
                         'nom' => 'Actualités',
@@ -146,7 +146,7 @@ class Feuilles extends AbstractSeed
                         'nom' => 'Plan du site',
                         'lien' => '/plan-du-site',
                     ],
-                ]
+                ],
             ],
             [
                 'nom' => 'Association / Antennes',
@@ -162,7 +162,7 @@ class Feuilles extends AbstractSeed
                     [
                         'nom' => 'Meetups',
                         'lien' => '/meetups/',
-                    ]
+                    ],
                 ],
             ],
             [
@@ -170,7 +170,7 @@ class Feuilles extends AbstractSeed
                 'children' => [
                     [
                         'nom' => 'AFUP Day 2019',
-                        'lien' => 'https://event.afup.org'
+                        'lien' => 'https://event.afup.org',
                     ],
                     [
                         'nom' => 'Baromètre des salaires',
@@ -180,8 +180,8 @@ class Feuilles extends AbstractSeed
                         'nom' => 'Planète PHP',
                         'lien' => 'https://www.planete-php.fr',
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 

@@ -18,9 +18,7 @@ class Rubrique implements NotifyPropertyInterface
     const ID_RUBRIQUE_INFORMATIONS_PRATIQUES = 86;
     const ID_RUBRIQUE_NOS_ACTIONS = 88;
 
-    /**
-     * @Assert\Type("integer")
-     */
+    #[Assert\Type('integer')]
     private $id;
 
     private $idPersonnePhysique;

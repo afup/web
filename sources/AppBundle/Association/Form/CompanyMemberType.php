@@ -42,21 +42,21 @@ class CompanyMemberType extends AbstractType
                 'maxMembers',
                 ChoiceType::class,
                 [
-                    'choices' => $choices
+                    'choices' => $choices,
                 ]
             )
             ->add('invitations', CollectionType::class, [
                 // each entry in the array will be an "email" field
                 'entry_type'   => CompanyMemberInvitationType::class,
                 'allow_add' => true,
-                'required' => false
+                'required' => false,
             ])
             ->add('recaptcha', EWZRecaptchaType::class, [
                 'label' => 'Vérification',
                 'mapped' => false,
                 'constraints' => [
-                    new RecaptchaIsValid()
-                ]
+                    new RecaptchaIsValid(),
+                ],
             ])
             ->add('save', SubmitType::class, ['label' => 'saveMembership'])
         ;

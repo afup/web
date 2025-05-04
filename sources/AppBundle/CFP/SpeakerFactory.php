@@ -14,13 +14,10 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class SpeakerFactory
 {
-    private TokenStorageInterface $tokenStorage;
-    private SpeakerRepository $speakerRepository;
-
-    public function __construct(TokenStorageInterface $tokenStorage, SpeakerRepository $speakerRepository)
-    {
-        $this->tokenStorage = $tokenStorage;
-        $this->speakerRepository = $speakerRepository;
+    public function __construct(
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly SpeakerRepository $speakerRepository,
+    ) {
     }
 
     /**
@@ -39,7 +36,7 @@ class SpeakerFactory
 
         $speaker = $this->speakerRepository->getOneBy([
             'user' => $user,
-            'eventId' => $event->getId()
+            'eventId' => $event->getId(),
         ]);
 
         if ($speaker === null) {

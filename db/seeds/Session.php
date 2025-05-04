@@ -8,7 +8,7 @@ class Session extends AbstractSeed
 {
     const ID_SESSIONS = [
         1,
-        2
+        2,
     ];
 
     public function run(): void
@@ -117,7 +117,7 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
         foreach ($sessions as $session) {
             $conferenciers[] = [
                 'session_id' => $session['session_id'],
-                'conferencier_id' => Conferenciers::ID_CONFERENCIER
+                'conferencier_id' => Conferenciers::ID_CONFERENCIER,
             ];
         }
 

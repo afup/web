@@ -21,7 +21,7 @@ class FeatureContext implements Context
 
     private array $pdfPages = [];
 
-    private DatabaseManager $databaseManager;
+    private readonly DatabaseManager $databaseManager;
 
     public function __construct()
     {
@@ -404,7 +404,7 @@ class FeatureContext implements Context
     {
         $pageContent = $this->pdfPages[$page] ?? null;
 
-        if (!str_contains($pageContent, $expectedContent)) {
+        if (!str_contains((string) $pageContent, $expectedContent)) {
             throw new ExpectationException(
                 sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent),
                 $this->minkContext->getSession()->getDriver()

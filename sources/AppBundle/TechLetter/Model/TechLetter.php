@@ -6,25 +6,16 @@ namespace AppBundle\TechLetter\Model;
 
 class TechLetter implements \JsonSerializable
 {
-    private ?News $firstNews;
-    private ?News $secondNews;
-
-    /** @var array<Article> */
-    private array $articles;
-
-    /** @var array<Project> */
-    private array $projects;
-
     /**
      * @param array<Article> $articles
      * @param array<Project> $projects
      */
-    public function __construct(?News $firstNews = null, ?News $secondNews = null, array $articles = [], array $projects = [])
-    {
-        $this->firstNews = $firstNews;
-        $this->secondNews = $secondNews;
-        $this->articles = $articles;
-        $this->projects = $projects;
+    public function __construct(
+        private readonly ?News $firstNews = null,
+        private readonly ?News $secondNews = null,
+        private readonly array $articles = [],
+        private readonly array $projects = [],
+    ) {
     }
 
     public function getFirstNews(): ?News
@@ -58,8 +49,8 @@ class TechLetter implements \JsonSerializable
         return [
             'firstNews' => $this->firstNews instanceof News ? $this->firstNews->jsonSerialize() : null,
             'secondNews' => $this->secondNews instanceof News ? $this->secondNews->jsonSerialize() : null,
-            'articles' => array_map(fn (Article $article) => $article->jsonSerialize(), $this->articles),
-            'projects' => array_map(fn (Project $project) => $project->jsonSerialize(), $this->projects)
+            'articles' => array_map(fn (Article $article): array => $article->jsonSerialize(), $this->articles),
+            'projects' => array_map(fn (Project $project): array => $project->jsonSerialize(), $this->projects),
         ];
     }
 }

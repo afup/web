@@ -16,20 +16,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SponsorshipLeadMail
 {
-    private Mailer $mailer;
-
-    private TranslatorInterface $translator;
-
-    private LoggerInterface $logger;
-
     public function __construct(
-        Mailer $mailer,
-        TranslatorInterface $translator,
-        LoggerInterface $logger
+        private readonly Mailer $mailer,
+        private readonly TranslatorInterface $translator,
+        private readonly LoggerInterface $logger,
     ) {
-        $this->mailer = $mailer;
-        $this->translator = $translator;
-        $this->logger = $logger;
     }
 
     public function sendSponsorshipFile(Lead $lead): void

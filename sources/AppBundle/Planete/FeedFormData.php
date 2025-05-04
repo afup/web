@@ -11,20 +11,20 @@ class FeedFormData
 {
     /**
      * @var string
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     public $name;
     /**
      * @var string
-     * @Assert\NotBlank()
-     * @Assert\Url()
      */
+    #[Assert\NotBlank]
+    #[Assert\Url]
     public $url = 'https://';
     /**
      * @var string
-     * @Assert\NotBlank()
-     * @Assert\Url()
      */
+    #[Assert\NotBlank]
+    #[Assert\Url]
     public $feed = 'https://';
     /**
      * @var int|null
@@ -32,7 +32,7 @@ class FeedFormData
     public $userId;
     /**
      * @var int
-     * @Assert\Choice(choices={0, 1}, strict=true)
      */
+    #[Assert\Choice(choices: [Feed::STATUS_INACTIVE, Feed::STATUS_ACTIVE], strict: true)]
     public $status = Feed::STATUS_ACTIVE;
 }

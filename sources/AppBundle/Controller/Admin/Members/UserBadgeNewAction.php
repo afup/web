@@ -14,18 +14,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserBadgeNewAction
 {
-    private UserRepository $userRepository;
-    private FormFactoryInterface $formFactory;
-    private UserBadgeRepository $userBadgeRepository;
-
     public function __construct(
-        UserRepository $userRepository,
-        FormFactoryInterface $formFactory,
-        UserBadgeRepository $userBadgeRepository
+        private readonly UserRepository $userRepository,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly UserBadgeRepository $userBadgeRepository,
     ) {
-        $this->userRepository = $userRepository;
-        $this->formFactory = $formFactory;
-        $this->userBadgeRepository = $userBadgeRepository;
     }
 
     public function __invoke(Request $request): RedirectResponse

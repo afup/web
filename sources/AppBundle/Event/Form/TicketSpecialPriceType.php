@@ -23,8 +23,8 @@ class TicketSpecialPriceType extends AbstractType
             ->add('token', TextType::class, [
                 'constraints' => [
                     new NotBlank(),
-                    new Length(['max' => 255])
-                ]
+                    new Length(['max' => 255]),
+                ],
             ])
             ->add('dateStart', DateType::class, [
                 'label' => 'Date de début',
@@ -35,15 +35,15 @@ class TicketSpecialPriceType extends AbstractType
             ->add('price', IntegerType::class, [
                 'label' => 'Prix (TTC)',
                 'constraints' => [
-                    new GreaterThan(['value' => 0])
-                ]
+                    new GreaterThan(['value' => 0]),
+                ],
             ])
             ->add('description', TextType::class, [
                 'label' => 'Description (interne)',
                 'constraints' => [
                     new NotBlank(),
-                    new Length(['max' => 255])
-                ]
+                    new Length(['max' => 255]),
+                ],
             ])
         ;
     }
@@ -51,7 +51,7 @@ class TicketSpecialPriceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => TicketSpecialPrice::class
+            'data_class' => TicketSpecialPrice::class,
         ]);
     }
 }

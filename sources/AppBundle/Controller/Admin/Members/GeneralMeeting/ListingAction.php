@@ -14,11 +14,8 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ListingAction
 {
-    private GeneralMeetingRepository $generalMeetingRepository;
-
-    public function __construct(GeneralMeetingRepository $generalMeetingRepository)
+    public function __construct(private readonly GeneralMeetingRepository $generalMeetingRepository)
     {
-        $this->generalMeetingRepository = $generalMeetingRepository;
     }
 
     public function __invoke(Request $request): BinaryFileResponse

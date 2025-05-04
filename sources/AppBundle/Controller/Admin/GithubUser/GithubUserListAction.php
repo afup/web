@@ -11,15 +11,10 @@ use Twig\Environment;
 
 class GithubUserListAction
 {
-    private GithubUserRepository $githubUserRepository;
-    private Environment $twig;
-
     public function __construct(
-        GithubUserRepository $githubUserRepository,
-        Environment $twig
+        private readonly GithubUserRepository $githubUserRepository,
+        private readonly Environment $twig,
     ) {
-        $this->githubUserRepository = $githubUserRepository;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response

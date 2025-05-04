@@ -39,35 +39,21 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class TicketController extends AbstractController
 {
-    private EventDispatcherInterface $eventDispatcher;
-    private LoggerInterface $logger;
-    private RepositoryFactory $repositoryFactory;
-    private ActionThrottling $actionThrottling;
-    private TicketFactory $ticketFactory;
-    private SponsorTicketHelper $sponsorTicketHelper;
-    private Emails $emails;
-    private PurchaseTypeFactory $purchaseTypeFactory;
-    private InvoiceRepository $invoiceRepository;
-    private LegacyModelFactory $legacyModelFactory;
-    private TicketRepository $ticketRepository;
-    private PayboxFactory $payboxFactory;
-    private EventActionHelper $eventActionHelper;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher, LoggerInterface $logger, RepositoryFactory $repositoryFactory, ActionThrottling $actionThrottling, TicketFactory $ticketFactory, SponsorTicketHelper $sponsorTicketHelper, Emails $emails, PurchaseTypeFactory $purchaseTypeFactory, InvoiceRepository $invoiceRepository, LegacyModelFactory $legacyModelFactory, TicketRepository $ticketRepository, PayboxFactory $payboxFactory, EventActionHelper $eventActionHelper)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->logger = $logger;
-        $this->repositoryFactory = $repositoryFactory;
-        $this->actionThrottling = $actionThrottling;
-        $this->ticketFactory = $ticketFactory;
-        $this->sponsorTicketHelper = $sponsorTicketHelper;
-        $this->emails = $emails;
-        $this->purchaseTypeFactory = $purchaseTypeFactory;
-        $this->invoiceRepository = $invoiceRepository;
-        $this->legacyModelFactory = $legacyModelFactory;
-        $this->ticketRepository = $ticketRepository;
-        $this->payboxFactory = $payboxFactory;
-        $this->eventActionHelper = $eventActionHelper;
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly LoggerInterface $logger,
+        private readonly RepositoryFactory $repositoryFactory,
+        private readonly ActionThrottling $actionThrottling,
+        private readonly TicketFactory $ticketFactory,
+        private readonly SponsorTicketHelper $sponsorTicketHelper,
+        private readonly Emails $emails,
+        private readonly PurchaseTypeFactory $purchaseTypeFactory,
+        private readonly InvoiceRepository $invoiceRepository,
+        private readonly LegacyModelFactory $legacyModelFactory,
+        private readonly TicketRepository $ticketRepository,
+        private readonly PayboxFactory $payboxFactory,
+        private readonly EventActionHelper $eventActionHelper,
+    ) {
     }
 
     public function sponsorTicket(Request $request, $eventSlug)
@@ -323,7 +309,7 @@ class TicketController extends AbstractController
             'amount' => $amount,
             'tickets' => $this->ticketRepository->getByInvoiceWithDetail(
                 $invoice
-            )
+            ),
         ];
 
         if ($invoice->isFree()) {
@@ -453,7 +439,7 @@ class TicketController extends AbstractController
             'event' => $event,
             'invoice' => $invoice,
             'payboxResponse' => $payboxResponse,
-            'status' => $request->get('status')
+            'status' => $request->get('status'),
         ]);
     }
 }

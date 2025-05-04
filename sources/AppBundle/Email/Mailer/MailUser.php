@@ -9,19 +9,14 @@ class MailUser
     const DEFAULT_SENDER_NAME = 'Bureau AFUP';
     const DEFAULT_SENDER_EMAIL = 'bureau@afup.org';
 
-    /** @var string */
-    private $email;
-    /** @var string */
-    private $name;
-
     /**
      * @param string $email
      * @param string $name
      */
-    public function __construct($email, $name = '')
-    {
-        $this->email = $email;
-        $this->name = $name;
+    public function __construct(
+        private $email,
+        private $name = '',
+    ) {
     }
 
     /**

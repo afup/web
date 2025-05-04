@@ -44,37 +44,37 @@ class SubscriptionReminderLogRepository extends Repository implements MetadataIn
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'user_id',
                 'fieldName' => 'userId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'user_type',
                 'fieldName' => 'userType',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'email',
                 'fieldName' => 'email',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'reminder_key',
                 'fieldName' => 'reminderKey',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'reminder_date',
                 'fieldName' => 'reminderDate',
-                'type' => 'datetime'
+                'type' => 'datetime',
             ])
             ->addField([
                 'columnName' => 'mail_sent',
                 'fieldName' => 'mailSent',
-                'type' => 'int'
+                'type' => 'int',
             ])
         ;
 

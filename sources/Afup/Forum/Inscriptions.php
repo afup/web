@@ -8,21 +8,8 @@ use Afup\Site\Utils\Base_De_Donnees;
 
 class Inscriptions
 {
-    /**
-     * Instance de la couche d'abstraction ï¿½ la base de donnï¿½es
-     * @var     Base_De_Donnees
-     */
-    private $_bdd;
-
-    /**
-     * Constructeur.
-     *
-     * @param  object $bdd Instance de la couche d'abstraction ï¿½ la base de donnï¿½es
-     * @return void
-     */
-    public function __construct(&$bdd)
+    public function __construct(private readonly Base_De_Donnees $_bdd)
     {
-        $this->_bdd = $bdd;
     }
 
     /**
@@ -138,7 +125,7 @@ SQL;
             $suivis[$i] = [
                 'jour' => $i,
                 'n' => $daysToEndOfSales >= $i ? $infoForum : null,
-                'n_1' => $infoN1
+                'n_1' => $infoN1,
             ];
         }
 
@@ -146,7 +133,7 @@ SQL;
             'suivi' => $suivis,
             'min' => $nombre_par_date[0]['jour'],
             'max' => $i,
-            'daysToEndOfSales' => $daysToEndOfSales
+            'daysToEndOfSales' => $daysToEndOfSales,
         ];
     }
 
@@ -169,7 +156,7 @@ SQL;
 
         $derniere_lettre = "";
         foreach ($liste as $inscrit) {
-            $premiere_lettre = strtoupper($inscrit['nom'][0]);
+            $premiere_lettre = strtoupper((string) $inscrit['nom'][0]);
             if ($derniere_lettre !== $premiere_lettre) {
                 $liste_emargement[] = [
                     'nom' => $premiere_lettre,
@@ -202,7 +189,7 @@ SQL;
 
         $derniere_lettre = "";
         foreach ($liste as $inscrit) {
-            $premiere_lettre = strtoupper($inscrit['nom'][0]);
+            $premiere_lettre = strtoupper((string) $inscrit['nom'][0]);
             if ($derniere_lettre !== $premiere_lettre) {
                 $liste_emargement[] = [
                     'nom' => $premiere_lettre,

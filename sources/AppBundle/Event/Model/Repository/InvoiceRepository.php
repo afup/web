@@ -115,7 +115,7 @@ class InvoiceRepository extends Repository implements MetadataInitializer
             ->setParams([
                 'event_id' => $event->getId(),
                 'paymentType' => Ticket::PAYMENT_BANKWIRE,
-                'state' => Ticket::STATUS_CREATED
+                'state' => Ticket::STATUS_CREATED,
             ])
             ->query($this->getCollection($hydrator))
         ;
@@ -138,7 +138,7 @@ class InvoiceRepository extends Repository implements MetadataInitializer
                 'columnName' => 'reference',
                 'fieldName' => 'reference',
                 'primary'       => true,
-                'type' => 'false'
+                'type' => 'false',
             ])
             ->addField([
                 'columnName' => 'date_reglement',
@@ -147,7 +147,7 @@ class InvoiceRepository extends Repository implements MetadataInitializer
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['format' => 'U'],
-                ]
+                ],
             ])
             ->addField([
                 'columnName' => 'date_facture',
@@ -156,88 +156,88 @@ class InvoiceRepository extends Repository implements MetadataInitializer
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['format' => 'U'],
-                ]
+                ],
             ])
             ->addField([
                 'columnName' => 'montant',
                 'fieldName' => 'amount',
-                'type' => 'float'
+                'type' => 'float',
             ])
             ->addField([
                 'columnName' => 'type_reglement',
                 'fieldName' => 'paymentType',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'informations_reglement',
                 'fieldName' => 'paymentInfos',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'email',
                 'fieldName' => 'email',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'societe',
                 'fieldName' => 'company',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'nom',
                 'fieldName' => 'lastname',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'prenom',
                 'fieldName' => 'firstname',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'adresse',
                 'fieldName' => 'address',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'code_postal',
                 'fieldName' => 'zipcode',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'ville',
                 'fieldName' => 'city',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'id_pays',
                 'fieldName' => 'countryId',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'autorisation',
                 'fieldName' => 'authorization',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'transaction',
                 'fieldName' => 'transaction',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'etat',
                 'fieldName' => 'status',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'facturation',
                 'fieldName' => 'invoice',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'id_forum',
                 'fieldName' => 'forumId',
-                'type' => 'int'
+                'type' => 'int',
             ])
         ;
 

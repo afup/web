@@ -10,15 +10,10 @@ use Twig\Environment;
 
 class CheckMembersAction
 {
-    private UsersChecker $usersChecker;
-    private Environment $twig;
-
     public function __construct(
-        UsersChecker $usersChecker,
-        Environment $twig
+        private readonly UsersChecker $usersChecker,
+        private readonly Environment $twig,
     ) {
-        $this->usersChecker = $usersChecker;
-        $this->twig = $twig;
     }
 
     public function __invoke(): Response

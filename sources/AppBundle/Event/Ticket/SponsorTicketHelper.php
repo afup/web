@@ -14,24 +14,12 @@ use CCMBenchmark\Ting\Exception;
 
 class SponsorTicketHelper
 {
-    private InvoiceFactory $invoiceFactory;
-
-    private InvoiceRepository $invoiceRepository;
-
-    private TicketRepository $ticketRepository;
-
-    private SponsorTicketRepository $sponsorTicketRepository;
-
     public function __construct(
-        InvoiceFactory $invoiceFactory,
-        InvoiceRepository $invoiceRepository,
-        TicketRepository $ticketRepository,
-        SponsorTicketRepository $sponsorTicketRepository
+        private readonly InvoiceFactory $invoiceFactory,
+        private readonly InvoiceRepository $invoiceRepository,
+        private readonly TicketRepository $ticketRepository,
+        private readonly SponsorTicketRepository $sponsorTicketRepository,
     ) {
-        $this->invoiceFactory = $invoiceFactory;
-        $this->invoiceRepository = $invoiceRepository;
-        $this->ticketRepository = $ticketRepository;
-        $this->sponsorTicketRepository = $sponsorTicketRepository;
     }
 
     public function addTicketToSponsor(SponsorTicket $sponsorTicket, Ticket $ticket): void
@@ -49,7 +37,7 @@ class SponsorTicketHelper
             $this->ticketRepository->save($ticket);
             $this->sponsorTicketRepository->save($sponsorTicket);
             $this->invoiceRepository->commit();
-        } catch (Exception $e) {
+        } catch (Exception) {
             $this->invoiceRepository->rollback();
         }
     }
@@ -66,7 +54,7 @@ class SponsorTicketHelper
             $sponsorTicket->setUsedInvitations($sponsorTicket->getUsedInvitations()-1);
             $this->sponsorTicketRepository->save($sponsorTicket);
             $this->ticketRepository->commit();
-        } catch (Exception $e) {
+        } catch (Exception) {
             $this->ticketRepository->rollback();
         }
     }

@@ -13,20 +13,16 @@ class Planning implements NotifyPropertyInterface
     use NotifyProperty;
     private ?int $id = null;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\GreaterThan(0)
-     */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(0)]
     private ?int $talkId = null;
 
     private ?\DateTime $start = null;
 
     private ?\DateTime $end = null;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\GreaterThan(0)
-     */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(0)]
     private ?int $eventId = null;
 
     /**

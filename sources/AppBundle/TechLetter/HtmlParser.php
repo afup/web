@@ -7,14 +7,14 @@ namespace AppBundle\TechLetter;
 
 class HtmlParser
 {
-    private \DOMDocument $dom;
+    private readonly \DOMDocument $dom;
 
     /**
      * @var \DOMNodeList&iterable<\DOMElement>
      */
-    private \DOMNodeList $meta;
+    private readonly \DOMNodeList $meta;
 
-    private \DOMXPath $xpath;
+    private readonly \DOMXPath $xpath;
 
     const OPEN_GRAPH_PREFIX = 'og';
     const TWITTER_PREFIX = 'twitter';
@@ -109,7 +109,7 @@ class HtmlParser
 
         $data = [];
         foreach ($jsonScripts as $script) {
-            $data[] = json_decode($script->nodeValue, true);
+            $data[] = json_decode((string) $script->nodeValue, true);
         }
         return $data;
     }

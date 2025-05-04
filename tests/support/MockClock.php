@@ -7,13 +7,10 @@ namespace Afup\Tests\Support;
 use DateTimeImmutable;
 use Psr\Clock\ClockInterface;
 
-final class MockClock implements ClockInterface
+final readonly class MockClock implements ClockInterface
 {
-    private \DateTimeImmutable $now;
-
-    public function __construct(DateTimeImmutable $now)
+    public function __construct(private \DateTimeImmutable $now)
     {
-        $this->now = $now;
     }
 
     public function now(): DateTimeImmutable

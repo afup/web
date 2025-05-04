@@ -23,7 +23,7 @@ class CompanyMemberInvitationRepository extends Repository implements MetadataIn
     {
         return $this->getBy([
             'companyId' => $companyMember->getId(),
-            'status' => CompanyMemberInvitation::STATUS_PENDING
+            'status' => CompanyMemberInvitation::STATUS_PENDING,
         ]);
     }
 
@@ -45,38 +45,38 @@ class CompanyMemberInvitationRepository extends Repository implements MetadataIn
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'company_id',
                 'fieldName' => 'companyId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'email',
                 'fieldName' => 'email',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'token',
                 'fieldName' => 'token',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'manager',
                 'fieldName' => 'manager',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'submitted_on',
                 'fieldName' => 'submittedOn',
-                'type' => 'datetime'
+                'type' => 'datetime',
             ])
             ->addField([
                 'columnName' => 'status',
                 'fieldName' => 'status',
-                'type' => 'int'
+                'type' => 'int',
             ])
         ;
 

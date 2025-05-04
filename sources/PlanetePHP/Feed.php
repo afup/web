@@ -8,18 +8,6 @@ class Feed
 {
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
-    /** @var int */
-    private $id;
-    /** @var string */
-    private $name;
-    /** @var string */
-    private $url;
-    /** @var string */
-    private $feed;
-    /** @var int */
-    private $status;
-    /** @var int */
-    private $userId;
 
     /**
      * @param int    $id
@@ -29,14 +17,14 @@ class Feed
      * @param int    $status
      * @param int    $userId
      */
-    public function __construct($id, $name, $url, $feed, $status, $userId)
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->url = $url;
-        $this->feed = $feed;
-        $this->status = $status;
-        $this->userId = $userId;
+    public function __construct(
+        private $id,
+        private $name,
+        private $url,
+        private $feed,
+        private $status,
+        private $userId,
+    ) {
     }
 
     public function getId()

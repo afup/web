@@ -16,7 +16,7 @@ class DataExtractor
      */
     public function extractDataForTechLetter($url): array
     {
-        $urlInfo = parse_url($url);
+        $urlInfo = parse_url((string) $url);
 
         $urlCrawler = new UrlCrawler();
         $html = $urlCrawler->crawlUrl($url);
@@ -29,11 +29,11 @@ class DataExtractor
          * @todo fix it
          */
         $data = [
-            'title' => substr($parser->getTitle(), 0, 250),
-            'name' => substr($parser->getTitle(), 0, 250),
+            'title' => substr((string) $parser->getTitle(), 0, 250),
+            'name' => substr((string) $parser->getTitle(), 0, 250),
             'excerpt' => $parser->getMeta('description'),
             'description' => $parser->getMeta('description'),
-            'host' => $urlInfo['host']
+            'host' => $urlInfo['host'],
         ];
 
         $richSchema = $parser->getRichSchema();

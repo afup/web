@@ -738,7 +738,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return [
             'id' => $this->id,
             'username' => $this->username,
-            'password' => $this->password
+            'password' => $this->password,
         ];
     }
 

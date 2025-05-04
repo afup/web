@@ -16,14 +16,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserBadgeType extends AbstractType
 {
-    private BadgeRepository $badgeRepository;
-
-    private UserBadgeRepository $userBadgeRepository;
-
-    public function __construct(BadgeRepository $badgeRepository, UserBadgeRepository $userBadgeRepository)
-    {
-        $this->badgeRepository = $badgeRepository;
-        $this->userBadgeRepository = $userBadgeRepository;
+    public function __construct(
+        private readonly BadgeRepository $badgeRepository,
+        private readonly UserBadgeRepository $userBadgeRepository,
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

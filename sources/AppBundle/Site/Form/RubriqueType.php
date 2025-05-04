@@ -21,13 +21,10 @@ class RubriqueType extends AbstractType
 {
     const POSITIONS_RUBRIQUES = 9;
 
-    private RubriqueRepository $rubriqueRepository;
-    private UserRepository $userRepository;
-
-    public function __construct(RubriqueRepository $rubriqueRepository, UserRepository $userRepository)
-    {
-        $this->rubriqueRepository = $rubriqueRepository;
-        $this->userRepository = $userRepository;
+    public function __construct(
+        private readonly RubriqueRepository $rubriqueRepository,
+        private readonly UserRepository $userRepository,
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -96,7 +93,7 @@ class RubriqueType extends AbstractType
                         'minHeight' => 37,
                         'maxHeight' => 43,
                     ]),
-                ]
+                ],
             ])
             ->add('raccourci', TextType::class, [
                 'required' => true,

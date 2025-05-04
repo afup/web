@@ -32,38 +32,28 @@ class Talk implements NotifyPropertyInterface
 
     private ?int $id = null;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\GreaterThan(0)
-     */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(0)]
     private ?int $forumId = null;
 
     private ?\DateTime $submittedOn = null;
 
-    /**
-     * @Assert\NotBlank()
-     */
+    #[Assert\NotBlank]
     private string $title = '';
 
-    /**
-     * @Assert\NotBlank()
-     */
-    private ?string $abstract = '';
+    #[Assert\NotBlank]
+    private string $abstract = '';
 
     private ?string $staffNotes = null;
 
     private bool $scheduled = false;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\Choice(choices = {1, 2, 3}, message = "Choose a valid type")
-     */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: [1, 2, 3], message: 'Choose a valid type')]
     private int $type = self::TYPE_FULL_LONG;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\Choice(choices = {0, 1, 2, 3}, message = "Choose a valid skill requirement")
-     */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: [0, 1, 2, 3], message: 'Choose a valid skill requirement')]
     private int $skill = self::SKILL_NA;
 
     private bool $withWorkshop = false;
@@ -98,9 +88,7 @@ class Talk implements NotifyPropertyInterface
 
     private bool $useMarkdown = true;
 
-    /**
-     * @Assert\NotNull()
-     */
+    #[Assert\NotNull]
     private bool $hasAllowedToSharingWithLocalOffices = false;
 
     /**

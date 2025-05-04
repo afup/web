@@ -6,15 +6,12 @@ namespace AppBundle\Email\Mailer;
 
 class Message
 {
-    private ?MailUser $from;
     /** @var MailUser[] */
     private ?array $recipients = null;
     /** @var MailUser[] */
     private array $cc = [];
     /** @var MailUser[] */
     private array $bcc = [];
-    /** @var string */
-    private $subject;
     /** @var string */
     private $content = '';
     /** @var bool */
@@ -25,10 +22,11 @@ class Message
     /**
      * @param string $subject
      */
-    public function __construct($subject, MailUser $from = null, MailUser ...$recipients)
-    {
-        $this->subject = $subject;
-        $this->from = $from;
+    public function __construct(
+        private $subject,
+        private ?MailUser $from = null,
+        MailUser ...$recipients,
+    ) {
         foreach ($recipients as $recipient) {
             $this->addRecipient($recipient);
         }

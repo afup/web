@@ -18,9 +18,10 @@ final class SpeakersExpensesStorage
 {
     private Filesystem $filesystem;
 
-    public function __construct(private readonly string $basePath,
+    public function __construct(
+        private readonly string $basePath,
                                 private readonly EventRepository $eventRepository,
-                                private readonly LoggerInterface $logger
+                                private readonly LoggerInterface $logger,
     ) {
         $this->filesystem = new Filesystem();
     }
@@ -62,7 +63,7 @@ final class SpeakersExpensesStorage
             $basename = str_replace(sprintf('%d_', $speaker->getId()), '', $file->getBasename());
             $files[] = [
                 'basename' => $basename,
-                'path' => $directory . '/' . $file->getBasename()
+                'path' => $directory . '/' . $file->getBasename(),
             ];
         }
         return $files;

@@ -22,18 +22,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SpeakerPage extends AbstractController
 {
-    private TalkRepository $talkRepository;
-    private SpeakerRepository $speakerRepository;
-    private SpeakersExpensesStorage $speakersExpensesStorage;
-
     public function __construct(
-        TalkRepository $talkRepository,
-        SpeakerRepository $speakerRepository,
-        SpeakersExpensesStorage $speakersExpensesStorage
+        private readonly TalkRepository $talkRepository,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly SpeakersExpensesStorage $speakersExpensesStorage,
     ) {
-        $this->talkRepository = $talkRepository;
-        $this->speakerRepository = $speakerRepository;
-        $this->speakersExpensesStorage = $speakersExpensesStorage;
     }
 
     public function handleRequest(Request $request, Event $event, Speaker $speaker)
@@ -46,7 +39,7 @@ class SpeakerPage extends AbstractController
         $now = new DateTime('now');
 
         $speakersContactDefaults = [
-            'phone_number' => $speaker->getPhoneNumber()
+            'phone_number' => $speaker->getPhoneNumber(),
         ];
         $speakersContactType = $this->createForm(SpeakersContactType::class, $speakersContactDefaults);
         $speakersContactType->handleRequest($request);

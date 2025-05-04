@@ -15,17 +15,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class SlackNotifier
 {
-    private string $postUrl;
-    private MessageFactory $messageFactory;
-    private Serializer $serializer;
-    private HttpClientInterface $httpClient;
-
-    public function __construct(string $postUrl, MessageFactory $messageFactory, Serializer $serializer, HttpClientInterface $httpClient)
-    {
-        $this->postUrl = $postUrl;
-        $this->messageFactory = $messageFactory;
-        $this->serializer = $serializer;
-        $this->httpClient = $httpClient;
+    public function __construct(
+        private readonly string $postUrl,
+        private readonly MessageFactory $messageFactory,
+        private readonly Serializer $serializer,
+        private readonly HttpClientInterface $httpClient,
+    ) {
     }
 
     public function notifyVote(Vote $vote): void

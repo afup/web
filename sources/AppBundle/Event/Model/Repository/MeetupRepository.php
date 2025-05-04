@@ -34,33 +34,33 @@ class MeetupRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'id',
                 'primary' => true,
                 'autoincrement' => false,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'date',
                 'fieldName' => 'date',
-                'type' => 'datetime'
+                'type' => 'datetime',
             ])
             ->addField([
                 'columnName' => 'title',
                 'fieldName' => 'title',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'location',
                 'fieldName' => 'location',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'description',
                 'fieldName' => 'description',
                 'type' => 'text',
-                'nullable' => true
+                'nullable' => true,
             ])
             ->addField([
                 'columnName' => 'antenne_name',
                 'fieldName' => 'antenneName',
-                'type' => 'string'
+                'type' => 'string',
             ]);
 
         return $metadata;

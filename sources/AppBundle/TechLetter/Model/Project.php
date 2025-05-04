@@ -6,15 +6,11 @@ namespace AppBundle\TechLetter\Model;
 
 class Project implements \JsonSerializable
 {
-    private string $url;
-    private string $name;
-    private string $description;
-
-    public function __construct(string $url, string $name, string $description)
-    {
-        $this->url = $url;
-        $this->name = $name;
-        $this->description = $description;
+    public function __construct(
+        private readonly string $url,
+        private readonly string $name,
+        private readonly string $description,
+    ) {
     }
 
     public function getUrl(): string
@@ -37,7 +33,7 @@ class Project implements \JsonSerializable
         return [
             'url' => $this->url,
             'name' => $this->name,
-            'description' => $this->description
+            'description' => $this->description,
         ];
     }
 }

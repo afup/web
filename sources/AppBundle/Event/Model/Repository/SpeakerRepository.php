@@ -190,109 +190,109 @@ SQL
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'id_forum',
                 'fieldName' => 'eventId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'civilite',
                 'fieldName' => 'civility',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'nom',
                 'fieldName' => 'lastname',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'prenom',
                 'fieldName' => 'firstname',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'email',
                 'fieldName' => 'email',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'societe',
                 'fieldName' => 'company',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'ville',
                 'fieldName' => 'locality',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'phone_number',
                 'fieldName' => 'phoneNumber',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'biographie',
                 'fieldName' => 'biography',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'twitter',
                 'fieldName' => 'twitter',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'mastodon',
                 'fieldName' => 'mastodon',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'bluesky',
                 'fieldName' => 'bluesky',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'user_github',
                 'fieldName' => 'user',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'photo',
                 'fieldName' => 'photo',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'will_attend_speakers_diner',
                 'fieldName' => 'willAttendSpeakersDiner',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'has_special_diet',
                 'fieldName' => 'hasSpecialDiet',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'special_diet_description',
                 'fieldName' => 'specialDietDescription',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'hotel_nights',
                 'fieldName' => 'hotelNights',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'referent_person',
                 'fieldName' => 'referentPerson',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'referent_person_email',
                 'fieldName' => 'referentPersonEmail',
-                'type' => 'string'
+                'type' => 'string',
             ])
         ;
 

@@ -89,7 +89,7 @@ function verifierAction($actions_disponibles)
  */
 function supprimerAccents($texte): ?string
 {
-    $texte = htmlentities($texte);
+    $texte = htmlentities((string) $texte);
     return preg_replace('/&([a-z])[a-z]+;/i',"$1", $texte);
 }
 

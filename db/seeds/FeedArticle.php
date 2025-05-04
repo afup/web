@@ -42,7 +42,7 @@ class FeedArticle extends AbstractSeed
                 'auteur' => 'Un super auteur',
                 'resume' => 'Un super article',
                 'contenu' => 'Le contenu du super article',
-                'etat' => 1
+                'etat' => 1,
             ],
             [
                 'afup_planete_flux_id' => 1,
@@ -53,7 +53,7 @@ class FeedArticle extends AbstractSeed
                 'auteur' => 'Toujours un super auteur',
                 'resume' => 'Un article qui déchire',
                 'contenu' => 'Le contenu de l\'article qui déchire',
-                'etat' => 1
+                'etat' => 1,
             ],
             [
                 'afup_planete_flux_id' => 1,
@@ -64,7 +64,7 @@ class FeedArticle extends AbstractSeed
                 'auteur' => 'Un super désactivé',
                 'resume' => 'Un super désactivé',
                 'contenu' => 'Le contenu du super désactivé',
-                'etat' => 0
+                'etat' => 0,
             ],
         ];
 
@@ -78,7 +78,7 @@ class FeedArticle extends AbstractSeed
                 'auteur' => 'Un super auteur ' . $i,
                 'resume' => 'Un super article ' . $i,
                 'contenu' => 'Le contenu du super article ' . $i,
-                'etat' => 1
+                'etat' => 1,
             ];
         }
 
@@ -91,7 +91,7 @@ class FeedArticle extends AbstractSeed
             'auteur' => 'Un super auteur',
             'resume' => 'Un super article',
             'contenu' => 'Le contenu du super article',
-            'etat' => 1
+            'etat' => 1,
         ];
 
         $data[] = [
@@ -103,7 +103,7 @@ class FeedArticle extends AbstractSeed
             'auteur' => 'Un super auteur',
             'resume' => 'Un super article',
             'contenu' => 'Le contenu du super article',
-            'etat' => 1
+            'etat' => 1,
         ];
 
         $data[] = [
@@ -115,7 +115,7 @@ class FeedArticle extends AbstractSeed
             'auteur' => 'Un super auteur',
             'resume' => 'Un super article',
             'contenu' => 'Le contenu du super article',
-            'etat' => 1
+            'etat' => 1,
         ];
 
         $data[] = [
@@ -127,7 +127,7 @@ class FeedArticle extends AbstractSeed
             'auteur' => 'Un super auteur',
             'resume' => 'Un super article',
             'contenu' => 'Le contenu du super article',
-            'etat' => 1
+            'etat' => 1,
         ];
 
         $table = $this->table('afup_planete_billet');

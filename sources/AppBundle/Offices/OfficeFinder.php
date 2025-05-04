@@ -15,15 +15,12 @@ class OfficeFinder
 {
     public const MAX_DISTANCE_TO_OFFICE = 50000;
 
-    private AntennesCollection $antennesCollection;
-
-    private Geocoder $geocoder;
+    private readonly AntennesCollection $antennesCollection;
 
     private array $geocodeCache = [];
 
-    public function __construct(Geocoder $geocoder)
+    public function __construct(private readonly Geocoder $geocoder)
     {
-        $this->geocoder = $geocoder;
         $this->antennesCollection = new AntennesCollection();
     }
 
@@ -69,13 +66,13 @@ class OfficeFinder
             $addressCollection = $this->geocodeAddresses([
                 $user->getZipCode() . ' ' . $user->getCity() . ' ' . $user->getCountry(),
                 $user->getZipCode() . ' ' . $user->getCity(),
-                $user->getCity()
+                $user->getCity(),
             ]);
         } else {
             $addressCollection = $this->geocodeAddresses([
                 $invoice->getZipCode() . ' ' . $invoice->getCity() . ' ' . $invoice->getCountryId(),
                 $invoice->getZipCode() . ' ' . $invoice->getCity(),
-                $invoice->getCity()
+                $invoice->getCity(),
             ]);
         }
 

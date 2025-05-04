@@ -18,27 +18,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InviteAction extends AbstractController
 {
-    private TalkRepository $talkRepository;
-    private SpeakerFactory $speakerFactory;
-    private TranslatorInterface $translator;
-    private TalkInvitationRepository $talkInvitationRepository;
-    private TalkToSpeakersRepository $talkToSpeakersRepository;
-    private EventActionHelper $eventActionHelper;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        TalkRepository $talkRepository,
-        SpeakerFactory $speakerFactory,
-        TalkInvitationRepository $talkInvitationRepository,
-        TalkToSpeakersRepository $talkToSpeakersRepository,
-        TranslatorInterface $translator
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly TalkRepository $talkRepository,
+        private readonly SpeakerFactory $speakerFactory,
+        private readonly TalkInvitationRepository $talkInvitationRepository,
+        private readonly TalkToSpeakersRepository $talkToSpeakersRepository,
+        private readonly TranslatorInterface $translator,
     ) {
-        $this->talkRepository = $talkRepository;
-        $this->speakerFactory = $speakerFactory;
-        $this->translator = $translator;
-        $this->talkInvitationRepository = $talkInvitationRepository;
-        $this->talkToSpeakersRepository = $talkToSpeakersRepository;
-        $this->eventActionHelper = $eventActionHelper;
     }
 
     public function __invoke(Request $request): RedirectResponse
@@ -60,7 +47,7 @@ class InviteAction extends AbstractController
             $this->addFlash('pendingInvitation', ['talkId' => $talkId, 'token' => $token, 'eventSlug' => $event->getPath()]);
 
             return $this->redirectToRoute('cfp_speaker', [
-                'eventSlug' => $event->getPath()
+                'eventSlug' => $event->getPath(),
             ]);
         }
 

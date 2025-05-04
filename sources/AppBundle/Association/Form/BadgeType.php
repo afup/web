@@ -37,9 +37,9 @@ class BadgeType extends AbstractType
                             'maxHeight' => 850,
                             'mimeTypes' => [
                                 'image/png',
-                            ]
-                        ])
-                    ]
+                            ],
+                        ]),
+                    ],
                 ]
             )
             ->add(

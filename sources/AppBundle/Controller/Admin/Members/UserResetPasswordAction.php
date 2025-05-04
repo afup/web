@@ -16,15 +16,10 @@ class UserResetPasswordAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private UserRepository $userRepository;
-    private UserService $userPasswordService;
-
     public function __construct(
-        UserRepository $userRepository,
-        UserService $userPasswordService
+        private UserRepository $userRepository,
+        private UserService $userPasswordService,
     ) {
-        $this->userRepository = $userRepository;
-        $this->userPasswordService = $userPasswordService;
     }
 
     public function __invoke(Request $request): RedirectResponse
@@ -37,7 +32,7 @@ class UserResetPasswordAction extends AbstractController
             $this->userPasswordService->resetPassword($user);
             $this->log('Envoi d\'un nouveau mot de passe à la personne physique ' . $user->getId());
             $this->addFlash('notice', 'Un nouveau mot de passe a été envoyé à la personne physique');
-        } catch (Exception $e) {
+        } catch (Exception) {
             $this->addFlash('error', 'Une erreur est survenue lors de l\'envoi d\'un nouveau mot de passe à la personne physique');
         }
 

@@ -7,41 +7,6 @@ namespace AppBundle\Compta\BankAccount;
 class BankAccount
 {
     /**
-     * @var string
-     */
-    private $etablissement;
-
-    /**
-     * @var string
-     */
-    private $guichet;
-
-    /**
-     * @var string
-     */
-    private $compte;
-
-    /**
-     * @var string
-     */
-    private $cle;
-
-    /**
-     * @var string
-     */
-    private $domicialisation;
-
-    /**
-     * @var string
-     */
-    private $bic;
-
-    /**
-     * @var string
-     */
-    private $iban;
-
-    /**
      * @param string $etablissement
      * @param string $guichet
      * @param string $compte
@@ -50,15 +15,15 @@ class BankAccount
      * @param string $bic
      * @param string $iban
      */
-    public function __construct($etablissement, $guichet, $compte, $cle, $domicialisation, $bic, $iban)
-    {
-        $this->etablissement = $etablissement;
-        $this->guichet = $guichet;
-        $this->compte = $compte;
-        $this->cle = $cle;
-        $this->domicialisation = $domicialisation;
-        $this->bic = $bic;
-        $this->iban = $iban;
+    public function __construct(
+        private $etablissement,
+        private $guichet,
+        private $compte,
+        private $cle,
+        private $domicialisation,
+        private $bic,
+        private $iban,
+    ) {
     }
 
     /**

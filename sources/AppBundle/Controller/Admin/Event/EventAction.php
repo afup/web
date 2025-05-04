@@ -16,14 +16,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EventAction extends AbstractController
 {
-    private EventRepository $eventRepository;
-    private EventCouponRepository $couponRepository;
-
-    public function __construct(EventRepository $eventRepository,
-                                EventCouponRepository $couponRepository
+    public function __construct(
+        private readonly EventRepository $eventRepository,
+        private readonly EventCouponRepository $couponRepository,
     ) {
-        $this->eventRepository = $eventRepository;
-        $this->couponRepository = $couponRepository;
     }
 
     public function __invoke(Request $request, $id): Response
@@ -53,7 +49,7 @@ class EventAction extends AbstractController
             $this->eventRepository->save($event);
 
             if ($form->get('coupons')->getData()) {
-                $eventCoupons = explode(',', $form->get('coupons')->getData());
+                $eventCoupons = explode(',', (string) $form->get('coupons')->getData());
                 $this->couponRepository->changeCouponForEvent($event, $eventCoupons);
             }
 

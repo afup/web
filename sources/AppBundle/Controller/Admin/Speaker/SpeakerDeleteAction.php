@@ -16,12 +16,8 @@ class SpeakerDeleteAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private SpeakerRepository $speakerRepository;
-
-    public function __construct(
-        SpeakerRepository $speakerRepository
-    ) {
-        $this->speakerRepository = $speakerRepository;
+    public function __construct(private SpeakerRepository $speakerRepository)
+    {
     }
 
     public function __invoke(Request $request): RedirectResponse
@@ -35,12 +31,12 @@ class SpeakerDeleteAction extends AbstractController
             $this->speakerRepository->delete($speaker);
             $this->log('Suppression du conférencier ' . $speaker->getId());
             $this->addFlash('notice', 'Le conférencier a été supprimé');
-        } catch (Exception $e) {
+        } catch (Exception) {
             $this->addFlash('error', 'Une erreur est survenue lors de la suppression du conférencier');
         }
 
         return $this->redirectToRoute('admin_speaker_list', [
-            'eventId' => $speaker->getEventId()
+            'eventId' => $speaker->getEventId(),
         ]);
     }
 }
