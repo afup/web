@@ -9,7 +9,6 @@ use AppBundle\Event\Model\Talk;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,13 +23,14 @@ class TalkType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre *'
+                'label' => 'Titre (1)',
             ])
             ->add('abstract', TextareaType::class, [
-                'label' => 'Résumé *', 'required' => false
+                'label' => 'Résumé (1)',
+                'required' => false,
             ])
             ->add('staffNotes', TextareaType::class, [
-                'label' => 'Notes aux organisateurs **',
+                'label' => 'Notes aux organisateurs (2)',
                 'required' => false,
             ])
             ->add('type', ChoiceType::class, [
@@ -40,19 +40,21 @@ class TalkType extends AbstractType
                     'Conférence plénière (20 mn)' => Talk::TYPE_FULL_SHORT,
                 ]
             ])
-            ->add('skill', ChoiceType::class, ['label' => 'Niveau requis', 'choices' => [
-                'Débutant' => Talk::SKILL_JUNIOR,
-                'Intermédiaire' => Talk::SKILL_MEDIOR,
-                'Avancé' => Talk::SKILL_SENIOR,
-                'N/A' => Talk::SKILL_NA
-            ]
+            ->add('skill', ChoiceType::class, [
+                'label' => 'Niveau requis',
+                'choices' => [
+                    'Débutant' => Talk::SKILL_JUNIOR,
+                    'Intermédiaire' => Talk::SKILL_MEDIOR,
+                    'Avancé' => Talk::SKILL_SENIOR,
+                    'N/A' => Talk::SKILL_NA,
+                ]
             ]);
 
         if (!$options[self::IS_AFUP_DAY]) {
             $builder->add('withWorkshop', CheckboxType::class, [
                 'label' => "Je propose de faire un atelier",
                 'required' => false,
-                'help' => 'Lors de l’événement, nous souhaitons proposer des ateliers d’une durée de 2 heures avec une vingtaine de participant(e)s qui se seront inscrit(e)s préalablement. Seulement les speakers sélectionné(e)s effectueraient un atelier. Cochez cette case et renseignez la zone de texte ci-dessous si vous souhaitez proposer un atelier.',
+                'help' => 'cfp_propose_workshop',
             ])
             ->add('workshopAbstract', TextareaType::class, ['label' => 'Résumé de l\'atelier',
                 'required' => false,
@@ -64,7 +66,7 @@ class TalkType extends AbstractType
                 'required' => false
             ])
             ->add('codeOfConduct', CheckboxType::class, [
-                'label' => 'J\'accepte le code de conduite et les conditions générales de participation. *',
+                'label' => 'J\'accepte le code de conduite et les conditions générales de participation (1)',
                 'mapped' => false,
                 'required' => true,
                 'data' => $options[self::OPT_COC_CHECKED]
@@ -76,12 +78,9 @@ class TalkType extends AbstractType
                 ],
                 'expanded' => true,
                 'multiple' => false,
-                'label' => "Autoriser l’AFUP à transmettre ma proposition de conférence à ses antennes locales ? 
-                    Les équipes des antennes AFUP peuvent être intéressées par votre sujet en vue d’un événement local 
-                    (meetup, Super Apéro PHP, soirée d’élection dans l’antenne...) 
-                    et pourrait aimer vous inviter dans leur ville."
-            ])
-            ->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
+                'label' => 'Autoriser l’AFUP à transmettre ma proposition de conférence à ses antennes locales ?',
+                'help' => 'cfp_propose_workshop'
+            ]);
     }
 
     /**

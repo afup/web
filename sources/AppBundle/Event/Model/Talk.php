@@ -48,7 +48,7 @@ class Talk implements NotifyPropertyInterface
     /**
      * @Assert\NotBlank()
      */
-    private string $abstract = '';
+    private ?string $abstract = '';
 
     private ?string $staffNotes = null;
 
@@ -162,7 +162,7 @@ class Talk implements NotifyPropertyInterface
         return $this->abstract;
     }
 
-    public function setAbstract(string $abstract): self
+    public function setAbstract(?string $abstract): self
     {
         $this->propertyChanged('abstract', $this->abstract, $abstract);
         $this->abstract = $abstract;

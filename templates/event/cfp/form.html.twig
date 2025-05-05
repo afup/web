@@ -1,0 +1,28 @@
+{{ form_start(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.abstract) }}
+    {{ form_row(form.staffNotes) }}
+    {{ form_row(form.type) }}
+    {{ form_row(form.skill) }}
+
+    {% if form.children.withWorkshop is defined %}
+        <div class="row">
+            <div class="col-sm-12">
+                {{ form_label(form.withWorkshop) }}
+                {{ form_widget(form.withWorkshop) }}
+                {{ form_help(form.withWorkshop) }}
+            </div>
+        </div>
+        {{ form_row(form.workshopAbstract) }}
+    {% endif %}
+
+    {{ form_row(form.needsMentoring) }}
+    {{ form_row(form.codeOfConduct) }}
+    <div class="row">
+        <div class="col-sm-12">
+            {{ form_label(form.hasAllowedToSharingWithLocalOffices) }}
+            {{ form_help(form.hasAllowedToSharingWithLocalOffices) }}
+            {{ form_widget(form.hasAllowedToSharingWithLocalOffices) }}
+        </div>
+    </div>
+{{ form_end(form) }}

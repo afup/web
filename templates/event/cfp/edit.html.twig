@@ -7,8 +7,10 @@
         {% else %}
             <h3>{{ 'Nouvelle proposition'|trans }}</h3>
         {% endif %}
-        {{ form(form) }}
-        <p>* {{ 'code_of_conduct_warning'|trans }}</p>
+
+        {% include 'event/cfp/form.html.twig' with {'form': form} %}
+
+        <p>* {{ 'code_of_conduct_warning'|trans|raw }}</p>
         <p>{{ "Vous pouvez éditer votre proposition jusqu'à la fin du CFP."|trans }}</p>
         <h3>{{ 'Conférenciers'|trans }}</h3>
         <ul>

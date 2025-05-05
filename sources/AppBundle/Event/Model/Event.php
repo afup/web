@@ -35,10 +35,8 @@ class Event implements NotifyPropertyInterface
      */
     private $dateEndCallForProjects;
 
-    /**
-     * @var DateTime
-     */
-    private $dateEndCallForPapers;
+    private ?\DateTime $dateStartCallForPapers = null;
+    private ?\DateTime $dateEndCallForPapers = null;
 
     private ?\DateTime $dateEndVote = null;
 
@@ -218,19 +216,24 @@ class Event implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getDateEndCallForPapers()
+    public function getDateStartCallForPapers(): ?\DateTime
+    {
+        return $this->dateStartCallForPapers;
+    }
+
+    public function setDateStartCallForPapers(?\DateTime $dateStartCallForPapers = null): self
+    {
+        $this->propertyChanged('dateStartCallForPapers', $this->dateStartCallForPapers, $dateStartCallForPapers);
+        $this->dateStartCallForPapers = $dateStartCallForPapers;
+        return $this;
+    }
+
+    public function getDateEndCallForPapers(): ?\DateTime
     {
         return $this->dateEndCallForPapers;
     }
 
-    /**
-     * @param DateTime $dateEndCallForPapers
-     * @return Event
-     */
-    public function setDateEndCallForPapers($dateEndCallForPapers): self
+    public function setDateEndCallForPapers(?\DateTime $dateEndCallForPapers = null): self
     {
         $this->propertyChanged('dateEndCallForPapers', $this->dateEndCallForPapers, $dateEndCallForPapers);
         $this->dateEndCallForPapers = $dateEndCallForPapers;
@@ -265,7 +268,8 @@ class Event implements NotifyPropertyInterface
             $currentDate = new DateTime();
         }
 
-        return $this->getDateEndCallForPapers() >= $currentDate;
+        return $this->getDateEndCallForPapers() >= $currentDate
+            && $currentDate >= $this->getDateStartCallForPapers();
     }
 
     public function isVoteAvailable(DateTime $currentDate = null): bool

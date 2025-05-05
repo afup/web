@@ -222,3 +222,10 @@ sponsor.qr_code_scanner.invalid_code: QR Code incorrect !
 code_of_conduct_warning: |
   Le code de conduite est <a href="https://afup.org/p/986-code-de-conduite" target="_blank">disponible en ligne</a> tout comme les <a href="https://event.afup.org/condition-generales-de-participation/" target="_blank">Conditions Générales de Participation</a>.<br />
   En tant que conférencier, j'accepte d'être filmé et photographié gratuitement au profit exclusif de l'AFUP, pour diffusion sur internet ou sur tout autre support de communication diffusé notamment en Europe, pour une durée de 10 ans après ma conférence.
+cfp_propose_workshop: |
+  Lors de l’événement, nous souhaitons proposer des ateliers d’une durée de 2 heures avec une vingtaine de participant(e)s
+  qui se seront inscrit(e)s préalablement. Seulement les speakers sélectionné(e)s effectueraient un atelier.
+  Cochez cette case et renseignez la zone de texte ci-dessous si vous souhaitez proposer un atelier.
+cfp_authorize_forward: |
+  Les équipes des antennes AFUP peuvent être intéressées par votre sujet en vue d’un événement local
+  (meetup, Super Apéro PHP, soirée d’élection dans l’antenne...) et pourrait aimer vous inviter dans leur ville.

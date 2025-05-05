@@ -7,9 +7,19 @@
         {% else %}
             <h3>{{ 'Nouvelle proposition'|trans }}</h3>
         {% endif %}
-        {{ form(form) }}
-        <p>* {{ 'code_of_conduct_warning'|trans }}</p>
-        <p>** {{ 'Ces notes facultatives peuvent contenir des informations sur votre conférence que vous ne voudriez pas voir apparaitre sur le système de vote et dans le programme'|trans }}.</p>
+
+        <div class="mlm">
+            {% if "now"|date < event.dateStartCallForPapers %}
+                <div class="flash flash-error">
+                    {{ "Le CFP n'est pas encore ouvert. Il ouvrira le %date%."|trans({'%date%': event.dateStartCallForPapers|localizeddate}) }}
+                </div>
+            {% endif %}
+        </div>
+
+        {% include 'event/cfp/form.html.twig' with {'form': form} %}
+
+        <p>(1) {{ 'code_of_conduct_warning'|trans|raw }}</p>
+        <p>(2) {{ 'Ces notes facultatives peuvent contenir des informations sur votre conférence que vous ne voudriez pas voir apparaitre sur le système de vote et dans le programme'|trans }}.</p>
     </div>
     {{ sidebar|raw }}
 {% endblock %}

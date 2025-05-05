@@ -7,6 +7,23 @@
 'Les nouvelles conférences': 'New talks'
 'Toutes les conférences': 'All talks'
 'Le CFP est ouvert jusqu''au %date%.': 'The CFP is open until %date%.'
+'Le CFP n''est pas encore ouvert. Il ouvrira le %date%.': 'The CFP is open not open. It will be open on %date%.'
+'CFP fermé': 'CFP closed'
+'Titre (1)': 'Title (1)'
+'Résumé (1)': 'Abstract (1)'
+'Notes aux organisateurs (2)': 'Notes to organizers (2)'
+'Je propose de faire un atelier': 'I propose a workshop'
+'Je souhaite profiter du programme d''accompagnement des jeunes speakers': 'I''d like to take advantage of the support program for young speakers'
+'J''accepte le code de conduite et les conditions générales de participation (1)': 'I accept the code of conduct and the general conditions of participation (1)'
+'Autoriser l’AFUP à transmettre ma proposition de conférence à ses antennes locales ?': 'Authorize AFUP to forward my conference proposal to its local branches?'
+'J''autorise': 'I authorize'
+'Je refuse': 'I refuse'
+cfp_propose_workshop: |
+  During the event, we'd like to offer 2-hour workshops with around twenty participants who have registered in advance.
+  Only selected speakers will take part in a workshop.
+  Please tick this box and fill in the text box below if you would like to offer a workshop.
+cfp_authorize_forward: |
+  AFUP branch teams may be interested in your topic for a local event (meetup, Super Apéro PHP, branch election evening...) and might like to invite you to their town.
 'Il vous reste donc <span id="end"></span>.': 'So you have <span id="end"></span> left.'
 'Soumettre une conférence': 'Submit a talk'
 'Suggérer un·e conférencier·e': 'Suggest a speaker'
