@@ -19,6 +19,8 @@ install:
 
 	$(DOCKER_COMPOSE_BIN) up -d --build
 
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp composer install --no-scripts
+
 	# Build les assets du projet
 	$(MAKE) --no-print-directory install-assets
 	$(MAKE) --no-print-directory build-assets

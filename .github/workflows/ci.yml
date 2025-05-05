@@ -82,11 +82,19 @@ jobs:
               'docker/dockerfiles/mysqltest/Dockerfile'
             ) }}
 
-      - name: Delete symfony cache
-        run: rm -rf var/cache/test
-
       - name: Tests - Functional
-        run: make test-functional
+        run: |
+          cp docker.env docker.env.local
+          cp .env.dist .env
+          mkdir -p ./htdocs/uploads -p ./tmp
+          docker compose up -d
+          docker compose exec --user localUser apachephp composer install --no-scripts
+          docker compose run --rm node bash -c "npm install --legacy-peer-deps && npm run build"
+          cat ./.docker/mysql/reset-db.sql | docker compose run -T --rm db /opt/mysql_no_db
+          docker compose exec --user localUser apachephptest php bin/phinx migrate
+          docker compose exec --user localUser apachephptest php bin/phinx seed:run
+          docker compose exec --user localUser apachephptest ./bin/behat
+          cat var/logs/test.deprecations.log | cut -d "]" -f 2 | awk '{$$1=$$1};1' | sort | uniq -c | sort -nr > var/logs/test.deprecations_grouped.log
 
       - uses: actions/upload-artifact@v4
         with:
@@ -111,16 +119,18 @@ jobs:
           key: |
             docker-${{ runner.os }}-${{ hashFiles(
               'compose.yml',
-              'docker/dockerfiles/apachephp/Dockerfile',
+              'Dockerfile',
               'docker/dockerfiles/mysql/Dockerfile',
               'docker/dockerfiles/mysqltest/Dockerfile'
             ) }}
 
-      - name: Delete symfony cache
-        run: rm -rf var/cache/test
-
       - name: Tests - Integration
-        run: make test-integration-ci
+        run: |
+          cp docker.env docker.env.local
+          cp -n .env.dist .env
+          docker compose up -d
+          docker compose exec --user localUser apachephp composer install --no-scripts
+          docker compose exec -u localUser apachephp ./bin/phpunit --testsuite integration
 
   rector:
     name: "Rector"
