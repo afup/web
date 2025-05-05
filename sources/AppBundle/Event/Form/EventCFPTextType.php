@@ -13,12 +13,12 @@ class EventCFPTextType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('cfp_fr', TextareaType::class, [
+            ->add('fr', TextareaType::class, [
                 'label' => 'CFP (fr)',
                 'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'simplemde'],
                 'required' => false,
             ])
-            ->add('cfp_en', TextareaType::class, [
+            ->add('en', TextareaType::class, [
                 'label' => 'CFP (en)',
                 'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'simplemde'],
                 'required' => false,
