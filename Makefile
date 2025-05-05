@@ -19,6 +19,8 @@ install:
 
 	$(DOCKER_COMPOSE_BIN) up -d --build
 
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp composer install --no-scripts
+
 	# Build les assets du projet
 	$(MAKE) --no-print-directory install-assets
 	$(MAKE) --no-print-directory build-assets
@@ -83,14 +85,15 @@ cs-fix:
 test-functional:
 	$(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
 	$(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest mailcatcher
-	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephp bash -c "rm -f /var/www/html/var/logs/test.deprecations.log"
+	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephptest bash -c "rm -f /var/www/html/var/logs/test.deprecations.log"
 	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephp ./bin/behat
+	cat var/logs/test.deprecations.log | cut -d "]" -f 2 | awk '{$$1=$$1};1' | sort | uniq -c | sort -nr > var/logs/test.deprecations_grouped.log
 	$(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
 
 ### Tests d'intégration avec start/stop des images docker
 test-integration-ci:
 	$(DOCKER_COMPOSE_BIN) stop dbtest apachephptest
-	$(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest
+	$(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest apachephp
 	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephp composer install --no-scripts
 	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephp ./bin/phpunit --testsuite integration
 	$(DOCKER_COMPOSE_BIN) stop dbtest apachephptest
