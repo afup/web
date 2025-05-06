@@ -19,6 +19,22 @@ Feature: Event pages - CFP
     And I press "Sauvegarder"
     Then I should see "Profil sauvegardé."
 
+  Scenario: On crée un profil speaker userGithub2 avec un jpg
+    Given I am on "/event/forum/cfp"
+    Then I should see "Oauth login test"
+    When I follow "Connect as userGithub2"
+    Then I should see "CFP: forum"
+    And I should see "Mon espace conférencier"
+    And I should see "Vous n'avez pas encore rempli votre profil conférencier."
+    When I follow "Mon profil conférencier"
+    When I fill in "speaker[firstname]" with "Mon prénom jpg"
+    And I fill in "speaker[lastname]" with "Mon prénom jpg"
+    And I fill in "speaker[email]" with "monjpg@example.com"
+    And I fill in "speaker[biography]" with "Ma biographie"
+    And I attach the file "avatar1.jpg" to "speaker[photoFile]"
+    And I press "Sauvegarder"
+    Then I should see "Profil sauvegardé."
+
   Scenario: Sans proposition on voit un message
     Given I am on "/event/forum/cfp"
     Then I should see "Oauth login test"
