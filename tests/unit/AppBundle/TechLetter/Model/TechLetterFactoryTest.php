@@ -72,7 +72,7 @@ class TechLetterFactoryTest extends TestCase
                 new News(
                     'https://afup.org/news/1222-forum-php-2024-exceptionnel',
                     'Un Forum PHP 2024 exceptionnel !',
-                    DateTimeImmutable::createFromFormat('Y-m-d', '2024-10-21'),
+                    DateTimeImmutable::createFromFormat('!Y-m-d', '2024-10-21'),
                 ),
                 null,
                 [],
@@ -87,7 +87,7 @@ class TechLetterFactoryTest extends TestCase
                 new News(
                     'https://afup.org/news/1231-enquete2025-barometre-des-salaires-PHP-ouverte',
                     'L’enquête 2025 du baromètre des salaires en PHP est ouverte',
-                    DateTimeImmutable::createFromFormat('Y-m-d', '2025-03-17'),
+                    DateTimeImmutable::createFromFormat('!Y-m-d', '2025-03-17'),
                 ),
                 [],
                 [],
@@ -100,12 +100,12 @@ class TechLetterFactoryTest extends TestCase
                 new News(
                     'https://afup.org/news/1222-forum-php-2024-exceptionnel',
                     'Un Forum PHP 2024 exceptionnel !',
-                    DateTimeImmutable::createFromFormat('Y-m-d', '2024-10-21'),
+                    DateTimeImmutable::createFromFormat('!Y-m-d', '2024-10-21'),
                 ),
                 new News(
                     'https://afup.org/news/1231-enquete2025-barometre-des-salaires-PHP-ouverte',
                     'L’enquête 2025 du baromètre des salaires en PHP est ouverte',
-                    DateTimeImmutable::createFromFormat('Y-m-d', '2025-03-17'),
+                    DateTimeImmutable::createFromFormat('!Y-m-d', '2025-03-17'),
                 ),
                 [
                     new Article('https://example.com/fr', 'Example en français', 'example.com', '2', 'Lorem ipsum', 'fr'),
