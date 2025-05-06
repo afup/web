@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class TalksController extends AbstractController
 {
@@ -47,14 +48,18 @@ class TalksController extends AbstractController
     public function list(Request $request): Response
     {
         $title = 'Historique des conférences de l\'AFUP';
+        $canonical = $this->generateUrl('talks_list', referenceType: UrlGeneratorInterface::ABSOLUTE_URL);
         if (isset($request->get('fR')['speakers.label'][0])) {
             $title = 'Les vidéos de ' . $request->get('fR')['speakers.label'][0];
+            $canonical = $this->generateUrl('talks_list', ['fR' => $request->get('fR')['speakers.label'][0]], UrlGeneratorInterface::ABSOLUTE_URL);
         } elseif (isset($request->get('fr')['event.title'][0])) {
             $title = $request->get('fR')['event.title'][0] . ' les vidéos';
+            $canonical = $this->generateUrl('talks_list', ['fR' => $request->get('fR')['event.title'][0]], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
         return $this->view->render('site/talks/list.html.twig', [
             'title' => $title,
+            'canonical' => $canonical,
             'antennes' => (new AntennesCollection())->getAllSortedByLabels(),
             'algolia_app_id' => $this->algoliaAppId,
             'algolia_api_key' => $this->algoliaFrontendApikey,
