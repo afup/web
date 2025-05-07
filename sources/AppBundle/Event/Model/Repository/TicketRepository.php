@@ -214,6 +214,65 @@ class TicketRepository extends Repository implements MetadataInitializer
                 ->query($this->getCollection(new HydratorSingleObject()));
     }
 
+    public function getTicketsForList(Event $event, ?string $filter, ?string $sort, ?string $direction): CollectionInterface
+    {
+        $availableSorts = [
+            'date' => 'i.date',
+            'name' => 'i.nom',
+            'societe' => 'f.societe',
+            'type' => 'i.type_inscription',
+            'etat' => 'i.etat',
+        ];
+
+        $params = [
+            'eventId' => $event->getId()
+        ];
+
+        $sql = <<<SQL
+                SELECT i.id,
+                   i.date,
+                   i.nom,
+                   i.prenom,
+                   i.email,
+                   f.societe,
+                   i.etat,
+                   i.coupon,
+                   i.type_inscription,
+                   f.type_reglement,
+                   i.presence_day1,
+                   i.presence_day2,
+                   CASE
+                       WHEN i.id_member IS NOT NULL
+                           THEN (SELECT MAX(ac.date_fin) AS lastsubcription FROM afup_cotisations ac WHERE ac.type_personne = i.member_type AND ac.id_personne = i.id_member)
+                       ELSE (SELECT MAX(ac.date_fin) AS lastsubcription
+                             FROM afup_personnes_physiques app
+                                      LEFT JOIN afup_personnes_morales apm ON apm.id = app.id_personne_morale
+                                      LEFT JOIN afup_cotisations ac ON ac.type_personne = IF(apm.id IS NULL, 0, 1) AND ac.id_personne = IFNULL(apm.id, app.id)
+                             WHERE app.email = i.email
+                             GROUP BY app.`id`)
+                       END AS lastsubscription
+            FROM afup_inscription_forum i
+                     LEFT JOIN afup_facturation_forum f ON i.reference = f.reference
+            
+            WHERE 1 = 1
+              AND i.id_forum = :eventId
+SQL;
+
+        if ($filter) {
+            $sql .= ' AND CONCAT(i.nom, i.prenom) LIKE :filter OR f.societe LIKE :filter';
+            $params['filter'] = "%$filter%";
+        }
+        if (isset($availableSorts[$sort])) {
+            $sql .= ' ORDER BY ' . $availableSorts[$sort] . ' ' . $direction;
+        }
+
+        return $this
+            ->getPreparedQuery($sql)
+            ->setParams($params)
+            ->query($this->getCollection(new HydratorArray()))
+        ;
+    }
+
     /**
      * @inheritDoc
      */
