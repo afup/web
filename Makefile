@@ -1,4 +1,3 @@
--include .env
 default: help
 
 # Variables
@@ -12,8 +11,115 @@ COLOR_TARGET = \033[32m
 COLOR_TITLE = \033[33m
 TEXT_BOLD = \033[1m
 
-.PHONY: help
-.SILENT: help
+##@ Setup 📜
+### Installer le projet from scratch
+install:
+	cp -n .env.dist .env && cp -n docker.env docker.env.local && cp -n .docker/data/history.dist .docker/data/history && cp -n compose.override.yml-dist compose.override.yml
+	mkdir -p ./htdocs/uploads -p ./tmp
+
+	$(DOCKER_COMPOSE_BIN) up -d --build
+
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp composer install --no-scripts
+
+	# Build les assets du projet
+	$(MAKE) --no-print-directory install-assets
+	$(MAKE) --no-print-directory build-assets
+
+	# Reset la base de donnée
+	cat ./.docker/mysql/reset-db.sql | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
+
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp php bin/phinx migrate
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp php bin/phinx seed:run
+
+### Supprime les volumes docker, les fichiers et les dossier généré par le projet
+reset:
+	$(DOCKER_COMPOSE_BIN) down --remove-orphans -v
+	rm -f ./.env -f ./docker.env.local -f .docker/data/history -f compose.override.yml
+	sudo rm -rf ./var ./vendor ./node_modules ./htdocs/bundles ./htdocs/docs ./htdocs/uploads ./htdocs/assets ./tmp
+
+### Reinstalle le projet from scratch
+reinstall: reset install
+
+##@ Front 💅
+### Install les assets
+install-assets:
+	$(DOCKER_COMPOSE_BIN) run --rm node npm install --legacy-peer-deps
+
+### Build les assets
+build-assets:
+	$(DOCKER_COMPOSE_BIN) run --rm node npm run build
+
+### Permet de build and watch les assets
+watch-assets:
+	$(DOCKER_COMPOSE_BIN) run --rm node npm run watch
+
+##@ Quality ✨
+### Installe l'environment de test
+install-test:
+	mkdir -p ./htdocs/uploads -p ./tmp
+
+### Lance toute la suite de tests
+tests: cs-lint unit-test test-integration behat
+
+### Lance les tests unitaire
+unit-test:
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephptest ./bin/phpunit --testsuite unit
+
+### Tests d'intégration
+test-integration: # not work
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephptest ./bin/phpunit --testsuite integration
+
+### Tests fonctionnels
+behat:
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephptest ./bin/behat
+
+### PHP CS Fixer (dry run)
+cs-lint:
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp ./bin/php-cs-fixer fix --dry-run -vv
+
+### PHP CS Fixer (fix)
+cs-fix:
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp ./bin/php-cs-fixer fix -vv
+
+### Tests fonctionnels
+test-functional:
+	$(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
+	$(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest mailcatcher
+	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephptest bash -c "rm -f /var/www/html/var/logs/test.deprecations.log"
+	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephp ./bin/behat
+	cat var/logs/test.deprecations.log | cut -d "]" -f 2 | awk '{$$1=$$1};1' | sort | uniq -c | sort -nr > var/logs/test.deprecations_grouped.log
+	$(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
+
+### Tests d'intégration avec start/stop des images docker
+test-integration-ci:
+	$(DOCKER_COMPOSE_BIN) stop dbtest apachephptest
+	$(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest apachephp
+	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephp composer install --no-scripts
+	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephp ./bin/phpunit --testsuite integration
+	$(DOCKER_COMPOSE_BIN) stop dbtest apachephptest
+
+### Analyse PHPStan
+phpstan:
+	docker run -v $(shell pwd):/app --rm ghcr.io/phpstan/phpstan
+
+##@ Docker 🐳
+### Démarrer un bash dans le container PHP
+console:
+	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephp bash
+
+##@ Git (En dehors du docker) 🔀
+### Mise en place de git hooks
+hooks: pre-commit post-checkout
+
+pre-commit: Makefile
+	cp ./hooks/post-checkout.sh .git/hooks/pre-commit
+	chmod +x .git/hooks/pre-commit
+
+post-checkout: Makefile
+	echo "#!/bin/sh" > .git/hooks/post-checkout
+	echo "docker compose run --rm -u localUser apachephp make vendor" >> .git/hooks/post-checkout
+	chmod +x .git/hooks/post-checkout
+
 help:
 	printf "\n${COLOR_TITLE}Usage:${COLOR_RESET}\n"
 	printf "  ${COLOR_TARGET}make${COLOR_RESET} [target]\n"
@@ -31,158 +137,5 @@ help:
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
-.PHONY: install docker-up docker-stop docker-down test hooks vendors db-seed db-migrations reset-db init console phpstan
-
-##@ Setup
-
-### Installer les dépendences (composer, npm)
-install: vendors
-
-### Initialisation générale (config, bdd)
-init: htdocs/uploads
-	make config
-	make init-db
-
-##@ Docker
-
-### Démarrer les containers
-docker-up: .env var/logs/.docker-build data compose.override.yml
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) up $(DOCKER_UP_OPTIONS)
-
-### Stopper les containers
-docker-stop:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop
-
-### Supprimer les containers
-docker-down:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) down
-
-### Démarrer un bash dans le container PHP
-console:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) exec -u localUser -it apachephp bash
-
-##@ Quality
-
-### (Dans Docker) Tests unitaires
-test:
-	./bin/phpunit --testsuite unit
-	./bin/php-cs-fixer fix --dry-run -vv
-
-### (Dans Docker) Tests d'intégration
-test-integration:
-	./bin/phpunit --testsuite integration
-
-### (Dans Docker) Tests fonctionnels
-behat:
-	./bin/behat
-
-### (Dans Docker) PHP CS Fixer (dry run)
-cs-lint:
-	./bin/php-cs-fixer fix --dry-run -vv
-
-### (Dans Docker) PHP CS Fixer (fix)
-cs-fix:
-	./bin/php-cs-fixer fix -vv
-
-### Tests fonctionnels
-test-functional: data config htdocs/uploads tmp
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest mailcatcher
-	make clean-test-deprecated-log
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp ./bin/behat
-	make var/logs/test.deprecations_grouped.log
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
-
-### Tests d'intégration avec start/stop des images docker
-test-integration-ci:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp make vendor
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp ./bin/phpunit --testsuite integration
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest
-
-### Analyse PHPStan
-phpstan:
-	docker run -v $(shell pwd):/app --rm ghcr.io/phpstan/phpstan
-
-##@ Frontend
-
-### Compiler les assets pour la production
-.PHONY: assets
-assets:
-	./node_modules/.bin/webpack -p
-
-### Lancer le watcher pour les assets
-watch:
-	./node_modules/.bin/webpack --progress --colors --watch
-
-##@ Git
-
-### Mise en place de hooks
-hooks: .git/hooks/pre-commit .git/hooks/post-checkout
-
-.git/hooks/pre-commit: Makefile
-	echo "#!/bin/sh" > .git/hooks/pre-commit
-	echo "docker compose run --rm -u localUser apachephp make test" >> .git/hooks/pre-commit
-	chmod +x .git/hooks/pre-commit
-
-.git/hooks/post-checkout: Makefile
-	echo "#!/bin/sh" > .git/hooks/post-checkout
-	echo "docker compose run --rm -u localUser apachephp make vendor" >> .git/hooks/post-checkout
-	chmod +x .git/hooks/post-checkout
-
-
-## Targets cachés
-
-var/logs/.docker-build: compose.yml compose.override.yml $(shell find docker -type f)
-	CURRENT_UID=$(CURRENT_UID) ENABLE_XDEBUG=$(ENABLE_XDEBUG) $(DOCKER_COMPOSE_BIN) build
-	touch var/logs/.docker-build
-
-.env:
-	cp .env.dist .env
-
-compose.override.yml:
-	cp compose.override.yml-dist compose.override.yml
-
-vendors: vendor node_modules
-
-vendor: composer.lock
-	composer install --no-scripts
-
-node_modules:
-	npm install --legacy-peer-deps
-
-init-db:
-	make reset-db
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm -u localUser apachephp make db-migrations
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm -u localUser apachephp make db-seed
-
-config:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp make vendors
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp make assets
-
-data:
-	mkdir data
-	mkdir data/composer
-
-htdocs/uploads:
-	mkdir htdocs/uploads
-
-tmp:
-	mkdir -p tmp
-
-reset-db:
-	echo 'DROP DATABASE IF EXISTS web' | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
-	echo 'CREATE DATABASE web' | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
-
-db-migrations:
-	php bin/phinx migrate
-
-db-seed:
-	php bin/phinx seed:run
-
-clean-test-deprecated-log:
-	rm -f var/logs/test.deprecations.log
-
-var/logs/test.deprecations_grouped.log:
-	cat var/logs/test.deprecations.log | cut -d "]" -f 2 | awk '{$$1=$$1};1' | sort | uniq -c | sort -nr > var/logs/test.deprecations_grouped.log
+.PHONY: install tests hooks console phpstan help
+.SILENT: help
