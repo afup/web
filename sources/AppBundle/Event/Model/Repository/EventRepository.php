@@ -7,6 +7,7 @@ namespace AppBundle\Event\Model\Repository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Ticket;
+use AppBundle\Ting\DateTimeWithTImeZoneSerializer;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorArray;
@@ -292,8 +293,9 @@ SQL;
                 'columnName' => 'date_fin_appel_projet',
                 'fieldName' => 'dateEndCallForProjects',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
@@ -301,8 +303,9 @@ SQL;
                 'columnName' => 'date_fin_appel_conferencier',
                 'fieldName' => 'dateEndCallForPapers',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
@@ -315,8 +318,9 @@ SQL;
                 'columnName' => 'date_fin_prevente',
                 'fieldName' => 'dateEndPreSales',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
@@ -324,8 +328,9 @@ SQL;
                 'columnName' => 'date_fin_vente',
                 'fieldName' => 'dateEndSales',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
@@ -333,8 +338,9 @@ SQL;
                 'columnName' => 'date_fin_vente_token_sponsor',
                 'fieldName' => 'dateEndSalesSponsorToken',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
@@ -342,8 +348,9 @@ SQL;
                 'columnName' => 'date_fin_saisie_repas_speakers',
                 'fieldName' => 'dateEndSpeakersDinerInfosCollection',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
@@ -351,8 +358,9 @@ SQL;
                 'columnName' => 'date_annonce_planning',
                 'fieldName' => 'datePlanningAnnouncement',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
@@ -360,8 +368,9 @@ SQL;
                 'columnName' => 'date_fin_saisie_nuites_hotel',
                 'fieldName' => 'dateEndHotelInfosCollection',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
