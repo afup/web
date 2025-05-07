@@ -18,7 +18,9 @@ class DateTimeWithTimeZoneSerializer extends DateTime
             $timeZone = date_default_timezone_get();
         }
 
-        $value->setTimezone(new \DateTimeZone($timeZone));
+        if ($timeZone) {
+            $value->setTimezone(new \DateTimeZone($timeZone));
+        }
 
         return $value;
     }
