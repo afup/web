@@ -295,7 +295,7 @@ SQL;
                 'type' => 'datetime',
                 'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
@@ -305,7 +305,7 @@ SQL;
                 'type' => 'datetime',
                 'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
@@ -320,7 +320,7 @@ SQL;
                 'type' => 'datetime',
                 'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
@@ -330,7 +330,7 @@ SQL;
                 'type' => 'datetime',
                 'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
@@ -340,7 +340,7 @@ SQL;
                 'type' => 'datetime',
                 'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
@@ -350,7 +350,7 @@ SQL;
                 'type' => 'datetime',
                 'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
@@ -360,7 +360,7 @@ SQL;
                 'type' => 'datetime',
                 'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])
@@ -370,7 +370,7 @@ SQL;
                 'type' => 'datetime',
                 'serializer' => DateTimeWithTImeZoneSerializer::class,
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U', 'timezone' => 'Europe/Paris',],
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ]
             ])

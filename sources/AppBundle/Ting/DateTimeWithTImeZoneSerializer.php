@@ -13,8 +13,12 @@ class DateTimeWithTImeZoneSerializer extends DateTime
         $value = parent::unserialize($serialized, $options);
 
         if ($value instanceof \DateTime && isset($options['timezone'])) {
-            $value->setTimezone(new \DateTimeZone($options['timezone']));
+            $timeZone = $options['timezone'];
+        } else {
+            $timeZone = date_default_timezone_get();
         }
+
+        $value->setTimezone(new \DateTimeZone($timeZone));
 
         return $value;
     }
