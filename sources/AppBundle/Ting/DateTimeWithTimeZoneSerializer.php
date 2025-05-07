@@ -6,7 +6,7 @@ namespace AppBundle\Ting;
 
 use CCMBenchmark\Ting\Serializer\DateTime;
 
-class DateTimeWithTImeZoneSerializer extends DateTime
+class DateTimeWithTimeZoneSerializer extends DateTime
 {
     public function unserialize($serialized, array $options = [])
     {
