@@ -6,6 +6,7 @@ framework:
         resource: "%kernel.project_dir%/config/routing_dev.yml"
         strict_requirements: true
     profiler: { only_exceptions: false }
+    ide: '%env(resolve:SYMFONY_IDE)%'
 
 web_profiler:
     toolbar: true
