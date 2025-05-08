@@ -33,7 +33,6 @@ services:
         ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
     environment:
       SYMFONY_ENV: "dev"
-      HOST_PWD: ${PWD}
     env_file:
       .env
     volumes:
