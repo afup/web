@@ -30,6 +30,8 @@ RUN apt-get update && \
         libicu-dev \
         nodejs \
     && \
+        docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && \
     docker-php-ext-install \
         pdo_mysql \
         mysqli \
