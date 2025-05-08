@@ -254,8 +254,7 @@ class TicketRepository extends Repository implements MetadataInitializer
             FROM afup_inscription_forum i
                      LEFT JOIN afup_facturation_forum f ON i.reference = f.reference
             
-            WHERE 1 = 1
-              AND i.id_forum = :eventId
+            WHERE i.id_forum = :eventId
 SQL;
 
         if ($filter) {

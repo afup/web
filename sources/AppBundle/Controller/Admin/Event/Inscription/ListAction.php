@@ -35,7 +35,7 @@ class ListAction extends AbstractController
 
         $membersTicket = [];
 
-        $restantes = $this->updateGlobalsForTarif($eventRepository, $ticketEventTypeRepository, $ticketTypeAvailability, $event->getId(), $membersTicket)['restantes'];
+        $remainingTickets = $this->updateGlobalsForTarif($eventRepository, $ticketEventTypeRepository, $ticketTypeAvailability, $event->getId(), $membersTicket);
 
         $stats = $eventStatsRepository->getStats($event->getId());
 
@@ -46,7 +46,7 @@ class ListAction extends AbstractController
             'forumTarifsMembers' => $membersTicket,
             'now' => new DateTime(),
             'inscriptions' => $ticketRepository->getTicketsForList($event, $filter, $sort, $direction),
-            'restantes' => $restantes,
+            'remainingTickets' => $remainingTickets,
             'statistiques' => [
                 'premier_jour' => [
                     'inscrits' => $stats->firstDay->registered,
@@ -133,7 +133,7 @@ class ListAction extends AbstractController
         global $AFUP_Tarifs_Forum, $AFUP_Tarifs_Forum_Lib;
         $event = $eventRepository->get($forumId);
         $ticketTypes = $ticketEventTypeRepository->getTicketsByEvent($event, false);
-        $AFUP_Tarifs_Forum_Restantes = [];
+        $remainingTickets = [];
 
         foreach ($ticketTypes as $ticketType) {
             /**
@@ -141,13 +141,13 @@ class ListAction extends AbstractController
              */
             $AFUP_Tarifs_Forum[$ticketType->getTicketTypeId()] = $ticketType->getPrice();
             $AFUP_Tarifs_Forum_Lib[$ticketType->getTicketTypeId()] = $ticketType->getTicketType()->getPrettyName();
-            $AFUP_Tarifs_Forum_Restantes[$ticketType->getTicketTypeId()] = $ticketTypeAvailability->getStock($ticketType, $event);
+            $remainingTickets[$ticketType->getTicketTypeId()] = $ticketTypeAvailability->getStock($ticketType, $event);
 
             if ($ticketType->getTicketType()->getIsRestrictedToMembers()) {
                 $membersTickets[] = $ticketType->getTicketTypeId();
             }
         }
 
-        return ['restantes' => $AFUP_Tarifs_Forum_Restantes];
+        return $remainingTickets;
     }
 }
