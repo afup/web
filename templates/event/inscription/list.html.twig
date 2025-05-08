@@ -6,7 +6,7 @@
     {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
 
     <div class="ui menu">
-        <a href="/pages/administration/index.php?page=forum_inscriptions&amp;action=ajouter&amp;id_forum={{ event.id }}" class="item">
+        <a href="/pages/administration/index.php?page=forum_inscriptions&action=ajouter&id_forum={{ event.id }}" class="item">
             <div data-tooltip="Ajouter une inscription" data-position="bottom left">
                 <i class="icon plus square"></i>
                 Ajouter
@@ -17,8 +17,8 @@
             <span class="text">Exports</span>
             <i class="dropdown icon"></i>
             <div class="menu hidden" tabindex="-1">
-                <a class="item" href="/admin/event/badges?id={{ event.id }}" title="Exporter les inscriptions pour les badges">Exporter les inscriptions pour les badges <i>(prends environ une minute)</a></i>
-                <a class="item" href="/admin/event/previous_registrations?event_count=4">Exporter les inscrits aux 4 derniers évènements <i>(ayant acceptés d'être contactés, et pour les évènements passés)</i></a>
+                <a class="item" href="{{ path('admin_event_badges', {id: event.id}) }}" title="Exporter les inscriptions pour les badges">Exporter les inscriptions pour les badges <i>(prends environ une minute)</a></i>
+                <a class="item" href="{{ path('admin_event_previous_registrations', {event_count: 4}) }}">Exporter les inscrits aux 4 derniers évènements <i>(ayant acceptés d'être contactés, et pour les évènements passés)</i></a>
             </div>
         </div>
 
@@ -63,7 +63,7 @@
                         <td class="right aligned">{{ confirmes }}</td>
                         <td class="right aligned">{{ payants }}</td>
                         <td class="right aligned"> {{ montant }}</td>
-                        <td class="right aligned"> {{ restantes[forumTarifKey]|default('') }}</td>
+                        <td class="right aligned"> {{ remainingTickets[forumTarifKey]|default('') }}</td>
 
                     </tr>
                 {% endif %}
@@ -143,7 +143,7 @@
                 <tr>
                     <th align="left"><a href="{{ path('admin_event_inscription_list', app.request.query.all|merge({
                             sort: 'date',
-                            direction: direction == 'asc' and sort == 'name' ? 'desc' : 'asc'
+                            direction: direction == 'asc' and sort == 'date' ? 'desc' : 'asc'
                         })) }}">Date</a></th>
                     <th align="left"><a href="{{ path('admin_event_inscription_list', app.request.query.all|merge({
                             sort: 'name',
@@ -151,15 +151,15 @@
                         })) }}">Nom Prénom</a></th>
                     <th align="left"><a href="{{ path('admin_event_inscription_list', app.request.query.all|merge({
                             sort: 'societe',
-                            direction: direction == 'asc' and sort == 'name' ? 'desc' : 'asc'
+                            direction: direction == 'asc' and sort == 'societe' ? 'desc' : 'asc'
                         })) }}">Société (facturation)</a></th>
                     <th align="left"><a href="{{ path('admin_event_inscription_list', app.request.query.all|merge({
                             sort: 'type',
-                            direction: direction == 'asc' and sort == 'name' ? 'desc' : 'asc'
+                            direction: direction == 'asc' and sort == 'type' ? 'desc' : 'asc'
                         })) }}">Type</a></th>
                     <th><a href="{{ path('admin_event_inscription_list', app.request.query.all|merge({
                             sort: 'etat',
-                            direction: direction == 'asc' and sort == 'name' ? 'desc' : 'asc'
+                            direction: direction == 'asc' and sort == 'etat' ? 'desc' : 'asc'
                         })) }}">Etat</a></th>
                     <th align="left">Règ.</th>
                     <th title="Applicable uniquement aux tarifs afup">Statut cotisation</th>
@@ -172,7 +172,7 @@
                     <td nowrap="nowrap">{% if inscription.date.timestamp is defined %}{{ inscription.date|date("d/m/Y H:m:s")}}{% endif %}</td>
                     <td>
                         <strong>{{ inscription.prenom }} {{ inscription.nom }}</strong>
-                        <a href="/admin/members/users?filter={{ inscription.nom }} {{ inscription.email }}"
+                        <a href="{{ path('admin_members_user_list', {'filter': inscription.nom~' '~inscription.email}) }}"
                            data-position="right center"
                            data-tooltip="Rechercher dans les membres"
                            class="compact ui icon mini button"
@@ -183,7 +183,7 @@
                     <td>
                         {{ inscription.societe }}
                         {% if inscription.societe %}
-                            <a href="/admin/members/companies?filter={{ inscription.societe }}"
+                            <a href="{{ path('admin_members_company_list', {'filter': inscription.societe}) }}"
                                data-position="right center"
                                data-tooltip="Rechercher dans les personnes morales"
                                class="compact ui icon mini button"
@@ -251,10 +251,10 @@
                     <td style="text-align: right" nowrap="nowrap">
                         {% if inscription.type_inscription == constant('AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION') and inscription.etat != 1%}
                             {# TODO RAPH "cheminTemplate" #}
-                            <a href="/pages/administration/index.php?page=forum_inscriptions&amp;action=generer_mail_inscription_afup&amp;id={{ inscription.id }}"><img src="{$chemin_template}images/famfamfam/email_edit.png" alt="Générer un mail pour demander la confirmation d'adhésion à l'AFUP" /></a>
-                            <a href="/pages/administration/index.php?page=forum_inscriptions&amp;action=generer_inscription_afup&amp;id={{ inscription.id }}"><img src="{$chemin_template}images/famfamfam/group_add.png" alt="Transformer en adhésion AFUP" /></a>
+                            <a href="/pages/administration/index.php?page=forum_inscriptions&action=generer_mail_inscription_afup&id={{ inscription.id }}"><img src="{$chemin_template}images/famfamfam/email_edit.png" alt="Générer un mail pour demander la confirmation d'adhésion à l'AFUP" /></a>
+                            <a href="/pages/administration/index.php?page=forum_inscriptions&action=generer_inscription_afup&id={{ inscription.id }}"><img src="{$chemin_template}images/famfamfam/group_add.png" alt="Transformer en adhésion AFUP" /></a>
                         {% endif %}
-                        <a href="/pages/administration/index.php?page=forum_inscriptions&amp;action=modifier&amp;id={{ inscription.id }}"
+                        <a href="/pages/administration/index.php?page=forum_inscriptions&action=modifier&id={{ inscription.id }}"
                            data-position="left center"
                            data-tooltip="Modifier la fiche de {{ inscription.nom }} {{ inscription.prenom }}"
                            class="compact ui icon button"
@@ -262,7 +262,7 @@
                             <i class="pencil alernate icon"></i>
                         </a>
 
-                        <a href="/pages/administration/index.php?page=forum_inscriptions&amp;action=supprimer&amp;id={{ inscription.id }}"
+                        <a href="/pages/administration/index.php?page=forum_inscriptions&action=supprimer&id={{ inscription.id }}"
                            data-position="left center"
                            data-tooltip="Supprimer la fiche de {{ inscription.nom }} {{ inscription.prenom }}"
                            class="compact ui red icon button confirmable"
