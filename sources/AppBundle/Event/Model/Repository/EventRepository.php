@@ -7,6 +7,7 @@ namespace AppBundle\Event\Model\Repository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Ticket;
+use AppBundle\Ting\DateTimeWithTimeZoneSerializer;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorArray;
@@ -292,6 +293,7 @@ SQL;
                 'columnName' => 'date_fin_appel_projet',
                 'fieldName' => 'dateEndCallForProjects',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTimeZoneSerializer::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
@@ -301,6 +303,7 @@ SQL;
                 'columnName' => 'date_fin_appel_conferencier',
                 'fieldName' => 'dateEndCallForPapers',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTimeZoneSerializer::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
@@ -315,6 +318,7 @@ SQL;
                 'columnName' => 'date_fin_prevente',
                 'fieldName' => 'dateEndPreSales',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTimeZoneSerializer::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
@@ -324,6 +328,7 @@ SQL;
                 'columnName' => 'date_fin_vente',
                 'fieldName' => 'dateEndSales',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTimeZoneSerializer::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
@@ -333,6 +338,7 @@ SQL;
                 'columnName' => 'date_fin_vente_token_sponsor',
                 'fieldName' => 'dateEndSalesSponsorToken',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTimeZoneSerializer::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
@@ -342,6 +348,7 @@ SQL;
                 'columnName' => 'date_fin_saisie_repas_speakers',
                 'fieldName' => 'dateEndSpeakersDinerInfosCollection',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTimeZoneSerializer::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
@@ -351,6 +358,7 @@ SQL;
                 'columnName' => 'date_annonce_planning',
                 'fieldName' => 'datePlanningAnnouncement',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTimeZoneSerializer::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
@@ -360,6 +368,7 @@ SQL;
                 'columnName' => 'date_fin_saisie_nuites_hotel',
                 'fieldName' => 'dateEndHotelInfosCollection',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTimeZoneSerializer::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
