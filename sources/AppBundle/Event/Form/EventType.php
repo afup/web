@@ -66,9 +66,14 @@ class EventType extends AbstractType
                 'label' => 'Date de fin de l\'appel aux projets',
                 'required' => false,
             ])
+            ->add('dateStartCallForPapers', DateTimeType::class, [
+                'widget' => 'single_text',
+                'label' => 'Date d\'ouverture du CFP',
+                'required' => false,
+            ])
             ->add('dateEndCallForPapers', DateTimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date de fin de l\'appel aux conférenciers',
+                'label' => 'Date de fin du CFP',
                 'required' => false,
             ])
             ->add('voteEnabled', CheckboxType::class, [

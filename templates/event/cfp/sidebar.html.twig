@@ -7,7 +7,9 @@
         <li class="list-group-item"><a href="{{ url('cfp_speaker', {eventSlug: event.path }) }}">{{ 'Mon profil conférencier'|trans }}
             </a>
         </li>
-        <li class="list-group-item"><a href="{{ url('cfp_propose', {eventSlug: event.path}) }}">{{ 'Nouvelle proposition'|trans }}
+        <li class="list-group-item">
+            <a href="{{ url('cfp_propose', {eventSlug: event.path}) }}">
+                {{ 'Nouvelle proposition'|trans }}
             </a>
         </li>
         <li class="list-group-item">{{ 'Mes propositions'|trans }}

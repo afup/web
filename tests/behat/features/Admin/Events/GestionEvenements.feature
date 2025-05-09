@@ -20,6 +20,23 @@ Feature: Administration - Évènements - Gestions Évènements
     Then I should see "Titre du forum manquant"
     And I should see "Nombre de places manquant"
 
+  Scenario: On affiche un évènement
+    Given I am logged in as admin and on the Administration
+    And I follow "Gestion évènements"
+    Then the ".content h2" element should contain "Liste des évènements"
+    And I follow the button of tooltip "Modifier le forum forum"
+    Then the "event[title]" field should contain "forum"
+    And the "event[path]" field should contain "forum"
+    And the "event[logoUrl]" field should contain "http://78.media.tumblr.com/tumblr_lgkqc0mz9d1qfyzelo1_1280.jpg"
+    And the "event[seats]" field should contain "500"
+    And the "event[placeName]" field should contain "Paris"
+    And the "event[placeAddress]" field should contain "Marriott Rive Gauche"
+    And the "event[CFP][fr]" field should contain "François le français"
+    And the "event[CFP][en]" field should contain "Henri l'anglais"
+    And the "event[CFP][sponsor_management_fr]" field should contain "**Sponsors**, venez, vous serez très visible !"
+    And the "event[CFP][sponsor_management_en]" field should contain "**Sponsors**, come, you will be very visible!"
+    And the "event[CFP][mail_inscription_content]" field should contain "Contenu email"
+
   Scenario: On crée un nouvel évènement
     Given I am logged in as admin and on the Administration
     And I follow "Gestion évènements"
@@ -35,6 +52,7 @@ Feature: Administration - Évènements - Gestions Évènements
     And I fill in "event[dateStart]" with "2027-03-03"
     And I fill in "event[dateEnd]" with "2027-03-05"
     And I fill in "event[dateEndCallForProjects]" with "2027-02-05 14:00:00"
+    And I fill in "event[dateStartCallForPapers]" with "2027-01-01 08:00:00"
     And I fill in "event[dateEndCallForPapers]" with "2027-02-06 14:00:00"
     And I fill in "event[dateEndVote]" with "2027-03-01 14:00:00"
     And I fill in "event[dateEndPreSales]" with "2027-01-01 14:00:00"

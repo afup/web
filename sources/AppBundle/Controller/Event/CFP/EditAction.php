@@ -19,6 +19,7 @@ use AppBundle\Event\Talk\InvitationFormHandler;
 use AppBundle\Event\Talk\TalkFormHandler;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -96,6 +97,7 @@ class EditAction extends AbstractController
         }
 
         $talkForm = $this->createForm(TalkType::class, $talk, [TalkType::OPT_COC_CHECKED => true]);
+        $talkForm->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
         if ($this->talkFormHandler->handle($request, $event, $talkForm, $speaker)) {
             $this->addFlash('success', $this->translator->trans('Proposition enregistrée !'));
 

@@ -46,7 +46,7 @@ class TalkFormHandler
     public function handle(Request $request, Event $event, FormInterface $form, Speaker $speaker): bool
     {
         $form->handleRequest($request);
-        if (!$form->isSubmitted() || !$form->isValid()) {
+        if (!$event->isCfpOpen() || !$form->isSubmitted() || !$form->isValid()) {
             return false;
         }
         /** @var Talk $talk */

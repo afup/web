@@ -11,6 +11,7 @@ use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Talk\TalkFormHandler;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -59,6 +60,12 @@ class ProposeAction extends AbstractController
         $form = $this->createForm(TalkType::class, $talk, [
             TalkType::IS_AFUP_DAY => $event->isAfupDay()
         ]);
+        if ($event->isCfpOpen()) {
+            $form->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
+        } else {
+            $form->add('save', SubmitType::class, ['label' => 'CFP fermé', 'attr' => ['disabled' => 'disabled']]);
+        }
+
         if ($this->talkFormHandler->handle($request, $event, $form, $speaker)) {
             $this->addFlash('success', $this->translator->trans('Proposition enregistrée !'));
 

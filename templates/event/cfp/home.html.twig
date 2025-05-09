@@ -9,9 +9,11 @@
             {% if speaker.id == 0 %}
                 <p>{{ 'Vous n\'avez pas encore rempli votre profil conférencier.'|trans }}</p>
             {% else %}
-                <div class="photo-container">
-                    <img src="{{ asset(speakerPhoto) }}"/>
-                </div>
+                {% if speakerPhoto %}
+                    <div class="photo-container">
+                        <img src="{{ asset(speakerPhoto) }}" alt="" />
+                    </div>
+                {% endif %}
                 <p><strong>{{ speaker.firstname~' '~speaker.lastname }}</strong></p>
                 <p>{{ speaker.biography|nl2br }}</p>
             {% endif %}

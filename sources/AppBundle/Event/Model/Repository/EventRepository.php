@@ -308,6 +308,15 @@ SQL;
                 ]
             ])
             ->addField([
+                'columnName' => 'date_debut_appel_conferencier',
+                'fieldName' => 'dateStartCallForPapers',
+                'type' => 'datetime',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
+                ]
+            ])
+            ->addField([
                 'columnName' => 'date_fin_appel_conferencier',
                 'fieldName' => 'dateEndCallForPapers',
                 'type' => 'datetime',
