@@ -9,7 +9,7 @@
         {% endif %}
 
         <div class="mlm">
-            {% if "now"|date < event.dateStartCallForPapers %}
+            {% if not event.isCfpOpen %}
                 <div class="flash flash-error">
                     {{ "Le CFP n'est pas encore ouvert. Il ouvrira le %date%."|trans({'%date%': event.dateStartCallForPapers|localizeddate}) }}
                 </div>
