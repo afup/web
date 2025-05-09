@@ -33,6 +33,8 @@ services:
         ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
     environment:
       SYMFONY_ENV: "dev"
+      HOST_PWD: ${PWD}
+      SYMFONY_IDE: "%env(IDE_USED)%://open?url=file://%%f&line=%%l&/var/www/html/>%env(HOST_PWD)%/"
     env_file:
       .env
     volumes:
@@ -50,6 +52,8 @@ services:
         ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
     environment:
       SYMFONY_ENV: "test"
+      HOST_PWD: ${PWD}
+      SYMFONY_IDE: "%env(IDE_USED)%://open?url=file://%%f&line=%%l&/var/www/html/>%env(HOST_PWD)%/"
     env_file:
       .env
     volumes:
