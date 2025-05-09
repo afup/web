@@ -11,5 +11,6 @@
   "55 15 * * * $ROOT/clevercloud/scripts/deduplicate_cron.sh /usr/bin/php $ROOT/bin/console --env=prod slack-member-notification",
   "0 * * * * $ROOT/clevercloud/scripts/deduplicate_cron.sh /usr/bin/php $ROOT/bin/console --env=prod update-user-state",
   "32 * * * * $ROOT/clevercloud/scripts/deduplicate_cron.sh /usr/bin/php $ROOT/bin/console --env=prod update-company-member-state",
-  "0 13 * * 2,4 $ROOT/clevercloud/scripts/deduplicate_cron.sh /usr/bin/php $ROOT/bin/console --env=prod videos:run-notifier"
+  "0 13 * * 2,4 $ROOT/clevercloud/scripts/deduplicate_cron.sh /usr/bin/php $ROOT/bin/console --env=prod videos:run-notifier",
+  "17 10 1 * * $ROOT/clevercloud/scripts/deduplicate_cron.sh /usr/bin/php $ROOT/bin/console --env=prod speaker:expenses-files-clean"
 ]

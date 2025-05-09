@@ -5,21 +5,23 @@ declare(strict_types=1);
 
 namespace AppBundle\SpeakerInfos;
 
+use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Speaker;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class SpeakersExpensesStorage
+final class SpeakersExpensesStorage
 {
-    private $basePath;
     private Filesystem $filesystem;
 
-    public function __construct($basePath)
-    {
-        $this->basePath = $basePath;
+    public function __construct(private readonly string $basePath,
+                                private readonly EventRepository $eventRepository,
+                                private readonly LoggerInterface $logger
+    ) {
         $this->filesystem = new Filesystem();
     }
 
@@ -64,6 +66,26 @@ class SpeakersExpensesStorage
             ];
         }
         return $files;
+    }
+
+    public function cleanFiles($duration = 'P12M'): void
+    {
+        $beforeDate = new \DateTime();
+        $beforeDate->sub(new \DateInterval($duration));
+
+        $this->logger->info(sprintf('Speakers Expenses Storage clean before "%s"', $beforeDate->format('Y-m-d')));
+
+        $events = $this->eventRepository->getPreviousEventsBefore($beforeDate);
+        foreach ($events as $event) {
+            $this->logger->info(sprintf('Event "%s" #%d [%s]: ', $event->getTitle(), $event->getId(), $event->getDateStart()->format('Y-m-d')));
+
+            $directory = $this->basePath . '/' . $event->getId();
+
+            if ($this->filesystem->exists($directory)) {
+                $this->filesystem->remove($directory);
+                $this->logger->info(sprintf('Removing "%s" directory OK', $directory));
+            }
+        }
     }
 
     private function createDirectory(string $directory): void

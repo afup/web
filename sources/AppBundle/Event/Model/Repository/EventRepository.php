@@ -9,6 +9,8 @@ use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Ting\DateTimeWithTimeZoneSerializer;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use CCMBenchmark\Ting\Exception;
+use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
@@ -217,11 +219,10 @@ SQL;
     }
 
     /**
-     * @param int $eventCount
-     *
-     * @return CollectionInterface
+     * @throws QueryException
+     * @throws Exception
      */
-    public function getPreviousEvents($eventCount)
+    public function getPreviousEvents(int $eventCount): CollectionInterface
     {
         $query = $this->getQuery('SELECT * FROM afup_forum WHERE date_debut < NOW() ORDER BY date_debut DESC LIMIT :limit');
         $query->setParams(['limit' => $eventCount]);
@@ -230,11 +231,18 @@ SQL;
     }
 
     /**
-     * @param $path
-     *
-     * @return Event|null
+     * @throws QueryException
+     * @throws Exception
      */
-    public function getByPath($path)
+    public function getPreviousEventsBefore(\DateTimeInterface $beforeDatetime): CollectionInterface
+    {
+        $query = $this->getQuery('SELECT * FROM afup_forum WHERE date_debut <= :before_date ORDER BY date_debut DESC');
+        $query->setParams(['before_date' => $beforeDatetime->format('Y-m-d')]);
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    public function getByPath(string $path): ?Event
     {
         return $this->getBy(['path' => $path])->first();
     }

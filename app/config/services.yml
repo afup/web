@@ -247,9 +247,11 @@ services:
             $legacyBasePath: "%kernel.project_dir%/../htdocs"
 
     AppBundle\SpeakerInfos\SpeakersExpensesStorage:
+        autowire: true
+        autoconfigure: true
+        public: false
         arguments:
-            - "%kernel.project_dir%/../htdocs/uploads/speaker_expenses"
-            - "/uploads/speaker_expenses"
+            $basePath: "%kernel.project_dir%/../htdocs/uploads/speaker_expenses"
 
     Twig_Extensions_Extension_Intl:
         class: Twig_Extensions_Extension_Intl
