@@ -314,6 +314,7 @@ SQL;
                 'columnName' => 'date_debut_appel_conferencier',
                 'fieldName' => 'dateStartCallForPapers',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTimeZoneSerializer::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
