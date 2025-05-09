@@ -101,3 +101,7 @@ admin_event_restore:
   defaults: { _controller: AppBundle\Controller\Admin\Event\RestoreAction }
   requirements:
     id: \d+
+
+admin_event_inscription_list:
+  path: /inscription
+  defaults: { _controller: AppBundle\Controller\Admin\Event\Inscription\ListAction}
