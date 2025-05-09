@@ -21,16 +21,10 @@ class Comptabilite
         'hors_ue' => 'Hors Union Européenne',
     ];
 
-    /**
-     * @var Base_De_Donnees
-     */
-    protected $_bdd;
-
     public $lastId;
 
-    public function __construct(&$bdd)
+    public function __construct(protected Base_De_Donnees $_bdd)
     {
-        $this->_bdd = $bdd;
     }
 
 
@@ -43,7 +37,7 @@ class Comptabilite
      */
     public function obtenirJournalBanque($compte = 1,
                                   $periode_debut = '',
-                                  $periode_fin = ''
+                                  $periode_fin = '',
     ) {
         $periode_debut = $this->periodeDebutFin($debutFin = 'debut', $periode_debut);
         $periode_fin = $this->periodeDebutFin($debutFin = 'fin', $periode_fin);
@@ -105,7 +99,7 @@ class Comptabilite
                 "debit" => $debit[$i],
                 "credit" => $credit[$i],
                 "dif" => $dif,
-                "nligne" => $nligne[$i]
+                "nligne" => $nligne[$i],
             ];
             $dif_old = $dif;
         }
@@ -138,7 +132,7 @@ class Comptabilite
         $tableau = [
             "debit" => $debit,
             "credit" => $credit,
-            "dif" => $credit - $debit
+            "dif" => $credit - $debit,
         ];
         //	$dif_old=$dif;
         //}
@@ -163,7 +157,7 @@ class Comptabilite
     public function obtenirJournal(string $debitCredit = '',
                             $periode_debut = '',
                             $periode_fin = '',
-                            $onlyUnclasifedEntries = true
+                            $onlyUnclasifedEntries = true,
     ) {
         $periode_debut = $this->periodeDebutFin($debutFin = 'debut', $periode_debut);
         $periode_fin = $this->periodeDebutFin($debutFin = 'fin', $periode_fin);
@@ -536,7 +530,7 @@ class Comptabilite
     public function modifier(string $id, $idoperation, $idcompte, $idcategorie, $date_ecriture, $nom_frs, $tva_intra, $montant, $description,
                       $numero, $idmode_regl, $date_regl, $obs_regl, $idevenement, $comment, $numero_operation = null, $attachmentRequired = 0,
                       $montantHtSoumisTva0 = null, $montantHtSoumisTva55 = null, $montantHtSoumisTva10 = null, $montantHtSoumisTva20 = null,
-                      $tvaZone = null
+                      $tvaZone = null,
     ) {
         $requete = 'UPDATE ';
         $requete .= 'compta ';

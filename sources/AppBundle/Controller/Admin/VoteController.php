@@ -28,18 +28,13 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class VoteController extends AbstractController
 {
     private ?FormBuilderInterface $formBuilder = null;
-    private RequestStack $requestStack;
-    private EventDispatcherInterface $eventDispatcher;
-    private RepositoryFactory $repositoryFactory;
-    private SlackNotifier $slackNotifier;
-    private EventActionHelper $eventActionHelper;
-    public function __construct(RequestStack $requestStack, EventDispatcherInterface $eventDispatcher, RepositoryFactory $repositoryFactory, SlackNotifier $slackNotifier, EventActionHelper $eventActionHelper)
-    {
-        $this->requestStack = $requestStack;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->repositoryFactory = $repositoryFactory;
-        $this->slackNotifier = $slackNotifier;
-        $this->eventActionHelper = $eventActionHelper;
+    public function __construct(
+        private readonly RequestStack $requestStack,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly RepositoryFactory $repositoryFactory,
+        private readonly SlackNotifier $slackNotifier,
+        private readonly EventActionHelper $eventActionHelper,
+    ) {
     }
 
     /**
@@ -75,7 +70,7 @@ class VoteController extends AbstractController
                  */
                 yield [
                     'form' => $this->createVoteForm($eventSlug, $talk['sessions']->getId(), $myVote)->createView(),
-                    'talk' => $talk['sessions']
+                    'talk' => $talk['sessions'],
                 ];
             }
         };
@@ -88,7 +83,7 @@ class VoteController extends AbstractController
                 'page' => $page,
                 'talks' => $forms(),
                 'event' => $event,
-                'all' => $all
+                'all' => $all,
             ]
         );
     }

@@ -33,17 +33,17 @@ class BadgeRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'label',
                 'fieldName' => 'label',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'url',
                 'fieldName' => 'url',
-                'type' => 'string'
+                'type' => 'string',
             ])
         ;
 

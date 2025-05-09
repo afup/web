@@ -13,18 +13,16 @@ use Symfony\Component\Process\Process;
 /**
  * Helper pour les tests pour recréer une base de données avec un dump.
  */
-final class DatabaseManager
+final readonly class DatabaseManager
 {
     private const DB_NAME = 'web';
 
     private PDO $database;
     private Mysqldump $dumper;
     private string $dbDumpKey;
-    private bool $shouldRunSeeds;
 
-    public function __construct(bool $shouldRunSeeds)
+    public function __construct(private bool $shouldRunSeeds)
     {
-        $this->shouldRunSeeds = $shouldRunSeeds;
         $this->database = new PDO('mysql:host=dbtest;dbname=' . self::DB_NAME, 'root', 'root');
         $this->dumper = new Mysqldump('mysql:host=dbtest;dbname=' . self::DB_NAME, 'root', 'root');
         $this->dbDumpKey = $this->computeDbDumpKey();

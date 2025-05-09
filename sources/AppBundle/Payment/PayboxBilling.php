@@ -9,21 +9,14 @@ use League\ISO3166\ISO3166;
 
 class PayboxBilling
 {
-    private $firstName;
-    private $lastName;
-    private $address1;
-    private $zipCode;
-    private $city;
-    private $countryCode;
-
-    public function __construct($firstName, $lastName, $address1, $zipCode, $city, $countryCode)
-    {
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->address1 = $address1;
-        $this->zipCode = $zipCode;
-        $this->city = $city;
-        $this->countryCode = $countryCode;
+    public function __construct(
+        private $firstName,
+        private $lastName,
+        private $address1,
+        private $zipCode,
+        private $city,
+        private $countryCode,
+    ) {
     }
 
     /**
@@ -82,7 +75,7 @@ class PayboxBilling
             $data = (new ISO3166)->alpha2($country);
 
             return $data['numeric'];
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             return null;
         }
     }

@@ -9,11 +9,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class UserDisabledEvent extends Event
 {
-    private User $user;
-
-    public function __construct(User $user)
+    public function __construct(private readonly User $user)
     {
-        $this->user = $user;
     }
 
     public function getUser(): User

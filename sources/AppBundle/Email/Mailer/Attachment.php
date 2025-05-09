@@ -6,24 +6,18 @@ namespace AppBundle\Email\Mailer;
 
 class Attachment
 {
-    /** @var string */
-    private $name;
-    /** @var string */
-    private $encoding;
-    /** @var string */
-    private $path;
-    /** @var string */
-    private $type;
-
     /**
      * @param string $name
+     * @param string $encoding
+     * @param string $path
+     * @param string $type
      */
-    public function __construct($path, $name, $encoding, $type)
-    {
-        $this->path = $path;
-        $this->name = $name;
-        $this->encoding = $encoding;
-        $this->type = $type;
+    public function __construct(
+        private $path,
+        private $name,
+        private $encoding,
+        private $type,
+    ) {
     }
 
     /**

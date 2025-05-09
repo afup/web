@@ -13,7 +13,7 @@ class PayboxResponseFactory
         $keys = [
             'cmd',
             'transaction',
-            'status'
+            'status',
         ];
         foreach ($keys as $key) {
             if ($request->query->has($key) === false) {

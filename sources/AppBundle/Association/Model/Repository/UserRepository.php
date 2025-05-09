@@ -52,7 +52,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->getPreparedQuery($queryBuilder->getStatement())
             ->setParams([
                 'username' => $username,
-                'email' => $username
+                'email' => $username,
             ])
             ->query($this->getCollection($this->getHydratorForUser()));
 
@@ -103,7 +103,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         $result = $this
             ->getPreparedQuery($queryBuilder->getStatement())
             ->setParams([
-                'hash' => $hash
+                'hash' => $hash,
             ])
             ->query($this->getCollection($this->getHydratorForUser()));
 
@@ -125,7 +125,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->getPreparedQuery($queryBuilder->getStatement())
             ->setParams([
                 'company' => $companyMember->getId(),
-                'state' => User::STATUS_ACTIVE
+                'state' => User::STATUS_ACTIVE,
             ])
             ->query($this->getCollection($this->getHydratorForUser()))
             ;
@@ -178,7 +178,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         $userId = null,
         $onlyActive = true,
         $isCompanyManager = null,
-        $needsUptoDateMembership = null
+        $needsUptoDateMembership = null,
     ) {
         Assertion::inArray($direction, ['asc', 'desc']);
         $sorts = [
@@ -196,7 +196,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         //   Même si l'email ne colle pas on pourra trouver la personne.
         // C'est un peu barbare mais généralement on ne met qu'un seul terme dans la recherche… du coup c'est pas bien grave.
         if ($filter) {
-            $filters = explode(' ', $filter);
+            $filters = explode(' ', (string) $filter);
             $filters = array_filter(array_map('trim', $filters));
             $ors = [];
             foreach ($filters as $i => $value) {
@@ -362,7 +362,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         $queryBuilder
             ->cols([
                 'app.`id`', 'app.`login`', 'app.`prenom`', 'app.`nom`',
-                'app.`email`', 'apm.`id`', 'apm.`raison_sociale`', 'apm.`max_members`', 'app.`id_personne_morale`'
+                'app.`email`', 'apm.`id`', 'apm.`raison_sociale`', 'apm.`max_members`', 'app.`id_personne_morale`',
             ])
             ->from('afup_personnes_physiques app')
             ->join('LEFT', 'afup_personnes_morales apm', 'apm.id = app.id_personne_morale')
@@ -385,7 +385,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'app.`slack_invite_status`', 'app.`slack_alternate_email`', 'app.`needs_up_to_date_membership`',
                 'app.`nearest_office`',
                 'MD5(CONCAT(app.`id`, \'_\', app.`email`, \'_\', app.`login`)) as hash',
-                "MAX(ac.date_fin) AS lastsubcription"
+                "MAX(ac.date_fin) AS lastsubcription",
             ]);
     }
 
@@ -434,7 +434,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->getPreparedQuery($queryBuilder->getStatement())
             ->setParams([
                 'start' => $today->format('U'),
-                'status' => User::STATUS_ACTIVE
+                'status' => User::STATUS_ACTIVE,
             ])
             ->query($this->getCollection(new HydratorSingleObject()));
     }
@@ -463,15 +463,15 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->setParams([
                 'start' => $startOfDay->format('U'),
                 'end' => $endOfDay->format('U'),
-                'status' => User::STATUS_ACTIVE
+                'status' => User::STATUS_ACTIVE,
             ])
             ->query($this->getCollection(new HydratorSingleObject()));
     }
 
     public function refreshUser(UserInterface $user)
     {
-        if ($this->supportsClass(get_class($user)) === false) {
-            throw new UnsupportedUserException(sprintf('Instance of %s not supported', get_class($user)));
+        if ($this->supportsClass($user::class) === false) {
+            throw new UnsupportedUserException(sprintf('Instance of %s not supported', $user::class));
         }
 
         return $this->loadUserByUsername($user->getUsername());
@@ -500,100 +500,100 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'id_personne_morale',
                 'fieldName' => 'companyId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'login',
                 'fieldName' => 'username',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'mot_de_passe',
                 'fieldName' => 'password',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'civilite',
                 'fieldName' => 'civility',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'prenom',
                 'fieldName' => 'firstName',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'nom',
                 'fieldName' => 'lastName',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'email',
                 'fieldName' => 'email',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'niveau',
                 'fieldName' => 'level',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'niveau_modules',
                 'fieldName' => 'levelModules',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'roles',
                 'fieldName' => 'roles',
                 'type' => 'json',
                 'serializer_options' => [
-                    'unserialize' => ['assoc' => true]
-                ]
+                    'unserialize' => ['assoc' => true],
+                ],
             ])
             ->addField([
                 'columnName' => 'adresse',
                 'fieldName' => 'address',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'code_postal',
                 'fieldName' => 'zipCode',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'ville',
                 'fieldName' => 'city',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'id_pays',
                 'fieldName' => 'country',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'telephone_fixe',
                 'fieldName' => 'phone',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'telephone_portable',
                 'fieldName' => 'mobilephone',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'nearest_office',
                 'fieldName' => 'nearestOffice',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'etat',
                 'fieldName' => 'status',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'slack_invite_status',
@@ -603,13 +603,13 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->addField([
                 'columnName' => 'slack_alternate_email',
                 'fieldName' => 'alternateEmail',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'needs_up_to_date_membership',
                 'fieldName' => 'needsUpToDateMembership',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
         ;
 

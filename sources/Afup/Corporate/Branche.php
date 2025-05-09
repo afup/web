@@ -90,15 +90,10 @@ class Branche
                 if ($extraction === "") {
                     $class = ' class="top"';
                 }
-                switch (true) {
-                    case preg_match('#^http://#', $feuille['lien']):
-                    case preg_match('#^/#', $feuille['lien']):
-                        $route = $feuille['lien'];
-                        break;
-                    default:
-                        $route = Site::WEB_PATH . Site::WEB_PREFIX . Site::WEB_QUERY_PREFIX . $feuille['lien'];
-                        break;
-                }
+                $route = match (true) {
+                    preg_match('#^http://#', (string) $feuille['lien']), preg_match('#^/#', (string) $feuille['lien']) => $feuille['lien'],
+                    default => Site::WEB_PATH . Site::WEB_PREFIX . Site::WEB_QUERY_PREFIX . $feuille['lien'],
+                };
                 $extraction .= '<li' . $class . '>';
                 if ($this->navigation == 'image' && $feuille['image'] !== null) {
                     $extraction .= '<a href="' . $route . '"><img alt="' . $feuille['alt'] . '" src="' . Site::WEB_PATH . 'templates/site/images/' . $feuille['image'] . '" /><br>';

@@ -16,12 +16,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EventSelectType extends AbstractType
 {
-    private EventRepository $eventRepository;
-    private EventHelper $eventHelper;
+    private readonly EventHelper $eventHelper;
 
-    public function __construct(EventRepository $eventRepository)
+    public function __construct(private readonly EventRepository $eventRepository)
     {
-        $this->eventRepository = $eventRepository;
         $this->eventHelper = new EventHelper();
     }
 
@@ -47,7 +45,7 @@ class EventSelectType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Event::class,
-            'csrf_protection' => false
+            'csrf_protection' => false,
         ]);
     }
 }

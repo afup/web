@@ -4,22 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\GeneralMeeting;
 
-use DateTimeInterface;
-
 class GeneralMeeting
 {
-    /** @var int */
-    private $id;
-    /** @var int */
-    private $personnePhysiqueId;
-    private \DateTimeInterface $date;
-    /** @var int */
-    private $presence;
-    /** @var int */
-    private $personneAvecPouvoirId;
-    private ?\DateTimeInterface $consultationDate;
-    private ?\DateTimeInterface $modificationDate;
-
     /**
      * @param int $id
      * @param int $personnePhysiqueId
@@ -27,21 +13,14 @@ class GeneralMeeting
      * @param int $personneAvecPouvoirId
      */
     public function __construct(
-        $id,
-        $personnePhysiqueId,
-        DateTimeInterface $date,
-        $presence,
-        $personneAvecPouvoirId,
-        DateTimeInterface $consultationDate = null,
-        DateTimeInterface $modificationDate = null
+        private $id,
+        private $personnePhysiqueId,
+        private readonly \DateTimeInterface $date,
+        private $presence,
+        private $personneAvecPouvoirId,
+        private readonly ?\DateTimeInterface $consultationDate = null,
+        private readonly ?\DateTimeInterface $modificationDate = null,
     ) {
-        $this->id = $id;
-        $this->personnePhysiqueId = $personnePhysiqueId;
-        $this->date = $date;
-        $this->presence = $presence;
-        $this->personneAvecPouvoirId = $personneAvecPouvoirId;
-        $this->consultationDate = $consultationDate;
-        $this->modificationDate = $modificationDate;
     }
 
     public function getId()

@@ -9,22 +9,16 @@ use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
 use AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 class DeleteAction extends AbstractController
 {
-    private GeneralMeetingQuestionRepository $generalMeetingQuestionRepository;
-    private GeneralMeetingVoteRepository $generalMeetingVoteRepository;
-
     public function __construct(
-        GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
-        GeneralMeetingVoteRepository $generalMeetingVoteRepository
+        private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
+        private readonly GeneralMeetingVoteRepository $generalMeetingVoteRepository,
     ) {
-        $this->generalMeetingQuestionRepository = $generalMeetingQuestionRepository;
-        $this->generalMeetingVoteRepository = $generalMeetingVoteRepository;
     }
 
-    public function __invoke(Request $request, $id): RedirectResponse
+    public function __invoke($id): RedirectResponse
     {
         /** @var GeneralMeetingQuestion $question */
         $question = $this->generalMeetingQuestionRepository->get($id);
@@ -42,7 +36,7 @@ class DeleteAction extends AbstractController
         $this->addFlash('notice', 'La question a été supprimée');
 
         return $this->redirectToRoute('admin_members_general_vote_list', [
-            'date' => $question->getDate()->format('U')
+            'date' => $question->getDate()->format('U'),
         ]);
     }
 }

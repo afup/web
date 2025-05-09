@@ -12,18 +12,11 @@ use Twig\Environment;
 
 class UserListAction
 {
-    private UserRepository $userRepository;
-    private AntennesCollection $antennesCollection;
-    private Environment $twig;
-
     public function __construct(
-        UserRepository $userRepository,
-        AntennesCollection $antennesCollection,
-        Environment $twig
+        private readonly UserRepository $userRepository,
+        private readonly AntennesCollection $antennesCollection,
+        private readonly Environment $twig,
     ) {
-        $this->userRepository = $userRepository;
-        $this->antennesCollection = $antennesCollection;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response

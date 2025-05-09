@@ -11,17 +11,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MeetupsController extends AbstractController
 {
-    private ViewRenderer $view;
-    private string $algoliaAppId;
-    private string $algoliaFrontendApikey;
-
-    public function __construct(ViewRenderer $view,
-                                string $algoliaAppId,
-                                string $algoliaFrontendApikey)
-    {
-        $this->view = $view;
-        $this->algoliaAppId = $algoliaAppId;
-        $this->algoliaFrontendApikey = $algoliaFrontendApikey;
+    public function __construct(
+        private readonly ViewRenderer $view,
+        private readonly string $algoliaAppId,
+        private readonly string $algoliaFrontendApikey,
+    ) {
     }
 
     public function list(Request $request): Response

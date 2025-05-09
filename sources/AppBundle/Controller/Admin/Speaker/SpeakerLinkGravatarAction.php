@@ -13,15 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SpeakerLinkGravatarAction extends AbstractController
 {
-    private SpeakerRepository $speakerRepository;
-    private PhotoStorage $photoStorage;
-
     public function __construct(
-        SpeakerRepository $speakerRepository,
-        PhotoStorage $photoStorage
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly PhotoStorage $photoStorage,
     ) {
-        $this->speakerRepository = $speakerRepository;
-        $this->photoStorage = $photoStorage;
     }
 
     public function __invoke(Request $request): RedirectResponse
@@ -40,7 +35,7 @@ class SpeakerLinkGravatarAction extends AbstractController
         }
 
         return $this->redirectToRoute('admin_speaker_edit', [
-            'id' => $speaker->getId()
+            'id' => $speaker->getId(),
         ]);
     }
 }

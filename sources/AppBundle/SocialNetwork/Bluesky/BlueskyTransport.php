@@ -16,16 +16,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class BlueskyTransport implements Transport
 {
-    private HttpClientInterface $httpClient;
-    private string $apiIdentifier;
-    private string $apiAppPassword;
     private ?Session $session = null;
 
-    public function __construct(HttpClientInterface $httpClient, string $apiIdentifier, string $apiAppPassword)
-    {
-        $this->httpClient = $httpClient;
-        $this->apiIdentifier = $apiIdentifier;
-        $this->apiAppPassword = $apiAppPassword;
+    public function __construct(
+        private readonly HttpClientInterface $httpClient,
+        private readonly string $apiIdentifier,
+        private readonly string $apiAppPassword,
+    ) {
     }
 
     public function socialNetwork(): SocialNetwork
@@ -106,7 +103,7 @@ final class BlueskyTransport implements Transport
         if ($embedData->imageUrl !== null) {
             try {
                 $thumbnail = $this->buildThumbnail($embedData->imageUrl);
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // Si une erreur survient, on ne bloque pas la création du post.
                 // Il sera juste envoyé sans image.
                 return $embed;

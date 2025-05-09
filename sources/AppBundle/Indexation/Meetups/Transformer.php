@@ -12,11 +12,8 @@ class Transformer
 {
     const MEETUP_URL = 'https://www.meetup.com/fr-FR/';
 
-    private AntennesCollection $antennesCollection;
-
-    public function __construct(AntennesCollection $antennesCollection)
+    public function __construct(private readonly AntennesCollection $antennesCollection)
     {
-        $this->antennesCollection = $antennesCollection;
     }
 
     /**

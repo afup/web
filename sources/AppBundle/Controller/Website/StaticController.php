@@ -13,13 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class StaticController extends AbstractController
 {
-    private ViewRenderer $view;
-    private string $superAperoCsvUrl;
-
-    public function __construct(ViewRenderer $view, string $superAperoCsvUrl)
-    {
-        $this->view = $view;
-        $this->superAperoCsvUrl = $superAperoCsvUrl;
+    public function __construct(
+        private readonly ViewRenderer $view,
+        private readonly string $superAperoCsvUrl,
+    ) {
     }
 
     public function offices(): Response
@@ -42,18 +39,18 @@ class StaticController extends AbstractController
         $aperos = [];
 
         while (false !== ($row = fgetcsv($fp))) {
-            if (trim($row[0]) === '') {
+            if (trim((string) $row[0]) === '') {
                 continue;
             }
 
             [$code, $meeetupId, $content] = $row;
 
             $apero = [
-                'code' => mb_strtolower($code),
+                'code' => mb_strtolower((string) $code),
                 'content' => $content,
             ];
 
-            if (strlen(trim($meeetupId)) !== 0) {
+            if (strlen(trim((string) $meeetupId)) !== 0) {
                 $apero['meetup_id'] = $meeetupId;
             }
 

@@ -10,13 +10,10 @@ use AppBundle\SocialNetwork\Embed;
 use AppBundle\SocialNetwork\SocialNetwork;
 use AppBundle\SocialNetwork\Status;
 
-final class StatusGenerator
+final readonly class StatusGenerator
 {
-    private SocialNetwork $socialNetwork;
-
-    public function __construct(SocialNetwork $socialNetwork)
+    public function __construct(private SocialNetwork $socialNetwork)
     {
-        $this->socialNetwork = $socialNetwork;
     }
 
     /**
@@ -34,7 +31,7 @@ final class StatusGenerator
         $mentionsText = $this->buildMentionsText($speakers);
 
         // Nettoyage des espaces dans le titre
-        $title = trim(preg_replace('/\s+/', ' ', $talk->getTitle()));
+        $title = trim((string) preg_replace('/\s+/', ' ', $talk->getTitle()));
 
         $text = sprintf(
             "« %s », la conférence de %s à revoir sur le site de l'AFUP",

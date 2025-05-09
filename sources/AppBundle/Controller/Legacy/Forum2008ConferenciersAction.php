@@ -11,13 +11,10 @@ use Twig\Environment;
 
 class Forum2008ConferenciersAction
 {
-    private AppelConferencier $appelConferencier;
-    private Environment $twig;
-
-    public function __construct(AppelConferencier $appelConferencier, Environment $twig)
-    {
-        $this->appelConferencier = $appelConferencier;
-        $this->twig = $twig;
+    public function __construct(
+        private readonly AppelConferencier $appelConferencier,
+        private readonly Environment $twig,
+    ) {
     }
 
     public function __invoke(Request $request): Response

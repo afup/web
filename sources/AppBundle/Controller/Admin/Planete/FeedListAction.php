@@ -14,15 +14,10 @@ use Twig\Environment;
 
 class FeedListAction
 {
-    private FeedRepository $feedRepository;
-    private Environment $twig;
-
     public function __construct(
-        FeedRepository $feedRepository,
-        Environment $twig
+        private readonly FeedRepository $feedRepository,
+        private readonly Environment $twig,
     ) {
-        $this->feedRepository = $feedRepository;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response
@@ -59,7 +54,7 @@ class FeedListAction
                 try {
                     new SimpleXmlElement(file_get_contents($f->getFeed()));
                     $results[$f->getId()] = true;
-                } catch (Exception $e) {
+                } catch (Exception) {
                     $results[$f->getId()] = false;
                 }
             }

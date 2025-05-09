@@ -11,15 +11,10 @@ use Twig\Environment;
 
 class Forum2016ConferenciersAction
 {
-    private AppelConferencier $appelConferencier;
-    private Environment $twig;
-
     public function __construct(
-        AppelConferencier $appelConferencier,
-        Environment $twig
+        private readonly AppelConferencier $appelConferencier,
+        private readonly Environment $twig,
     ) {
-        $this->appelConferencier = $appelConferencier;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response
@@ -36,8 +31,8 @@ class Forum2016ConferenciersAction
                 }
 
                 if (!isset($conferenciers[$conferencier['conferencier_id']])) {
-                    $conferencier['prenom'] = ucfirst(strtolower($conferencier['prenom']));
-                    $conferencier['nom'] = strtoupper($conferencier['nom']);
+                    $conferencier['prenom'] = ucfirst(strtolower((string) $conferencier['prenom']));
+                    $conferencier['nom'] = strtoupper((string) $conferencier['nom']);
                     $conferenciers[$conferencier['conferencier_id']] = $conferencier;
                 }
 

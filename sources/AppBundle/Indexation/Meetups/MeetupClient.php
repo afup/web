@@ -11,18 +11,15 @@ use CuyZ\Valinor\Mapper\Source\Source;
 use CuyZ\Valinor\MapperBuilder;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class MeetupClient
+final readonly class MeetupClient
 {
     private const QUANTITY_PAST_EVENTS = 2;
     private const QUANTITY_UPCOMING_EVENTS = 10;
 
-    private HttpClientInterface $httpClient;
-    private AntennesCollection $antennesCollection;
-
-    public function __construct(HttpClientInterface $httpClient, AntennesCollection $antennesCollection)
-    {
-        $this->httpClient = $httpClient;
-        $this->antennesCollection = $antennesCollection;
+    public function __construct(
+        private HttpClientInterface $httpClient,
+        private AntennesCollection $antennesCollection,
+    ) {
     }
 
     /**

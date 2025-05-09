@@ -14,12 +14,12 @@ use Twig\TwigFunction;
 class TwigExtension extends AbstractExtension implements GlobalsInterface
 {
     public function __construct(
-        private Parsedown $parsedown,
-        private Parsedown $emailParsedown,
+        private readonly Parsedown $parsedown,
+        private readonly Parsedown $emailParsedown,
         #[Autowire('%google_analytics_enabled%')]
-        private string $googleAnalyticsEnabled,
+        private readonly string $googleAnalyticsEnabled,
         #[Autowire('%google_analytics_id%')]
-        private string $googleAnalyticsId,
+        private readonly string $googleAnalyticsId,
     ) {
     }
 
@@ -35,7 +35,7 @@ class TwigExtension extends AbstractExtension implements GlobalsInterface
                     return $response;
                 }
                 return '';
-            }, ['is_safe' => ['html']])
+            }, ['is_safe' => ['html']]),
         ];
     }
 

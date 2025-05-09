@@ -21,19 +21,13 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class LeadController extends AbstractController
 {
-    private Mailer $mailer;
-    private EventDispatcherInterface $eventDispatcher;
-    private SponsorshipLeadMail $sponsorshipLeadMail;
-    private RepositoryFactory $repositoryFactory;
-    private EventActionHelper $eventActionHelper;
-
-    public function __construct(Mailer $mailer, EventDispatcherInterface $eventDispatcher, SponsorshipLeadMail $sponsorshipLeadMail, RepositoryFactory $repositoryFactory, EventActionHelper $eventActionHelper)
-    {
-        $this->mailer = $mailer;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->sponsorshipLeadMail = $sponsorshipLeadMail;
-        $this->repositoryFactory = $repositoryFactory;
-        $this->eventActionHelper = $eventActionHelper;
+    public function __construct(
+        private readonly Mailer $mailer,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly SponsorshipLeadMail $sponsorshipLeadMail,
+        private readonly RepositoryFactory $repositoryFactory,
+        private readonly EventActionHelper $eventActionHelper,
+    ) {
     }
 
     public function becomeSponsor($eventSlug, Request $request)
@@ -62,7 +56,7 @@ class LeadController extends AbstractController
 
         return $this->render('event/sponsorship_file/form.html.twig', [
             'event' => $event,
-            'leadForm' => $leadForm->createView()
+            'leadForm' => $leadForm->createView(),
         ]);
     }
 

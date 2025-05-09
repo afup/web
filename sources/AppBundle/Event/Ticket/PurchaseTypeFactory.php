@@ -16,24 +16,12 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class PurchaseTypeFactory
 {
-    private AuthorizationCheckerInterface $securityChecker;
-
-    private FormFactoryInterface $formFactory;
-
-    private InvoiceFactory $invoiceFactory;
-
-    private SpeakerRepository $speakerRepository;
-
     public function __construct(
-        AuthorizationCheckerInterface $securityChecker,
-        FormFactoryInterface $formFactory,
-        InvoiceFactory $invoiceFactory,
-        SpeakerRepository $speakerRepository
+        private readonly AuthorizationCheckerInterface $securityChecker,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly InvoiceFactory $invoiceFactory,
+        private readonly SpeakerRepository $speakerRepository,
     ) {
-        $this->securityChecker = $securityChecker;
-        $this->formFactory = $formFactory;
-        $this->invoiceFactory = $invoiceFactory;
-        $this->speakerRepository = $speakerRepository;
     }
 
     public function getPurchaseForUser(Event $event, User $user = null, $specialPriceToken = null)

@@ -279,7 +279,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
                 'columnName' => 'public_profile_enabled',
                 'fieldName' => 'publicProfileEnabled',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'description',

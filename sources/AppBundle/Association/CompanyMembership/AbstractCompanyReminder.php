@@ -17,28 +17,12 @@ use AppBundle\Email\Mailer\Message;
 
 abstract class AbstractCompanyReminder implements MembershipReminderInterface
 {
-    private Mailer $mailer;
-
-    protected $membershipFee;
-
-    protected $membersPerFee;
-
-    private SubscriptionReminderLogRepository $subscriptionReminderLogRepository;
-
-    /**
-     * @param int                               $membershipFee
-     * @param int                               $membersPerFee
-     */
     public function __construct(
-        Mailer $mailer,
-        $membershipFee,
-        $membersPerFee,
-        SubscriptionReminderLogRepository $subscriptionReminderLogRepository
+        private readonly Mailer $mailer,
+        protected int $membershipFee,
+        protected int $membersPerFee,
+        private readonly SubscriptionReminderLogRepository $subscriptionReminderLogRepository,
     ) {
-        $this->mailer = $mailer;
-        $this->membershipFee = $membershipFee;
-        $this->membersPerFee = $membersPerFee;
-        $this->subscriptionReminderLogRepository = $subscriptionReminderLogRepository;
     }
 
     abstract protected function getText();

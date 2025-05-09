@@ -11,11 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CleanThrottlingCommand extends Command
 {
-    private ActionThrottling $actionThrottling;
-
-    public function __construct(ActionThrottling $actionThrottling)
+    public function __construct(private readonly ActionThrottling $actionThrottling)
     {
-        $this->actionThrottling = $actionThrottling;
         parent::__construct();
     }
 

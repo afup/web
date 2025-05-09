@@ -8,16 +8,11 @@ class Factory
 {
     public function create(string $filePath, string $code): Importer
     {
-        switch ($code) {
-            case CreditMutuel::CODE:
-                $importer = new CreditMutuel();
-                break;
-            case CreditMutuelLivret::CODE:
-                $importer = new CreditMutuelLivret();
-                break;
-            default:
-                throw new \InvalidArgumentException("Unknown importer for code '$code'");
-        }
+        $importer = match ($code) {
+            CreditMutuel::CODE => new CreditMutuel(),
+            CreditMutuelLivret::CODE => new CreditMutuelLivret(),
+            default => throw new \InvalidArgumentException("Unknown importer for code '$code'"),
+        };
 
         $importer->initialize($filePath);
 

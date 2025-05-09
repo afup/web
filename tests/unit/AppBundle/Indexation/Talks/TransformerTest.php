@@ -87,7 +87,7 @@ final class TransformerTest extends TestCase
                         'first_name' => 'Dimitri',
                         'last_name' => 'Fontaine',
                         'label' => 'Dimitri FONTAINE',
-                    ]
+                    ],
                 ],
                 'has_video' => true,
                 'video_url' => 'https://www.youtube.com/watch?v=hzn0ODTMNDk',
@@ -103,7 +103,7 @@ final class TransformerTest extends TestCase
                 'language' => [
                     'code' => 'fr',
                     'label' => 'Français',
-                ]
+                ],
             ],
             $result,
         );

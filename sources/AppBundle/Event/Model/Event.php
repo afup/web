@@ -623,7 +623,7 @@ class Event implements NotifyPropertyInterface
 
     public function isAfupDay(): bool
     {
-        return str_starts_with($this->getTitle(), 'AFUP Day');
+        return str_starts_with((string) $this->getTitle(), 'AFUP Day');
     }
 
     /**

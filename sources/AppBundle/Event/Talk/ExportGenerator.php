@@ -12,11 +12,8 @@ use CCMBenchmark\Ting\Query\QueryException;
 
 class ExportGenerator
 {
-    private TalkRepository $talkRepository;
-
-    public function __construct(TalkRepository $talkRepository)
+    public function __construct(private readonly TalkRepository $talkRepository)
     {
-        $this->talkRepository = $talkRepository;
     }
 
     /**
@@ -133,7 +130,7 @@ class ExportGenerator
     {
         try {
             return $talk->getLanguageLabel();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return '';
         }
     }

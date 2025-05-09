@@ -18,17 +18,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CfpNotificationCommand extends Command
 {
-    private MessageFactory $messageFactory;
-    private SlackNotifier $slackNotifier;
-    private RepositoryFactory $ting;
-
-    public function __construct(MessageFactory $messageFactory,
-                                SlackNotifier $slackNotifier,
-                                RepositoryFactory $ting)
-    {
-        $this->messageFactory = $messageFactory;
-        $this->slackNotifier = $slackNotifier;
-        $this->ting = $ting;
+    public function __construct(
+        private readonly MessageFactory $messageFactory,
+        private readonly SlackNotifier $slackNotifier,
+        private readonly RepositoryFactory $ting,
+    ) {
         parent::__construct();
     }
 

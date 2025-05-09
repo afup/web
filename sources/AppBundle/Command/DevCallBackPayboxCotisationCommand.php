@@ -27,7 +27,7 @@ EOF;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $parsedUrl = parse_url($input->getArgument('url_paiement_effectue'));
+        $parsedUrl = parse_url((string) $input->getArgument('url_paiement_effectue'));
 
         $query = $parsedUrl['query'];
 

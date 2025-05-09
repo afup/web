@@ -39,17 +39,17 @@ class RoomRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'nom',
                 'fieldName' => 'name',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'id_forum',
                 'fieldName' => 'eventId',
-                'type' => 'int'
+                'type' => 'int',
             ])
         ;
 

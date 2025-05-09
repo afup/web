@@ -11,15 +11,10 @@ use Twig\Environment;
 
 class ReminderLogAction
 {
-    private SubscriptionReminderLogRepository $subscriptionReminderLogRepository;
-    private Environment $twig;
-
     public function __construct(
-        SubscriptionReminderLogRepository $subscriptionReminderLogRepository,
-        Environment $twig
+        private readonly SubscriptionReminderLogRepository $subscriptionReminderLogRepository,
+        private readonly Environment $twig,
     ) {
-        $this->subscriptionReminderLogRepository = $subscriptionReminderLogRepository;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response

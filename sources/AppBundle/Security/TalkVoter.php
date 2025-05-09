@@ -13,11 +13,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class TalkVoter extends Voter
 {
-    private SpeakerRepository $speakerRepository;
-
-    public function __construct(SpeakerRepository $speakerRepository)
+    public function __construct(private readonly SpeakerRepository $speakerRepository)
     {
-        $this->speakerRepository = $speakerRepository;
     }
 
     /**

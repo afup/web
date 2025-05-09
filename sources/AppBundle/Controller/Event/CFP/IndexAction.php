@@ -20,27 +20,15 @@ use Symfony\Component\HttpFoundation\Response;
 class IndexAction extends AbstractController
 {
     const MAX_EVENTS_HISTORY = 50;
-    private TalkRepository $talkRepository;
-    private SpeakerFactory $speakerFactory;
-    private PhotoStorage $photoStorage;
-    private SidebarRenderer $sidebarRenderer;
-    private EventActionHelper $eventActionHelper;
-    private EventRepository $eventRepository;
 
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        EventRepository $eventRepository,
-        TalkRepository $talkRepository,
-        SpeakerFactory $speakerFactory,
-        PhotoStorage $photoStorage,
-        SidebarRenderer $sidebarRenderer
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly EventRepository $eventRepository,
+        private readonly TalkRepository $talkRepository,
+        private readonly SpeakerFactory $speakerFactory,
+        private readonly PhotoStorage $photoStorage,
+        private readonly SidebarRenderer $sidebarRenderer,
     ) {
-        $this->talkRepository = $talkRepository;
-        $this->speakerFactory = $speakerFactory;
-        $this->photoStorage = $photoStorage;
-        $this->sidebarRenderer = $sidebarRenderer;
-        $this->eventActionHelper = $eventActionHelper;
-        $this->eventRepository = $eventRepository;
     }
 
     public function __invoke(Request $request): Response

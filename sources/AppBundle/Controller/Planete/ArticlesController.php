@@ -9,14 +9,10 @@ use PlanetePHP\FeedArticleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-final class ArticlesController
+final readonly class ArticlesController
 {
-    private FeedArticleRepository $feedArticleRepository;
-
-    public function __construct(
-        FeedArticleRepository $feedArticleRepository
-    ) {
-        $this->feedArticleRepository = $feedArticleRepository;
+    public function __construct(private FeedArticleRepository $feedArticleRepository)
+    {
     }
 
     public function __invoke(Request $request): Response
@@ -68,7 +64,7 @@ final class ArticlesController
         }
 
         if (!str_starts_with($url, 'http')) {
-            $feedUrl = rtrim($article->getFeedUrl(), '/');
+            $feedUrl = rtrim((string) $article->getFeedUrl(), '/');
             $articleUrl = ltrim($url, '/');
 
             return implode('/', [$feedUrl, $articleUrl]);

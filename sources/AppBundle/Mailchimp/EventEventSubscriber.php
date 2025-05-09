@@ -9,14 +9,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EventEventSubscriber implements EventSubscriberInterface
 {
-    private Mailchimp $mailchimp;
-
-    private $membersList;
-
-    public function __construct(Mailchimp $mailchimp, $membersList)
-    {
-        $this->mailchimp = $mailchimp;
-        $this->membersList = $membersList;
+    public function __construct(
+        private readonly Mailchimp $mailchimp,
+        private $membersList,
+    ) {
     }
 
     public function onUserDisabled(UserDisabledEvent $userDisabledEvent): void

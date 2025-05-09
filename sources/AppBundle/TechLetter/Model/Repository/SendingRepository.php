@@ -58,28 +58,28 @@ SQL;
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'sending_date',
                 'fieldName' => 'sendingDate',
-                'type' => 'datetime'
+                'type' => 'datetime',
             ])
             ->addField([
                 'columnName' => 'techletter',
                 'fieldName' => 'techletter',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'sent_to_mailchimp',
                 'fieldName' => 'sentToMailchimp',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'archive_url',
                 'fieldName' => 'archiveUrl',
-                'type' => 'string'
+                'type' => 'string',
             ])
         ;
 

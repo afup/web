@@ -12,19 +12,13 @@ use UnexpectedValueException;
 
 class PhpMailerAdapter implements MailerAdapter
 {
-    private ?string $smtpServer;
-    private ?string $tls;
-    private ?string $username;
-    private ?string $password;
-    private ?string $port;
-
-    public function __construct($smtpServer, $tls, $username, $password, $port)
-    {
-        $this->smtpServer = $smtpServer;
-        $this->tls = $tls;
-        $this->username = $username;
-        $this->password = $password;
-        $this->port = $port;
+    public function __construct(
+        private readonly ?string $smtpServer,
+        private readonly ?string $tls,
+        private readonly ?string $username,
+        private readonly ?string $password,
+        private readonly ?string $port,
+    ) {
     }
 
     public static function createFromConfiguration(Configuration $configuration): self

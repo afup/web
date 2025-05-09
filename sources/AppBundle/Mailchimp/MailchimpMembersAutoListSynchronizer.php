@@ -10,19 +10,13 @@ use Psr\Log\NullLogger;
 
 class MailchimpMembersAutoListSynchronizer
 {
-    private Mailchimp $mailchimp;
-
-    private UserRepository $userRepository;
-
-    private string $listId;
-
     private LoggerInterface $logger;
 
-    public function __construct(Mailchimp $mailchimp, UserRepository $userRepository, string $listId)
-    {
-        $this->mailchimp = $mailchimp;
-        $this->userRepository = $userRepository;
-        $this->listId = $listId;
+    public function __construct(
+        private readonly Mailchimp $mailchimp,
+        private readonly UserRepository $userRepository,
+        private readonly string $listId,
+    ) {
         $this->logger = new NullLogger();
     }
 
@@ -84,7 +78,7 @@ class MailchimpMembersAutoListSynchronizer
         }
 
         if ($errors !== []) {
-            throw new \RuntimeException('Errors during subscribeAddresses : ' . implode($errors, PHP_EOL));
+            throw new \RuntimeException('Errors during subscribeAddresses : ' . implode(PHP_EOL, $errors));
         }
     }
 

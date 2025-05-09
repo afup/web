@@ -28,7 +28,7 @@ class Ticket implements NotifyPropertyInterface
         AFUP_TRANSPORT_MODE_TRAIN => 'Train',
         AFUP_TRANSPORT_MODE_AVION_ECO => 'Avion classe économique',
         AFUP_TRANSPORT_MODE_AVION_BUSINESS => 'Avion classe business',
-        AFUP_TRANSPORT_MODE_COMMUN => 'Transports en commun'
+        AFUP_TRANSPORT_MODE_COMMUN => 'Transports en commun',
     ];
 
     const TRANSPORT_DISTANCES = [

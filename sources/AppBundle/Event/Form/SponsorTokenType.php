@@ -19,18 +19,18 @@ class SponsorTokenType extends AbstractType
     {
         $builder
             ->add('company', TextType::class, [
-                'label' => 'Sponsor (société)'
+                'label' => 'Sponsor (société)',
             ])
             ->add('contactEmail', EmailType::class, [
-                'label' => 'Email de contact'
+                'label' => 'Email de contact',
             ])
             ->add('token', TextType::class)
             ->add('maxInvitations', IntegerType::class, [
-                'label' => 'Nombre d\'invitations'
+                'label' => 'Nombre d\'invitations',
             ])
             ->add('qrCodesScannerAvailable', CheckboxType::class, [
                 'label' => 'Autoriser le scan de QR Codes',
-                'required' => false
+                'required' => false,
             ])
         ;
     }
@@ -38,7 +38,7 @@ class SponsorTokenType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => SponsorTicket::class
+            'data_class' => SponsorTicket::class,
         ]);
     }
 }

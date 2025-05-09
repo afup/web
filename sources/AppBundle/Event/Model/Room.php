@@ -18,10 +18,8 @@ class Room implements NotifyPropertyInterface
      */
     private $name;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\GreaterThan(0)
-     */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(0)]
     private ?int $eventId = null;
 
     /**

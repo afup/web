@@ -21,18 +21,11 @@ class SpeakerAddAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private EventRepository $eventRepository;
-    private SpeakerRepository $speakerRepository;
-    private PhotoStorage $photoStorage;
-
     public function __construct(
-        EventRepository $eventRepository,
-        SpeakerRepository $speakerRepository,
-        PhotoStorage $photoStorage
+        private EventRepository $eventRepository,
+        private SpeakerRepository $speakerRepository,
+        private PhotoStorage $photoStorage,
     ) {
-        $this->eventRepository = $eventRepository;
-        $this->speakerRepository = $speakerRepository;
-        $this->photoStorage = $photoStorage;
     }
 
     public function __invoke(Request $request): Response
@@ -42,7 +35,7 @@ class SpeakerAddAction extends AbstractController
         Assertion::notNull($event);
         $data = new SpeakerFormData();
         $form = $this->createForm(SpeakerType::class, $data, [
-            SpeakerType::OPT_USER_GITHUB => true
+            SpeakerType::OPT_USER_GITHUB => true,
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -71,7 +64,7 @@ class SpeakerAddAction extends AbstractController
             $this->addFlash('notice', 'Le conférencier a été ajouté');
 
             return $this->redirectToRoute('admin_speaker_list', [
-                'eventId' => $event->getId()
+                'eventId' => $event->getId(),
             ]);
         }
 

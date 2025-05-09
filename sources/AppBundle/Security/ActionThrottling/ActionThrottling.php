@@ -6,11 +6,8 @@ namespace AppBundle\Security\ActionThrottling;
 
 class ActionThrottling
 {
-    private LogRepository $logRepository;
-
-    public function __construct(LogRepository $logRepository)
+    public function __construct(private readonly LogRepository $logRepository)
     {
-        $this->logRepository = $logRepository;
     }
 
     /**

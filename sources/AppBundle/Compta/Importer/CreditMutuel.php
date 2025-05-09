@@ -43,14 +43,14 @@ class CreditMutuel implements Importer
                 continue;
             }
 
-            $dateEcriture = implode('-', array_reverse(explode('/', $data[0])));
+            $dateEcriture = implode('-', array_reverse(explode('/', (string) $data[0])));
             if (!isset($nbLineByDate[$dateEcriture])) {
                 $nbLineByDate[$dateEcriture] = 0;
             }
             $nbLineByDate[$dateEcriture]++;
 
             $description = $data[4];
-            $description = implode(' ', array_filter(explode(' ', $description)));
+            $description = implode(' ', array_filter(explode(' ', (string) $description)));
 
             if ('' === $data[3]) {
                 $montant = abs((float) str_replace(',', '.', $data[2]));

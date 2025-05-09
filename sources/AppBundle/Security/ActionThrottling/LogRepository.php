@@ -39,7 +39,7 @@ class LogRepository extends Repository implements MetadataInitializer
         $createdOn->sub($interval);
 
         $params = [
-            'createdOn' => $createdOn->format('Y-m-d H:i:s')
+            'createdOn' => $createdOn->format('Y-m-d H:i:s'),
         ];
 
         $where = [];
@@ -73,7 +73,7 @@ class LogRepository extends Repository implements MetadataInitializer
         ');
         $query->setParams([
             'action' => $action,
-            'ip' => ip2long($ip)
+            'ip' => ip2long($ip),
         ]);
 
         $query->execute();
@@ -87,7 +87,7 @@ class LogRepository extends Repository implements MetadataInitializer
         ');
         $date = (new \DateTime())->sub($delay);
         $query->setParams([
-            'date' => $date->format('Y-m-d H:i:s')
+            'date' => $date->format('Y-m-d H:i:s'),
         ]);
 
         $query->execute();
@@ -110,27 +110,27 @@ class LogRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'ip',
                 'fieldName' => 'ip',
-                'type' => 'ip'
+                'type' => 'ip',
             ])
             ->addField([
                 'columnName' => 'action',
                 'fieldName' => 'action',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'object_id',
                 'fieldName' => 'objectId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'created_on',
                 'fieldName' => 'createdOn',
-                'type' => 'datetime'
+                'type' => 'datetime',
             ])
         ;
 

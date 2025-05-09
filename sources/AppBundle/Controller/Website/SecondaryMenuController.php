@@ -12,10 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SecondaryMenuController extends AbstractController
 {
-    private RequestStack $requestStack;
-    public function __construct(RequestStack $requestStack)
+    public function __construct(private readonly RequestStack $requestStack)
     {
-        $this->requestStack = $requestStack;
     }
     public function display(Request $request): Response
     {
@@ -49,7 +47,7 @@ class SecondaryMenuController extends AbstractController
     {
         $url = $masterRequest->getUri();
 
-        $pattern = '/' . preg_quote($feuille['lien'], '/') . '/';
+        $pattern = '/' . preg_quote((string) $feuille['lien'], '/') . '/';
 
         if (preg_match($pattern, $url)) {
             return true;
@@ -57,7 +55,7 @@ class SecondaryMenuController extends AbstractController
 
         $isCurrent = false;
         if ($feuille['patterns']) {
-            foreach (explode(PHP_EOL, $feuille['patterns']) as $pattern) {
+            foreach (explode(PHP_EOL, (string) $feuille['patterns']) as $pattern) {
                 $pattern = trim($pattern);
                 if ($pattern === '') {
                     continue;

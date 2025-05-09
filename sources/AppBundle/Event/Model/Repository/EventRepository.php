@@ -87,7 +87,10 @@ class EventRepository extends Repository implements MetadataInitializer
         return $events->first();
     }
 
-    public function getList($id = null)
+    /**
+     * @return list
+     */
+    public function getList($id = null): array
     {
         $sql = <<<ENDSQL
 SELECT f.id, f.titre, f.path, f.nb_places, f.date_debut, f.date_fin, f.date_fin_appel_conferencier, f.date_fin_vente, f.archived_at
@@ -200,7 +203,7 @@ SQL;
     public function getLastYearEvent(Event $event): Event
     {
         // Recherche de l'année dans le nom
-        preg_match('#\d{4}#', $event->getTitle(), $matches);
+        preg_match('#\d{4}#', (string) $event->getTitle(), $matches);
         if (!$matches) {
             return $this->getLastEvent();
         }
@@ -268,25 +271,25 @@ SQL;
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'titre',
                 'fieldName' => 'title',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'nb_places',
                 'fieldName' => 'seats',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'date_debut',
                 'fieldName' => 'dateStart',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => false]
-                ]
+                    'unserialize' => ['unSerializeUseFormat' => false],
+                ],
 
             ])
             ->addField([
@@ -294,8 +297,8 @@ SQL;
                 'fieldName' => 'dateEnd',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => false]
-                ]
+                    'unserialize' => ['unSerializeUseFormat' => false],
+                ],
             ])
             ->addField([
                 'columnName' => 'date_fin_appel_projet',
@@ -305,7 +308,7 @@ SQL;
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
-                ]
+                ],
             ])
             ->addField([
                 'columnName' => 'date_debut_appel_conferencier',
@@ -314,7 +317,7 @@ SQL;
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
-                ]
+                ],
             ])
             ->addField([
                 'columnName' => 'date_fin_appel_conferencier',
@@ -324,12 +327,12 @@ SQL;
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
-                ]
+                ],
             ])
             ->addField([
                 'columnName' => 'date_fin_vote',
                 'fieldName' => 'dateEndVote',
-                'type' => 'datetime'
+                'type' => 'datetime',
             ])
             ->addField([
                 'columnName' => 'date_fin_prevente',
@@ -339,7 +342,7 @@ SQL;
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
-                ]
+                ],
             ])
             ->addField([
                 'columnName' => 'date_fin_vente',
@@ -349,7 +352,7 @@ SQL;
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
-                ]
+                ],
             ])
             ->addField([
                 'columnName' => 'date_fin_vente_token_sponsor',
@@ -359,7 +362,7 @@ SQL;
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
-                ]
+                ],
             ])
             ->addField([
                 'columnName' => 'date_fin_saisie_repas_speakers',
@@ -369,7 +372,7 @@ SQL;
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
-                ]
+                ],
             ])
             ->addField([
                 'columnName' => 'date_annonce_planning',
@@ -379,7 +382,7 @@ SQL;
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
-                ]
+                ],
             ])
             ->addField([
                 'columnName' => 'date_fin_saisie_nuites_hotel',
@@ -389,7 +392,7 @@ SQL;
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
-                ]
+                ],
             ])
             ->addField([
                 'columnName' => 'text',
@@ -397,51 +400,51 @@ SQL;
                 'type' => 'json',
                 'serializer_options' => [
                     'unserialize' => ['assoc' => true],
-                ]
+                ],
             ])
             ->addField([
                 'columnName' => 'path',
                 'fieldName' => 'path',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'logo_url',
                 'fieldName' => 'logoUrl',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'place_name',
                 'fieldName' => 'placeName',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'place_address',
                 'fieldName' => 'placeAddress',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'vote_enabled',
                 'fieldName' => 'voteEnabled',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'has_prices_defined_with_vat',
                 'fieldName' => 'hasPricesDefinedWithVat',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'speakers_diner_enabled',
                 'fieldName' => 'speakersDinerEnabled',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'accomodation_enabled',
                 'fieldName' => 'accomodationEnabled',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'waiting_list_url',
@@ -452,7 +455,7 @@ SQL;
                 'columnName' => 'transport_information_enabled',
                 'fieldName' => 'transportInformationEnabled',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'archived_at',

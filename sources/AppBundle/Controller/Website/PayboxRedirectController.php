@@ -12,11 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PayboxRedirectController extends AbstractController
 {
-    private ViewRenderer $view;
-
-    public function __construct(ViewRenderer $view)
+    public function __construct(private readonly ViewRenderer $view)
     {
-        $this->view = $view;
     }
 
     public function index(Request $request, $type = 'success'): Response
@@ -26,7 +23,7 @@ class PayboxRedirectController extends AbstractController
         return $this->view->render('site/company_membership/paybox_redirect.html.twig', [
             'payboxResponse' => $payboxResponse,
             'status' => $request->get('status'),
-            'return_type' => $type
+            'return_type' => $type,
         ]);
     }
 }

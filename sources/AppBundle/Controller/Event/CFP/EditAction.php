@@ -28,42 +28,19 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EditAction extends AbstractController
 {
-    private SpeakerFactory $speakerFactory;
-    private TranslatorInterface $translator;
-    private TalkFormHandler $talkFormHandler;
-    private TalkRepository $talkRepository;
-    private TalkInvitationRepository $talkInvitationRepository;
-    private SpeakerRepository $speakerRepository;
-    private VoteRepository $voteRepository;
-    private SidebarRenderer $sidebarRenderer;
-    private EventActionHelper $eventActionHelper;
-    private AuthorizationCheckerInterface $authorizationChecker;
-    private InvitationFormHandler $invitationFormHandler;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        TalkRepository $talkRepository,
-        TalkInvitationRepository $talkInvitationRepository,
-        TalkFormHandler $talkFormHandler,
-        InvitationFormHandler $invitationFormHandler,
-        SpeakerFactory $speakerFactory,
-        TranslatorInterface $translator,
-        SpeakerRepository $speakerRepository,
-        VoteRepository $voteRepository,
-        AuthorizationCheckerInterface $authorizationChecker,
-        SidebarRenderer $sidebarRenderer
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly TalkRepository $talkRepository,
+        private readonly TalkInvitationRepository $talkInvitationRepository,
+        private readonly TalkFormHandler $talkFormHandler,
+        private readonly InvitationFormHandler $invitationFormHandler,
+        private readonly SpeakerFactory $speakerFactory,
+        private readonly TranslatorInterface $translator,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly VoteRepository $voteRepository,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly SidebarRenderer $sidebarRenderer,
     ) {
-        $this->speakerFactory = $speakerFactory;
-        $this->translator = $translator;
-        $this->talkFormHandler = $talkFormHandler;
-        $this->talkRepository = $talkRepository;
-        $this->talkInvitationRepository = $talkInvitationRepository;
-        $this->speakerRepository = $speakerRepository;
-        $this->voteRepository = $voteRepository;
-        $this->sidebarRenderer = $sidebarRenderer;
-        $this->eventActionHelper = $eventActionHelper;
-        $this->invitationFormHandler = $invitationFormHandler;
-        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function __invoke(Request $request)
@@ -78,7 +55,7 @@ class EditAction extends AbstractController
             $this->addFlash('error', $this->translator->trans('Vous devez remplir votre profil conférencier afin de pouvoir soumettre un sujet.'));
 
             return $this->redirectToRoute('cfp_speaker', [
-                'eventSlug' => $event->getPath()
+                'eventSlug' => $event->getPath(),
             ]);
         }
         $talkId = (int) $request->attributes->get('talkId');

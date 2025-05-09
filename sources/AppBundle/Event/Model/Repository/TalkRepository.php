@@ -157,7 +157,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             'user' => $user->getId(),
             'excluded_event' => $event->getId(),
             'excluded_user' => $user->getId(),
-            'randomSeed' => $randomSeed
+            'randomSeed' => $randomSeed,
         ]);
 
         return $query->query();
@@ -330,142 +330,142 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'id_forum',
                 'fieldName' => 'forumId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'date_soumission',
                 'fieldName' => 'submittedOn',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => false]
-                ]
+                    'unserialize' => ['unSerializeUseFormat' => false],
+                ],
             ])
             ->addField([
                 'columnName' => 'titre',
                 'fieldName' => 'title',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'abstract',
                 'fieldName' => 'abstract',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'staff_notes',
                 'fieldName' => 'staffNotes',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'genre',
                 'fieldName' => 'type',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'skill',
                 'fieldName' => 'skill',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'with_workshop',
                 'fieldName' => 'withWorkshop',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'workshop_abstract',
                 'fieldName' => 'workshopAbstract',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'plannifie',
                 'fieldName' => 'scheduled',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'needs_mentoring',
                 'fieldName' => 'needsMentoring',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'youtube_id',
                 'fieldName' => 'youtubeId',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'video_has_fr_subtitles',
                 'fieldName' => 'videoHasFrSubtitles',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'video_has_en_subtitles',
                 'fieldName' => 'videoHasEnSubtitles',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'slides_url',
                 'fieldName' => 'slidesUrl',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'blog_post_url',
                 'fieldName' => 'blogPostUrl',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'interview_url',
                 'fieldName' => 'interviewUrl',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'joindin',
                 'fieldName' => 'joindinId',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'openfeedback_path',
                 'fieldName' => 'openfeedbackPath',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'language_code',
                 'fieldName' => 'languageCode',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'tweets',
                 'fieldName' => 'tweets',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'transcript',
                 'fieldName' => 'transcript',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'verbatim',
                 'fieldName' => 'verbatim',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'markdown',
                 'fieldName' => 'useMarkdown',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'has_allowed_to_sharing_with_local_offices',
                 'fieldName' => 'hasAllowedToSharingWithLocalOffices',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ]);
 
         return $metadata;

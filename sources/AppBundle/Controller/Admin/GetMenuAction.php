@@ -11,19 +11,12 @@ use Twig\Environment;
 
 class GetMenuAction
 {
-    /** @var array<string, mixed> */
-    private array $backOfficePages;
-    private Environment $twig;
-    private RequestStack $requestStack;
-
     public function __construct(
-        RequestStack $requestStack,
-        Environment $twig,
-        array $backOfficePages
+        private readonly RequestStack $requestStack,
+        private readonly Environment $twig,
+        /** @var array<string, mixed> */
+        private readonly array $backOfficePages,
     ) {
-        $this->backOfficePages = $backOfficePages;
-        $this->requestStack = $requestStack;
-        $this->twig = $twig;
     }
 
     public function __invoke(): Response

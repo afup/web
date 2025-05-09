@@ -40,28 +40,28 @@ class ContactDetailsType extends AbstractType
             ->add('email', EmailType::class, [
                 'constraints' => [
                     new Email(),
-                ]
+                ],
             ])
             ->add('address', TextareaType::class, [
                 'constraints' => [
                     new NotBlank(),
-                ]
+                ],
             ])
             ->add('zipcode', TextType::class, [
                 'label' => 'Zip code',
                 'constraints' => [
                     new NotBlank(),
-                ]
+                ],
             ])
             ->add('city', TextType::class, [
                 'constraints' => [
                     new NotBlank(),
-                ]
+                ],
             ])
             ->add('country', ChoiceType::class, [
                 'label' => 'Pays',
                 'choices' => $this->getCountyChoices(),
-                'preferred_choices' => ['FR']
+                'preferred_choices' => ['FR'],
             ])
             ->add('phone', TextType::class, [
                 'required' => false,
@@ -81,12 +81,12 @@ class ContactDetailsType extends AbstractType
             ])
             ->add('username', TextType::class, [
                 'attr' => [
-                    'maxlength' => 30
+                    'maxlength' => 30,
                 ],
                 'constraints' => [
                     new NotBlank(),
                     new Length(['max' => 30]),
-                ]
+                ],
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'mapped' => false,

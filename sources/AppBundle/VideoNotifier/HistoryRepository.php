@@ -7,13 +7,10 @@ namespace AppBundle\VideoNotifier;
 use AppBundle\Event\Model\Talk;
 use Doctrine\DBAL\Connection;
 
-final class HistoryRepository
+final readonly class HistoryRepository
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     public function insert(HistoryEntry $entry): void

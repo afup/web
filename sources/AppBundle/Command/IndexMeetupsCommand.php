@@ -16,14 +16,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class IndexMeetupsCommand extends Command
 {
-    private RepositoryFactory $ting;
-    private SearchClient $searchClient;
-
-    public function __construct(RepositoryFactory $ting,
-                                SearchClient $searchClient)
-    {
-        $this->ting = $ting;
-        $this->searchClient = $searchClient;
+    public function __construct(
+        private readonly RepositoryFactory $ting,
+        private readonly SearchClient $searchClient,
+    ) {
         parent::__construct();
     }
 

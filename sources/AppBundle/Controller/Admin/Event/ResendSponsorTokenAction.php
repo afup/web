@@ -13,18 +13,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ResendSponsorTokenAction extends AbstractController
 {
-    private EventActionHelper $eventActionHelper;
-    private SponsorTicketRepository $sponsorTicketRepository;
-    private SponsorTokenMail $sponsorTokenMail;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        SponsorTicketRepository $sponsorTicketRepository,
-        SponsorTokenMail $sponsorTokenMail
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly SponsorTicketRepository $sponsorTicketRepository,
+        private readonly SponsorTokenMail $sponsorTokenMail,
     ) {
-        $this->eventActionHelper = $eventActionHelper;
-        $this->sponsorTicketRepository = $sponsorTicketRepository;
-        $this->sponsorTokenMail = $sponsorTokenMail;
     }
 
     public function __invoke(Request $request): RedirectResponse
@@ -39,7 +32,7 @@ class ResendSponsorTokenAction extends AbstractController
         $this->addFlash('notice', 'Le mail a été renvoyé');
 
         return $this->redirectToRoute('admin_event_sponsor_ticket', [
-            'id' => $event->getId()
+            'id' => $event->getId(),
         ]);
     }
 }

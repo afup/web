@@ -9,7 +9,6 @@ use Afup\Site\Utils\Configuration;
 class Article
 {
     public $soustitre;
-    public $id;
     public $id_site_rubrique;
     public $id_personne_physique;
     public $titre;
@@ -71,10 +70,11 @@ class Article
      */
     protected $bdd;
 
-    public function __construct($id = 0, $bdd = false, $conf = false)
-    {
-        $this->id = $id;
-
+    public function __construct(
+        public $id = 0,
+        $bdd = false,
+        $conf = false,
+    ) {
         $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
 
         $this->conf = $conf ?: $GLOBALS['AFUP_CONF'];
@@ -103,13 +103,10 @@ class Article
 
     public function teaser()
     {
-        switch (true) {
-            case !empty($this->chapeau):
-                $teaser = $this->chapeau;
-                break;
-            default:
-                $teaser = substr(strip_tags($this->contenu), 0, 200);
-        }
+        $teaser = match (true) {
+            !empty($this->chapeau) => $this->chapeau,
+            default => substr(strip_tags((string) $this->contenu), 0, 200),
+        };
         return $teaser;
     }
 

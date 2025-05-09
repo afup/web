@@ -11,18 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SpeakerInfosAction
 {
-    private EventActionHelper $eventActionHelper;
-    private SpeakerRepository $speakerRepository;
-    private SpeakerPage $speakerPage;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        SpeakerRepository $speakerRepository,
-        SpeakerPage $speakerPage
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly SpeakerPage $speakerPage,
     ) {
-        $this->speakerRepository = $speakerRepository;
-        $this->speakerPage = $speakerPage;
-        $this->eventActionHelper = $eventActionHelper;
     }
 
     public function __invoke(Request $request)

@@ -13,7 +13,7 @@ class AssetsExtension extends AbstractExtension
 {
     public function __construct(
         #[Autowire('%kernel.project_dir%')]
-        private string $kernelProjectDir,
+        private readonly string $kernelProjectDir,
     ) {
     }
 
@@ -24,7 +24,7 @@ class AssetsExtension extends AbstractExtension
                 $path = $this->kernelProjectDir . '/../htdocs/' . $url;
 
                 return substr(md5_file($path), 0, 8);
-            }, ['is_safe' => ['html']])
+            }, ['is_safe' => ['html']]),
         ];
     }
 

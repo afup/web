@@ -139,6 +139,7 @@
     "friends-of-behat/mink-extension": "^2.7",
     "friendsofphp/php-cs-fixer": "^3.75",
     "ifsnop/mysqldump-php": "^2.12",
+    "kubawerlos/php-cs-fixer-custom-fixers": "^3.24",
     "phpunit/phpunit": "^9.6",
     "rector/rector": "^2.0",
     "smalot/pdfparser": "^0.19.0",

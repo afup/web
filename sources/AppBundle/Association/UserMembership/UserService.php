@@ -16,25 +16,15 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UserService
 {
-    private UserRepository $userRepository;
-    private Mailer $mailer;
-    private UrlGeneratorInterface $urlGenerator;
     private string $sender = MailUser::DEFAULT_SENDER_EMAIL;
-    private Cotisations $cotisations;
-    private UserPasswordHasherInterface $passwordHasher;
 
     public function __construct(
-        UserRepository $userRepository,
-        Mailer $mailer,
-        UrlGeneratorInterface $urlGenerator,
-        Cotisations $cotisations,
-        UserPasswordHasherInterface $passwordHasher
+        private readonly UserRepository $userRepository,
+        private readonly Mailer $mailer,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly Cotisations $cotisations,
+        private readonly UserPasswordHasherInterface $passwordHasher,
     ) {
-        $this->userRepository = $userRepository;
-        $this->mailer = $mailer;
-        $this->urlGenerator = $urlGenerator;
-        $this->cotisations = $cotisations;
-        $this->passwordHasher = $passwordHasher;
     }
 
     public function generateRandomPassword(): string

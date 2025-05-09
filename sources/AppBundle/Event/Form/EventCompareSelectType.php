@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EventCompareSelectType extends AbstractType
 {
-    private EventHelper $eventHelper;
+    private readonly EventHelper $eventHelper;
 
     public function __construct()
     {
@@ -48,7 +48,7 @@ class EventCompareSelectType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'csrf_protection' => false
+            'csrf_protection' => false,
         ]);
         $resolver->setRequired([
             'events',

@@ -6,11 +6,8 @@ namespace AppBundle\Event\Ticket;
 
 class QrCodeGenerator
 {
-    private string $salt;
-
-    public function __construct(string $salt)
+    public function __construct(private readonly string $salt)
     {
-        $this->salt = $salt;
     }
 
     public function generate(int $idTicket): string

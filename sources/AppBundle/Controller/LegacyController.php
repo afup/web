@@ -29,63 +29,25 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class LegacyController extends AbstractController
 {
-    private TokenStorageInterface $tokenStorage;
-    private AuthorizationCheckerInterface $authorizationChecker;
-    private RequestStack $requestStack;
-
-    // Services utilisés dans les anciens controller (htdocs/pages/administration/*)
-    private EventRepository $eventRepository;
-    private TicketEventTypeRepository $ticketEventTypeRepository;
-    private TicketTypeAvailability $ticketTypeAvailability;
-    private InvoiceService $invoiceService;
-    private InvoiceRepository $invoiceRepository;
-    private UrlGeneratorInterface $urlGenerator;
-    private EventStatsRepository $eventStatsRepository;
-    private TicketRepository $ticketRepository;
-    private UserRepository $userRepository;
-    private CompanyMemberRepository $companyMemberRepository;
-    private Mailer $mailer;
-    private SpeakerRepository $speakerRepository;
-    private TalkRepository $talkRepository;
-    // Fn des Services
-
-    private array $backOfficePages;
-
-    public function __construct(TokenStorageInterface $tokenStorage,
-                                AuthorizationCheckerInterface $authorizationChecker,
-                                RequestStack $requestStack,
-                                EventRepository $eventRepository,
-                                TicketEventTypeRepository $ticketEventTypeRepository,
-                                TicketTypeAvailability $ticketTypeAvailability,
-                                InvoiceService $invoiceService,
-                                InvoiceRepository $invoiceRepository,
-                                UrlGeneratorInterface $urlGenerator,
-                                EventStatsRepository $eventStatsRepository,
-                                TicketRepository $ticketRepository,
-                                UserRepository $userRepository,
-                                CompanyMemberRepository $companyMemberRepository,
-                                Mailer $mailer,
-                                SpeakerRepository $speakerRepository,
-                                TalkRepository $talkRepository,
-                                array $backOfficePages
+    public function __construct(
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly RequestStack $requestStack,
+        private readonly EventRepository $eventRepository,
+        private readonly TicketEventTypeRepository $ticketEventTypeRepository,
+        private readonly TicketTypeAvailability $ticketTypeAvailability,
+        private readonly InvoiceService $invoiceService,
+        private readonly InvoiceRepository $invoiceRepository,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly EventStatsRepository $eventStatsRepository,
+        private readonly TicketRepository $ticketRepository,
+        private readonly UserRepository $userRepository,
+        private readonly CompanyMemberRepository $companyMemberRepository,
+        private readonly Mailer $mailer,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly TalkRepository $talkRepository,
+        private readonly array $backOfficePages,
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->requestStack = $requestStack;
-        $this->backOfficePages = $backOfficePages;
-        $this->eventRepository = $eventRepository;
-        $this->ticketEventTypeRepository = $ticketEventTypeRepository;
-        $this->ticketTypeAvailability = $ticketTypeAvailability;
-        $this->invoiceService = $invoiceService;
-        $this->invoiceRepository = $invoiceRepository;
-        $this->urlGenerator = $urlGenerator;
-        $this->eventStatsRepository = $eventStatsRepository;
-        $this->ticketRepository = $ticketRepository;
-        $this->userRepository = $userRepository;
-        $this->companyMemberRepository = $companyMemberRepository;
-        $this->mailer = $mailer;
-        $this->speakerRepository = $speakerRepository;
-        $this->talkRepository = $talkRepository;
     }
     public function void()
     {

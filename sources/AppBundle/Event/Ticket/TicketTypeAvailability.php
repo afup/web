@@ -15,11 +15,8 @@ class TicketTypeAvailability
     const DAY_TWO = 'two';
     const DAY_BOTH = 'both';
 
-    private TicketRepository $ticketRepository;
-
-    public function __construct(TicketRepository $ticketRepository)
+    public function __construct(private readonly TicketRepository $ticketRepository)
     {
-        $this->ticketRepository = $ticketRepository;
     }
 
     public function getStock(TicketEventType $ticketEventType, Event $event)

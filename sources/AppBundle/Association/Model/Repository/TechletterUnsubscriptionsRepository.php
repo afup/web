@@ -54,27 +54,27 @@ class TechletterUnsubscriptionsRepository extends Repository implements Metadata
                 'fieldName' => 'id',
                 'primary' => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'email',
                 'fieldName' => 'email',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'unsubscription_date',
                 'fieldName' => 'unsubscriptionDate',
-                'type' => 'datetime'
+                'type' => 'datetime',
             ])
             ->addField([
                 'columnName' => 'reason',
                 'fieldName' => 'reason',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'mailchimp_id',
                 'fieldName' => 'mailchimpId',
-                'type' => 'string'
+                'type' => 'string',
             ])
         ;
 

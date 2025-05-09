@@ -13,15 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PricesAction extends AbstractController
 {
-    private EventActionHelper $eventActionHelper;
-    private TicketEventTypeRepository $ticketEventTypeRepository;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        TicketEventTypeRepository $ticketEventTypeRepository
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly TicketEventTypeRepository $ticketEventTypeRepository,
     ) {
-        $this->ticketEventTypeRepository = $ticketEventTypeRepository;
-        $this->eventActionHelper = $eventActionHelper;
     }
 
     public function __invoke(Request $request): Response

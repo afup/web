@@ -14,13 +14,10 @@ use InvalidArgumentException;
 
 class Emails
 {
-    private Mailer $mailer;
-
     private array $tempFiles = [];
 
-    public function __construct(Mailer $mailer)
+    public function __construct(private readonly Mailer $mailer)
     {
-        $this->mailer = $mailer;
     }
 
     public function __destruct()

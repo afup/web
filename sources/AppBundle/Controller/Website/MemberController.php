@@ -19,21 +19,14 @@ class MemberController extends AbstractController
 {
     const DAYS_BEFORE_CALL_TO_UPDATE = 15;
 
-    private ViewRenderer $view;
-    private GeneralMeetingRepository $generalMeetingRepository;
-    private UserService $userService;
-    private GeneralMeetingQuestionRepository $generalMeetingQuestionRepository;
-    private BadgesComputer $badgesComputer;
-    private RepositoryFactory $repositoryFactory;
-
-    public function __construct(ViewRenderer $view, GeneralMeetingRepository $generalMeetingRepository, UserService $userService, GeneralMeetingQuestionRepository $generalMeetingQuestionRepository, BadgesComputer $badgesComputer, RepositoryFactory $repositoryFactory)
-    {
-        $this->view = $view;
-        $this->generalMeetingRepository = $generalMeetingRepository;
-        $this->userService = $userService;
-        $this->generalMeetingQuestionRepository = $generalMeetingQuestionRepository;
-        $this->badgesComputer = $badgesComputer;
-        $this->repositoryFactory = $repositoryFactory;
+    public function __construct(
+        private readonly ViewRenderer $view,
+        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly UserService $userService,
+        private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
+        private readonly BadgesComputer $badgesComputer,
+        private readonly RepositoryFactory $repositoryFactory,
+    ) {
     }
 
     public function index(): Response

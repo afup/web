@@ -57,21 +57,21 @@ class UserBadgeRepository extends Repository implements MetadataInitializer
                 'columnName' => 'afup_personne_physique_id',
                 'fieldName' => 'userId',
                 'primary' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'badge_id',
                 'fieldName' => 'badgeId',
                 'primary' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'issued_at',
                 'fieldName' => 'issuedAt',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => false]
-                ]
+                    'unserialize' => ['unSerializeUseFormat' => false],
+                ],
             ])
         ;
 

@@ -15,15 +15,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class QrCodesGeneratorCommand extends Command
 {
-    private QrCodeGenerator $qrCodeGenerator;
-    private RepositoryFactory $ting;
-
-    public function __construct(QrCodeGenerator $qrCodeGenerator,
-                                RepositoryFactory $ting)
-    {
+    public function __construct(
+        private readonly QrCodeGenerator $qrCodeGenerator,
+        private readonly RepositoryFactory $ting,
+    ) {
         parent::__construct();
-        $this->qrCodeGenerator = $qrCodeGenerator;
-        $this->ting = $ting;
     }
 
     protected function configure(): void

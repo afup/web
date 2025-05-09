@@ -98,7 +98,7 @@ final class AutoQualifierTest extends TestCase
         int $expectedCategorie,
         int $expectedAttachment,
         ?float $expectedHT,
-        ?string $expectedHTKey
+        ?string $expectedHTKey,
     ): void {
         $operation = new Operation('2022-02-22', $operationDescription, '100', $operationType, '1234');
         $qualifier = new AutoQualifier($this->fakeBD());

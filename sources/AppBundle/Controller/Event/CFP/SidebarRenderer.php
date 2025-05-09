@@ -12,18 +12,11 @@ use Twig\Environment;
 
 class SidebarRenderer
 {
-    private TalkRepository $talkRepository;
-    private SpeakerFactory $speakerFactory;
-    private Environment $twig;
-
     public function __construct(
-        TalkRepository $talkRepository,
-        SpeakerFactory $speakerFactory,
-        Environment $twig
+        private readonly TalkRepository $talkRepository,
+        private readonly SpeakerFactory $speakerFactory,
+        private readonly Environment $twig,
     ) {
-        $this->talkRepository = $talkRepository;
-        $this->speakerFactory = $speakerFactory;
-        $this->twig = $twig;
     }
 
     /**

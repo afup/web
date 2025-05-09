@@ -15,15 +15,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CompanyController extends AbstractController
 {
-    private CompanyMemberRepository $companyMemberRepository;
-    private ViewRenderer $view;
-
     public function __construct(
-        CompanyMemberRepository $companyMemberRepository,
-        ViewRenderer            $view
+        private readonly CompanyMemberRepository $companyMemberRepository,
+        private readonly ViewRenderer $view,
     ) {
-        $this->companyMemberRepository = $companyMemberRepository;
-        $this->view = $view;
     }
 
     public function __invoke(Request $request)
@@ -46,7 +41,7 @@ class CompanyController extends AbstractController
             try {
                 $this->companyMemberRepository->save($member);
                 $this->addFlash('notice', 'Les modifications ont bien été enregistrées.');
-            } catch (Exception $exception) {
+            } catch (Exception) {
                 $this->addFlash('error', 'Une erreur est survenue. Merci de nous contacter.');
             }
 

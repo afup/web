@@ -23,7 +23,7 @@ class RoomType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Room::class
+            'data_class' => Room::class,
         ]);
     }
 }

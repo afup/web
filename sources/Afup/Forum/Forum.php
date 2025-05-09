@@ -4,23 +4,12 @@ declare(strict_types=1);
 
 namespace Afup\Site\Forum;
 
+use Afup\Site\Utils\Base_De_Donnees;
+
 class Forum
 {
-    /**
-     * Instance de la couche d'abstraction à la base de données
-     * @var     object
-     */
-    private $_bdd;
-
-    /**
-     * Constructeur.
-     *
-     * @param  object $bdd Instance de la couche d'abstraction à la base de données
-     * @return void
-     */
-    public function __construct(&$bdd)
+    public function __construct(private readonly Base_De_Donnees $_bdd)
     {
-        $this->_bdd = $bdd;
     }
 
     /**
@@ -535,7 +524,7 @@ CODE_HTML;
         foreach ($donnees as $conference) {
 
             // Gestion de la description
-            $description = html_entity_decode($conference['abstract'], ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
+            $description = html_entity_decode((string) $conference['abstract'], ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
             $description = strip_tags($description);
             $description = str_replace('"', '\"', $description);
 
@@ -543,7 +532,7 @@ CODE_HTML;
             $conferenciers = [];
             for ($i = 1; $i <= 2; $i++) {
                 if (!empty($conference['conferencier' . $i]) &&
-                    'En cours de validation' !== trim($conference['conferencier' . $i])
+                    'En cours de validation' !== trim((string) $conference['conferencier' . $i])
                 ) {
                     $conferenciers[] = $conference['conferencier' . $i];
                 }
@@ -600,7 +589,7 @@ CODE_HTML;
         $accomodationEnabled = true,
         $waitingListUrl = null,
         $hasPricesDefinedWithVat = false,
-        $transportInformationEnabled = false
+        $transportInformationEnabled = false,
     ) {
         $requete = 'INSERT INTO ';
         $requete .= '  afup_forum (id, titre, nb_places, date_debut, date_fin, annee, date_fin_appel_projet,';
@@ -621,7 +610,7 @@ CODE_HTML;
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_saisie_repas_speakers, true) . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_fin_saisie_nuites_hotel, true) . ',';
         $requete .= $this->_bdd->echapperSqlDateFromQuickForm($date_annonce_planning, true) . ',';
-        $requete .= $this->_bdd->echapper($chemin_template, true) . ',';
+        $requete .= $this->_bdd->echapper($chemin_template) . ',';
         $requete .= $this->_bdd->echapper(json_encode($text)) . ', ';
         $requete .= $this->_bdd->echapper($logoUrl) . ',';
         $requete .= $this->_bdd->echapper($placeName) . ',';
@@ -663,7 +652,7 @@ CODE_HTML;
         $accomodationEnabled = true,
         $waitingListUrl = null,
         $hasPricesDefinedWithVat = false,
-        $transportInformationEnabled = false
+        $transportInformationEnabled = false,
     ) {
         $requete = 'UPDATE ';
         $requete .= '  afup_forum ';
@@ -682,7 +671,7 @@ CODE_HTML;
         $requete .= '  date_fin_saisie_repas_speakers=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_saisie_repas_speakers, true) . ',';
         $requete .= '  date_fin_saisie_nuites_hotel=' . $this->_bdd->echapperSqlDateFromQuickForm($date_fin_saisie_nuites_hotel, true) . ',';
         $requete .= '  date_annonce_planning=' . $this->_bdd->echapperSqlDateFromQuickForm($date_annonce_planning, true) . ',';
-        $requete .= '  path=' . $this->_bdd->echapper($chemin_template, true) . ', ';
+        $requete .= '  path=' . $this->_bdd->echapper($chemin_template) . ', ';
         $requete .= ' `text` = ' . $this->_bdd->echapper(json_encode($text)) . ', ';
         $requete .= ' `logo_url` = ' . $this->_bdd->echapper($logoUrl) . ', ';
         $requete .= ' `place_name` = ' . $this->_bdd->echapper($placeName) . ', ';

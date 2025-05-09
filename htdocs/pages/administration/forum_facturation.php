@@ -79,12 +79,12 @@ if ($action == 'lister') {
             $invoiceService->deleteInvoice($invoice);
             Logs::log('Supprimer => facture n°' . $_GET['ref']);
             afficherMessage('La facture est supprimée', 'index.php?page=forum_facturation&action=lister');
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
     }
     afficherMessage("La facture n'a pas pu être supprimée", 'index.php?page=forum_facturation&action=lister', true);
 } elseif ($action == 'changer_date_reglement') {
-    $reglement = strtotime(implode('-', array_reverse(explode('/', $_GET['reglement']))));
+    $reglement = strtotime(implode('-', array_reverse(explode('/', (string) $_GET['reglement']))));
     if ($forum_facturation->changerDateReglement($_GET['ref'], $reglement)) {
         afficherMessage('La date de réglement a été changée', 'index.php?page=forum_facturation&action=lister');
     } else {

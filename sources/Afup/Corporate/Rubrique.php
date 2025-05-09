@@ -14,8 +14,6 @@ class Rubrique
     const ID_RUBRIQUE_ANTENNES = 84;
     const ID_RUBRIQUE_INFORMATIONS_PRATIQUES = 86;
     const ID_RUBRIQUE_NOS_ACTIONS = 88;
-
-    public $id;
     public $id_personne_physique;
     public $id_parent;
     public $nom;
@@ -40,10 +38,11 @@ class Rubrique
     protected $conf;
     protected $page_courante;
 
-    public function __construct($id = 0, $bdd = false, $conf = false)
-    {
-        $this->id = $id;
-
+    public function __construct(
+        public $id = 0,
+        $bdd = false,
+        $conf = false,
+    ) {
         $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
 
         $this->conf = $conf ?: $GLOBALS['AFUP_CONF'];
@@ -376,7 +375,7 @@ class Rubrique
                 $this->page_courante,
                 $this->pagination,
                 $this->compte_autres_articles(),
-                [$this, 'genere_route']
+                $this->genere_route(...)
             );
         } else {
             return '';

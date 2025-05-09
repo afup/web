@@ -11,14 +11,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UserCompany
 {
-    private UserRepository $userRepository;
-
-    private EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(UserRepository $userRepository, EventDispatcherInterface $eventDispatcher)
-    {
-        $this->userRepository = $userRepository;
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {
     }
 
     public function setManager(User $user): void

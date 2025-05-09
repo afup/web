@@ -20,27 +20,14 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class TalkFormHandler
 {
-    private TalkRepository $talkRepository;
-    private SpeakerRepository $speakerRepository;
-    private SlackNotifier $slackNotifier;
-    private EventDispatcherInterface $eventDispatcher;
-    private TalkToSpeakersRepository $talkToSpeakersRepository;
-    private UnitOfWork $unitOfWork;
-
     public function __construct(
-        TalkRepository $talkRepository,
-        SpeakerRepository $speakerRepository,
-        SlackNotifier $slackNotifier,
-        EventDispatcherInterface $eventDispatcher,
-        TalkToSpeakersRepository $talkToSpeakersRepository,
-        UnitOfWork $unitOfWork
+        private readonly TalkRepository $talkRepository,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly SlackNotifier $slackNotifier,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly TalkToSpeakersRepository $talkToSpeakersRepository,
+        private readonly UnitOfWork $unitOfWork,
     ) {
-        $this->talkRepository = $talkRepository;
-        $this->speakerRepository = $speakerRepository;
-        $this->slackNotifier = $slackNotifier;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->talkToSpeakersRepository = $talkToSpeakersRepository;
-        $this->unitOfWork = $unitOfWork;
     }
 
     public function handle(Request $request, Event $event, FormInterface $form, Speaker $speaker): bool

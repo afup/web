@@ -9,7 +9,7 @@ use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInterface
+class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInterface, \Stringable
 {
     use NotifyProperty;
 
@@ -29,7 +29,7 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
 
     private bool $afupCrew = false;
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getLabel();
     }

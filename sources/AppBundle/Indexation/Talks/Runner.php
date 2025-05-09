@@ -17,16 +17,12 @@ use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 
 class Runner
 {
-    protected SearchClient $algoliaClient;
-
-    protected RepositoryFactory $ting;
-
     protected Transformer $transformer;
 
-    public function __construct(SearchClient $algoliaClient, RepositoryFactory $ting)
-    {
-        $this->algoliaClient = $algoliaClient;
-        $this->ting = $ting;
+    public function __construct(
+        protected SearchClient $algoliaClient,
+        protected RepositoryFactory $ting,
+    ) {
         $this->transformer = new Transformer();
     }
 
@@ -46,7 +42,7 @@ class Runner
 
         $index->clearObjects();
         $index->saveObjects($objects, [
-            'objectIDKey' => 'planning_id'
+            'objectIDKey' => 'planning_id',
         ]);
     }
 

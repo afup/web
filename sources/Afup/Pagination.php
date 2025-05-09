@@ -4,22 +4,17 @@ declare(strict_types=1);
 
 namespace Afup\Site;
 
-class Pagination
+class Pagination implements \Stringable
 {
-    private $page_courante;
-    private $nombre_elements_par_page;
-    private $nombre_elements_total;
-    private $genere_route;
-
-    public function __construct($page_courante, $nombre_elements_par_page, $nombre_elements_total, $genere_route)
-    {
-        $this->page_courante = $page_courante;
-        $this->nombre_elements_par_page = $nombre_elements_par_page;
-        $this->nombre_elements_total = $nombre_elements_total;
-        $this->genere_route = $genere_route;
+    public function __construct(
+        private $page_courante,
+        private $nombre_elements_par_page,
+        private $nombre_elements_total,
+        private $genere_route,
+    ) {
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         global $smarty;
 
@@ -36,6 +31,6 @@ class Pagination
 
         ob_start();
         $smarty->display('pagination.html');
-        return ob_get_clean();
+        return (string) ob_get_clean();
     }
 }

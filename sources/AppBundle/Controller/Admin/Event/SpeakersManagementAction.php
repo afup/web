@@ -14,18 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SpeakersManagementAction extends AbstractController
 {
-    private EventActionHelper $eventActionHelper;
-    private SpeakerRepository $speakerRepository;
-    private SpeakersExpensesStorage $speakersExpensesStorage;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        SpeakerRepository $speakerRepository,
-        SpeakersExpensesStorage $speakersExpensesStorage
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly SpeakersExpensesStorage $speakersExpensesStorage,
     ) {
-        $this->eventActionHelper = $eventActionHelper;
-        $this->speakerRepository = $speakerRepository;
-        $this->speakersExpensesStorage = $speakersExpensesStorage;
     }
 
     public function __invoke(Request $request): Response

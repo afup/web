@@ -6,15 +6,11 @@ namespace AppBundle\TechLetter\Model;
 
 class News implements \JsonSerializable
 {
-    private string $url;
-    private string $title;
-    private \DateTimeImmutable $date;
-
-    public function __construct(string $url, string $title, \DateTimeImmutable $date)
-    {
-        $this->url = $url;
-        $this->title = $title;
-        $this->date = $date;
+    public function __construct(
+        private readonly string $url,
+        private readonly string $title,
+        private readonly \DateTimeImmutable $date,
+    ) {
     }
 
     public function getUrl(): string
@@ -37,7 +33,7 @@ class News implements \JsonSerializable
         return [
             'url' => $this->url,
             'title' => $this->title,
-            'date' => $this->date->format('Y-m-d')
+            'date' => $this->date->format('Y-m-d'),
         ];
     }
 }

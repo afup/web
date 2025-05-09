@@ -6,18 +6,11 @@ namespace Afup\Site\Utils;
 
 class Sympa
 {
-    /**
-     * @var Base_De_Donnees
-     */
-    private $_bdd;
-    private $_configUrl;
-    private $configHost;
-
-    public function __construct($bdd, $configUrl, $configHost)
-    {
-        $this->_bdd = $bdd;
-        $this->_configUrl = $configUrl;
-        $this->configHost = $configHost;
+    public function __construct(
+        private readonly Base_De_Donnees $_bdd,
+        private $_configUrl,
+        private $configHost,
+    ) {
     }
 
     public function getAllMailingList()

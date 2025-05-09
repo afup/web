@@ -49,12 +49,12 @@ header('Content-type: text/html; charset=UTF-8');
 
 $serveur   = '';
 $url = $_SERVER['REQUEST_URI'];
-if (strrpos($url, '?') !== false) {
-    $position = strrpos($url, '?');
-    $url      = substr($url, 0, $position);
+if (strrpos((string) $url, '?') !== false) {
+    $position = strrpos((string) $url, '?');
+    $url      = substr((string) $url, 0, $position);
 }
-$position  = strrpos($url, '/');
-$url       = substr($_SERVER['REQUEST_URI'], 0, $position);
+$position  = strrpos((string) $url, '/');
+$url       = substr((string) $_SERVER['REQUEST_URI'], 0, $position);
 $parties   = explode('/', $url);
 $sous_site = array_pop($parties);
 

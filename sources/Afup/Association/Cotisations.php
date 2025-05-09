@@ -39,16 +39,12 @@ define('AFUP_COTISATIONS_PAIEMENT_REFUSE', 3);
  */
 class Cotisations
 {
-    private Base_De_Donnees $_bdd;
-
-    private ?Droits $_droits;
-
     private ?CompanyMemberRepository $companyMemberRepository = null;
 
-    public function __construct(Base_De_Donnees $bdd, Droits $droits = null)
-    {
-        $this->_bdd = $bdd;
-        $this->_droits = $droits;
+    public function __construct(
+        private readonly Base_De_Donnees $_bdd,
+        private readonly ?Droits $_droits = null,
+    ) {
     }
 
     /**
@@ -248,13 +244,13 @@ class Cotisations
 
     public function validerReglementEnLigne($cmd, $total, string $autorisation, string $transaction)
     {
-        $reference = substr($cmd, 0, strlen($cmd) - 4);
-        $verif = substr($cmd, strlen($cmd) - 3, strlen($cmd));
+        $reference = substr((string) $cmd, 0, strlen((string) $cmd) - 4);
+        $verif = substr((string) $cmd, strlen((string) $cmd) - 3, strlen((string) $cmd));
         $result = false;
 
-        if (str_starts_with($cmd, 'F')) {
+        if (str_starts_with((string) $cmd, 'F')) {
             // This is an invoice ==> we dont have to create a new cotisation, just update the existing one
-            $invoiceNumber = substr($cmd, 1);
+            $invoiceNumber = substr((string) $cmd, 1);
             $cotisation = $this->getByInvoice($invoiceNumber);
 
             $this
@@ -263,7 +259,7 @@ class Cotisations
                     AFUP_COTISATIONS_REGLEMENT_ENLIGNE, "autorisation : " . $autorisation . " / transaction : " . $transaction
                 );
         } elseif (substr(md5($reference), -3) === strtolower($verif) && !$this->estDejaReglee($cmd)) {
-            [$ref, $date, $type_personne, $id_personne, $reste] = explode('-', $cmd, 5);
+            [$ref, $date, $type_personne, $id_personne, $reste] = explode('-', (string) $cmd, 5);
             $date_debut = mktime(0, 0, 0, (int) substr($date, 2, 2), (int) substr($date, 0, 2), (int) substr($date, 4, 4));
 
             $cotisation = $this->obtenirDerniere($type_personne, $id_personne);
@@ -292,7 +288,7 @@ class Cotisations
      */
     public function getAccountFromCmd($cmd): array
     {
-        $arr = explode('-', $cmd, 5);
+        $arr = explode('-', (string) $cmd, 5);
         // Personne morale : $cmd=FCOTIS-2023-202
         if (3 === count($arr)) {
             return ['type' => UserRepository::USER_TYPE_COMPANY, 'id' => $arr[2]];

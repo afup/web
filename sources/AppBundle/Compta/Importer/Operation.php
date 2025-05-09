@@ -9,12 +9,6 @@ class Operation
     const DEBIT = 'debit';
     const CREDIT = 'credit';
 
-    private $dateEcriture;
-    private $description;
-    private $montant;
-    private $type;
-    private $numeroOperation;
-
     /**
      * Operation constructor.
      *
@@ -24,13 +18,13 @@ class Operation
      * @param string $type
      * @param string $numeroOperation
      */
-    public function __construct($dateEcriture, $description, $montant, $type, $numeroOperation)
-    {
-        $this->dateEcriture = $dateEcriture;
-        $this->description = $description;
-        $this->montant = $montant;
-        $this->type = $type;
-        $this->numeroOperation = $numeroOperation;
+    public function __construct(
+        private $dateEcriture,
+        private $description,
+        private $montant,
+        private $type,
+        private $numeroOperation,
+    ) {
     }
 
     /**

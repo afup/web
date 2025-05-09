@@ -6,13 +6,11 @@ namespace AppBundle\VideoNotifier;
 
 class HistoryEntry
 {
-    private int $talkId;
     private ?string $statusIdBluesky = null;
     private ?string $statusIdMastodon = null;
 
-    public function __construct(int $talkId)
+    public function __construct(private readonly int $talkId)
     {
-        $this->talkId = $talkId;
     }
 
     public function setStatusIdBluesky(?string $statusIdBluesky): void

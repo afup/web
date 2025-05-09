@@ -29,8 +29,8 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
 
     /**
      * @var string
-     * @Assert\Email()
      */
+    #[Assert\Email]
     private $email;
 
     /**

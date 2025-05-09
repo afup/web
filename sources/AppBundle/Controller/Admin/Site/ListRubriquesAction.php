@@ -11,14 +11,10 @@ use Twig\Environment;
 
 class ListRubriquesAction
 {
-    private Environment $twig;
-
-    private RubriqueRepository $rubriqueRepository;
-
-    public function __construct(RubriqueRepository $rubriqueRepository, Environment $twig)
-    {
-        $this->rubriqueRepository = $rubriqueRepository;
-        $this->twig = $twig;
+    public function __construct(
+        private readonly RubriqueRepository $rubriqueRepository,
+        private readonly Environment $twig,
+    ) {
     }
 
     public function __invoke(Request $request): Response

@@ -30,40 +30,40 @@ class SpeakerSuggestionRepository extends Repository implements MetadataInitiali
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'event_id',
                 'fieldName' => 'eventId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'suggester_email',
                 'fieldName' => 'suggesterEmail',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'suggester_name',
                 'fieldName' => 'suggesterName',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'speaker_name',
                 'fieldName' => 'speakerName',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'comment',
                 'fieldName' => 'comment',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'created_at',
                 'fieldName' => 'createdAt',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => false]
-                ]
+                    'unserialize' => ['unSerializeUseFormat' => false],
+                ],
             ])
         ;
 

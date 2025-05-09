@@ -20,11 +20,8 @@ use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface
 
 class TestGithubAuthenticator extends OAuth2Authenticator implements AuthenticationEntryPointInterface
 {
-    private GithubUserRepository $githubUserRepository;
-
-    public function __construct(GithubUserRepository $githubUserRepository)
+    public function __construct(private readonly GithubUserRepository $githubUserRepository)
     {
-        $this->githubUserRepository = $githubUserRepository;
     }
 
     public function authenticate(Request $request): SelfValidatingPassport
@@ -75,7 +72,7 @@ class TestGithubAuthenticator extends OAuth2Authenticator implements Authenticat
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): JsonResponse
     {
         $data = [
-            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
+            'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
         ];
 
         return new JsonResponse($data, Response::HTTP_FORBIDDEN);

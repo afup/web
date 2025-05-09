@@ -14,24 +14,12 @@ use Twig\Environment;
 
 class ListAction
 {
-    private GeneralMeetingRepository $generalMeetingRepository;
-
-    private GeneralMeetingQuestionRepository $generalMeetingQuestionRepository;
-
-    private GeneralMeetingVoteRepository $generalMeetingVoteRepository;
-
-    private Environment $twig;
-
     public function __construct(
-        GeneralMeetingRepository $generalMeetingRepository,
-        GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
-        GeneralMeetingVoteRepository $generalMeetingVoteRepository,
-        Environment $twig
+        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
+        private readonly GeneralMeetingVoteRepository $generalMeetingVoteRepository,
+        private readonly Environment $twig,
     ) {
-        $this->generalMeetingRepository = $generalMeetingRepository;
-        $this->twig = $twig;
-        $this->generalMeetingQuestionRepository = $generalMeetingQuestionRepository;
-        $this->generalMeetingVoteRepository = $generalMeetingVoteRepository;
     }
 
     public function __invoke(Request $request): Response

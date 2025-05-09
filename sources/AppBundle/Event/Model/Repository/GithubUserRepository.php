@@ -34,43 +34,43 @@ class GithubUserRepository extends Repository implements MetadataInitializer, Us
                 'fieldName' => 'id',
                 'primary' => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'github_id',
                 'fieldName' => 'githubId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'login',
                 'fieldName' => 'login',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'name',
                 'fieldName' => 'name',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'company',
                 'fieldName' => 'company',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'profile_url',
                 'fieldName' => 'profileUrl',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'avatar_url',
                 'fieldName' => 'avatarUrl',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'afup_crew',
                 'fieldName' => 'afupCrew',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ]);
 
         return $metadata;

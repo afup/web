@@ -21,12 +21,10 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class SponsorScanController extends AbstractController
 {
-    private RepositoryFactory $repositoryFactory;
-    private EventActionHelper $eventActionHelper;
-    public function __construct(RepositoryFactory $repositoryFactory, EventActionHelper $eventActionHelper)
-    {
-        $this->repositoryFactory = $repositoryFactory;
-        $this->eventActionHelper = $eventActionHelper;
+    public function __construct(
+        private readonly RepositoryFactory $repositoryFactory,
+        private readonly EventActionHelper $eventActionHelper,
+    ) {
     }
     public function index(Request $request, $eventSlug)
     {

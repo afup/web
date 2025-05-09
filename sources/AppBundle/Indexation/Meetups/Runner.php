@@ -13,16 +13,12 @@ use CCMBenchmark\Ting\Repository\CollectionInterface;
 
 class Runner
 {
-    protected SearchClient $algoliaClient;
-
-    protected MeetupRepository $meetupRepository;
-
     protected Transformer $transformer;
 
-    public function __construct(SearchClient $algoliaClient, MeetupRepository $meetupRepository)
-    {
-        $this->algoliaClient = $algoliaClient;
-        $this->meetupRepository = $meetupRepository;
+    public function __construct(
+        protected SearchClient $algoliaClient,
+        protected MeetupRepository $meetupRepository,
+    ) {
         $this->transformer = new Transformer(new AntennesCollection());
     }
 
@@ -36,7 +32,7 @@ class Runner
 
         $index->clearObjects();
         $index->saveObjects($meetups, [
-            'objectIDKey' => 'meetup_id'
+            'objectIDKey' => 'meetup_id',
         ]);
 
         echo "Indexation des meetups terminée avec succès !\n";

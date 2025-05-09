@@ -11,11 +11,8 @@ class Mailchimp
 {
     private const MAX_MEMBERS_PER_PAGE = 50;
 
-    private DrewMailChimp $client;
-
-    public function __construct(DrewMailChimp $client)
+    public function __construct(private readonly DrewMailChimp $client)
     {
-        $this->client = $client;
     }
 
     /**
@@ -28,7 +25,7 @@ class Mailchimp
         return $this->client->put('lists/' . $list . '/members/' . $this->getAddressId($email), [
             'status' => 'pending',
             'email_address' => $email,
-            'language' => 'fr'
+            'language' => 'fr',
         ]);
     }
 
@@ -37,7 +34,7 @@ class Mailchimp
         return $this->client->put('lists/' . $list . '/members/' . $this->getAddressId($email), [
             'status' => 'subscribed',
             'email_address' => $email,
-            'language' => 'fr'
+            'language' => 'fr',
         ]);
     }
 
@@ -92,7 +89,7 @@ class Mailchimp
     {
         return $this->client->put('lists/' . $list . '/members/' . $this->getAddressId($email), [
             'status' => 'unsubscribed',
-            'email_address' => $email
+            'email_address' => $email,
         ]);
     }
 
@@ -126,14 +123,14 @@ class Mailchimp
             'recipients' => [
                 'list_id' => $list,
             ],
-            'settings' => $settings
+            'settings' => $settings,
         ]);
     }
 
     public function scheduleCampaign(string $campaignId, \DateTime $datetime)
     {
         return $this->client->post('campaigns/' . $campaignId . '/actions/schedule', [
-            'schedule_time' => $datetime->format('c')
+            'schedule_time' => $datetime->format('c'),
         ]);
     }
 }

@@ -18,7 +18,7 @@ $action = verifierAction([
                     'lister',
                     'modifier',
                     'telecharger_facture',
-                    'envoyer_facture'
+                    'envoyer_facture',
                     ]);
 
 

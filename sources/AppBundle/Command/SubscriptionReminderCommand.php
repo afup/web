@@ -25,13 +25,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class SubscriptionReminderCommand extends Command
 {
-    private Mailer $mailer;
-    private RepositoryFactory $ting;
-
-    public function __construct(Mailer $mailer, RepositoryFactory $ting)
-    {
-        $this->mailer = $mailer;
-        $this->ting = $ting;
+    public function __construct(
+        private readonly Mailer $mailer,
+        private readonly RepositoryFactory $ting,
+    ) {
         parent::__construct();
     }
     /**
@@ -71,22 +68,22 @@ class SubscriptionReminderCommand extends Command
             'in 15 days' => [
                 'date' => $today->add(new \DateInterval('P15D')),
                 'physical' => Reminder15DaysBeforeEnd::class,
-                'company' => Association\CompanyMembership\Reminder15DaysBeforeEnd::class
+                'company' => Association\CompanyMembership\Reminder15DaysBeforeEnd::class,
             ],
             'in 7 days' => [
                 'date' => $today->add(new \DateInterval('P7D')),
                 'physical' => Reminder7DaysBeforeEnd::class,
-                'company' => Association\CompanyMembership\Reminder7DaysBeforeEnd::class
+                'company' => Association\CompanyMembership\Reminder7DaysBeforeEnd::class,
             ],
             'Today' => [
                 'date' => $today,
                 'physical' => ReminderDDay::class,
-                'company' => Association\CompanyMembership\ReminderDDay::class
+                'company' => Association\CompanyMembership\ReminderDDay::class,
             ],
             '15 days ago' => [
                 'date' => $today->sub(new \DateInterval('P15D')),
                 'physical' => Reminder15DaysAfterEnd::class,
-                'company' => Association\CompanyMembership\Reminder15DaysAfterEnd::class
+                'company' => Association\CompanyMembership\Reminder15DaysAfterEnd::class,
             ],
         ];
 
@@ -113,7 +110,7 @@ class SubscriptionReminderCommand extends Command
         OutputInterface $output,
         MembershipReminderInterface $reminder,
         CollectionInterface $users,
-        $dryRun = true
+        $dryRun = true,
     ): void {
         foreach ($users as $user) {
             /**

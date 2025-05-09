@@ -11,13 +11,10 @@ use AppBundle\Association\Model\User;
 
 class StatisticsComputer
 {
-    private UserRepository $userRepository;
-    private CompanyMemberRepository $companyMemberRepository;
-
-    public function __construct(UserRepository $userRepository, CompanyMemberRepository $companyMemberRepository)
-    {
-        $this->userRepository = $userRepository;
-        $this->companyMemberRepository = $companyMemberRepository;
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly CompanyMemberRepository $companyMemberRepository,
+    ) {
     }
 
     public function computeStatistics(): Statistics

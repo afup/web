@@ -9,13 +9,13 @@ use AppBundle\Event\Model\Talk;
 
 class EventTalkList
 {
-    private Event $event;
     /** @var Talk[] */
     private array $talks = [];
 
-    public function __construct(Event $event, Talk ...$talks)
-    {
-        $this->event = $event;
+    public function __construct(
+        private readonly Event $event,
+        Talk ...$talks,
+    ) {
         foreach ($talks as $talk) {
             $this->addTalk($talk);
         }

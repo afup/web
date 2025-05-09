@@ -80,13 +80,13 @@ class TalkToSpeakersRepository extends Repository implements MetadataInitializer
                 'columnName' => 'conferencier_id',
                 'fieldName' => 'speakerId',
                 'primary'       => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'session_id',
                 'fieldName' => 'talkId',
                 'primary'       => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
         ;
 

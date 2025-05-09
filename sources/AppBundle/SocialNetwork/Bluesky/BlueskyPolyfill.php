@@ -16,13 +16,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  *
  * @see https://github.com/symfony/bluesky-notifier/blob/7.2/BlueskyTransport.php
  */
-final class BlueskyPolyfill
+final readonly class BlueskyPolyfill
 {
-    private HttpClientInterface $httpClient;
-
-    public function __construct(HttpClientInterface $httpClient)
+    public function __construct(private HttpClientInterface $httpClient)
     {
-        $this->httpClient = $httpClient;
     }
 
     public function parseFacets(string $input): array
@@ -38,7 +35,7 @@ final class BlueskyPolyfill
             try {
                 $response = $this->httpClient->request('GET', '/xrpc/com.atproto.identity.resolveHandle', [
                     'query' => [
-                        'handle' => ltrim($match['match'], '@'),
+                        'handle' => ltrim((string) $match['match'], '@'),
                     ],
                 ]);
 
@@ -47,7 +44,7 @@ final class BlueskyPolyfill
                 }
 
                 $did = $response->toArray()['did'] ?? null;
-            } catch (ExceptionInterface $e) {
+            } catch (ExceptionInterface) {
                 continue;
             }
 

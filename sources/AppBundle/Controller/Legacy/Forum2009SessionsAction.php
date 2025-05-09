@@ -11,13 +11,10 @@ use Twig\Environment;
 
 class Forum2009SessionsAction
 {
-    private AppelConferencier $appelConferencier;
-    private Environment $twig;
-
-    public function __construct(AppelConferencier $appelConferencier, Environment $twig)
-    {
-        $this->appelConferencier = $appelConferencier;
-        $this->twig = $twig;
+    public function __construct(
+        private readonly AppelConferencier $appelConferencier,
+        private readonly Environment $twig,
+    ) {
     }
 
     public function __invoke(Request $request): Response
@@ -26,7 +23,7 @@ class Forum2009SessionsAction
 
         foreach ($sessions as $index => $session) {
             $sessions[$index]['conferenciers'] = $this->appelConferencier->obtenirConferenciersPourSession($session['session_id']);
-            $sessions[$index]['journees'] = explode(" ", $session['journee']);
+            $sessions[$index]['journees'] = explode(" ", (string) $session['journee']);
         }
 
         return new Response($this->twig->render('legacy/forumphp2009/sessions.html.twig', [

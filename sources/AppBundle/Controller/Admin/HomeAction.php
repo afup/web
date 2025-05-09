@@ -17,27 +17,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HomeAction extends AbstractController
 {
-    private EventRepository $eventRepository;
-    private EventStatsRepository $eventStatsRepository;
-    private TicketEventTypeRepository $ticketEventTypeRepository;
-    private TechletterSubscriptionsRepository $techletterSubscriptionsRepository;
-    private StatisticsComputer $statisticsComputer;
-    private GeneralMeetingRepository $generalMeetingRepository;
-
     public function __construct(
-        EventRepository $eventRepository,
-        EventStatsRepository $eventStatsRepository,
-        TicketEventTypeRepository $ticketEventTypeRepository,
-        TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
-        GeneralMeetingRepository $generalMeetingRepository,
-        StatisticsComputer $statisticsComputer
+        private readonly EventRepository $eventRepository,
+        private readonly EventStatsRepository $eventStatsRepository,
+        private readonly TicketEventTypeRepository $ticketEventTypeRepository,
+        private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
+        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly StatisticsComputer $statisticsComputer,
     ) {
-        $this->eventRepository = $eventRepository;
-        $this->eventStatsRepository = $eventStatsRepository;
-        $this->ticketEventTypeRepository = $ticketEventTypeRepository;
-        $this->techletterSubscriptionsRepository = $techletterSubscriptionsRepository;
-        $this->statisticsComputer = $statisticsComputer;
-        $this->generalMeetingRepository = $generalMeetingRepository;
     }
 
     public function __invoke(): Response

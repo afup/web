@@ -10,9 +10,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class GithubUserFormData
 {
     /**
-     * @Assert\NotNull(message="L'utilisateur n'existe pas")
      * @var null|GithubUser
      */
+    #[Assert\NotNull(message: "L'utilisateur n'existe pas")]
     public $user;
 
     /**

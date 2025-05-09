@@ -23,27 +23,14 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class TechLetterGenerateController extends AbstractController
 {
-    private SendingRepository $sendingRepository;
-    private TechletterSubscriptionsRepository $techletterSubscriptionsRepository;
-    private Mailer $mailer;
-    private Mailchimp $mailchimp;
-    private string $techletterTestEmailAddress;
-    private string $mailchimpTechletterList;
-
     public function __construct(
-        SendingRepository $sendingRepository,
-        TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
-        Mailer $mailer,
-        Mailchimp $mailchimp,
-        string $techletterTestEmailAddress,
-        string $mailchimpTechletterList
+        private readonly SendingRepository $sendingRepository,
+        private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
+        private readonly Mailer $mailer,
+        private readonly Mailchimp $mailchimp,
+        private readonly string $techletterTestEmailAddress,
+        private readonly string $mailchimpTechletterList,
     ) {
-        $this->sendingRepository = $sendingRepository;
-        $this->techletterSubscriptionsRepository = $techletterSubscriptionsRepository;
-        $this->mailer = $mailer;
-        $this->mailchimp = $mailchimp;
-        $this->techletterTestEmailAddress = $techletterTestEmailAddress;
-        $this->mailchimpTechletterList = $mailchimpTechletterList;
     }
 
     public function index(Request $request)
@@ -83,7 +70,7 @@ class TechLetterGenerateController extends AbstractController
                 $history[] = $defaultColumns + [
                     'type' => 'First news',
                     'url' => $url,
-                    'title' => $firstNews->getTitle()
+                    'title' => $firstNews->getTitle(),
                 ];
             }
 
@@ -160,7 +147,7 @@ class TechLetterGenerateController extends AbstractController
                     'admin/techletter/mail_template.html.twig',
                     [
                         'tech_letter' => $techLetter,
-                        'preview' => false
+                        'preview' => false,
                     ]
                 )
                 ->getContent();
@@ -210,7 +197,7 @@ class TechLetterGenerateController extends AbstractController
             [
                 'title' => "Veille de l'AFUP",
                 'sending' => $sending,
-                'tech_letter' => $techLetter
+                'tech_letter' => $techLetter,
             ]
         );
     }
@@ -253,7 +240,7 @@ class TechLetterGenerateController extends AbstractController
 
         return $this->render('admin/techletter/mail_template.html.twig', [
             'preview' => true,
-            'tech_letter' => $techletter
+            'tech_letter' => $techletter,
         ]);
     }
 
@@ -294,7 +281,7 @@ class TechLetterGenerateController extends AbstractController
         $subscribers = $this->techletterSubscriptionsRepository->getAllSubscriptionsWithUser();
         return $this->render('admin/techletter/members.html.twig', [
             'subscribers' => $subscribers,
-            'title' => 'Liste des abonnés à la techletter'
+            'title' => 'Liste des abonnés à la techletter',
         ]);
     }
 }

@@ -35,7 +35,7 @@ class Users extends AbstractSeed
                 'id_pays' => 'FR',
                 'etat' => 1,
                 'public_profile_enabled' => 1,
-                'max_members' => 3
+                'max_members' => 3,
             ],
             [
                 'id'    => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
@@ -51,7 +51,7 @@ class Users extends AbstractSeed
                 'id_pays' => 'FR',
                 'etat' => 1,
                 'public_profile_enabled' => 1,
-                'max_members' => 3
+                'max_members' => 3,
             ],
         ];
 

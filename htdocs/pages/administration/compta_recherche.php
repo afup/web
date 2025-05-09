@@ -36,7 +36,7 @@ switch ($action) {
     // Results
     case 'results':
         // No search param?
-        if (!isset($_GET['q']) || !($q = trim($_GET['q']))) {
+        if (!isset($_GET['q']) || !($q = trim((string) $_GET['q']))) {
             $smarty->assign('action', $defaultAction);
             break;
         }

@@ -11,25 +11,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SpeakerFormData
 {
     /**
-     * @Assert\NotBlank()
      * @var string
      */
+    #[Assert\NotBlank]
     public $civility;
     /**
-     * @Assert\NotBlank()
      * @var string
      */
+    #[Assert\NotBlank]
     public $firstname;
     /**
-     * @Assert\NotBlank()
      * @var string
      */
+    #[Assert\NotBlank]
     public $lastname;
     /**
-     * @Assert\NotBlank()
-     * @Assert\Email()
      * @var string
      */
+    #[Assert\NotBlank]
+    #[Assert\Email]
     public $email;
     /**
      * @var string
@@ -40,9 +40,9 @@ class SpeakerFormData
      */
     public $locality;
     /**
-     * @Assert\NotBlank()
      * @var string
      */
+    #[Assert\NotBlank]
     public $biography;
     /**
      * @var string
@@ -56,9 +56,9 @@ class SpeakerFormData
     public ?string $bluesky = null;
 
     /**
-     * @Assert\File(mimeTypes={"image/jpeg","image/png"})
      * @var UploadedFile|null
      */
+    #[Assert\File(mimeTypes: ['image/jpeg', 'image/png'])]
     public $photoFile;
 
     /**

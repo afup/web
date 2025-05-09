@@ -16,7 +16,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     ob_clean();
 
     // On affiche la page du message
-    $smarty->assign('message', stripslashes($_GET['message']));
+    $smarty->assign('message', stripslashes((string) $_GET['message']));
     $smarty->assign('url'    , $_GET['url']);
     $smarty->assign('erreur' , $_GET['erreur']);
     $smarty->display('message.html');

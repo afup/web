@@ -65,12 +65,12 @@ SQL;
             ->addField([
                 'columnName' => 'afup_assemblee_generale_question_id',
                 'fieldName' => 'questionId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'afup_personnes_physiques_id',
                 'fieldName' => 'userId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'weight',

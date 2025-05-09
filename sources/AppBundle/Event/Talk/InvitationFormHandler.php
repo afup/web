@@ -22,24 +22,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InvitationFormHandler
 {
-    private TalkInvitationRepository $talkInvitationRepository;
-    private EventDispatcherInterface $eventDispatcher;
-    private TranslatorInterface $translator;
-    private UrlGeneratorInterface $urlGenerator;
-    private Mailer $mailer;
-
     public function __construct(
-        TalkInvitationRepository $talkInvitationRepository,
-        EventDispatcherInterface $eventDispatcher,
-        TranslatorInterface $translator,
-        UrlGeneratorInterface $urlGenerator,
-        Mailer $mailer
+        private readonly TalkInvitationRepository $talkInvitationRepository,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly TranslatorInterface $translator,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly Mailer $mailer,
     ) {
-        $this->talkInvitationRepository = $talkInvitationRepository;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->translator = $translator;
-        $this->urlGenerator = $urlGenerator;
-        $this->mailer = $mailer;
     }
 
     public function handle(Request $request, Event $event, FormInterface $form, GithubUser $user, Talk $talk): bool

@@ -13,15 +13,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class EventActionHelper
 {
-    protected EventRepository $eventRepository;
-    private TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        EventRepository $eventRepository,
-        TokenStorageInterface $tokenStorage
+        protected EventRepository $eventRepository,
+        private readonly TokenStorageInterface $tokenStorage,
     ) {
-        $this->eventRepository = $eventRepository;
-        $this->tokenStorage = $tokenStorage;
     }
 
     /**

@@ -14,14 +14,10 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class AvailableTicketValidator extends ConstraintValidator
 {
-    private TicketTypeAvailability $ticketTypeAvailability;
-
-    private EventRepository $eventRepository;
-
-    public function __construct(TicketTypeAvailability $ticketTypeAvailability, EventRepository $eventRepository)
-    {
-        $this->ticketTypeAvailability = $ticketTypeAvailability;
-        $this->eventRepository = $eventRepository;
+    public function __construct(
+        private readonly TicketTypeAvailability $ticketTypeAvailability,
+        private readonly EventRepository $eventRepository,
+    ) {
     }
 
     public function validate($ticket, Constraint $constraint): void

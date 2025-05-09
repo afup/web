@@ -10,11 +10,8 @@ use AppBundle\Association\Model\User;
 
 class SeniorityComputer
 {
-    private Cotisations $cotisations;
-
-    public function __construct(Cotisations $cotisations)
+    public function __construct(private readonly Cotisations $cotisations)
     {
-        $this->cotisations = $cotisations;
     }
 
     public function computeCompany(CompanyMember $companyMember)

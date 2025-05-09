@@ -16,12 +16,8 @@ class PrepareAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private GeneralMeetingRepository $generalMeetingRepository;
-
-    public function __construct(
-        GeneralMeetingRepository $generalMeetingRepository
-    ) {
-        $this->generalMeetingRepository = $generalMeetingRepository;
+    public function __construct(private GeneralMeetingRepository $generalMeetingRepository)
+    {
     }
 
     public function __invoke(Request $request)

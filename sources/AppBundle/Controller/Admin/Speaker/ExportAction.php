@@ -14,15 +14,10 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ExportAction
 {
-    private EventRepository $eventRepository;
-    private ExportGenerator $exportGenerator;
-
     public function __construct(
-        EventRepository $eventRepository,
-        ExportGenerator $exportGenerator
+        private readonly EventRepository $eventRepository,
+        private readonly ExportGenerator $exportGenerator,
     ) {
-        $this->eventRepository = $eventRepository;
-        $this->exportGenerator = $exportGenerator;
     }
 
     public function __invoke(Request $request): BinaryFileResponse

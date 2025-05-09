@@ -12,15 +12,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class SendTestInscriptionEmailAction extends AbstractController
 {
-    private EventActionHelper $eventActionHelper;
-    private Emails $emails;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        Emails $emails
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly Emails $emails,
     ) {
-        $this->eventActionHelper = $eventActionHelper;
-        $this->emails = $emails;
     }
 
     public function __invoke(int $id): RedirectResponse
@@ -30,7 +25,7 @@ class SendTestInscriptionEmailAction extends AbstractController
         $this->addFlash('notice', 'Mail de test envoyé');
 
         return $this->redirectToRoute('admin_event_edit', [
-            'id' => $event->getId()
+            'id' => $event->getId(),
         ]);
     }
 }

@@ -17,17 +17,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InvitationMail
 {
-    private Mailer $mailer;
-
-    private TranslatorInterface $translator;
-
-    private RouterInterface $router;
-
-    public function __construct(Mailer $mailer, TranslatorInterface $translator, RouterInterface $router)
-    {
-        $this->mailer = $mailer;
-        $this->translator = $translator;
-        $this->router = $router;
+    public function __construct(
+        private readonly Mailer $mailer,
+        private readonly TranslatorInterface $translator,
+        private readonly RouterInterface $router,
+    ) {
     }
 
     /**
@@ -46,7 +40,7 @@ class InvitationMail
                     'company_invitation',
                     ['invitationId' => $invitation->getId(), 'token' => $invitation->getToken()],
                     UrlGeneratorInterface::ABSOLUTE_URL
-                )
+                ),
             ]
         );
 

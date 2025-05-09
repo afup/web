@@ -9,14 +9,10 @@ namespace AppBundle\Indexation\Meetups\GraphQL;
  */
 final class QueryGroupsResponse
 {
-    /** @var array<string, Group> */
-    public array $data;
-
     /**
      * @param array<string, Group> $data
      */
-    public function __construct(array $data)
+    public function __construct(public array $data)
     {
-        $this->data = $data;
     }
 }

@@ -17,13 +17,6 @@ class PDF_Facture extends PDF
      */
     public $configuration;
 
-    private BankAccount $bankAccount;
-
-    /**
-     * @var bool
-     */
-    private $isSubjectedToVat;
-
     /**
      * Constructor
      *
@@ -33,12 +26,17 @@ class PDF_Facture extends PDF
      * @param string $format The page's format. Default is A4
      * @return void
      * @throws \Exception
+     * @param bool $isSubjectedToVat
      */
-    public function __construct($configuration, BankAccount $bankAccount, $isSubjectedToVat = false, $orientation = 'P', $unit = 'mm', $format = 'A4')
-    {
+    public function __construct(
+        $configuration,
+        private readonly BankAccount $bankAccount,
+        private $isSubjectedToVat = false,
+        $orientation = 'P',
+        $unit = 'mm',
+        $format = 'A4',
+    ) {
         parent::__construct($orientation, $unit, $format);
-        $this->bankAccount = $bankAccount;
-        $this->isSubjectedToVat = $isSubjectedToVat;
 
         $this->setAFUPConfiguration($configuration);
     }

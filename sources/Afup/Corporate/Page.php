@@ -33,16 +33,16 @@ class Page
     {
         $this->route = $route;
         switch (true) {
-            case preg_match("%\s*/[0-9]*/\s*%", $this->route):
-                [, $id, ] = explode("/", $this->route);
+            case preg_match("%\s*/[0-9]*/\s*%", (string) $this->route):
+                [, $id, ] = explode("/", (string) $this->route);
                 $article = new Article($id, $this->bdd);
                 $article->charger();
                 $this->title = $article->titre;
                 $this->content = $article->afficher();
                 break;
 
-            case preg_match("%s*/[0-9]*%", $this->route):
-                [, $id] = explode("/", $this->route);
+            case preg_match("%s*/[0-9]*%", (string) $this->route):
+                [, $id] = explode("/", (string) $this->route);
                 $rubrique = new Rubrique($id, $this->bdd);
                 $rubrique->charger();
                 $this->title = $rubrique->nom;
@@ -66,7 +66,7 @@ class Page
     public function header($url = null, UserInterface $user = null): string
     {
         $branche = new Branche($this->bdd);
-        $url = urldecode($url);
+        $url = urldecode((string) $url);
         $str = '<ul>';
 
         $feuillesEnfants = $branche->feuillesEnfants(Feuille::ID_FEUILLE_HEADER);
@@ -96,14 +96,14 @@ class Page
                 'etat' => '1',
                 'image' => null,
                 'patterns' => null,
-                'class' => 'desktop-hidden'
+                'class' => 'desktop-hidden',
             ];
         }
 
         foreach ($feuillesEnfants as $feuille) {
             $isCurrent = false;
             if ($feuille['patterns']) {
-                foreach (explode(PHP_EOL, $feuille['patterns']) as $pattern) {
+                foreach (explode(PHP_EOL, (string) $feuille['patterns']) as $pattern) {
                     $pattern = trim($pattern);
                     if ($pattern === '') {
                         continue;
@@ -175,7 +175,7 @@ class Page
         foreach ($branche->feuillesEnfants(Feuille::ID_FEUILLE_FOOTER) as $feuilleColonne) {
             $footerColumns[] = [
                 'nom' => $branche->getNom($feuilleColonne['id']),
-                'items' => $branche->feuillesEnfants($feuilleColonne['id'])
+                'items' => $branche->feuillesEnfants($feuilleColonne['id']),
             ];
         }
 

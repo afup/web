@@ -12,13 +12,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class VideoNotifierCommand extends Command
 {
-    private Engine $engine;
-
-    public function __construct(Engine $engine)
+    public function __construct(private readonly Engine $engine)
     {
         parent::__construct();
-
-        $this->engine = $engine;
     }
 
     protected function configure(): void

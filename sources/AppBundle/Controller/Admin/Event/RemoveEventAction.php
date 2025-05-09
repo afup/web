@@ -7,23 +7,18 @@ namespace AppBundle\Controller\Admin\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class RemoveEventAction extends AbstractController
 {
-    private EventRepository $eventRepository;
-    private CsrfTokenManagerInterface $csrfTokenManager;
-
-    public function __construct(EventRepository $eventRepository,
-                                CsrfTokenManagerInterface $csrfTokenManager)
-    {
-        $this->eventRepository = $eventRepository;
-        $this->csrfTokenManager = $csrfTokenManager;
+    public function __construct(
+        private readonly EventRepository $eventRepository,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
+    ) {
     }
 
-    public function __invoke(int $id, string $token, Request $request): RedirectResponse
+    public function __invoke(int $id, string $token): RedirectResponse
     {
         if (false === $this->csrfTokenManager->isTokenValid(new CsrfToken('forum_delete', $token))) {
             $this->addFlash('error', 'Token invalide');

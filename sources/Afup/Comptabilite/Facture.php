@@ -16,14 +16,8 @@ use AppBundle\Email\Mailer\Message;
 
 class Facture
 {
-    /**
-     * @var Base_De_Donnees
-     */
-    private $_bdd;
-
-    public function __construct(&$bdd)
+    public function __construct(private readonly Base_De_Donnees $_bdd)
     {
-        $this->_bdd = $bdd;
     }
 
 
@@ -403,15 +397,10 @@ class Facture
 
         $totalTtc = 0;
         $totalHt = 0;
-        switch ($coordonnees['devise_facture']) {
-            case 'DOL':
-                $devise = ' $';
-                break;
-            case 'EUR':
-            default:
-                $devise = ' €';
-                break;
-        }
+        $devise = match ($coordonnees['devise_facture']) {
+            'DOL' => ' $',
+            default => ' €',
+        };
 
         $yInitial = $pdf->getY();
 
@@ -600,15 +589,10 @@ class Facture
 
         $totalTtc = 0;
         $totalHt = 0;
-        switch ($coordonnees['devise_facture']) {
-            case 'DOL':
-                $devise = ' $';
-                break;
-            case 'EUR':
-            default:
-                $devise = ' €';
-                break;
-        }
+        $devise = match ($coordonnees['devise_facture']) {
+            'DOL' => ' $',
+            default => ' €',
+        };
         $yInitial = $pdf->getY();
         $columns = $isSubjectedToVat ? [0, 30, 90, 110, 130, 160, 190] : [0, 30, 110, 130, 160, 190];
 

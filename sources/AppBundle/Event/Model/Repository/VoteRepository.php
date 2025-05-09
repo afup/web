@@ -89,32 +89,32 @@ WHERE s.id_forum = :event');
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'session_id',
                 'fieldName' => 'sessionId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'submitted_on',
                 'fieldName' => 'submittedOn',
-                'type' => 'datetime'
+                'type' => 'datetime',
             ])
             ->addField([
                 'columnName' => 'comment',
                 'fieldName' => 'comment',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'user',
                 'fieldName' => 'user',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'vote',
                 'fieldName' => 'vote',
-                'type' => 'int'
+                'type' => 'int',
             ])
         ;
 

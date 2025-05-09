@@ -12,18 +12,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SpeakerFilesAction
 {
-    private SpeakersExpensesStorage $speakersExpensesStorage;
-    private SpeakerRepository $speakerRepository;
-    private EventActionHelper $eventActionHelper;
-
     public function __construct(
-        SpeakersExpensesStorage $speakersExpensesStorage,
-        SpeakerRepository $speakerRepository,
-        EventActionHelper $eventActionHelper
+        private readonly SpeakersExpensesStorage $speakersExpensesStorage,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly EventActionHelper $eventActionHelper,
     ) {
-        $this->speakersExpensesStorage = $speakersExpensesStorage;
-        $this->speakerRepository = $speakerRepository;
-        $this->eventActionHelper = $eventActionHelper;
     }
 
     public function __invoke(Request $request): BinaryFileResponse

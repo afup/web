@@ -48,7 +48,7 @@ class CompanyPublicProfile extends AbstractType
                 'maxWidth' => 1000,
                 'minHeight' => 200,
                 'minWidth' => 200,
-            ])
+            ]),
         ];
 
         if ($options['logo_required']) {
@@ -64,7 +64,7 @@ class CompanyPublicProfile extends AbstractType
                     'required' => false,
                     'constraints' => [
                         new Type(['type' => 'boolean']),
-                    ]
+                    ],
                 ]
             )
             ->add(
@@ -78,7 +78,7 @@ class CompanyPublicProfile extends AbstractType
                     'constraints' => [
                         new NotNull(),
                         new Length(['max' => self::DESCRIPTION_MAX_LENGTH]),
-                    ]
+                    ],
                 ]
             )
             ->add(
@@ -144,7 +144,7 @@ class CompanyPublicProfile extends AbstractType
                             'multiple' => true,
                             'strict' => true,
                         ]),
-                    ]
+                    ],
                 ]
             )
             ->add(

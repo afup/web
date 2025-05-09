@@ -15,37 +15,19 @@ class PayboxResponse
     const STATUS_DUPLICATE = '00015';
 
     /**
-     * @var string
+     * @param string $cmd
+     * @param string $status
+     * @param int $total
+     * @param string $authorizationId
+     * @param string $transactionId
      */
-    private $cmd;
-
-    /**
-     * @var string
-     */
-    private $status;
-
-    /**
-     * @var int
-     */
-    private $total;
-
-    /**
-     * @var string
-     */
-    private $authorizationId;
-
-    /**
-     * @var string
-     */
-    private $transactionId;
-
-    public function __construct($cmd, $status, $total, $authorizationId, $transactionId)
-    {
-        $this->cmd = $cmd;
-        $this->status = $status;
-        $this->total = $total;
-        $this->authorizationId = $authorizationId;
-        $this->transactionId = $transactionId;
+    public function __construct(
+        private $cmd,
+        private $status,
+        private $total,
+        private $authorizationId,
+        private $transactionId,
+    ) {
     }
 
     /**

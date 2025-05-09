@@ -25,41 +25,41 @@ class Speaker implements NotifyPropertyInterface
 
     /**
      * @var int
-     * @Assert\NotBlank()
-     * @Assert\GreaterThan(0)
      */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(0)]
     private $eventId;
 
     /**
      * @var int
-     * @Assert\NotBlank()
-     * @Assert\GreaterThan(0)
      */
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(0)]
     private $user;
 
     /**
-     * @Assert\NotBlank()
      * @var string
      */
+    #[Assert\NotBlank]
     private $civility;
 
     /**
-     * @Assert\NotBlank()
      * @var string
      */
+    #[Assert\NotBlank]
     private $firstname;
 
     /**
-     * @Assert\NotBlank()
      * @var string
      */
+    #[Assert\NotBlank]
     private $lastname;
 
     /**
-     * @Assert\NotBlank()
-     * @Assert\Email()
      * @var string
      */
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private $email;
 
     /**
@@ -73,9 +73,9 @@ class Speaker implements NotifyPropertyInterface
     private $locality;
 
     /**
-     * @Assert\NotBlank()
      * @var string
      */
+    #[Assert\NotBlank]
     private $biography;
 
     /**
@@ -96,9 +96,8 @@ class Speaker implements NotifyPropertyInterface
 
     /**
      * Wrapper for SpeakerType to allow picture upload
-     *
-     * @Assert\File(mimeTypes={"image/jpeg","image/png"})
      */
+    #[Assert\File(mimeTypes: ['image/jpeg', 'image/png'])]
     private ?UploadedFile $photoFile = null;
 
     /**
@@ -403,7 +402,7 @@ class Speaker implements NotifyPropertyInterface
         $twitter = trim($twitter, '@');
         $twitter = preg_replace('!^(https?://(twitter|x).com/)!', '', $twitter);
 
-        return trim($twitter);
+        return trim((string) $twitter);
     }
 
     public function getUrlTwitter(): string
@@ -449,11 +448,11 @@ class Speaker implements NotifyPropertyInterface
     public function getCleanedMastodon(): string
     {
         $mastodon = $this->getMastodon();
-        if (!str_contains($mastodon, '@')) {
+        if (!str_contains((string) $mastodon, '@')) {
             return '';
         }
 
-        [, $username] = explode('@', $mastodon);
+        [, $username] = explode('@', (string) $mastodon);
         return trim($username);
     }
 
@@ -677,9 +676,7 @@ class Speaker implements NotifyPropertyInterface
         return 0 === count($hotelNights);
     }
 
-    /**
-     * @Assert\Callback
-     */
+    #[Assert\Callback]
     public function validate(ExecutionContextInterface $context, $payload): void
     {
         // check if the name is actually a fake name

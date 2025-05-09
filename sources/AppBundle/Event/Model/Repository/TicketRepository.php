@@ -47,9 +47,9 @@ class TicketRepository extends Repository implements MetadataInitializer
                 'member' => $userId,
                 'type' => $userType,
                 'forum' => $eventId,
-                'state' => Ticket::STATUS_PAID
+                'state' => Ticket::STATUS_PAID,
             ])->query($this->getCollection(new HydratorArray()))->first()['total'];
-        } catch (QueryException $exception) {
+        } catch (QueryException) {
             return 0;
         }
     }
@@ -232,7 +232,7 @@ class TicketRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'date',
@@ -241,123 +241,123 @@ class TicketRepository extends Repository implements MetadataInitializer
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['format' => 'U'],
-                ]
+                ],
             ])
             ->addField([
                 'columnName' => 'reference',
                 'fieldName' => 'reference',
-                'type' => 'string'
+                'type' => 'string',
             ])
 
             ->addField([
                 'columnName' => 'coupon',
                 'fieldName' => 'voucher',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'type_inscription',
                 'fieldName' => 'ticketTypeId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'montant',
                 'fieldName' => 'amount',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'informations_reglement',
                 'fieldName' => 'paymentInfo',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'civilite',
                 'fieldName' => 'civility',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'nom',
                 'fieldName' => 'lastname',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'prenom',
                 'fieldName' => 'firstname',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'email',
                 'fieldName' => 'email',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'telephone',
                 'fieldName' => 'phoneNumber',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'citer_societe',
                 'fieldName' => 'companyCitation',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'newsletter_afup',
                 'fieldName' => 'newsletter',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'commentaires',
                 'fieldName' => 'comments',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'etat',
                 'fieldName' => 'status',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'facturation',
                 'fieldName' => 'invoiceStatus',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'id_forum',
                 'fieldName' => 'forumId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'id_member',
                 'fieldName' => 'memberId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'member_type',
                 'fieldName' => 'memberType',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'mail_partenaire',
                 'fieldName' => 'optin',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'presence_day1',
                 'fieldName' => 'day1Checkin',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'presence_day2',
                 'fieldName' => 'day2Checkin',
                 'type' => 'bool',
-                'serializer' => Boolean::class
+                'serializer' => Boolean::class,
             ])
             ->addField([
                 'columnName' => 'special_price_token',
                 'fieldName' => 'specialPriceToken',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'nearest_office',
@@ -372,7 +372,7 @@ class TicketRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'transport_distance',
                 'fieldName' => 'transportDistance',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'qr_code',

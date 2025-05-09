@@ -18,15 +18,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SpeakerSuggestionController extends AbstractController
 {
-    private Mailer $mailer;
-    private RepositoryFactory $repositoryFactory;
-    private EventActionHelper $eventActionHelper;
-
-    public function __construct(Mailer $mailer, RepositoryFactory $repositoryFactory, EventActionHelper $eventActionHelper)
-    {
-        $this->mailer = $mailer;
-        $this->repositoryFactory = $repositoryFactory;
-        $this->eventActionHelper = $eventActionHelper;
+    public function __construct(
+        private readonly Mailer $mailer,
+        private readonly RepositoryFactory $repositoryFactory,
+        private readonly EventActionHelper $eventActionHelper,
+    ) {
     }
 
     /**

@@ -11,7 +11,7 @@ require_once __DIR__ . '/../../../sources/Afup/Bootstrap/Http.php';
 
 $comptaFact = new Facture($bdd);
 
-$ref = Utils::decryptFromText(urldecode($_GET['ref']));
+$ref = Utils::decryptFromText(urldecode((string) $_GET['ref']));
 
 $facture = $comptaFact->obtenir($ref);
 if ($facture) {
@@ -35,10 +35,10 @@ if ($facture) {
             ->setTotal($prix * 100)
             ->setCmd($facture['numero_facture'])
             ->setPorteur($facture['email'])
-            ->setUrlRetourEffectue('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_effectue.php')
-            ->setUrlRetourAnnule('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_annule.php')
-            ->setUrlRetourRefuse('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_refuse.php')
-            ->setUrlRetourErreur('https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/paybox_erreur.php')
+            ->setUrlRetourEffectue('https://' . $_SERVER['HTTP_HOST'] . dirname((string) $_SERVER['REQUEST_URI']) . '/paybox_effectue.php')
+            ->setUrlRetourAnnule('https://' . $_SERVER['HTTP_HOST'] . dirname((string) $_SERVER['REQUEST_URI']) . '/paybox_annule.php')
+            ->setUrlRetourRefuse('https://' . $_SERVER['HTTP_HOST'] . dirname((string) $_SERVER['REQUEST_URI']) . '/paybox_refuse.php')
+            ->setUrlRetourErreur('https://' . $_SERVER['HTTP_HOST'] . dirname((string) $_SERVER['REQUEST_URI']) . '/paybox_erreur.php')
         ;
 
         $payboxBilling = new PayboxBilling($facture['prenom'], $facture['nom'], $facture['adresse'], $facture['code_postal'], $facture['ville'], $facture['id_pays']);
@@ -48,7 +48,7 @@ if ($facture) {
 
         $smarty->assign('facture', $facture);
         $smarty->assign('details_facture', $details);
-        $smarty->assign('original_ref', urlencode($_GET['ref']));
+        $smarty->assign('original_ref', urlencode((string) $_GET['ref']));
         $smarty->display('paybox_formulaire.html');
     }
 } else {

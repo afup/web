@@ -9,29 +9,6 @@ use DateTimeImmutable;
 
 class Attendee
 {
-    /** @var int */
-    private $id;
-    /** @var string */
-    private $email;
-    /** @var string */
-    private $login;
-    /** @var string */
-    private $lastname;
-    /** @var string */
-    private $firstname;
-    /** @var string */
-    private $nearestOffice;
-    /** @var DateTimeImmutable|null */
-    private $consultationDate;
-    /** @var int */
-    private $presence;
-    /** @var int|null */
-    private $powerId;
-    /** @var string|null */
-    private $powerLastname;
-    /** @var string|null */
-    private $powerFirstname;
-
     /**
      * @param int                    $id
      * @param string                 $email
@@ -46,29 +23,18 @@ class Attendee
      * @param string|null            $powerFirstname
      */
     public function __construct(
-        $id,
-        $email,
-        $login,
-        $lastname,
-        $firstname,
-        $nearestOffice,
-        $consultationDate,
-        $presence,
-        $powerId,
-        $powerLastname,
-        $powerFirstname
+        private $id,
+        private $email,
+        private $login,
+        private $lastname,
+        private $firstname,
+        private $nearestOffice,
+        private $consultationDate,
+        private $presence,
+        private $powerId,
+        private $powerLastname,
+        private $powerFirstname,
     ) {
-        $this->id = $id;
-        $this->email = $email;
-        $this->login = $login;
-        $this->lastname = $lastname;
-        $this->firstname = $firstname;
-        $this->nearestOffice = $nearestOffice;
-        $this->consultationDate = $consultationDate;
-        $this->presence = $presence;
-        $this->powerId = $powerId;
-        $this->powerLastname = $powerLastname;
-        $this->powerFirstname = $powerFirstname;
     }
 
     public function getId()

@@ -22,7 +22,7 @@ final class PayboxTest extends TestCase
         \DateTimeImmutable $currentDate,
         \Closure $callback,
         PayboxBilling $billing,
-        string $expected
+        string $expected,
     ): void {
         $paybox = new Paybox($domainServer, $secretKey, $site, $rang, $identifiant);
 

@@ -13,11 +13,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateUserStateCommand extends Command
 {
-    private RepositoryFactory $ting;
-
-    public function __construct(RepositoryFactory $ting)
+    public function __construct(private readonly RepositoryFactory $ting)
     {
-        $this->ting = $ting;
         parent::__construct();
     }
 

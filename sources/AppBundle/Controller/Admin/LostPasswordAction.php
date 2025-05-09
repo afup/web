@@ -14,14 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LostPasswordAction extends AbstractController
 {
-    private ViewRenderer $view;
-    private UserService $userPasswordService;
-
-    public function __construct(UserService $userPasswordService,
-                                ViewRenderer $view
+    public function __construct(
+        private readonly UserService $userPasswordService,
+        private readonly ViewRenderer $view,
     ) {
-        $this->userPasswordService = $userPasswordService;
-        $this->view = $view;
     }
 
     public function __invoke(Request $request): Response

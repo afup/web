@@ -17,15 +17,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SpecialPriceAction extends AbstractController
 {
-    private EventActionHelper $eventActionHelper;
-    private TicketSpecialPriceRepository $ticketSpecialPriceRepository;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        TicketSpecialPriceRepository $ticketSpecialPriceRepository
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly TicketSpecialPriceRepository $ticketSpecialPriceRepository,
     ) {
-        $this->eventActionHelper = $eventActionHelper;
-        $this->ticketSpecialPriceRepository = $ticketSpecialPriceRepository;
     }
 
     public function __invoke(Request $request): Response
@@ -57,7 +52,7 @@ class SpecialPriceAction extends AbstractController
             $this->addFlash('notice', 'Le token a été enregistré');
 
             return $this->redirectToRoute('admin_event_special_price', [
-                'id' => $event->getId()
+                'id' => $event->getId(),
             ]);
         }
 

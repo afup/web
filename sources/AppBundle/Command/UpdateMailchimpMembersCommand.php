@@ -15,17 +15,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateMailchimpMembersCommand extends Command
 {
-    private Mailchimp $mailchimp;
-    private RepositoryFactory $ting;
-    private string $mailchimpMembersList;
-
-    public function __construct(Mailchimp $mailchimp,
-                                RepositoryFactory $ting,
-                                string $mailchimpMembersList)
-    {
-        $this->mailchimp = $mailchimp;
-        $this->mailchimpMembersList = $mailchimpMembersList;
-        $this->ting = $ting;
+    public function __construct(
+        private readonly Mailchimp $mailchimp,
+        private readonly RepositoryFactory $ting,
+        private readonly string $mailchimpMembersList,
+    ) {
         parent::__construct();
     }
 

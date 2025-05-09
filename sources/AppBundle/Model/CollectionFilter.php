@@ -18,7 +18,7 @@ class CollectionFilter
 
         return array_filter($items, function ($item) use ($method, $value): bool {
             if (method_exists($item, $method) === false) {
-                throw new \RuntimeException(sprintf('Could not find method "%s" on object of type "%s"', $method, get_class($item)));
+                throw new \RuntimeException(sprintf('Could not find method "%s" on object of type "%s"', $method, $item::class));
             }
             return $item->$method() === $value;
         });

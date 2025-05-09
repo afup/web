@@ -36,7 +36,7 @@ foreach ($forum->obtenirListe(null, '*', 'date_debut DESC') as $forum) {
 
 function checkNoSpace($value): bool
 {
-    return !preg_match('/(\s)/', $value);
+    return !preg_match('/(\s)/', (string) $value);
 }
 
 if ($action == 'lister') {

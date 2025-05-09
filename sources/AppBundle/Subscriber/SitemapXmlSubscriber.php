@@ -28,14 +28,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SitemapXmlSubscriber implements EventSubscriberInterface
 {
-    private UrlGeneratorInterface $urlGenerator;
-    private RepositoryFactory $ting;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator,
-                                RepositoryFactory $ting)
-    {
-        $this->urlGenerator = $urlGenerator;
-        $this->ting = $ting;
+    public function __construct(
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly RepositoryFactory $ting,
+    ) {
     }
 
     public static function getSubscribedEvents(): array
@@ -79,7 +75,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                 $video = new GoogleVideo(
                     sprintf('https://img.youtube.com/vi/%s/0.jpg', $talk->getYoutubeId()),
                     $talk->getTitle(),
-                    strip_tags(html_entity_decode($talk->getDescription())),
+                    strip_tags(html_entity_decode((string) $talk->getDescription())),
                     ['player_location' => $talk->getYoutubeUrl()]
                 );
                 $decoratedUrl = new GoogleVideoUrlDecorator($url);
@@ -202,7 +198,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
 
         $leafs = $branche->feuillesEnfants($id);
         foreach ($leafs as $leaf) {
-            if (!$leaf['lien'] || !str_starts_with($leaf['lien'], 'http')) {
+            if (!$leaf['lien'] || !str_starts_with((string) $leaf['lien'], 'http')) {
                 continue;
             }
 

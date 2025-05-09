@@ -25,42 +25,42 @@ class TicketEventType extends AbstractType
             ->add('ticketType', ChoiceType::class, [
                 'choices' => $this->ticketTypesToChoices($options['ticketTypes']),
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank(),
                 ],
-                'label' => 'Type de ticket'
+                'label' => 'Type de ticket',
             ])
             ->add('price', MoneyType::class, [
                 'currency' => 'EUR',
                 'constraints' => [
                     new GreaterThanOrEqual(0),
-                    new NotBlank()
+                    new NotBlank(),
                 ],
                 'label' => $options['has_prices_defined_with_vat'] ? 'Montant TTC' : 'Montant HT',
             ])
             ->add('dateStart', DateTimeType::class, [
                 'widget' => 'choice',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank(),
                 ],
-                'label' => 'Date de début'
+                'label' => 'Date de début',
             ])
             ->add('dateEnd', DateTimeType::class, [
                 'widget' => 'choice',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank(),
                 ],
-                'label' => 'Date de fin'
+                'label' => 'Date de fin',
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
-                'label' => 'Description'
+                'label' => 'Description',
             ])
             ->add('maxTickets', IntegerType::class, [
                 'constraints' => [
                     new GreaterThanOrEqual(0),
                 ],
                 'required' => false,
-                'label' => 'Nombre max. de tickets'
+                'label' => 'Nombre max. de tickets',
             ]);
     }
 
@@ -71,7 +71,7 @@ class TicketEventType extends AbstractType
             'has_prices_defined_with_vat' => true,
         ]);
         $resolver->setRequired([
-            'ticketTypes'
+            'ticketTypes',
         ]);
     }
 

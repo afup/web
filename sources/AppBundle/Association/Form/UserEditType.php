@@ -25,15 +25,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserEditType extends AbstractType
 {
-    private CompanyMemberRepository $companyMemberRepository;
-    private Pays $pays;
-
     public function __construct(
-        CompanyMemberRepository $companyMemberRepository,
-        Pays $pays
+        private readonly CompanyMemberRepository $companyMemberRepository,
+        private readonly Pays $pays,
     ) {
-        $this->companyMemberRepository = $companyMemberRepository;
-        $this->pays = $pays;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -226,7 +221,7 @@ class UserEditType extends AbstractType
 
         $builder->get('roles')->addModelTransformer(new CallbackTransformer(
             fn ($rolesAsArray): string => json_encode($rolesAsArray),
-            fn ($rolesAsString): array => json_decode($rolesAsString)
+            fn ($rolesAsString): array => json_decode((string) $rolesAsString)
         ));
 
         $builder

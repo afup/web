@@ -12,11 +12,8 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class UserExportAction
 {
-    private UserRepository $userRepository;
-
-    public function __construct(UserRepository $userRepository)
+    public function __construct(private readonly UserRepository $userRepository)
     {
-        $this->userRepository = $userRepository;
     }
 
     public function __invoke(Request $request): BinaryFileResponse

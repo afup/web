@@ -9,27 +9,19 @@ use AppBundle\Association\Model\User;
 
 class Runner
 {
-    private Mailchimp $mailchimp;
-
-    private UserRepository $userRepository;
-
-    /**
-     * @var string id of the mailchimp list to use
-     */
-    private $membersListId;
-
     /**
      * Runner constructor.
      * @param $membersListId
+     * @param string $membersListId
      */
     public function __construct(
-        Mailchimp $mailchimp,
-        UserRepository $userRepository,
-        $membersListId
+        private readonly Mailchimp $mailchimp,
+        private readonly UserRepository $userRepository,
+        /**
+         * @var string id of the mailchimp list to use
+         */
+        private $membersListId,
     ) {
-        $this->mailchimp = $mailchimp;
-        $this->userRepository = $userRepository;
-        $this->membersListId = $membersListId;
     }
 
     /**

@@ -24,14 +24,10 @@ class PurchaseType extends AbstractType
 {
     const MAX_NB_PERSONNES = 15;
 
-    private Pays $country;
-
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(Pays $pays, TokenStorageInterface $tokenStorage)
-    {
-        $this->country = $pays;
-        $this->tokenStorage = $tokenStorage;
+    public function __construct(
+        private readonly Pays $country,
+        private readonly TokenStorageInterface $tokenStorage,
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -49,7 +45,7 @@ class PurchaseType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'mapped' => false,
-                'data' => 1
+                'data' => 1,
             ])
             ->add('tickets', CollectionType::class, [
                 'entry_type' => TicketType::class,
@@ -61,16 +57,16 @@ class PurchaseType extends AbstractType
                     'is_cfp_submitter' => $options['is_cfp_submitter'],
                     'special_price_token' => $options['special_price_token'],
                     'error_bubbling' => false,
-                ]
+                ],
             ])
             ->add('paymentType', ChoiceType::class, [
                 'label' => 'Règlement',
                 'choices' => [
                     'Carte bancaire' => Ticket::PAYMENT_CREDIT_CARD,
-                    'Virement' => Ticket::PAYMENT_BANKWIRE
+                    'Virement' => Ticket::PAYMENT_BANKWIRE,
                 ],
                 'expanded' => true,
-                'multiple' => false
+                'multiple' => false,
             ])
             ->add('firstname', TextType::class)
             ->add('lastname', TextType::class)
@@ -81,12 +77,12 @@ class PurchaseType extends AbstractType
             ->add('city', TextType::class)
             ->add('countryId', ChoiceType::class, [
                 'label' => 'Country',
-                'choices' => array_flip($this->country->obtenirPays())
+                'choices' => array_flip($this->country->obtenirPays()),
             ])
             ->add('companyCitation', CheckboxType::class, [
                 'label'    => 'J\'accepte que ma société soit citée comme participant à la conférence',
                 'required' => false,
-                'mapped' => false
+                'mapped' => false,
             ])
             ->add('cgv', CheckboxType::class, [
                 'required' => true,
@@ -100,7 +96,7 @@ class PurchaseType extends AbstractType
             ->add('newsletterAfup', CheckboxType::class, [
                 'label' => 'Je souhaite être tenu au courant des rencontres de l\'AFUP sur des sujets afférents à PHP',
                 'required' => false,
-                'mapped' => false
+                'mapped' => false,
             ])
         ;
     }

@@ -6,27 +6,6 @@ namespace PlanetePHP;
 
 class FeedArticle
 {
-    /** @var int */
-    private $id;
-    /** @var int */
-    private $feedId;
-    /** @var string */
-    private $key;
-    /** @var string */
-    private $title;
-    /** @var string */
-    private $url;
-    /** @var int */
-    private $update;
-    /** @var string */
-    private $author;
-    /** @var string */
-    private $summary;
-    /** @var string */
-    private $content;
-    /** @var int */
-    private $status;
-
     /**
      * @param int    $id
      * @param int    $feedId
@@ -40,27 +19,17 @@ class FeedArticle
      * @param int    $status
      */
     public function __construct(
-        $id,
-        $feedId,
-        $key,
-        $title,
-        $url,
-        $update,
-        $author,
-        $summary,
-        $content,
-        $status
+        private $id,
+        private $feedId,
+        private $key,
+        private $title,
+        private $url,
+        private $update,
+        private $author,
+        private $summary,
+        private $content,
+        private $status,
     ) {
-        $this->id = $id;
-        $this->feedId = $feedId;
-        $this->key = $key;
-        $this->title = $title;
-        $this->url = $url;
-        $this->update = $update;
-        $this->author = $author;
-        $this->summary = $summary;
-        $this->content = $content;
-        $this->status = $status;
     }
 
     public function getId()

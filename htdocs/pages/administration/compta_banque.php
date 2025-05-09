@@ -72,9 +72,9 @@ if ($action == 'lister') {
     for ($i = 1; $i < 13; $i++) {
         $compteurLigne[$i] = 4;
         $sheet = $workbook->createSheet($i);
-        $sheet->setTitle('Mois de ' . strftime('%B %Y', mktime(0, 0, 0, $i, 1, (int) date('Y', strtotime($periode_debut)))));
+        $sheet->setTitle('Mois de ' . strftime('%B %Y', mktime(0, 0, 0, $i, 1, (int) date('Y', strtotime((string) $periode_debut)))));
         $sheet->setCellValue('A1',
-            'Mois de ' . strftime('%B %Y', mktime(0, 0, 0, $i, 1, (int) date('Y', strtotime($periode_debut)))));
+            'Mois de ' . strftime('%B %Y', mktime(0, 0, 0, $i, 1, (int) date('Y', strtotime((string) $periode_debut)))));
         $sheet->setCellValue('A3', 'Date');
         $sheet->setCellValue('B3', 'Opération');
         $sheet->setCellValue('C3', 'Description');
@@ -89,7 +89,7 @@ if ($action == 'lister') {
     }
     foreach ($journal as $ecriture) {
         $sheet = $workbook->getSheet($ecriture['mois']);
-        $sheet->setCellValue('A' . $compteurLigne[$ecriture['mois']], date('d/m/Y', strtotime($ecriture['date_regl'])));
+        $sheet->setCellValue('A' . $compteurLigne[$ecriture['mois']], date('d/m/Y', strtotime((string) $ecriture['date_regl'])));
         $sheet->setCellValue('B' . $compteurLigne[$ecriture['mois']], $ecriture['reglement']);
         $sheet->setCellValue('C' . $compteurLigne[$ecriture['mois']], $ecriture['description']);
         $sheet->setCellValue('D' . $compteurLigne[$ecriture['mois']], $ecriture['evenement']);
@@ -112,34 +112,34 @@ if ($action == 'lister') {
             'font' => [
                 'size' => 12,
                 'bold' => true,
-                'name' => 'Ubuntu'
-            ]
+                'name' => 'Ubuntu',
+            ],
         ]);
         $sheet->getStyle('A3:K3')->applyFromArray([
             'font' => [
                 'size' => 10,
                 'bold' => true,
-                'name' => 'Ubuntu'
+                'name' => 'Ubuntu',
             ],
             'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
             'borders' => [
                 'allborders' => [
                     'style' => Border::BORDER_THIN,
-                    'color' => ['rgb' => 'FF666666']
-                ]
-            ]
+                    'color' => ['rgb' => 'FF666666'],
+                ],
+            ],
         ]);
         $sheet->getStyle('A4:K' . ($compteurLigne[$i] + 1))->applyFromArray([
             'font' => [
                 'size' => 10,
-                'name' => 'Ubuntu'
+                'name' => 'Ubuntu',
             ],
             'borders' => [
                 'allborders' => [
                     'style' => Border::BORDER_THIN,
-                    'color' => ['rgb' => 'FF666666']
-                ]
-            ]
+                    'color' => ['rgb' => 'FF666666'],
+                ],
+            ],
         ]);
         $sheet->getStyle('J3:I200')->applyFromArray(['alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]]);
 
@@ -154,8 +154,8 @@ if ($action == 'lister') {
             'font' => [
                 'size' => 10,
                 'bold' => true,
-                'name' => 'Ubuntu'
-            ]
+                'name' => 'Ubuntu',
+            ],
         ]);
         $sheet->getStyle('F' . ($compteurLigne[$i] + 1))->getAlignment()->applyFromArray(['horizontal' => Alignment::HORIZONTAL_CENTER]);
 
@@ -182,7 +182,7 @@ if ($action == 'lister') {
     //$workbook->removeSheetByIndex(0);
 
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment;filename="compta_afup_' . date('Y', strtotime($periode_debut)) . '.xlsx"');
+    header('Content-Disposition: attachment;filename="compta_afup_' . date('Y', strtotime((string) $periode_debut)) . '.xlsx"');
     header('Cache-Control: max-age=0');
 
     $writer = new Xlsx($workbook);
@@ -195,7 +195,7 @@ if ($action == 'lister') {
 
     try {
         // Get the year
-        $year = date('Y', strtotime($listPeriode[$id_periode - 1]['date_debut']));
+        $year = date('Y', strtotime((string) $listPeriode[$id_periode - 1]['date_debut']));
 
         // Create the zip
         $zipFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'afup_justificatifs-' . $year . '.zip';

@@ -26,30 +26,15 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class PendingBankwiresAction extends AbstractController
 {
-    private EventActionHelper $eventActionHelper;
-    private InvoiceRepository $invoiceRepository;
-    private TicketRepository $ticketRepository;
-    private LegacyModelFactory $legacyModelFactory;
-    private Emails $emails;
-    private EventDispatcherInterface $eventDispatcher;
-    private CsrfTokenManagerInterface $csrfTokenManager;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        InvoiceRepository $invoiceRepository,
-        TicketRepository $ticketRepository,
-        LegacyModelFactory $legacyModelFactory,
-        Emails $emails,
-        EventDispatcherInterface $eventDispatcher,
-        CsrfTokenManagerInterface $csrfTokenManager
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly InvoiceRepository $invoiceRepository,
+        private readonly TicketRepository $ticketRepository,
+        private readonly LegacyModelFactory $legacyModelFactory,
+        private readonly Emails $emails,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
     ) {
-        $this->eventActionHelper = $eventActionHelper;
-        $this->invoiceRepository = $invoiceRepository;
-        $this->ticketRepository = $ticketRepository;
-        $this->legacyModelFactory = $legacyModelFactory;
-        $this->emails = $emails;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->csrfTokenManager = $csrfTokenManager;
     }
 
     public function __invoke(Request $request): Response

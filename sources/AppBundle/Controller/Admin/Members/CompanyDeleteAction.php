@@ -16,12 +16,8 @@ class CompanyDeleteAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private CompanyMemberRepository $companyMemberRepository;
-
-    public function __construct(
-        CompanyMemberRepository $companyMemberRepository
-    ) {
-        $this->companyMemberRepository = $companyMemberRepository;
+    public function __construct(private CompanyMemberRepository $companyMemberRepository)
+    {
     }
 
     public function __invoke(Request $request): RedirectResponse
@@ -36,7 +32,7 @@ class CompanyDeleteAction extends AbstractController
             $this->addFlash('notice', 'La personne morale a été supprimée');
         } catch (InvalidArgumentException $e) {
             $this->addFlash('error', $e->getMessage());
-        } catch (Exception $e) {
+        } catch (Exception) {
             $this->addFlash('error', 'Une erreur est survenue lors de la suppression de la personne morale');
         }
 

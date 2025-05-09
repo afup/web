@@ -11,22 +11,13 @@ class UsersClient
     const USER_LIST_API = '/users.list';
 
     /**
-     * @var string
-     */
-    private $token;
-    /**
-     * @var string
-     */
-    private $apiBaseUrl;
-
-    /**
      * @param string $token Token des API Slack
      * @param string $apiBaseUrl URL de base des API Slack
      */
-    public function __construct($token, $apiBaseUrl)
-    {
-        $this->token = $token;
-        $this->apiBaseUrl = $apiBaseUrl;
+    public function __construct(
+        private $token,
+        private $apiBaseUrl,
+    ) {
     }
 
     /**

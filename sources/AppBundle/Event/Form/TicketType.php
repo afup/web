@@ -29,30 +29,15 @@ class TicketType extends AbstractType
     const MEMBER_PERSONAL = 1;
     const MEMBER_CORPORATE = 2;
 
-    private TicketEventTypeRepository $ticketEventTypeRepository;
-
-    private EventRepository $eventRepository;
-
-    private TicketTypeAvailability $ticketTypeAvailability;
-
-    private TicketSpecialPriceRepository $ticketSpecialPriceRepository;
-
-    private TicketTypeRepository $ticketTypeRepository;
-
-    private AntennesCollection $antennesCollection;
+    private readonly AntennesCollection $antennesCollection;
 
     public function __construct(
-        EventRepository $eventRepository,
-        TicketEventTypeRepository $ticketEventTypeRepository,
-        TicketTypeAvailability $ticketTypeAvailability,
-        TicketSpecialPriceRepository $ticketSpecialPriceRepository,
-        TicketTypeRepository $ticketTypeRepository
+        private readonly EventRepository $eventRepository,
+        private readonly TicketEventTypeRepository $ticketEventTypeRepository,
+        private readonly TicketTypeAvailability $ticketTypeAvailability,
+        private readonly TicketSpecialPriceRepository $ticketSpecialPriceRepository,
+        private readonly TicketTypeRepository $ticketTypeRepository,
     ) {
-        $this->eventRepository = $eventRepository;
-        $this->ticketEventTypeRepository = $ticketEventTypeRepository;
-        $this->ticketTypeAvailability = $ticketTypeAvailability;
-        $this->ticketSpecialPriceRepository = $ticketSpecialPriceRepository;
-        $this->ticketTypeRepository = $ticketTypeRepository;
         $this->antennesCollection = new AntennesCollection();
     }
 
@@ -74,21 +59,21 @@ class TicketType extends AbstractType
                 'label' => 'Civilité',
                 'choices' => [
                     'M.' => 'M.',
-                    'Mme' => 'Mme'
-                ]
+                    'Mme' => 'Mme',
+                ],
             ])
             ->add('firstname', TextType::class, [
-                'label' => 'Prénom'
+                'label' => 'Prénom',
             ])
             ->add('lastname', TextType::class, [
-                'label' => 'Nom'
+                'label' => 'Nom',
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email'
+                'label' => 'Email',
             ])
             ->add('phoneNumber', TextType::class, [
                 'label' => 'Téléphone',
-                'required' => false
+                'required' => false,
             ])
             ->add('nearestOffice', ChoiceType::class, [
                 'label' => 'Antenne de prédilection',
@@ -141,7 +126,7 @@ class TicketType extends AbstractType
                         'data-members-only' => (int) $type->getTicketType()->getIsRestrictedToMembers(),
                         'data-max-tickets' => $type->getMaxTickets(),
                         'data-stock' => $this->ticketTypeAvailability->getStock($type, $event),
-                        'data-label' => $type->getTicketType()->getPrettyName()
+                        'data-label' => $type->getTicketType()->getPrettyName(),
                     ];
 
                     if (
@@ -152,7 +137,7 @@ class TicketType extends AbstractType
                         $attr['disabled'] = 'disabled';
                     }
                     return $attr;
-                }
+                },
             ])
             ;
         });

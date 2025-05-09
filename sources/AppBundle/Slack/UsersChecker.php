@@ -11,14 +11,11 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 class UsersChecker
 {
     const SUBSCRIPTION_DELAY = '+15 days';
-    private UsersClient $usersClient;
 
-    private UserRepository $userRepository;
-
-    public function __construct(UsersClient $usersClient, UserRepository $userRepository)
-    {
-        $this->usersClient = $usersClient;
-        $this->userRepository = $userRepository;
+    public function __construct(
+        private readonly UsersClient $usersClient,
+        private readonly UserRepository $userRepository,
+    ) {
     }
 
     /**
@@ -69,7 +66,7 @@ class UsersChecker
                             $result[] = $userInfo;
                         }
                     }
-                } catch (UserNotFoundException $e) {
+                } catch (UserNotFoundException) {
                     //User Not found ! A supprimer de slack !
                     $result[] = $userInfo;
                 }

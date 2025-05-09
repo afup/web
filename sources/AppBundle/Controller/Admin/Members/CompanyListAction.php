@@ -11,15 +11,10 @@ use Twig\Environment;
 
 class CompanyListAction
 {
-    private CompanyMemberRepository $companyMemberRepository;
-    private Environment $twig;
-
     public function __construct(
-        CompanyMemberRepository $companyMemberRepository,
-        Environment $twig
+        private readonly CompanyMemberRepository $companyMemberRepository,
+        private readonly Environment $twig,
     ) {
-        $this->companyMemberRepository = $companyMemberRepository;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request)

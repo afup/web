@@ -19,21 +19,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PricesAddAction extends AbstractController
 {
-    private EventActionHelper $eventActionHelper;
-    private TicketTypeRepository $ticketTypeRepository;
-    private TicketEventTypeRepository $ticketEventTypeRepository;
-    private ValidatorInterface $validator;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        TicketTypeRepository $ticketTypeRepository,
-        TicketEventTypeRepository $ticketEventTypeRepository,
-        ValidatorInterface $validator
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly TicketTypeRepository $ticketTypeRepository,
+        private readonly TicketEventTypeRepository $ticketEventTypeRepository,
+        private readonly ValidatorInterface $validator,
     ) {
-        $this->eventActionHelper = $eventActionHelper;
-        $this->ticketTypeRepository = $ticketTypeRepository;
-        $this->ticketEventTypeRepository = $ticketEventTypeRepository;
-        $this->validator = $validator;
     }
 
     public function __invoke(Request $request): Response
@@ -60,8 +51,8 @@ class PricesAddAction extends AbstractController
                 new UniqueEntity([
                     'fields' => ['ticketTypeId', 'eventId'],
                     'repository' => $this->ticketEventTypeRepository,
-                    'message' => 'Ce type de ticket existe déjà pour cet évènement.'
-                ])
+                    'message' => 'Ce type de ticket existe déjà pour cet évènement.',
+                ]),
             ]);
             foreach ($violations as $violation) {
                 $form->get('ticketType')->addError(new FormError($violation->getMessage()));
@@ -73,7 +64,7 @@ class PricesAddAction extends AbstractController
                 $this->addFlash('notice', 'Le tarif a été ajouté');
 
                 return $this->redirectToRoute('admin_event_prices', [
-                    'id' => $event->getId()
+                    'id' => $event->getId(),
                 ]);
             }
         }

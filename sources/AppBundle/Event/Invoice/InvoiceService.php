@@ -11,15 +11,10 @@ use AppBundle\Event\Model\Ticket;
 
 class InvoiceService
 {
-    private InvoiceRepository $invoiceRepository;
-    private TicketRepository $ticketRepository;
-
     public function __construct(
-        InvoiceRepository $invoiceRepository,
-        TicketRepository $ticketRepository
+        private readonly InvoiceRepository $invoiceRepository,
+        private readonly TicketRepository $ticketRepository,
     ) {
-        $this->invoiceRepository = $invoiceRepository;
-        $this->ticketRepository = $ticketRepository;
     }
 
     public function handleInvoicing(
@@ -39,7 +34,7 @@ class InvoiceService
         $oldReference = null,
         $authorization = null,
         $transaction = null,
-        $status = Ticket::STATUS_CREATED
+        $status = Ticket::STATUS_CREATED,
     ): void {
         $tickets = $this->ticketRepository->getByReference($reference);
         $amount = 0.0;

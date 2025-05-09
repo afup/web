@@ -6,21 +6,6 @@ namespace PlanetePHP;
 
 class DisplayableFeedArticle
 {
-    /** @var string */
-    private $title;
-    /** @var string */
-    private $url;
-    /** @var string */
-    private $update;
-    /** @var string */
-    private $author;
-    /** @var string */
-    private $content;
-    /** @var string */
-    private $feedName;
-    /** @var string */
-    private $feedUrl;
-
     /**
      * @param string $title
      * @param string $url
@@ -31,21 +16,14 @@ class DisplayableFeedArticle
      * @param string $feedUrl
      */
     public function __construct(
-        $title,
-        $url,
-        $update,
-        $author,
-        $content,
-        $feedName,
-        $feedUrl
+        private $title,
+        private $url,
+        private $update,
+        private $author,
+        private $content,
+        private $feedName,
+        private $feedUrl,
     ) {
-        $this->title = $title;
-        $this->url = $url;
-        $this->update = $update;
-        $this->author = $author;
-        $this->content = $content;
-        $this->feedName = $feedName;
-        $this->feedUrl = $feedUrl;
     }
 
     public function getTitle()

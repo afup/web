@@ -16,14 +16,10 @@ class GithubUserAddAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    private GithubUserRepository $githubUserRepository;
-    private GithubClient $githubClient;
-
-    public function __construct(GithubUserRepository $githubUserRepository,
-                                GithubClient $githubClient
+    public function __construct(
+        private GithubUserRepository $githubUserRepository,
+        private GithubClient $githubClient,
     ) {
-        $this->githubUserRepository = $githubUserRepository;
-        $this->githubClient = $githubClient;
     }
 
     public function __invoke(Request $request)

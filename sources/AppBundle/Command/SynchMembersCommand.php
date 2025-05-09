@@ -12,13 +12,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class SynchMembersCommand extends Command
 {
-    private MailchimpMembersAutoListSynchronizer $synchronizer;
-    private LoggerInterface $logger;
-
-    public function __construct(MailchimpMembersAutoListSynchronizer $synchronizer, LoggerInterface $logger)
-    {
-        $this->synchronizer = $synchronizer;
-        $this->logger = $logger;
+    public function __construct(
+        private readonly MailchimpMembersAutoListSynchronizer $synchronizer,
+        private readonly LoggerInterface $logger,
+    ) {
         parent::__construct();
     }
 

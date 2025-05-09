@@ -13,15 +13,10 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class BadgesGenerateAction
 {
-    private EventActionHelper $eventActionHelper;
-    private RegistrationsExportGenerator $registrationsExportGenerator;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        RegistrationsExportGenerator $registrationsExportGenerator
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly RegistrationsExportGenerator $registrationsExportGenerator,
     ) {
-        $this->eventActionHelper = $eventActionHelper;
-        $this->registrationsExportGenerator = $registrationsExportGenerator;
     }
 
     public function __invoke(Request $request): BinaryFileResponse

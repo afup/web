@@ -40,8 +40,8 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @var string
-     * @Assert\Email()
      */
+    #[Assert\Email]
     private $email;
 
     /**
@@ -51,38 +51,38 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $lastname;
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $firstname;
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $address;
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $zipcode;
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $city;
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $countryId = Pays::DEFAULT_ID;
 
     /**
@@ -112,11 +112,11 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @var Ticket[]
-     * @Assert\Valid()
      * @AfupAssert\CorporateMember(groups={"corporate"})
      * @AfupAssert\TicketsCfpSubmitter()
      * @AfupAssert\EarlyBirdTicket()
      */
+    #[Assert\Valid]
     private array $tickets = [];
 
 

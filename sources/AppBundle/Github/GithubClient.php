@@ -11,11 +11,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class GithubClient
 {
-    private HttpClientInterface $httpClient;
-
-    public function __construct(HttpClientInterface $githubClient)
+    public function __construct(private readonly HttpClientInterface $httpClient)
     {
-        $this->httpClient = $githubClient;
     }
 
     /**

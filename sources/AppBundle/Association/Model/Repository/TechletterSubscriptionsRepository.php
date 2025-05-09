@@ -128,17 +128,17 @@ class TechletterSubscriptionsRepository extends Repository implements MetadataIn
                 'fieldName' => 'id',
                 'primary' => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'user_id',
                 'fieldName' => 'userId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'subscription_date',
                 'fieldName' => 'subscriptionDate',
-                'type' => 'datetime'
+                'type' => 'datetime',
             ])
         ;
 

@@ -28,7 +28,7 @@ class UserType extends AbstractType
             ->add('password', RepeatedType::class, [
                 'first_options'  => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
-                'type' => PasswordType::class
+                'type' => PasswordType::class,
             ])
             ->add('address', TextareaType::class)
             ->add('zipcode', TextType::class, ['label' => 'Zip code'])

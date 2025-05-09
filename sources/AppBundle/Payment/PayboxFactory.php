@@ -11,22 +11,14 @@ use Symfony\Component\Routing\RouterInterface;
 
 class PayboxFactory
 {
-    private RouterInterface $router;
-
-    private $payboxDomainServer;
-    private $payboxSecretKey;
-    private $payboxSite;
-    private $payboxRang;
-    private $payboxIdentifiant;
-
-    public function __construct(RouterInterface $router, $payboxDomainServer, $payboxSecretKey, $payboxSite, $payboxRang, $payboxIdentifiant)
-    {
-        $this->router = $router;
-        $this->payboxDomainServer = $payboxDomainServer;
-        $this->payboxSecretKey = $payboxSecretKey;
-        $this->payboxSite = $payboxSite;
-        $this->payboxRang = $payboxRang;
-        $this->payboxIdentifiant = $payboxIdentifiant;
+    public function __construct(
+        private readonly RouterInterface $router,
+        private $payboxDomainServer,
+        private $payboxSecretKey,
+        private $payboxSite,
+        private $payboxRang,
+        private $payboxIdentifiant,
+    ) {
     }
 
     /**

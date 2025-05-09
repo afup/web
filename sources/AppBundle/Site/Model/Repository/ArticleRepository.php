@@ -84,7 +84,7 @@ class ArticleRepository extends Repository implements MetadataInitializer
             $params,
             [
                 'offset' => ($page - 1) * $itemsPerPage,
-                'limit' => $itemsPerPage
+                'limit' => $itemsPerPage,
             ]
         );
 
@@ -254,60 +254,60 @@ class ArticleRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'id',
                 'primary'       => true,
                 'autoincrement' => true,
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'id_site_rubrique',
                 'fieldName' => 'rubricId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'raccourci',
                 'fieldName' => 'path',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'titre',
                 'fieldName' => 'title',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'chapeau',
                 'fieldName' => 'leadParagraph',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'contenu',
                 'fieldName' => 'content',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'type_contenu',
                 'fieldName' => 'contentType',
-                'type' => 'string'
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'theme',
                 'fieldName' => 'theme',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'id_forum',
                 'fieldName' => 'eventId',
-                'type' => 'int'
+                'type' => 'int',
             ])
             ->addField([
                 'columnName' => 'date',
                 'fieldName' => 'publishedAt',
                 'type' => 'datetime',
                 'serializer_options' => [
-                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U']
-                ]
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                ],
             ])
             ->addField([
                 'columnName' => 'etat',
                 'fieldName' => 'state',
-                'type' => 'int'
+                'type' => 'int',
             ])
         ;
 

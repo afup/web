@@ -17,15 +17,11 @@ class ScrappingMeetupEventsCommand extends Command
 {
     use LockableTrait;
 
-    private RepositoryFactory $ting;
-    private MeetupClient $meetupClient;
-
-    public function __construct(RepositoryFactory $ting,
-                                MeetupClient $meetupClient)
-    {
+    public function __construct(
+        private RepositoryFactory $ting,
+        private MeetupClient $meetupClient,
+    ) {
         parent::__construct();
-        $this->ting = $ting;
-        $this->meetupClient = $meetupClient;
     }
 
     protected function configure(): void
@@ -83,5 +79,6 @@ class ScrappingMeetupEventsCommand extends Command
         } catch (\Exception $e) {
             throw new \Exception('Problème lors du scraping ou de la sauvegarde des évènements Meetup', $e->getCode(), $e);
         }
+        return Command::SUCCESS;
     }
 }

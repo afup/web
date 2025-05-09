@@ -14,14 +14,10 @@ use AppBundle\Event\Model\Talk;
 
 class JsonPlanningGenerator
 {
-    private TalkRepository $talkRepository;
-
-    private PhotoStorage $photoStorage;
-
-    public function __construct(TalkRepository $talkRepository, PhotoStorage $photoStorage)
-    {
-        $this->talkRepository = $talkRepository;
-        $this->photoStorage = $photoStorage;
+    public function __construct(
+        private readonly TalkRepository $talkRepository,
+        private readonly PhotoStorage $photoStorage,
+    ) {
     }
 
     public function generate(Event $event): array

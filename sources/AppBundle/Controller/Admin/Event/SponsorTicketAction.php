@@ -18,18 +18,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SponsorTicketAction extends AbstractController
 {
-    private EventActionHelper $eventActionHelper;
-    private SponsorTicketRepository $sponsorTicketRepository;
-    private SponsorTokenMail $sponsorTokenMail;
-
     public function __construct(
-        EventActionHelper $eventActionHelper,
-        SponsorTicketRepository $sponsorTicketRepository,
-        SponsorTokenMail $sponsorTokenMail
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly SponsorTicketRepository $sponsorTicketRepository,
+        private readonly SponsorTokenMail $sponsorTokenMail,
     ) {
-        $this->eventActionHelper = $eventActionHelper;
-        $this->sponsorTicketRepository = $sponsorTicketRepository;
-        $this->sponsorTokenMail = $sponsorTokenMail;
     }
 
     public function __invoke(Request $request): Response
@@ -65,7 +58,7 @@ class SponsorTicketAction extends AbstractController
             $this->addFlash('notice', 'Le token a été enregistré');
 
             return $this->redirectToRoute('admin_event_sponsor_ticket', [
-                'id' => $event->getId()
+                'id' => $event->getId(),
             ]);
         }
 

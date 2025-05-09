@@ -22,7 +22,7 @@ $translator->addResource('xliff', __DIR__ . '/../../../translations/inscription.
 $translator->addResource('xliff', __DIR__ . '/../../../translations/cfp.en.xlf', 'en');
 $translator->setFallbackLocales(['fr']);
 if (isset($smarty)) {
-    $smarty->register_modifier('trans', [$translator, 'trans']);
+    $smarty->register_modifier('trans', $translator->trans(...));
 }
 
 
@@ -190,8 +190,8 @@ $services->get('ConnectionPool')->setConfig([
             'user'      => $GLOBALS['AFUP_CONF']->obtenir('database_user'),
             'password'  => $GLOBALS['AFUP_CONF']->obtenir('database_password'),
             'port'      => 3306,
-        ]
-    ]
+        ],
+    ],
 ]);
 
 $services

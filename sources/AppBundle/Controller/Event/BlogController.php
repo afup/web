@@ -18,14 +18,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BlogController extends AbstractController
 {
-    private RepositoryFactory $repositoryFactory;
-    private JsonLd $jsonLd;
-    private EventActionHelper $eventActionHelper;
-    public function __construct(RepositoryFactory $repositoryFactory, JsonLd $jsonLd, EventActionHelper $eventActionHelper)
-    {
-        $this->repositoryFactory = $repositoryFactory;
-        $this->jsonLd = $jsonLd;
-        $this->eventActionHelper = $eventActionHelper;
+    public function __construct(
+        private readonly RepositoryFactory $repositoryFactory,
+        private readonly JsonLd $jsonLd,
+        private readonly EventActionHelper $eventActionHelper,
+    ) {
     }
 
     public function program(Request $request, $eventSlug): Response
@@ -169,7 +166,7 @@ class BlogController extends AbstractController
          */
         $talkRepository = $this->repositoryFactory->get(TalkRepository::class);
 
-        $talks = $talkRepository->getBy(['id' => explode(',', $request->get('ids'))]);
+        $talks = $talkRepository->getBy(['id' => explode(',', (string) $request->get('ids'))]);
 
         $speakers = [];
         $talksInfos = [];
@@ -187,7 +184,7 @@ class BlogController extends AbstractController
             [
                 'talks_infos' => $talksInfos,
                 'speakers' => $speakers,
-                'widget_type' => $request->get('type', 'all')
+                'widget_type' => $request->get('type', 'all'),
             ]
         );
     }
