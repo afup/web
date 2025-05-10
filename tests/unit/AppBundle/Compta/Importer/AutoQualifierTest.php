@@ -9,6 +9,7 @@ use AppBundle\Compta\Importer\Operation;
 use AppBundle\Model\ComptaCategorie;
 use AppBundle\Model\ComptaEvenement;
 use AppBundle\Model\ComptaModeReglement;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class AutoQualifierTest extends TestCase
@@ -29,7 +30,7 @@ final class AutoQualifierTest extends TestCase
         self::assertEquals('DESCRIPTION', $actual['description']);
     }
 
-    public function idModeReglementData(): array
+    public static function idModeReglementData(): array
     {
         return [
             'Défaut' => ['XXX blablabla', AutoQualifier::DEFAULT_REGLEMENT],
@@ -42,9 +43,7 @@ final class AutoQualifierTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider idModeReglementData
-     */
+    #[DataProvider('idModeReglementData')]
     public function testIdModeReglement($description, $idModeReglement): void
     {
         $operation = new Operation('2022-02-22', $description, '123', Operation::CREDIT, '1234');
@@ -55,7 +54,7 @@ final class AutoQualifierTest extends TestCase
     }
 
 
-    public function qualifierData(): array
+    public static function qualifierData(): array
     {
         return [
             'sprd.net' => ['VIR SEPA sprd.net AG blablabla', Operation::CREDIT,
@@ -87,9 +86,7 @@ final class AutoQualifierTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider qualifierData
-     */
+    #[DataProvider('qualifierData')]
     public function testQualifier(
         string $operationDescription,
         string $operationType,
