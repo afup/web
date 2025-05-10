@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Afup\Site\Tests\Utils;
 
 use Afup\Site\Utils\Utils;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class UtilsTest extends TestCase
 {
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             [
@@ -35,9 +36,7 @@ final class UtilsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProvider
-     */
+    #[DataProvider('dataProvider')]
     public function testCryptFromText($decrypted, string $encrypted): void
     {
         self::assertEquals($encrypted, Utils::cryptFromText($decrypted));

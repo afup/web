@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace AppBundle\Tests\Event\Model;
 
 use AppBundle\Event\Model\Speaker;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class SpeakerTest extends TestCase
 {
-    /**
-     * @dataProvider mastodonDataProvider
-     */
+    #[DataProvider('mastodonDataProvider')]
     public function testMastodon(string $mastodon, string $expectedUsername, string $expectedUrl): void
     {
         $speaker = new Speaker();
@@ -21,7 +20,7 @@ final class SpeakerTest extends TestCase
         self::assertEquals($expectedUrl, $speaker->getUrlMastodon());
     }
 
-    public function mastodonDataProvider(): array
+    public static function mastodonDataProvider(): array
     {
         return [
             ['', '', ''],
@@ -32,9 +31,7 @@ final class SpeakerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider twitterDataProvider
-     */
+    #[DataProvider('twitterDataProvider')]
     public function testTwitter(string $twitter, string $expectedUsername, string $expectedUrl): void
     {
         $speaker = new Speaker();
@@ -44,7 +41,7 @@ final class SpeakerTest extends TestCase
         self::assertEquals($expectedUrl, $speaker->getUrlTwitter());
     }
 
-    public function twitterDataProvider(): array
+    public static function twitterDataProvider(): array
     {
         return [
             ['', '', ''],

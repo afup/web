@@ -20,7 +20,7 @@ final class EventTest extends TestCase
         self::assertEquals($expected, $event->isCfpOpen());
     }
 
-    public function dates(): \Generator
+    public static function dates(): \Generator
     {
         yield 'all null' => [null, null, false];
         yield 'null start date' => [null, new DateTime('+1 day'), true];
