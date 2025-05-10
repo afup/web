@@ -9,7 +9,6 @@ use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 
 class GeneralMeetingRepository
 {
@@ -29,7 +28,7 @@ ORDER BY apag.date DESC
 SQL
         );
 
-        return array_map(static fn (array $row): \DateTimeImmutable => new DateTimeImmutable('@' . $row['date']), $query->fetchAll());
+        return array_map(static fn (array $row): \DateTimeImmutable => new DateTimeImmutable('@' . $row['date']), $query->fetchAllAssociative());
     }
 
     /**
@@ -38,9 +37,9 @@ SQL
     public function getLatestDate()
     {
         $query = $this->connection->executeQuery('SELECT MAX(date) maxDate FROM afup_presences_assemblee_generale LIMIT 1');
-        $row = $query->fetch();
+        $maxDate = $query->fetchOne();
 
-        return null !== $row['maxDate'] ? new DateTimeImmutable('@' . $row['maxDate']) : null;
+        return null !== $maxDate ? new DateTimeImmutable('@' . $maxDate) : null;
     }
 
     public function hasGeneralMeetingPlanned(DateTimeInterface $currentDate = null): bool
@@ -69,8 +68,7 @@ SQL
         );
         $query->bindValue('login', $login);
         $query->bindValue('date', $date->getTimestamp());
-        $query->execute();
-        $row = $query->fetch();
+        $row = $query->executeQuery()->fetchAssociative();
 
         return is_array($row) ? new GeneralMeeting(
             (int) $row['id'],
@@ -83,9 +81,6 @@ SQL
         ) : null;
     }
 
-    /**
-     * @throws DBALException
-     */
     public function findOneByDate(DateTimeInterface $date): ?array
     {
         $query = $this->connection->prepare(<<<SQL
@@ -96,8 +91,7 @@ SQL
         );
 
         $query->bindValue('date', $date->getTimestamp());
-        $query->execute();
-        $row = $query->fetch();
+        $row = $query->executeQuery()->fetchAssociative();
 
         return is_array($row) ? [
             'date' => new \DateTimeImmutable('@' . $row['date']),
@@ -115,9 +109,8 @@ AND (apag.presence = '1' OR apag.id_personne_avec_pouvoir > 0)
 SQL
         );
         $query->bindValue('date', $date->getTimestamp());
-        $query->execute();
 
-        return (int) $query->fetch()['c'];
+        return (int) $query->executeQuery()->fetchOne();
     }
 
     public function countAttendees(DateTimeInterface $date): int
@@ -130,9 +123,8 @@ AND apag.presence = '1'
 SQL
         );
         $query->bindValue('date', $date->getTimestamp());
-        $query->execute();
 
-        return (int) $query->fetch()['c'];
+        return (int) $query->executeQuery()->fetchOne();
     }
 
     public function obtenirDescription(DateTimeInterface $date)
@@ -144,10 +136,8 @@ WHERE aag.date = :date
 SQL
         );
         $query->bindValue('date', $date->getTimestamp());
-        $query->execute();
-        $row = $query->fetch();
 
-        return is_array($row) ? $row['description'] : null;
+        return $query->executeQuery()->fetchOne() ?: null;
     }
 
     /**
@@ -196,7 +186,7 @@ SQL
             $row['power_id'] ? (int) $row['power_id'] : null,
             $row['power_lastname'],
             $row['power_firstname']
-        ), $query->execute()->fetchAll());
+        ), $query->executeQuery()->fetchAllAssociative());
     }
 
     /**
@@ -223,7 +213,7 @@ SQL
         }
 
         $list = [];
-        foreach ($query->execute()->fetchAll() as $row) {
+        foreach ($query->executeQuery()->fetchAllAssociative() as $row) {
             $list[$row['id']] = $row['nom'] . ' ' . $row['prenom'];
         }
 
@@ -250,9 +240,8 @@ AND etat = 1
 SQL
         );
         $query->bindValue('date', $timestamp);
-        $query->execute();
 
-        return array_map(static fn (array $row): int => (int) $row['id'], $query->fetchAll());
+        return array_map(static fn (array $row): int => (int) $row['id'], $query->executeQuery()->fetchAllAssociative());
     }
 
     /**
@@ -267,16 +256,16 @@ SQL
         $insertQuery = $this->connection->prepare('INSERT INTO  afup_presences_assemblee_generale (id_personne_physique, date)
             VALUES (:id, :date)');
         $insertQuery->bindValue('date', $date->getTimestamp());
-        foreach ($query->fetchAll() as $row) {
+        foreach ($query->fetchAllAssociative() as $row) {
             $query = $this->connection->prepare('SELECT id FROM afup_presences_assemblee_generale 
                 WHERE id_personne_physique = :id AND date = :date');
             $query->bindValue('id', $row['id']);
             $query->bindValue('date', $date->getTimestamp());
-            $query->execute();
-            $preparation = $query->fetch();
+
+            $preparation = $query->executeQuery()->fetchAssociative();
             if (!is_array($preparation)) {
                 $insertQuery->bindValue('id', $row['id']);
-                if ($insertQuery->execute()) {
+                if ($insertQuery->executeStatement()) {
                     $success++;
                 }
             }
@@ -290,13 +279,12 @@ SQL
         $query->bindValue('date', $date->getTimestamp());
         $query->bindValue('description', $description);
 
-        return $query->execute();
+        return $query->executeStatement() > 0;
     }
 
     /**
      * @param string $description
      * @return bool
-     * @throws DBALException
      */
     public function save(DateTimeInterface $date, $description)
     {
@@ -305,7 +293,7 @@ SQL
         $query->bindValue('date', $date->getTimestamp());
         $query->bindValue('description', $description);
 
-        return $query->execute();
+        return $query->executeStatement() > 0;
     }
 
     /**
@@ -329,7 +317,7 @@ SQL
         $query->bindValue('powerId', $powerId);
         $query->bindValue('modificationDate', (new DateTimeImmutable())->getTimestamp());
 
-        return $query->execute();
+        return $query->executeStatement() > 0;
     }
 
     /**
@@ -357,7 +345,7 @@ SQL
         $query->bindValue('powerId', $powerId);
         $query->bindValue('modificationDate', (new DateTimeImmutable())->getTimestamp());
 
-        return $query->execute();
+        return $query->executeStatement() > 0;
     }
 
     /**
@@ -387,8 +375,8 @@ SQL
         );
         $query->bindValue('login', $login);
         $query->bindValue('date', $date->getTimestamp());
-        $query->execute();
-        $row = $query->fetch();
+
+        $row = $query->executeQuery()->fetchAssociative();
 
         return is_array($row) ? new Attendee(
             (int) $row['id'],
