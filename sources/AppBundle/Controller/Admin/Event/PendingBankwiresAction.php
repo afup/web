@@ -8,7 +8,7 @@ use Afup\Site\Forum\Facturation;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Email\Emails;
 use AppBundle\Email\Mailer\MailUser;
-use AppBundle\Event\Form\EventSelectType;
+use AppBundle\Event\Form\Support\EventSelectFactory;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-class PendingBankwiresAction extends AbstractController
+class PendingBankwiresAction extends AbstractController implements AdminActionWithEventSelector
 {
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,
@@ -34,6 +34,7 @@ class PendingBankwiresAction extends AbstractController
         private readonly Emails $emails,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private readonly EventSelectFactory $eventSelectFactory,
     ) {
     }
 
@@ -62,7 +63,7 @@ class PendingBankwiresAction extends AbstractController
             'event' => $event,
             'title' => 'Virements en attente',
             'token' => $this->csrfTokenManager->getToken('admin_event_bankwires'),
-            'event_select_form' => $this->createForm(EventSelectType::class, $event)->createView(),
+            'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
         ]);
     }
 

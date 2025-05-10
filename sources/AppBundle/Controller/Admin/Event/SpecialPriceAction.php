@@ -6,7 +6,7 @@ namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Association\Model\User;
 use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Event\Form\EventSelectType;
+use AppBundle\Event\Form\Support\EventSelectFactory;
 use AppBundle\Event\Form\TicketSpecialPriceType;
 use AppBundle\Event\Model\Repository\TicketSpecialPriceRepository;
 use AppBundle\Event\Model\TicketSpecialPrice;
@@ -15,11 +15,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class SpecialPriceAction extends AbstractController
+class SpecialPriceAction extends AbstractController implements AdminActionWithEventSelector
 {
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,
         private readonly TicketSpecialPriceRepository $ticketSpecialPriceRepository,
+        private readonly EventSelectFactory $eventSelectFactory,
     ) {
     }
 
@@ -61,7 +62,7 @@ class SpecialPriceAction extends AbstractController
             'event' => $event,
             'title' => 'Gestion des prix custom',
             'form' => $form === null ? null : $form->createView(),
-            'event_select_form' => $this->createForm(EventSelectType::class, $event)->createView(),
+            'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
         ]);
     }
 }

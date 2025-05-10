@@ -101,3 +101,7 @@ admin_event_restore:
   defaults: { _controller: AppBundle\Controller\Admin\Event\RestoreAction }
   requirements:
     id: \d+
+
+admin_event_votes:
+  path: /votes
+  defaults: {_controller: AppBundle\Controller\Admin\Event\VotesListeAction}
