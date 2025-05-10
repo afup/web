@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace AppBundle\Tests\Subtitles;
 
 use AppBundle\Subtitles\Parser;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class ParserTest extends TestCase
 {
-    /**
-     * @dataProvider parseDataProvider
-     */
+    #[DataProvider('parseDataProvider')]
     public function testPars(string $content, array $expectedResult): void
     {
         $parser = new Parser();
@@ -21,7 +20,7 @@ final class ParserTest extends TestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    public function parseDataProvider(): array
+    public static function parseDataProvider(): array
     {
         $content = <<<EOF
 1
@@ -69,7 +68,7 @@ on reçoit Stéphane Hulard Il baigne dans le web et son écosystème Il est con
         return [
             'Test simple' => [
                 'content' => $content,
-                'expected' => $expected,
+                'expectedResult' => $expected,
             ],
         ];
     }

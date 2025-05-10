@@ -6,13 +6,12 @@ namespace AppBundle\Tests\Payment;
 
 use AppBundle\Payment\Paybox;
 use AppBundle\Payment\PayboxBilling;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class PayboxTest extends TestCase
 {
-    /**
-     * @dataProvider generateDateProvider
-     */
+    #[DataProvider('generateDateProvider')]
     public function testGenerate(
         string $domainServer,
         string $secretKey,
@@ -33,7 +32,7 @@ final class PayboxTest extends TestCase
         self::assertEquals($expected, $actual);
     }
 
-    public function generateDateProvider(): array
+    public static function generateDateProvider(): array
     {
         $casGeneral = <<<EOF
 <form method="POST" action="https://preprod-tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi">
@@ -119,42 +118,42 @@ EOF;
 
         return [
             'Cas général' => [
-                'domain_server' => $preprodDomainServer,
-                'secret_key' => $preprodTestSecretKey,
+                'domainServer' => $preprodDomainServer,
+                'secretKey' => $preprodTestSecretKey,
                 'site' => $testSite,
                 'rang' => $testRang,
                 'identifiant' => $testIdentifiant,
-                'current_date' => new \DateTimeImmutable('2018-03-02 20:20:19'),
+                'currentDate' => new \DateTimeImmutable('2018-03-02 20:20:19'),
                 'callback' => function (Paybox $paybox): void {
                     $paybox->setTotal(2500);
                     $paybox->setCmd('TEST Paybox');
                     $paybox->setPorteur('test@paybox.com');
                 },
-                'paybox_billing' => $billingEmpty,
+                'billing' => $billingEmpty,
                 'expected' => $casGeneral,
             ],
             'Avec un billing' => [
-                'domain_server' => $preprodDomainServer,
-                'secret_key' => $preprodTestSecretKey,
+                'domainServer' => $preprodDomainServer,
+                'secretKey' => $preprodTestSecretKey,
                 'site' => $testSite,
                 'rang' => $testRang,
                 'identifiant' => $testIdentifiant,
-                'current_date' => new \DateTimeImmutable('2018-03-02 20:20:19'),
+                'currentDate' => new \DateTimeImmutable('2018-03-02 20:20:19'),
                 'callback' => function (Paybox $paybox): void {
                     $paybox->setTotal(2500);
                     $paybox->setCmd('TEST Paybox');
                     $paybox->setPorteur('test@paybox.com');
                 },
-                'paybox_billing' => $billing,
+                'billing' => $billing,
                 'expected' => $avecBilling,
             ],
             'URL de retour' => [
-                'domain_server' => $preprodDomainServer,
-                'secret_key' => $preprodTestSecretKey,
+                'domainServer' => $preprodDomainServer,
+                'secretKey' => $preprodTestSecretKey,
                 'site' => $testSite,
                 'rang' => $testRang,
                 'identifiant' => $testIdentifiant,
-                'current_date' => new \DateTimeImmutable('2018-03-02 20:20:19'),
+                'currentDate' => new \DateTimeImmutable('2018-03-02 20:20:19'),
                 'callback' => function (Paybox $paybox): void {
                     $paybox->setTotal(2500);
                     $paybox->setCmd('TEST Paybox');
@@ -165,7 +164,7 @@ EOF;
                     $paybox->setUrlRetourEffectue('http://test4.com');
                     $paybox->setUrlRepondreA('http://reponseA');
                 },
-                'paybox_billing' => $billingEmpty,
+                'billing' => $billingEmpty,
                 'expected' => $urlRetour,
             ],
         ];

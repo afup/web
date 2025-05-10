@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Set\ValueObject\LevelSetList;
+use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Set\TwigSetList;
 
@@ -31,6 +31,9 @@ return RectorConfig::configure()
         SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
         TwigSetList::TWIG_UNDERSCORE_TO_NAMESPACE,
-        LevelSetList::UP_TO_PHP_82
+        LevelSetList::UP_TO_PHP_82,
+        PHPUnitSetList::PHPUNIT_90,
+        PHPUnitSetList::PHPUNIT_100,
+        PHPUnitSetList::PHPUNIT_110,
     ])
 ;

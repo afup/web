@@ -11,6 +11,7 @@ use AppBundle\SocialNetwork\SocialNetwork;
 use AppBundle\SocialNetwork\Status;
 use AppBundle\Tests\TestCase;
 use AppBundle\VideoNotifier\StatusGenerator;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class StatusGeneratorTest extends TestCase
 {
@@ -24,9 +25,7 @@ class StatusGeneratorTest extends TestCase
         $generator->generate(new Talk(), []);
     }
 
-    /**
-     * @dataProvider textTooLongDataProvider
-     */
+    #[DataProvider('textTooLongDataProvider')]
     public function testTextTooLong(
         SocialNetwork $socialNetwork,
         Talk $talk,
@@ -41,30 +40,28 @@ class StatusGeneratorTest extends TestCase
         $generator->generate($talk, $speakers);
     }
 
-    public function textTooLongDataProvider(): \Generator
+    public static function textTooLongDataProvider(): \Generator
     {
         yield [
             SocialNetwork::Bluesky,
-            (new Talk())->setTitle($this->faker()->realText(SocialNetwork::Bluesky->statusMaxLength() * 2)),
+            (new Talk())->setTitle(self::faker()->realText(SocialNetwork::Bluesky->statusMaxLength() * 2)),
             [
-                (new Speaker())->setBluesky($this->faker()->domainName()),
+                (new Speaker())->setBluesky(self::faker()->domainName()),
             ],
             'Statut généré pour bluesky trop long',
         ];
 
         yield [
             SocialNetwork::Mastodon,
-            (new Talk())->setTitle($this->faker()->realText(SocialNetwork::Mastodon->statusMaxLength() * 2)),
+            (new Talk())->setTitle(self::faker()->realText(SocialNetwork::Mastodon->statusMaxLength() * 2)),
             [
-                (new Speaker())->setMastodon($this->faker()->domainName()),
+                (new Speaker())->setMastodon(self::faker()->domainName()),
             ],
             'Statut généré pour mastodon trop long',
         ];
     }
 
-    /**
-     * @dataProvider validStatusDataProvider
-     */
+    #[DataProvider('validStatusDataProvider')]
     public function testGenerateValidStatus(
         SocialNetwork $socialNetwork,
         Talk $talk,
@@ -78,7 +75,7 @@ class StatusGeneratorTest extends TestCase
         self::assertEquals($expectedStatus, $actualStatus);
     }
 
-    public function validStatusDataProvider(): \Generator
+    public static function validStatusDataProvider(): \Generator
     {
         yield 'mastodon full case' => [
             SocialNetwork::Mastodon,

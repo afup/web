@@ -7,35 +7,34 @@ namespace Afup\Site\Tests\Association;
 use Afup\Site\Association\Cotisations;
 use Afup\Site\Utils\Base_De_Donnees;
 use AppBundle\Association\Model\Repository\UserRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class CotisationsTest extends TestCase
 {
-    public function generateCotisationProvider(): array
+    public static function generateCotisationProvider(): array
     {
         return [
             'La cotisation précédente a expiré il y a plus d\'un an, la nouvelle cotisation doit expirer dans un an' => [
-                'date_fin' => (new \DateTime('18 months ago')),
+                'dateFin' => (new \DateTime('18 months ago')),
                 'expected' => new \DateTime('+1 year'),
             ],
             'La cotisation précédente a expiré hier, la nouvelle cotisation doit expirer dans un an' => [
-                'date_fin' => (new \DateTime('yesterday')),
+                'dateFin' => (new \DateTime('yesterday')),
                 'expected' => new \DateTime('+1 year'),
             ],
             'La cotisation précédente a expiré aujourd\'hui, la nouvelle cotisation doit expirer dans un an' => [
-                'date_fin' => (new \DateTime()),
+                'dateFin' => (new \DateTime()),
                 'expected' => new \DateTime('+1 year'),
             ],
             'La cotisation précédente expire dans 1 mois, la nouvelle cotisation doit expirer dans 13 mois' => [
-                'date_fin' => (new \DateTimeImmutable('+1 month'))->setTime(14, 0),
+                'dateFin' => (new \DateTimeImmutable('+1 month'))->setTime(14, 0),
                 'expected' => (new \DateTimeImmutable('+1 month'))->setTime(14, 0)->add(new \DateInterval('P1Y')),
             ],
         ];
     }
 
-    /**
-     * @dataProvider generateCotisationProvider
-     */
+    #[DataProvider('generateCotisationProvider')]
     public function testFinProchaineCotisation(\DateTimeInterface $dateFin, \DateTimeInterface $expected): void
     {
         $bdd = new Base_De_Donnees('', '', '', '');
@@ -47,7 +46,7 @@ final class CotisationsTest extends TestCase
         self::assertEquals($expected->format('Y-m-d'), $actual->format('Y-m-d'));
     }
 
-    public function accountCmdProvider(): array
+    public static function accountCmdProvider(): array
     {
         return [
             'Personne Morale' => [
@@ -61,9 +60,7 @@ final class CotisationsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider accountCmdProvider
-     */
+    #[DataProvider('accountCmdProvider')]
     public function testGetAccountFromCmd(string $cmd, array $expected): void
     {
         $bdd = new Base_De_Donnees('', '', '', '');
