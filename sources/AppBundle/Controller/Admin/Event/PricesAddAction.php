@@ -6,7 +6,7 @@ namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Association\Form\TicketEventType;
 use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Event\Form\EventSelectType;
+use AppBundle\Event\Form\Support\EventSelectFactory;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\TicketEventType as ModelTicketEventType;
@@ -24,6 +24,7 @@ class PricesAddAction extends AbstractController
         private readonly TicketTypeRepository $ticketTypeRepository,
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
         private readonly ValidatorInterface $validator,
+        private readonly EventSelectFactory $eventSelectFactory,
     ) {
     }
 
@@ -74,7 +75,7 @@ class PricesAddAction extends AbstractController
             'event' => $event,
             'title' => 'Tarifications - Ajouter',
             'button_text' => 'Ajouter',
-            'event_select_form' => $this->createForm(EventSelectType::class, $event)->createView(),
+            'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
         ]);
     }
 }

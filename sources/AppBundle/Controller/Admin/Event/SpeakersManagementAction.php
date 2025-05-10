@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Event\Form\EventSelectType;
+use AppBundle\Event\Form\Support\EventSelectFactory;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\SpeakerInfos\SpeakersExpensesStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class SpeakersManagementAction extends AbstractController
+class SpeakersManagementAction extends AbstractController implements AdminActionWithEventSelector
 {
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,
         private readonly SpeakerRepository $speakerRepository,
         private readonly SpeakersExpensesStorage $speakersExpensesStorage,
+        private readonly EventSelectFactory $eventSelectFactory,
     ) {
     }
 
@@ -39,7 +40,7 @@ class SpeakersManagementAction extends AbstractController
         return $this->render('admin/event/speakers_management.html.twig', [
             'event' => $event,
             'speakers' => $speakers,
-            'event_select_form' => $this->createForm(EventSelectType::class, $event)->createView(),
+            'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
         ]);
     }
 }

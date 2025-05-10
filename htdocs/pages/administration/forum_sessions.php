@@ -53,6 +53,8 @@ if ($action == 'lister') {
         $list_type = $_GET['type'];
     }
 
+    $_GET['id_forum'] = $_GET['id_forum'] ?? $_SESSION['_sf2_attributes']['event_selector_current_id'] ?? 0;
+
     if (!isset($_GET['id_forum']) || intval($_GET['id_forum']) == 0) {
         $_GET['id_forum'] = $forum->obtenirDernier();
     }
