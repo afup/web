@@ -85,6 +85,8 @@ if ($action == 'lister') {
         $list_filtre = $_GET['filtre'];
     }
 
+    chargerForumId();
+
     if (!isset($_GET['id_forum']) || intval($_GET['id_forum']) == 0) {
         $_GET['id_forum'] = $forum->obtenirDernier();
     }

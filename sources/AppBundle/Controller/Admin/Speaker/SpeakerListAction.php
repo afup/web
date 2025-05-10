@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Speaker;
 
+use AppBundle\Controller\Admin\Event\AdminActionWithEventSelector;
 use AppBundle\Controller\Event\EventActionHelper;
+use AppBundle\Event\Form\Support\EventSelectFactory;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
@@ -15,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class SpeakerListAction
+class SpeakerListAction implements AdminActionWithEventSelector
 {
     const VALID_SORTS = ['name', 'company'];
     const VALID_DIRECTIONS = ['asc', 'desc'];
@@ -26,6 +28,7 @@ class SpeakerListAction
         private readonly SpeakerRepository $speakerRepository,
         private readonly TalkRepository $talkRepository,
         private readonly Environment $twig,
+        private readonly EventSelectFactory $eventSelectFactory,
     ) {
     }
 
@@ -36,7 +39,7 @@ class SpeakerListAction
         Assertion::inArray($sort, self::VALID_SORTS);
         Assertion::inArray($direction, self::VALID_DIRECTIONS);
         $filter = $request->query->get('filter');
-        $eventId = $request->query->get('eventId');
+        $eventId = $request->query->get('id');
 
         $event = $this->eventActionHelper->getEventById($eventId);
         $speakers = $this->speakerRepository->searchSpeakers($event, $sort, $direction, $filter);
@@ -57,6 +60,7 @@ class SpeakerListAction
 
         return new Response($this->twig->render('admin/speaker/list.html.twig', [
             'eventId' => $event === null ? null:$event->getId(),
+            'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
             'events' => $events,
             'speakers' => $speakers,
             'talks' => $talks,

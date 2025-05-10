@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\RoomType;
+use AppBundle\Event\Form\Support\EventSelectFactory;
 use AppBundle\Event\Model\Repository\RoomRepository;
 use AppBundle\Event\Model\Room;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -16,12 +16,13 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class RoomAction extends AbstractController
+class RoomAction extends AbstractController implements AdminActionWithEventSelector
 {
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,
         private readonly FormFactoryInterface $formFactory,
         private readonly RoomRepository $roomRepository,
+        private readonly EventSelectFactory $eventSelectFactory,
     ) {
     }
 
@@ -73,7 +74,7 @@ class RoomAction extends AbstractController
             'addForm' => $addForm === null ? null : $addForm->createView(),
             'editForms' => $editForms === null ? null : array_map(static fn (Form $form) => $form->createView(), $editForms),
             'title' => 'Gestion des salles',
-            'event_select_form' => $this->createForm(EventSelectType::class, $event)->createView(),
+            'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
         ]);
     }
 

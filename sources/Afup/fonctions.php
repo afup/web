@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use AppBundle\Association\Form\HTML_QuickForm;
+use AppBundle\Controller\Admin\Event\AdminActionWithEventSelector;
 
 /**
  * Affiche un message puis redirige le visiteur vers une URL spécifiée
@@ -108,4 +109,9 @@ function obtenirTitre($pages, $page)
         }
     }
     return null;
+}
+
+function chargerForumId(): void
+{
+    $_GET['id_forum'] = $_GET['id_forum'] ?? $_SESSION['_sf2_attributes'][AdminActionWithEventSelector::SESSION_KEY] ?? 0;
 }

@@ -3,27 +3,9 @@
 {% block content %}
 <h2>Speakers</h2>
 
-<div class="ui violet segment">
-    <form method="GET" name="forum">
-        <div class="ui form">
-            <div class="inline fields">
-                <div class="field">
-                    <label>Évènement</label>
-                    <select name="eventId" onchange="this.form.submit(); return false;">
-                        {% for event in events %}
-                            <option value="{{ event.id }}"{% if eventId == event.id %} selected{% endif %}>{{ event.title }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
+{% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
 
 <div class="ui menu">
-{% if eventId == null %}
-    <div class="item">Changez d'évènement dans le menu ci dessus</div>
-    {% else %}
     <a href="{{ path('admin_speaker_add' ,{eventId: eventId}) }}" class="item">
         <div data-tooltip="Ajouter un conférencier" data-position="bottom left">
             <i class="icon plus square"></i>
@@ -37,14 +19,13 @@
         <i class="icon file"></i>
         Exporter les speakers
     </a>
-    {% endif %}
 </div>
 
 <div class="ui segment">
     <form method="GET" name="filtre">
         <input type="hidden" name="sort" value="{{ sort }}"/>
         <input type="hidden" name="direction" value="{{ direction }}"/>
-        <input type="hidden" name="eventId" value="{{ eventId }}"/>
+        <input type="hidden" name="id" value="{{ eventId }}"/>
 
         <div class="ui form">
             <div class="inline fields">
@@ -68,7 +49,7 @@
         </div>
     </div>
 
-    {% if speakers %}
+    {% if speakers.count > 0 %}
         <table class="ui table striped compact celled">
             <thead>
             <tr>
@@ -131,7 +112,7 @@
         <div class="ui placeholder segment">
             <div class="ui icon header">
                 <i class="meh outline icon"></i>
-                Aucun speaker. {% if eventId == null %}Essayez de changez d'évènement.{% endif %}
+                Aucun speaker.
             </div>
         </div>
     {% endif %}
