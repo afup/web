@@ -6,7 +6,6 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Association\Model\User;
 use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\VoteType;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
@@ -163,21 +162,6 @@ class VoteController extends AbstractController
         }
 
         return new JsonResponse(['errors' => []]);
-    }
-
-    public function admin(Request $request): Response
-    {
-        $eventId = $request->query->get('id');
-        $event = $this->eventActionHelper->getEventById($eventId);
-
-        $votes = $event === null ? []:$this->repositoryFactory->get(VoteRepository::class)->getVotesByEvent($event->getId());
-
-        return $this->render('admin/vote/liste.html.twig', [
-            'votes' => $votes,
-            'title' => 'Votes',
-            'event' => $event,
-            'event_select_form' => $this->createForm(EventSelectType::class, $event)->createView(),
-        ]);
     }
 
     /**

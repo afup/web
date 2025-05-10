@@ -2,10 +2,6 @@ admin_home:
   path: /
   defaults: {_controller: AppBundle\Controller\Admin\HomeAction}
 
-admin_vote:
-  path: /vote/
-  defaults: {_controller: AppBundle\Controller\Admin\VoteController::admin}
-
 admin_relances:
   path: /association/relances/{page}
   defaults: {_controller: AppBundle\Controller\Admin\Membership\ReminderLogAction}

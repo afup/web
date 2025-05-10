@@ -62,7 +62,6 @@ security:
         - { path: ^/admin/members/companies, roles: ROLE_ADMIN }
         - { path: ^/admin/event/speakers-management, roles: ROLE_FORUM }
         - { path: ^/admin/event, roles: ROLE_ADMIN }
-        - { path: ^/admin/vote, roles: ROLE_ADMIN }
         - { path: ^/admin/members/general_meeting, roles: ROLE_ADMIN }
         - { path: ^/admin/members/general_meeting_vote, roles: ROLE_ADMIN }
         - { path: ^/admin/site, roles: ROLE_ADMIN }

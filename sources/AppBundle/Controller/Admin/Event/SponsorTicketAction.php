@@ -6,8 +6,8 @@ namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Association\Model\User;
 use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Form\SponsorTokenType;
+use AppBundle\Event\Form\Support\EventSelectFactory;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Ticket\SponsorTokenMail;
@@ -16,12 +16,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class SponsorTicketAction extends AbstractController
+class SponsorTicketAction extends AbstractController implements AdminActionWithEventSelector
 {
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,
         private readonly SponsorTicketRepository $sponsorTicketRepository,
         private readonly SponsorTokenMail $sponsorTokenMail,
+        private readonly EventSelectFactory $eventSelectFactory,
     ) {
     }
 
@@ -68,7 +69,7 @@ class SponsorTicketAction extends AbstractController
             'title' => 'Gestion des inscriptions sponsors',
             'form' => $form === null ? null : $form->createView(),
             'edit' => $edit,
-            'event_select_form' => $this->createForm(EventSelectType::class, $event)->createView(),
+            'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
         ]);
     }
 }

@@ -4,7 +4,7 @@ Feature: Administration - Évènements - Vote Visiteur
 
   Scenario: Un membre ne peut pas accéder aux votes visiteurs
     Given I am logged-in with the user "paul" and the password "paul"
-    And I am on "/admin/vote/"
+    And I am on "/admin/event/votes/"
     Then the response status code should be 403
 
   Scenario: Accès aux votes des visiteurs
