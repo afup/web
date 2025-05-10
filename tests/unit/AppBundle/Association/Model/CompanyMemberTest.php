@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace AppBundle\Tests\Association\Model;
 
 use AppBundle\Association\Model\CompanyMember;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class CompanyMemberTest extends TestCase
 {
-    /** @dataProvider companies */
+    #[DataProvider('companies')]
     public function testMembershipFee(CompanyMember $companyMember, float $expectedAmount): void
     {
         self::assertEquals($expectedAmount, $companyMember->getMembershipFee());
     }
 
-    public function companies(): array
+    public static function companies(): array
     {
         return [
             'null' => [(new CompanyMember()), AFUP_COTISATION_PERSONNE_MORALE],

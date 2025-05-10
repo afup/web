@@ -7,14 +7,12 @@ namespace AppBundle\Tests\Event\Form\Support;
 use AppBundle\Event\Form\Support\EventHelper;
 use AppBundle\Event\Model\Event;
 use AppBundle\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class EventHelperTest extends TestCase
 {
-    /**
-     * @dataProvider groupByYearDataProvider
-     * @param Event|string $event
-     */
-    public function testGroupByYear($event, string $expectedYear): void
+    #[DataProvider('groupByYearDataProvider')]
+    public function testGroupByYear(Event|string $event, string $expectedYear): void
     {
         $helper = new EventHelper();
 
@@ -23,32 +21,32 @@ class EventHelperTest extends TestCase
         self::assertEquals($expectedYear, $actualYear);
     }
 
-    public function groupByYearDataProvider(): \Generator
+    public static function groupByYearDataProvider(): \Generator
     {
         yield 'with event as string' => [
             'event' => 'Forum PHP 2014',
-            'year' => '2014',
+            'expectedYear' => '2014',
         ];
 
         yield 'with start date' => [
             'event' => (new Event())->setDateStart(new \DateTime('1999-12-13')),
-            'year' => '1999',
+            'expectedYear' => '1999',
         ];
 
         yield 'with date in title' => [
             'event' => (new Event())->setTitle('AFUP Day 2025 Lyon'),
-            'year' => '2025',
+            'expectedYear' => '2025',
         ];
 
         yield 'without date in title' => [
             'event' => (new Event())
                 ->setTitle('PHP Tour'),
-            'year' => 'Année inconnue',
+            'expectedYear' => 'Année inconnue',
         ];
 
         yield 'without date' => [
             'event' => (new Event()),
-            'year' => 'Année inconnue',
+            'expectedYear' => 'Année inconnue',
         ];
     }
 
@@ -64,7 +62,7 @@ class EventHelperTest extends TestCase
 
         $helper = new EventHelper();
 
-        $r = $helper->sortEventsByStartDate($this->faker()->shuffle($events));
+        $r = $helper->sortEventsByStartDate(self::faker()->shuffle($events));
 
         self::assertCount(5, $r);
         self::assertEquals('2024-05-03', $r[0]->getDateStart()->format('Y-m-d'));

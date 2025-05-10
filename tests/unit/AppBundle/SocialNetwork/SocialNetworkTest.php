@@ -8,13 +8,12 @@ use AppBundle\Event\Model\Speaker;
 use AppBundle\SocialNetwork\SocialNetwork;
 use AppBundle\SocialNetwork\StatusId;
 use AppBundle\VideoNotifier\HistoryEntry;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class SocialNetworkTest extends TestCase
 {
-    /**
-     * @dataProvider speakerHandleDataProvider
-     */
+    #[DataProvider('speakerHandleDataProvider')]
     public function testGetSpeakerHandle(SocialNetwork $socialNetwork, Speaker $speaker, string $expectedHandle): void
     {
         $actualHandle = $socialNetwork->getSpeakerHandle($speaker);
@@ -22,7 +21,7 @@ class SocialNetworkTest extends TestCase
         self::assertEquals($expectedHandle, $actualHandle);
     }
 
-    public function speakerHandleDataProvider(): \Generator
+    public static function speakerHandleDataProvider(): \Generator
     {
         yield 'bluesky without @ prefix' => [
             SocialNetwork::Bluesky,

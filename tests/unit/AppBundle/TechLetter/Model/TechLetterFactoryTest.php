@@ -32,26 +32,26 @@ class TechLetterFactoryTest extends TestCase
         self::assertEquals($expectedTechLetter, $actualTechLetter);
     }
 
-    public function jsonDatProvider(): Generator
+    public static function jsonDatProvider(): Generator
     {
         yield 'null' => [
-            'json' => null,
-            'letter' => new TechLetter(),
+            'jsonFilePath' => null,
+            'expectedTechLetter' => new TechLetter(),
         ];
 
         yield 'empty' => [
-            'json' => __DIR__ . '/fixtures/empty.json',
-            'letter' => new TechLetter(),
+            'jsonFilePath' => __DIR__ . '/fixtures/empty.json',
+            'expectedTechLetter' => new TechLetter(),
         ];
 
         yield 'keys-present-but-empty-values' => [
-            'json' => __DIR__ . '/fixtures/keys-present-but-empty-values.json',
-            'letter' => new TechLetter(),
+            'jsonFilePath' => __DIR__ . '/fixtures/keys-present-but-empty-values.json',
+            'expectedTechLetter' => new TechLetter(),
         ];
 
         yield 'with-only-projects' => [
-            'json' => __DIR__ . '/fixtures/with-only-projects.json',
-            'letter' => new TechLetter(
+            'jsonFilePath' => __DIR__ . '/fixtures/with-only-projects.json',
+            'expectedTechLetter' => new TechLetter(
                 null,
                 null,
                 [],
@@ -63,8 +63,8 @@ class TechLetterFactoryTest extends TestCase
         ];
 
         yield 'with-only-articles' => [
-            'json' => __DIR__ . '/fixtures/with-only-articles.json',
-            'letter' => new TechLetter(
+            'jsonFilePath' => __DIR__ . '/fixtures/with-only-articles.json',
+            'expectedTechLetter' => new TechLetter(
                 null,
                 null,
                 [
@@ -76,8 +76,8 @@ class TechLetterFactoryTest extends TestCase
         ];
 
         yield 'language-null' => [
-            'json' => __DIR__ . '/fixtures/language-null.json',
-            'letter' => new TechLetter(
+            'jsonFilePath' => __DIR__ . '/fixtures/language-null.json',
+            'expectedTechLetter' => new TechLetter(
                 null,
                 null,
                 [
@@ -88,8 +88,8 @@ class TechLetterFactoryTest extends TestCase
         ];
 
         yield 'with-only-first-news' => [
-            'json' => __DIR__ . '/fixtures/with-only-first-news.json',
-            'letter' => new TechLetter(
+            'jsonFilePath' => __DIR__ . '/fixtures/with-only-first-news.json',
+            'expectedTechLetter' => new TechLetter(
                 new News(
                     'https://afup.org/news/1222-forum-php-2024-exceptionnel',
                     'Un Forum PHP 2024 exceptionnel !',
@@ -102,8 +102,8 @@ class TechLetterFactoryTest extends TestCase
         ];
 
         yield 'with-only-second-news' => [
-            'json' => __DIR__ . '/fixtures/with-only-second-news.json',
-            'letter' => new TechLetter(
+            'jsonFilePath' => __DIR__ . '/fixtures/with-only-second-news.json',
+            'expectedTechLetter' => new TechLetter(
                 null,
                 new News(
                     'https://afup.org/news/1231-enquete2025-barometre-des-salaires-PHP-ouverte',
@@ -116,8 +116,8 @@ class TechLetterFactoryTest extends TestCase
         ];
 
         yield 'full' => [
-            'json' => __DIR__ . '/fixtures/full.json',
-            'letter' => new TechLetter(
+            'jsonFilePath' => __DIR__ . '/fixtures/full.json',
+            'expectedTechLetter' => new TechLetter(
                 new News(
                     'https://afup.org/news/1222-forum-php-2024-exceptionnel',
                     'Un Forum PHP 2024 exceptionnel !',

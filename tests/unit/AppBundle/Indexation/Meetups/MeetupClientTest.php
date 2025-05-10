@@ -6,6 +6,7 @@ namespace AppBundle\Tests\Indexation\Meetups;
 
 use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Indexation\Meetups\MeetupClient;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
@@ -14,9 +15,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final class MeetupClientTest extends TestCase
 {
-    /**
-     * @dataProvider failureDataProvider
-     */
+    #[DataProvider('failureDataProvider')]
     public function testFailure(MockResponse $response, string $expectedExceptionMessage): void
     {
         $httpClient = $this->makeGuzzleMockClient($response);
@@ -29,16 +28,16 @@ final class MeetupClientTest extends TestCase
         $meetupClient->getEvents();
     }
 
-    public function failureDataProvider(): \Generator
+    public static function failureDataProvider(): \Generator
     {
         yield [
             'response' => new MockResponse('', ['http_code' => 500]),
-            'exception' => 'HTTP 500 returned for "http://fakemeetup/gql".',
+            'expectedExceptionMessage' => 'HTTP 500 returned for "http://fakemeetup/gql".',
         ];
 
         yield [
             'response' => new MockResponse('invalid json'),
-            'exception' => 'Syntax error for "http://fakemeetup/gql".',
+            'expectedExceptionMessage' => 'Syntax error for "http://fakemeetup/gql".',
         ];
     }
 

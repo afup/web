@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace AppBundle\Tests\Association;
 
 use AppBundle\Association\MembershipFeeReferenceGenerator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class MembershipFeeReferenceGeneratorTest extends TestCase
 {
-    /**
-     * @dataProvider generateDateProvider
-     */
-    public function testGenerate(string $case, \DateTimeImmutable $currentDate, int $typePersonne, int $idPersonne, string $nom, string $expected): void
+    #[DataProvider('generateDateProvider')]
+    public function testGenerate(\DateTimeImmutable $currentDate, int $typePersonne, int $idPersonne, string $nom, string $expected): void
     {
         $generator = new MembershipFeeReferenceGenerator();
 
@@ -21,22 +20,20 @@ final class MembershipFeeReferenceGeneratorTest extends TestCase
         self::assertEquals($expected, $actual);
     }
 
-    public function generateDateProvider(): array
+    public static function generateDateProvider(): array
     {
         return [
-            [
-                'case' => 'Cas général',
-                'current_date' => new \DateTimeImmutable('2018-03-02 20:20:19'),
-                'type_personne' => 0,
-                'id_personne' => 1234,
+            'Cas général' => [
+                'currentDate' => new \DateTimeImmutable('2018-03-02 20:20:19'),
+                'typePersonne' => 0,
+                'idPersonne' => 1234,
                 'nom' => 'DUPONT',
                 'expected' => "C2018-020320182020-0-1234-DUPON-875",
             ],
-            [
-                'case' => 'Accent en cinquième position',
-                'current_date' => new \DateTimeImmutable('2018-03-02 20:20:19'),
-                'type_personne' => 0,
-                'id_personne' => 1234,
+            'Accent en cinquième position' => [
+                'currentDate' => new \DateTimeImmutable('2018-03-02 20:20:19'),
+                'typePersonne' => 0,
+                'idPersonne' => 1234,
                 'nom' => 'Jirsé',
                 'expected' => "C2018-020320182020-0-1234-JIRSE-A91",
             ],
