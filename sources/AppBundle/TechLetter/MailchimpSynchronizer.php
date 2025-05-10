@@ -39,6 +39,7 @@ class MailchimpSynchronizer
 
     private function unsubscribeAddresses(array $emails): void
     {
+        $emails = array_filter($emails);
         foreach ($emails as $email) {
             $this->logger->info('Unsubscribe {address} to techletter', ['address' => $email]);
             try {
@@ -51,6 +52,7 @@ class MailchimpSynchronizer
 
     private function subscribeAddresses(array $emails): void
     {
+        $emails = array_filter($emails);
         foreach ($emails as $email) {
             $this->logger->info('Subscribe {address} to techletter', ['address' => $email]);
             try {
