@@ -47,6 +47,19 @@ Feature: Espace membre, accueil
     When I follow "Télécharger la facture"
     Then the response header "Content-disposition" should equal 'attachment; filename=Maurice_COTIS-2018-198_13072018.pdf'
 
+  @reloadDbWithTestData
+  @clearEmails
+  Scenario: On peux recevoir la facture par email pour une personne physique
+    Given I am logged-in with the user "userexpire" and the password "userexpire"
+    And I follow "Espace membre"
+    Then I should see "Cotisations"
+    When I follow "Se mettre à jour"
+    Then I should see "Payer ma cotisation"
+    When I follow "Recevoir par mail"
+    And I should only receive the following emails:
+      | from               | to                    | subject      |
+      | <bonjour@afup.org> | <userexpire@yahoo.fr> | Facture AFUP |
+
   @reloadDbWithTestData @vat
   Scenario: Test d'une facture de cotisation de personne physique avant 2024
     Given I am logged-in with the user "cpike" and the password "cpike"
@@ -148,6 +161,19 @@ Feature: Espace membre, accueil
     Then I should see "Payer ma cotisation"
     When I follow "Télécharger la facture"
     Then the response header "Content-disposition" should equal 'attachment; filename=MyCorp_COTIS-2025-200_13072018.pdf'
+
+  @reloadDbWithTestData
+  @clearEmails
+  Scenario: On peux recevoir la facture par email pour une personne morale
+    Given I am logged-in with the user "edmonddupont" and the password "edmonddupont"
+    And I follow "Espace membre"
+    Then I should see "Cotisations"
+    When I follow "Consulter"
+    Then I should see "Payer ma cotisation"
+    When I follow "Recevoir par mail"
+    And I should only receive the following emails:
+      | from               | to                       | subject      |
+      | <bonjour@afup.org> | <raoul.dupont@mycorp.fr> | Facture AFUP |
 
   @reloadDbWithTestData
   Scenario: Si on est pas company manager de la personne morale, on ne peux pas télécharger la facture
