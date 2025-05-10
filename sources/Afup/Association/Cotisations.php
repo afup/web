@@ -530,7 +530,7 @@ class Cotisations
         $cheminFacture = AFUP_CHEMIN_RACINE . 'cache/fact' . $id_cotisation . '.pdf';
         $numeroFacture = $this->genererFacture($id_cotisation, $cheminFacture);
         $cotisation = $this->obtenirDerniere($personne['type_personne'], $personne['id_personne']);
-        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', $cotisation['date_debut']) . '.pdf';
+        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', (int) $cotisation['date_debut']) . '.pdf';
 
         $message = new Message('Facture AFUP', null, new MailUser(
             $contactPhysique['email'],
