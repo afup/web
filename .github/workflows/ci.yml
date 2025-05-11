@@ -122,3 +122,22 @@ jobs:
 
       - name: Tests - Integration
         run: make test-integration-ci
+
+  rector:
+    name: "Rector"
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP with tools
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php_version }}
+
+      - uses: ramsey/composer-install@v3
+        with:
+          composer-options: "--no-scripts"
+
+      - name: Rector
+        run: make rector
