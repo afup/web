@@ -161,7 +161,7 @@ if ($action == 'lister') {
         'telephone_portable' => $champs['telephone'],
         'etat' => 1,
     ]);
-    afficherMessage("L'inscription a été pré-remplie\nPensez à générer le login",  $urlGenerator->generate('admin_members_add'));
+    afficherMessage("L'inscription a été pré-remplie\nPensez à générer le login",  $urlGenerator->generate('admin_members_user_add'));
 } else {
     $pays = new Pays($bdd);
 
