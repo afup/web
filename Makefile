@@ -84,6 +84,14 @@ cs-lint:
 cs-fix:
 	./bin/php-cs-fixer fix -vv
 
+### (Dans Docker) Rector (dry run)
+rector: var/cache/dev/AppKernelDevDebugContainer.xml
+	./bin/rector --dry-run
+
+### (Dans Docker) Rector (fix)
+rector-fix: var/cache/dev/AppKernelDevDebugContainer.xml
+	./bin/rector
+
 ### Tests fonctionnels
 test-functional: data config htdocs/uploads tmp
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
@@ -186,3 +194,6 @@ clean-test-deprecated-log:
 
 var/logs/test.deprecations_grouped.log:
 	cat var/logs/test.deprecations.log | cut -d "]" -f 2 | awk '{$$1=$$1};1' | sort | uniq -c | sort -nr > var/logs/test.deprecations_grouped.log
+
+var/cache/dev/AppKernelDevDebugContainer.xml:
+	php bin/console cache:warmup --env=dev
