@@ -14,14 +14,14 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-final class SpeakersExpensesStorage
+final readonly class SpeakersExpensesStorage
 {
     private Filesystem $filesystem;
 
     public function __construct(
-        private readonly string $basePath,
-                                private readonly EventRepository $eventRepository,
-                                private readonly LoggerInterface $logger,
+        private string $basePath,
+                                private EventRepository $eventRepository,
+                                private LoggerInterface $logger,
     ) {
         $this->filesystem = new Filesystem();
     }
