@@ -75,7 +75,7 @@ class Mailchimp
             ]);
 
             foreach ($response['members'] as $member) {
-                $addresses[] = $member->email_address;
+                $addresses[] = $member['email_address'];
             }
         }
 
