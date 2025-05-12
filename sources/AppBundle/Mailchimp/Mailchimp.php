@@ -18,7 +18,7 @@ class Mailchimp
     /**
      * Subscribe an address to a list
      */
-    public function subscribeAddress(string $list, string $email)
+    public function subscribeAddress(string $list, string $email): bool|array
     {
         // Le status pending permet d'être en double opt-in, que Mailchimp envoie
         // un mail de confirmation pour valider l'inscription à la newsletter
@@ -29,7 +29,7 @@ class Mailchimp
         ]);
     }
 
-    public function subscribeAddressWithoutConfirmation(string $list, string $email)
+    public function subscribeAddressWithoutConfirmation(string $list, string $email): bool|array
     {
         return $this->client->put('lists/' . $list . '/members/' . $this->getAddressId($email), [
             'status' => 'subscribed',
@@ -85,7 +85,7 @@ class Mailchimp
     /**
      * Unsubscribe an address from a list
      */
-    public function unSubscribeAddress(string $list, string $email)
+    public function unSubscribeAddress(string $list, string $email): bool|array
     {
         return $this->client->put('lists/' . $list . '/members/' . $this->getAddressId($email), [
             'status' => 'unsubscribed',
@@ -93,7 +93,7 @@ class Mailchimp
         ]);
     }
 
-    public function archiveAddress(string $list, string $email)
+    public function archiveAddress(string $list, string $email): bool|array
     {
         return $this->client->delete('lists/' . $list . '/members/' . $this->getAddressId($email));
     }
@@ -108,7 +108,7 @@ class Mailchimp
     }
 
 
-    public function createTemplate(string $title, string $html)
+    public function createTemplate(string $title, string $html): bool|array
     {
         return $this->client->post('templates', [
             'name' => $title,
@@ -127,7 +127,7 @@ class Mailchimp
         ]);
     }
 
-    public function scheduleCampaign(string $campaignId, \DateTime $datetime)
+    public function scheduleCampaign(string $campaignId, \DateTime $datetime): bool|array
     {
         return $this->client->post('campaigns/' . $campaignId . '/actions/schedule', [
             'schedule_time' => $datetime->format('c'),
