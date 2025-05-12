@@ -11,9 +11,13 @@ use Afup\Site\Corporate\_Site_Base_De_Donnees;
  */
 class Logs
 {
-    private _Site_Base_De_Donnees $_bdd;
-    private int $_id_utilisateur;
     private int $_nombre_logs_par_page = 10;
+
+    public function __construct(
+        private readonly _Site_Base_De_Donnees $_bdd,
+        private readonly int $_id_utilisateur,
+    ) {
+    }
 
     /**
      * Renvoit l'instance unique de la classe Afup\Site\Utils\Logs
@@ -25,8 +29,9 @@ class Logs
     {
         // TODO : Utiliser une propriété statique en PHP5
         if (!isset($GLOBALS['_afup_log'])) {
-            $GLOBALS['_afup_log'] = new self;
+            throw new \RuntimeException("The logs instance has not been initialized");
         }
+
         return $GLOBALS['_afup_log'];
     }
 
@@ -38,9 +43,7 @@ class Logs
      */
     public static function initialiser(&$bdd, $id_utilisateur): void
     {
-        $instance =& self::_obtenirInstance();
-        $instance->_bdd =& $bdd;
-        $instance->_id_utilisateur = $id_utilisateur;
+        $GLOBALS['_afup_log'] = new self($bdd, $id_utilisateur);
     }
 
     /**
