@@ -17,6 +17,8 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
+checkForumRedirection();
+
 $action = verifierAction(['lister', 'ajouter', 'modifier', 'supprimer']);
 $tris_valides = ['s.titre', 's.date_soumission'];
 $sens_valides = ['asc' , 'desc'];

@@ -115,3 +115,27 @@ function chargerForumId(): void
 {
     $_GET['id_forum'] = $_GET['id_forum'] ?? $_SESSION['_sf2_attributes'][AdminActionWithEventSelector::SESSION_KEY] ?? 0;
 }
+
+function checkForumRedirection(): void
+{
+    $idFromSession = $_SESSION['_sf2_attributes'][AdminActionWithEventSelector::SESSION_KEY] ?? null;
+
+    if (
+        $_SERVER['REQUEST_METHOD'] === 'GET'
+        && !isset($_GET['id_forum'])
+        && $idFromSession !== null
+    ) {
+        $url = $_SERVER['REQUEST_URI'];
+
+        $parsedUrl = parse_url($url);
+        parse_str($parsedUrl['query'] ?? '', $queryParams);
+
+        $queryParams['id_forum'] = $idFromSession;
+
+        $newQuery = http_build_query($queryParams);
+        $newUrl = $parsedUrl['path'] . '?' . $newQuery;
+
+        header("Location: $newUrl");
+        exit();
+    }
+}

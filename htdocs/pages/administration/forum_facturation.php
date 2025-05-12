@@ -14,6 +14,8 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
+checkForumRedirection();
+
 $invoiceRepository = $this->invoiceRepository;
 $invoiceService = $this->invoiceService;
 

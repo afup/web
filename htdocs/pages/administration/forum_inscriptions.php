@@ -21,6 +21,8 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
+checkForumRedirection();
+
 $action = verifierAction(['lister', 'ajouter', 'modifier', 'supprimer','envoyer_convocation', 'generer_mail_inscription_afup', 'generer_inscription_afup']);
 $tris_valides = ['i.date', 'i.nom', 'f.societe', 'i.etat'];
 $sens_valides = [ 'desc','asc' ];
