@@ -13,6 +13,8 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
     exit;
 }
 
+checkForumRedirection();
+
 $action = verifierAction(['lister', 'ajouter', 'modifier', 'commenter', 'supprimer', 'voter']);
 $tris_valides = [];
 $sens_valides = ['asc' , 'desc'];
