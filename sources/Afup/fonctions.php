@@ -113,7 +113,7 @@ function obtenirTitre($pages, $page)
 
 function chargerForumId(): void
 {
-    $_GET['id_forum'] = $_GET['id_forum'] ?? $_SESSION['_sf2_attributes'][AdminActionWithEventSelector::SESSION_KEY] ?? 0;
+    $_GET['id_forum'] ??= $_SESSION['_sf2_attributes'][AdminActionWithEventSelector::SESSION_KEY] ?? 0;
 }
 
 function checkForumRedirection(): void
@@ -127,7 +127,7 @@ function checkForumRedirection(): void
     ) {
         $url = $_SERVER['REQUEST_URI'];
 
-        $parsedUrl = parse_url($url);
+        $parsedUrl = parse_url((string) $url);
         parse_str($parsedUrl['query'] ?? '', $queryParams);
 
         $queryParams['id_forum'] = $idFromSession;

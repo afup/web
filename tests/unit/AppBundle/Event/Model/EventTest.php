@@ -6,11 +6,12 @@ namespace AppBundle\Tests\Event\Model;
 
 use AppBundle\Event\Model\Event;
 use DateTime;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class EventTest extends TestCase
 {
-    /** @dataProvider dates */
+    #[DataProvider('dates')]
     public function testIsCfpOpen(? DateTime $start, ? DateTime $end, bool $expected): void
     {
         $event = new Event();
