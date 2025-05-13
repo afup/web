@@ -49,7 +49,7 @@ final readonly class RedirectEventFromSessionListener
                 ),
             );
 
-            $event->setController(fn () => new RedirectResponse($url));
+            $event->setController(fn (): RedirectResponse => new RedirectResponse($url));
         }
     }
 }
