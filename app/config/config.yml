@@ -330,8 +330,11 @@ framework:
         utf8: true
     form:            ~
     csrf_protection: ~
-    validation:      { enable_annotations: true }
+    validation:
+        enable_annotations: true
+        email_validation_mode: html5
     #serializer:      { enable_annotations: true }
+    annotations: true
     default_locale:  "%locale%"
     trusted_hosts:   ~
     session:
@@ -340,9 +343,14 @@ framework:
         handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         # 24 heures
         gc_maxlifetime: 86400
+        cookie_secure: auto
+        cookie_samesite: lax
     fragments:       ~
     http_method_override: true
     assets: ~
+    handle_all_throwables: true
+    php_errors:
+        log: true
     exceptions:
         Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
             log_level: debug

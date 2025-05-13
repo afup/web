@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace AppBundle\Twig;
 
 use Afup\Site\Corporate\Page;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Security;
 use Twig\Environment;
 
 class ViewRenderer
