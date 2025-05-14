@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\TechLetter\Model;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use AppBundle\TechLetter\Model\Article;
 use AppBundle\TechLetter\Model\News;
 use AppBundle\TechLetter\Model\Project;
@@ -12,6 +11,7 @@ use AppBundle\TechLetter\Model\TechLetter;
 use AppBundle\TechLetter\Model\TechLetterFactory;
 use DateTimeImmutable;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class TechLetterFactoryTest extends TestCase
