@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\TechLetter\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use AppBundle\TechLetter\Model\Article;
 use AppBundle\TechLetter\Model\News;
 use AppBundle\TechLetter\Model\Project;
@@ -15,9 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 class TechLetterFactoryTest extends TestCase
 {
-    /**
-     * @dataProvider jsonDatProvider
-     */
+    #[DataProvider('jsonDatProvider')]
     public function testCreateTechLetterFromJson(?string $jsonFilePath, TechLetter $expectedTechLetter): void
     {
         $json = null;
