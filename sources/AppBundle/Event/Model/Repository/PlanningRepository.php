@@ -6,6 +6,7 @@ namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Talk;
+use AppBundle\Ting\DateTimeWithTimeZoneSerializer;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -96,6 +97,7 @@ class PlanningRepository extends Repository implements MetadataInitializer
                 'columnName' => 'debut',
                 'fieldName' => 'start',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTimeZoneSerializer::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                 ],
@@ -104,6 +106,7 @@ class PlanningRepository extends Repository implements MetadataInitializer
                 'columnName' => 'fin',
                 'fieldName' => 'end',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTimeZoneSerializer::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                 ],

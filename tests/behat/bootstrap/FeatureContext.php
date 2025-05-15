@@ -10,6 +10,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
+use Behat\Step\Then;
 use Smalot\PdfParser\Parser;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -542,5 +543,12 @@ class FeatureContext implements Context
                 ), $this->minkContext->getSession()->getDriver()
             );
         }
+    }
+
+    #[Then('the response should contain date :arg1')]
+    #[Then('the response should contain date :arg1 with format :arg2')]
+    public function responseShouldContainsDate(string $datetimeFormat, string $withFormat = DateTimeInterface::ATOM): void
+    {
+        $this->minkContext->assertResponseContains((new DateTimeImmutable($datetimeFormat))->format($withFormat));
     }
 }

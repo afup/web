@@ -13,8 +13,8 @@ class Session extends AbstractSeed
 
     public function run(): void
     {
-        $dateDebut = DateTimeImmutable::createFromFormat('U', (string) strtotime('-' . random_int(5, 6) . ' days'));
-        $date = DateTimeImmutable::createFromFormat('U', (string) strtotime('-' . random_int(1, 5) . ' days'));
+        $dateDebut = DateTimeImmutable::createFromFormat('U', (string) strtotime('-5 days 09:00:00'));
+        $date = DateTimeImmutable::createFromFormat('U', (string) strtotime('-1 days 20:00:00'));
 
         $sessions = [
             [
