@@ -105,6 +105,36 @@ $(document).ready(function() {
         return true;
     }
 
+    const validateValuesPerFieldSearch = function(fieldSearch, stepName) {
+        let valid = true;
+        // Check required fields
+        const fields = $(`input[name^="${fieldSearch}"][required]`);
+        fields.each(function() {
+            if (!valid) {
+                return false;
+            }
+            const field = $(this);
+            if (field.val().trim() === '') {
+                valid = false;
+                field.focus();
+                alert(`Veuillez remplir tous les champs obligatoires pour ${stepName}.`);
+            }
+        })
+        const select = $(`select[name^="${fieldSearch}"][required]`);
+        select.each(function() {
+            if (!valid) {
+                return false;
+            }
+            const field = $(this);
+            if (field.find(":selected").val().trim() === '') {
+                valid = false;
+                field.focus();
+                alert(`Veuillez remplir tous les champs obligatoires pour ${stepName}.`);
+            }
+        })
+        return valid;
+    }
+
     // Step validation
     const validateStep = function(step) {
         let valid = true;
@@ -126,28 +156,13 @@ $(document).ready(function() {
                     // Check if ticket type is selected
                     if ($(`input[name="purchase[tickets][${i}][ticketEventType]"]:checked`).length === 0) {
                         valid = false;
-                        alert(`Veuillez sélectionner un type de billet pour la personne ${i+1}.`);
+                        alert(`Veuillez sélectionner un type de billet pour le billet ${i+1}.`);
                         break;
                     }
 
-                    // Check required fields
-                    const requiredFields = [
-                        `purchase[tickets][${i}][firstname]`,
-                        `purchase[tickets][${i}][lastname]`,
-                        `purchase[tickets][${i}][email]`
-                    ];
-
-                    for (const fieldName of requiredFields) {
-                        const field = $(`input[name="${fieldName}"]`);
-                        if (field.val().trim() === '') {
-                            valid = false;
-                            field.focus();
-                            alert(`Veuillez remplir tous les champs obligatoires pour la personne ${i+1}.`);
-                            break;
-                        }
+                    if (!validateValuesPerFieldSearch("purchase[tickets][${i}]", "le billet ${i+1}")) {
+                        break;
                     }
-
-                    if (!valid) break;
                 }
                 break;
 
