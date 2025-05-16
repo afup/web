@@ -28,7 +28,7 @@
 {% endblock %}
 
 {% block form_row %}
-    <div class="form_row">
+    <div class="ticket-form-group">
         {{ form_errors(form) }}
         {{ form_label(form) }}
         {{ form_widget(form) }}
@@ -37,18 +37,18 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('/css/tickets.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/css/tickets-modern.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 {% endblock %}
 
 {% block content %}
     <script src="{{ asset('templates/site/js/vendor/jquery-1.8.0.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/formdata-polyfill@3.0.11/formdata.min.js"></script>
-    <script src="{{ asset('js/inscription.js') }}?2"></script>
+    <script src="{{ asset('js/tickets-modern.js') }}?1"></script>
 
     <script type="text/javascript">
 		var nbInscriptions = {{ nbPersonnes }};
     </script>
-
 
     {% set allTicketsSold = true %}
     {% for key,ticket in ticketForm.tickets %}
@@ -59,15 +59,17 @@
         {% endfor %}
     {% endfor %}
 
-    <div class="col-md-8" id="ticketing" data-is-subjected-to-vat="{{ isSubjectedToVat ? '1' : '0' }}" data-vat-rate="{{ constant('Afup\\Site\\Utils\\Utils::TICKETING_VAT_RATE') }}" data-has-prices-defined-with-vat="{{ hasPricesDefinedWithVat ? '1' : '0' }}">
+    <div class="col-md-12" id="ticketing" data-is-subjected-to-vat="{{ isSubjectedToVat ? '1' : '0' }}" data-vat-rate="{{ constant('Afup\\Site\\Utils\\Utils::TICKETING_VAT_RATE') }}" data-has-prices-defined-with-vat="{{ hasPricesDefinedWithVat ? '1' : '0' }}">
         <h1>{{ 'Billetterie'|trans }}: {{ event.title }}</h1>
 
         {% if allTicketsSold and event.getWaitingListUrl %}
-            Tous les billets ont été vendus. Nous vous invitons à vous inscrire sur  <a href="{{ event.getWaitingListUrl }}">liste d'attente</a> pour le cas où des places viendraient à se libérer.
+            <div class="tickets--info">
+                <p>Tous les billets ont été vendus. Nous vous invitons à vous inscrire sur <a href="{{ event.getWaitingListUrl }}">liste d'attente</a> pour le cas où des places viendraient à se libérer.</p>
+            </div>
         {% else %}
 
         {% if hasMembersTickets %}
-        <div class="tickets--members-detail">
+        <div class="tickets--info">
             {% if app.user %}
                 {% if app.user.companyId > 0 %}
                     <p>{{ 'Vous êtes connecté avec le compte AFUP de l\'entreprise %company%. Votre cotisation est valable pour %maxMembers% salarié·e·s. Vous pouvez donc acheter %maxMembers% tickets au tarif AFUP pour cet évènement - pour qui vous voulez !'|trans({ '%maxMembers%': app.user.company.maxMembers, '%company%': app.user.company.companyName}) }}</p>
@@ -89,31 +91,55 @@
 
         {% if not ticketForm.vars.valid %}
             <div class="tickets--errors">
-                {{ 'Une ou plusieurs erreurs sont survenues. Merci de vérifier le formulaire' }}
+                <p>{{ 'Une ou plusieurs erreurs sont survenues. Merci de vérifier le formulaire' }}</p>
                 {{ form_errors(ticketForm) }}
             </div>
         {% endif %}
-
-        {{ form_start(ticketForm, {attr: {id: 'formulaire'}}) }}
-
-            <div id="divPersonne" data-nb-max-personnes="{{ maxNbPersonnes }}">
-                <fieldset>
-                    <legend>
-                        <a name="inscription1">Nombre de personnes</a>
-                    </legend>
-                    <p>Je souhaite inscrire
-                        {{ form_widget(ticketForm.nbPersonnes) }}
-                        personne(s)</p>
-                </fieldset>
+        
+        <!-- Steps Indicator -->
+        <div class="steps-indicator" data-current-step="1">
+            <div class="step-item active" data-step="1">
+                <span class="step-label">1. Nombre de billets</span>
             </div>
+            <div class="step-item" data-step="2">
+                <span class="step-label">2. Informations participants</span>
+            </div>
+            <div class="step-item" data-step="3">
+                <span class="step-label">3. Facturation & Paiement</span>
+            </div>
+        </div>
 
-            {% set currentDate = 'now'|date('Y-m-d') %}
+        {{ form_start(ticketForm, {attr: {id: 'formulaire', class: 'ticket-container'}}) }}
+
+        <!-- Step 1: Select number of tickets -->
+        <div id="ticket-step-1" class="ticket-step active">
+            <div id="divPersonne" data-nb-max-personnes="{{ maxNbPersonnes }}">
+                <h2>Combien de billets souhaitez-vous commander ?</h2>
+                <div class="ticket-count-selection">
+                    <p>Je souhaite inscrire</p>
+                    {{ form_widget(ticketForm.nbPersonnes) }}
+                    <p>personne(s)</p>
+                </div>
+                <div class="ticket-actions">
+                    <div></div> <!-- Empty div for spacing -->
+                    <button type="button" class="btn btn-primary btn-next">Suivant <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Attendee Information -->
+        <div id="ticket-step-2" class="ticket-step">
+            <h2>Informations sur les participants</h2>
             {{ form_errors(ticketForm.tickets) }}
-
+            
+            {% set currentDate = 'now'|date('Y-m-d') %}
+            
             {% for key,ticket in ticketForm.tickets %}
-                <fieldset class="f{{ key+1 }} tickets--fieldset">
-                    <legend><a name="inscription{{ key+1 }}">Personne</a> {{ key+1 }} <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span></legend>
-                    <div id="fieldset--{{ key+1 }}" class="fieldset--inner">
+                <div id="ticket-section-{{ key }}" class="form-section ticket-section">
+                    <h3 class="form-section-title">
+                        <span class="number">{{ key+1 }}</span> Participant {{ key+1 }}
+                    </h3>
+                    <div class="form-section-content">
                         {{ form_row(ticket.civility) }}
                         {{ form_row(ticket.firstname) }}
                         {{ form_row(ticket.lastname) }}
@@ -121,60 +147,60 @@
                         {{ form_row(ticket.phoneNumber) }}
                         {{ form_row(ticket.nearestOffice) }}
 
-                        {{ form_label(ticket.ticketEventType) }}
-                        {{ form_errors(ticket.ticketEventType) }}
-                        <ul class="tickets--type-list">
-                            {% set endDate = null %}
-                            {% for type in ticket.ticketEventType %}
-                                <li {% if endDate != type.vars.attr['data-date-end-raw'] and endDate != null %}class="tickets--type-list-emphasis" {% endif %}>
-                                    {% if endDate != type.vars.attr['data-date-end-raw'] and endDate != null and endDate > currentDate %}
-                                        Vous souhaitez soutenir l'AFUP ? Vous pouvez prendre ces billets dès aujourd’hui.
-                                    {% endif %}
-                                    {% set endDate=type.vars.attr['data-date-end-raw'] %}
-                                    <div>
-                                        {{ form_widget(type) }}
-                                        {{ form_label(type) }}
-                                        <span class="tickets--type-price">
-                                            {% if type.vars.attr['data-price'] == 0 %}
-                                                OFFERT
-                                            {% else %}
-                                                {{ type.vars.attr['data-price'] }}€
-                                            {% endif %}
-                                            {% if isSubjectedToVat %}
-                                                {% if hasPricesDefinedWithVat %}
-                                                    TTC
-                                                {% else %}
-                                                    HT
-                                                {% endif %}
-                                            {% endif %}
-                                        </span>
-                                        <br />
-                                        <span class="tickets--type-details">
-                                            <span class="tickets--type-dateEnd">
-                                                Disponible jusqu'au {{ type.vars.attr['data-date-end'] }}
-                                                {% if type.vars.attr['data-max-tickets'] > 0 %}
-                                                    (ou jusqu’à écoulement des {{ type.vars.attr['data-max-tickets'] }} billets à ce tarif).
-                                                {% endif %}
-                                            </span>
-                                            {% if type.vars.attr['data-members-only'] %} - <span class="tickets--type-members">Réservé aux membres AFUP</span>{% endif %}<br />
-                                            {% if type.vars.attr['data-stock'] <= 0 %}
-                                                <span class="tickets--type-stock">Plus aucun billet disponible</span><br />
-                                            {% elseif type.vars.attr['data-stock'] < 10 %}
-                                                <span class="tickets--type-stock tickets--type-stock-close-to-sold-out">Peu de billets disponibles</span><br />
-                                            {% else %}
-                                            {% endif %}
-                                        </span>
-                                        {% if type.vars.attr['data-description'] %}
-                                            <div class="tickets--type-description">
-                                                {{ type.vars.attr['data-description']|markdown }}
-                                            </div>
+                        <div class="ticket-form-group">
+                            {{ form_label(ticket.ticketEventType) }}
+                            {{ form_errors(ticket.ticketEventType) }}
+                            <ul class="ticket-type-list">
+                                {% set endDate = null %}
+                                {% for type in ticket.ticketEventType %}
+                                    <li class="ticket-type-item {% if endDate != type.vars.attr['data-date-end-raw'] and endDate != null %}ticket-type-item-emphasized{% endif %}">
+                                        {% if endDate != type.vars.attr['data-date-end-raw'] and endDate != null and endDate > currentDate %}
+                                            <div class="ticket-type-promo">Vous souhaitez soutenir l'AFUP ? Vous pouvez prendre ces billets dès aujourd'hui.</div>
                                         {% endif %}
-                                    </div>
-                                </li>
-                            {% endfor %}
-                        </ul>
+                                        {% set endDate=type.vars.attr['data-date-end-raw'] %}
+                                        {{ form_widget(type) }}
+                                        <div class="ticket-type-content">
+                                            <div class="ticket-type-title">{{ form_label(type) }}</div>
+                                            <div class="ticket-type-price">
+                                                {% if type.vars.attr['data-price'] == 0 %}
+                                                    OFFERT
+                                                {% else %}
+                                                    {{ type.vars.attr['data-price'] }}€
+                                                    {% if isSubjectedToVat %}
+                                                        {% if hasPricesDefinedWithVat %}
+                                                            TTC
+                                                        {% else %}
+                                                            HT
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                            <div class="ticket-type-details">
+                                                <span class="ticket-type-dateEnd">
+                                                    Disponible jusqu'au {{ type.vars.attr['data-date-end'] }}
+                                                    {% if type.vars.attr['data-max-tickets'] > 0 %}
+                                                        (ou jusqu'à écoulement des {{ type.vars.attr['data-max-tickets'] }} billets à ce tarif).
+                                                    {% endif %}
+                                                </span>
+                                                {% if type.vars.attr['data-members-only'] %} - <span class="ticket-type-members">Réservé aux membres AFUP</span>{% endif %}
+                                                {% if type.vars.attr['data-stock'] <= 0 %}
+                                                    <div class="ticket-type-stock sold-out">Plus aucun billet disponible</div>
+                                                {% elseif type.vars.attr['data-stock'] < 10 %}
+                                                    <div class="ticket-type-stock ticket-type-stock-close-to-sold-out">Peu de billets disponibles</div>
+                                                {% endif %}
+                                            </div>
+                                            {% if type.vars.attr['data-description'] %}
+                                                <div class="ticket-type-description">
+                                                    {{ type.vars.attr['data-description']|markdown }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
 
-                        <p class="tickets--type-stock-limit"><em>{{ 'Dans la limite des stocks disponibles.'|trans }}</em></p>
+                        <p class="ticket-type-stock-limit"><em>{{ 'Dans la limite des stocks disponibles.'|trans }}</em></p>
 
                         {% if ticket.transportMode is defined %}
                             <div class="transport">
@@ -183,47 +209,66 @@
                                 {{ form_row(ticket.transportDistance) }}
 
                                 {% if key == 0 %}
-                                    <button id="clone_transport" class="btn-link">
+                                    <button id="clone_transport" type="button" class="btn btn-outline">
                                         Recopier les informations de transport pour toutes les personnes
                                     </button>
                                 {% endif %}
-
                             </div>
                         {%  endif %}
 
-                        <p>{{ 'Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l\'évènement'|trans }}</p>
+                        <div class="tag-section">
+                            <p>{{ 'Merci de renseigner 3 tags (et/ou votre id Twitter) vous caractérisant, ces tags seront imprimés sur votre badge afin de faciliter le networking pendant l\'évènement'|trans }}</p>
 
-                        {{ form_widget(ticket.specialPriceToken) }}
+                            {{ form_widget(ticket.specialPriceToken) }}
 
-                        {{ form_widget(ticket.tag1) }}
-                        {{ form_widget(ticket.tag2) }}
-                        {{ form_widget(ticket.tag3) }}
-                        <p class="raccourci"><i>Ex : framework, hosting,  gestion de projet, Symfony, Zend Framework, Test unitaire...</i></p>
-
-                        <div><a href="#inscription{{ key+2 }}" data-registration="{{ key+1 }}" class="btn primary add_inscription">Inscription suivante</a> ou <a href="#facturation" class="btn primary fieldset--link-facturation">passer à la facturation</a></div>
-
+                            <div class="tag-inputs">
+                                {{ form_widget(ticket.tag1) }}
+                                {{ form_widget(ticket.tag2) }}
+                                {{ form_widget(ticket.tag3) }}
+                            </div>
+                            <p class="tag-examples"><i>Ex : framework, hosting, gestion de projet, Symfony, Zend Framework, Test unitaire...</i></p>
+                        </div>
                     </div>
-                </fieldset>
-            {% endfor %}
-
-        <fieldset class="f{{ ticketForm.tickets|length +1 }} fieldset-facturation">
-            <legend>
-                <a name="facturation">Facturation</a>
-                <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span>
-            </legend>
-            <div class="fieldset--inner">
-                {# On ne souhaite pas mettre en avant le VB, on affiche donc avant tout la CB #}
-                {{ form_label(ticketForm.paymentType) }}
-                {{ form_widget(ticketForm.paymentType[0]) }}
-                {{ form_label(ticketForm.paymentType[0]) }}
-                <p id="tickets--other-payments">
-                    <em>{{ "D'autres moyens de paiements sont disponibles si nécessaire (cliquer ici)."|trans }}</em>
-                </p>
-                <div class="tickets--bankwire">
-                    {{ form_widget(ticketForm.paymentType[1]) }}
-                    {{ form_label(ticketForm.paymentType[1]) }}
                 </div>
+            {% endfor %}
+            
+            <div class="ticket-actions">
+                <button type="button" class="btn btn-outline btn-prev"><i class="fas fa-arrow-left"></i> Précédent</button>
+                <button type="button" class="btn btn-primary btn-next">Suivant <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
 
+        <!-- Step 3: Billing and Payment -->
+        <div id="ticket-step-3" class="ticket-step">
+            <h2>Facturation et Paiement</h2>
+            
+            <!-- Payment Options -->
+            <div class="form-section">
+                <h3 class="form-section-title">Mode de paiement</h3>
+                
+                <div class="payment-options">
+                    <div class="payment-option primary selected">
+                        {{ form_widget(ticketForm.paymentType[0]) }}
+                        <div class="payment-option-content">
+                            <div class="payment-option-title">{{ form_label(ticketForm.paymentType[0]) }}</div>
+                            <div class="payment-option-description">Paiement sécurisé par carte bancaire. Confirmation immédiate.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-option">
+                        {{ form_widget(ticketForm.paymentType[1]) }}
+                        <div class="payment-option-content">
+                            <div class="payment-option-title">{{ form_label(ticketForm.paymentType[1]) }}</div>
+                            <div class="payment-option-description">Traitement manuel. Votre inscription sera validée une fois le virement reçu.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Billing Information -->
+            <div class="form-section">
+                <h3 class="form-section-title">Informations de facturation</h3>
+                
                 {{ form_row(ticketForm.company) }}
                 {{ form_row(ticketForm.firstname) }}
                 {{ form_row(ticketForm.lastname) }}
@@ -233,14 +278,15 @@
                 {{ form_row(ticketForm.city) }}
                 {{ form_row(ticketForm.countryId) }}
             </div>
-        </fieldset>
-
-        <fieldset class="f{{ ticketForm.tickets|length +2 }} fieldset-divers">
-            <legend>Divers <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span></legend>        <div id="fieldset--optin" class="fieldset--inner">
-                <div>
+            
+            <!-- Additional Information -->
+            <div class="form-section">
+                <h3 class="form-section-title">Informations complémentaires</h3>
+                
+                <div class="ticket-form-group checkbox-group">
                     {{ form_errors(ticketForm.cgv) }}
                     {{ form_widget(ticketForm.cgv) }}
-                    <label for="{{ ticketForm.cgv.vars.id }}" style="max-width: 850px; text-align: left">
+                    <label for="{{ ticketForm.cgv.vars.id }}">
                         J'accepte les <a href="https://event.afup.org/conditions-generales-de-vente/">conditions générale de vente</a>, <a href="https://event.afup.org/condition-generales-de-participation/">de participation</a> et m'engage à respecter <a href="https://afup.org/p/986-code-de-conduite">le code de conduite</a>
                         {% if event.isOnline %}
                         , et autorise l'AFUP à transmettre mon nom, prénom et email à <a href="https://livestorm.co">Livestorm</a> et <a href="https://workadventu.re/">WorkAdventu.re</a> pour la gestion du webinar
@@ -248,53 +294,40 @@
                         .
                     </label>
                 </div>
-                <div>
+                
+                <div class="ticket-form-group checkbox-group">
                     {{ form_widget(ticketForm.companyCitation) }}
                     {{ form_label(ticketForm.companyCitation) }}
                 </div>
-                <div>
+                
+                <div class="ticket-form-group checkbox-group">
                     {{ form_widget(ticketForm.newsletterAfup) }}
                     {{ form_label(ticketForm.newsletterAfup) }}
                 </div>
-
-                <p>
-                    <i>L'afup tient à protéger vos données personnelles et ne les communique pas à ses partenaires.</i>
-                </p>
+                
+                <p><i>L'afup tient à protéger vos données personnelles et ne les communique pas à ses partenaires.</i></p>
             </div>
-        </fieldset>
-
-        <fieldset class="f{{ ticketForm.tickets|length +3 }} boutons">
-            <legend>Récapitulatif <span class="fieldset--legend--title"></span><span class="fieldset--legend--price"></span></legend>        <div class="fieldset--inner">
-
+            
+            <!-- Order Summary -->
+            <div class="form-section">
+                <h3 class="form-section-title">Récapitulatif de votre commande</h3>
+                
+                <div class="ticket-summary" id="ticket-summary"></div>
+                
                 <div>
                     <p>Une fois votre commande effectuée, <strong>chaque participant recevra un email de confirmation</strong> et la facture sera transmise à l'adresse indiquée dans l'onglet facturation.<br>
-                        Ensuite, pas besoin de billet, chaque participant recevra quelques jours avant l'évènement <strong>un email de convocation</strong> avec toutes les informations nécessaires pour préparer sa venue.<br>
-                        <!--
-                        Le jour J il leur suffira de se présenter à l'accueil badges <strong>avec une pièce d'identité</strong>.
-                        -->
-                    </p>
+                    Ensuite, pas besoin de billet, chaque participant recevra quelques jours avant l'évènement <strong>un email de convocation</strong> avec toutes les informations nécessaires pour préparer sa venue.</p>
                 </div>
-
-                <div class="clearfix">
-                    <div class="input">
-                        <div id="summary">
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix">
-                    <input class="btn primary" style="float: right" name="soumettre" value="Confirmer &amp; Payer" type="submit">
-                </div>
-                <div class="clearfix">
-                    <div class="input">
-                        Si vous rencontrez le moindre problème, n'hésitez pas à nous contacter à l'adresse bonjour [@] afup.org.
-                    </div>
-                </div>
-
-                <!-- Vilain hack pour Opera -->
-                <div style="clear: both">&nbsp;</div>
+                
+                <p>Si vous rencontrez le moindre problème, n'hésitez pas à nous contacter à l'adresse bonjour [@] afup.org.</p>
             </div>
-        </fieldset>
-
+            
+            <div class="ticket-actions">
+                <button type="button" class="btn btn-outline btn-prev"><i class="fas fa-arrow-left"></i> Précédent</button>
+                <button type="submit" class="btn btn-primary">Confirmer & Payer <i class="fas fa-check"></i></button>
+            </div>
+        </div>
+        
         {{ form_end(ticketForm) }}
         {% endif %}
     </div>
