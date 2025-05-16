@@ -91,6 +91,11 @@ $(document).ready(function() {
 
         // Update current step
         currentStep = step;
+        
+        // If we're moving to step 2, update ticket sections to ensure required attributes are correctly set
+        if (step === 2) {
+            manageTicketSections();
+        }
 
         // Scroll to top of the form
         $('html, body').animate({
@@ -115,8 +120,9 @@ $(document).ready(function() {
                 break;
 
             case 2:
-                // Validate all ticket information
-                for (let i = 0; i < nbInscriptions; i++) {
+                // Validate ticket information ONLY for the selected number of tickets
+                const currentPersonnes = parseInt($('#purchase_nbPersonnes').val(), 10);
+                for (let i = 0; i < currentPersonnes; i++) {
                     // Check if ticket type is selected
                     if ($(`input[name="purchase[tickets][${i}][ticketEventType]"]:checked`).length === 0) {
                         valid = false;
@@ -182,13 +188,23 @@ $(document).ready(function() {
     const manageTicketSections = function() {
         const nbPersonnes = parseInt($('#purchase_nbPersonnes').val(), 10);
         nbInscriptions = nbPersonnes;
-
+        
+        // First, on page load, mark required fields with data-required attribute if not already done
+        $('.ticket-section').find('input[required],select[required]').each(function() {
+            $(this).attr('data-required', 'true');
+        });
+        
+        // Clear required attribute from all ticket sections first
+        $('.ticket-section').find('input,select').removeAttr('required');
+        
         // Show/hide ticket sections based on number of tickets
         $('.ticket-section').hide();
+        
+        // Show selected number of sections and restore required attributes
         for (let i = 0; i < nbPersonnes; i++) {
             $(`#ticket-section-${i}`).show();
-            // Ensure required fields are properly marked
-            $(`#ticket-section-${i}`).find('input[data-required=true]').attr('required', true);
+            // Ensure required fields are properly marked ONLY for visible sections
+            $(`#ticket-section-${i}`).find('input[data-required="true"],select[data-required="true"]').attr('required', 'required');
         }
 
         // Select first available ticket type for each person if none selected
@@ -225,69 +241,158 @@ $(document).ready(function() {
             inscriptions[label].subtotal = inscriptions[label].quantity * inscriptions[label].price;
         }
 
-        let summaryHtml = '<table class="summary-table">';
-        summaryHtml += '<thead><tr>';
-        summaryHtml += '<th>Type de billet</th>';
-        
-        if (isSubjectedToVat) {
-            summaryHtml += '<th class="text-right">Prix unitaire HT</th>';
-        } else {
-            summaryHtml += '<th class="text-right">Prix unitaire</th>';
-        }
-        
-        summaryHtml += '<th class="text-right">Quantité</th>';
-        
-        if (isSubjectedToVat) {
-            summaryHtml += '<th class="text-right">Total HT</th>';
-            summaryHtml += '<th class="text-right">Total TTC</th>';
-        } else {
-            summaryHtml += '<th class="text-right">Total</th>';
-        }
-        
-        summaryHtml += '</tr></thead><tbody>';
+        // Define column headers for display
+        const typeLabel = "Type de billet";
+        const priceLabel = isSubjectedToVat ? "Prix unitaire HT" : "Prix unitaire";
+        const quantityLabel = "Quantité";
+        const subtotalLabel = isSubjectedToVat ? "Total HT" : "Total";
+        const totalLabel = "Total TTC";
 
         let numberOfTickets = 0;
         let total = 0;
 
+        // Desktop version (table)
+        let desktopHtml = '<table class="summary-table">';
+        desktopHtml += '<thead><tr>';
+        desktopHtml += `<th>${typeLabel}</th>`;
+        desktopHtml += `<th class="text-right">${priceLabel}</th>`;
+        desktopHtml += `<th class="text-right">${quantityLabel}</th>`;
+        
+        if (isSubjectedToVat) {
+            desktopHtml += `<th class="text-right">${subtotalLabel}</th>`;
+            desktopHtml += `<th class="text-right">${totalLabel}</th>`;
+        } else {
+            desktopHtml += `<th class="text-right">${subtotalLabel}</th>`;
+        }
+        
+        desktopHtml += '</tr></thead><tbody>';
+
+        // Mobile version (card design)
+        let mobileHtml = '<div class="mobile-summary">';
+
         for (let type in inscriptions) {
-            summaryHtml += '<tr>';
-            summaryHtml += `<td>${type}</td>`;
+            // Desktop row
+            desktopHtml += '<tr>';
+            desktopHtml += `<td>${type}</td>`;
+            
+            let priceValue, totalHTValue, totalTTCValue;
             
             if (isSubjectedToVat) {
-                summaryHtml += `<td class="text-right">${formatPrice(hasPricesDefinedWithVat ? computeWithoutTaxesPriceFromPriceWithTaxesConditionally(inscriptions[type].price) : inscriptions[type].price)}€</td>`;
+                priceValue = formatPrice(hasPricesDefinedWithVat ? 
+                    computeWithoutTaxesPriceFromPriceWithTaxesConditionally(inscriptions[type].price) : 
+                    inscriptions[type].price);
+                desktopHtml += `<td class="text-right">${priceValue}€</td>`;
             } else {
-                summaryHtml += `<td class="text-right">${formatPrice(inscriptions[type].price)}€</td>`;
+                priceValue = formatPrice(inscriptions[type].price);
+                desktopHtml += `<td class="text-right">${priceValue}€</td>`;
             }
             
-            summaryHtml += `<td class="text-right">x${inscriptions[type].quantity}</td>`;
+            desktopHtml += `<td class="text-right">x${inscriptions[type].quantity}</td>`;
             
             if (isSubjectedToVat) {
-                summaryHtml += `<td class="text-right">${formatPrice(hasPricesDefinedWithVat ? computeWithoutTaxesPriceFromPriceWithTaxesConditionally(inscriptions[type].subtotal) : inscriptions[type].subtotal)}€</td>`;
-                summaryHtml += `<td class="text-right">${formatPrice(hasPricesDefinedWithVat ? inscriptions[type].subtotal : computeWithTaxesPriceFromPriceWithoutTaxes(inscriptions[type].subtotal))}€</td>`;
+                totalHTValue = formatPrice(hasPricesDefinedWithVat ? 
+                    computeWithoutTaxesPriceFromPriceWithTaxesConditionally(inscriptions[type].subtotal) : 
+                    inscriptions[type].subtotal);
+                desktopHtml += `<td class="text-right">${totalHTValue}€</td>`;
+                
+                totalTTCValue = formatPrice(hasPricesDefinedWithVat ? 
+                    inscriptions[type].subtotal : 
+                    computeWithTaxesPriceFromPriceWithoutTaxes(inscriptions[type].subtotal));
+                desktopHtml += `<td class="text-right">${totalTTCValue}€</td>`;
             } else {
-                summaryHtml += `<td class="text-right">${formatPrice(inscriptions[type].subtotal)}€</td>`;
+                totalHTValue = formatPrice(inscriptions[type].subtotal);
+                desktopHtml += `<td class="text-right">${totalHTValue}€</td>`;
             }
             
-            summaryHtml += '</tr>';
+            desktopHtml += '</tr>';
             
+            // Mobile card
+            mobileHtml += '<div class="mobile-summary-item">';
+            mobileHtml += '<div class="mobile-summary-header">';
+            mobileHtml += `<div class="mobile-summary-ticket-type">${type}</div>`;
+            mobileHtml += `<div class="mobile-summary-quantity">${inscriptions[type].quantity}</div>`;
+            mobileHtml += '</div>';
+            
+            mobileHtml += '<div class="mobile-summary-details">';
+            mobileHtml += `<div class="mobile-summary-label">${priceLabel}</div>`;
+            mobileHtml += `<div class="mobile-summary-value">${priceValue}€</div>`;
+            mobileHtml += '</div>';
+            
+            if (isSubjectedToVat) {
+                mobileHtml += '<div class="mobile-summary-details">';
+                mobileHtml += `<div class="mobile-summary-label">${subtotalLabel}</div>`;
+                mobileHtml += `<div class="mobile-summary-value">${totalHTValue}€</div>`;
+                mobileHtml += '</div>';
+                
+                mobileHtml += '<div class="mobile-summary-details">';
+                mobileHtml += `<div class="mobile-summary-label">${totalLabel}</div>`;
+                mobileHtml += `<div class="mobile-summary-value">${totalTTCValue}€</div>`;
+                mobileHtml += '</div>';
+            } else {
+                mobileHtml += '<div class="mobile-summary-details">';
+                mobileHtml += `<div class="mobile-summary-label">${subtotalLabel}</div>`;
+                mobileHtml += `<div class="mobile-summary-value">${totalHTValue}€</div>`;
+                mobileHtml += '</div>';
+            }
+            
+            mobileHtml += '</div>'; // End mobile-summary-item
+            
+            // Count totals
             numberOfTickets += inscriptions[type].quantity;
             total += hasPricesDefinedWithVat ? inscriptions[type].subtotal : computeWithTaxesPriceFromPriceWithoutTaxes(inscriptions[type].subtotal);
         }
 
-        summaryHtml += '<tr class="summary-total">';
-        summaryHtml += '<td>Total</td><td></td>';
-        summaryHtml += `<td class="text-right">x${numberOfTickets}</td>`;
+        // Desktop totals row
+        desktopHtml += '<tr class="summary-total">';
+        desktopHtml += '<td>Total</td><td></td>';
+        desktopHtml += `<td class="text-right">x${numberOfTickets}</td>`;
+        
+        let formattedTotalHT, formattedTotalTTC;
         
         if (isSubjectedToVat) {
-            summaryHtml += `<td class="text-right">${formatPrice(computeWithoutTaxesPriceFromPriceWithTaxesConditionally(total))}€</td>`;
-            summaryHtml += `<td class="text-right">${formatPrice(total)}€</td>`;
+            formattedTotalHT = formatPrice(computeWithoutTaxesPriceFromPriceWithTaxesConditionally(total));
+            desktopHtml += `<td class="text-right">${formattedTotalHT}€</td>`;
+            
+            formattedTotalTTC = formatPrice(total);
+            desktopHtml += `<td class="text-right">${formattedTotalTTC}€</td>`;
         } else {
-            summaryHtml += `<td class="text-right">${formatPrice(total)}€</td>`;
+            formattedTotalHT = formatPrice(total);
+            desktopHtml += `<td class="text-right">${formattedTotalHT}€</td>`;
         }
         
-        summaryHtml += '</tr></tbody></table>';
+        desktopHtml += '</tr></tbody></table>';
 
-        $('#ticket-summary').html(summaryHtml);
+        // Mobile totals
+        mobileHtml += '<div class="mobile-summary-total">';
+        mobileHtml += `<div class="mobile-summary-total-header">Récapitulatif total</div>`;
+        
+        mobileHtml += '<div class="mobile-summary-total-row">';
+        mobileHtml += `<div class="mobile-summary-label">${quantityLabel}</div>`;
+        mobileHtml += `<div class="mobile-summary-value">${numberOfTickets} ${numberOfTickets > 1 ? 'billets' : 'billet'}</div>`;
+        mobileHtml += '</div>';
+        
+        if (isSubjectedToVat) {
+            mobileHtml += '<div class="mobile-summary-total-row">';
+            mobileHtml += `<div class="mobile-summary-label">${subtotalLabel}</div>`;
+            mobileHtml += `<div class="mobile-summary-value">${formattedTotalHT}€</div>`;
+            mobileHtml += '</div>';
+            
+            mobileHtml += '<div class="mobile-summary-total-row">';
+            mobileHtml += `<div class="mobile-summary-label">${totalLabel}</div>`;
+            mobileHtml += `<div class="mobile-summary-value">${formattedTotalTTC}€</div>`;
+            mobileHtml += '</div>';
+        } else {
+            mobileHtml += '<div class="mobile-summary-total-row">';
+            mobileHtml += `<div class="mobile-summary-label">${subtotalLabel}</div>`;
+            mobileHtml += `<div class="mobile-summary-value">${formattedTotalHT}€</div>`;
+            mobileHtml += '</div>';
+        }
+        
+        mobileHtml += '</div>'; // End mobile-summary-total
+        mobileHtml += '</div>'; // End mobile-summary
+
+        // Add both versions to the page
+        $('#ticket-summary').html(desktopHtml + mobileHtml);
     }
 
     // Payment options
@@ -297,6 +402,20 @@ $(document).ready(function() {
             radioInput.prop('checked', true);
             $('.payment-option').removeClass('selected');
             $(this).addClass('selected');
+        });
+
+        // Alternative payment options toggle
+        $('#alt-payment-toggle').click(function() {
+            const $alternatives = $('.payment-alternative-options');
+            const $icon = $(this).find('i');
+            
+            if ($alternatives.is(':visible')) {
+                $alternatives.slideUp(300);
+                $icon.removeClass('fa-minus-circle').addClass('fa-plus-circle');
+            } else {
+                $alternatives.slideDown(300);
+                $icon.removeClass('fa-plus-circle').addClass('fa-minus-circle');
+            }
         });
     }
 
@@ -341,8 +460,16 @@ $(document).ready(function() {
 
     // Initialize and set up event listeners
     const init = function() {
+        // Ensure all originally required fields are marked with data-required
+        $('.ticket-section').find('input[required],select[required]').each(function() {
+            $(this).attr('data-required', 'true');
+        });
+        
         // Initialize steps indicator
         updateStepsIndicator(currentStep);
+        
+        // Initial management of ticket sections
+        manageTicketSections();
         
         // Set up navigation buttons
         $('.btn-next').click(function(e) {
@@ -406,9 +533,49 @@ $(document).ready(function() {
 
         // Handle form submission
         $('#formulaire').on('submit', function(e) {
-            // Validate final step
+            // Validate final step for payment and billing info
             if (!validateStep(3)) {
                 e.preventDefault();
+                return false;
+            }
+            
+            // Validate all tickets based on current count
+            const currentPersonnes = parseInt($('#purchase_nbPersonnes').val(), 10);
+            let isValid = true;
+            
+            // Validate ticket information only for the selected number of tickets
+            for (let i = 0; i < currentPersonnes; i++) {
+                // Check if ticket type is selected
+                if ($(`input[name="purchase[tickets][${i}][ticketEventType]"]:checked`).length === 0) {
+                    isValid = false;
+                    alert(`Veuillez sélectionner un type de billet pour la personne ${i+1}.`);
+                    break;
+                }
+
+                // Check required fields
+                const requiredFields = [
+                    `purchase[tickets][${i}][firstname]`,
+                    `purchase[tickets][${i}][lastname]`,
+                    `purchase[tickets][${i}][email]`
+                ];
+
+                for (const fieldName of requiredFields) {
+                    const field = $(`input[name="${fieldName}"]`);
+                    if (field.val().trim() === '') {
+                        isValid = false;
+                        field.focus();
+                        alert(`Veuillez remplir tous les champs obligatoires pour la personne ${i+1}.`);
+                        break;
+                    }
+                }
+
+                if (!isValid) break;
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+                // Retour à l'étape 2 pour corriger les informations des participants
+                goToStep(2);
                 return false;
             }
 

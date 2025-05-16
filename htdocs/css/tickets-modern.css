@@ -191,31 +191,35 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 2rem 0;
-  flex-wrap: wrap;
+  margin: 2rem auto;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  max-width: 450px;
   gap: 0.5rem;
 }
 
 .ticket-count-selection p {
   margin: 0;
   font-size: 1.1rem;
+  white-space: nowrap;
 }
 
 .ticket-count-selection select {
   font-size: 1.2rem;
-  padding: 0.75rem 1.25rem;
   border: 2px solid var(--primary-color);
   border-radius: var(--border-radius);
   margin: 0 0.5rem;
+  min-width: 70px;
   width: auto;
   background-color: white;
   cursor: pointer;
   appearance: none;
+  text-align: center;
   background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2350a0dd%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
   background-position: right 0.7rem top 50%;
   background-size: 0.65rem auto;
-  padding-right: 2rem;
+  padding: 0.75rem 2rem 0.75rem 1.25rem;
   transition: var(--transition);
 }
 
@@ -559,7 +563,7 @@ button {
   padding: 1.5rem;
   transition: var(--transition);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   cursor: pointer;
   background-color: white;
   box-shadow: var(--shadow);
@@ -576,11 +580,48 @@ button {
   background-color: rgba(80, 160, 221, 0.05);
 }
 
+/* Alternative Payment Options */
+.payment-alternative-toggle {
+  margin: 1.5rem 0 0.5rem;
+  text-align: center;
+}
+
+.payment-alternative-button {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+}
+
+.payment-alternative-button:hover {
+  background-color: rgba(80, 160, 221, 0.1);
+  color: var(--primary-dark);
+  text-decoration: none;
+}
+
+.payment-alternative-button i {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+.payment-alternative-options {
+  margin-top: 0.75rem;
+  border-top: 1px dashed var(--medium-gray);
+  padding-top: 1.25rem;
+}
+
 /* Custom radio button styles for payment options */
 .payment-option input[type="radio"] {
   position: relative;
   margin-right: 1.5rem;
-  margin-top: 0.5rem;
+  margin-top: -3px;
   flex-shrink: 0;
   width: 24px;
   height: 24px;
@@ -628,8 +669,11 @@ button {
 .payment-option-title {
   font-weight: bold;
   font-size: 1.15rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
   color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
 }
 
 .payment-option-description {
@@ -644,11 +688,17 @@ button {
 }
 
 /* Payment option icons */
+.payment-option-title {
+  display: flex;
+  align-items: center;
+}
+
 .payment-option.primary .payment-option-title:before {
   content: '\f09d';
   font-family: 'Font Awesome 5 Free';
   margin-right: 8px;
   color: var(--primary-color);
+  font-weight: 900;
 }
 
 .payment-option:not(.primary) .payment-option-title:before {
@@ -656,6 +706,7 @@ button {
   font-family: 'Font Awesome 5 Free';
   margin-right: 8px;
   color: var(--primary-dark);
+  font-weight: 900;
 }
 
 /* Transport section */
@@ -673,6 +724,7 @@ button {
   margin: 1.5rem 0;
 }
 
+/* Desktop Table */
 .summary-table {
   width: 100%;
   border-collapse: collapse;
@@ -713,6 +765,12 @@ button {
 
 .summary-table .summary-total td {
   padding: 1.25rem;
+}
+
+/* Mobile Summary - Initially hidden */
+.mobile-summary {
+  display: none;
+  margin: 1rem 0 2rem;
 }
 
 /* Buttons */
@@ -764,7 +822,7 @@ button {
 }
 
 .btn i {
-  margin-right: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 .btn-primary i {
@@ -889,6 +947,14 @@ button {
     font-size: 1.5rem;
   }
   
+  /* Show mobile summary, hide desktop table */
+  .summary-table {
+    display: none;
+  }
+  
+  .mobile-summary {
+    display: block;
+  }
   
   .form-section-content {
     grid-template-columns: 1fr;
@@ -944,18 +1010,126 @@ button {
   }
   
   .payment-option {
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
   }
   
   .payment-option input[type="radio"] {
-    align-self: flex-start;
+    margin-top: -3px;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+  }
+  
+  /* Responsive payment alternative styles */
+  .payment-alternative-toggle {
+    margin: 1.25rem 0 0.5rem;
+  }
+  
+  .payment-alternative-button {
+    font-size: 0.95rem;
+    padding: 0.6rem 1.25rem;
+  }
+  
+  .payment-alternative-button i {
+    margin-right: 6px;
+  }
+  
+  /* Mobile Summary Cards */
+  .mobile-summary {
+    display: none; /* Hidden on desktop */
+  }
+  
+  /* Complete redesign of the summary table for mobile */
+  .summary-table {
+    display: none; /* Hidden on mobile */
+  }
+  
+  /* Show mobile summary on small screens */
+  .mobile-summary {
+    display: block;
+    width: 100%;
+  }
+  
+  .mobile-summary-item {
+    background-color: white;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .mobile-summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--medium-gray);
+  }
+  
+  .mobile-summary-ticket-type {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--primary-dark);
+  }
+  
+  .mobile-summary-quantity {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mobile-summary-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+  }
+  
+  .mobile-summary-label {
+    color: var(--dark-gray);
+    font-size: 0.9rem;
+  }
+  
+  .mobile-summary-value {
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  
+  .mobile-summary-total {
+    background-color: rgba(80, 160, 221, 0.1);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-top: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .mobile-summary-total-header {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+    color: var(--primary-dark);
+    border-bottom: 1px solid var(--medium-gray);
+    padding-bottom: 0.5rem;
+  }
+  
+  .mobile-summary-total-row {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 0.5rem;
   }
   
-  .summary-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
+  .mobile-summary-total-row:last-child {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--medium-gray);
+    font-weight: bold;
+    font-size: 1.1rem;
   }
   
   .ticket-actions {

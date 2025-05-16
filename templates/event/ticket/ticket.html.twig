@@ -122,7 +122,7 @@
                 </div>
                 <div class="ticket-actions">
                     <div></div> <!-- Empty div for spacing -->
-                    <button type="button" class="btn btn-primary btn-next">Suivant <i class="fas fa-arrow-right"></i></button>
+                    <button type="button" class="btn btn-primary btn-next">Suivant<i class="fas fa-arrow-right"></i></button>
                 </div>
             </div>
         </div>
@@ -234,7 +234,7 @@
             
             <div class="ticket-actions">
                 <button type="button" class="btn btn-outline btn-prev"><i class="fas fa-arrow-left"></i> Précédent</button>
-                <button type="button" class="btn btn-primary btn-next">Suivant <i class="fas fa-arrow-right"></i></button>
+                <button type="button" class="btn btn-primary btn-next">Suivant<i class="fas fa-arrow-right"></i></button>
             </div>
         </div>
 
@@ -255,11 +255,19 @@
                         </div>
                     </div>
                     
-                    <div class="payment-option">
-                        {{ form_widget(ticketForm.paymentType[1]) }}
-                        <div class="payment-option-content">
-                            <div class="payment-option-title">{{ form_label(ticketForm.paymentType[1]) }}</div>
-                            <div class="payment-option-description">Traitement manuel. Votre inscription sera validée une fois le virement reçu.</div>
+                    <div class="payment-alternative-toggle">
+                        <button type="button" id="alt-payment-toggle" class="payment-alternative-button">
+                            <i class="fas fa-plus-circle"></i> Autres moyens de paiement
+                        </button>
+                    </div>
+                    
+                    <div class="payment-alternative-options" style="display: none;">
+                        <div class="payment-option">
+                            {{ form_widget(ticketForm.paymentType[1]) }}
+                            <div class="payment-option-content">
+                                <div class="payment-option-title">{{ form_label(ticketForm.paymentType[1]) }}</div>
+                                <div class="payment-option-description">Traitement manuel. Votre inscription sera validée une fois le virement reçu.</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -287,9 +295,9 @@
                     {{ form_errors(ticketForm.cgv) }}
                     {{ form_widget(ticketForm.cgv) }}
                     <label for="{{ ticketForm.cgv.vars.id }}">
-                        J'accepte les <a href="https://event.afup.org/conditions-generales-de-vente/">conditions générale de vente</a>, <a href="https://event.afup.org/condition-generales-de-participation/">de participation</a> et m'engage à respecter <a href="https://afup.org/p/986-code-de-conduite">le code de conduite</a>
+                        J'accepte les <a href="https://event.afup.org/conditions-generales-de-vente/" target="_blank">conditions générale de vente</a>, <a href="https://event.afup.org/condition-generales-de-participation/" target="_blank">de participation</a> et m'engage à respecter <a href="https://afup.org/p/986-code-de-conduite" target="_blank">le code de conduite</a>
                         {% if event.isOnline %}
-                        , et autorise l'AFUP à transmettre mon nom, prénom et email à <a href="https://livestorm.co">Livestorm</a> et <a href="https://workadventu.re/">WorkAdventu.re</a> pour la gestion du webinar
+                        , et autorise l'AFUP à transmettre mon nom, prénom et email à <a href="https://livestorm.co" target="_blank">Livestorm</a> et <a href="https://workadventu.re/" target="_blank">WorkAdventu.re</a> pour la gestion du webinar
                         {% endif %}
                         .
                     </label>
@@ -324,7 +332,7 @@
             
             <div class="ticket-actions">
                 <button type="button" class="btn btn-outline btn-prev"><i class="fas fa-arrow-left"></i> Précédent</button>
-                <button type="submit" class="btn btn-primary">Confirmer & Payer <i class="fas fa-check"></i></button>
+                <button type="submit" class="btn btn-primary">Confirmer & Payer<i class="fas fa-check"></i></button>
             </div>
         </div>
         
