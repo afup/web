@@ -79,7 +79,7 @@ class TalkType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'label' => 'Autoriser l’AFUP à transmettre ma proposition de conférence à ses antennes locales ?',
-                'help' => 'cfp_propose_workshop',
+                'help' => 'cfp_authorize_forward',
             ]);
     }
 
