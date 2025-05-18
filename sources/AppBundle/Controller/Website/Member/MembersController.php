@@ -38,8 +38,7 @@ class MembersController extends AbstractController
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly InvitationMail $invitationMail,
         private readonly EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

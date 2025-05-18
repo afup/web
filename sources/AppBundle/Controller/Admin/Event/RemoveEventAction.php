@@ -15,8 +15,7 @@ class RemoveEventAction extends AbstractController
     public function __construct(
         private readonly EventRepository $eventRepository,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
-    ) {
-    }
+    ) {}
 
     public function __invoke(int $id, string $token): RedirectResponse
     {

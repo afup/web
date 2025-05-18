@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CmsPageController extends AbstractController
 {
-    public function __construct(private readonly ViewRenderer $view)
-    {
-    }
+    public function __construct(private readonly ViewRenderer $view) {}
 
     public function display($code): Response
     {

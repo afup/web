@@ -35,11 +35,11 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
 
         return array_filter(
             $companies,
-            fn (CompanyMember $companyMember): bool => $companyMember->hasUpToDateMembershipFee()
+            fn(CompanyMember $companyMember): bool => $companyMember->hasUpToDateMembershipFee(),
         );
     }
 
-    public function findById($id):? CompanyMember
+    public function findById($id): ?CompanyMember
     {
         $queryBuilder = $this->getQueryBuilderWithCompleteCompanyMember();
         $queryBuilder->where('apm.id = :id');
@@ -77,7 +77,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
         ];
         Assertion::keyExists($sorts, $sort);
         $queryBuilder = $this->getQueryBuilderWithCompleteCompanyMember()
-            ->orderBy(array_map(static fn ($field): string => $field . ' ' . $direction, $sorts[$sort]));
+            ->orderBy(array_map(static fn($field): string => $field . ' ' . $direction, $sorts[$sort]));
 
         // On filtre sur tous les mots possibles. Donc plus on a de mots dans la recherche plus on aura de résultats.
         // Mais ça peut aussi permettre de trouver des personnes en entrant par exemple "Prénom email" dans le champ de recherche :

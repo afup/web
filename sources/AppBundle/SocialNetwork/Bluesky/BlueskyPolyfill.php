@@ -18,9 +18,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 final readonly class BlueskyPolyfill
 {
-    public function __construct(private HttpClientInterface $httpClient)
-    {
-    }
+    public function __construct(private HttpClientInterface $httpClient) {}
 
     public function parseFacets(string $input): array
     {

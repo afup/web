@@ -16,8 +16,7 @@ class PreviousRegistrationsAction
     public function __construct(
         private readonly EventRepository $eventRepository,
         private readonly TicketRepository $ticketRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): BinaryFileResponse
     {

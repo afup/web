@@ -12,6 +12,5 @@ final class Group
     public function __construct(
         public Events $upcomingEvents,
         public Events $pastEvents,
-    ) {
-    }
+    ) {}
 }

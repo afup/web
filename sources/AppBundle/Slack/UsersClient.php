@@ -8,7 +8,7 @@ use RuntimeException;
 
 class UsersClient
 {
-    const USER_LIST_API = '/users.list';
+    public const USER_LIST_API = '/users.list';
 
     /**
      * @param string $token Token des API Slack
@@ -17,8 +17,7 @@ class UsersClient
     public function __construct(
         private $token,
         private $apiBaseUrl,
-    ) {
-    }
+    ) {}
 
     /**
      * Retourne une page d'utilisateur Slack

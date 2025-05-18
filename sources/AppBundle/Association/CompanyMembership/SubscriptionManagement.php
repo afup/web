@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Association\CompanyMembership;
 
 use Afup\Site\Association\Cotisations;
@@ -12,9 +11,7 @@ use AppBundle\LegacyModelFactory;
 
 class SubscriptionManagement
 {
-    public function __construct(private readonly LegacyModelFactory $legacyModelFactory)
-    {
-    }
+    public function __construct(private readonly LegacyModelFactory $legacyModelFactory) {}
 
     public function createInvoiceForInscription(CompanyMember $company, $numberOfMembers): array
     {
@@ -31,7 +28,7 @@ class SubscriptionManagement
             null,
             (new \DateTime())->format('U'),
             $endSubscription->format('U'),
-            ''
+            '',
         );
         $subscriptionArray = $subscription->obtenirDerniere(AFUP_PERSONNES_MORALES, $company->getId());
 

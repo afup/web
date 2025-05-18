@@ -15,9 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class FeedFormType extends AbstractType
 {
-    public function __construct(private readonly UserRepository $userRepository)
-    {
-    }
+    public function __construct(private readonly UserRepository $userRepository) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

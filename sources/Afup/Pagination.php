@@ -11,8 +11,7 @@ class Pagination implements \Stringable
         private $nombre_elements_par_page,
         private $nombre_elements_total,
         private $genere_route,
-    ) {
-    }
+    ) {}
 
     public function __toString(): string
     {

@@ -20,6 +20,5 @@ final readonly class Antenne
         public ?array $departments = null,
         public ?array $pays = null,
         public bool $hideOnOfficesPage = false,
-    ) {
-    }
+    ) {}
 }

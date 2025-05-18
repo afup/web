@@ -15,13 +15,13 @@ class UrlCrawler
         $output = curl_exec($curl);
         if (curl_errno($curl) > 0) {
             throw new \RuntimeException(
-                sprintf('Error when crawling the page: %s (%s)', curl_error($curl), curl_errno($curl))
+                sprintf('Error when crawling the page: %s (%s)', curl_error($curl), curl_errno($curl)),
             );
         }
         $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         if ($status !== 200) {
             throw new \RuntimeException(
-                sprintf('The url responded with a wrong status code: %s', $status)
+                sprintf('The url responded with a wrong status code: %s', $status),
             );
         }
         return $output;

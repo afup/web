@@ -13,6 +13,5 @@ final readonly class CrawlingResult
         public int $saved,
         public int $tooOld,
         public array $failedFeedsIds,
-    ) {
-    }
+    ) {}
 }

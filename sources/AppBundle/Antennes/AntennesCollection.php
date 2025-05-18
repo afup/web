@@ -45,12 +45,12 @@ final class AntennesCollection
     {
         $antennes = array_filter(
             $this->getAll(),
-            fn (Antenne $antenne): bool => !$antenne->hideOnOfficesPage,
+            fn(Antenne $antenne): bool => !$antenne->hideOnOfficesPage,
         );
 
         uasort(
             $antennes,
-            fn (Antenne $a, Antenne $b): int => strcmp($a->label, $b->label),
+            fn(Antenne $a, Antenne $b): int => strcmp($a->label, $b->label),
         );
 
         return $antennes;

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Afup\Site\Forum;
 
 class InscriptionType

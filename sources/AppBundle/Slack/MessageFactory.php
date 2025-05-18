@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Slack;
 
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -23,9 +22,7 @@ class MessageFactory
     /**
      * MessageFactory constructor.
      */
-    public function __construct(private readonly TranslatorInterface $translator)
-    {
-    }
+    public function __construct(private readonly TranslatorInterface $translator) {}
 
     public function createMessageForVote(Vote $vote): Message
     {
@@ -37,8 +34,8 @@ class MessageFactory
                     'Nouveau vote sur la conférence "%s". Note: %s. Commentaire: %s',
                     $vote->getTalk()->getTitle(),
                     $vote->getVote(),
-                    $vote->getComment()
-                )
+                    $vote->getComment(),
+                ),
             )
             ->setColor('good')
             ->setMrkdwnIn(['text', 'fields'])
@@ -46,18 +43,18 @@ class MessageFactory
 
         $attachment
             ->addField(
-                (new Field())->setShort(false)->setTitle('Talk')->setValue($vote->getTalk()->getTitle())
+                (new Field())->setShort(false)->setTitle('Talk')->setValue($vote->getTalk()->getTitle()),
             )
             ->addField(
                 (new Field())->setShort(false)->setTitle('Nouveau vote')->setValue(
-                    str_repeat(':star:', $vote->getVote())
-                )
+                    str_repeat(':star:', $vote->getVote()),
+                ),
             )
         ;
         if ($vote->getComment() !== null) {
             $attachment
                 ->addField(
-                    (new Field())->setShort(false)->setTitle('Commentaire')->setValue($vote->getComment())
+                    (new Field())->setShort(false)->setTitle('Commentaire')->setValue($vote->getComment()),
                 )
             ;
         }
@@ -87,8 +84,8 @@ class MessageFactory
                     'Nouvelle proposition intitulée "%s". Type %s - Public %s',
                     $talk->getTitle(),
                     $this->translator->trans($talk->getTypeTranslationKey()),
-                    $this->translator->trans($talk->getSkillTranslationKey())
-                )
+                    $this->translator->trans($talk->getSkillTranslationKey()),
+                ),
             )
             ->setColor('good')
             ->setMrkdwnIn(['text', 'fields'])
@@ -96,19 +93,19 @@ class MessageFactory
 
         $attachment
             ->addField(
-                (new Field())->setShort(false)->setTitle('Talk')->setValue($talk->getTitle())
+                (new Field())->setShort(false)->setTitle('Talk')->setValue($talk->getTitle()),
             )
             ->addField(
-                (new Field())->setShort(false)->setTitle('Résumé')->setValue(substr($talk->getAbstract(), 0, 300))
+                (new Field())->setShort(false)->setTitle('Résumé')->setValue(substr($talk->getAbstract(), 0, 300)),
             )
             ->addField(
-                (new Field())->setShort(false)->setTitle('Accompagnement')->setValue($talk->getNeedsMentoring() ? "Oui": "Non")
+                (new Field())->setShort(false)->setTitle('Accompagnement')->setValue($talk->getNeedsMentoring() ? "Oui" : "Non"),
             )
             ->addField(
-                (new Field())->setShort(true)->setTitle('Type')->setValue($this->translator->trans($talk->getTypeTranslationKey()))
+                (new Field())->setShort(true)->setTitle('Type')->setValue($this->translator->trans($talk->getTypeTranslationKey())),
             )
             ->addField(
-                (new Field())->setShort(true)->setTitle('Public')->setValue($this->translator->trans($talk->getSkillTranslationKey()))
+                (new Field())->setShort(true)->setTitle('Public')->setValue($this->translator->trans($talk->getSkillTranslationKey())),
             )
         ;
 
@@ -131,7 +128,7 @@ class MessageFactory
             ->setTitleLink('https://afup.org/admin/slackmembers/check')
             ->setColor('#FF0000')
             ->addField(
-                (new Field())->setShort(false)->setTitle('Membres à vérifier')->setValue($membersToCheckCount)
+                (new Field())->setShort(false)->setTitle('Membres à vérifier')->setValue($membersToCheckCount),
             )
         ;
 

@@ -50,14 +50,14 @@ if ($action == 'lister') {
             $ok = $compta->ajouterConfig(
                                     'compta_evenement',
                                     'evenement',
-                                    $valeur['evenement']
+                                    $valeur['evenement'],
                                     );
         } else {
             $ok = $compta->modifierConfig(
                                     'compta_evenement',
                                        $valeur['id'],
                                        'evenement',
-                                       $valeur['evenement']
+                                       $valeur['evenement'],
                                      );
         }
 

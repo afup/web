@@ -6,12 +6,12 @@ namespace AppBundle\Model;
 
 class ComptaCategorie
 {
-    const GOODIES = 13;
-    const FRAIS_DE_COMPTE = 28;
-    const MAILCHIMP = 31;
-    const CHARGES_SOCIALES = 32;
-    const GANDI = 37;
-    const MEETUP = 45;
-    const OUTILS = 48;
-    const PRELEVEMENT_SOURCE = 51;
+    public const GOODIES = 13;
+    public const FRAIS_DE_COMPTE = 28;
+    public const MAILCHIMP = 31;
+    public const CHARGES_SOCIALES = 32;
+    public const GANDI = 37;
+    public const MEETUP = 45;
+    public const OUTILS = 48;
+    public const PRELEVEMENT_SOURCE = 51;
 }

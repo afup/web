@@ -9,11 +9,9 @@ namespace Afup\Site\Utils;
  */
 class Pays
 {
-    const DEFAULT_ID = 'FR';
+    public const DEFAULT_ID = 'FR';
 
-    public function __construct(private readonly Base_De_Donnees $_bdd)
-    {
-    }
+    public function __construct(private readonly Base_De_Donnees $_bdd) {}
 
     /**
      * Renvoit un tableau associatif des pays avec le code ISO comme clé et le nom comme valeur

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\TechLetter\Model\Repository;
 
 use AppBundle\TechLetter\Model\Sending;

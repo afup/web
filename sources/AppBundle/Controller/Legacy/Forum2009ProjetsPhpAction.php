@@ -14,8 +14,7 @@ class Forum2009ProjetsPhpAction
     public function __construct(
         private readonly AppelConferencier $appelConferencier,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {
@@ -25,7 +24,7 @@ class Forum2009ProjetsPhpAction
             's.titre',
             false,
             false,
-            Forum2009Config::PROJECT_IDS
+            Forum2009Config::PROJECT_IDS,
         );
 
         foreach ($sessions as $index => $session) {

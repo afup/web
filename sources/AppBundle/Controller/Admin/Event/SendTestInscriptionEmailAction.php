@@ -15,8 +15,7 @@ class SendTestInscriptionEmailAction extends AbstractController
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,
         private readonly Emails $emails,
-    ) {
-    }
+    ) {}
 
     public function __invoke(int $id): RedirectResponse
     {

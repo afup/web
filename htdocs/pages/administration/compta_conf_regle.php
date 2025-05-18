@@ -67,12 +67,12 @@ if ($action === 'lister') {
             }
             afficherMessage(
                 'La règle a été ' . (($action === 'ajouter') ? 'ajoutée' : 'modifiée'),
-                'index.php?page=compta_conf_regle&action=lister'
+                'index.php?page=compta_conf_regle&action=lister',
             );
         } else {
             $smarty->assign(
                 'erreur',
-                'Une erreur est survenue lors de ' . (($action === 'ajouter') ? "l'ajout" : 'la modification') . ' de la règle'
+                'Une erreur est survenue lors de ' . (($action === 'ajouter') ? "l'ajout" : 'la modification') . ' de la règle',
             );
         }
     }

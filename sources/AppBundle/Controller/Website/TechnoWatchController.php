@@ -14,8 +14,7 @@ class TechnoWatchController extends AbstractController
     public function __construct(
         private readonly string $technoWatchCalendarKey,
         private readonly string $technoWatchCalendarUrl,
-    ) {
-    }
+    ) {}
 
     public function calendar(Request $request): Response
     {
@@ -28,7 +27,7 @@ class TechnoWatchController extends AbstractController
         $calendar = $generator->generate(
             $this->technoWatchCalendarUrl,
             $request->query->getBoolean('display_prefix', true),
-            $request->query->get('filter', '')
+            $request->query->get('filter', ''),
         );
 
         $response = new Response($calendar);

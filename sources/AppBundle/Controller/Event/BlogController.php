@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Controller\Event;
 
 use AppBundle\Event\JsonLd;
@@ -22,8 +21,7 @@ class BlogController extends AbstractController
         private readonly RepositoryFactory $repositoryFactory,
         private readonly JsonLd $jsonLd,
         private readonly EventActionHelper $eventActionHelper,
-    ) {
-    }
+    ) {}
 
     public function program(Request $request, $eventSlug): Response
     {
@@ -45,7 +43,7 @@ class BlogController extends AbstractController
                 'jsonld' => $jsonld,
                 'speakersPagePrefix' => $request->query->get('speakers-page-prefix', '/' . $event->getPath() . '/speakers/'),
                 'display_joindin_links' => $now >= $event->getDateStart() && $now <= \DateTimeImmutable::createFromMutable($event->getDateEnd())->modify('+10 days'),
-            ]
+            ],
         );
     }
 
@@ -115,7 +113,7 @@ class BlogController extends AbstractController
             }
 
 
-            if (isset($eventPlanning[$startDay][$start])=== false) {
+            if (isset($eventPlanning[$startDay][$start]) === false) {
                 $eventPlanning[$startDay][$start] = [];
             }
 
@@ -155,7 +153,7 @@ class BlogController extends AbstractController
                     'hourMax' => $hourMax,
                     'precision' => 5,
                     'jsonld' => $jsonld,
-                ]
+                ],
         );
     }
 
@@ -185,7 +183,7 @@ class BlogController extends AbstractController
                 'talks_infos' => $talksInfos,
                 'speakers' => $speakers,
                 'widget_type' => $request->get('type', 'all'),
-            ]
+            ],
         );
     }
 
@@ -207,7 +205,7 @@ class BlogController extends AbstractController
                 'event' => $event,
                 'jsonld' => $jsonld,
                 'programPagePrefix' => $request->query->get('program-page-prefix', '/' . $event->getPath() . '/programme/'),
-            ]
+            ],
         );
     }
 }

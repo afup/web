@@ -22,7 +22,7 @@ class TalkInvitationRepository extends Repository implements MetadataInitializer
         $query = $this->getPreparedQuery(
             'SELECT asi.id, asi.talk_id, asi.state, asi.submitted_on, asi.submitted_by, asi.token, asi.email
             FROM afup_sessions_invitation asi
-            WHERE asi.talk_id = :talkId AND asi.state = :state'
+            WHERE asi.talk_id = :talkId AND asi.state = :state',
         );
         $query->setParams(['talkId' => $talkId, 'state' => TalkInvitation::STATE_PENDING]);
 

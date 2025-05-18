@@ -20,8 +20,7 @@ class TwigExtension extends AbstractExtension implements GlobalsInterface
         private readonly string $googleAnalyticsEnabled,
         #[Autowire('%google_analytics_id%')]
         private readonly string $googleAnalyticsId,
-    ) {
-    }
+    ) {}
 
     public function getFunctions(): array
     {
@@ -42,8 +41,8 @@ class TwigExtension extends AbstractExtension implements GlobalsInterface
     public function getFilters(): array
     {
         return [
-            new TwigFilter('markdown', fn ($text) => $this->parsedown->text($text), ['is_safe' => ['html']]),
-            new TwigFilter('markdown_email', fn ($text) => $this->emailParsedown->text($text), ['is_safe' => ['html']]),
+            new TwigFilter('markdown', fn($text) => $this->parsedown->text($text), ['is_safe' => ['html']]),
+            new TwigFilter('markdown_email', fn($text) => $this->emailParsedown->text($text), ['is_safe' => ['html']]),
         ];
     }
 

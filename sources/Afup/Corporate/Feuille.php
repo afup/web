@@ -8,12 +8,12 @@ use Afup\Site\Utils\Base_De_Donnees;
 
 class Feuille
 {
-    const ID_FEUILLE_ANTENNES = 71;
-    const ID_FEUILLE_ASSOCIATION = 74;
-    const ID_FEUILLE_COLONNE_DROITE = 1;
-    const ID_FEUILLE_HEADER = 21;
-    const ID_FEUILLE_FOOTER = 38;
-    const ID_FEUILLE_NOS_ACTIONS = 96;
+    public const ID_FEUILLE_ANTENNES = 71;
+    public const ID_FEUILLE_ASSOCIATION = 74;
+    public const ID_FEUILLE_COLONNE_DROITE = 1;
+    public const ID_FEUILLE_HEADER = 21;
+    public const ID_FEUILLE_FOOTER = 38;
+    public const ID_FEUILLE_NOS_ACTIONS = 96;
     public $id_parent;
     public $nom;
     public $lien;

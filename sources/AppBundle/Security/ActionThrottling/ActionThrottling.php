@@ -6,9 +6,7 @@ namespace AppBundle\Security\ActionThrottling;
 
 class ActionThrottling
 {
-    public function __construct(private readonly LogRepository $logRepository)
-    {
-    }
+    public function __construct(private readonly LogRepository $logRepository) {}
 
     /**
      * @param string|null $action
@@ -30,7 +28,7 @@ class ActionThrottling
             throw new \RuntimeException(
                 sprintf('Sorry, I could not understand the delay "%s" for the action "%s"', $delay, $action),
                 0,
-                $dateIntervalException
+                $dateIntervalException,
             );
         }
 

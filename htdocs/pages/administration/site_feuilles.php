@@ -56,9 +56,9 @@ if ($action == 'lister') {
     $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
         $formulaire->setDefaults(['date' => time(),
-                                       'position' => 0,
-                                       'id_personne_physique' => $droits->obtenirIdentifiant(),
-                                       'etat' => 0]);
+            'position' => 0,
+            'id_personne_physique' => $droits->obtenirIdentifiant(),
+            'etat' => 0]);
     } else {
         $feuille->charger();
         $formulaire->setDefaults($feuille->exportable());

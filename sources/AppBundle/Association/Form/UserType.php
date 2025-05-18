@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Association\Form;
 
 use AppBundle\Association\Model\User;

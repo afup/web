@@ -15,9 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewsFiltersType extends AbstractType
 {
-    public function __construct(private readonly ArticleRepository $articleRepository)
-    {
-    }
+    public function __construct(private readonly ArticleRepository $articleRepository) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -36,7 +34,7 @@ class NewsFiltersType extends AbstractType
                         'multiple' => true,
                         'expanded' => true,
                         'choices' => $yearValues,
-                    ]
+                    ],
             )
             ->add(
                 'theme',
@@ -46,7 +44,7 @@ class NewsFiltersType extends AbstractType
                     'multiple' => true,
                     'expanded' => true,
                     'choices' => array_flip(Article::getThemesLabels()),
-                ]
+                ],
             )
             ->add(
                 'event',
@@ -56,7 +54,7 @@ class NewsFiltersType extends AbstractType
                     'multiple' => true,
                     'expanded' => true,
                     'choices' => array_flip($this->articleRepository->getEventsLabelsById()),
-                ]
+                ],
             )
             ->add('submit', SubmitType::class, ['label' => 'Filtrer'])
         ;

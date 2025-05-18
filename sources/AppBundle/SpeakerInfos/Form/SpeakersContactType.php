@@ -21,7 +21,7 @@ class SpeakersContactType extends AbstractType
                 [
                     'label' => 'Phone',
                     'required' => false,
-                ]
+                ],
             )
             ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
         ;

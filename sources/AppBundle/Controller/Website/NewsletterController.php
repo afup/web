@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Mailchimp\Mailchimp;
@@ -19,8 +18,7 @@ class NewsletterController extends AbstractController
         private readonly ViewRenderer $view,
         private readonly Mailchimp $mailchimp,
         private readonly string $mailchimpSubscribersList,
-    ) {
-    }
+    ) {}
 
     public function subscribeForm(): Response
     {
@@ -38,7 +36,7 @@ class NewsletterController extends AbstractController
             try {
                 $this->mailchimp->subscribeAddress(
                     $this->mailchimpSubscribersList,
-                    $subscribeForm->getData()['email']
+                    $subscribeForm->getData()['email'],
                 );
                 $success = true;
             } catch (\Exception) {

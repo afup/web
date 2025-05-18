@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PayboxRedirectController extends AbstractController
 {
-    public function __construct(private readonly ViewRenderer $view)
-    {
-    }
+    public function __construct(private readonly ViewRenderer $view) {}
 
     public function index(Request $request, $type = 'success'): Response
     {

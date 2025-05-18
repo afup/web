@@ -6,7 +6,7 @@ use Phinx\Seed\AbstractSeed;
 
 class GithubUsers extends AbstractSeed
 {
-    const ID_GITHUBUSER_UBERMUDA = 1;
+    public const ID_GITHUBUSER_UBERMUDA = 1;
 
     public function run(): void
     {

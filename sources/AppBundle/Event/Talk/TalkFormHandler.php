@@ -27,8 +27,7 @@ class TalkFormHandler
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly TalkToSpeakersRepository $talkToSpeakersRepository,
         private readonly UnitOfWork $unitOfWork,
-    ) {
-    }
+    ) {}
 
     public function handle(Request $request, Event $event, FormInterface $form, Speaker $speaker): bool
     {

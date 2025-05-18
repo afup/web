@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace Afup\Site\Corporate;
 
 use Afup\Site\Pagination;
@@ -9,11 +10,11 @@ use Afup\Site\Utils\Configuration;
 
 class Rubrique
 {
-    const ID_RUBRIQUE_ACTUALITES = 9;
-    const ID_RUBRIQUE_ASSOCIATION = 85;
-    const ID_RUBRIQUE_ANTENNES = 84;
-    const ID_RUBRIQUE_INFORMATIONS_PRATIQUES = 86;
-    const ID_RUBRIQUE_NOS_ACTIONS = 88;
+    public const ID_RUBRIQUE_ACTUALITES = 9;
+    public const ID_RUBRIQUE_ASSOCIATION = 85;
+    public const ID_RUBRIQUE_ANTENNES = 84;
+    public const ID_RUBRIQUE_INFORMATIONS_PRATIQUES = 86;
+    public const ID_RUBRIQUE_NOS_ACTIONS = 88;
     public $id_personne_physique;
     public $id_parent;
     public $nom;
@@ -375,7 +376,7 @@ class Rubrique
                 $this->page_courante,
                 $this->pagination,
                 $this->compte_autres_articles(),
-                $this->genere_route(...)
+                $this->genere_route(...),
             );
         } else {
             return '';

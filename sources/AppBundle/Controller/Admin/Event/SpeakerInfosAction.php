@@ -15,8 +15,7 @@ class SpeakerInfosAction
         private readonly EventActionHelper $eventActionHelper,
         private readonly SpeakerRepository $speakerRepository,
         private readonly SpeakerPage $speakerPage,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request)
     {

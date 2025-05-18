@@ -26,14 +26,13 @@ class SpeakerPage extends AbstractController
         private readonly TalkRepository $talkRepository,
         private readonly SpeakerRepository $speakerRepository,
         private readonly SpeakersExpensesStorage $speakersExpensesStorage,
-    ) {
-    }
+    ) {}
 
     public function handleRequest(Request $request, Event $event, Speaker $speaker)
     {
         $talks = array_filter(
             iterator_to_array($this->talkRepository->getTalksBySpeaker($event, $speaker)),
-            static fn (Talk $talk): bool => $talk->getScheduled()
+            static fn(Talk $talk): bool => $talk->getScheduled(),
         );
 
         $now = new DateTime('now');

@@ -32,9 +32,9 @@ use UnexpectedValueException;
  */
 class UserRepository extends Repository implements MetadataInitializer, UserProviderInterface, PasswordUpgraderInterface
 {
-    const USER_TYPE_PHYSICAL = 0;
-    const USER_TYPE_COMPANY = 1;
-    const USER_TYPE_ALL = 2;
+    public const USER_TYPE_PHYSICAL = 0;
+    public const USER_TYPE_COMPANY = 1;
+    public const USER_TYPE_ALL = 2;
 
     public function loadUserByIdentifier(string $identifier): User
     {
@@ -189,7 +189,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         Assertion::keyExists($sorts, $sort);
 
         $queryBuilder = $this->getQueryBuilderWithCompleteUser()
-            ->orderBy(array_map(static fn ($field): string => $field . ' ' . $direction, $sorts[$sort]));
+            ->orderBy(array_map(static fn($field): string => $field . ' ' . $direction, $sorts[$sort]));
 
         // On filtre sur tous les mots possibles. Donc plus on a de mots dans la recherche plus on aura de résultats.
         // Mais ça peut aussi permettre de trouver des personnes en entrant par exemple "Prénom email" dans le champ de recherche :

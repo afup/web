@@ -16,9 +16,7 @@ class SpeakerDeleteAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    public function __construct(private SpeakerRepository $speakerRepository)
-    {
-    }
+    public function __construct(private SpeakerRepository $speakerRepository) {}
 
     public function __invoke(Request $request): RedirectResponse
     {

@@ -9,9 +9,7 @@ use Psr\Cache\CacheItemPoolInterface;
 
 class JoindinComments
 {
-    public function __construct(private readonly CacheItemPoolInterface $cache)
-    {
-    }
+    public function __construct(private readonly CacheItemPoolInterface $cache) {}
 
     public function getCommentsFromTalk(Talk $talk): array
     {

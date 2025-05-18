@@ -14,8 +14,7 @@ class Forum2016ConferenciersAction
     public function __construct(
         private readonly AppelConferencier $appelConferencier,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {
@@ -42,7 +41,7 @@ class Forum2016ConferenciersAction
                 ];
             }
         }
-        uasort($conferenciers, static fn ($a, $b): int => $a['prenom'] <=> $b['prenom']);
+        uasort($conferenciers, static fn($a, $b): int => $a['prenom'] <=> $b['prenom']);
 
         return new Response($this->twig->render('legacy/forumphp2016/conferenciers.html.twig', [
             'conferenciers' => $conferenciers,

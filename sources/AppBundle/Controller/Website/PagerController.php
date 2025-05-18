@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PagerController extends AbstractController
 {
-    const PAGER_LINKS_COUNT = 6;
+    public const PAGER_LINKS_COUNT = 6;
 
     public function display(Request $request): Response
     {
@@ -23,7 +23,7 @@ class PagerController extends AbstractController
         $displayedPages = [];
         $fistPageItem = max($currentPage - (self::PAGER_LINKS_COUNT / 2), 1);
 
-        for ($i=0; $i<=self::PAGER_LINKS_COUNT; $i++) {
+        for ($i = 0; $i <= self::PAGER_LINKS_COUNT; $i++) {
             if (($fistPageItem + $i) > $nbPages) {
                 continue;
             }
@@ -37,7 +37,7 @@ class PagerController extends AbstractController
                 'displayed_pages' => $displayedPages,
                 'current_page' => $currentPage,
                 'extra_parameters' => $request->get('extra_parameters', []),
-            ]
+            ],
         );
     }
 }

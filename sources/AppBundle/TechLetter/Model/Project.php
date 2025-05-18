@@ -10,8 +10,7 @@ class Project implements \JsonSerializable
         private readonly string $url,
         private readonly string $name,
         private readonly string $description,
-    ) {
-    }
+    ) {}
 
     public function getUrl(): string
     {

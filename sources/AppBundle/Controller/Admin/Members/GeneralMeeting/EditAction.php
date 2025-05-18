@@ -16,9 +16,7 @@ class EditAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    public function __construct(private GeneralMeetingRepository $generalMeetingRepository)
-    {
-    }
+    public function __construct(private GeneralMeetingRepository $generalMeetingRepository) {}
 
     public function __invoke(Request $request): Response
     {

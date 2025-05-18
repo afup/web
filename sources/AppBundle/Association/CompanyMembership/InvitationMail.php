@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Association\CompanyMembership;
 
 use AppBundle\Association\Model\CompanyMember;
@@ -21,8 +20,7 @@ class InvitationMail
         private readonly Mailer $mailer,
         private readonly TranslatorInterface $translator,
         private readonly RouterInterface $router,
-    ) {
-    }
+    ) {}
 
     /**
      * Send mail to please a user to join a company as a member
@@ -36,18 +34,18 @@ class InvitationMail
             [
                 '%firstname%' => $companyMember->getFirstName(),
                 '%lastname%' => $companyMember->getLastName(),
-                '%link%' =>$this->router->generate(
+                '%link%' => $this->router->generate(
                     'company_invitation',
                     ['invitationId' => $invitation->getId(), 'token' => $invitation->getToken()],
-                    UrlGeneratorInterface::ABSOLUTE_URL
+                    UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
-            ]
+            ],
         );
 
         return $this->mailer->sendTransactional(new Message(
             sprintf('%s vous invite à profiter de son compte "Membre AFUP"', $companyMember->getCompanyName()),
             MailUserFactory::sponsors(),
-            new MailUser($invitation->getEmail())
+            new MailUser($invitation->getEmail()),
         ), $text);
     }
 }

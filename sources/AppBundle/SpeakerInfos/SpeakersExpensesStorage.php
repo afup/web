@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\SpeakerInfos;
 
 use AppBundle\Event\Model\Repository\EventRepository;

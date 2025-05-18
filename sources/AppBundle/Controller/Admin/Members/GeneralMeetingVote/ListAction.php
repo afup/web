@@ -19,8 +19,7 @@ class ListAction
         private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
         private readonly GeneralMeetingVoteRepository $generalMeetingVoteRepository,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

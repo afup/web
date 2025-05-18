@@ -22,20 +22,19 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 
 class PurchaseType extends AbstractType
 {
-    const MAX_NB_PERSONNES = 15;
+    public const MAX_NB_PERSONNES = 15;
 
     public function __construct(
         private readonly Pays $country,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
-    }
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $maxNbPersonne = $options['special_price_token'] ? 1 : self::MAX_NB_PERSONNES;
 
         $nbPersonnesChoices = [];
-        for ($i=1; $i<=$maxNbPersonne; $i++) {
+        for ($i = 1; $i <= $maxNbPersonne; $i++) {
             $nbPersonnesChoices[$i] = $i;
         }
 

@@ -9,9 +9,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class NewMemberEvent extends Event
 {
-    public function __construct(private readonly User $user)
-    {
-    }
+    public function __construct(private readonly User $user) {}
 
     public function getUser(): User
     {

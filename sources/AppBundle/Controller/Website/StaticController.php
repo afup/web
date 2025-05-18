@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Antennes\AntennesCollection;
@@ -16,8 +15,7 @@ class StaticController extends AbstractController
     public function __construct(
         private readonly ViewRenderer $view,
         private readonly string $superAperoCsvUrl,
-    ) {
-    }
+    ) {}
 
     public function offices(): Response
     {

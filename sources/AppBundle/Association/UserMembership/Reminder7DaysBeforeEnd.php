@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Association\UserMembership;
 
 class Reminder7DaysBeforeEnd extends AbstractUserReminder

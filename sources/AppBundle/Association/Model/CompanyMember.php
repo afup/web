@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Association\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -14,9 +13,9 @@ class CompanyMember implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    const STATUS_PENDING = -1;
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
+    public const STATUS_PENDING = -1;
+    public const STATUS_ACTIVE = 1;
+    public const STATUS_INACTIVE = 0;
 
     /**
      * @var int
@@ -376,7 +375,7 @@ class CompanyMember implements NotifyPropertyInterface
      */
     public function setInvitations($invitations): self
     {
-        $this->invitations = array_filter($invitations, static fn ($invitation): bool => $invitation instanceof CompanyMemberInvitation);
+        $this->invitations = array_filter($invitations, static fn($invitation): bool => $invitation instanceof CompanyMemberInvitation);
 
         return $this;
     }

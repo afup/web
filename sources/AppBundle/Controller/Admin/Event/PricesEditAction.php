@@ -19,8 +19,7 @@ class PricesEditAction extends AbstractController
         private readonly TicketTypeRepository $ticketTypeRepository,
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
         private readonly EventSelectFactory $eventSelectFactory,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request, $event, $id)
     {

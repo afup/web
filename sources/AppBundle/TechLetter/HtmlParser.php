@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\TechLetter;
 
 class HtmlParser
@@ -16,8 +15,8 @@ class HtmlParser
 
     private readonly \DOMXPath $xpath;
 
-    const OPEN_GRAPH_PREFIX = 'og';
-    const TWITTER_PREFIX = 'twitter';
+    public const OPEN_GRAPH_PREFIX = 'og';
+    public const TWITTER_PREFIX = 'twitter';
 
     public function __construct($html)
     {

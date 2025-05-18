@@ -11,9 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final readonly class ArticlesController
 {
-    public function __construct(private FeedArticleRepository $feedArticleRepository)
-    {
-    }
+    public function __construct(private FeedArticleRepository $feedArticleRepository) {}
 
     public function __invoke(Request $request): Response
     {
@@ -51,7 +49,7 @@ final readonly class ArticlesController
                 'X-Pagination-Total' => $totalCount,
                 'X-Pagination-Per-Page' => $perPage,
                 'X-Pagination-Has-Next-Page' => json_encode($totalCount > $page * $perPage),
-            ]
+            ],
         );
     }
 

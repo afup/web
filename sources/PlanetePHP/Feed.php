@@ -6,8 +6,8 @@ namespace PlanetePHP;
 
 class Feed
 {
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
+    public const STATUS_ACTIVE = 1;
+    public const STATUS_INACTIVE = 0;
 
     /**
      * @param int    $id
@@ -24,8 +24,7 @@ class Feed
         private $feed,
         private $status,
         private $userId,
-    ) {
-    }
+    ) {}
 
     public function getId()
     {

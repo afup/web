@@ -16,9 +16,7 @@ use AppBundle\Email\Mailer\Message;
 
 class Facture
 {
-    public function __construct(private readonly Base_De_Donnees $_bdd)
-    {
-    }
+    public function __construct(private readonly Base_De_Donnees $_bdd) {}
 
 
     /* Journal des opération
@@ -290,7 +288,7 @@ class Facture
         // index null = changement d'année
         // on va chercher l'index de l'année dernière
         if (null === $index) {
-            $index = $this->_bdd->obtenirUn($sql . ($year-1));
+            $index = $this->_bdd->obtenirUn($sql . ($year - 1));
             $index = (int) (is_null($index) ? 1 : $index);
         }
 
@@ -352,7 +350,7 @@ class Facture
             $coordonnees['code_postal'] . " " .
             $coordonnees['ville'] . "\n" .
             $pays->obtenirNom($coordonnees['id_pays']) .
-            ($coordonnees['tva_intra'] ? ("\n" . 'N° TVA Intracommunautaire : ' . $coordonnees['tva_intra']) : null)
+            ($coordonnees['tva_intra'] ? ("\n" . 'N° TVA Intracommunautaire : ' . $coordonnees['tva_intra']) : null),
         );
 
         $pdf->Ln(10);
@@ -728,7 +726,7 @@ class Facture
             $chemin_facture,
             'facture-' . $reference . '.pdf',
             'base64',
-            'application/pdf'
+            'application/pdf',
         ));
         $ok = Mailing::envoyerMail($message, $corps);
 

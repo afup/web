@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\Talk;
@@ -16,8 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TalkType extends AbstractType
 {
-    const OPT_COC_CHECKED = 'codeOfConductChecked';
-    const IS_AFUP_DAY = 'isAfupDay';
+    public const OPT_COC_CHECKED = 'codeOfConductChecked';
+    public const IS_AFUP_DAY = 'isAfupDay';
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -62,25 +61,25 @@ class TalkType extends AbstractType
         }
 
         $builder->add('needsMentoring', CheckboxType::class, [
-                'label' => "Je souhaite profiter du programme d'accompagnement des jeunes speakers",
-                'required' => false,
-            ])
-            ->add('codeOfConduct', CheckboxType::class, [
-                'label' => 'J\'accepte le code de conduite et les conditions générales de participation (1)',
-                'mapped' => false,
-                'required' => true,
-                'data' => $options[self::OPT_COC_CHECKED],
-            ])
-            ->add('hasAllowedToSharingWithLocalOffices', ChoiceType::class, [
-                'choices' => [
-                    'J\'autorise' => true,
-                    'Je refuse' => false,
-                ],
-                'expanded' => true,
-                'multiple' => false,
-                'label' => 'Autoriser l’AFUP à transmettre ma proposition de conférence à ses antennes locales ?',
-                'help' => 'cfp_authorize_forward',
-            ]);
+            'label' => "Je souhaite profiter du programme d'accompagnement des jeunes speakers",
+            'required' => false,
+        ])
+        ->add('codeOfConduct', CheckboxType::class, [
+            'label' => 'J\'accepte le code de conduite et les conditions générales de participation (1)',
+            'mapped' => false,
+            'required' => true,
+            'data' => $options[self::OPT_COC_CHECKED],
+        ])
+        ->add('hasAllowedToSharingWithLocalOffices', ChoiceType::class, [
+            'choices' => [
+                'J\'autorise' => true,
+                'Je refuse' => false,
+            ],
+            'expanded' => true,
+            'multiple' => false,
+            'label' => 'Autoriser l’AFUP à transmettre ma proposition de conférence à ses antennes locales ?',
+            'help' => 'cfp_authorize_forward',
+        ]);
     }
 
     /**

@@ -14,9 +14,7 @@ use Twig\Error\LoaderError;
 
 class LegacyEventAction
 {
-    public function __construct(private readonly Environment $twig)
-    {
-    }
+    public function __construct(private readonly Environment $twig) {}
 
     public function __invoke(Request $request): Response
     {

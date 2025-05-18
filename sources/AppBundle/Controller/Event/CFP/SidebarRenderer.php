@@ -16,8 +16,7 @@ class SidebarRenderer
         private readonly TalkRepository $talkRepository,
         private readonly SpeakerFactory $speakerFactory,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     /**
      * @return string

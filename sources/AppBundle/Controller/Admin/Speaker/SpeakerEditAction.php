@@ -23,7 +23,7 @@ class SpeakerEditAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    const ID_FORUM_PHOTO_STORAGE = 16;
+    public const ID_FORUM_PHOTO_STORAGE = 16;
 
     public function __construct(
         private SpeakerRepository $speakerRepository,
@@ -31,8 +31,7 @@ class SpeakerEditAction extends AbstractController
         private EventRepository $eventRepository,
         private PhotoStorage $photoStorage,
         private SpeakerFormDataFactory $speakerFormDataFactory,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request)
     {

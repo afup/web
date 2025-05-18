@@ -23,8 +23,7 @@ class RoomAction extends AbstractController implements AdminActionWithEventSelec
         private readonly FormFactoryInterface $formFactory,
         private readonly RoomRepository $roomRepository,
         private readonly EventSelectFactory $eventSelectFactory,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request)
     {
@@ -72,7 +71,7 @@ class RoomAction extends AbstractController implements AdminActionWithEventSelec
             'event' => $event,
             'rooms' => $rooms,
             'addForm' => $addForm === null ? null : $addForm->createView(),
-            'editForms' => $editForms === null ? null : array_map(static fn (Form $form) => $form->createView(), $editForms),
+            'editForms' => $editForms === null ? null : array_map(static fn(Form $form) => $form->createView(), $editForms),
             'title' => 'Gestion des salles',
             'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
         ]);

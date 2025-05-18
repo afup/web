@@ -16,9 +16,7 @@ class Emails
 {
     private array $tempFiles = [];
 
-    public function __construct(private readonly Mailer $mailer)
-    {
-    }
+    public function __construct(private readonly Mailer $mailer) {}
 
     public function __destruct()
     {

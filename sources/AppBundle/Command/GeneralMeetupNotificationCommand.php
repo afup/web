@@ -36,7 +36,7 @@ class GeneralMeetupNotificationCommand extends Command
             $this->slackNotifier->sendMessage($this->messageFactory->createMessageForGeneralMeeting(
                 $this->generalMeetingRepository,
                 $this->userRepository,
-                $this->urlGenerator
+                $this->urlGenerator,
             ));
         }
 

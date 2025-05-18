@@ -12,7 +12,5 @@ final class QueryGroupsResponse
     /**
      * @param array<string, Group> $data
      */
-    public function __construct(public array $data)
-    {
-    }
+    public function __construct(public array $data) {}
 }

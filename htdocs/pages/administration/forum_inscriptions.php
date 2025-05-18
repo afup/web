@@ -182,7 +182,7 @@ if ($action == 'lister') {
                 'newsletter_afup' => 0,
                 'newsletter_nexen' => 0,
                 'date_reglement' => (new \DateTime())->format('Y-m-d'),
-            ]
+            ],
         );
     } else {
         $champs = $forum_inscriptions->obtenir($_GET['id']);
@@ -260,13 +260,13 @@ if ($action == 'lister') {
         AFUP_FORUM_ETAT_ATTENTE_REGLEMENT => 'Attente règlement',
         AFUP_FORUM_ETAT_CONFIRME          => 'Inscription confirmée',
         AFUP_FORUM_ETAT_A_POSTERIORI      => 'Inscription à posteriori',
-        ];
+    ];
     $formulaire->addElement('select', 'etat'        , 'Etat'        , $state);
 
     $facturation = [AFUP_FORUM_FACTURE_A_ENVOYER => 'Facture à envoyer',
         AFUP_FORUM_FACTURE_ENVOYEE                    => 'Facture envoyée',
         AFUP_FORUM_FACTURE_RECUE                      => 'Facture reçue',
-        ];
+    ];
     $formulaire->addElement('select', 'facturation' , 'Facturation'  , $facturation);
 
     $formulaire->addElement('header'  , ''                       , 'Règlement');
@@ -280,7 +280,7 @@ if ($action == 'lister') {
 
 
     $current = $forum->obtenir($_GET['id_forum']);
-    $formulaire->addElement('date'    , 'date_reglement'     , 'Date', ['language' => 'fr', 'minYear' => $current['forum_annee']-2, 'maxYear' => $current['forum_annee']+2]);
+    $formulaire->addElement('date'    , 'date_reglement'     , 'Date', ['language' => 'fr', 'minYear' => $current['forum_annee'] - 2, 'maxYear' => $current['forum_annee'] + 2]);
 
 
     $formulaire->addElement('header'  , ''                       , 'Facturation');

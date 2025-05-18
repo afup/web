@@ -42,7 +42,7 @@ class TicketRepository extends Repository implements MetadataInitializer
             WHERE inscriptions.id_member = :member
             AND inscriptions.member_type = :type
             AND inscriptions.id_forum = :forum
-            AND inscriptions.etat = :state'
+            AND inscriptions.etat = :state',
             )->setParams([
                 'member' => $userId,
                 'type' => $userType,
@@ -81,7 +81,7 @@ class TicketRepository extends Repository implements MetadataInitializer
                  ORDER BY afup_inscription_forum.nom, afup_inscription_forum.prenom, afup_inscription_forum.email',
                 [
                     '%ids%' => implode(',', $idsParams),
-                ]
+                ],
             ))
             ->setParams($params)
             ->query($this->getCollection(new HydratorArray()))
@@ -103,13 +103,13 @@ class TicketRepository extends Repository implements MetadataInitializer
             JOIN afup_forum_tarif_event tarif_event ON tarif_event.id_tarif = inscriptions.type_inscription AND tarif_event.id_event = inscriptions.id_forum
             JOIN afup_forum_tarif tarif ON tarif.id = tarif_event.id_tarif
             WHERE inscriptions.reference = :ref
-            '
+            ',
         )->setParams(['ref' => $invoice->getReference()])->query(
             $this->getCollection(
                 (new HydratorSingleObject())
                 ->mapObjectTo('tarif', 'tarif_event', 'setTicketType')
-                ->mapObjectTo('tarif_event', 'inscriptions', 'setTicketEventType')
-            )
+                ->mapObjectTo('tarif_event', 'inscriptions', 'setTicketEventType'),
+            ),
         );
     }
 
@@ -208,7 +208,7 @@ class TicketRepository extends Repository implements MetadataInitializer
                     inscriptions.email, inscriptions.id_forum
                     FROM afup_inscription_forum inscriptions
                     WHERE inscriptions.etat = :state
-                    '
+                    ',
                 )
                 ->setParams(['state' => Ticket::STATUS_PAID])
                 ->query($this->getCollection(new HydratorSingleObject()));

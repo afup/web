@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\CFP;
 
 use AppBundle\Event\Model\Event;
@@ -17,8 +16,7 @@ class SpeakerFactory
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly SpeakerRepository $speakerRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * Get a speaker from current logged in user or create a new speaker if profile has not been created

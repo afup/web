@@ -85,7 +85,7 @@ class ArticleRepository extends Repository implements MetadataInitializer
             [
                 'offset' => ($page - 1) * $itemsPerPage,
                 'limit' => $itemsPerPage,
-            ]
+            ],
         );
 
         $query = $this->getPreparedQuery($sql)->setParams($params);
@@ -224,7 +224,7 @@ class ArticleRepository extends Repository implements MetadataInitializer
         $query = $this
             ->getPreparedQuery(
                 'SELECT * FROM afup_site_article
-         WHERE id_site_rubrique = :rubricId AND CONCAT(id, "-", raccourci) = :slug'
+         WHERE id_site_rubrique = :rubricId AND CONCAT(id, "-", raccourci) = :slug',
             )
             ->setParams(['rubricId' => Rubrique::ID_RUBRIQUE_ACTUALITES, 'slug' => $slug]);
         $events = $query->query($this->getCollection(new HydratorSingleObject()));

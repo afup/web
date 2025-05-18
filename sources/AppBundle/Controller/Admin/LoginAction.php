@@ -14,8 +14,7 @@ class LoginAction
     public function __construct(
         private readonly AuthenticationUtils $authenticationUtils,
         private readonly ViewRenderer $view,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

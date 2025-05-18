@@ -17,6 +17,5 @@ final class Node
         public string $description,
         public DateTime $dateTime,
         public ?Venue $venue,
-    ) {
-    }
+    ) {}
 }

@@ -187,9 +187,7 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
         return $this->getLogin();
     }
 
-    public function eraseCredentials(): void
-    {
-    }
+    public function eraseCredentials(): void {}
 
     public function __serialize(): array
     {

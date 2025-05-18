@@ -67,7 +67,7 @@ if ($action == 'lister') {
     if ($action == 'ajouter') {
         $date_debut = $cotisations->obtenirDateDebut($_GET['type_personne'], $_GET['id_personne']);
         $formulaire->setDefaults(['date_debut' => $date_debut,
-                                       'date_fin'   => strtotime('+1year', $date_debut)]);
+            'date_fin'   => strtotime('+1year', $date_debut)]);
     } elseif ($action == 'modifier') {
         $formulaire->setDefaults($cotisations->obtenir($_GET['id']));
     }
@@ -78,21 +78,21 @@ if ($action == 'lister') {
     $formulaire->addElement('header' , ''                      , '');
     $formulaire->addElement('text'   , 'montant'               , 'Montant', ['size' => 5, 'maxlength' => 5]);
     $formulaire->addElement('select' , 'type_reglement'        , 'Type règlement', [null                                => '',
-                                                                                         AFUP_COTISATIONS_REGLEMENT_ESPECES  => 'Espèces',
-                                                                                         AFUP_COTISATIONS_REGLEMENT_CHEQUE   => 'Chèques',
-                                                                                         AFUP_COTISATIONS_REGLEMENT_VIREMENT => 'Virement',
-                                                                                         AFUP_COTISATIONS_REGLEMENT_ENLIGNE  => 'En ligne',
-                                                                                         AFUP_COTISATIONS_REGLEMENT_AUTRE    => 'Autre']);
+        AFUP_COTISATIONS_REGLEMENT_ESPECES  => 'Espèces',
+        AFUP_COTISATIONS_REGLEMENT_CHEQUE   => 'Chèques',
+        AFUP_COTISATIONS_REGLEMENT_VIREMENT => 'Virement',
+        AFUP_COTISATIONS_REGLEMENT_ENLIGNE  => 'En ligne',
+        AFUP_COTISATIONS_REGLEMENT_AUTRE    => 'Autre']);
     $formulaire->addElement('text'   , 'informations_reglement', 'Informations', ['size' => 50, 'maxlength' => 255]);
     $formulaire->addElement('text', 'reference_client', 'Référence client', ['size' => 50, 'maxlength' => 255]);
     $formulaire->addElement('date'   , 'date_debut'            , 'Date début', ['language' => 'fr',
-                                                                                     'format'   => 'd F Y',
-                                                                                     'minYear'  => 2002,
-                                                                                     'maxYear'  => date('Y') + 5]);
+        'format'   => 'd F Y',
+        'minYear'  => 2002,
+        'maxYear'  => date('Y') + 5]);
     $formulaire->addElement('date'   , 'date_fin'              , 'Date fin', ['language' => 'fr',
-                                                                                   'format'   => 'd F Y',
-                                                                                   'minYear'  => 2002,
-                                                                                   'maxYear'  => date('Y') + 5]);
+        'format'   => 'd F Y',
+        'minYear'  => 2002,
+        'maxYear'  => date('Y') + 5]);
     $formulaire->addElement('textarea', 'commentaires'         , 'Commentaires', ['cols' => 42, 'rows' => 5]);
 
     $formulaire->addElement('header', 'boutons'          , '');
@@ -118,7 +118,7 @@ if ($action == 'lister') {
                 $date_debut,
                 $date_fin,
                 $formulaire->exportValue('commentaires'),
-                $formulaire->exportValue('reference_client')
+                $formulaire->exportValue('reference_client'),
             )) {
                 Logs::log("Ajout de la cotisation jusqu'au " . date('d F Y', $date_fin) . ' pour ' . $nom);
                 afficherMessage("La cotisation jusqu'au " . date('d F Y', $date_fin) . ' pour ' . $nom . ' a bien été ajoutée', 'index.php?page=cotisations&action=lister&type_personne=' . $_GET['type_personne'] . '&id_personne=' . $_GET['id_personne']);
@@ -135,7 +135,7 @@ if ($action == 'lister') {
             $date_debut,
             $date_fin,
             $formulaire->exportValue('commentaires'),
-            $formulaire->exportValue('reference_client')
+            $formulaire->exportValue('reference_client'),
         )) {
             Logs::log('Modification de la cotisation (' . $_GET['id'] . ') pour ' . $nom);
             afficherMessage('La cotisation pour ' . $nom . ' a bien été modifiée', 'index.php?page=cotisations&action=lister&type_personne=' . $_GET['type_personne'] . '&id_personne=' . $_GET['id_personne']);

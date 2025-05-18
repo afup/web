@@ -17,8 +17,7 @@ class TechletterController extends AbstractController
         private readonly ViewRenderer $view,
         private readonly RepositoryFactory $repositoryFactory,
         private readonly string $mailchimpTechletterWebhookKey,
-    ) {
-    }
+    ) {}
 
     public function index(): Response
     {

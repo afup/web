@@ -14,8 +14,7 @@ class ListRubriquesAction
     public function __construct(
         private readonly RubriqueRepository $rubriqueRepository,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

@@ -9,9 +9,7 @@ use Psr\Clock\ClockInterface;
 
 final readonly class MockClock implements ClockInterface
 {
-    public function __construct(private \DateTimeImmutable $now)
-    {
-    }
+    public function __construct(private \DateTimeImmutable $now) {}
 
     public function now(): DateTimeImmutable
     {

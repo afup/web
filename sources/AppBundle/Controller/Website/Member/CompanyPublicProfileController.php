@@ -18,8 +18,7 @@ class CompanyPublicProfileController extends AbstractController
     public function __construct(
         private readonly RepositoryFactory $repositoryFactory,
         private readonly string $storageDir,
-    ) {
-    }
+    ) {}
     public function index(Request $request)
     {
         /**
@@ -66,7 +65,7 @@ class CompanyPublicProfileController extends AbstractController
 
                 $data['logo']->move(
                     $this->prepareUploadedFilesDir(),
-                    $filename
+                    $filename,
                 );
 
                 $companyMember->setLogoUrl($filename);
@@ -94,7 +93,7 @@ class CompanyPublicProfileController extends AbstractController
             [
                 'form' => $form->createView(),
                 'company_member' => $companyMember,
-            ]
+            ],
         );
     }
 

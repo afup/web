@@ -19,8 +19,7 @@ class UserSendWelcomeAction extends AbstractController
     public function __construct(
         private UserRepository $userRepository,
         private UserService $userService,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): RedirectResponse
     {

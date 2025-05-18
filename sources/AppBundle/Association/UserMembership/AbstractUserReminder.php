@@ -21,8 +21,7 @@ abstract class AbstractUserReminder implements MembershipReminderInterface
         private readonly Mailer $mailer,
         protected int $membershipFee,
         private readonly SubscriptionReminderLogRepository $subscriptionReminderLogRepository,
-    ) {
-    }
+    ) {}
 
     abstract protected function getText();
     abstract protected function getSubject();
@@ -42,14 +41,14 @@ abstract class AbstractUserReminder implements MembershipReminderInterface
         $message = new Message(
             $this->getSubject(),
             MailUserFactory::bureau(),
-            new MailUser($user->getEmail())
+            new MailUser($user->getEmail()),
         );
 
         $message->addAttachment(new Attachment(
             __DIR__ . '/../_data/membership-renouvellement-cotisation.pdf',
             'membership-renouvellement-cotisation.pdf',
             'base64',
-            'application/pdf'
+            'application/pdf',
         ));
 
         $status = $this->mailer->sendTransactional($message, $this->getText(), MailUserFactory::bureau()->getEmail());

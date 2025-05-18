@@ -14,8 +14,7 @@ class Forum2009ConferenciersAction
     public function __construct(
         private readonly AppelConferencier $appelConferencier,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {
@@ -27,7 +26,7 @@ class Forum2009ConferenciersAction
                 's.titre',
                 false,
                 false,
-                Forum2009Config::PROJECT_IDS
+                Forum2009Config::PROJECT_IDS,
             );
         } else {
             $sessions = $this->appelConferencier->obtenirListeSessionsPlannifies(Forum2009Config::ID);

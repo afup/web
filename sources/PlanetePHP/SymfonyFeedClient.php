@@ -11,9 +11,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final readonly class SymfonyFeedClient implements ClientInterface
 {
-    public function __construct(private HttpClientInterface $httpClient)
-    {
-    }
+    public function __construct(private HttpClientInterface $httpClient) {}
 
     public function get($uri): ResponseInterface
     {

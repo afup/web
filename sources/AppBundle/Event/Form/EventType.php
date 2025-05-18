@@ -44,7 +44,7 @@ class EventType extends AbstractType
                 'label' => 'Nom du lieu',
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => 255]
+                    new Assert\Length(['max' => 255],
                 )],
             ])
             ->add('placeAddress', TextType::class, [
@@ -149,7 +149,7 @@ class EventType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'constraints' => [
-                    new Assert\File(['mimeTypes'=> 'application/pdf']),
+                    new Assert\File(['mimeTypes' => 'application/pdf']),
                 ],
             ])
             ->add('sponsor_file_fr', FileType::class, [
@@ -157,7 +157,7 @@ class EventType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'constraints' => [
-                    new Assert\File(['mimeTypes'=> 'application/pdf']),
+                    new Assert\File(['mimeTypes' => 'application/pdf']),
                 ],
             ])
             ->add('sponsor_file_en', FileType::class, [
@@ -165,7 +165,7 @@ class EventType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'constraints' => [
-                    new Assert\File(['mimeTypes'=> 'application/pdf']),
+                    new Assert\File(['mimeTypes' => 'application/pdf']),
                 ],
             ])
         ;

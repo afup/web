@@ -17,8 +17,7 @@ class PricesAction extends AbstractController implements AdminActionWithEventSel
         private readonly EventActionHelper $eventActionHelper,
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
         private readonly EventSelectFactory $eventSelectFactory,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Controller;
 
 use Afup\Site\Utils\Logs;
@@ -47,8 +46,8 @@ class LegacyController extends AbstractController
         private readonly SpeakerRepository $speakerRepository,
         private readonly TalkRepository $talkRepository,
         private readonly array $backOfficePages,
-    ) {
-    }
+    ) {}
+
     public function void()
     {
         return new Response();

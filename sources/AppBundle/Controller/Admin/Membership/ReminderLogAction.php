@@ -14,8 +14,7 @@ class ReminderLogAction
     public function __construct(
         private readonly SubscriptionReminderLogRepository $subscriptionReminderLogRepository,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

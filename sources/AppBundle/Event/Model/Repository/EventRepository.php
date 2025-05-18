@@ -99,14 +99,14 @@ FROM afup_forum f
 GROUP BY f.id, f.titre, f.path, f.nb_places, f.date_debut, f.date_fin, f.date_fin_appel_conferencier, f.date_fin_vente
 ORDER BY date_debut desc;
 ENDSQL;
-        $sql = sprintf($sql, $id === null ? '':'WHERE f.id = :id');
+        $sql = sprintf($sql, $id === null ? '' : 'WHERE f.id = :id');
 
         $sessions = $this->countRelation('afup_sessions');
         $inscriptions = $this->countRelation('afup_inscription_forum');
 
         $query = $this->getQuery($sql);
         if ($id !== null) {
-            $query->setParams(['id'=>$id]);
+            $query->setParams(['id' => $id]);
         }
 
         $results = $query->query($this->getCollection(new HydratorArray()));

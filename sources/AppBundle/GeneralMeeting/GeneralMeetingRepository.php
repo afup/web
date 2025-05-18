@@ -12,9 +12,7 @@ use Doctrine\DBAL\Connection;
 
 class GeneralMeetingRepository
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * @return DateTimeInterface[]
@@ -28,7 +26,7 @@ ORDER BY apag.date DESC
 SQL
         );
 
-        return array_map(static fn (array $row): \DateTimeImmutable => new DateTimeImmutable('@' . $row['date']), $query->fetchAllAssociative());
+        return array_map(static fn(array $row): \DateTimeImmutable => new DateTimeImmutable('@' . $row['date']), $query->fetchAllAssociative());
     }
 
     /**
@@ -77,7 +75,7 @@ SQL
             (int) $row['presence'],
             (int) $row['id_personne_avec_pouvoir'],
             $row['date_consultation'] ? new \DateTimeImmutable('@' . $row['date_consultation']) : null,
-            $row['date_modification'] ? new \DateTimeImmutable('@' . $row['date_modification']) : null
+            $row['date_modification'] ? new \DateTimeImmutable('@' . $row['date_modification']) : null,
         ) : null;
     }
 
@@ -161,7 +159,7 @@ SQL
                 'apag.presence',
                 'app2.id AS power_id',
                 'app2.nom AS power_lastname',
-                'app2.prenom AS power_firstname'
+                'app2.prenom AS power_firstname',
             )
             ->join('app', 'afup_presences_assemblee_generale', 'apag', 'app.id = apag.id_personne_physique')
             ->leftJoin('app', 'afup_personnes_physiques', 'app2', 'app2.id = apag.id_personne_avec_pouvoir')
@@ -174,7 +172,7 @@ SQL
                 ->setParameter('pouvoir', $idPersonneAvecPouvoir);
         }
 
-        return array_map(static fn (array $row): Attendee => new Attendee(
+        return array_map(static fn(array $row): Attendee => new Attendee(
             (int) $row['id'],
             $row['email'],
             $row['login'],
@@ -185,7 +183,7 @@ SQL
             (int) $row['presence'],
             $row['power_id'] ? (int) $row['power_id'] : null,
             $row['power_lastname'],
-            $row['power_firstname']
+            $row['power_firstname'],
         ), $query->executeQuery()->fetchAllAssociative());
     }
 
@@ -241,7 +239,7 @@ SQL
         );
         $query->bindValue('date', $timestamp);
 
-        return array_map(static fn (array $row): int => (int) $row['id'], $query->executeQuery()->fetchAllAssociative());
+        return array_map(static fn(array $row): int => (int) $row['id'], $query->executeQuery()->fetchAllAssociative());
     }
 
     /**
@@ -389,7 +387,7 @@ SQL
             (int) $row['presence'],
             $row['power_id'] ? (int) $row['power_id'] : null,
             $row['power_lastname'],
-            $row['power_firstname']
+            $row['power_firstname'],
         ) : null;
     }
 

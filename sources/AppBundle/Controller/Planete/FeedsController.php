@@ -9,9 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final readonly class FeedsController
 {
-    public function __construct(private FeedRepository $feedRepository)
-    {
-    }
+    public function __construct(private FeedRepository $feedRepository) {}
 
     public function __invoke(): Response
     {

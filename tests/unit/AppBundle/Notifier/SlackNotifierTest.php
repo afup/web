@@ -52,8 +52,8 @@ final class SlackNotifierTest extends TestCase
                     (new Field())
                         ->setTitle("f1")
                         ->setValue("f2")
-                        ->setShort(true)
-                )
+                        ->setShort(true),
+                ),
         );
 
         $notifier->sendMessage($message);

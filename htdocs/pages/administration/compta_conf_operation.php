@@ -52,14 +52,14 @@ if ($action == 'lister') {
             $ok = $compta->ajouterConfig(
                                     'compta_operation',
                                     'operation',
-                                    $valeur['operation']
+                                    $valeur['operation'],
                                     );
         } else {
             $ok = $compta->modifierConfig(
                                     'compta_operation',
                                        $valeur['id'],
                                        'operation',
-                                       $valeur['operation']
+                                       $valeur['operation'],
                                      );
         }
 

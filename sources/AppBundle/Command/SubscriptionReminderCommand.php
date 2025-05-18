@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Command;
 
 use AppBundle\Association;
@@ -52,7 +51,7 @@ class SubscriptionReminderCommand extends Command
         $factory = new UserReminderFactory($mailer, $this->ting->get(SubscriptionReminderLogRepository::class));
         $companyFactory = new CompanyReminderFactory(
             $mailer,
-            $this->ting->get(SubscriptionReminderLogRepository::class)
+            $this->ting->get(SubscriptionReminderLogRepository::class),
         );
 
         /**

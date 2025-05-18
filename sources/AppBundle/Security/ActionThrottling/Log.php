@@ -9,12 +9,12 @@ use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 
 class Log implements NotifyPropertyInterface
 {
-    const ACTION_SPONSOR_TOKEN = 'sponsor_token';
-    const LIMITATIONS = [
+    use NotifyProperty;
+
+    public const ACTION_SPONSOR_TOKEN = 'sponsor_token';
+    public const LIMITATIONS = [
         self::ACTION_SPONSOR_TOKEN => ['delay' => 'PT1H', 'limit' => 10],
     ];
-
-    use NotifyProperty;
 
     /**
      * @var int

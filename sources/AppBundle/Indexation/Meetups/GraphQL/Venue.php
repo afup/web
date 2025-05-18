@@ -9,7 +9,5 @@ namespace AppBundle\Indexation\Meetups\GraphQL;
  */
 final class Venue
 {
-    public function __construct(public string $name)
-    {
-    }
+    public function __construct(public string $name) {}
 }

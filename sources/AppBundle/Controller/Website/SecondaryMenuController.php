@@ -12,9 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SecondaryMenuController extends AbstractController
 {
-    public function __construct(private readonly RequestStack $requestStack)
-    {
-    }
+    public function __construct(private readonly RequestStack $requestStack) {}
+
     public function display(Request $request): Response
     {
         $branche = new Branche();
@@ -24,7 +23,7 @@ class SecondaryMenuController extends AbstractController
             'site/secondary_menu.html.twig',
             [
                 'menu' => $this->prepareMenu($this->requestStack->getMainRequest(), $menu),
-            ]
+            ],
         );
     }
 

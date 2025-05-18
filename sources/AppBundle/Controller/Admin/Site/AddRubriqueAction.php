@@ -19,8 +19,7 @@ class AddRubriqueAction extends AbstractController
     public function __construct(
         private readonly RubriqueRepository $rubriqueRepository,
         private string $storageDir,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

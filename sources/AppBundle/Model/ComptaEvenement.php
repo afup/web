@@ -6,6 +6,6 @@ namespace AppBundle\Model;
 
 class ComptaEvenement
 {
-    const GESTION = 26;
-    const ASSOCIATION_AFUP = 27;
+    public const GESTION = 26;
+    public const ASSOCIATION_AFUP = 27;
 }

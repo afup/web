@@ -12,9 +12,7 @@ use AppBundle\SocialNetwork\Status;
 
 final readonly class StatusGenerator
 {
-    public function __construct(private SocialNetwork $socialNetwork)
-    {
-    }
+    public function __construct(private SocialNetwork $socialNetwork) {}
 
     /**
      * Cette fonction génère un statut pour un réseau social (Bluesky ou Mastodon par exemple) à partir d'un talk.
@@ -88,7 +86,7 @@ final readonly class StatusGenerator
     private function buildMentionsText(array $speakers): string
     {
         $mentions = array_map(
-            fn (Speaker $speaker): string => $this->socialNetwork->getSpeakerHandle($speaker) ?? $speaker->getLabel(),
+            fn(Speaker $speaker): string => $this->socialNetwork->getSpeakerHandle($speaker) ?? $speaker->getLabel(),
             $speakers,
         );
 

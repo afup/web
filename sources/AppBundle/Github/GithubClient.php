@@ -11,9 +11,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class GithubClient
 {
-    public function __construct(private readonly HttpClientInterface $httpClient)
-    {
-    }
+    public function __construct(private readonly HttpClientInterface $httpClient) {}
 
     /**
      * @param string $username
@@ -39,7 +37,7 @@ class GithubClient
 
         throw new UnableToGetGithubUserInfosException(
             $response->getStatusCode(),
-            $response->getContent()
+            $response->getContent(),
         );
     }
 }

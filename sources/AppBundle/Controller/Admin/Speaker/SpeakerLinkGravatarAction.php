@@ -16,8 +16,7 @@ class SpeakerLinkGravatarAction extends AbstractController
     public function __construct(
         private readonly SpeakerRepository $speakerRepository,
         private readonly PhotoStorage $photoStorage,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): RedirectResponse
     {

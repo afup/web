@@ -21,8 +21,7 @@ class SpecialPriceAction extends AbstractController implements AdminActionWithEv
         private readonly EventActionHelper $eventActionHelper,
         private readonly TicketSpecialPriceRepository $ticketSpecialPriceRepository,
         private readonly EventSelectFactory $eventSelectFactory,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

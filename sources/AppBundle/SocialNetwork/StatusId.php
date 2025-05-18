@@ -9,7 +9,5 @@ namespace AppBundle\SocialNetwork;
  */
 final class StatusId
 {
-    public function __construct(public string $value)
-    {
-    }
+    public function __construct(public string $value) {}
 }

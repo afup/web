@@ -16,8 +16,7 @@ class CompanyPublicProfileListController extends AbstractController
     public function __construct(
         private readonly ViewRenderer $view,
         private readonly RepositoryFactory $repositoryFactory,
-    ) {
-    }
+    ) {}
 
     public function index(): Response
     {

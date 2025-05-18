@@ -11,9 +11,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class UniqueEntityValidator extends ConstraintValidator
 {
-    public function __construct(private readonly RepositoryFactory $repositoryFactory)
-    {
-    }
+    public function __construct(private readonly RepositoryFactory $repositoryFactory) {}
 
     /**
      * @inheritDoc

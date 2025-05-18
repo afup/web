@@ -25,8 +25,7 @@ class SpeakerAddAction extends AbstractController
         private EventRepository $eventRepository,
         private SpeakerRepository $speakerRepository,
         private PhotoStorage $photoStorage,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

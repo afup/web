@@ -16,8 +16,7 @@ class PayboxBilling
         private $zipCode,
         private $city,
         private $countryCode,
-    ) {
-    }
+    ) {}
 
     /**
      * @return mixed
@@ -72,7 +71,7 @@ class PayboxBilling
         $country = $this->getCountryCode();
 
         try {
-            $data = (new ISO3166)->alpha2($country);
+            $data = (new ISO3166())->alpha2($country);
 
             return $data['numeric'];
         } catch (\Exception) {

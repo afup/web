@@ -17,8 +17,7 @@ class BadgesComputer
         private readonly EventRepository $eventRepository,
         private readonly UserBadgeRepository $userBadgeRepository,
         private readonly GeneralMeetingResponseRepository $generalMeetingResponseRepository,
-    ) {
-    }
+    ) {}
 
     public function getBadges(User $user): array
     {
@@ -155,7 +154,7 @@ class BadgesComputer
     {
         usort(
             $badgesInfos,
-            fn (array $a, array $b): int => $b['date'] <=> $a['date']
+            fn(array $a, array $b): int => $b['date'] <=> $a['date'],
         );
 
         return $badgesInfos;

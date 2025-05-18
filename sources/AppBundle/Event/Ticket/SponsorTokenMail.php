@@ -22,8 +22,7 @@ class SponsorTokenMail
         private readonly TranslatorInterface $translator,
         private readonly RouterInterface $router,
         private readonly EventRepository $eventRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * Send mail to a sponsor with a custom token to get tickets
@@ -55,16 +54,16 @@ class SponsorTokenMail
                 '%link%' => $this->router->generate(
                     'sponsor_ticket_home',
                     ['eventSlug' => $event->getPath()],
-                    UrlGeneratorInterface::ABSOLUTE_URL
+                    UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
                 '%endDate%' => $event->getDateEndSalesSponsorToken()->format('d/m/Y'),
-            ]
+            ],
         );
 
         return $this->mailer->sendTransactional(new Message(
             $this->translator->trans($subjectLabel, ['%event%' => $event->getTitle()]),
             MailUserFactory::afup(),
-            new MailUser($sponsorTicket->getContactEmail(), $sponsorTicket->getCompany())
+            new MailUser($sponsorTicket->getContactEmail(), $sponsorTicket->getCompany()),
         ), $text);
     }
 }

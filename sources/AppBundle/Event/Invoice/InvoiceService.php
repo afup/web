@@ -14,8 +14,7 @@ class InvoiceService
     public function __construct(
         private readonly InvoiceRepository $invoiceRepository,
         private readonly TicketRepository $ticketRepository,
-    ) {
-    }
+    ) {}
 
     public function handleInvoicing(
         $reference,

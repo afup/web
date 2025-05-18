@@ -16,8 +16,7 @@ class Forum2016SessionsAction
         private readonly AppelConferencier $appelConferencier,
         private readonly TranslatorInterface $translator,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

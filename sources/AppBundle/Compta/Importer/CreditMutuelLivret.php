@@ -8,7 +8,7 @@ use AppBundle\Model\ComptaCompte;
 
 class CreditMutuelLivret extends CreditMutuel
 {
-    const CODE = 'CMUTLIVRET';
+    public const CODE = 'CMUTLIVRET';
 
     public function getCompteId(): int
     {

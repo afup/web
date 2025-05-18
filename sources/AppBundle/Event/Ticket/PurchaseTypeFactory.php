@@ -21,8 +21,7 @@ class PurchaseTypeFactory
         private readonly FormFactoryInterface $formFactory,
         private readonly InvoiceFactory $invoiceFactory,
         private readonly SpeakerRepository $speakerRepository,
-    ) {
-    }
+    ) {}
 
     public function getPurchaseForUser(Event $event, User $user = null, $specialPriceToken = null)
     {
@@ -49,7 +48,7 @@ class PurchaseTypeFactory
             $ticket->setSpecialPriceToken($specialPriceToken);
             $invoice->addTicket(clone $ticket);
         } else {
-            for ($i=1; $i<=PurchaseType::MAX_NB_PERSONNES; $i++) {
+            for ($i = 1; $i <= PurchaseType::MAX_NB_PERSONNES; $i++) {
                 $invoice->addTicket(clone $ticket);
             }
         }
@@ -57,7 +56,7 @@ class PurchaseTypeFactory
         return $this->formFactory->create(
             PurchaseType::class,
             $invoice,
-            ['event_id' => $event->getId(), 'member_type' => $memberType, 'is_cfp_submitter' => $isCfpSubmitter, 'special_price_token' => $specialPriceToken]
+            ['event_id' => $event->getId(), 'member_type' => $memberType, 'is_cfp_submitter' => $isCfpSubmitter, 'special_price_token' => $specialPriceToken],
         );
     }
 }

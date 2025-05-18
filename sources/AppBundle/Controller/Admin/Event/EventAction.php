@@ -19,8 +19,7 @@ class EventAction extends AbstractController
     public function __construct(
         private readonly EventRepository $eventRepository,
         private readonly EventCouponRepository $couponRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request, $id): Response
     {

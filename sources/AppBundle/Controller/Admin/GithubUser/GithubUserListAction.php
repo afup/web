@@ -14,8 +14,7 @@ class GithubUserListAction
     public function __construct(
         private readonly GithubUserRepository $githubUserRepository,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

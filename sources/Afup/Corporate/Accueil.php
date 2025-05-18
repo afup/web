@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace Afup\Site\Corporate;
 
 class Accueil
@@ -15,9 +16,7 @@ class Accueil
         $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
     }
 
-    public function charger(): void
-    {
-    }
+    public function charger(): void {}
 
     public function afficher(): string
     {

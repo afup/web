@@ -12,6 +12,5 @@ final class Status
     public function __construct(
         public string $text,
         public ?Embed $embed = null,
-    ) {
-    }
+    ) {}
 }

@@ -90,10 +90,10 @@ if ($action == 'lister') {
     $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
         $formulaire->setDefaults(['date' => time(),
-                                       'position' => 0,
-                                       'id_personne_physique' => $droits->obtenirIdentifiant(),
-                                       'type_contenu' => Article::TYPE_CONTENU_MARKDOWN,
-                                       'etat' => 0]);
+            'position' => 0,
+            'id_personne_physique' => $droits->obtenirIdentifiant(),
+            'type_contenu' => Article::TYPE_CONTENU_MARKDOWN,
+            'etat' => 0]);
     } else {
         $champs = $article->charger();
         $formulaire->setDefaults($article->exportable());
@@ -108,7 +108,7 @@ if ($action == 'lister') {
 
     $formulaire->addElement('text'    , 'titre'                    , 'Titre'           , ['size' => 60, 'maxlength' => 255]);
     $formulaire->addElement('textarea', 'chapeau'                  , 'Chapeau'         , ['cols' => 42, 'rows'      => 10, 'class' => $abstractClass]);
-    $formulaire->addElement('textarea', 'contenu'                  , 'Contenu'         , ['cols' => 42, 'rows'      => 20, 'class'=> $abstractClass]);
+    $formulaire->addElement('textarea', 'contenu'                  , 'Contenu'         , ['cols' => 42, 'rows'      => 20, 'class' => $abstractClass]);
     $formulaire->addElement('hidden', 'type_contenu');
 
     $formulaire->addElement('header'  , ''                         , 'M&eacute;ta-donn&eacute;es');

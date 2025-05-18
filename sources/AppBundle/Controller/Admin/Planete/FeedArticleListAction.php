@@ -14,8 +14,7 @@ class FeedArticleListAction
     public function __construct(
         private readonly FeedArticleRepository $feedArticleRepository,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

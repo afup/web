@@ -18,15 +18,14 @@ final class VotesListeAction extends AbstractController implements AdminActionWi
         private readonly RepositoryFactory $repositoryFactory,
         private readonly EventActionHelper $eventActionHelper,
         private readonly EventSelectFactory $eventSelectFactory,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {
         $eventId = $request->query->get('id');
         $event = $this->eventActionHelper->getEventById($eventId);
 
-        $votes = $event === null ? []:$this->repositoryFactory->get(VoteRepository::class)->getVotesByEvent($event->getId());
+        $votes = $event === null ? [] : $this->repositoryFactory->get(VoteRepository::class)->getVotesByEvent($event->getId());
 
         return $this->render('admin/vote/liste.html.twig', [
             'votes' => $votes,

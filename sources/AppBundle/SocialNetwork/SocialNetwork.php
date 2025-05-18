@@ -6,6 +6,7 @@ namespace AppBundle\SocialNetwork;
 
 use AppBundle\Event\Model\Speaker;
 use AppBundle\VideoNotifier\HistoryEntry;
+
 use function Symfony\Component\String\u;
 
 enum SocialNetwork: string

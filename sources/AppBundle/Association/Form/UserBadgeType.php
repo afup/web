@@ -19,8 +19,7 @@ class UserBadgeType extends AbstractType
     public function __construct(
         private readonly BadgeRepository $badgeRepository,
         private readonly UserBadgeRepository $userBadgeRepository,
-    ) {
-    }
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -45,28 +44,28 @@ class UserBadgeType extends AbstractType
                 [
                     'label' => 'Badge',
                     'choices' => $badges,
-                ]
+                ],
             )
             ->add(
                 'date',
                 DateType::class,
                 [
                     'label' => 'Date',
-                ]
+                ],
             )
             ->add(
                 'user',
                 HiddenType::class,
                 [
                     'data' => $options['user']->getId(),
-                ]
+                ],
             )
             ->add(
                 'save',
                 SubmitType::class,
                 [
                     'label' => 'Créer',
-                ]
+                ],
             );
     }
 

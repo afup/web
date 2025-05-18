@@ -24,8 +24,7 @@ class HomeAction extends AbstractController
         private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
         private readonly GeneralMeetingRepository $generalMeetingRepository,
         private readonly StatisticsComputer $statisticsComputer,
-    ) {
-    }
+    ) {}
 
     public function __invoke(): Response
     {

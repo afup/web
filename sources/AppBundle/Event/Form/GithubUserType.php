@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\GithubUser;
@@ -48,7 +47,7 @@ class GithubUserType extends AbstractType
                 /**
                  * @param $githubUser null|GithubUser
                  */
-                fn ($githubUser) => $githubUser === null ? null : $githubUser->getLogin(),
+                fn($githubUser) => $githubUser === null ? null : $githubUser->getLogin(),
                 /**
                  * @param $githubUsername string
                  */
@@ -62,7 +61,7 @@ class GithubUserType extends AbstractType
                     } catch (UnableToFindGithubUserException|UnableToGetGithubUserInfosException $e) {
                         throw new TransformationFailedException($e->getMessage());
                     }
-                }
+                },
             ));
     }
 

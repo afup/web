@@ -17,8 +17,7 @@ class AvailableTicketValidator extends ConstraintValidator
     public function __construct(
         private readonly TicketTypeAvailability $ticketTypeAvailability,
         private readonly EventRepository $eventRepository,
-    ) {
-    }
+    ) {}
 
     public function validate($ticket, Constraint $constraint): void
     {

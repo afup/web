@@ -23,8 +23,7 @@ class SponsorTicketAction extends AbstractController implements AdminActionWithE
         private readonly SponsorTicketRepository $sponsorTicketRepository,
         private readonly SponsorTokenMail $sponsorTokenMail,
         private readonly EventSelectFactory $eventSelectFactory,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

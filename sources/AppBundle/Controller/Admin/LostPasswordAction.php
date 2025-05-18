@@ -17,8 +17,7 @@ class LostPasswordAction extends AbstractController
     public function __construct(
         private readonly UserService $userPasswordService,
         private readonly ViewRenderer $view,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

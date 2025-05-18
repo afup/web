@@ -19,8 +19,7 @@ class SpeakersExpensesAction extends AbstractController implements AdminActionWi
         private readonly SpeakerRepository $speakerRepository,
         private readonly SpeakersExpensesStorage $speakersExpensesStorage,
         private readonly EventSelectFactory $eventSelectFactory,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

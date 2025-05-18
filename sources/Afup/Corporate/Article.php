@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace Afup\Site\Corporate;
 
 use Afup\Site\Utils\Base_De_Donnees;
@@ -24,14 +25,14 @@ class Article
     public $theme;
     public $id_forum;
 
-    const THEME_ID_CYCLE_CONFERENCE = 1;
-    const THEME_ID_ANTENNES = 2;
-    const THEME_ID_ASSOCIATIF = 3;
-    const THEME_ID_BAROMETRE = 4;
-    const THEME_ID_AFUP_SOUTIEN = 5;
+    public const THEME_ID_CYCLE_CONFERENCE = 1;
+    public const THEME_ID_ANTENNES = 2;
+    public const THEME_ID_ASSOCIATIF = 3;
+    public const THEME_ID_BAROMETRE = 4;
+    public const THEME_ID_AFUP_SOUTIEN = 5;
 
-    const TYPE_CONTENU_HTML = 'html';
-    const TYPE_CONTENU_MARKDOWN = 'markdown';
+    public const TYPE_CONTENU_HTML = 'html';
+    public const TYPE_CONTENU_MARKDOWN = 'markdown';
 
     public static function getThemesLabels(): array
     {

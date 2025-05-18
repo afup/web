@@ -23,14 +23,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class TalksController extends AbstractController
 {
     public function __construct(
-        private readonly ViewRenderer      $view,
+        private readonly ViewRenderer $view,
         private readonly RepositoryFactory $repositoryFactory,
-        private readonly JoindinComments   $joindinComments,
-        private readonly JoindinTalk       $joindinTalk,
-        private readonly string            $algoliaAppId,
-        private readonly string            $algoliaFrontendApikey,
-    ) {
-    }
+        private readonly JoindinComments $joindinComments,
+        private readonly JoindinTalk $joindinTalk,
+        private readonly string $algoliaAppId,
+        private readonly string $algoliaFrontendApikey,
+    ) {}
 
     public function list(Request $request): Response
     {

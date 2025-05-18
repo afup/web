@@ -91,19 +91,19 @@ class Feuilles extends AbstractSeed
             ],
             [
                 'id' => Feuille::ID_FEUILLE_ANTENNES,
-                'id_parent' =>null,
+                'id_parent' => null,
                 'nom' => 'Second Menu Antennes',
                 'lien' => '/',
                 'etat' => 1,
             ],
             [
-                'id_parent' =>Feuille::ID_FEUILLE_ANTENNES,
+                'id_parent' => Feuille::ID_FEUILLE_ANTENNES,
                 'nom' => 'Meetups',
                 'lien' => '/meetups/',
                 'etat' => 1,
             ],
             [
-                'id_parent' =>Feuille::ID_FEUILLE_ANTENNES,
+                'id_parent' => Feuille::ID_FEUILLE_ANTENNES,
                 'nom' => 'Liste des antennes',
                 'lien' => '/association/antennes',
                 'etat' => 1,

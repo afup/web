@@ -19,13 +19,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class RubriqueType extends AbstractType
 {
-    const POSITIONS_RUBRIQUES = 9;
+    public const POSITIONS_RUBRIQUES = 9;
 
     public function __construct(
         private readonly RubriqueRepository $rubriqueRepository,
         private readonly UserRepository $userRepository,
-    ) {
-    }
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -127,7 +126,7 @@ class RubriqueType extends AbstractType
             ->add('date', DateType::class, [
                 'required' => false,
                 'label' => 'Date',
-                'input'=>'datetime',
+                'input' => 'datetime',
                 'years' => range(2001, date('Y')),
                 'attr' => [
                     'style' => 'display: flex;',

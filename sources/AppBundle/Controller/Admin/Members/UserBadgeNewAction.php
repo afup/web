@@ -18,8 +18,7 @@ class UserBadgeNewAction
         private readonly UserRepository $userRepository,
         private readonly FormFactoryInterface $formFactory,
         private readonly UserBadgeRepository $userBadgeRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): RedirectResponse
     {

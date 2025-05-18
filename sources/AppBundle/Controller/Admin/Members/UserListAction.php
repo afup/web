@@ -16,8 +16,7 @@ class UserListAction
         private readonly UserRepository $userRepository,
         private readonly AntennesCollection $antennesCollection,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {
@@ -38,7 +37,7 @@ class UserListAction
                 null,
                 $onlyDisplayActive,
                 null,
-                $needsUpToDateMembership
+                $needsUpToDateMembership,
             ),
             'needsUpToDateMembership' => $needsUpToDateMembership,
             'onlyDisplayActive' => $onlyDisplayActive,

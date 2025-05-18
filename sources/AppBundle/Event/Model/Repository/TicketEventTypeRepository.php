@@ -16,9 +16,9 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class TicketEventTypeRepository extends Repository implements MetadataInitializer
 {
-    const REMOVE_PAST_TICKETS = 1;
-    const REMOVE_FUTURE_TICKETS = 2;
-    const ACTUAL_TICKETS_ONLY = 3; // Combination of REMOVE_PAST_TICKETS and REMOVE_FUTURE_TICKETS
+    public const REMOVE_PAST_TICKETS = 1;
+    public const REMOVE_FUTURE_TICKETS = 2;
+    public const ACTUAL_TICKETS_ONLY = 3; // Combination of REMOVE_PAST_TICKETS and REMOVE_FUTURE_TICKETS
     /**
      * @param bool $publicOnly
      * @param null|int $datesFilter can be one of self::REMOVE_PAST_TICKETS, self::REMOVE_FUTURE_TICKETS. self::ACTUAL_TICKETS == self::REMOVE_PAST_TICKETS | self::REMOVE_FUTURE_TICKETS. Default value is ACTUAL_TICKETS
@@ -49,15 +49,15 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
             $sql .= 'AND public = :public';
             $params['public'] = $publicOnly;
         }
-        $sql .='
+        $sql .= '
             ORDER BY date_start, date_end, price, tarif.members_only DESC
         ';
         $query = $this->getPreparedQuery($sql)->setParams($params);
 
         return $query->query(
             $this->getCollection(
-                (new HydratorSingleObject())->mapObjectTo('tarif', 'tarif_event', 'setTicketType')
-            )
+                (new HydratorSingleObject())->mapObjectTo('tarif', 'tarif_event', 'setTicketType'),
+            ),
         );
     }
 

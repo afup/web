@@ -6,10 +6,10 @@ namespace AppBundle\Model;
 
 class ComptaModeReglement
 {
-    const CB = 2;
-    const VIREMENT = 3;
-    const CHEQUE = 4;
-    const PRELEVEMENT = 5;
+    public const CB = 2;
+    public const VIREMENT = 3;
+    public const CHEQUE = 4;
+    public const PRELEVEMENT = 5;
 
     public static function list(): array
     {

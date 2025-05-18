@@ -17,8 +17,7 @@ class Attachment
         private $name,
         private $encoding,
         private $type,
-    ) {
-    }
+    ) {}
 
     /**
      * @return string

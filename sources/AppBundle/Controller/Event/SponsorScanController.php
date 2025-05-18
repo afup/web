@@ -24,8 +24,8 @@ class SponsorScanController extends AbstractController
     public function __construct(
         private readonly RepositoryFactory $repositoryFactory,
         private readonly EventActionHelper $eventActionHelper,
-    ) {
-    }
+    ) {}
+
     public function index(Request $request, $eventSlug)
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);

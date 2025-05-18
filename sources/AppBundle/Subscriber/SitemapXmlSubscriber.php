@@ -31,8 +31,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly RepositoryFactory $ting,
-    ) {
-    }
+    ) {}
 
     public static function getSubscribedEvents(): array
     {
@@ -65,9 +64,9 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                 $this->urlGenerator->generate(
                     'talks_show',
                     ['id' => $talk->getId(), 'slug' => $talk->getSlug()],
-                    UrlGeneratorInterface::ABSOLUTE_URL
+                    UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
-                $talk->getSubmittedOn()
+                $talk->getSubmittedOn(),
             );
             $urls->addUrl($url,'talks');
 
@@ -76,7 +75,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                     sprintf('https://img.youtube.com/vi/%s/0.jpg', $talk->getYoutubeId()),
                     $talk->getTitle(),
                     strip_tags(html_entity_decode((string) $talk->getDescription())),
-                    ['player_location' => $talk->getYoutubeUrl()]
+                    ['player_location' => $talk->getYoutubeUrl()],
                 );
                 $decoratedUrl = new GoogleVideoUrlDecorator($url);
                 $decoratedUrl->addVideo($video);
@@ -94,7 +93,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                 $this->urlGenerator->generate(
                     'talks_list',
                     ['fR' => ['speakers.label' => [$speaker->getLabel()]]],
-                    UrlGeneratorInterface::ABSOLUTE_URL
+                    UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
             );
             $urls->addUrl($url,'talks');
@@ -110,11 +109,11 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                 $this->urlGenerator->generate(
                     'talks_list',
                     ['fR' => ['event.title' => [$event->getTitle()]]],
-                    UrlGeneratorInterface::ABSOLUTE_URL
+                    UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
                 $event->getDateEnd(),
                 UrlConcrete::CHANGEFREQ_DAILY,
-                1
+                1,
             );
             $urls->addUrl($url,'talks');
         }
@@ -133,13 +132,13 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                     $this->urlGenerator->generate(
                         'news_display',
                         ['code' => $article->getSlug(),],
-                        UrlGeneratorInterface::ABSOLUTE_URL
+                        UrlGeneratorInterface::ABSOLUTE_URL,
                     ),
                     $article->getPublishedAt(),
                     UrlConcrete::CHANGEFREQ_DAILY,
-                    1
+                    1,
                 ),
-                'news'
+                'news',
             );
         }
 
@@ -153,10 +152,10 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                     $this->urlGenerator->generate(
                         'news_list',
                         ['page' => $page],
-                        UrlGeneratorInterface::ABSOLUTE_URL
-                    )
+                        UrlGeneratorInterface::ABSOLUTE_URL,
+                    ),
                 ),
-                'news'
+                'news',
             );
         }
     }
@@ -175,10 +174,10 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                             'id' => $member->getId(),
                             'slug' => $member->getSlug(),
                         ],
-                        UrlGeneratorInterface::ABSOLUTE_URL
-                    )
+                        UrlGeneratorInterface::ABSOLUTE_URL,
+                    ),
                 ),
-                'members'
+                'members',
             );
         }
     }
@@ -204,7 +203,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
 
             $urls->addUrl(
                 new UrlConcrete($leaf['lien']),
-                'default'
+                'default',
             );
         }
     }

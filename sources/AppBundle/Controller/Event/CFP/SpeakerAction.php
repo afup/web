@@ -26,8 +26,7 @@ class SpeakerAction extends AbstractController
         private readonly TranslatorInterface $translator,
         private readonly PhotoStorage $photoStorage,
         private readonly SidebarRenderer $sidebarRenderer,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

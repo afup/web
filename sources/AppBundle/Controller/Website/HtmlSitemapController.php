@@ -20,8 +20,7 @@ class HtmlSitemapController extends AbstractController
     public function __construct(
         private readonly ViewRenderer $view,
         private readonly RepositoryFactory $repositoryFactory,
-    ) {
-    }
+    ) {}
 
     public function display(): Response
     {
@@ -108,7 +107,7 @@ class HtmlSitemapController extends AbstractController
         foreach ($talkList as $talk) {
             $url = $this->generateUrl(
                 'talks_show',
-                ['id' => $talk->getId(), 'slug' => $talk->getSlug()]
+                ['id' => $talk->getId(), 'slug' => $talk->getSlug()],
             );
 
             $talks[] = [

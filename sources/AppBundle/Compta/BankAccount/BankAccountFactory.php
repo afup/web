@@ -19,7 +19,7 @@ class BankAccountFactory
                 '70',
                 "CCM PARIS MAGENTA GARE DE L'EST",
                 'CMCIFR2A',
-                'FR76 1027 8060 7600 0207 0770 170'
+                'FR76 1027 8060 7600 0207 0770 170',
             );
         }
 
@@ -30,7 +30,7 @@ class BankAccountFactory
             '70',
             'CE ILE DE FRANCE PARIS',
             'CEPAFRPP751',
-            'FR76 1751 5900 0004 0451 6866 770'
+            'FR76 1751 5900 0004 0451 6866 770',
         );
     }
 }

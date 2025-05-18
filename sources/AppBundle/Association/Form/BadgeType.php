@@ -22,7 +22,7 @@ class BadgeType extends AbstractType
                 TextType::class,
                 [
                     'label' => 'Nom',
-                ]
+                ],
             )
             ->add(
                 'image',
@@ -40,18 +40,16 @@ class BadgeType extends AbstractType
                             ],
                         ]),
                     ],
-                ]
+                ],
             )
             ->add(
                 'save',
                 SubmitType::class,
                 [
                     'label' => 'Créer',
-                ]
+                ],
             );
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-    }
+    public function configureOptions(OptionsResolver $resolver): void {}
 }

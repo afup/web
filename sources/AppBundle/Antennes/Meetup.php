@@ -9,6 +9,5 @@ final readonly class Meetup
     public function __construct(
         public string $urlName,
         public string $id,
-    ) {
-    }
+    ) {}
 }

@@ -34,8 +34,7 @@ class Attendee
         private $powerId,
         private $powerLastname,
         private $powerFirstname,
-    ) {
-    }
+    ) {}
 
     public function getId()
     {

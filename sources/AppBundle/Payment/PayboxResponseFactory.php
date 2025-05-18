@@ -26,7 +26,7 @@ class PayboxResponseFactory
             $query->get('status'),
             $query->get('total'),
             $query->get('autorisation'),
-            $query->get('transaction')
+            $query->get('transaction'),
         );
     }
 }

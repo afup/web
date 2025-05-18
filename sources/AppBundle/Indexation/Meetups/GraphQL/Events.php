@@ -12,7 +12,5 @@ final class Events
     /**
      * @param list<Edge> $edges
      */
-    public function __construct(public array $edges)
-    {
-    }
+    public function __construct(public array $edges) {}
 }

@@ -50,14 +50,14 @@ if ($action == 'lister') {
             $ok = $compta->ajouterConfig(
                                     'compta_reglement',
                                     'reglement',
-                                    $valeur['reglement']
+                                    $valeur['reglement'],
                                     );
         } else {
             $ok = $compta->modifierConfig(
                                     'compta_reglement',
                                        $valeur['id'],
                                        'reglement',
-                                       $valeur['reglement']
+                                       $valeur['reglement'],
                                      );
         }
 

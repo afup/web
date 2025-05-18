@@ -6,6 +6,7 @@ declare(strict_types=1);
 // revoir sous totaux balance
 // test champ obligatoire lors de la saisie
 // ajout filtre par mois pour les journaux banques
+
 namespace Afup\Site\Comptabilite;
 
 use Afup\Site\Forum\Forum;
@@ -15,7 +16,7 @@ use AppBundle\Compta\Importer\Importer;
 
 class Comptabilite
 {
-    const TVA_ZONES = [
+    public const TVA_ZONES = [
         'france' => 'France',
         'ue' => 'Union Européenne hors France',
         'hors_ue' => 'Hors Union Européenne',
@@ -23,9 +24,7 @@ class Comptabilite
 
     public $lastId;
 
-    public function __construct(protected Base_De_Donnees $_bdd)
-    {
-    }
+    public function __construct(protected Base_De_Donnees $_bdd) {}
 
 
     /* affiche le journal de :
@@ -725,7 +724,7 @@ SQL;
                     $operationQualified['montant_ht_soumis_tva_0'],
                     $operationQualified['montant_ht_soumis_tva_5_5'],
                     $operationQualified['montant_ht_soumis_tva_10'],
-                    $operationQualified['montant_ht_soumis_tva_20']
+                    $operationQualified['montant_ht_soumis_tva_20'],
                 );
             } else {
                 $modifier = false;
@@ -753,7 +752,7 @@ SQL;
                         $enregistrement['obs_regl'],
                         $enregistrement['idevenement'],
                         $enregistrement['numero_operation'],
-                        $operationQualified['attachmentRequired']
+                        $operationQualified['attachmentRequired'],
                     );
                 }
             }

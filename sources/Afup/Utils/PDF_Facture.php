@@ -123,7 +123,7 @@ class PDF_Facture extends PDF
             AFUP_CODE_POSTAL,
             AFUP_VILLE,
             AFUP_EMAIL,
-            'https://afup.org'
+            'https://afup.org',
         );
 
         $this->SetY(-30);

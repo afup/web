@@ -43,7 +43,7 @@ class UpdateMailchimpMembersCommand extends Command
         $runner = new Runner(
             $mailchimp,
             $userRepository,
-            $this->mailchimpMembersList
+            $this->mailchimpMembersList,
         );
 
         $errors = $input->getOption('init') === true ? $runner->initList() : $runner->updateList();

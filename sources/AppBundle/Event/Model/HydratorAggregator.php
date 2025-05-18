@@ -92,7 +92,7 @@ class HydratorAggregator extends Hydrator
             $result = $this->hydrateColumns(
                 $this->result->getConnectionName(),
                 $this->result->getDatabase(),
-                $columns
+                $columns,
             );
 
             $currentId = $callableForId($result);
