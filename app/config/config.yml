@@ -57,23 +57,6 @@ parameters:
                     extra_routes:
                         - admin_members_badges_index
                         - admin_members_badges_new
-                assemblee_generale:
-                    nom: 'Assemblée générale'
-                    niveau: 'ROLE_ADMIN'
-                    url: '/admin/members/general_meeting'
-                    extra_routes:
-                        - admin_members_general_meeting
-                        - admin_members_general_meeting_prepare
-                        - admin_members_general_meeting_edit
-                        - admin_members_general_meeting_reports
-                assemblee_generale_votes:
-                    nom: 'Assemblée générale - votes'
-                    niveau: 'ROLE_ADMIN'
-                    url: '/admin/members/general_meeting_vote'
-                    extra_routes:
-                        - admin_members_general_vote_list
-                        - admin_members_general_question_add
-                        - admin_members_general_question_edit
         veille:
             nom: "Veille"
             niveau: "ROLE_VEILLE"
@@ -117,23 +100,13 @@ parameters:
                 site_articles:
                     nom: 'Articles'
                     niveau: 'ROLE_SITE'
-        antenne:
-            nom: 'Antennes AFUP'
-            niveau: 'ROLE_ANTENNE'
-            elements:
-                rendez_vous:
-                    nom: 'Rendez-vous'
-                    niveau: 'ROLE_ANTENNE'
-                antenne:
-                    nom: 'Liste des antennes'
-                    niveau: 'ROLE_ANTENNE'
         forum:
             nom: 'Évènements'
             niveau: 'ROLE_FORUM'
             icon: "globe"
             elements:
                 forum_gestion:
-                    nom: 'Gestion évènements'
+                    nom: 'Liste'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/event/list'
                     extra_routes:
@@ -251,6 +224,28 @@ parameters:
                 compta_recherche:
                     nom: 'Recherche comptable'
                     niveau: 'ROLE_ADMIN'
+        assemblee_generale:
+            nom: 'Assemblée générale'
+            niveau: 'ROLE_ADMIN'
+            icon: 'comments'
+            elements:
+                assemblee_generale_infos:
+                    nom: 'Informations'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/general_meeting'
+                    extra_routes:
+                        - admin_members_general_meeting
+                        - admin_members_general_meeting_prepare
+                        - admin_members_general_meeting_edit
+                        - admin_members_general_meeting_reports
+                assemblee_generale_votes:
+                    nom: 'Votes'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/members/general_meeting_vote'
+                    extra_routes:
+                        - admin_members_general_vote_list
+                        - admin_members_general_question_add
+                        - admin_members_general_question_edit
         planete:
             nom: 'Planète PHP FR'
             niveau: 'ROLE_ADMIN'

@@ -8,7 +8,7 @@ Feature: Administration - Partie Assemblée Générale CR
   @reloadDbWithTestData
   Scenario: Accède à la liste des CR
     Given I am logged in as admin and on the Administration
-    And I follow "Assemblée générale"
+    And I follow "afup-main-menu-item--assemblee_generale_infos"
     Then the ".content h2" element should contain "Assemblée générale"
     When I follow "Liste des comptes rendus"
 
@@ -25,5 +25,3 @@ Feature: Administration - Partie Assemblée Générale CR
     # Suppression
     And I follow the button of tooltip "Supprimer le CR test_file1"
     Then the ".content .message" element should contain "Le compte rendu a correctement été supprimé."
-
-
