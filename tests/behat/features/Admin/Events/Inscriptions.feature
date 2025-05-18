@@ -30,7 +30,7 @@ Feature: Administration - Évènements - Inscriptions
   Scenario: Export CSV: Badges
     Given I am logged in as admin and on the Administration
     # Création d'un évènement
-    And I follow "Gestion évènements"
+    And I follow "afup-main-menu-item--forum_gestion"
     Then the ".content h2" element should contain "Liste des évènements"
     When I follow "Ajouter"
     Then I fill in "event[title]" with "AFUP export badges"
@@ -50,7 +50,7 @@ Feature: Administration - Évènements - Inscriptions
   Scenario: Export CSV: Inscrits aux 4 derniers évènements
     Given I am logged in as admin and on the Administration
     # Création d'un évènement
-    And I follow "Gestion évènements"
+    And I follow "afup-main-menu-item--forum_gestion"
     Then the ".content h2" element should contain "Liste des évènements"
     When I follow "Ajouter"
     Then I fill in "event[title]" with "AFUP export derniers"

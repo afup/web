@@ -11,7 +11,7 @@ Feature: Administration - Évènements - Gestions Évènements
   @clearAllSponsorFiles
   Scenario: On crée un nouvel évènement vide
     Given I am logged in as admin and on the Administration
-    And I follow "Gestion évènements"
+    And I follow "afup-main-menu-item--forum_gestion"
     Then the ".content h2" element should contain "Liste des évènements"
     When I follow "Ajouter"
     Then I should see "Ajouter un évènement"
@@ -22,7 +22,7 @@ Feature: Administration - Évènements - Gestions Évènements
 
   Scenario: On affiche un évènement
     Given I am logged in as admin and on the Administration
-    And I follow "Gestion évènements"
+    And I follow "afup-main-menu-item--forum_gestion"
     Then the ".content h2" element should contain "Liste des évènements"
     And I follow the button of tooltip "Modifier le forum forum"
     Then the "event[title]" field should contain "forum"
@@ -39,7 +39,7 @@ Feature: Administration - Évènements - Gestions Évènements
 
   Scenario: On crée un nouvel évènement
     Given I am logged in as admin and on the Administration
-    And I follow "Gestion évènements"
+    And I follow "afup-main-menu-item--forum_gestion"
     Then the ".content h2" element should contain "Liste des évènements"
     When I follow "Ajouter"
 
@@ -81,7 +81,7 @@ Feature: Administration - Évènements - Gestions Évènements
 
   Scenario: Suppression d'un évènement vide
     Given I am logged in as admin and on the Administration
-    And I follow "Gestion évènements"
+    And I follow "afup-main-menu-item--forum_gestion"
     Then the ".content h2" element should contain "Liste des évènements"
     When I follow "Ajouter"
     Then I fill in "event[title]" with "SUPP"
@@ -92,7 +92,7 @@ Feature: Administration - Évènements - Gestions Évènements
     And I fill in "event[dateEnd]" with "1970-01-01"
     And I press "Soumettre"
     Then I should see "Évènement ajouté"
-    And I follow "Gestion évènements"
+    And I follow "afup-main-menu-item--forum_gestion"
     And I should see "Liste des évènements"
     When I follow the button of tooltip "Supprimer le forum SUPP"
     And I should see "Événement supprimé"

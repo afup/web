@@ -8,13 +8,13 @@ Feature: Administration - Partie Assemblée Générale Questions
   @reloadDbWithTestData
   Scenario: Accès à la liste des questions
     Given I am logged in as admin and on the Administration
-    And I follow "Assemblée générale - votes"
+    And I follow "afup-main-menu-item--assemblee_generale_votes"
     Then the ".content h2" element should contain "Assemblée générale - votes"
     And I should see "Vote Oui Non Abstention Actions"
 
   Scenario: Ajouter une question
     Given I am logged in as admin and on the Administration
-    And I follow "Assemblée générale - votes"
+    And I follow "afup-main-menu-item--assemblee_generale_votes"
     When I follow "Ajouter"
     Then the ".content h2" element should contain "Assemblée générale - questions"
     And I fill in "general_meeting_question_form[label]" with "Une super question"
@@ -23,7 +23,7 @@ Feature: Administration - Partie Assemblée Générale Questions
 
   Scenario: Modifier une question
     Given I am logged in as admin and on the Administration
-    And I follow "Assemblée générale - votes"
+    And I follow "afup-main-menu-item--assemblee_generale_votes"
     When I follow "question-1-edit"
     Then the ".content h2" element should contain "Modifier la question"
     And I fill in "general_meeting_question_form[label]" with "Une super question modifié"
@@ -33,7 +33,7 @@ Feature: Administration - Partie Assemblée Générale Questions
 
   Scenario: Supprimer une question
     Given I am logged in as admin and on the Administration
-    And I follow "Assemblée générale - votes"
+    And I follow "afup-main-menu-item--assemblee_generale_votes"
     When I follow "question-1-delete"
     Then the ".content h2" element should contain "Assemblée générale - votes"
     Then I should see "La question a été supprimée"

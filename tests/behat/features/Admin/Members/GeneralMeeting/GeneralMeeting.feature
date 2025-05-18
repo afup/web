@@ -13,7 +13,7 @@ Feature: Administration - Partie Assemblée Générale
   @reloadDbWithTestData
   Scenario: Créer une assemblée générale
     Given I am logged in as admin and on the Administration
-    And I follow "Assemblée générale"
+    And I follow "afup-main-menu-item--assemblee_generale_infos"
     Then the ".content h2" element should contain "Assemblée générale"
     When I follow "Préparer une assemblée générale"
     Then I should see "Préparer une assemblée générale"
@@ -27,7 +27,7 @@ Feature: Administration - Partie Assemblée Générale
 
   Scenario: Modifier une assemblée générale
     Given I am logged in as admin and on the Administration
-    And I follow "Assemblée générale"
+    And I follow "afup-main-menu-item--assemblee_generale_infos"
     Then the ".content h2" element should contain "Assemblée générale"
     When I follow "Modifier la description"
     Then I should see "Modifier l'assemblée générale"
