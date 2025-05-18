@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Security;
 
 use AppBundle\Event\Model\GithubUser;
@@ -28,8 +27,7 @@ class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationE
         private readonly ClientRegistry $clientRegistry,
         private readonly GithubUserRepository $githubUserRepository,
         private readonly RouterInterface $router,
-    ) {
-    }
+    ) {}
 
     public function authenticate(Request $request): SelfValidatingPassport
     {
@@ -55,7 +53,7 @@ class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationE
                 $this->githubUserRepository->save($user);
 
                 return $user;
-            })
+            }),
         );
     }
 

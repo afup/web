@@ -23,8 +23,7 @@ class UserAddAction extends AbstractController
         private UserRepository $userRepository,
         private UserService $userService,
         private UserPasswordHasherInterface $passwordHasher,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

@@ -14,9 +14,7 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class HealthcheckController extends AbstractController
 {
-    public function __construct(private readonly RepositoryFactory $ting)
-    {
-    }
+    public function __construct(private readonly RepositoryFactory $ting) {}
 
     public function __invoke(): Response
     {

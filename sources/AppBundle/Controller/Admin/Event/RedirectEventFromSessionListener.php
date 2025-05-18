@@ -14,8 +14,7 @@ final readonly class RedirectEventFromSessionListener
 {
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ControllerEvent $event): void
     {
@@ -45,11 +44,11 @@ final readonly class RedirectEventFromSessionListener
                 $request->attributes->get('_route'),
                 array_merge(
                     $request->attributes->get('_route_params'),
-                    ['id' => $request->getSession()->get(AdminActionWithEventSelector::SESSION_KEY)]
+                    ['id' => $request->getSession()->get(AdminActionWithEventSelector::SESSION_KEY)],
                 ),
             );
 
-            $event->setController(fn (): RedirectResponse => new RedirectResponse($url));
+            $event->setController(fn(): RedirectResponse => new RedirectResponse($url));
         }
     }
 }

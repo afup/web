@@ -16,8 +16,7 @@ class EventActionHelper
     public function __construct(
         protected EventRepository $eventRepository,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
-    }
+    ) {}
 
     /**
      * @param string $eventSlug

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Event\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;

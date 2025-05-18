@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Controller;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
@@ -11,9 +10,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class GithubController extends AbstractController
 {
-    public function __construct(private readonly ClientRegistry $clientRegistry)
-    {
-    }
+    public function __construct(private readonly ClientRegistry $clientRegistry) {}
+
     /**
      * Link to this controller to start the "connect" process
      */

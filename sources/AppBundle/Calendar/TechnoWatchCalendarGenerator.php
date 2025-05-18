@@ -11,8 +11,7 @@ class TechnoWatchCalendarGenerator
     public function __construct(
         private readonly string $name,
         private readonly \DateTime $currentDate,
-    ) {
-    }
+    ) {}
 
     /**
      * @param string $googleSpreadsheetCsvUrl

@@ -11,39 +11,39 @@ class ComptaReglement extends AbstractSeed
         $data = [
             [
                 'id' => 1,
-                'reglement'=>'Espece',
+                'reglement' => 'Espece',
             ],
             [
                 'id' => 2,
-                'reglement'=>'Carte Bleue',
+                'reglement' => 'Carte Bleue',
             ],
             [
                 'id' => 3,
-                'reglement'=>'Virement',
+                'reglement' => 'Virement',
             ],
             [
                 'id' => 4,
-                'reglement'=>'Cheque',
+                'reglement' => 'Cheque',
             ],
             [
                 'id' => 5,
-                'reglement'=>'Prelevement',
+                'reglement' => 'Prelevement',
             ],
             [
                 'id' => 6,
-                'reglement'=>'Solde banque',
+                'reglement' => 'Solde banque',
             ],
             [
                 'id' => 7,
-                'reglement'=>'Provision',
+                'reglement' => 'Provision',
             ],
             [
                 'id' => 8,
-                'reglement'=>'paypal',
+                'reglement' => 'paypal',
             ],
             [
                 'id' => 9,
-                'reglement'=>'A déterminer',
+                'reglement' => 'A déterminer',
             ],
         ];
 

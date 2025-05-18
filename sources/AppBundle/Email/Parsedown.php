@@ -26,7 +26,7 @@ class Parsedown extends \Parsedown
             $level = 1;
 
             while (isset($Line['text'][$level]) && $Line['text'][$level] === '#') {
-                $level ++;
+                $level++;
             }
 
             if ($level > 6) {

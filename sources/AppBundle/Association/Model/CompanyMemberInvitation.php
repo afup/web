@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Association\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -13,9 +12,9 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    const STATUS_PENDING = 0;
-    const STATUS_ACCEPTED = 1;
-    const STATUS_CANCELLED = 2;
+    public const STATUS_PENDING = 0;
+    public const STATUS_ACCEPTED = 1;
+    public const STATUS_CANCELLED = 2;
 
     /**
      * @var int

@@ -22,8 +22,7 @@ class JsonLd
         private readonly TicketTypeAvailability $ticketTypeAvailability,
         private readonly Packages $packages,
         private readonly PhotoStorage $photoStorage,
-    ) {
-    }
+    ) {}
 
     public function getDataForEvent(Event $event): array
     {
@@ -102,7 +101,7 @@ class JsonLd
             "@type" => "BusinessEvent",
             "name" => $event->getTitle(),
             'description' => $this->getDescription($event),
-            "url"=> "https://event.afup.org",
+            "url" => "https://event.afup.org",
             'location' => [
                 "@type" => "Place",
                 "name" => $event->getPlaceName(),
@@ -131,7 +130,7 @@ class JsonLd
                 $event->getTitle(),
                 $event->getDateStart()->format('d'),
                 $event->getDateEnd()->format('M'),
-                $event->getPlaceName()
+                $event->getPlaceName(),
             );
         }
 
@@ -141,7 +140,7 @@ class JsonLd
             $event->getDateStart()->format('d'),
             $event->getDateEnd()->format('d'),
             $event->getDateEnd()->format('M'),
-            $event->getPlaceName()
+            $event->getPlaceName(),
         );
     }
 }

@@ -11,9 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UpdateIndexationAction extends AbstractController
 {
-    public function __construct(private readonly Runner $runner)
-    {
-    }
+    public function __construct(private readonly Runner $runner) {}
 
     public function __invoke(Request $request): RedirectResponse
     {

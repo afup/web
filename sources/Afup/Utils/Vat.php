@@ -6,7 +6,7 @@ namespace Afup\Site\Utils;
 
 class Vat
 {
-    const VAT_APPLICATION_DATE = "2024-01-01";
+    public const VAT_APPLICATION_DATE = "2024-01-01";
 
     public static function isSubjectedToVat(\DateTimeInterface $date): bool
     {

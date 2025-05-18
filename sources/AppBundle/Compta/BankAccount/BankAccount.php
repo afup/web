@@ -23,8 +23,7 @@ class BankAccount
         private $domicialisation,
         private $bic,
         private $iban,
-    ) {
-    }
+    ) {}
 
     /**
      * @return string

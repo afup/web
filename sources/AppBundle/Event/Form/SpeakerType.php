@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\GithubUser;
@@ -34,8 +33,7 @@ class SpeakerType extends AbstractType
         private readonly GithubUserRepository $githubUserRepository,
         private readonly SpeakerRepository $speakerRepository,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
-    }
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -65,15 +63,15 @@ class SpeakerType extends AbstractType
                         'property_path' => 'githubUser',
                         'label' => 'Utilisateur GitHub',
                         'required' => false,
-                        'choice_label' => fn (GithubUser $user): string => $user->getLabel(),
+                        'choice_label' => fn(GithubUser $user): string => $user->getLabel(),
                         'choice_value' => function ($choice) {
                             if ($choice instanceof GithubUser) {
                                 return $choice->getId();
                             }
                             return $choice;
                         },
-                        'choice_loader' => new CallbackChoiceLoader(fn () => $this->githubUserRepository->getAllOrderedByLogin()),
-                    ]
+                        'choice_loader' => new CallbackChoiceLoader(fn() => $this->githubUserRepository->getAllOrderedByLogin()),
+                    ],
                 )
             ;
         }

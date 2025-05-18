@@ -16,8 +16,7 @@ class BadgeListAction
         private readonly BadgeRepository $badgeRepository,
         private readonly UserRepository $userRepository,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

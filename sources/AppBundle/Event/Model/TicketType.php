@@ -11,8 +11,8 @@ class TicketType implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    const SPECIAL_PRICE_TECHNICAL_NAME = 'SPECIAL_PRICE';
-    const EARLY_BIRD_TECHNICAL_NAME = ['EARLY_BIRD', 'EARLY_BIRD_AFUP', 'AFUP_DAY_EARLY'];
+    public const SPECIAL_PRICE_TECHNICAL_NAME = 'SPECIAL_PRICE';
+    public const EARLY_BIRD_TECHNICAL_NAME = ['EARLY_BIRD', 'EARLY_BIRD_AFUP', 'AFUP_DAY_EARLY'];
 
     /**
      * @var int
@@ -65,7 +65,7 @@ class TicketType implements NotifyPropertyInterface
             $this->getTechnicalName(),
             $this->getPrettyName(),
             $this->getIsRestrictedToMembers() ? ' - (réservé aux membres)' : '',
-            $this->getPrettyDays()
+            $this->getPrettyDays(),
         );
     }
 

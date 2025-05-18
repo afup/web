@@ -33,7 +33,7 @@ abstract class IntegrationTestCase extends KernelTestCase
     protected function restoreExceptionHandler(): void
     {
         while (true) {
-            $previousHandler = set_exception_handler(static fn (): null => null);
+            $previousHandler = set_exception_handler(static fn(): null => null);
 
             restore_exception_handler();
 

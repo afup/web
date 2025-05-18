@@ -12,9 +12,7 @@ use CCMBenchmark\Ting\Query\QueryException;
 
 class ExportGenerator
 {
-    public function __construct(private readonly TalkRepository $talkRepository)
-    {
-    }
+    public function __construct(private readonly TalkRepository $talkRepository) {}
 
     /**
      *

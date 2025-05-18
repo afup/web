@@ -50,14 +50,14 @@ if ($action == 'lister') {
             $ok = $compta->ajouterConfig(
                                     'compta_compte',
                                     'nom_compte',
-                                    $valeur['nom_compte']
+                                    $valeur['nom_compte'],
                                     );
         } else {
             $ok = $compta->modifierConfig(
                                     'compta_compte',
                                        $valeur['id'],
                                        'nom_compte',
-                                       $valeur['nom_compte']
+                                       $valeur['nom_compte'],
                                      );
         }
 

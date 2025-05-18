@@ -9,9 +9,7 @@ class HistoryEntry
     private ?string $statusIdBluesky = null;
     private ?string $statusIdMastodon = null;
 
-    public function __construct(private readonly int $talkId)
-    {
-    }
+    public function __construct(private readonly int $talkId) {}
 
     public function setStatusIdBluesky(?string $statusIdBluesky): void
     {

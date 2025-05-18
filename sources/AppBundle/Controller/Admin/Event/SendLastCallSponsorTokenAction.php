@@ -18,8 +18,7 @@ class SendLastCallSponsorTokenAction extends AbstractController
         private readonly EventActionHelper $eventActionHelper,
         private readonly SponsorTicketRepository $sponsorTicketRepository,
         private readonly SponsorTokenMail $sponsorTokenMail,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): RedirectResponse
     {

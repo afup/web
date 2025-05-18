@@ -24,8 +24,7 @@ class UserService
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly Cotisations $cotisations,
         private readonly UserPasswordHasherInterface $passwordHasher,
-    ) {
-    }
+    ) {}
 
     public function generateRandomPassword(): string
     {
@@ -43,7 +42,7 @@ class UserService
         $message = new Message(
             'AFUP : Mot de passe perdu ?',
             new MailUser($this->sender),
-            new MailUser($user->getEmail(), $user->getFirstName() . ' ' . $user->getLastName())
+            new MailUser($user->getEmail(), $user->getFirstName() . ' ' . $user->getLastName()),
         );
         $message->setContent(<<<BODY
 Votre nouveau mot de passe est indiqué ci-dessous.
@@ -74,7 +73,7 @@ BODY
         $message = new Message(
             'Votre compte afup.org',
             MailUserFactory::bureau(),
-            new MailUser($user->getEmail(), sprintf('%s %s', $user->getFirstName(), $user->getLastName()))
+            new MailUser($user->getEmail(), sprintf('%s %s', $user->getFirstName(), $user->getLastName())),
         );
         $this->mailer->renderTemplate($message, 'mail_templates/confirmation_creation_compte.html.twig', [
             'login' => $user->getUsername(),

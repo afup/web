@@ -9,14 +9,12 @@ use AppBundle\Model\ComptaModeReglement;
 
 class AutoQualifier
 {
-    const DEFAULT_CATEGORIE = 26; // "A déterminer"
-    const DEFAULT_EVENEMENT = 8; // "A déterminer"
-    const DEFAULT_REGLEMENT = 9;
-    const DEFAULT_ATTACHMENT = 0;
+    public const DEFAULT_CATEGORIE = 26; // "A déterminer"
+    public const DEFAULT_EVENEMENT = 8; // "A déterminer"
+    public const DEFAULT_REGLEMENT = 9;
+    public const DEFAULT_ATTACHMENT = 0;
 
-    public function __construct(protected array $rules)
-    {
-    }
+    public function __construct(protected array $rules) {}
 
     public function qualify(Operation $operation): array
     {

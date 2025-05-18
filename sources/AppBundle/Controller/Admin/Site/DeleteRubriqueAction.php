@@ -18,8 +18,7 @@ class DeleteRubriqueAction extends AbstractController
     public function __construct(
         private RubriqueRepository $rubriqueRepository,
         private CsrfTokenManagerInterface $csrfTokenManager,
-    ) {
-    }
+    ) {}
 
     public function __invoke(int $id, string $token): RedirectResponse
     {

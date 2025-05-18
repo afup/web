@@ -20,8 +20,7 @@ class SponsorshipLeadMail
         private readonly Mailer $mailer,
         private readonly TranslatorInterface $translator,
         private readonly LoggerInterface $logger,
-    ) {
-    }
+    ) {}
 
     public function sendSponsorshipFile(Lead $lead): void
     {
@@ -33,7 +32,7 @@ class SponsorshipLeadMail
             $file,
             basename($file),
             'base64',
-            'application/pdf'
+            'application/pdf',
         ));
 
         $content = $this->translator->trans('mail.sponsoringfile.text', ['%eventName%' => $lead->getEvent()->getTitle()]);

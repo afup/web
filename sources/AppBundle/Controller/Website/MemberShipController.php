@@ -92,8 +92,7 @@ class MemberShipController extends AbstractController
         private GeneralMeetingVoteRepository $generalMeetingVoteRepository,
         private string $storageDir,
         private UserPasswordHasherInterface $passwordHasher,
-    ) {
-    }
+    ) {}
 
     public function becomeMember(): Response
     {
@@ -206,7 +205,7 @@ class MemberShipController extends AbstractController
             'F' . $invoiceNumber,
             (float) $invoice['montant'],
             $company->getEmail(),
-            $payboxBilling
+            $payboxBilling,
         );
 
         $bankAccountFactory = new BankAccountFactory();
@@ -431,7 +430,7 @@ class MemberShipController extends AbstractController
                 number_format((float) $cotisation['montant'], 2, ',', ' '),
                 EURO,
                 date("d/m/Y", (int) $cotisation['date_fin']),
-                $endSubscription->format('d/m/Y')
+                $endSubscription->format('d/m/Y'),
             );
         }
 
@@ -482,7 +481,7 @@ class MemberShipController extends AbstractController
             $reference,
             (float) $montant,
             $user->getEmail(),
-            $payboxBilling
+            $payboxBilling,
         );
 
         $paybox = str_replace('INPUT TYPE=SUBMIT', 'INPUT TYPE=SUBMIT class="button button--call-to-action"', $paybox);
@@ -593,8 +592,8 @@ class MemberShipController extends AbstractController
         $lastGeneralMeetingDescription = $generalMeetingRepository->obtenirDescription($latestDate);
 
         $data = [
-          'presence' => 0,
-          'id_personne_avec_pouvoir' => null,
+            'presence' => 0,
+            'id_personne_avec_pouvoir' => null,
         ];
         if ($attendee instanceof Attendee) {
             $data['presence'] = $attendee->getPresence();
@@ -602,20 +601,20 @@ class MemberShipController extends AbstractController
         }
 
         $form = $this->createFormBuilder($data, [
-                'constraints' => [
-                    new Assert\Callback([
-                        'callback' => static function (array $data, ExecutionContextInterface $context): void {
-                            if ($data['presence'] === 1 && $data['id_personne_avec_pouvoir']) {
-                                $context
-                                    ->buildViolation("Vous ne pouvez pas donner votre pouvoir et indiquer que vous participez en même temps.")
-                                    ->atPath('[id_personne_avec_pouvoir]')
-                                    ->addViolation()
-                                ;
-                            }
-                        }]
-                    ),
-                ],
-            ])
+            'constraints' => [
+                new Assert\Callback([
+                    'callback' => static function (array $data, ExecutionContextInterface $context): void {
+                        if ($data['presence'] === 1 && $data['id_personne_avec_pouvoir']) {
+                            $context
+                                ->buildViolation("Vous ne pouvez pas donner votre pouvoir et indiquer que vous participez en même temps.")
+                                ->atPath('[id_personne_avec_pouvoir]')
+                                ->addViolation()
+                            ;
+                        }
+                    }],
+                ),
+            ],
+        ])
             ->add('presence', ChoiceType::class, [
                 'expanded' => true,
                 'choices' => [
@@ -642,14 +641,14 @@ class MemberShipController extends AbstractController
                     $user->getUsername(),
                     $latestDate,
                     $data['presence'],
-                    (int) $data['id_personne_avec_pouvoir']
+                    (int) $data['id_personne_avec_pouvoir'],
                 );
             } else {
                 $ok = $generalMeetingRepository->addAttendee(
                     $user->getId(),
                     $latestDate,
                     $data['presence'],
-                    (int) $data['id_personne_avec_pouvoir']
+                    (int) $data['id_personne_avec_pouvoir'],
                 );
             }
 

@@ -6,7 +6,7 @@ use Phinx\Seed\AbstractSeed;
 
 class Conferenciers extends AbstractSeed
 {
-    const ID_CONFERENCIER = 1;
+    public const ID_CONFERENCIER = 1;
 
     public function run(): void
     {

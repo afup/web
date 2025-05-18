@@ -14,8 +14,7 @@ class CompanyListAction
     public function __construct(
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request)
     {
@@ -30,7 +29,7 @@ class CompanyListAction
                 $sort,
                 $direction,
                 $filter,
-                $onlyDisplayActive
+                $onlyDisplayActive,
             ),
             'activeMembers' => $this->companyMemberRepository->countActiveByCompany(),
             'onlyDisplayActive' => $onlyDisplayActive,

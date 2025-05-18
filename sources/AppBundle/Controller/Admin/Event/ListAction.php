@@ -10,9 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ListAction extends AbstractController
 {
-    public function __construct(private readonly EventRepository $eventRepository)
-    {
-    }
+    public function __construct(private readonly EventRepository $eventRepository) {}
 
     public function __invoke(): Response
     {

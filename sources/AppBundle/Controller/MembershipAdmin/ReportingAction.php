@@ -14,8 +14,7 @@ class ReportingAction
     public function __construct(
         private readonly StatisticsComputer $statisticsComputer,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

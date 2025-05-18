@@ -24,8 +24,8 @@ use Symfony\Component\Validator\Constraints\Url;
 
 class CompanyPublicProfile extends AbstractType
 {
-    const DESCRIPTION_MAX_LENGTH = 2000;
-    const MEMBERSHIP_REASON_MAX_LENGTH = 150;
+    public const DESCRIPTION_MAX_LENGTH = 2000;
+    public const MEMBERSHIP_REASON_MAX_LENGTH = 150;
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -65,7 +65,7 @@ class CompanyPublicProfile extends AbstractType
                     'constraints' => [
                         new Type(['type' => 'boolean']),
                     ],
-                ]
+                ],
             )
             ->add(
                 'description',
@@ -79,7 +79,7 @@ class CompanyPublicProfile extends AbstractType
                         new NotNull(),
                         new Length(['max' => self::DESCRIPTION_MAX_LENGTH]),
                     ],
-                ]
+                ],
             )
             ->add(
                 'logo',
@@ -89,7 +89,7 @@ class CompanyPublicProfile extends AbstractType
                     'required' => $options['logo_required'],
                     'help' => 'Entre 200px x 200px et 1000px x 1000px, format JPEG ou PNG',
                     'constraints' => $logoConstraints,
-                ]
+                ],
             )
             ->add(
                 'website_url',
@@ -100,7 +100,7 @@ class CompanyPublicProfile extends AbstractType
                     'constraints' => [
                         new Url(),
                     ],
-                ]
+                ],
             )
             ->add(
                 'careers_page_url',
@@ -129,7 +129,7 @@ class CompanyPublicProfile extends AbstractType
                     'label' => "Compte twitter",
                     'required' => false,
                     'help' => 'Exemple "@afup"',
-                ]
+                ],
             )
             ->add('related_afup_offices',
                 ChoiceType::class,
@@ -145,7 +145,7 @@ class CompanyPublicProfile extends AbstractType
                             'strict' => true,
                         ]),
                     ],
-                ]
+                ],
             )
             ->add(
                 'membership_reason',

@@ -15,8 +15,7 @@ class MeetupsController extends AbstractController
         private readonly ViewRenderer $view,
         private readonly string $algoliaAppId,
         private readonly string $algoliaFrontendApikey,
-    ) {
-    }
+    ) {}
 
     public function list(Request $request): Response
     {

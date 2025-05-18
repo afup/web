@@ -57,7 +57,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             WHERE id_forum = :event AND cs.conferencier_id = :speaker
             ORDER BY titre
             LIMIT 0, 20
-            '
+            ',
         )->setParams(['event' => $event->getId(), 'speaker' => $speaker->getId()]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
@@ -76,7 +76,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             WHERE s.id_forum != :event AND c.user_github IN (SELECT user_github FROM afup_conferenciers WHERE conferencier_id = :speaker) 
             ORDER BY s.titre ASC
             LIMIT 0, 50
-            '
+            ',
         )->setParams(['event' => $event->getId(), 'speaker' => $speaker->getId()]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
@@ -100,7 +100,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             LEFT JOIN afup_sessions_vote_github asvg ON (asvg.session_id = sessions.session_id AND asvg.user = :user)
             WHERE plannifie = 0 AND id_forum = :event
             ORDER BY RAND(:randomSeed)
-            LIMIT ' . ((int) $page - 1)*$limit . ', ' . ((int) $limit + 1)
+            LIMIT ' . ((int) $page - 1) * $limit . ', ' . ((int) $limit + 1),
         )->setParams(['event' => $event->getId(), 'user' => $user->getId(), 'randomSeed' => $randomSeed]);
 
         return $query->query();
@@ -108,8 +108,7 @@ class TalkRepository extends Repository implements MetadataInitializer
 
     public function getTalkOfTheDay(\DateTime $currentDate)
     {
-        $query = $this
-            ->getPreparedQuery(
+        $query = $this->getPreparedQuery(
             'SELECT afup_sessions.*
             FROM afup_sessions
             WHERE plannifie = 1 and LENGTH(youtube_id) > 0  AND (afup_sessions.date_publication < NOW() OR afup_sessions.date_publication IS NULL)
@@ -120,9 +119,8 @@ class TalkRepository extends Repository implements MetadataInitializer
             )
             ORDER BY RAND(:randomSeed)
             LIMIT 1
-            ')
-            ->setParams(['randomSeed' => md5($currentDate->format('Y-m-d'))])
-        ;
+            ',
+        )->setParams(['randomSeed' => md5($currentDate->format('Y-m-d'))]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()))->first();
     }
@@ -151,7 +149,7 @@ class TalkRepository extends Repository implements MetadataInitializer
                 WHERE id_forum = :excluded_event AND cs.conferencier_id = :excluded_user
             )
             ORDER BY RAND(:randomSeed)
-            LIMIT ' . ((int) $page - 1)*$limit . ', ' . ((int) $limit + 1)
+            LIMIT ' . ((int) $page - 1) * $limit . ', ' . ((int) $limit + 1),
         )->setParams([
             'event' => $event->getId(),
             'user' => $user->getId(),
@@ -182,7 +180,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
             LEFT JOIN afup_forum event ON talk.id_forum = event.id
             WHERE talk.session_id = :talk AND plannifie = 1 AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)
-            ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC '
+            ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC ',
         )->setParams(['talk' => $talk->getId()]);
 
         return $query->query($this->getCollection($hydrator));
@@ -240,7 +238,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
             LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
             WHERE talk.id_forum IN(%s) AND plannifie = 1 %s
-            ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC ', $inEvents, $publicationdateFilters)
+            ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC ', $inEvents, $publicationdateFilters),
         )->setParams($params);
 
         return $query->query($this->getCollection($hydrator));
@@ -263,7 +261,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
             WHERE talk.id_forum = :event
-            ORDER BY talk.session_id ASC '
+            ORDER BY talk.session_id ASC ',
         )->setParams(['event' => $event->getId()]);
 
         return $query->query($this->getCollection($hydrator));
@@ -276,7 +274,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             SELECT talk.*
             FROM afup_sessions AS talk
             LEFT JOIN afup_forum_planning afp ON talk.session_id = afp.id_session
-            WHERE afp.fin <= :date_fin'
+            WHERE afp.fin <= :date_fin',
         )->setParams(['date_fin' => $dateTime->format('U')]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));

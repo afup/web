@@ -12,8 +12,7 @@ class EventEventSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly Mailchimp $mailchimp,
         private $membersList,
-    ) {
-    }
+    ) {}
 
     public function onUserDisabled(UserDisabledEvent $userDisabledEvent): void
     {

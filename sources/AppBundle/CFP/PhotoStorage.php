@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\CFP;
 
 use Afup\Site\Utils\Utils;
@@ -18,10 +17,10 @@ class PhotoStorage
 {
     private readonly Filesystem $filesystem;
 
-    const DIR_ORIGINAL = 'originals';
-    const DIR_THUMBS = 'thumbnails';
+    public const DIR_ORIGINAL = 'originals';
+    public const DIR_THUMBS = 'thumbnails';
 
-    const FORMAT = [
+    public const FORMAT = [
         'originals' => ['width' => 1000, 'height' => 1000],
         'thumbnails' => ['width' => 90, 'height' => 120],
     ];

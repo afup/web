@@ -29,8 +29,7 @@ class FeedArticle
         private $summary,
         private $content,
         private $status,
-    ) {
-    }
+    ) {}
 
     public function getId()
     {

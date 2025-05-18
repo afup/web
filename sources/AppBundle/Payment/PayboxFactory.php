@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Payment;
 
 use AppBundle\Event\Model\Event;
@@ -18,8 +17,7 @@ class PayboxFactory
         private $payboxSite,
         private $payboxRang,
         private $payboxIdentifiant,
-    ) {
-    }
+    ) {}
 
     /**
      * @param string $facture Facture id
@@ -38,10 +36,10 @@ class PayboxFactory
             ->setTotal($montant * 100) // Total de la commande, en centimes d'euros
             ->setCmd($facture) // Référence de la commande
             ->setPorteur($email) // Email du client final (Le porteur de la carte)
-            ->setUrlRetourEffectue($this->router->generate('membership_payment_redirect', ['type'=>'success'], RouterInterface::ABSOLUTE_URL))
-            ->setUrlRetourRefuse($this->router->generate('membership_payment_redirect', ['type'=>'refused'], RouterInterface::ABSOLUTE_URL))
-            ->setUrlRetourAnnule($this->router->generate('membership_payment_redirect', ['type'=>'canceled'], RouterInterface::ABSOLUTE_URL))
-            ->setUrlRetourErreur($this->router->generate('membership_payment_redirect', ['type'=>'error'], RouterInterface::ABSOLUTE_URL))
+            ->setUrlRetourEffectue($this->router->generate('membership_payment_redirect', ['type' => 'success'], RouterInterface::ABSOLUTE_URL))
+            ->setUrlRetourRefuse($this->router->generate('membership_payment_redirect', ['type' => 'refused'], RouterInterface::ABSOLUTE_URL))
+            ->setUrlRetourAnnule($this->router->generate('membership_payment_redirect', ['type' => 'canceled'], RouterInterface::ABSOLUTE_URL))
+            ->setUrlRetourErreur($this->router->generate('membership_payment_redirect', ['type' => 'error'], RouterInterface::ABSOLUTE_URL))
             ->setUrlRepondreA($this->router->generate('membership_payment', [], RouterInterface::ABSOLUTE_URL))
         ;
 
@@ -77,7 +75,7 @@ class PayboxFactory
             $this->payboxSecretKey,
             $this->payboxSite,
             $this->payboxRang,
-            $this->payboxIdentifiant
+            $this->payboxIdentifiant,
         );
     }
 }

@@ -20,8 +20,7 @@ class GeneralMeeting
         private $personneAvecPouvoirId,
         private readonly ?\DateTimeInterface $consultationDate = null,
         private readonly ?\DateTimeInterface $modificationDate = null,
-    ) {
-    }
+    ) {}
 
     public function getId()
     {

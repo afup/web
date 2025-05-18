@@ -13,7 +13,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 class RubriqueRepository extends Repository implements MetadataInitializer
 {
-    public function getAllRubriques($ordre = 'nom', $direction='asc', string $filtre = '%')
+    public function getAllRubriques($ordre = 'nom', $direction = 'asc', string $filtre = '%')
     {
         if ($direction !== 'desc' && $direction !== 'asc') {
             $direction = 'asc';
@@ -22,7 +22,7 @@ class RubriqueRepository extends Repository implements MetadataInitializer
         $columnNameFound = false;
         foreach ($metadata->getFields() as $field) {
             if ($field['columnName'] === $ordre) {
-                $columnNameFound=true;
+                $columnNameFound = true;
                 break;
             }
         }

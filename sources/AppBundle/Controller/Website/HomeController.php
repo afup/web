@@ -32,8 +32,7 @@ class HomeController extends AbstractController
         private readonly CacheItemPoolInterface $cache,
         private readonly SearchClient $client,
         private readonly bool $homeAlgoliaEnabled,
-    ) {
-    }
+    ) {}
 
     public function display(): Response
     {

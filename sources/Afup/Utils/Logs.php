@@ -16,8 +16,7 @@ class Logs
     public function __construct(
         private readonly _Site_Base_De_Donnees $_bdd,
         private readonly int $_id_utilisateur,
-    ) {
-    }
+    ) {}
 
     /**
      * Renvoit l'instance unique de la classe Afup\Site\Utils\Logs
@@ -53,7 +52,7 @@ class Logs
      */
     public static function log($texte): void
     {
-        $instance =& self::_obtenirInstance();
+        $instance = & self::_obtenirInstance();
         $requete = 'INSERT INTO';
         $requete .= '  afup_logs (id, date, id_personne_physique, texte) ';
         $requete .= 'VALUES (';
@@ -73,7 +72,7 @@ class Logs
      */
     public static function obtenirTous($numero_page)
     {
-        $instance =& self::_obtenirInstance();
+        $instance = & self::_obtenirInstance();
         $depart = ($numero_page - 1) * $instance->_nombre_logs_par_page;
         $requete = 'SELECT';
         $requete .= '  afup_logs.*,';
@@ -97,7 +96,7 @@ class Logs
      */
     public static function obtenirNombrePages(): int
     {
-        $instance =& self::_obtenirInstance();
+        $instance = & self::_obtenirInstance();
         $nombre = $instance->_bdd->obtenirUn('SELECT COUNT(*) FROM afup_logs');
         if (!$instance->_nombre_logs_par_page) {
             return 1;

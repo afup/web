@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace Afup\Site\Utils;
 
 use Afup\Site\Droits;
@@ -12,8 +13,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class Utils
 {
-    const TICKETING_VAT_RATE = 0.1;
-    const MEMBERSHIP_FEE_VAT_RATE = 0.2;
+    public const TICKETING_VAT_RATE = 0.1;
+    public const MEMBERSHIP_FEE_VAT_RATE = 0.2;
 
     public static function fabriqueDroits(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker): Droits
     {

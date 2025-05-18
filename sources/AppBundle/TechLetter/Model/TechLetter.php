@@ -15,8 +15,7 @@ class TechLetter implements \JsonSerializable
         private readonly ?News $secondNews = null,
         private readonly array $articles = [],
         private readonly array $projects = [],
-    ) {
-    }
+    ) {}
 
     public function getFirstNews(): ?News
     {
@@ -49,8 +48,8 @@ class TechLetter implements \JsonSerializable
         return [
             'firstNews' => $this->firstNews instanceof News ? $this->firstNews->jsonSerialize() : null,
             'secondNews' => $this->secondNews instanceof News ? $this->secondNews->jsonSerialize() : null,
-            'articles' => array_map(fn (Article $article): array => $article->jsonSerialize(), $this->articles),
-            'projects' => array_map(fn (Project $project): array => $project->jsonSerialize(), $this->projects),
+            'articles' => array_map(fn(Article $article): array => $article->jsonSerialize(), $this->articles),
+            'projects' => array_map(fn(Project $project): array => $project->jsonSerialize(), $this->projects),
         ];
     }
 }

@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class UserExportAction
 {
-    public function __construct(private readonly UserRepository $userRepository)
-    {
-    }
+    public function __construct(private readonly UserRepository $userRepository) {}
 
     public function __invoke(Request $request): BinaryFileResponse
     {

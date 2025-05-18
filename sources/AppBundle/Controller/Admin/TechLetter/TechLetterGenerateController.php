@@ -30,8 +30,7 @@ class TechLetterGenerateController extends AbstractController
         private readonly Mailchimp $mailchimp,
         private readonly string $techletterTestEmailAddress,
         private readonly string $mailchimpTechletterList,
-    ) {
-    }
+    ) {}
 
     public function index(Request $request)
     {
@@ -148,7 +147,7 @@ class TechLetterGenerateController extends AbstractController
                     [
                         'tech_letter' => $techLetter,
                         'preview' => false,
-                    ]
+                    ],
                 )
                 ->getContent();
 
@@ -163,7 +162,7 @@ class TechLetterGenerateController extends AbstractController
                     'from_name' => "Pôle Veille de l'AFUP",
                     'reply_to' => 'pole-veille@afup.org',
                     'subject_line' => $subject,
-                ]
+                ],
             );
 
             if ($this->isCsrfTokenValid('sendToMailchimpAndSchedule', $request->request->get('_csrf_token'))) {
@@ -171,7 +170,7 @@ class TechLetterGenerateController extends AbstractController
                     $this->mailchimp->scheduleCampaign($response['id'], $sending->getSendingDate());
                     $message = sprintf("Newsletter envoyée, verrouillée et planifiée pour être envoyée à %s (%s) sur Mailchimp",
                         $sending->getSendingDate()->format('d/m/Y H:i'),
-                        $sending->getSendingDate()->getTimezone()->getName()
+                        $sending->getSendingDate()->getTimezone()->getName(),
                     );
                     $this->addFlash('notice', $message);
                 } catch (\Exception $exception) {
@@ -198,7 +197,7 @@ class TechLetterGenerateController extends AbstractController
                 'title' => "Veille de l'AFUP",
                 'sending' => $sending,
                 'tech_letter' => $techLetter,
-            ]
+            ],
         );
     }
 

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Association\Form;
 
 use AppBundle\Association\Model\CompanyMember;
@@ -23,9 +22,9 @@ class CompanyMemberType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $choices = [];
-        for ($i = 1; $i <=10; $i++) {
-            $j = $i*AFUP_PERSONNE_MORALE_SEUIL;
-            $choices[$j . ' (' . $i*AFUP_COTISATION_PERSONNE_MORALE . '€)'] = $j;
+        for ($i = 1; $i <= 10; $i++) {
+            $j = $i * AFUP_PERSONNE_MORALE_SEUIL;
+            $choices[$j . ' (' . $i * AFUP_COTISATION_PERSONNE_MORALE . '€)'] = $j;
         }
 
         $builder
@@ -43,7 +42,7 @@ class CompanyMemberType extends AbstractType
                 ChoiceType::class,
                 [
                     'choices' => $choices,
-                ]
+                ],
             )
             ->add('invitations', CollectionType::class, [
                 // each entry in the array will be an "email" field

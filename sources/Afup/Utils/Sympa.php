@@ -10,8 +10,7 @@ class Sympa
         private readonly Base_De_Donnees $_bdd,
         private $_configUrl,
         private $configHost,
-    ) {
-    }
+    ) {}
 
     public function getAllMailingList()
     {

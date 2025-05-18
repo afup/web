@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Form\Support\EventHelper;
@@ -34,8 +33,8 @@ class EventSelectType extends AbstractType
                     'choices' => $this->eventHelper->sortEventsByStartDate(
                         iterator_to_array($this->eventRepository->getAllActive()),
                     ),
-                    'group_by' => fn (Event $choice): string => $this->eventHelper->groupByYear($choice),
-                ]
+                    'group_by' => fn(Event $choice): string => $this->eventHelper->groupByYear($choice),
+                ],
             )
             ->setMethod(Request::METHOD_GET)
         ;

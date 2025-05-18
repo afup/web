@@ -14,9 +14,9 @@ class Speaker implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    const NIGHT_BEFORE = 'before';
-    const NIGHT_BETWEEN = 'between';
-    const NIGHT_AFTER = 'after';
+    public const NIGHT_BEFORE = 'before';
+    public const NIGHT_BETWEEN = 'between';
+    public const NIGHT_AFTER = 'after';
 
     /**
      * @var int

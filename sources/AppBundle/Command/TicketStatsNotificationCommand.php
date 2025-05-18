@@ -58,7 +58,7 @@ class TicketStatsNotificationCommand extends Command
                 $event,
                 $this->eventStatsRepository,
                 $ticketRepository,
-                $date
+                $date,
             );
 
             $this->slackNotifier->sendMessage($message);

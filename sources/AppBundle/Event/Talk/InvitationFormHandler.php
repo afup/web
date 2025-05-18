@@ -28,8 +28,7 @@ class InvitationFormHandler
         private readonly TranslatorInterface $translator,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly Mailer $mailer,
-    ) {
-    }
+    ) {}
 
     public function handle(Request $request, Event $event, FormInterface $form, GithubUser $user, Talk $talk): bool
     {

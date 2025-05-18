@@ -8,9 +8,7 @@ use Afup\Site\Utils\Base_De_Donnees;
 
 class Forum
 {
-    public function __construct(private readonly Base_De_Donnees $_bdd)
-    {
-    }
+    public function __construct(private readonly Base_De_Donnees $_bdd) {}
 
     /**
      * Renvoit les informations concernant un forum
@@ -524,7 +522,7 @@ CODE_HTML;
         foreach ($donnees as $conference) {
 
             // Gestion de la description
-            $description = html_entity_decode((string) $conference['abstract'], ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
+            $description = html_entity_decode((string) $conference['abstract'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
             $description = strip_tags($description);
             $description = str_replace('"', '\"', $description);
 
@@ -558,7 +556,7 @@ CODE_HTML;
                 $conferenciers,
                 $conference['date'],
                 $conference['heure'],
-                $type
+                $type,
             );
         }
 

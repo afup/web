@@ -22,8 +22,7 @@ class CompanyPublicProfileController extends AbstractController
         private readonly BadgesComputer $badgesComputer,
         private readonly RepositoryFactory $repositoryFactory,
         private readonly string $storageDir,
-    ) {
-    }
+    ) {}
 
     public function index($id, $slug): Response
     {
@@ -90,7 +89,7 @@ class CompanyPublicProfileController extends AbstractController
             $antennes[] = $antenne;
         }
 
-        usort($antennes, fn (Antenne $a, Antenne $b): int => $a->label <=> $b->label);
+        usort($antennes, fn(Antenne $a, Antenne $b): int => $a->label <=> $b->label);
 
         return $antennes;
     }

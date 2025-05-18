@@ -15,8 +15,7 @@ class DeleteAction extends AbstractController
     public function __construct(
         private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
         private readonly GeneralMeetingVoteRepository $generalMeetingVoteRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke($id): RedirectResponse
     {

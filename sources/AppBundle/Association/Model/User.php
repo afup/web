@@ -20,19 +20,19 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
 {
     use NotifyProperty;
 
-    const LEVEL_MEMBER = 0;
-    const LEVEL_WRITER = 1;
-    const LEVEL_ADMIN = 2;
+    public const LEVEL_MEMBER = 0;
+    public const LEVEL_WRITER = 1;
+    public const LEVEL_ADMIN = 2;
 
-    const STATUS_PENDING = -1;
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
+    public const STATUS_PENDING = -1;
+    public const STATUS_ACTIVE = 1;
+    public const STATUS_INACTIVE = 0;
 
-    const SLACK_INVITE_STATUS_NONE = 0;
-    const SLACK_INVITE_STATUS_REQUESTED = 1;
+    public const SLACK_INVITE_STATUS_NONE = 0;
+    public const SLACK_INVITE_STATUS_REQUESTED = 1;
 
-    const CIVILITE_M = 0;
-    const CIVILITE_MME = 1;
+    public const CIVILITE_M = 0;
+    public const CIVILITE_MME = 1;
 
     /**
      * @var int
@@ -729,9 +729,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return null;
     }
 
-    public function eraseCredentials(): void
-    {
-    }
+    public function eraseCredentials(): void {}
 
     public function __serialize(): array
     {

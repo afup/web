@@ -12,7 +12,7 @@ use Twig\Loader\FilesystemLoader;
 
 class Mail
 {
-    const PROJECT_DIR = __DIR__ . '/../../..';
+    public const PROJECT_DIR = __DIR__ . '/../../..';
 
     public static function createMailer(): Mailer
     {
@@ -22,7 +22,7 @@ class Mail
             new NullLogger(),
             new Environment(new FilesystemLoader(self::PROJECT_DIR . '/templates/')),
             PhpMailerAdapter::createFromConfiguration($configuration),
-            $configuration
+            $configuration,
         );
     }
 }

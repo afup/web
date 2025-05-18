@@ -16,9 +16,7 @@ class UserDeleteAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    public function __construct(private UserRepository $userRepository)
-    {
-    }
+    public function __construct(private UserRepository $userRepository) {}
 
     public function __invoke(Request $request): RedirectResponse
     {

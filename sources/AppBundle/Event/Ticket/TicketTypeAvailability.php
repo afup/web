@@ -11,13 +11,11 @@ use AppBundle\Event\Model\TicketType;
 
 class TicketTypeAvailability
 {
-    const DAY_ONE = 'one';
-    const DAY_TWO = 'two';
-    const DAY_BOTH = 'both';
+    public const DAY_ONE = 'one';
+    public const DAY_TWO = 'two';
+    public const DAY_BOTH = 'both';
 
-    public function __construct(private readonly TicketRepository $ticketRepository)
-    {
-    }
+    public function __construct(private readonly TicketRepository $ticketRepository) {}
 
     public function getStock(TicketEventType $ticketEventType, Event $event)
     {

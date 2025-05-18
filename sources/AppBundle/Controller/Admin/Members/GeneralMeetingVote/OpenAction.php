@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class OpenAction extends AbstractController
 {
-    public function __construct(private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository)
-    {
-    }
+    public function __construct(private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository) {}
 
     public function __invoke(Request $request): RedirectResponse
     {

@@ -25,8 +25,7 @@ class InviteAction extends AbstractController
         private readonly TalkInvitationRepository $talkInvitationRepository,
         private readonly TalkToSpeakersRepository $talkToSpeakersRepository,
         private readonly TranslatorInterface $translator,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): RedirectResponse
     {

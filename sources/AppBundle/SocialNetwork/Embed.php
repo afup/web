@@ -14,6 +14,5 @@ final class Embed
         public string $title,
         public string $abstract,
         public ?string $imageUrl,
-    ) {
-    }
+    ) {}
 }

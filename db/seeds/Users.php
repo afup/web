@@ -7,16 +7,16 @@ use Phinx\Seed\AbstractSeed;
 
 class Users extends AbstractSeed
 {
-    const ID_USER_ADMIN = 1;
-    const ID_USER_EXPIRIE = 2;
-    const ID_USER_PERSONNE_MORALE = 3;
-    const ID_USER_PERSONNE_MORALE_NON_MANAGER = 4;
-    const ID_USER_PERSONNE_PHYSIQUE = 5;
-    const ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS = 6;
-    const ID_USER_PERSONNE_LIE_PERSONNE_MORALE_FIXED_COTISATIONS = 7;
+    public const ID_USER_ADMIN = 1;
+    public const ID_USER_EXPIRIE = 2;
+    public const ID_USER_PERSONNE_MORALE = 3;
+    public const ID_USER_PERSONNE_MORALE_NON_MANAGER = 4;
+    public const ID_USER_PERSONNE_PHYSIQUE = 5;
+    public const ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS = 6;
+    public const ID_USER_PERSONNE_LIE_PERSONNE_MORALE_FIXED_COTISATIONS = 7;
 
-    const ID_PERSONNE_MORALE_MY_CORP = 1;
-    const ID_PERSONNE_MORALE_HELIOS_AEROSPACE = 2;
+    public const ID_PERSONNE_MORALE_MY_CORP = 1;
+    public const ID_PERSONNE_MORALE_HELIOS_AEROSPACE = 2;
 
     public function run(): void
     {
@@ -171,7 +171,7 @@ class Users extends AbstractSeed
         ;
 
         $now = time();
-        $oneMonthInSeconds = 60*60*24*30;
+        $oneMonthInSeconds = 60 * 60 * 24 * 30;
 
         $dateDebutUserExpire = mktime(17, 32, 15, 7, 13,2018);
         $year = (int) date('Y');
@@ -206,7 +206,7 @@ class Users extends AbstractSeed
                 'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE,
                 'montant' => 25,
                 'date_fin' => $now + $oneMonthInSeconds * 12,
-                'numero_facture' => 'COTIS-' . date('Y') . '-' . (date('Hi')+200),
+                'numero_facture' => 'COTIS-' . date('Y') . '-' . (date('Hi') + 200),
             ],
             [
                 'date_debut' => mktime(16, 10, 10, 1, 1, 2023),
@@ -229,7 +229,7 @@ class Users extends AbstractSeed
                 'type_personne' => AFUP_PERSONNES_PHYSIQUES,
                 'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
                 'montant' => 30,
-                'date_fin' => mktime(16, 10, 10, 1, 1, $year+1),
+                'date_fin' => mktime(16, 10, 10, 1, 1, $year + 1),
                 'numero_facture' => "COTIS-$year-245",
             ],
             [
@@ -253,7 +253,7 @@ class Users extends AbstractSeed
                 'type_personne' => AFUP_PERSONNES_MORALES,
                 'id_personne' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
                 'montant' => 180,
-                'date_fin' => mktime(16, 10, 10, 1, 2, $year+1),
+                'date_fin' => mktime(16, 10, 10, 1, 2, $year + 1),
                 'numero_facture' => "COTIS-$year-249",
             ],
         ];

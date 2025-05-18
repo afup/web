@@ -25,8 +25,7 @@ class PricesAddAction extends AbstractController
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
         private readonly ValidatorInterface $validator,
         private readonly EventSelectFactory $eventSelectFactory,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

@@ -16,8 +16,7 @@ class BadgesGenerateAction
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,
         private readonly RegistrationsExportGenerator $registrationsExportGenerator,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): BinaryFileResponse
     {

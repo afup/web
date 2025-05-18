@@ -17,8 +17,7 @@ class AddAction extends AbstractController
     public function __construct(
         private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
         private readonly GeneralMeetingRepository $generalMeetingRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request, $date): Response
     {

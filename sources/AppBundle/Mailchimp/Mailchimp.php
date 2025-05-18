@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Mailchimp;
 
 use DrewM\MailChimp\MailChimp as DrewMailChimp;
@@ -11,9 +10,7 @@ class Mailchimp
 {
     private const MAX_MEMBERS_PER_PAGE = 50;
 
-    public function __construct(private readonly DrewMailChimp $client)
-    {
-    }
+    public function __construct(private readonly DrewMailChimp $client) {}
 
     /**
      * Subscribe an address to a list

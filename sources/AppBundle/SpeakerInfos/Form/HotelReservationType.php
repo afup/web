@@ -18,11 +18,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class HotelReservationType extends AbstractType
 {
-    const NIGHT_NONE = 'none';
+    public const NIGHT_NONE = 'none';
 
-    public function __construct(private readonly TranslatorInterface $translator)
-    {
-    }
+    public function __construct(private readonly TranslatorInterface $translator) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -72,7 +70,7 @@ class HotelReservationType extends AbstractType
                             }
                         }]),
                     ],
-                ]
+                ],
             )
             ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
         ;

@@ -14,8 +14,7 @@ class UserCompany
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     public function setManager(User $user): void
     {

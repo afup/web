@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Twig;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -14,8 +13,7 @@ class AssetsExtension extends AbstractExtension
     public function __construct(
         #[Autowire('%kernel.project_dir%')]
         private readonly string $kernelProjectDir,
-    ) {
-    }
+    ) {}
 
     public function getFunctions(): array
     {

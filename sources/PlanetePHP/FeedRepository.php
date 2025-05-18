@@ -9,9 +9,7 @@ use Doctrine\DBAL\Connection;
 
 class FeedRepository
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * @return Feed[]
@@ -110,7 +108,7 @@ SQL
 
     private function hydrateAll(array $rows): array
     {
-        return array_map(fn (array $row): Feed => $this->hydrate($row), $rows);
+        return array_map(fn(array $row): Feed => $this->hydrate($row), $rows);
     }
 
     private function hydrate(array $row): Feed
@@ -121,7 +119,7 @@ SQL
             $row['url'],
             $row['feed'],
             $row['etat'],
-            $row['id_personne_physique']
+            $row['id_personne_physique'],
         );
     }
 }

@@ -6,9 +6,7 @@ namespace AppBundle\Slack;
 
 class LegacyClient
 {
-    public function __construct(private $token)
-    {
-    }
+    public function __construct(private $token) {}
 
     public function invite($email): void
     {

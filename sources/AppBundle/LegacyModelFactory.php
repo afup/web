@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle;
 
 use Afup\Site\Utils\Base_De_Donnees;

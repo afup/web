@@ -17,9 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CompanyEditType extends AbstractType
 {
-    public function __construct(private readonly Pays $pays)
-    {
-    }
+    public function __construct(private readonly Pays $pays) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

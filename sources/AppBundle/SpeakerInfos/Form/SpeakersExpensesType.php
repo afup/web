@@ -40,7 +40,7 @@ class SpeakersExpensesType extends AbstractType
                     'attr' => [
                         'accept' => '.pdf',
                     ],
-                ]
+                ],
             )
             ->add('submit', SubmitType::class, ['label' => 'Ajouter des fichiers'])
         ;

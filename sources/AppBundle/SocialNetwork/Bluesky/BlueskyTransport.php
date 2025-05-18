@@ -22,8 +22,7 @@ final class BlueskyTransport implements Transport
         private readonly HttpClientInterface $httpClient,
         private readonly string $apiIdentifier,
         private readonly string $apiAppPassword,
-    ) {
-    }
+    ) {}
 
     public function socialNetwork(): SocialNetwork
     {

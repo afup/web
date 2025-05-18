@@ -10,8 +10,7 @@ class News implements \JsonSerializable
         private readonly string $url,
         private readonly string $title,
         private readonly \DateTimeImmutable $date,
-    ) {
-    }
+    ) {}
 
     public function getUrl(): string
     {

@@ -16,9 +16,7 @@ class CompanyDeleteAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    public function __construct(private CompanyMemberRepository $companyMemberRepository)
-    {
-    }
+    public function __construct(private CompanyMemberRepository $companyMemberRepository) {}
 
     public function __invoke(Request $request): RedirectResponse
     {

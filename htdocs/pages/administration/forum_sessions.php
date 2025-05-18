@@ -130,7 +130,7 @@ if ($action == 'lister') {
 
     $formulaire->addElement('header', null, 'Présentation');
 
-    $formulaire->addElement('date'    , 'date_soumission', 'Soumission', ['language' => 'fr', 'minYear' => date('Y') -5, 'maxYear' => date('Y') +5]);
+    $formulaire->addElement('date'    , 'date_soumission', 'Soumission', ['language' => 'fr', 'minYear' => date('Y') - 5, 'maxYear' => date('Y') + 5]);
     $formulaire->addElement('text'    , 'titre'          , 'Titre' , ['size' => 40, 'maxlength' => 150]);
 
     $abstractClass = 'simplemde';
@@ -140,7 +140,7 @@ if ($action == 'lister') {
         $abstractClass = 'tinymce';
     }
 
-    $formulaire->addElement('textarea', 'abstract'       , 'Résumé', ['cols' => 40, 'rows' => 15,'class'=> $abstractClass]);
+    $formulaire->addElement('textarea', 'abstract'       , 'Résumé', ['cols' => 40, 'rows' => 15,'class' => $abstractClass]);
     $formulaire->addElement('hidden', 'use_markdown', (int) $useMarkdown);
 
 
@@ -184,7 +184,7 @@ if ($action == 'lister') {
         $formulaire->addElement('date'  , 'date_publication'       , 'Date de publication'               , ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5]);
         $formulaire->addElement('textarea'    , 'tweets'          , "Tweets", ['style' => "width:100%;min-height:100px"]);
         $formulaire->addElement('textarea'    , 'transcript'          , "Sous titres en français (format SRT)", ['style' => "width:100%;min-height:100px"]);
-        $formulaire->addElement('textarea', 'verbatim', 'Verbatim', ['cols' => 40, 'rows' => 15,'class'=> 'simplemde']);
+        $formulaire->addElement('textarea', 'verbatim', 'Verbatim', ['cols' => 40, 'rows' => 15,'class' => 'simplemde']);
     }
 
 
@@ -248,7 +248,7 @@ if ($action == 'lister') {
                 (int) $valeurs['plannifie'],
                 isset($valeurs['needs_mentoring']) ? (int) $valeurs['needs_mentoring'] : 0,
                 (int) $valeurs['skill'],
-                $valeurs['use_markdown']
+                $valeurs['use_markdown'],
             );
             $ok = (bool) $session_id;
         } else {
@@ -275,7 +275,7 @@ if ($action == 'lister') {
                                                 $valeurs['date_publication']['Y'] . '-' . $valeurs['date_publication']['M'] . '-' . $valeurs['date_publication']['d'] . ' ' . $valeurs['date_publication']['H'] . ':' . $valeurs['date_publication']['i'] . ':' . $valeurs['date_publication']['s'],
                                                 $valeurs['tweets'],
                                                 $valeurs['transcript'],
-                                                $valeurs['verbatim']
+                                                $valeurs['verbatim'],
             );
             $forum_appel->delierSession($session_id);
         }

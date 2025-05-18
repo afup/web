@@ -97,8 +97,8 @@ class StatusGeneratorTest extends TestCase
                     'https://afup.org/talks/123-lorem-ipsum-dolor-si-amet',
                     'Lorem ipsum dolor si amet',
                     'Foo bar',
-                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp'
-                )
+                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp',
+                ),
             ),
         ];
 
@@ -118,8 +118,8 @@ class StatusGeneratorTest extends TestCase
                     'https://afup.org/talks/123-lorem-ipsum-dolor-si-amet',
                     'Lorem ipsum dolor si amet',
                     'Foo bar',
-                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp'
-                )
+                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp',
+                ),
             ),
         ];
 
@@ -139,8 +139,8 @@ class StatusGeneratorTest extends TestCase
                     'https://afup.org/talks/123-lorem-ipsum-dolor-si-amet',
                     'Lorem ipsum dolor si amet',
                     'Foo bar',
-                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp'
-                )
+                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp',
+                ),
             ),
         ];
 
@@ -161,8 +161,8 @@ class StatusGeneratorTest extends TestCase
                     'https://afup.org/talks/123-lorem-ipsum-dolor-si-amet',
                     'Lorem ipsum dolor si amet',
                     'Foo bar',
-                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp'
-                )
+                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp',
+                ),
             ),
         ];
 
@@ -184,8 +184,8 @@ class StatusGeneratorTest extends TestCase
                     'https://afup.org/talks/123-lorem-ipsum-dolor-si-amet',
                     'Lorem ipsum dolor si amet',
                     'Foo bar',
-                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp'
-                )
+                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp',
+                ),
             ),
         ];
 
@@ -205,8 +205,8 @@ class StatusGeneratorTest extends TestCase
                     'https://afup.org/talks/123-lorem-ipsum-dolor-sit-amet-consectetur-adipisicing-elit-ab-accusantium-architecto-assumenda-consequuntur-corporis-dolorem-doloremque-eaque-magnam-mollitia-necessitatibus-neque-nesciunt-obcaecati-odio-odit-quam-repellat-repellendus',
                     'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium architecto assumenda consequuntur corporis dolorem doloremque eaque magnam mollitia necessitatibus neque nesciunt, obcaecati odio odit quam, repellat repellendus.',
                     'Foo bar',
-                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp'
-                )
+                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp',
+                ),
             ),
         ];
 
@@ -226,8 +226,8 @@ class StatusGeneratorTest extends TestCase
                     'https://afup.org/talks/123-lorem-ipsum-dolor-sit-amet-consectetur-adipisicing-elit-ab-accusantium-architecto-assumenda-consequuntur-corporis-dolorem-doloremque-eaque-magnam-mollitia-necessitatibus-neque-nesciunt-obcaecati-odio-odit-quam-repellat-repellendus-magnam',
                     'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium architecto assumenda consequuntur corporis dolorem doloremque eaque magnam mollitia necessitatibus neque nesciunt, obcaecati odio odit quam, repellat repellendus magnam.',
                     'Foo bar',
-                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp'
-                )
+                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp',
+                ),
             ),
         ];
 
@@ -247,8 +247,8 @@ class StatusGeneratorTest extends TestCase
                     'https://afup.org/talks/123-lorem-ipsum',
                     'Lorem ipsum',
                     'Foo bar',
-                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp'
-                )
+                    'https://i.ytimg.com/vi_webp/abcd1234/maxresdefault.webp',
+                ),
             ),
         ];
     }

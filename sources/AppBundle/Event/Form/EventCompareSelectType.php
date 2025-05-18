@@ -29,7 +29,7 @@ class EventCompareSelectType extends AbstractType
         $builder
             ->add('event_id', ChoiceType::class, [
                 'choices' => $choices,
-                'group_by' => fn ($choice, string $key): string => $this->eventHelper->groupByYear($key),
+                'group_by' => fn($choice, string $key): string => $this->eventHelper->groupByYear($key),
             ])
             ->add('compared_event_id', ChoiceType::class, [
                 'choices' => $choices,
@@ -40,7 +40,7 @@ class EventCompareSelectType extends AbstractType
 
                     return [];
                 },
-                'group_by' => fn ($choice, string $key): string => $this->eventHelper->groupByYear($key),
+                'group_by' => fn($choice, string $key): string => $this->eventHelper->groupByYear($key),
             ])
             ->setMethod(Request::METHOD_GET);
     }

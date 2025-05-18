@@ -11,6 +11,5 @@ final readonly class Map
         public LegendAttachment $legendAttachment,
         public City $firstCity,
         public ?City $secondCity = null,
-    ) {
-    }
+    ) {}
 }

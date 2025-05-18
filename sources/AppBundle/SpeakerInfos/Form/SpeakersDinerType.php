@@ -26,7 +26,7 @@ class SpeakersDinerType extends AbstractType
                         'Oui' => 1,
                         'Non' => 0,
                     ],
-                ]
+                ],
             )
             ->add(
                 'has_special_diet',
@@ -38,7 +38,7 @@ class SpeakersDinerType extends AbstractType
                         "Non, je n'ai pas de régime alimentaire particulier" => 0,
                         "J'ai un régime alimentaire particulier / des contraintes alimentaires" => 1,
                     ],
-                ]
+                ],
             )
             ->add(
                 'special_diet_description',
@@ -46,7 +46,7 @@ class SpeakersDinerType extends AbstractType
                 [
                     'label' => 'Précisions sur le régime alimentaire',
                     'required' => false,
-                ]
+                ],
             )
             ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])
         ;

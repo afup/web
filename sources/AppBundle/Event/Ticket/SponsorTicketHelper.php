@@ -19,8 +19,7 @@ class SponsorTicketHelper
         private readonly InvoiceRepository $invoiceRepository,
         private readonly TicketRepository $ticketRepository,
         private readonly SponsorTicketRepository $sponsorTicketRepository,
-    ) {
-    }
+    ) {}
 
     public function addTicketToSponsor(SponsorTicket $sponsorTicket, Ticket $ticket): void
     {
@@ -31,7 +30,7 @@ class SponsorTicketHelper
 
             if ($ticket->getId() === null) {
                 // This is a new ticket, so we update the number of tickets created for this sponsor
-                $sponsorTicket->setUsedInvitations($sponsorTicket->getUsedInvitations()+1);
+                $sponsorTicket->setUsedInvitations($sponsorTicket->getUsedInvitations() + 1);
             }
 
             $this->ticketRepository->save($ticket);
@@ -51,7 +50,7 @@ class SponsorTicketHelper
         try {
             $this->ticketRepository->startTransaction();
             $this->ticketRepository->delete($ticket);
-            $sponsorTicket->setUsedInvitations($sponsorTicket->getUsedInvitations()-1);
+            $sponsorTicket->setUsedInvitations($sponsorTicket->getUsedInvitations() - 1);
             $this->sponsorTicketRepository->save($sponsorTicket);
             $this->ticketRepository->commit();
         } catch (Exception) {

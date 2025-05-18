@@ -23,8 +23,8 @@ class EventController extends AbstractController
         private readonly RepositoryFactory $repositoryFactory,
         private readonly PhotoStorage $photoStorage,
         private readonly EventActionHelper $eventActionHelper,
-    ) {
-    }
+    ) {}
+
     public function index()
     {
         /**

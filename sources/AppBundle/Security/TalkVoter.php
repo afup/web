@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Security;
 
 use AppBundle\Event\Model\GithubUser;
@@ -13,9 +12,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class TalkVoter extends Voter
 {
-    public function __construct(private readonly SpeakerRepository $speakerRepository)
-    {
-    }
+    public function __construct(private readonly SpeakerRepository $speakerRepository) {}
 
     /**
      * @inheritDoc

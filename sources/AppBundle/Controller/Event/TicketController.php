@@ -53,8 +53,7 @@ class TicketController extends AbstractController
         private readonly TicketRepository $ticketRepository,
         private readonly PayboxFactory $payboxFactory,
         private readonly EventActionHelper $eventActionHelper,
-    ) {
-    }
+    ) {}
 
     public function sponsorTicket(Request $request, $eventSlug)
     {
@@ -260,7 +259,7 @@ class TicketController extends AbstractController
             $totalOfSoldTicketsByMember = $this->ticketRepository->getTotalOfSoldTicketsByMember(
                 $user->isMemberForCompany() ? UserRepository::USER_TYPE_COMPANY : UserRepository::USER_TYPE_PHYSICAL,
                 $user->isMemberForCompany() ? $user->getCompanyId() : $user->getId(),
-                $event->getId()
+                $event->getId(),
             );
         }
 
@@ -292,7 +291,7 @@ class TicketController extends AbstractController
 
         if ($invoice->getStatus() === Ticket::STATUS_PAID) {
             $this->logger->warning(
-                sprintf('Invoice %s already paid, cannot show the paymentAction', $invoiceRef)
+                sprintf('Invoice %s already paid, cannot show the paymentAction', $invoiceRef),
             );
             return $this->render('event/ticket/payment_already_done.html.twig', ['event' => $event]);
         }
@@ -308,7 +307,7 @@ class TicketController extends AbstractController
             'invoice' => $invoice,
             'amount' => $amount,
             'tickets' => $this->ticketRepository->getByInvoiceWithDetail(
-                $invoice
+                $invoice,
             ),
         ];
 

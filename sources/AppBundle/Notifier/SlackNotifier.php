@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Notifier;
 
 use AppBundle\Event\Model\Event;
@@ -20,8 +19,7 @@ class SlackNotifier
         private readonly MessageFactory $messageFactory,
         private readonly Serializer $serializer,
         private readonly HttpClientInterface $httpClient,
-    ) {
-    }
+    ) {}
 
     public function notifyVote(Vote $vote): void
     {

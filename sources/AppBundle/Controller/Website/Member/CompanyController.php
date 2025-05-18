@@ -18,8 +18,7 @@ class CompanyController extends AbstractController
     public function __construct(
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly ViewRenderer $view,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request)
     {

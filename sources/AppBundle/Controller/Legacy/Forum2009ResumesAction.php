@@ -14,8 +14,7 @@ class Forum2009ResumesAction
     public function __construct(
         private readonly AppelConferencier $appelConferencier,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

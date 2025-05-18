@@ -13,9 +13,7 @@ use Sabre\VObject\Component\VCalendar;
 
 class IcsPLanningGenerator
 {
-    public function __construct(private readonly TalkRepository $talkRepository)
-    {
-    }
+    public function __construct(private readonly TalkRepository $talkRepository) {}
 
     /**
      * @return string

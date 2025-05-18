@@ -30,8 +30,7 @@ class Droits
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-    ) {
-    }
+    ) {}
 
     /**
      * Renvoit l'identifiant de l'utilisateur

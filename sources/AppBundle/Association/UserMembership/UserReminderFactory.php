@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Association\UserMembership;
 
 use AppBundle\Association\MembershipReminderInterface;
@@ -14,8 +13,7 @@ class UserReminderFactory
     public function __construct(
         private readonly Mailer $mailer,
         private readonly SubscriptionReminderLogRepository $subscriptionReminderLogRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * @param $class

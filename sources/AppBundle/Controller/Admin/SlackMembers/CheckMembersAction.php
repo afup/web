@@ -13,8 +13,7 @@ class CheckMembersAction
     public function __construct(
         private readonly UsersChecker $usersChecker,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(): Response
     {

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\SubscriptionReminderLog;
@@ -22,7 +21,7 @@ class SubscriptionReminderLogRepository extends Repository implements MetadataIn
             LEFT JOIN afup_personnes_physiques app ON app.id = asrl.user_id
             LEFT JOIN afup_personnes_morales apm ON apm.id = app.id_personne_morale
             ORDER BY asrl.reminder_date DESC
-            LIMIT ' . (((int) $page-1) * $limit) . ', ' . (int) ($limit + 1)
+            LIMIT ' . (((int) $page - 1) * $limit) . ', ' . (int) ($limit + 1),
         )->query();
     }
 

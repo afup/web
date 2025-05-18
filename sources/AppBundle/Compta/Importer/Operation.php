@@ -6,8 +6,8 @@ namespace AppBundle\Compta\Importer;
 
 class Operation
 {
-    const DEBIT = 'debit';
-    const CREDIT = 'credit';
+    public const DEBIT = 'debit';
+    public const CREDIT = 'credit';
 
     /**
      * Operation constructor.
@@ -24,8 +24,7 @@ class Operation
         private $montant,
         private $type,
         private $numeroOperation,
-    ) {
-    }
+    ) {}
 
     /**
      * @return string

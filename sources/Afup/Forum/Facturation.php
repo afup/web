@@ -19,9 +19,7 @@ use AppBundle\Event\Model\Ticket;
 
 class Facturation
 {
-    public function __construct(private readonly Base_De_Donnees $_bdd)
-    {
-    }
+    public function __construct(private readonly Base_De_Donnees $_bdd) {}
 
     /**
      * Renvoit les informations concernant une inscription
@@ -294,7 +292,7 @@ class Facturation
                 $this->formatFactureValue($isSubjectedToVat ? $montantHt : $montant, $isSubjectedToVat) . ' €',
                 1,
                 0,
-                $isSubjectedToVat ? 'R' : ''
+                $isSubjectedToVat ? 'R' : '',
             );
 
             if ($isSubjectedToVat) {
@@ -340,7 +338,7 @@ class Facturation
             1,
             0,
             $isSubjectedToVat ? 'R' : 'L',
-            1
+            1,
         );
         $pdf->Cell(
             40 - ($isSubjectedToVat ? 10 : 0), 5,
@@ -348,7 +346,7 @@ class Facturation
             1,
             0,
             $isSubjectedToVat ? 'R' : 'L',
-            1
+            1,
         );
 
         $pdf->Ln(15);
@@ -415,7 +413,7 @@ class Facturation
         $message = new Message(
             'Facture évènement AFUP',
             MailUserFactory::afup(),
-            new MailUser($personne['email'], sprintf('%s %s', $personne['prenom'], $personne['nom']))
+            new MailUser($personne['email'], sprintf('%s %s', $personne['prenom'], $personne['nom'])),
         );
         $mailer = Mail::createMailer();
         $mailer->renderTemplate($message,'mail_templates/facture-forum.html.twig', [
@@ -427,7 +425,7 @@ class Facturation
             $cheminFacture,
             'facture-' . $numeroFacture . '.pdf',
             'base64',
-            'application/pdf'
+            'application/pdf',
         ));
         if ($copyTresorier) {
             $message->addBcc(MailUserFactory::tresorier());

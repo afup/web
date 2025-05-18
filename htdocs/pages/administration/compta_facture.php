@@ -15,11 +15,11 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 }
 
 $action = verifierAction([
-                    'lister',
-                    'modifier',
-                    'telecharger_facture',
-                    'envoyer_facture',
-                    ]);
+    'lister',
+    'modifier',
+    'telecharger_facture',
+    'envoyer_facture',
+]);
 
 
 //$action = verifierAction(array('lister', 'devis','facture','ajouter', 'modifier'));
@@ -91,7 +91,7 @@ if ($action == 'lister') {
 
         $champsRecup = $comptaFact->obtenir_details($_GET['id']);
 
-        $i=1;
+        $i = 1;
         foreach ($champsRecup as $row) {
             $champs['id' . $i]          = $row['id'];
             $champs['ref' . $i]          = $row['ref'];
@@ -117,14 +117,14 @@ if ($action == 'lister') {
     //$mois=10;
     if ($action === 'modifier') {
         $formulaire->addElement('date'    , 'date_facture'     , 'Date facture', ['language' => 'fr',
-                                                                                'format'   => 'd F Y',
-                                                                                'minYear' => date('Y')-3,
-                                                                                'maxYear' => date('Y')]);
+            'format'   => 'd F Y',
+            'minYear' => date('Y') - 3,
+            'maxYear' => date('Y')]);
     } else {
         $formulaire->addElement('date'    , 'date_facture'     , 'Date facture', ['language' => 'fr',
-                                                                                'format'   => 'd F Y',
-                                                                                'minYear' => date('Y'),
-                                                                                'maxYear' => date('Y')]);
+            'format'   => 'd F Y',
+            'minYear' => date('Y'),
+            'maxYear' => date('Y')]);
     }
     $formulaire->addElement('header'  , ''                       , 'Facturation');
     $formulaire->addElement('static'  , 'note'                   , ''               , 'Ces informations concernent la personne ou la société qui sera facturée<br /><br />');
@@ -170,7 +170,7 @@ if ($action == 'lister') {
 
     $formulaire->addElement('header'  , '', 'Paiement');
     $formulaire->addElement('select', 'devise_facture'  , 'Monnaie de la facture', ['EUR' => 'Euro',
-                                                                                        'DOL' => 'Dollar'], ['size' => 2]);
+        'DOL' => 'Dollar'], ['size' => 2]);
     $formulaire->addElement('select', 'etat_paiement'  , 'Etat paiement', ['En attente de paiement', 'Payé', 'Annulé'], ['size' => 3]);
     $formulaire->addElement('date'    , 'date_paiement'     , 'Date paiement', ['language' => 'fr', 'format'   => 'd F Y', 'minYear' => date('Y') - 5, 'maxYear' => date('Y')]);
 
@@ -184,7 +184,7 @@ if ($action == 'lister') {
 
 
 
-    for ($i=1;$i<6;$i++) {
+    for ($i = 1;$i < 6;$i++) {
         $formulaire->addElement('header'  , '', 'Contenu');
         $formulaire->addElement('static'  , 'note'     , ''  , 'Ligne ' . $i . '<br /><br />');
         $formulaire->addElement('hidden'    , 'id' . $i    , 'id');
@@ -214,8 +214,8 @@ if ($action == 'lister') {
     if ($formulaire->validate()) {
         $valeur = $formulaire->exportValues();
 
-        $date_ecriture= $valeur['date_facture']['Y'] . "-" . $valeur['date_facture']['F'] . "-" . $valeur['date_facture']['d'] ;
-        $date_paiement= $valeur['date_paiement']['Y'] . "-" . $valeur['date_paiement']['F'] . "-" . $valeur['date_paiement']['d'] ;
+        $date_ecriture = $valeur['date_facture']['Y'] . "-" . $valeur['date_facture']['F'] . "-" . $valeur['date_facture']['d'] ;
+        $date_paiement = $valeur['date_paiement']['Y'] . "-" . $valeur['date_paiement']['F'] . "-" . $valeur['date_paiement']['d'] ;
         if ($action === 'ajouter') {
             // il faut passser obligatoirement par un devis
         } else {
@@ -241,17 +241,17 @@ if ($action == 'lister') {
                 $valeur['numero_facture'],
                 $valeur['etat_paiement'],
                 $date_paiement,
-                $valeur['devise_facture']
+                $valeur['devise_facture'],
             );
 
-            for ($i=1;$i<6;$i++) {
+            for ($i = 1;$i < 6;$i++) {
                 $ok = $comptaFact->modifier_details(
                     $valeur['id' . $i],
                     $valeur['ref' . $i],
                     $valeur['designation' . $i],
                     (int) $valeur['quantite' . $i],
                     (float) $valeur['pu' . $i],
-                    (int) $valeur['tva' . $i]
+                    (int) $valeur['tva' . $i],
                 );
             }
         }

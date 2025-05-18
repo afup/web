@@ -18,8 +18,7 @@ class PhpMailerAdapter implements MailerAdapter
         private readonly ?string $username,
         private readonly ?string $password,
         private readonly ?string $port,
-    ) {
-    }
+    ) {}
 
     public static function createFromConfiguration(Configuration $configuration): self
     {
@@ -28,7 +27,7 @@ class PhpMailerAdapter implements MailerAdapter
             (string) $configuration->obtenir('smtp_tls'),
             $configuration->obtenir('smtp_username'),
             $configuration->obtenir('smtp_password'),
-            (string) $configuration->obtenir('smtp_port')
+            (string) $configuration->obtenir('smtp_port'),
         );
     }
 

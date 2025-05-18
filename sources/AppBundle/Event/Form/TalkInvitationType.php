@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Event\Form;
 
 use Symfony\Component\Form\AbstractType;

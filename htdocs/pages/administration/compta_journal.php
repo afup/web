@@ -43,8 +43,8 @@ $listPeriode = $compta->obtenirListPeriode();
 $smarty->assign('listPeriode', $listPeriode);
 
 
-$periode_debut=$listPeriode[$id_periode-1]['date_debut'];
-$periode_fin=$listPeriode[$id_periode-1]['date_fin'];
+$periode_debut = $listPeriode[$id_periode - 1]['date_debut'];
+$periode_fin = $listPeriode[$id_periode - 1]['date_fin'];
 
 if ($action == 'lister' || $action == 'debit' || $action == 'credit' || $action == 'export') {
     $alsoDisplayClassifed = isset($_GET['also_display_classifed_entries']) && $_GET['also_display_classifed_entries'];
@@ -116,9 +116,9 @@ if ($action == 'lister') {
 
     //$mois=10;
     $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', ['language' => 'fr',
-                                                                                'format'   => 'd F Y',
-                                                                                'minYear' => date('Y')-5,
-                                                                                'maxYear' => date('Y')+1]);
+        'format'   => 'd F Y',
+        'minYear' => date('Y') - 5,
+        'maxYear' => date('Y') + 1]);
 
     $formulaire->addElement('select'  , 'idcategorie', 'Type de compte', $compta->obtenirListCategories());
     $formulaire->addElement('text', 'nom_frs', 'Nom fournisseurs' , ['size' => 30, 'maxlength' => 40]);
@@ -144,9 +144,9 @@ if ($action == 'lister') {
     $formulaire->addElement('header'  , ''                         , 'Réglement');
     $formulaire->addElement('select'  , 'idmode_regl', 'Réglement', $compta->obtenirListReglements());
     $formulaire->addElement('date'    , 'date_reglement'     , 'Date', ['language' => 'fr',
-                                                                            'format'   => 'd F Y',
-                                                                            'minYear' => date('Y')-5,
-                                                                            'maxYear' => date('Y')+1]);
+        'format'   => 'd F Y',
+        'minYear' => date('Y') - 5,
+        'maxYear' => date('Y') + 1]);
     $formulaire->addElement('text', 'obs_regl', 'Info reglement' , ['size' => 30, 'maxlength' => 40]);
 
 
@@ -185,8 +185,8 @@ if ($action == 'lister') {
     if ($formulaire->validate()) {
         $valeur = $formulaire->exportValues();
 
-        $date_ecriture= $valeur['date_saisie']['Y'] . "-" . $valeur['date_saisie']['F'] . "-" . $valeur['date_saisie']['d'] ;
-        $date_regl=$valeur['date_reglement']['Y'] . "-" . $valeur['date_reglement']['F'] . "-" . $valeur['date_reglement']['d'] ;
+        $date_ecriture = $valeur['date_saisie']['Y'] . "-" . $valeur['date_saisie']['F'] . "-" . $valeur['date_saisie']['d'] ;
+        $date_regl = $valeur['date_reglement']['Y'] . "-" . $valeur['date_reglement']['F'] . "-" . $valeur['date_reglement']['d'] ;
 
         if ($action === 'ajouter') {
             $ok = $compta->ajouter(
@@ -209,7 +209,7 @@ if ($action == 'lister') {
                                     $valeur['montant_ht_soumis_tva_5_5'],
                                     $valeur['montant_ht_soumis_tva_10'],
                                     $valeur['montant_ht_soumis_tva_20'],
-                                    $valeur['tva_zone']
+                                    $valeur['tva_zone'],
 
                                     );
         } else {
@@ -235,7 +235,7 @@ if ($action == 'lister') {
                                     $valeur['montant_ht_soumis_tva_5_5'],
                                     $valeur['montant_ht_soumis_tva_10'],
                                     $valeur['montant_ht_soumis_tva_20'],
-                                    $valeur['tva_zone']
+                                    $valeur['tva_zone'],
                                     );
         }
         if ($ok) {
@@ -275,7 +275,7 @@ if ($action == 'lister') {
         'AFUP_%s_journal_from-%s_to-%s.csv',
         date('Y-M-d'),
         $periode_debut,
-        $periode_fin
+        $periode_fin,
     );
 
     // headers
@@ -341,7 +341,7 @@ if ($action == 'lister') {
                 Comptabilite::getTvaZoneLabel($line['tva_zone'], 'Non définie'),
             ],
             $csvDelimiter,
-            $csvEnclosure
+            $csvEnclosure,
         );
     }
 
@@ -505,7 +505,7 @@ if ($action == 'lister') {
                     'png' => 'image/png',
                     'pdf' => 'application/pdf',
                 ],
-                true
+                true,
         )) {
             throw new RuntimeException('Invalid file format. Only jpg/png/pdf allowed.');
         }
@@ -513,11 +513,11 @@ if ($action == 'lister') {
         // Move/Rename
         $filename = sprintf('%s.%s',
             date('Y-m-d', strtotime((string) $line['date_ecriture'])) . '_' . $line['id'] . '_' . substr(sha1_file($_FILES['file']['tmp_name']), 0, 6),
-            $ext
+            $ext,
         );
         $moved = move_uploaded_file(
             $_FILES['file']['tmp_name'],
-            $uploadDirectory . $filename
+            $uploadDirectory . $filename,
         );
         if (!$moved) {
             throw new RuntimeException('Failed to move uploaded file.');
@@ -598,14 +598,14 @@ if ($action == 'lister') {
 
     if ($formulaire->validate()) {
         $valeurs = $formulaire->exportValues();
-        $file =& $formulaire->getElement('fichiercsv');
+        $file = & $formulaire->getElement('fichiercsv');
         $tmpDir = __DIR__ . '/../../../tmp';
         if ($file->isUploadedFile()) {
             $file->moveUploadedFile($tmpDir, 'banque.csv');
             $importerFactory = new Factory();
             $importer = $importerFactory->create(
                 $tmpDir . '/banque.csv',
-                $valeurs['banque']
+                $valeurs['banque'],
             );
             $importer->initialize($tmpDir . '/banque.csv');
             if ($compta->extraireComptaDepuisCSVBanque($importer)) {
@@ -638,7 +638,7 @@ if ($action == 'lister') {
             $ligneCompta['date_regl'],
             $ligneCompta['obs_regl'],
             8, // A déterminer
-            $ligneCompta['numero_operation']
+            $ligneCompta['numero_operation'],
         );
         $montantTotal += $montant;
     }

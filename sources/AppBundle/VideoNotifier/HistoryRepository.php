@@ -9,9 +9,7 @@ use Doctrine\DBAL\Connection;
 
 final readonly class HistoryRepository
 {
-    public function __construct(private Connection $connection)
-    {
-    }
+    public function __construct(private Connection $connection) {}
 
     public function insert(HistoryEntry $entry): void
     {
@@ -40,7 +38,7 @@ final readonly class HistoryRepository
             ->from('video_notifier_history', 'h')
             ->select('h.talk_id', 'COUNT(h.id) AS quantity')
             ->where(
-                $qb->expr()->in('h.talk_id', array_map(fn (Talk $talk): ?int => $talk->getId(), $talks))
+                $qb->expr()->in('h.talk_id', array_map(fn(Talk $talk): ?int => $talk->getId(), $talks)),
             )
             ->groupBy('h.talk_id')
             ->executeQuery()

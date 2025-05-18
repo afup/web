@@ -19,8 +19,7 @@ final readonly class EventSelectFactory
         private FormFactoryInterface $formFactory,
         private SessionInterface $session,
         private EventRepository $eventRepository,
-    ) {
-    }
+    ) {}
 
     public function create(Event $event, Request $request): FormInterface
     {

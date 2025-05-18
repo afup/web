@@ -6,7 +6,7 @@ use Phinx\Seed\AbstractSeed;
 
 class Session extends AbstractSeed
 {
-    const ID_SESSIONS = [
+    public const ID_SESSIONS = [
         1,
         2,
     ];
@@ -53,7 +53,7 @@ class Session extends AbstractSeed
                 3
                 00:00:31,680 --> 00:00:33,340
                 Bonjour, bonjour à toutes et à tous.
-                EOF
+                EOF,
             ],
             [
                 'session_id' => self::ID_SESSIONS[1],
@@ -121,7 +121,7 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
             ];
         }
 
-        $conferenciers[2]['conferencier_id']= 2;
+        $conferenciers[2]['conferencier_id'] = 2;
 
         $table = $this->table('afup_conferenciers_sessions');
         $table->truncate();

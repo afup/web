@@ -40,8 +40,7 @@ class EditAction extends AbstractController
         private readonly VoteRepository $voteRepository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly SidebarRenderer $sidebarRenderer,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request)
     {
@@ -90,16 +89,15 @@ class EditAction extends AbstractController
         }
 
         return $this->render('event/cfp/edit.html.twig', [
-                'event' => $event,
-                'form' => $talkForm->createView(),
-                'talk' => $talk,
-                'invitations' => $this->talkInvitationRepository->getPendingInvitationsByTalkId($talk->getId()),
-                'speakers' => $this->speakerRepository->getSpeakersByTalk($talk),
-                'invitationForm' => $invitationForm->createView(),
-                'votes' => $this->voteRepository->getVotesByTalkWithUser($talk->getId()),
-                'sidebar' => $this->sidebarRenderer->render($event),
-            ]
-        );
+            'event' => $event,
+            'form' => $talkForm->createView(),
+            'talk' => $talk,
+            'invitations' => $this->talkInvitationRepository->getPendingInvitationsByTalkId($talk->getId()),
+            'speakers' => $this->speakerRepository->getSpeakersByTalk($talk),
+            'invitationForm' => $invitationForm->createView(),
+            'votes' => $this->voteRepository->getVotesByTalkWithUser($talk->getId()),
+            'sidebar' => $this->sidebarRenderer->render($event),
+        ]);
     }
 
     private function createInvitationForm(GithubUser $user, Talk $talk): FormInterface

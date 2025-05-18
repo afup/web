@@ -23,8 +23,7 @@ class DisplayableFeedArticle
         private $content,
         private $feedName,
         private $feedUrl,
-    ) {
-    }
+    ) {}
 
     public function getTitle()
     {

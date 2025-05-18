@@ -19,8 +19,7 @@ class GithubUserAddAction extends AbstractController
     public function __construct(
         private GithubUserRepository $githubUserRepository,
         private GithubClient $githubClient,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request)
     {

@@ -22,8 +22,7 @@ class UserEditAction extends AbstractController
         private UserRepository $userRepository,
         private UserBadgeRepository $userBadgeRepository,
         private UserPasswordHasherInterface $passwordHasher,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

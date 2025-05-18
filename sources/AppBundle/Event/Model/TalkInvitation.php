@@ -12,8 +12,8 @@ class TalkInvitation implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    const STATE_PENDING = 0;
-    const STATE_ACCEPTED = 1;
+    public const STATE_PENDING = 0;
+    public const STATE_ACCEPTED = 1;
 
     /**
      * @var int

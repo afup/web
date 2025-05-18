@@ -21,8 +21,7 @@ class CorporateMemberValidator extends ConstraintValidator
         private readonly TokenStorageInterface $tokenStorage,
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly TicketRepository $ticketRepository,
-    ) {
-    }
+    ) {}
 
     public function validate($tickets, Constraint $constraint): void
     {
@@ -79,7 +78,7 @@ class CorporateMemberValidator extends ConstraintValidator
         $ticketsSoldToThisCompany = $this->ticketRepository->getTotalOfSoldTicketsByMember(
             UserRepository::USER_TYPE_COMPANY,
             $company->getId(),
-            $eventId
+            $eventId,
         );
 
         if (($ticketsSoldToThisCompany + $restrictedTickets) > $company->getMaxMembers()) {

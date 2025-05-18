@@ -10,9 +10,9 @@ use Doctrine\DBAL\ParameterType;
 
 class FeedArticleRepository
 {
-    const RELEVANT = 1;
-    const IRRELEVANT = 0;
-    const PERTINENCE_LIST = 'php|afup|pear|pecl|symfony|copix|jelix|wampserver|simpletest|simplexml|zend|pmo|drupal|ovidentia|mvc|magento|chrome|spip|PDO|mock|cake|hiphop|CMS|Framework|typo3|photon|pattern';
+    public const RELEVANT = 1;
+    public const IRRELEVANT = 0;
+    public const PERTINENCE_LIST = 'php|afup|pear|pecl|symfony|copix|jelix|wampserver|simpletest|simplexml|zend|pmo|drupal|ovidentia|mvc|magento|chrome|spip|PDO|mock|cake|hiphop|CMS|Framework|typo3|photon|pattern';
     private readonly string $pertinenceRegex;
 
     public function __construct(private readonly Connection $connection)
@@ -160,7 +160,7 @@ class FeedArticleRepository
 
     private function hydrate(array $rows): array
     {
-        return array_map(static fn (array $row): FeedArticle => new FeedArticle(
+        return array_map(static fn(array $row): FeedArticle => new FeedArticle(
             $row['id'],
             $row['afup_planete_flux_id'],
             $row['clef'],
@@ -170,7 +170,7 @@ class FeedArticleRepository
             $row['auteur'],
             $row['resume'],
             $row['contenu'],
-            $row['etat']
+            $row['etat'],
         ), $rows);
     }
 
@@ -179,14 +179,14 @@ class FeedArticleRepository
      */
     private function hydrateDisplayable(array $rows, $format = DATE_ATOM): array
     {
-        return array_map(static fn (array $row): DisplayableFeedArticle => new DisplayableFeedArticle(
+        return array_map(static fn(array $row): DisplayableFeedArticle => new DisplayableFeedArticle(
             $row['titre'],
             $row['url'],
             date($format, (int) $row['maj']),
             $row['auteur'],
             $row['contenu'],
             $row['feed_name'],
-            $row['feed_url']
+            $row['feed_url'],
         ), $rows);
     }
 }

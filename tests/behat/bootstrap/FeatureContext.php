@@ -105,7 +105,7 @@ class FeatureContext implements Context
         if (null === $form) {
             throw new ExpectationException(
                 sprintf('The form named "%s" not found', $formName),
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
 
@@ -147,9 +147,9 @@ class FeatureContext implements Context
                 sprintf(
                     'The select has the following values %s (expected %s)',
                     json_encode($foundValues, JSON_UNESCAPED_UNICODE),
-                    $expectedValuesJson
+                    $expectedValuesJson,
                 ),
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
     }
@@ -174,7 +174,7 @@ class FeatureContext implements Context
         if ($selectedValue !== $expectedValue) {
             throw new ExpectationException(
                 sprintf('The select has the following value "%s" (expected "%s")', $selectedValue, $expectedValue),
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
     }
@@ -199,7 +199,7 @@ class FeatureContext implements Context
         if ($selectedValue !== $expectedValue) {
             throw new ExpectationException(
                 sprintf('The select has the following text "%s" (expected "%s")', $selectedValue, $expectedValue),
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
     }
@@ -242,7 +242,7 @@ class FeatureContext implements Context
         if (!preg_match($regex, $currentUrl)) {
             throw new ExpectationException(
                 sprintf('The current URL "%s" does not matches "%s"', $currentUrl, $regex),
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
     }
@@ -258,7 +258,7 @@ class FeatureContext implements Context
         if (null === $link) {
             throw new ExpectationException(
                 sprintf('Link of tooltip "%s" not found', $tooltip),
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
 
@@ -317,9 +317,9 @@ class FeatureContext implements Context
                 sprintf(
                     'The emails are not the expected ones "%s" (expected "%s")',
                     var_export($foundEmails, true),
-                    var_export($expectedEmailsArray, true)
+                    var_export($expectedEmailsArray, true),
                 ),
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
     }
@@ -342,7 +342,7 @@ class FeatureContext implements Context
         if (null === $cid) {
             throw new ExpectationException(
                 sprintf('Attachment with name %s not found', $filename),
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
 
@@ -352,7 +352,7 @@ class FeatureContext implements Context
         if ($actualMd5sum !== $md5sum) {
             throw new ExpectationException(
                 sprintf('The md5sum of %s, if not %s (found %s)', $filename, $md5sum, $actualMd5sum),
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
     }
@@ -373,9 +373,9 @@ class FeatureContext implements Context
                 sprintf(
                     "The content \n%s\nis not the expected one \n%s\n",
                     var_export($content, true),
-                    var_export($expectedContentString, true)
+                    var_export($expectedContentString, true),
                 ),
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
     }
@@ -408,7 +408,7 @@ class FeatureContext implements Context
         if (!str_contains((string) $pageContent, $expectedContent)) {
             throw new ExpectationException(
                 sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent),
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
     }
@@ -422,7 +422,7 @@ class FeatureContext implements Context
         if (!isset($this->pdfPages[$page])) {
             throw new ExpectationException(
                 sprintf('The page %d does not exists', $page),
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
 
@@ -431,7 +431,7 @@ class FeatureContext implements Context
         if (str_contains($pageContent, $expectedContent)) {
             throw new ExpectationException(
                 sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent),
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
     }
@@ -449,7 +449,7 @@ class FeatureContext implements Context
         if ($expectedChecksum !== $foundChecksum) {
             throw new ExpectationException(
                 sprintf('The checksum %s is not the expected checksum %s', $foundChecksum, $expectedChecksum),
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
     }
@@ -504,7 +504,7 @@ class FeatureContext implements Context
         if (count($emails) !== 1) {
             throw new ExpectationException(
                 'The email has not been received.',
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
     }
@@ -529,7 +529,7 @@ class FeatureContext implements Context
         if (count($foundEmails) !== 1) {
             throw new ExpectationException(
                 'The email has not been received.',
-                $this->minkContext->getSession()->getDriver()
+                $this->minkContext->getSession()->getDriver(),
             );
         }
 
@@ -539,8 +539,8 @@ class FeatureContext implements Context
                 sprintf(
                     'The email content does not contain the expected URL "%s" (expected "%s")',
                     $content,
-                    $arg1
-                ), $this->minkContext->getSession()->getDriver()
+                    $arg1,
+                ), $this->minkContext->getSession()->getDriver(),
             );
         }
     }

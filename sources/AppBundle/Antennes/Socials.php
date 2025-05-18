@@ -12,6 +12,5 @@ final readonly class Socials
         public ?string $twitter,
         public ?string $linkedin,
         public ?string $bluesky,
-    ) {
-    }
+    ) {}
 }

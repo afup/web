@@ -11,6 +11,5 @@ final readonly class City
         public Point $secondPoint,
         public Point $thirdPoint,
         public Position $position,
-    ) {
-    }
+    ) {}
 }

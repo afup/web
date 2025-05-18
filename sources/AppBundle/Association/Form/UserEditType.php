@@ -28,8 +28,7 @@ class UserEditType extends AbstractType
     public function __construct(
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly Pays $pays,
-    ) {
-    }
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -220,14 +219,14 @@ class UserEditType extends AbstractType
             ->add('save', SubmitType::class, ['label' => 'Ajouter']);
 
         $builder->get('roles')->addModelTransformer(new CallbackTransformer(
-            fn ($rolesAsArray): string => json_encode($rolesAsArray),
-            fn ($rolesAsString): array => json_decode((string) $rolesAsString)
+            fn($rolesAsArray): string => json_encode($rolesAsArray),
+            fn($rolesAsString): array => json_decode((string) $rolesAsString),
         ));
 
         $builder
             ->get('companyId')->addModelTransformer(new CallbackTransformer(
-                fn ($value): string => (string) $value,
-                fn ($value): int => (int) $value
+                fn($value): string => (string) $value,
+                fn($value): int => (int) $value,
             ));
     }
 

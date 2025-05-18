@@ -84,7 +84,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         JOIN afup_forum_planning ON (afup_forum_planning.id_session = afup_sessions.session_id)
         WHERE afup_sessions.id_forum = :eventId
         GROUP BY afup_conferenciers.conferencier_id
-        '
+        ',
         )->setParams(['eventId' => $event->getId()]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
@@ -101,7 +101,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         GROUP BY afup_conferenciers.conferencier_id, afup_forum.date_debut
         ORDER BY afup_forum.date_debut DESC
         LIMIT 1
-        '
+        ',
         )->setParams(['eventId' => $eventId, 'userGithub' => $githubUserId]);
 
         $speaker = $query->query($this->getCollection(new HydratorSingleObject()));
@@ -126,7 +126,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         FROM afup_conferenciers
         JOIN afup_conferenciers_sessions ON (afup_conferenciers_sessions.conferencier_id = afup_conferenciers.conferencier_id)
         JOIN afup_sessions ON (afup_conferenciers_sessions.session_id = afup_sessions.session_id)
-        WHERE afup_sessions.id_forum = :eventId AND afup_conferenciers.email = :email'
+        WHERE afup_sessions.id_forum = :eventId AND afup_conferenciers.email = :email',
         )->setParams(['eventId' => $event->getId(), 'email' => $email]);
 
         return $query->query()->first()[0]->cfp > 0;

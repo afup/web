@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MemberController extends AbstractController
 {
-    const DAYS_BEFORE_CALL_TO_UPDATE = 15;
+    public const DAYS_BEFORE_CALL_TO_UPDATE = 15;
 
     public function __construct(
         private readonly ViewRenderer $view,
@@ -26,8 +26,7 @@ class MemberController extends AbstractController
         private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
         private readonly BadgesComputer $badgesComputer,
         private readonly RepositoryFactory $repositoryFactory,
-    ) {
-    }
+    ) {}
 
     public function index(): Response
     {

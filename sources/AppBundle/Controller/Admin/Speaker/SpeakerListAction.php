@@ -19,8 +19,8 @@ use Twig\Environment;
 
 class SpeakerListAction implements AdminActionWithEventSelector
 {
-    const VALID_SORTS = ['name', 'company'];
-    const VALID_DIRECTIONS = ['asc', 'desc'];
+    public const VALID_SORTS = ['name', 'company'];
+    public const VALID_DIRECTIONS = ['asc', 'desc'];
 
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,
@@ -29,8 +29,7 @@ class SpeakerListAction implements AdminActionWithEventSelector
         private readonly TalkRepository $talkRepository,
         private readonly Environment $twig,
         private readonly EventSelectFactory $eventSelectFactory,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {
@@ -59,12 +58,12 @@ class SpeakerListAction implements AdminActionWithEventSelector
         $events = $this->eventRepository->getAll();
 
         return new Response($this->twig->render('admin/speaker/list.html.twig', [
-            'eventId' => $event === null ? null:$event->getId(),
+            'eventId' => $event === null ? null : $event->getId(),
             'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
             'events' => $events,
             'speakers' => $speakers,
             'talks' => $talks,
-            'nbSpeakers' => $event === null ? 0:$this->speakerRepository->countByEvent($event),
+            'nbSpeakers' => $event === null ? 0 : $this->speakerRepository->countByEvent($event),
             'sort' => $sort,
             'direction' => $direction,
             'filter' => $filter,

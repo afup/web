@@ -8,9 +8,7 @@ use Afup\Site\Utils\Base_De_Donnees;
 
 class Partenaires
 {
-    public function __construct(private readonly Base_De_Donnees $_bdd)
-    {
-    }
+    public function __construct(private readonly Base_De_Donnees $_bdd) {}
 
     /**
      * Renvoit les informations concernant un forum

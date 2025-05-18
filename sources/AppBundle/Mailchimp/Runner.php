@@ -21,8 +21,7 @@ class Runner
          * @var string id of the mailchimp list to use
          */
         private $membersListId,
-    ) {
-    }
+    ) {}
 
     /**
      * Add all active members to the list

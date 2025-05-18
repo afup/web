@@ -14,9 +14,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class LoggedInMemberValidator extends ConstraintValidator
 {
-    public function __construct(private readonly TokenStorageInterface $tokenStorage)
-    {
-    }
+    public function __construct(private readonly TokenStorageInterface $tokenStorage) {}
 
     public function validate($ticket, Constraint $constraint): void
     {

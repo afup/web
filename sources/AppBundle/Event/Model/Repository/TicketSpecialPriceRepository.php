@@ -38,9 +38,9 @@ class TicketSpecialPriceRepository extends Repository implements MetadataInitial
               AND afup_forum_special_price.date_end >= NOW()
               AND afup_forum_special_price.id_event = :id_event
             LIMIT 1
-            ')
-            ->setParams(['token' => $token, 'id_event' => $event->getId(), 'etat_annule' => Ticket::STATUS_CANCELLED])
-        ;
+            ',
+            )->setParams(['token' => $token, 'id_event' => $event->getId(), 'etat_annule' => Ticket::STATUS_CANCELLED]);
+
         return $query->query($this->getCollection(new HydratorSingleObject()))->first();
     }
 
@@ -59,7 +59,7 @@ class TicketSpecialPriceRepository extends Repository implements MetadataInitial
             LEFT JOIN afup_personnes_physiques as creator ON (special_price.creator_id = creator.id)
             WHERE special_price.id_event = :id_event
             ORDER BY special_price.id_event, special_price.id DESC, inscription.id DESC
-            '
+            ',
         )->setParams(['id_event' => $event->getId(), 'etat_annule' => Ticket::STATUS_CANCELLED]);
 
         return $query->query($this->getCollection($hydrator));

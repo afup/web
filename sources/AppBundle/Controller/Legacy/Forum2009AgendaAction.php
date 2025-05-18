@@ -14,8 +14,7 @@ class Forum2009AgendaAction
     public function __construct(
         private readonly Forum $forum,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

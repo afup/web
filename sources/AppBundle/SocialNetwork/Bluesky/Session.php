@@ -12,6 +12,5 @@ final class Session
     public function __construct(
         public string $did,
         public string $accessJwt,
-    ) {
-    }
+    ) {}
 }

@@ -33,8 +33,7 @@ class VoteController extends AbstractController
         private readonly RepositoryFactory $repositoryFactory,
         private readonly SlackNotifier $slackNotifier,
         private readonly EventActionHelper $eventActionHelper,
-    ) {
-    }
+    ) {}
 
     /**
      * @param $eventSlug
@@ -78,12 +77,12 @@ class VoteController extends AbstractController
             'event/vote/liste.html.twig',
             [
                 'numberOfTalks' => $talks->count(),
-                'route' => ($all === true ? 'vote_all_paginated':'vote_index_paginated'),
+                'route' => ($all === true ? 'vote_all_paginated' : 'vote_index_paginated'),
                 'page' => $page,
                 'talks' => $forms(),
                 'event' => $event,
                 'all' => $all,
-            ]
+            ],
         );
     }
 
@@ -104,9 +103,9 @@ class VoteController extends AbstractController
             ->formBuilder->create(
                 'vote' . $talkId,
                 VoteType::class,
-                ['data' => $vote]
+                ['data' => $vote],
             )->setAction(
-                $this->generateUrl('vote_new', ['talkId' => $talkId, 'eventSlug' => $eventSlug])
+                $this->generateUrl('vote_new', ['talkId' => $talkId, 'eventSlug' => $eventSlug]),
             )
             ->setMethod(Request::METHOD_POST)
             ->getForm();

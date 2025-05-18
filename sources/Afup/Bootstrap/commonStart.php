@@ -199,7 +199,7 @@ $services
     ->batchLoadMetadata(
         'AppBundle\Event\Model\Repository',
         __DIR__ . '/../Event/Model/Repository/*.php',
-        ['default' => ['database' => $GLOBALS['AFUP_CONF']->obtenir('database_name')]]
+        ['default' => ['database' => $GLOBALS['AFUP_CONF']->obtenir('database_name')]],
     )
 ;
-$services->set('security.csrf.token_manager', fn (): CsrfTokenManager => new CsrfTokenManager());
+$services->set('security.csrf.token_manager', fn(): CsrfTokenManager => new CsrfTokenManager());

@@ -16,8 +16,7 @@ class SpeakerFilesAction
         private readonly SpeakersExpensesStorage $speakersExpensesStorage,
         private readonly SpeakerRepository $speakerRepository,
         private readonly EventActionHelper $eventActionHelper,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): BinaryFileResponse
     {

@@ -30,8 +30,7 @@ class SpeakerRegisterAction extends AbstractController
         private TicketRepository $ticketRepository,
         private InvoiceService $invoiceService,
         private InvoiceRepository $invoiceRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): RedirectResponse
     {
@@ -90,7 +89,7 @@ class SpeakerRegisterAction extends AbstractController
                         null,
                         '',
                         '',
-                        Ticket::STATUS_GUEST
+                        Ticket::STATUS_GUEST,
                     );
                     $this->log('Ajout inscription conférencier ' . $speaker->getId());
                     $nbSpeakers++;

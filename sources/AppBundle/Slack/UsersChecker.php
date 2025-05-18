@@ -10,13 +10,12 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UsersChecker
 {
-    const SUBSCRIPTION_DELAY = '+15 days';
+    public const SUBSCRIPTION_DELAY = '+15 days';
 
     public function __construct(
         private readonly UsersClient $usersClient,
         private readonly UserRepository $userRepository,
-    ) {
-    }
+    ) {}
 
     /**
      * Retourne la liste des utilisateurs devant être supprimé du slack membre
@@ -47,9 +46,9 @@ class UsersChecker
                 //Vérification de l'utilisateur Slack dans la base du site
                 try {
                     $userDb = $this->userRepository->loadUserByEmailOrAlternateEmail($email);
-                    $userInfo['afup_last_subscription']=$userDb->getLastSubscription();
+                    $userInfo['afup_last_subscription'] = $userDb->getLastSubscription();
                     $userInfo['afup_user_id'] = $userDb->getId();
-                    $userInfo['user_found']=true;
+                    $userInfo['user_found'] = true;
 
                     $lastSubscription = $userDb->getLastSubscription();
 

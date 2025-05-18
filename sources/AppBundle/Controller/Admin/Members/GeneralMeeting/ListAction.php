@@ -13,15 +13,14 @@ use Twig\Environment;
 
 class ListAction
 {
-    const VALID_SORTS = ['nom', 'date_consultation', 'presence', 'personnes_avec_pouvoir_nom'];
-    const VALID_DIRECTIONS = ['asc', 'desc'];
+    public const VALID_SORTS = ['nom', 'date_consultation', 'presence', 'personnes_avec_pouvoir_nom'];
+    public const VALID_DIRECTIONS = ['asc', 'desc'];
 
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly GeneralMeetingRepository $generalMeetingRepository,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class EditAction extends AbstractController
 {
-    public function __construct(private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository)
-    {
-    }
+    public function __construct(private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository) {}
 
     public function __invoke(Request $request, $id)
     {

@@ -14,8 +14,8 @@ class BadgeController extends AbstractController
     public function __construct(
         private readonly RepositoryFactory $repositoryFactory,
         private readonly string $storageDir,
-    ) {
-    }
+    ) {}
+
     public function badge($id)
     {
         $badge = $this->repositoryFactory->get(BadgeRepository::class)->get($id);

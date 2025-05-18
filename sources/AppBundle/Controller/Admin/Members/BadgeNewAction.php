@@ -18,8 +18,7 @@ class BadgeNewAction extends AbstractController
         private readonly BadgeRepository $badgeRepository,
         private readonly Filesystem $filesystem,
         private readonly string $storageDir,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

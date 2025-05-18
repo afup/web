@@ -13,13 +13,11 @@ use Doctrine\DBAL\Connection;
 
 class EventStatsRepository
 {
-    const DAY_ONE = 'one';
-    const DAY_TWO = 'two';
-    const DAYS = [self::DAY_ONE, self::DAY_TWO];
+    public const DAY_ONE = 'one';
+    public const DAY_TWO = 'two';
+    public const DAYS = [self::DAY_ONE, self::DAY_TWO];
 
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * @param int $eventId

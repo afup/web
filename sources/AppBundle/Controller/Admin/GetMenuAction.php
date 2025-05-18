@@ -16,8 +16,7 @@ class GetMenuAction
         private readonly Environment $twig,
         /** @var array<string, mixed> */
         private readonly array $backOfficePages,
-    ) {
-    }
+    ) {}
 
     public function __invoke(): Response
     {

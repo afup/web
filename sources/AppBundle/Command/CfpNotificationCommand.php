@@ -56,7 +56,7 @@ class CfpNotificationCommand extends Command
                 $this->ting->get(TalkRepository::class),
                 $this->ting->get(TalkToSpeakersRepository::class),
                 $currentDate,
-                $since
+                $since,
             );
 
             $this->slackNotifier->sendMessage($message);

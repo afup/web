@@ -27,8 +27,7 @@ class LeadController extends AbstractController
         private readonly SponsorshipLeadMail $sponsorshipLeadMail,
         private readonly RepositoryFactory $repositoryFactory,
         private readonly EventActionHelper $eventActionHelper,
-    ) {
-    }
+    ) {}
 
     public function becomeSponsor($eventSlug, Request $request)
     {
@@ -101,7 +100,7 @@ class LeadController extends AbstractController
                 $lead->getEmail(),
                 $lead->getPhone(),
                 $lead->getWebsite(),
-                $lead->getLanguage()
+                $lead->getLanguage(),
             );
 
         $this->mailer->sendSimpleMessage($subject, $content, MailUserFactory::sponsors());

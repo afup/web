@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class IndexAction extends AbstractController
 {
-    const MAX_EVENTS_HISTORY = 50;
+    public const MAX_EVENTS_HISTORY = 50;
 
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,
@@ -28,8 +28,7 @@ class IndexAction extends AbstractController
         private readonly SpeakerFactory $speakerFactory,
         private readonly PhotoStorage $photoStorage,
         private readonly SidebarRenderer $sidebarRenderer,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {
@@ -56,7 +55,7 @@ class IndexAction extends AbstractController
             }
         }
         // Remove events with no talks submitted
-        $previousEventTalkLists = array_filter($previousEventTalkLists, static fn (EventTalkList $previousEventTalkList): bool => [] !== $previousEventTalkList->getTalks());
+        $previousEventTalkLists = array_filter($previousEventTalkLists, static fn(EventTalkList $previousEventTalkList): bool => [] !== $previousEventTalkList->getTalks());
 
         return $this->render('event/cfp/home.html.twig', [
             'event' => $event,

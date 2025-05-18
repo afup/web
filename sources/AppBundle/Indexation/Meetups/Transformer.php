@@ -10,11 +10,9 @@ use AppBundle\Event\Model\Meetup;
 
 class Transformer
 {
-    const MEETUP_URL = 'https://www.meetup.com/fr-FR/';
+    public const MEETUP_URL = 'https://www.meetup.com/fr-FR/';
 
-    public function __construct(private readonly AntennesCollection $antennesCollection)
-    {
-    }
+    public function __construct(private readonly AntennesCollection $antennesCollection) {}
 
     /**
      * @return array

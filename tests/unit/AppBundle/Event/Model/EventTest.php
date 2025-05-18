@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 final class EventTest extends TestCase
 {
     #[DataProvider('dates')]
-    public function testIsCfpOpen(? DateTime $start, ? DateTime $end, bool $expected): void
+    public function testIsCfpOpen(?DateTime $start, ?DateTime $end, bool $expected): void
     {
         $event = new Event();
         $event->setDateStartCallForPapers($start);

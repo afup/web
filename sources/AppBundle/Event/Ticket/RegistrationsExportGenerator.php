@@ -22,8 +22,7 @@ class RegistrationsExportGenerator
         private readonly TicketRepository $ticketRepository,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly UserRepository $userRepository,
-    ) {
-    }
+    ) {}
 
     public function export(Event $event, \SplFileObject $toFile): void
     {

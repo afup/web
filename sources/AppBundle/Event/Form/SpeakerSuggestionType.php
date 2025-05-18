@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Event\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -29,7 +28,7 @@ class SpeakerSuggestionType extends AbstractType
                         new Length(['max' => 254]),
                         new Email(),
                     ],
-                ]
+                ],
             )
             ->add(
                 'suggester_name',
@@ -40,7 +39,7 @@ class SpeakerSuggestionType extends AbstractType
                         new NotBlank(),
                         new Length(['max' => 254]),
                     ],
-                ]
+                ],
             )
             ->add(
                 'speaker_name',
@@ -51,7 +50,7 @@ class SpeakerSuggestionType extends AbstractType
                             new NotBlank(),
                             new Length(['max' => 254]),
                         ],
-                    ]
+                    ],
             )
             ->add(
                 'comment',
@@ -63,7 +62,7 @@ class SpeakerSuggestionType extends AbstractType
                         new NotBlank(),
                         new Length(['max' => 1500]),
                     ],
-                ]
+                ],
             )
             ->add('save', SubmitType::class, ['label' => 'Suggérer'])
         ;

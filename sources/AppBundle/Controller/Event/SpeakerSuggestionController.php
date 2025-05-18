@@ -22,8 +22,7 @@ class SpeakerSuggestionController extends AbstractController
         private readonly Mailer $mailer,
         private readonly RepositoryFactory $repositoryFactory,
         private readonly EventActionHelper $eventActionHelper,
-    ) {
-    }
+    ) {}
 
     /**
      * @param string $eventSlug
@@ -39,7 +38,7 @@ class SpeakerSuggestionController extends AbstractController
                 'event/speaker-suggestion/closed.html.twig',
                 [
                     'event' => $event,
-                ]
+                ],
             );
         }
 
@@ -66,7 +65,7 @@ class SpeakerSuggestionController extends AbstractController
             [
                 'form' => $form->createView(),
                 'event' => $event,
-            ]
+            ],
         );
     }
 
@@ -91,7 +90,7 @@ class SpeakerSuggestionController extends AbstractController
             [
                 'event' => $event,
                 'speaker_suggestion' => $speakerSuggestion,
-            ]
+            ],
         );
 
         $this->mailer->sendSimpleMessage($subject, $content, MailUserFactory::conferences());

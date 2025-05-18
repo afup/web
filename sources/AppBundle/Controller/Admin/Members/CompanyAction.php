@@ -20,8 +20,7 @@ class CompanyAction extends AbstractController
     public function __construct(
         private CompanyMemberRepository $companyMemberRepository,
         private UserRepository $userRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request, ?int $id)
     {

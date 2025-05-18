@@ -26,8 +26,7 @@ class StatsAction extends AbstractController
         private readonly TicketTypeRepository $ticketTypeRepository,
         private readonly EventStatsRepository $eventStatsRepository,
         private readonly EventRepository $eventRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {
@@ -76,11 +75,11 @@ class StatsAction extends AbstractController
             'series' => [
                 [
                     'name' => $event->getTitle(),
-                    'data' => array_values(array_map(static fn ($item) => $item['n'], $stats['suivi'])),
+                    'data' => array_values(array_map(static fn($item) => $item['n'], $stats['suivi'])),
                 ],
                 [
                     'name' => $comparedEvent->getTitle(),
-                    'data' => array_values(array_map(static fn ($item) => $item['n_1'], $stats['suivi'])),
+                    'data' => array_values(array_map(static fn($item) => $item['n_1'], $stats['suivi'])),
                 ],
             ],
         ];

@@ -1,15 +1,16 @@
 <?php
 
 declare(strict_types=1);
+
 namespace Afup\Site\Corporate;
 
 use Afup\Site\Utils\Base_De_Donnees;
 
 class Site
 {
-    const WEB_PATH = '/';
-    const WEB_PREFIX = 'pages/site/';
-    const WEB_QUERY_PREFIX = '?route=';
+    public const WEB_PATH = '/';
+    public const WEB_PREFIX = 'pages/site/';
+    public const WEB_QUERY_PREFIX = '?route=';
 
     /**
      * @var Base_De_Donnees

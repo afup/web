@@ -19,8 +19,7 @@ final readonly class MeetupClient
     public function __construct(
         private HttpClientInterface $httpClient,
         private AntennesCollection $antennesCollection,
-    ) {
-    }
+    ) {}
 
     /**
      * @return Meetup[]

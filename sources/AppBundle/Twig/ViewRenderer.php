@@ -16,8 +16,7 @@ class ViewRenderer
         private readonly Security $security,
         private readonly RequestStack $requestStack,
         private readonly Environment $twig,
-    ) {
-    }
+    ) {}
 
 
     /**

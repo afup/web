@@ -15,9 +15,7 @@ class FeedAddAction extends AbstractController
 {
     use DbLoggerTrait;
 
-    public function __construct(private FeedRepository $feedRepository)
-    {
-    }
+    public function __construct(private FeedRepository $feedRepository) {}
 
     public function __invoke(Request $request)
     {
@@ -30,7 +28,7 @@ class FeedAddAction extends AbstractController
                 $data->url,
                 $data->feed,
                 $data->status,
-                $data->userId
+                $data->userId,
             );
 
             if ($ok) {

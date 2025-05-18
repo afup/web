@@ -14,8 +14,7 @@ class StatisticsComputer
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly CompanyMemberRepository $companyMemberRepository,
-    ) {
-    }
+    ) {}
 
     public function computeStatistics(): Statistics
     {

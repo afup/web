@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Validator\Constraints;
 
 use CCMBenchmark\Ting\Repository\Repository;

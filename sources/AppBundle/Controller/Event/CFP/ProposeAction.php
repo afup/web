@@ -24,8 +24,7 @@ class ProposeAction extends AbstractController
         private readonly TranslatorInterface $translator,
         private readonly SidebarRenderer $sidebarRenderer,
         private readonly EventActionHelper $eventActionHelper,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): Response
     {

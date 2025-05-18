@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace AppBundle\Security;
 
 use AppBundle\Event\Model\GithubUser;
@@ -20,9 +19,7 @@ use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface
 
 class TestGithubAuthenticator extends OAuth2Authenticator implements AuthenticationEntryPointInterface
 {
-    public function __construct(private readonly GithubUserRepository $githubUserRepository)
-    {
-    }
+    public function __construct(private readonly GithubUserRepository $githubUserRepository) {}
 
     public function authenticate(Request $request): SelfValidatingPassport
     {
@@ -48,7 +45,7 @@ class TestGithubAuthenticator extends OAuth2Authenticator implements Authenticat
                 $this->githubUserRepository->save($user);
 
                 return $user;
-            })
+            }),
         );
     }
 

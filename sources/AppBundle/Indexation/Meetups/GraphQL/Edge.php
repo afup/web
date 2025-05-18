@@ -9,7 +9,5 @@ namespace AppBundle\Indexation\Meetups\GraphQL;
  */
 final class Edge
 {
-    public function __construct(public Node $node)
-    {
-    }
+    public function __construct(public Node $node) {}
 }

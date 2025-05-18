@@ -25,9 +25,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TicketType extends AbstractType
 {
-    const MEMBER_NOT = 0;
-    const MEMBER_PERSONAL = 1;
-    const MEMBER_CORPORATE = 2;
+    public const MEMBER_NOT = 0;
+    public const MEMBER_PERSONAL = 1;
+    public const MEMBER_CORPORATE = 2;
 
     private readonly AntennesCollection $antennesCollection;
 

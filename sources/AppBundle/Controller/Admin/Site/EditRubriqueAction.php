@@ -18,8 +18,7 @@ class EditRubriqueAction extends AbstractController
     public function __construct(
         private RubriqueRepository $rubriqueRepository,
         private string $storageDir,
-    ) {
-    }
+    ) {}
 
     public function __invoke(int $id,Request $request): Response
     {

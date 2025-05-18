@@ -17,8 +17,7 @@ class OpenfeedbackJsonGenerator
     public function __construct(
         private readonly TalkRepository $talkRepository,
         private readonly PhotoStorage $photoStorage,
-    ) {
-    }
+    ) {}
 
     public function generate(Event $event): array
     {

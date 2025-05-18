@@ -24,8 +24,7 @@ class NewsController extends AbstractController
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly RepositoryFactory $repositoryFactory,
         private readonly string $projectDir,
-    ) {
-    }
+    ) {}
 
     public function display($code): Response
     {

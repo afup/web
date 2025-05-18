@@ -44,8 +44,7 @@ class Cotisations
     public function __construct(
         private readonly Base_De_Donnees $_bdd,
         private readonly ?Droits $_droits = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Renvoit la liste des cotisations concernant une personne
@@ -256,7 +255,7 @@ class Cotisations
             $this
                 ->updatePayment(
                     $cotisation['id'],
-                    AFUP_COTISATIONS_REGLEMENT_ENLIGNE, "autorisation : " . $autorisation . " / transaction : " . $transaction
+                    AFUP_COTISATIONS_REGLEMENT_ENLIGNE, "autorisation : " . $autorisation . " / transaction : " . $transaction,
                 );
         } elseif (substr(md5($reference), -3) === strtolower($verif) && !$this->estDejaReglee($cmd)) {
             [$ref, $date, $type_personne, $id_personne, $reste] = explode('-', (string) $cmd, 5);
@@ -364,7 +363,7 @@ class Cotisations
             $pdf->Ln(10);
             $pdf->MultiCell(180, 5, sprintf(
                 "Référence client : %s",
-                $cotisation['reference_client']
+                $cotisation['reference_client'],
             ));
         }
 
@@ -504,17 +503,17 @@ class Cotisations
             $company = $this->companyMemberRepository ? $this->companyMemberRepository->get($personne['id_personne']) : null;
             Assertion::notNull($company);
             $contactPhysique = [
-                'nom'=> $company->getLastName(),
-                'prenom'=> $company->getFirstName(),
-                'email'=> $company->getEmail(),
+                'nom' => $company->getLastName(),
+                'prenom' => $company->getFirstName(),
+                'email' => $company->getEmail(),
             ];
         } else {
             $user = $userRepository->get($personne['id_personne']);
             Assertion::notNull($user);
             $contactPhysique = [
-                'nom'=> $user->getLastName(),
-                'prenom'=> $user->getFirstName(),
-                'email'=> $user->getEmail(),
+                'nom' => $user->getLastName(),
+                'prenom' => $user->getFirstName(),
+                'email' => $user->getEmail(),
             ];
         }
         $patternPrefix = $contactPhysique['nom'];
@@ -534,13 +533,13 @@ class Cotisations
 
         $message = new Message('Facture AFUP', null, new MailUser(
             $contactPhysique['email'],
-            sprintf('%s %s', $contactPhysique['prenom'], $contactPhysique['nom'])
+            sprintf('%s %s', $contactPhysique['prenom'], $contactPhysique['nom']),
         ));
         $message->addAttachment(new Attachment(
             $cheminFacture,
             $pattern,
             'base64',
-            'application/pdf'
+            'application/pdf',
         ));
         $ok = $mailer->sendTransactional($message, $corps);
         @unlink($cheminFacture);
