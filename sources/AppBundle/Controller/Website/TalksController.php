@@ -23,12 +23,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class TalksController extends AbstractController
 {
     public function __construct(
-        private readonly ViewRenderer $view,
+        private readonly ViewRenderer      $view,
         private readonly RepositoryFactory $repositoryFactory,
-        private readonly JoindinComments $joindinComments,
-        private readonly JoindinTalk $joindinTalk,
-        private readonly string $algoliaAppId,
-        private readonly string $algoliaFrontendApikey,
+        private readonly JoindinComments   $joindinComments,
+        private readonly JoindinTalk       $joindinTalk,
+        private readonly string            $algoliaAppId,
+        private readonly string            $algoliaFrontendApikey,
     ) {
     }
 
@@ -37,11 +37,17 @@ class TalksController extends AbstractController
         $title = 'Historique des conférences de l\'AFUP';
         $canonical = $this->generateUrl('talks_list', referenceType: UrlGeneratorInterface::ABSOLUTE_URL);
         if (isset($request->get('fR')['speakers.label'][0])) {
-            $title = 'Les vidéos de ' . $request->get('fR')['speakers.label'][0];
-            $canonical = $this->generateUrl('talks_list', ['fR' => $request->get('fR')['speakers.label'][0]], UrlGeneratorInterface::ABSOLUTE_URL);
-        } elseif (isset($request->get('fr')['event.title'][0])) {
+            $label = $request->get('fR')['speakers.label'][0];
+            $title = 'Les vidéos de ' . $label;
+            $canonical = $this->generateUrl('talks_list', [
+                'fR' => ['speakers.label' => [$label]],
+            ], UrlGeneratorInterface::ABSOLUTE_URL);
+        } elseif (isset($request->get('fR')['event.title'][0])) {
+            $label = $request->get('fR')['event.title'][0];
             $title = $request->get('fR')['event.title'][0] . ' les vidéos';
-            $canonical = $this->generateUrl('talks_list', ['fR' => $request->get('fR')['event.title'][0]], UrlGeneratorInterface::ABSOLUTE_URL);
+            $canonical = $this->generateUrl('talks_list', [
+                'fR' => ['event.title' => [$label]],
+            ], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
         return $this->view->render('site/talks/list.html.twig', [
