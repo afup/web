@@ -175,7 +175,7 @@ parameters:
                         - admin_speaker_add
                         - admin_speaker_edit
                 admin_event_speakers_management:
-                    nom: 'Venue speakers'
+                    nom: 'Infos speakers'
                     niveau: 'ROLE_FORUM'
                     url: '/admin/event/speakers-management'
                     extra_routes:

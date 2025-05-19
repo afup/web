@@ -1,16 +1,16 @@
-Feature: Administration - Partie Venue Speakers
+Feature: Administration - Partie Infos Speakers
 
   @reloadDbWithTestData
 
-  Scenario: Un membre ne peut pas accéder aux venues Speakers
+  Scenario: Un membre ne peut pas accéder aux infos Speakers
     Given I am logged-in with the user "paul" and the password "paul"
     And I am on "/admin/event/speakers-expenses"
     Then the response status code should be 403
 
   Scenario: Liste des speakers liés à un évènement et modification d'une information sur la page info speaker
     Given I am logged in as admin and on the Administration
-    And I follow "Venue speakers"
-    Then the ".content h2" element should contain "Venue speakers"
+    And I follow "afup-main-menu-item--admin_event_speakers_management"
+    Then the ".content h2" element should contain "Infos speakers"
     And the ".content table" element should contain "Geoffrey BACHELET"
     When I follow the button of tooltip "Voir sa page"
     Then I should see "Ma page speaker : forum"
