@@ -319,7 +319,6 @@ button {
 }
 
 .ticket-form-group.checkbox-group input[type="checkbox"] {
-  width: auto;
   margin-right: 12px;
   margin-top: 4px;
   cursor: pointer;

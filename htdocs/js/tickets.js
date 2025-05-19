@@ -155,13 +155,12 @@ $(document).ready(function() {
                 for (let i = 0; i < currentPersonnes; i++) {
                     // Check if ticket type is selected
                     if ($(`input[name="purchase[tickets][${i}][ticketEventType]"]:checked`).length === 0) {
-                        valid = false;
                         alert(`Veuillez sélectionner un type de billet pour le billet ${i+1}.`);
-                        break;
+                        return false;
                     }
 
-                    if (!validateValuesPerFieldSearch("purchase[tickets][${i}]", "le billet ${i+1}")) {
-                        break;
+                    if (!validateValuesPerFieldSearch(`purchase[tickets][${i}]`, `le billet ${i+1}`)) {
+                        return false;
                     }
                 }
                 break;

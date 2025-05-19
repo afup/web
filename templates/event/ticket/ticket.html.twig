@@ -37,14 +37,14 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('/css/tickets-modern.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/css/tickets-2025.css') }}?={{ asset_md5_start('/css/tickets-2025.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 {% endblock %}
 
 {% block content %}
     <script src="{{ asset('templates/site/js/vendor/jquery-1.8.0.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/formdata-polyfill@3.0.11/formdata.min.js"></script>
-    <script src="{{ asset('js/tickets-modern.js') }}?1"></script>
+    <script src="{{ asset('js/tickets.js') }}?v={{ asset_md5_start('js/tickets.js') }}"></script>
 
     <script type="text/javascript">
 		var nbInscriptions = {{ nbPersonnes }};
@@ -102,7 +102,7 @@
                 <span class="step-label">1. Nombre de billets</span>
             </div>
             <div class="step-item" data-step="2">
-                <span class="step-label">2. Informations participants</span>
+                <span class="step-label">2. Informations billets</span>
             </div>
             <div class="step-item" data-step="3">
                 <span class="step-label">3. Facturation & Paiement</span>
@@ -129,7 +129,7 @@
 
         <!-- Step 2: Attendee Information -->
         <div id="ticket-step-2" class="ticket-step">
-            <h2>Informations sur les participants</h2>
+            <h2>Informations sur les participant•e•s</h2>
             {{ form_errors(ticketForm.tickets) }}
             
             {% set currentDate = 'now'|date('Y-m-d') %}
@@ -323,8 +323,8 @@
                 <div class="ticket-summary" id="ticket-summary"></div>
                 
                 <div>
-                    <p>Une fois votre commande effectuée, <strong>chaque participant recevra un email de confirmation</strong> et la facture sera transmise à l'adresse indiquée dans l'onglet facturation.<br>
-                    Ensuite, pas besoin de billet, chaque participant recevra quelques jours avant l'évènement <strong>un email de convocation</strong> avec toutes les informations nécessaires pour préparer sa venue.</p>
+                    <p>Une fois votre commande effectuée, <strong>chaque participant•e recevra un email de confirmation</strong> et la facture sera transmise à l'adresse indiquée dans l'onglet facturation.<br>
+                    Ensuite, pas besoin de billet, chaque participant•e recevra quelques jours avant l'évènement <strong>un email de convocation</strong> avec toutes les informations nécessaires pour préparer sa venue.</p>
                 </div>
                 
                 <p>Si vous rencontrez le moindre problème, n'hésitez pas à nous contacter à l'adresse bonjour [@] afup.org.</p>
