@@ -12,7 +12,7 @@ class Vote implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    private int $id;
+    private ?int $id = null;
 
     #[Assert\NotBlank]
     #[Assert\GreaterThan(0)]
@@ -75,7 +75,7 @@ class Vote implements NotifyPropertyInterface
         return $this->comment;
     }
 
-    public function setComment(string $comment): self
+    public function setComment(?string $comment): self
     {
         $this->propertyChanged('comment', $this->comment, $comment);
         $this->comment = $comment;

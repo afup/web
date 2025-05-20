@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Event;
 
-use AppBundle\Association\Model\User;
 use AppBundle\Event\Form\VoteType;
+use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
 use AppBundle\Event\Model\Talk;
@@ -118,7 +118,7 @@ class VoteController extends AbstractController
         }
 
         $vote = new Vote();
-        if ($this->getUser() instanceof User) {
+        if ($this->getUser() instanceof GithubUser) {
             $vote->setUser($this->getUser()->getId());
         }
 
