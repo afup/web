@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event;
 
+use Symfony\Component\Form\FormView;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\RoomType;
 use AppBundle\Event\Form\Support\EventSelectFactory;
@@ -71,7 +72,7 @@ class RoomAction extends AbstractController implements AdminActionWithEventSelec
             'event' => $event,
             'rooms' => $rooms,
             'addForm' => $addForm === null ? null : $addForm->createView(),
-            'editForms' => $editForms === null ? null : array_map(static fn(Form $form) => $form->createView(), $editForms),
+            'editForms' => $editForms === null ? null : array_map(static fn(Form $form): FormView => $form->createView(), $editForms),
             'title' => 'Gestion des salles',
             'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
         ]);
