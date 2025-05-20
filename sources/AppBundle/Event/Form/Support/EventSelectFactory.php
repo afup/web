@@ -11,23 +11,21 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final readonly class EventSelectFactory
 {
     public function __construct(
         private FormFactoryInterface $formFactory,
-        private SessionInterface $session,
         private EventRepository $eventRepository,
     ) {}
 
     public function create(Event $event, Request $request): FormInterface
     {
         // L'id dans l'url est prioritaire sur celui de la session
-        $selectedEventId = $request->query->get('id') ?? $this->session->get(AdminActionWithEventSelector::SESSION_KEY);
+        $selectedEventId = $request->query->get('id') ?? $request->getSession()->get(AdminActionWithEventSelector::SESSION_KEY);
 
         if ($request->query->has('id')) {
-            $this->session->set(AdminActionWithEventSelector::SESSION_KEY, $selectedEventId);
+            $request->getSession()->set(AdminActionWithEventSelector::SESSION_KEY, $selectedEventId);
         }
 
         $selectedEvent = null;
