@@ -35,20 +35,15 @@ class VoteController extends AbstractController
     ) {}
 
     /**
-     * @param $eventSlug
-     * @param int $page
      * @param bool $all if true => show all talks to rate even if already rated by the current user
      */
-    public function index($eventSlug, $page = 1, $all = false): Response
+    public function index(string $eventSlug, int $page = 1, bool $all = false): Response
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
         if (!$event->isVoteAvailable()) {
             return $this->render('event/cfp/closed.html.twig', ['event' => $event]);
         }
 
-        /**
-         * @var TalkRepository $talkRepository
-         */
         $talkRepository = $this->repositoryFactory->get(TalkRepository::class);
 
         // Get a random list of unrated talks
@@ -60,43 +55,37 @@ class VoteController extends AbstractController
 
         $vote = new Vote();
         $forms = function () use ($talks, $vote, $eventSlug) {
-            foreach ($talks as $talk) {
-                $myVote = $talk['asvg'] ?? clone $vote;
+            foreach ($talks as $session) {
+                /** @var Talk $talk */
+                $talk = $session['sessions'];
+                $myVote = $session['asvg'] ?? clone $vote;
                 /*
                  * By using a yield here, there will be only one iteration over the talks for the entire page
                  */
                 yield [
-                    'form' => $this->createVoteForm($eventSlug, $talk['sessions']->getId(), $myVote)->createView(),
-                    'talk' => $talk['sessions'],
+                    'form' => $this->createVoteForm($eventSlug, $talk->getId(), $myVote)->createView(),
+                    'talk' => $talk,
                 ];
             }
         };
 
-        return $this->render(
-            'event/vote/liste.html.twig',
-            [
-                'numberOfTalks' => $talks->count(),
-                'route' => ($all === true ? 'vote_all_paginated' : 'vote_index_paginated'),
-                'page' => $page,
-                'talks' => $forms(),
-                'event' => $event,
-                'all' => $all,
-            ],
-        );
+        return $this->render('event/vote/liste.html.twig', [
+            'numberOfTalks' => $talks->count(),
+            'route' => ($all === true ? 'vote_all_paginated' : 'vote_index_paginated'),
+            'page' => $page,
+            'talks' => $forms(),
+            'event' => $event,
+            'all' => $all,
+        ]);
     }
 
-    /**
-     * @param string $eventSlug
-     * @param int $talkId
-     * @return FormInterface
-     */
-    private function createVoteForm($eventSlug, $talkId, Vote $vote)
+    private function createVoteForm(string $eventSlug, int $talkId, Vote $vote): FormInterface
     {
         if (!$this->formBuilder instanceof FormBuilderInterface) {
             $this->formBuilder = $this->createFormBuilder();
         }
 
-        $vote->setSessionId((int) $talkId);
+        $vote->setSessionId($talkId);
 
         return $this
             ->formBuilder->create(
@@ -110,7 +99,7 @@ class VoteController extends AbstractController
             ->getForm();
     }
 
-    public function new(Request $request, $eventSlug, $talkId)
+    public function new(Request $request, string $eventSlug, int $talkId): JsonResponse
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
         if (!$event->isVoteAvailable()) {
@@ -143,9 +132,7 @@ class VoteController extends AbstractController
             return new JsonResponse(['errors' => ['Talk does not exists']], Response::HTTP_BAD_REQUEST);
         }
 
-        /** @var VoteRepository $voteRepository */
         $voteRepository = $this->repositoryFactory->get(VoteRepository::class);
-        /** @var Vote $vote */
         $vote = $form->getData();
         $vote->setSubmittedOn(new \DateTime());
 
@@ -162,13 +149,8 @@ class VoteController extends AbstractController
         return new JsonResponse(['errors' => []]);
     }
 
-    /**
-     * @param $talkId
-     * @return Talk|false
-     */
-    private function findTalk($talkId)
+    private function findTalk(int $talkId): Talk|false
     {
-        /** @var TalkRepository $talkRepository */
         $talkRepository = $this->repositoryFactory->get(TalkRepository::class);
         /** @var Talk $talk */
         $talk = $talkRepository->getOneBy(['id' => $talkId]);
