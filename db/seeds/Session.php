@@ -103,6 +103,24 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
                 'date_publication' => (new \DateTime())->modify('+5 days')->format('Y-m-d H:i:s'),
                 'has_allowed_to_sharing_with_local_offices' => 1,
             ],
+            [
+                'session_id' => 4,
+                'id_forum' => 2,
+                'date_soumission' => $date->format('Y-m-d'),
+                'titre' => 'Une conf pour voter',
+                'abstract' => 'Une conf soumise pour tester le vote du CFP',
+                'plannifie' => 0,
+                'genre' => 1,
+            ],
+            [
+                'session_id' => 5,
+                'id_forum' => 2,
+                'date_soumission' => $date->format('Y-m-d'),
+                'titre' => 'Une deuxième conf pour voter',
+                'abstract' => 'Une deuxième conf soumise pour tester le vote du CFP',
+                'plannifie' => 0,
+                'genre' => 3,
+            ],
         ];
 
         $table = $this->table('afup_sessions');

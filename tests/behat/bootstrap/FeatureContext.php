@@ -11,6 +11,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Step\Then;
+use Behat\Step\When;
 use Smalot\PdfParser\Parser;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -550,5 +551,15 @@ class FeatureContext implements Context
     public function responseShouldContainsDate(string $datetimeFormat, string $withFormat = DateTimeInterface::ATOM): void
     {
         $this->minkContext->assertResponseContains((new DateTimeImmutable($datetimeFormat))->format($withFormat));
+    }
+
+    #[When('/^(?:|I )fill hidden field "(?P<field>(?:[^"]|\\")*)" with "(?P<value>(?:[^"]|\\")*)"$/')]
+    #[When('/^(?:|I )fill hidden field "(?P<field>(?:[^"]|\\")*)" with:$/')]
+    #[When('/^(?:|I )fill hidden field "(?P<value>(?:[^"]|\\")*)" for "(?P<field>(?:[^"]|\\")*)"$/')]
+    public function fillHiddenField($field, $value): void
+    {
+        $this->minkContext->getSession()->getPage()
+            ->find('css', 'input[name="' . $field . '"]')
+            ?->setValue($value);
     }
 }
