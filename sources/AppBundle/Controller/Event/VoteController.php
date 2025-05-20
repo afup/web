@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Admin;
+namespace AppBundle\Controller\Event;
 
 use AppBundle\Association\Model\User;
-use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\VoteType;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
