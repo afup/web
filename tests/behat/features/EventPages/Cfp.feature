@@ -92,3 +92,17 @@ Feature: Event pages - CFP
     # Nouvelle proposition
     When I follow "Nouvelle proposition"
     Then I should see "Le CFP n'est pas encore ouvert."
+
+  Scenario: On vote pour une conférence
+    Given I am on "/event/afup-day-lyon/vote"
+    Then I should see "Oauth login test"
+    When I follow "Connect as userGithub1"
+    Then I should see "Une deuxième conf pour voter"
+    Then I should see "Une conf pour voter"
+    # Vote
+    When I fill in "vote5[comment]" with "Ça a l'air super !"
+    And I fill hidden field "vote5[vote]" with "4"
+    And I press "vote5[save]"
+    When I am on "/event/afup-day-lyon/vote"
+    Then I should not see "Une deuxième conf pour voter"
+    Then I should see "Une conf pour voter"
