@@ -96,7 +96,7 @@ class VoteController extends AbstractController
             $this->formBuilder = $this->createFormBuilder();
         }
 
-        $vote->setSessionId($talkId);
+        $vote->setSessionId((int) $talkId);
 
         return $this
             ->formBuilder->create(
