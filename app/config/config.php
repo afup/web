@@ -24,6 +24,8 @@ foreach ($lines as $line) {
     $value = trim($value);
     if (is_numeric($value)) {
         $value = (int) $value;
+    } else {
+        $value = trim($value, '"');
     }
 
     $container->setParameter($name, $value);
