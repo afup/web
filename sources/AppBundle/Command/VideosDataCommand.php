@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Command;
 
-use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Speaker;
-use AppBundle\Event\Model\Talk;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -44,37 +41,22 @@ class VideosDataCommand extends Command
             throw new \InvalidArgumentException("Event not found");
         }
 
-        $talks = $talkRepository->getByEventWithSpeakers($event);
+        $talkAggregates = $talkRepository->getByEventWithSpeakers($event);
 
         $data = [];
 
-        foreach ($talks as $talkWithData) {
-            /**
-             * @var Talk $talk
-             */
-            $talk = $talkWithData['talk'];
-
-            /**
-             * @var Planning $planning
-             */
-            $planning = $talkWithData['planning'];
-
-            /**
-             * @var Speaker[] $speakers
-             */
-            $speakers = $talkWithData['.aggregation']['speaker'];
-
+        foreach ($talkAggregates as $talkAggregate) {
             $speakersNames = [];
-            foreach ($speakers as $speaker) {
+            foreach ($talkAggregate->speakers as $speaker) {
                 $speakersNames[] = $speaker->getLabel();
             }
 
             $data[] = [
                 'filepath' => "",
-                'title' => sprintf("%s - %s - %s", $talk->getTitle(), implode(',', $speakersNames), $event->getTitle()),
-                "language" => $talk->getLanguageCode(),
-                'url' => "https://afup.org/talks/" . $talk->getUrlKey(),
-                'recording_date' => $planning->getStart()->format(\Datetime::ISO8601),
+                'title' => sprintf("%s - %s - %s", $talkAggregate->talk->getTitle(), implode(',', $speakersNames), $event->getTitle()),
+                "language" => $talkAggregate->talk->getLanguageCode(),
+                'url' => "https://afup.org/talks/" . $talkAggregate->talk->getUrlKey(),
+                'recording_date' => $talkAggregate->planning->getStart()->format(\Datetime::ISO8601),
             ];
         }
 

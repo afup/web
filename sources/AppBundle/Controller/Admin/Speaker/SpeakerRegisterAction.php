@@ -37,18 +37,22 @@ class SpeakerRegisterAction extends AbstractController
         $event = $this->eventActionHelper->getEventById($request->query->get('id'));
         $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event);
         $nbSpeakers = 0;
+
         foreach ($talkAggregates as $talkAggregate) {
-            $talk = $talkAggregate['talk'];
-            if ($talk->getType() === Talk::TYPE_PHP_PROJECT) {
+            if ($talkAggregate->talk->getType() === Talk::TYPE_PHP_PROJECT) {
                 continue;
             }
-            $speakers = $this->speakerRepository->getSpeakersByTalk($talk);
+
+            $speakers = $this->speakerRepository->getSpeakersByTalk($talkAggregate->talk);
+
             foreach ($speakers as $speaker) {
                 $reference = 'GENCONF-' . $event->getId() . '-' . $speaker->getId() . '-' . Ticket::TYPE_SPEAKER;
                 $invoice = $this->invoiceRepository->getByReference($reference);
+
                 if ($invoice) {
                     continue;
                 }
+
                 $ticket = new Ticket();
                 $ticket->setDate(new DateTime());
                 $ticket->setAmount(0);
@@ -64,6 +68,7 @@ class SpeakerRegisterAction extends AbstractController
                 $ticket->setComments('import auto');
                 $ticket->setStatus(Ticket::STATUS_GUEST);
                 $ticket->setInvoiceStatus(Ticket::INVOICE_TODO);
+
                 try {
                     $this->ticketRepository->save($ticket);
                 } catch (Exception) {
@@ -71,6 +76,7 @@ class SpeakerRegisterAction extends AbstractController
 
                     return $this->redirectToRoute('admin_speaker_list');
                 }
+
                 try {
                     $this->invoiceService->handleInvoicing(
                         $reference,
@@ -102,6 +108,7 @@ class SpeakerRegisterAction extends AbstractController
                 }
             }
         }
+
         $this->addFlash('notice', $nbSpeakers . ' conférenciers ont été ajoutés dans les inscriptions');
 
         return $this->redirectToRoute('admin_speaker_list', [

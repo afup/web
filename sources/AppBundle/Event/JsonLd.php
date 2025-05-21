@@ -8,8 +8,6 @@ use AppBundle\CFP\PhotoStorage;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
-use AppBundle\Event\Model\Speaker;
-use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\TicketEventType;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
 use Symfony\Component\Asset\Packages;
@@ -26,18 +24,12 @@ class JsonLd
 
     public function getDataForEvent(Event $event): array
     {
-        /**
-         * @var Talk[] $talks
-         */
-        $talks = $this->talkRepository->getByEventWithSpeakers($event);
+        $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event);
 
         $subEvents = [];
-        foreach ($talks as $talkInfo) {
+        foreach ($talkAggregates as $talkAggregate) {
             $performers = [];
-            foreach ($talkInfo['.aggregation']['speaker'] as $speaker) {
-                /**
-                 * @var Speaker $speaker
-                 */
+            foreach ($talkAggregate->speakers as $speaker) {
                 $url = $this->photoStorage->getUrl($speaker);
                 $performers[] = [
                     '@type' => 'Person',
@@ -49,20 +41,20 @@ class JsonLd
 
             $subEvent = [
                 '@type' => 'Event',
-                'name' => $talkInfo['talk']->getTitle(),
-                'description' => html_entity_decode(strip_tags((string) $talkInfo['talk']->getDescription())),
+                'name' => $talkAggregate->talk->getTitle(),
+                'description' => html_entity_decode(strip_tags((string) $talkAggregate->talk->getDescription())),
                 'location' => [
                     '@type' => 'Place',
-                    'name' => $talkInfo['room'] ? $talkInfo['room']->getName() : '',
+                    'name' => $talkAggregate->room?->getName() ?? '',
                     'address' => $event->getPlaceAddress(),
                 ],
                 'performers' => $performers,
 
             ];
 
-            if ($talkInfo['planning'] && $event->isPlanningDisplayable()) {
-                $subEvent['startDate'] = $talkInfo['planning']->getStart()->format('c');
-                $subEvent['endDate'] = $talkInfo['planning']->getEnd()->format('c');
+            if ($talkAggregate->planning && $event->isPlanningDisplayable()) {
+                $subEvent['startDate'] = $talkAggregate->planning->getStart()->format('c');
+                $subEvent['endDate'] = $talkAggregate->planning->getEnd()->format('c');
             }
 
             $subEvents[] = $subEvent;

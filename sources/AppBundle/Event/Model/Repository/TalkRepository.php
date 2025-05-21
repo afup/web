@@ -9,6 +9,7 @@ use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\JoinHydrator;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
+use AppBundle\Event\Model\TalkAggregate;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;
@@ -189,10 +190,10 @@ class TalkRepository extends Repository implements MetadataInitializer
     /**
      * @param bool $applyPublicationdateFilters
      *
-     * @return CollectionInterface&iterable<array{talk: Talk, speaker: Speaker, room: mixed, planning: mixed, ".aggregation": array<string, mixed>}>
+     * @return array<TalkAggregate>
      * @throws QueryException
      */
-    public function getByEventWithSpeakers(Event $event, $applyPublicationdateFilters = true)
+    public function getByEventWithSpeakers(Event $event, $applyPublicationdateFilters = true): array
     {
         return $this->getByEventsWithSpeakers([$event], $applyPublicationdateFilters);
     }
@@ -201,10 +202,10 @@ class TalkRepository extends Repository implements MetadataInitializer
      * @param list<Event> $events
      * @param bool $applyPublicationdateFilters
      *
-     * @return CollectionInterface&iterable<array{talk: Talk, speaker: Speaker, room: mixed, planning: mixed, ".aggregation": array<string, mixed>}>
+     * @return array<TalkAggregate>
      * @throws QueryException
      */
-    public function getByEventsWithSpeakers(array $events, $applyPublicationdateFilters = true)
+    public function getByEventsWithSpeakers(array $events, $applyPublicationdateFilters = true): array
     {
         $hydrator = new JoinHydrator();
         $hydrator->aggregateOn('talk', 'speaker', 'getId');
@@ -241,7 +242,19 @@ class TalkRepository extends Repository implements MetadataInitializer
             ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC ', $inEvents, $publicationdateFilters),
         )->setParams($params);
 
-        return $query->query($this->getCollection($hydrator));
+        $result = $query->query($this->getCollection($hydrator));
+        $aggregates = [];
+
+        foreach ($result as $row) {
+            $aggregates[] = new TalkAggregate(
+                $row['talk'],
+                $row['.aggregation']['speaker'],
+                $row['room'] ?? null,
+                $row['planning'] ?? null,
+            );
+        }
+
+        return $aggregates;
     }
 
 
