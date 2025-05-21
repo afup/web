@@ -27,7 +27,7 @@
                     {% endif %}
                 </div>
                 <div>
-                    {% for speaker in talk[".aggregation"].speaker %}
+                    {% for speaker in talk.speakers %}
                         {% if speaker is not null %}
                             <div class="conferencier">
                                 <div class="photo">

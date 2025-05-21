@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace AppBundle\Event\Speaker;
 
 use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Model\Room;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\SpeakerInfos\Form\HotelReservationType;
@@ -143,14 +145,18 @@ class SpeakerPage extends AbstractController
     /**
      * @param Talk[] $talks
      *
-     * @return array<array{talk: Talk, speaker: Speaker, room: mixed, planning: mixed, ".aggregation": array<string, mixed>}>
+     * @return array<array{talk: Talk, room: ?Room, planning: ?Planning}>
      */
     protected function addTalkInfos(Event $event, array $talks): array
     {
-        $allTalks = $this->talkRepository->getByEventWithSpeakers($event, false);
+        $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event, false);
         $allTalksById = [];
-        foreach ($allTalks as $allTalk) {
-            $allTalksById[$allTalk['talk']->getId()] = $allTalk;
+        foreach ($talkAggregates as $talkAggregate) {
+            $allTalksById[$talkAggregate->talk->getId()] = [
+                'talk' => $talkAggregate->talk,
+                'room' => $talkAggregate->room,
+                'planning' => $talkAggregate->planning,
+            ];
         }
 
         $speakerTalks = [];

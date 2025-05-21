@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Event;
 
 use AppBundle\Event\JsonLd;
-use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Room;
-use AppBundle\Event\Model\Talk;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,13 +29,13 @@ class BlogController extends AbstractController
          */
         $talkRepository = $this->repositoryFactory->get(TalkRepository::class);
         $jsonld = $this->jsonLd->getDataForEvent($event);
-        $talks = $talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true));
+        $talkAggregates = $talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true));
         $now = new \DateTime();
 
         return $this->render(
             'blog/program.html.twig',
             [
-                'talks' => iterator_to_array($talks),
+                'talks' => iterator_to_array($talkAggregates),
                 'event' => $event,
                 'jsonld' => $jsonld,
                 'speakersPagePrefix' => $request->query->get('speakers-page-prefix', '/' . $event->getPath() . '/speakers/'),
@@ -62,8 +59,7 @@ class BlogController extends AbstractController
         $talkRepository = $this->repositoryFactory->get(TalkRepository::class);
         $applyPublicationDateFilters = $request->query->getBoolean('apply-publication-date-filters', true);
 
-
-        $talks = $talkRepository->getByEventsWithSpeakers($events, $applyPublicationDateFilters);
+        $talkAggregates = $talkRepository->getByEventsWithSpeakers($events, $applyPublicationDateFilters);
 
         $jsonld = [];
         foreach ($events as $event) {
@@ -76,21 +72,10 @@ class BlogController extends AbstractController
         $hourMin = null;
         $hourMax = null;
 
-        foreach ($talks as $talkWithData) {
-            /**
-             * @var Talk $talk
-             */
-            $talk = $talkWithData['talk'];
-
-            /**
-             * @var Planning $planning
-             */
-            $planning = $talkWithData['planning'];
-
-            /**
-             * @var Room $room
-             */
-            $room = $talkWithData['room'];
+        foreach ($talkAggregates as $talkAggregate) {
+            $talk = $talkAggregate->talk;
+            $planning = $talkAggregate->planning;
+            $room = $talkAggregate->room;
 
             if ($planning === null) {
                 continue;
@@ -118,16 +103,21 @@ class BlogController extends AbstractController
             }
 
             $interval = $planning->getEnd()->diff($planning->getStart());
-            $talkWithData['length'] = $interval->i + $interval->h * 60;
-
 
             $defaultProgramPagePrefix = '/';
             if (isset($events[$talk->getForumId()])) {
                 $eventPath = $events[$talk->getForumId()]->getPath();
                 $defaultProgramPagePrefix = $request->query->get('program-page-prefix-' . $eventPath, '/' . $eventPath . '/programme/');
             }
-            $talkWithData['program_page_prefix'] = $request->query->get('program-page-prefix', $defaultProgramPagePrefix);
-            $eventPlanning[$startDay][$start][$room->getId()][] = $talkWithData;
+
+            $eventPlanning[$startDay][$start][$room->getId()][] = [
+                'talk' => $talkAggregate->talk,
+                'speakers' => $talkAggregate->speakers,
+                'room' => $talkAggregate->room,
+                'planning' => $talkAggregate->planning,
+                'program_page_prefix' => $request->query->get('program-page-prefix', $defaultProgramPagePrefix),
+                'length' => $interval->i + $interval->h * 60,
+            ];
 
             if (isset($rooms[$room->getId()]) === false) {
                 $rooms[$room->getId()] = $room;
@@ -140,7 +130,6 @@ class BlogController extends AbstractController
                 $hasAllEventsDisplayable = false;
             }
         }
-
 
         return $this->render(
             'blog/planning.html.twig',

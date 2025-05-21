@@ -6,11 +6,7 @@ namespace AppBundle\Openfeedback;
 
 use AppBundle\CFP\PhotoStorage;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Room;
-use AppBundle\Event\Model\Speaker;
-use AppBundle\Event\Model\Talk;
 
 class OpenfeedbackJsonGenerator
 {
@@ -21,32 +17,12 @@ class OpenfeedbackJsonGenerator
 
     public function generate(Event $event): array
     {
-        $talks = $this->talkRepository->getByEventWithSpeakers($event);
+        $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event);
         $data = [];
-        foreach ($talks as $talkWithData) {
-            /**
-             * @var Talk
-             */
-            $talk = $talkWithData['talk'];
-
-            /**
-             * @var Speaker[]
-             */
-            $speakers = $talkWithData['.aggregation']['speaker'];
-
-            /**
-             * @var Planning
-             */
-            $planning = $talkWithData['planning'];
-
-            /**
-             * @var Room
-             */
-            $room = $talkWithData['room'];
-
+        foreach ($talkAggregates as $talkAggregate) {
             $speakersFormatted = [];
             $speakersId = [];
-            foreach ($speakers as $speaker) {
+            foreach ($talkAggregate->speakers as $speaker) {
                 $speakersId[] = "{$speaker->getId()}";
                 $speakersFormatted[] = [
                     'name' => $speaker->getLabel(),
@@ -63,18 +39,18 @@ class OpenfeedbackJsonGenerator
 
             $talkFormatted = [
                 'speakers' => $speakersId,
-                'tags' => [$talk->getTypeLabel()],
-                'title' => $talk->getTitle(),
-                'id' => "{$talk->getId()}",
-                'trackTitle' => ($room ? $room->getName() : ''),
+                'tags' => [$talkAggregate->talk->getTypeLabel()],
+                'title' => $talkAggregate->talk->getTitle(),
+                'id' => "{$talkAggregate->talk->getId()}",
+                'trackTitle' => $talkAggregate->room?->getName() ?? '',
             ];
 
-            if (null !== $planning) {
-                $talkFormatted ['startTime'] = $this->getOpenfeedbackFormat($planning->getStart());
-                $talkFormatted ['endTime'] = $this->getOpenfeedbackFormat($planning->getEnd());
+            if (null !== $talkAggregate->planning) {
+                $talkFormatted['startTime'] = $this->getOpenfeedbackFormat($talkAggregate->planning->getStart());
+                $talkFormatted['endTime'] = $this->getOpenfeedbackFormat($talkAggregate->planning->getEnd());
             }
 
-            $data['sessions'][$talk->getId()] = $talkFormatted;
+            $data['sessions'][$talkAggregate->talk->getId()] = $talkFormatted;
 
             foreach ($speakersFormatted as $person) {
                 $data['speakers'][$person["id"]] = $person;
@@ -83,7 +59,7 @@ class OpenfeedbackJsonGenerator
         return $data;
     }
 
-    public function getOpenfeedbackFormat(\DateTime $date): string
+    private function getOpenfeedbackFormat(\DateTime $date): string
     {
         return $date->format('Y-m-d\TH:i:sP');
     }

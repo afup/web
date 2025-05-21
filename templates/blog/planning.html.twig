@@ -54,7 +54,7 @@
                                                     <a href="{{ row.program_page_prefix }}#{{ row.talk.id }}" name="ag_sess_{{ row.talk.id }}">
                                                         {{ row.talk.title }}
                                                         <div class="conferencier">
-                                                            {% for speaker in row[".aggregation"].speaker %}
+                                                            {% for speaker in row.speakers %}
                                                                 {% if loop.index > 1 %} / {% endif %}
                                                                 {{ speaker.label }}
                                                                 {% if speaker.company %}
