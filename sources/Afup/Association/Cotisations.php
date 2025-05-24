@@ -191,36 +191,42 @@ class Cotisations
         return $this->_bdd->obtenirUn($requete);
     }
 
-    public function notifierReglementEnLigneAuTresorier(string $cmd, string $total, string $autorisation, string $transaction, UserRepository $userRepository): ?bool
+    public function notifierReglementEnLigneAuTresorier(string $cmd, float $total, string $autorisation, string $transaction, UserRepository $userRepository): ?bool
     {
         if (str_starts_with($cmd, 'F')) {
+            // Facture
             $invoiceNumber = substr($cmd, 1);
             $cotisation = $this->getByInvoice($invoiceNumber);
-            $company = $this->companyMemberRepository ? $this->companyMemberRepository->get($cotisation['id_personne']) : null;
-            if ($company === null) {
-                throw new \RuntimeException(sprintf('Personne morale non trouvée pour "%s"', $cmd));
-            }
-            $infos = [
-                'nom' => $company->getLastName(),
-                'prenom' => $company->getFirstName(),
-                'email' => $company->getEmail(),
-                'id' => $cotisation['id_personne'],
-                'type' => AFUP_PERSONNES_MORALES,
-            ];
+            $type_personne = $cotisation['type_personne'];
+            $id_personne = $cotisation['id_personne'];
+
         } else {
+            // Cotisation
             [$ref, $date, $type_personne, $id_personne, $reste] = explode('-', $cmd, 5);
-            $user = $userRepository->get($id_personne);
-            if ($user === null) {
-                throw new \RuntimeException(sprintf('Personne physique non trouvée pour "%s"', $cmd));
-            }
-            $infos = [
-                'nom' => $user->getLastName(),
-                'prenom' => $user->getFirstName(),
-                'email' => $user->getEmail(),
-                'id' => $id_personne,
-                'type' => $type_personne,
-            ];
         }
+
+        $infos = [
+            'id' => $id_personne,
+            'type' => $type_personne,
+            'nom' => 'N.C.',
+            'prenom' => 'N.C.',
+            'email' => 'N.C.',
+        ];
+
+        if ($type_personne == AFUP_PERSONNES_MORALES) {
+            if ($company = $this->companyMemberRepository?->get($id_personne)) {
+                $infos['nom'] = $company->getLastName();
+                $infos['prenom'] = $company->getFirstName();
+                $infos['email'] = $company->getEmail();
+            }
+        } else {
+            if ($user = $userRepository->get($id_personne)) {
+                $infos['nom'] = $user->getLastName();
+                $infos['prenom'] = $user->getFirstName();
+                $infos['email'] = $user->getEmail();
+            }
+        }
+
 
         $sujet = "Paiement cotisation AFUP\n";
 
@@ -283,20 +289,20 @@ class Cotisations
     }
 
     /**
-     * @return int[]|string[]
+     * @return array{type: int, id: int}
      */
-    public function getAccountFromCmd($cmd): array
+    public function getAccountFromCmd(string $cmd): array
     {
-        $arr = explode('-', (string) $cmd, 5);
-        // Personne morale : $cmd=FCOTIS-2023-202
+        $arr = explode('-', $cmd, 5);
+        // Depuis une facture : $cmd=FCOTIS-2023-202
         if (3 === count($arr)) {
-            return ['type' => UserRepository::USER_TYPE_COMPANY, 'id' => $arr[2]];
+            return ['type' => UserRepository::USER_TYPE_COMPANY, 'id' => (int) $arr[2]];
         }
 
-        // Personne physique : $cmd=C2023-211120232237-0-5-PAUL-431
+        // Depuis une cotisation : $cmd=C2023-211120232237-0-5-PAUL-431
         [$ref, $date, $memberType, $memberId, $stuff] = $arr;
 
-        return ['type' => $memberType, 'id' => $memberId];
+        return ['type' => (int) $memberType, 'id' => (int) $memberId];
     }
 
     /**
