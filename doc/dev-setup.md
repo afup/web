@@ -99,6 +99,12 @@ Il faut se connecter au container via `make console` puis :
 ./bin/behat
 ```
 
+ou
+
+```bash
+make behat
+```
+
 > [!TIP]
 > Il est possible de spécifier un test dans la ligne de commande :
 > ```bash
@@ -119,7 +125,7 @@ Si par la suite, vous souhaitez lancer un test, il faut bien penser à les allum
 Les tests unitaires sont écrits via PHPUnit.
 
 ```bash
-bash unit-test
+make unit-test
 ```
 
 ### Tests d'intégration
@@ -127,7 +133,7 @@ bash unit-test
 Ces tests sont écrits via PHPUnit et utilisent le kernel de Symfony : https://symfony.com/doc/current/testing.html#integration-tests
 
 ```bash
-bash test-integration
+make test-integration
 ```
 
 Une alternative est d'utiliser la commande `make test-integration`, attention cette commande arrête les containeurs de

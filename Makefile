@@ -1,8 +1,6 @@
 default: help
 
 # Variables
-CURRENT_UID ?= $(shell id -u)
-DOCKER_UP_OPTIONS ?=
 DOCKER_COMPOSE_BIN ?= docker compose
 
 # Colors
@@ -13,9 +11,8 @@ TEXT_BOLD = \033[1m
 
 ##@ Setup 📜
 ### Installer le projet from scratch
-install:
-	cp -n .env.dist .env && cp -n docker.env docker.env.local && cp -n ./docker/data/history.dist ./docker/data/history && cp -n compose.override.yml-dist compose.override.yml
-	mkdir -p ./htdocs/uploads -p ./tmp
+install: init-file init-folder
+	cp -n ./docker/data/history.dist ./docker/data/history && cp -n compose.override.yml-dist compose.override.yml
 
 	$(DOCKER_COMPOSE_BIN) up -d --build
 
@@ -26,7 +23,7 @@ install:
 	$(MAKE) --no-print-directory build-assets
 
 	# Reset la base de donnée
-	cat ./.docker/mysql/reset-db.sql | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
+	cat ./docker/mysql/reset-db.sql | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
 
 	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp php bin/phinx migrate
 	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp php bin/phinx seed:run
@@ -35,7 +32,7 @@ install:
 reset:
 	$(DOCKER_COMPOSE_BIN) down --remove-orphans -v
 	rm -f ./.env -f ./docker.env.local -f ./docker/data/history -f compose.override.yml
-	sudo rm -rf ./var ./vendor ./node_modules ./htdocs/bundles ./htdocs/docs ./htdocs/uploads ./htdocs/assets ./tmp
+	sudo rm -rf ./var/cache/dev ./var/cache/prod ./var/cache/test ./var/logs/*.log ./vendor ./node_modules ./htdocs/bundles ./htdocs/docs ./htdocs/uploads ./htdocs/assets ./tmp
 
 ### Reinstalle le projet from scratch
 reinstall: reset install
@@ -54,24 +51,20 @@ watch-assets:
 	$(DOCKER_COMPOSE_BIN) run --rm node npm run watch
 
 ##@ Quality ✨
-### Installe l'environment de test
-install-test:
-	mkdir -p ./htdocs/uploads -p ./tmp
-
 ### Lance toute la suite de tests
 tests: cs-lint unit-test test-integration behat
 
 ### Lance les tests unitaire
 unit-test:
-	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephptest ./bin/phpunit --testsuite unit
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp ./bin/phpunit --testsuite unit
 
 ### Tests d'intégration
 test-integration: # not work
-	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephptest ./bin/phpunit --testsuite integration
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp ./bin/phpunit --testsuite integration
 
 ### Tests fonctionnels
 behat:
-	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephptest ./bin/behat
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp ./bin/behat
 
 ### PHP CS Fixer (dry run)
 cs-lint:
@@ -108,7 +101,7 @@ test-integration-ci:
 
 ### Analyse PHPStan
 phpstan:
-	docker run -v $(shell pwd):/app --rm ghcr.io/phpstan/phpstan
+	$(DOCKER_COMPOSE_BIN) exec -u localUser apachephp ./bin/phpstan --memory-limit=-1
 
 ##@ Docker 🐳
 ### Démarrer un bash dans le container PHP
@@ -139,9 +132,12 @@ help:
 .PHONY: install tests hooks console phpstan help
 .SILENT: help
 
+## Target only used by other make command
+# Used by "rector" target
 var/cache/dev/AppKernelDevDebugContainer.xml:
 	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp bin/console cache:warmup --env=dev
 
+# Used by "hooks" target
 pre-commit:
 	echo "#!/bin/sh" > .git/hooks/pre-commit
 	echo "docker compose run --rm -u localUser apachephp make test" >> .git/hooks/pre-commit
@@ -151,3 +147,11 @@ post-checkout:
 	echo "#!/bin/sh" > .git/hooks/post-checkout
 	echo "docker compose run --rm -u localUser apachephp composer install --no-scripts" >> .git/hooks/post-checkout
 	chmod +x .git/hooks/post-checkout
+
+# Used by CI and "install" target
+init-file:
+	cp -n .env.dist .env && cp -n docker.env docker.env.local
+
+# Used by CI and "install" target
+init-folder:
+	mkdir -p ./htdocs/uploads -p ./tmp

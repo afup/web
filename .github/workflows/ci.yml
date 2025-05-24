@@ -62,7 +62,7 @@ jobs:
           composer-options: "--no-scripts"
 
       - name: PHPStan
-        run: make phpstan
+        run: ./bin/phpstan --memory-limit=-1
 
   functional:
     name: "Functional tests"
@@ -77,16 +77,15 @@ jobs:
           key: |
             docker-${{ runner.os }}-${{ hashFiles(
               'compose.yml',
-              'docker/dockerfiles/apachephp/Dockerfile',
-              'docker/dockerfiles/mysql/Dockerfile',
-              'docker/dockerfiles/mysqltest/Dockerfile'
+              'docker/apachephp/Dockerfile',
+              'docker/mysql/dev/Dockerfile',
+              'docker/mysql/test/Dockerfile'
             ) }}
 
       - name: Tests - Functional
         run: |
-          cp docker.env docker.env.local
-          cp .env.dist .env
-          mkdir -p ./htdocs/uploads -p ./tmp
+          make init-file
+          make init-folder
           docker compose up -d
           docker compose exec --user localUser apachephp composer install --no-scripts
           docker compose run --rm node bash -c "npm install --legacy-peer-deps && npm run build"
@@ -119,18 +118,15 @@ jobs:
           key: |
             docker-${{ runner.os }}-${{ hashFiles(
               'compose.yml',
-              'Dockerfile',
-              'docker/dockerfiles/mysql/Dockerfile',
-              'docker/dockerfiles/mysqltest/Dockerfile'
+              'docker/apachephp/Dockerfile',
+              'docker/mysql/dev/Dockerfile',
+              'docker/mysql/test/Dockerfile'
             ) }}
 
       - name: Tests - Integration
         run: |
-          cp docker.env docker.env.local
-          cp -n .env.dist .env
-          docker compose up -d
-          docker compose exec --user localUser apachephp composer install --no-scripts
-          docker compose exec -u localUser apachephp ./bin/phpunit --testsuite integration
+          make init-file
+          make test-integration-ci
 
   rector:
     name: "Rector"
@@ -149,4 +145,4 @@ jobs:
           composer-options: "--no-scripts"
 
       - name: Rector
-        run: make rector
+        run: ./bin/rector --dry-run

@@ -3,7 +3,7 @@
 
 ###> docker file ###
 docker.env.local
-.docker/data/history
+docker/data/history
 
 deps.lock
 .idea
