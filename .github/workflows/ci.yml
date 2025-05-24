@@ -78,9 +78,9 @@ jobs:
           key: |
             docker-${{ runner.os }}-${{ hashFiles(
               'compose.yml',
-              'docker/dockerfiles/apachephp/Dockerfile',
-              'docker/dockerfiles/mysql/Dockerfile',
-              'docker/dockerfiles/mysqltest/Dockerfile'
+              'docker/apachephp/Dockerfile',
+              'docker/mysql/dev/Dockerfile',
+              'docker/mysql/test/Dockerfile'
             ) }}
 
       - name: Tests - Functional
@@ -120,9 +120,9 @@ jobs:
           key: |
             docker-${{ runner.os }}-${{ hashFiles(
               'compose.yml',
-              'Dockerfile',
-              'docker/dockerfiles/mysql/Dockerfile',
-              'docker/dockerfiles/mysqltest/Dockerfile'
+              'docker/apachephp/Dockerfile',
+              'docker/mysql/dev/Dockerfile',
+              'docker/mysql/test/Dockerfile'
             ) }}
 
       - name: Tests - Integration
@@ -150,4 +150,9 @@ jobs:
           composer-options: "--no-scripts"
 
       - name: Rector
-        run: make rector
+        run: |
+          cp docker.env docker.env.local
+          cp -n .env.dist .env
+          docker compose up -d
+          docker compose exec --user localUser apachephp composer install --no-scripts
+          docker compose exec -u localUser apachephp ./bin/phpunit --testsuite integration

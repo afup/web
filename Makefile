@@ -14,7 +14,7 @@ TEXT_BOLD = \033[1m
 ##@ Setup 📜
 ### Installer le projet from scratch
 install:
-	cp -n .env.dist .env && cp -n docker.env docker.env.local && cp -n .docker/data/history.dist .docker/data/history && cp -n compose.override.yml-dist compose.override.yml
+	cp -n .env.dist .env && cp -n docker.env docker.env.local && cp -n ./docker/data/history.dist ./docker/data/history && cp -n compose.override.yml-dist compose.override.yml
 	mkdir -p ./htdocs/uploads -p ./tmp
 
 	$(DOCKER_COMPOSE_BIN) up -d --build
@@ -26,7 +26,7 @@ install:
 	$(MAKE) --no-print-directory build-assets
 
 	# Reset la base de donnée
-	cat ./.docker/mysql/reset-db.sql | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
+	cat ./docker/mysql/reset-db.sql | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
 
 	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp php bin/phinx migrate
 	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp php bin/phinx seed:run
@@ -34,7 +34,7 @@ install:
 ### Supprime les volumes docker, les fichiers et les dossier généré par le projet
 reset:
 	$(DOCKER_COMPOSE_BIN) down --remove-orphans -v
-	rm -f ./.env -f ./docker.env.local -f .docker/data/history -f compose.override.yml
+	rm -f ./.env -f ./docker.env.local -f ./docker/data/history -f compose.override.yml
 	sudo rm -rf ./var ./vendor ./node_modules ./htdocs/bundles ./htdocs/docs ./htdocs/uploads ./htdocs/assets ./tmp
 
 ### Reinstalle le projet from scratch
@@ -71,7 +71,7 @@ test-integration: # not work
 
 ### Tests fonctionnels
 behat:
-	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephptest ./bin/behat
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp ./bin/behat
 
 ### PHP CS Fixer (dry run)
 cs-lint:
@@ -81,13 +81,16 @@ cs-lint:
 cs-fix:
 	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp ./bin/php-cs-fixer fix -vv
 
-### (Dans Docker) Rector (dry run)
+### Rector (dry run)
 rector: var/cache/dev/AppKernelDevDebugContainer.xml
-	./bin/rector --dry-run
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp ./bin/rector --dry-run
 
-### (Dans Docker) Rector (fix)
+### Rector (fix)
 rector-fix: var/cache/dev/AppKernelDevDebugContainer.xml
-	./bin/rector
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp ./bin/rector
+
+var/cache/dev/AppKernelDevDebugContainer.xml:
+	$(DOCKER_COMPOSE_BIN) exec --user localUser apachephp bin/console cache:warmup --env=dev
 
 ### Tests fonctionnels
 test-functional:
@@ -125,7 +128,7 @@ pre-commit: Makefile
 
 post-checkout: Makefile
 	echo "#!/bin/sh" > .git/hooks/post-checkout
-	echo "docker compose run --rm -u localUser apachephp make vendor" >> .git/hooks/post-checkout
+	echo "docker compose run --rm -u localUser apachephp composer install --no-scripts" >> .git/hooks/post-checkout
 	chmod +x .git/hooks/post-checkout
 
 help:
@@ -147,6 +150,3 @@ help:
 
 .PHONY: install tests hooks console phpstan help
 .SILENT: help
-
-var/cache/dev/AppKernelDevDebugContainer.xml:
-	php bin/console cache:warmup --env=dev
