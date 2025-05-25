@@ -11,6 +11,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<TechletterUnsubscription>
+ */
 class TechletterUnsubscriptionsRepository extends Repository implements MetadataInitializer
 {
     public function createFromWebhookData(array $data): TechletterUnsubscription

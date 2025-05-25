@@ -12,6 +12,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<UserBadge>
+ */
 class UserBadgeRepository extends Repository implements MetadataInitializer
 {
     public function findByUserId($userId)

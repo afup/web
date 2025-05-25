@@ -11,6 +11,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<Rubrique>
+ */
 class RubriqueRepository extends Repository implements MetadataInitializer
 {
     public function getAllRubriques($ordre = 'nom', $direction = 'asc', string $filtre = '%')

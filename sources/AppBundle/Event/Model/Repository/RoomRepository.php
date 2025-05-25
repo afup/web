@@ -12,6 +12,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<Room>
+ */
 class RoomRepository extends Repository implements MetadataInitializer
 {
     /**

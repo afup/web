@@ -21,6 +21,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<Talk>
+ */
 class TalkRepository extends Repository implements MetadataInitializer
 {
     public function getNumberOfTalksByEvent(Event $event, \DateTime $since = null)

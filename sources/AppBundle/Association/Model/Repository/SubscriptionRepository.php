@@ -10,6 +10,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<User>
+ */
 class SubscriptionRepository extends Repository implements MetadataInitializer
 {
     public function getStats(\DateInterval $interval): void

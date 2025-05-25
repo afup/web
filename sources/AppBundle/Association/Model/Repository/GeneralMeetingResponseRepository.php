@@ -11,6 +11,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<GeneralMeetingResponse>
+ */
 class GeneralMeetingResponseRepository extends Repository implements MetadataInitializer
 {
     public function getByUser(User $user)

@@ -11,6 +11,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<TicketType>
+ */
 class TicketTypeRepository extends Repository implements MetadataInitializer
 {
     /**

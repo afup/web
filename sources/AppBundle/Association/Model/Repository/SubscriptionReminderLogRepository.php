@@ -10,6 +10,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<SubscriptionReminderLog>
+ */
 class SubscriptionReminderLogRepository extends Repository implements MetadataInitializer
 {
     public function getPaginatedLogs($page = 1, $limit = 50)
