@@ -51,7 +51,7 @@ class MembersController extends AbstractController
             Assertion::isInstanceOf($user, User::class);
             $companyId = $user->getCompanyId();
         }
-        /** @var CompanyMember $company */
+
         $company = $this->companyMemberRepository->get($companyId);
         if ($company === null) {
             throw $this->createNotFoundException('Company not found');
@@ -74,15 +74,15 @@ class MembersController extends AbstractController
             } elseif (!$this->csrfTokenManager->isTokenValid(new CsrfToken('member_company_members', $request->request->get('token')))) {
                 $this->addFlash('error', 'Erreur lors de la soumission du formulaire (jeton CSRF invalide). Merci de réessayer.');
             } elseif ($request->request->has('delete_invitation')) {
-                $this->removeInvitation($request->request->get('delete_invitation'), $pendingInvitations);
+                $this->removeInvitation($request->request->getString('delete_invitation'), $pendingInvitations);
             } elseif ($request->request->has('resend_invitation')) {
-                $this->resendInvitation($request->request->get('resend_invitation'), $pendingInvitations, $company);
+                $this->resendInvitation($request->request->getString('resend_invitation'), $pendingInvitations, $company);
             } elseif ($request->request->has('promote_up')) {
-                $this->promoteUser($request->request->get('promote_up'), $users);
+                $this->promoteUser($request->request->getString('promote_up'), $users);
             } elseif ($request->request->has('promote_down')) {
-                $this->disproveUser($request->request->get('promote_down'), $users);
+                $this->disproveUser($request->request->getString('promote_down'), $users);
             } elseif ($request->request->has('remove')) {
-                $this->removeUser($request->request->get('remove'), $users);
+                $this->removeUser($request->request->getString('remove'), $users);
             }
 
             return $this->redirectToRoute('member_company_members', [
@@ -131,10 +131,13 @@ class MembersController extends AbstractController
         $this->addFlash('notice', sprintf('L\'invitation a été envoyée à l\'adresse %s.', $invitation->getEmail()));
     }
 
-    private function removeInvitation($emailToDelete, CollectionInterface $pendingInvitations): void
+    /**
+     * @param CollectionInterface<CompanyMemberInvitation> $pendingInvitations
+     */
+    private function removeInvitation(string $emailToDelete, CollectionInterface $pendingInvitations): void
     {
-        /** @var CompanyMemberInvitation $invitationToDelete */
         $invitationToDelete = $this->collectionFilter->findOne($pendingInvitations, 'getEmail', $emailToDelete);
+
         if ($invitationToDelete !== null) {
             $invitationToDelete->setStatus(CompanyMemberInvitation::STATUS_CANCELLED);
             $this->companyMemberInvitationRepository->save($invitationToDelete);
@@ -144,12 +147,13 @@ class MembersController extends AbstractController
         }
     }
 
-    private function resendInvitation($emailToSend,
-                                      CollectionInterface $pendingInvitations,
-                                      CompanyMember $company,
-    ): void {
-        /** @var CompanyMemberInvitation $invitationToSend */
+    /**
+     * @param CollectionInterface<CompanyMemberInvitation> $pendingInvitations
+     */
+    private function resendInvitation(string $emailToSend, CollectionInterface $pendingInvitations, CompanyMember $company): void
+    {
         $invitationToSend = $this->collectionFilter->findOne($pendingInvitations, 'getEmail', $emailToSend);
+
         if ($invitationToSend !== null) {
             $this->invitationMail->sendInvitation($company, $invitationToSend);
             $this->addFlash('notice', 'L\'invitation a été renvoyée.');
@@ -158,11 +162,13 @@ class MembersController extends AbstractController
         }
     }
 
-    private function promoteUser($emailToPromote,
-                                 CollectionInterface $users,
-    ): void {
-        /** @var User $user */
+    /**
+     * @param CollectionInterface<User> $users
+     */
+    private function promoteUser(string $emailToPromote, CollectionInterface $users): void
+    {
         $user = $this->collectionFilter->findOne($users, 'getEmail', $emailToPromote);
+
         if ($user !== null) {
             $this->userCompany->setManager($user);
             $this->addFlash('notice', 'Le membre a été promu en tant que manager.');
@@ -171,10 +177,11 @@ class MembersController extends AbstractController
         }
     }
 
-    private function disproveUser($emailToDisapprove,
-                                  CollectionInterface $users,
-    ): void {
-        /** @var User $user */
+    /**
+     * @param CollectionInterface<User> $users
+     */
+    private function disproveUser(string $emailToDisapprove, CollectionInterface $users): void
+    {
         $user = $this->collectionFilter->findOne($users, 'getEmail', $emailToDisapprove);
         /** @var User $connectedUser */
         $connectedUser = $this->getUser();
@@ -190,9 +197,11 @@ class MembersController extends AbstractController
         }
     }
 
-    private function removeUser($emailToRemove, CollectionInterface $users,
-    ): void {
-        /** @var User $user */
+    /**
+     * @param CollectionInterface<User> $users
+     */
+    private function removeUser(string $emailToRemove, CollectionInterface $users): void
+    {
         $user = $this->collectionFilter->findOne($users, 'getEmail', $emailToRemove);
         /** @var User $connectedUser */
         $connectedUser = $this->getUser();
