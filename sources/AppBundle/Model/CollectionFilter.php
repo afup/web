@@ -9,10 +9,11 @@ use CCMBenchmark\Ting\Repository\CollectionInterface;
 class CollectionFilter
 {
     /**
-     * @param $method
-     * @param $value
+     * @template T
+     *
+     * @param CollectionInterface<T> $collection
      */
-    public function filter(CollectionInterface $collection, $method, $value): array
+    private function filter(CollectionInterface $collection, string $method, mixed $value): array
     {
         $items = iterator_to_array($collection->getIterator());
 
@@ -25,11 +26,12 @@ class CollectionFilter
     }
 
     /**
-     * @param $method
-     * @param $value
-     * @return Object|null
+     * @template T
+     *
+     * @param CollectionInterface<T> $collection
+     * @return T|null
      */
-    public function findOne(CollectionInterface $collection, $method, $value)
+    public function findOne(CollectionInterface $collection, string $method, mixed $value)
     {
         $extractedItems = $this->filter($collection, $method, $value);
         if (count($extractedItems) !== 1) {
