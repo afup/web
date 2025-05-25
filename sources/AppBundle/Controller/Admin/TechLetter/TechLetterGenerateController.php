@@ -107,9 +107,6 @@ class TechLetterGenerateController extends AbstractController
 
     public function generate($techletterId, Request $request)
     {
-        /**
-         * @var Techletter\Sending $sending
-         */
         $sending = $this->sendingRepository->get($techletterId);
         if ($sending === null) {
             throw $this->createNotFoundException('Could not find this techletter');
@@ -217,9 +214,6 @@ class TechLetterGenerateController extends AbstractController
     public function preview(Request $request): Response
     {
         $sendingId = $request->request->getInt('techletterId');
-        /**
-         * @var Techletter\Sending $sending
-         */
         $sending = $this->sendingRepository->get($sendingId);
 
         if ($sending === null) {
@@ -246,9 +240,6 @@ class TechLetterGenerateController extends AbstractController
     public function sendTest(Request $request): RedirectResponse
     {
         $sendingId = $request->query->getInt('techletterId');
-        /**
-         * @var Techletter\Sending $sending
-         */
         $sending = $this->sendingRepository->get($sendingId);
 
         if ($sending === null) {

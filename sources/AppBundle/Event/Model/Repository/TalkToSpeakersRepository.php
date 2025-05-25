@@ -15,6 +15,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<TalkToSpeaker>
+ */
 class TalkToSpeakersRepository extends Repository implements MetadataInitializer
 {
     public function getNumberOfSpeakers(Event $event, \DateTime $since = null)

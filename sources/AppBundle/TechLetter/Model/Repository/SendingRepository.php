@@ -12,6 +12,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<Sending>
+ */
 class SendingRepository extends Repository implements MetadataInitializer
 {
     public function getAllOrderedByDateDesc()

@@ -16,6 +16,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<Invoice>
+ */
 class InvoiceRepository extends Repository implements MetadataInitializer
 {
     public function saveWithTickets(Invoice $invoice): void

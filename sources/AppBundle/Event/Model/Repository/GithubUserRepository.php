@@ -16,6 +16,9 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+/**
+ * @extends Repository<GithubUser>
+ */
 class GithubUserRepository extends Repository implements MetadataInitializer, UserProviderInterface
 {
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = []): Metadata

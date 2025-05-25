@@ -14,6 +14,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<TicketEventType>
+ */
 class TicketEventTypeRepository extends Repository implements MetadataInitializer
 {
     public const REMOVE_PAST_TICKETS = 1;

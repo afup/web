@@ -19,6 +19,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<Event>
+ */
 class EventRepository extends Repository implements MetadataInitializer
 {
     /**

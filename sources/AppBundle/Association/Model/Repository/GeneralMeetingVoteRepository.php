@@ -11,6 +11,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<GeneralMeetingVote>
+ */
 class GeneralMeetingVoteRepository extends Repository implements MetadataInitializer
 {
     public function loadByQuestionIdAndUserId($questionId, $userId)

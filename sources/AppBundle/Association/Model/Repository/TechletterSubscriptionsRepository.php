@@ -13,6 +13,9 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
+/**
+ * @extends Repository<TechletterSubscription>
+ */
 class TechletterSubscriptionsRepository extends Repository implements MetadataInitializer
 {
     public function subscribe(User $user = null): void
