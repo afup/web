@@ -17,18 +17,14 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 class LogRepository extends Repository implements MetadataInitializer
 {
     /**
-     * @param string $action
-     * @param string|null $ip
-     * @param int|null $objectId
-     *
-     * @return array
-     * @throws \RuntimeException
+     * @return array{ip: int, object: int}
      */
-    public function getApplicableLogs($action, $ip, $objectId, \DateInterval $interval)
+    public function getApplicableLogs(?string $ip, ?int $objectId, \DateInterval $interval): array
     {
         if ($ip === null && $objectId === null) {
             throw new \RuntimeException('I need at least an ip or an object Id to get logs');
         }
+
         /**
          * @var Select $query
          */

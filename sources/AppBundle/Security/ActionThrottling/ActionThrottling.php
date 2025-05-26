@@ -4,16 +4,11 @@ declare(strict_types=1);
 
 namespace AppBundle\Security\ActionThrottling;
 
-class ActionThrottling
+final readonly class ActionThrottling
 {
-    public function __construct(private readonly LogRepository $logRepository) {}
+    public function __construct(private LogRepository $logRepository) {}
 
-    /**
-     * @param string|null $action
-     * @param string|null $ip
-     * @param int $objectId
-     */
-    public function isActionBlocked($action, $ip = null, $objectId = null): bool
+    public function isActionBlocked(string $action, ?string $ip = null, ?int $objectId = null): bool
     {
         $limitations = Log::LIMITATIONS;
         if (isset($limitations[$action]) === false) {
@@ -22,17 +17,8 @@ class ActionThrottling
 
         $delay = $limitations[$action]['delay'];
 
-        try {
-            $interval = new \DateInterval($delay);
-        } catch (\Exception $dateIntervalException) {
-            throw new \RuntimeException(
-                sprintf('Sorry, I could not understand the delay "%s" for the action "%s"', $delay, $action),
-                0,
-                $dateIntervalException,
-            );
-        }
+        $logs = $this->logRepository->getApplicableLogs($ip, $objectId, new \DateInterval($delay));
 
-        $logs = $this->logRepository->getApplicableLogs($action, $ip, $objectId, $interval);
         return $logs['ip'] > $limitations[$action]['limit'] || $logs['object'] > $limitations[$action]['limit'];
     }
 
@@ -41,12 +27,7 @@ class ActionThrottling
         $this->logRepository->removeLogs($action, $ip);
     }
 
-    /**
-     * @param string $action
-     * @param string|null $ip
-     * @param string|null $objectId
-     */
-    public function log($action, $ip = null, $objectId = null): void
+    public function log(string $action, ?string $ip = null, ?int $objectId = null): void
     {
         $log = new Log();
         $log
