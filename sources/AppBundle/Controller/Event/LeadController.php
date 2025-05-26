@@ -11,7 +11,6 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Lead;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Sponsorship\SponsorshipLeadMail;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -25,8 +24,8 @@ class LeadController extends AbstractController
         private readonly Mailer $mailer,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly SponsorshipLeadMail $sponsorshipLeadMail,
-        private readonly RepositoryFactory $repositoryFactory,
         private readonly EventActionHelper $eventActionHelper,
+        private readonly EventRepository $eventRepository,
     ) {}
 
     public function becomeSponsor($eventSlug, Request $request)
@@ -72,7 +71,7 @@ class LeadController extends AbstractController
      */
     public function becomeSponsorLatest()
     {
-        $event = $this->repositoryFactory->get(EventRepository::class)->getCurrentEvent();
+        $event = $this->eventRepository->getCurrentEvent();
 
         return new RedirectResponse($this->generateUrl('sponsor_leads', ['eventSlug' => $event->getPath()]));
     }

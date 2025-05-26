@@ -12,10 +12,8 @@ use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
 use AppBundle\Notifier\SlackNotifier;
 use CCMBenchmark\Ting\Exception;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,13 +23,13 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class VoteController extends AbstractController
 {
-    private ?FormBuilderInterface $formBuilder = null;
     public function __construct(
         private readonly RequestStack $requestStack,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly RepositoryFactory $repositoryFactory,
         private readonly SlackNotifier $slackNotifier,
         private readonly EventActionHelper $eventActionHelper,
+        private readonly TalkRepository $talkRepository,
+        private readonly VoteRepository $voteRepository,
     ) {}
 
     /**
@@ -44,13 +42,11 @@ class VoteController extends AbstractController
             return $this->render('event/cfp/closed.html.twig', ['event' => $event]);
         }
 
-        $talkRepository = $this->repositoryFactory->get(TalkRepository::class);
-
         // Get a random list of unrated talks
         if ($all === false) {
-            $talks = $talkRepository->getNewTalksToRate($event, $this->getUser(), crc32($this->requestStack->getSession()->getId()), $page);
+            $talks = $this->talkRepository->getNewTalksToRate($event, $this->getUser(), crc32($this->requestStack->getSession()->getId()), $page);
         } else {
-            $talks = $talkRepository->getAllTalksAndRatingsForUser($event, $this->getUser(), crc32($this->requestStack->getSession()->getId()), $page);
+            $talks = $this->talkRepository->getAllTalksAndRatingsForUser($event, $this->getUser(), crc32($this->requestStack->getSession()->getId()), $page);
         }
 
         $vote = new Vote();
@@ -81,14 +77,10 @@ class VoteController extends AbstractController
 
     private function createVoteForm(string $eventSlug, int $talkId, Vote $vote): FormInterface
     {
-        if (!$this->formBuilder instanceof FormBuilderInterface) {
-            $this->formBuilder = $this->createFormBuilder();
-        }
-
         $vote->setSessionId($talkId);
 
         return $this
-            ->formBuilder->create(
+            ->createFormBuilder()->create(
                 'vote' . $talkId,
                 VoteType::class,
                 ['data' => $vote],
@@ -132,7 +124,6 @@ class VoteController extends AbstractController
             return new JsonResponse(['errors' => ['Talk does not exists']], Response::HTTP_BAD_REQUEST);
         }
 
-        $voteRepository = $this->repositoryFactory->get(VoteRepository::class);
         $vote = $form->getData();
         $vote->setSubmittedOn(new \DateTime());
 
@@ -141,7 +132,7 @@ class VoteController extends AbstractController
             $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($vote): void {
                 $this->slackNotifier->notifyVote($vote);
             });
-            $voteRepository->upsert($vote);
+            $this->voteRepository->upsert($vote);
         } catch (Exception $e) {
             return new JsonResponse(['errors' => [$e->getMessage()]], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -151,9 +142,7 @@ class VoteController extends AbstractController
 
     private function findTalk(int $talkId): Talk|false
     {
-        $talkRepository = $this->repositoryFactory->get(TalkRepository::class);
-        /** @var Talk $talk */
-        $talk = $talkRepository->getOneBy(['id' => $talkId]);
+        $talk = $this->talkRepository->getOneBy(['id' => $talkId]);
         if ($talk) {
             return $talk;
         }

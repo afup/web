@@ -10,7 +10,6 @@ use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Twig\ViewRenderer;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +19,7 @@ class CompanyPublicProfileController extends AbstractController
     public function __construct(
         private readonly ViewRenderer $view,
         private readonly BadgesComputer $badgesComputer,
-        private readonly RepositoryFactory $repositoryFactory,
+        private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly string $storageDir,
     ) {}
 
@@ -43,11 +42,7 @@ class CompanyPublicProfileController extends AbstractController
      */
     private function checkAndGetCompanyMember($id, $slug)
     {
-        /**
-         * @var CompanyMemberRepository $companyRepository
-         */
-        $companyRepository = $this->repositoryFactory->get(CompanyMemberRepository::class);
-        $companyMember = $companyRepository->findById($id);
+        $companyMember = $this->companyMemberRepository->findById($id);
 
         if ($companyMember === null
             || $companyMember->getSlug() != $slug

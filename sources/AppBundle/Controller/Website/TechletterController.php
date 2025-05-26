@@ -6,7 +6,6 @@ namespace AppBundle\Controller\Website;
 
 use AppBundle\Association\Model\Repository\TechletterUnsubscriptionsRepository;
 use AppBundle\Twig\ViewRenderer;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +14,7 @@ class TechletterController extends AbstractController
 {
     public function __construct(
         private readonly ViewRenderer $view,
-        private readonly RepositoryFactory $repositoryFactory,
+        private readonly TechletterUnsubscriptionsRepository $techletterUnsubscriptionsRepository,
         private readonly string $mailchimpTechletterWebhookKey,
     ) {}
 
@@ -35,9 +34,8 @@ class TechletterController extends AbstractController
         }
 
         if ($request->get('type') === 'unsubscribe') {
-            $techletterUnsubscriptionRepository = $this->repositoryFactory->get(TechletterUnsubscriptionsRepository::class);
-            $techletterUnsubscription = $techletterUnsubscriptionRepository->createFromWebhookData($request->get('data', []));
-            $techletterUnsubscriptionRepository->save($techletterUnsubscription);
+            $techletterUnsubscription = $this->techletterUnsubscriptionsRepository->createFromWebhookData($request->get('data', []));
+            $this->techletterUnsubscriptionsRepository->save($techletterUnsubscription);
         }
 
         return new Response('ok');

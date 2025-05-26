@@ -7,7 +7,6 @@ namespace AppBundle\Controller\Event;
 use AppBundle\Event\JsonLd;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,21 +14,17 @@ use Symfony\Component\HttpFoundation\Response;
 class BlogController extends AbstractController
 {
     public function __construct(
-        private readonly RepositoryFactory $repositoryFactory,
         private readonly JsonLd $jsonLd,
         private readonly EventActionHelper $eventActionHelper,
+        private readonly TalkRepository $talkRepository,
+        private readonly SpeakerRepository $speakerRepository,
     ) {}
 
     public function program(Request $request, $eventSlug): Response
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
-
-        /**
-         * @var TalkRepository $talkRepository
-         */
-        $talkRepository = $this->repositoryFactory->get(TalkRepository::class);
         $jsonld = $this->jsonLd->getDataForEvent($event);
-        $talkAggregates = $talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true));
+        $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true));
         $now = new \DateTime();
 
         return $this->render(
@@ -53,13 +48,9 @@ class BlogController extends AbstractController
             $events[$event->getId()] = $event;
         }
 
-        /**
-         * @var TalkRepository $talkRepository
-         */
-        $talkRepository = $this->repositoryFactory->get(TalkRepository::class);
         $applyPublicationDateFilters = $request->query->getBoolean('apply-publication-date-filters', true);
 
-        $talkAggregates = $talkRepository->getByEventsWithSpeakers($events, $applyPublicationDateFilters);
+        $talkAggregates = $this->talkRepository->getByEventsWithSpeakers($events, $applyPublicationDateFilters);
 
         $jsonld = [];
         foreach ($events as $event) {
@@ -148,17 +139,12 @@ class BlogController extends AbstractController
 
     public function talkWidget(Request $request): Response
     {
-        /**
-         * @var TalkRepository $talkRepository
-         */
-        $talkRepository = $this->repositoryFactory->get(TalkRepository::class);
-
-        $talks = $talkRepository->getBy(['id' => explode(',', (string) $request->get('ids'))]);
+        $talks = $this->talkRepository->getBy(['id' => explode(',', (string) $request->get('ids'))]);
 
         $speakers = [];
         $talksInfos = [];
         foreach ($talks as $talk) {
-            foreach ($talkRepository->getByTalkWithSpeakers($talk) as $row) {
+            foreach ($this->talkRepository->getByTalkWithSpeakers($talk) as $row) {
                 $talksInfos[] = $row;
                 foreach ($row['.aggregation']['speaker'] as $speaker) {
                     $speakers[$speaker->getId()] = $speaker;
@@ -179,12 +165,7 @@ class BlogController extends AbstractController
     public function speakers(Request $request, string $eventSlug): Response
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
-
-        /**
-         * @var SpeakerRepository $speakerRepository
-         */
-        $speakerRepository = $this->repositoryFactory->get(SpeakerRepository::class);
-        $speakers = $speakerRepository->getScheduledSpeakersByEvent($event, !$request->query->getBoolean('apply-publication-date-filters', true));
+        $speakers = $this->speakerRepository->getScheduledSpeakersByEvent($event, !$request->query->getBoolean('apply-publication-date-filters', true));
         $jsonld = $this->jsonLd->getDataForEvent($event);
 
         return $this->render(

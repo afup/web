@@ -9,7 +9,6 @@ use AppBundle\Site\Form\NewsFiltersType;
 use AppBundle\Site\Model\Article;
 use AppBundle\Site\Model\Repository\ArticleRepository;
 use AppBundle\Twig\ViewRenderer;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,15 +21,14 @@ class NewsController extends AbstractController
     public function __construct(
         private readonly ViewRenderer $view,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly RepositoryFactory $repositoryFactory,
+        private readonly EventRepository $eventRepository,
+        private readonly ArticleRepository $articleRepository,
         private readonly string $projectDir,
     ) {}
 
     public function display($code): Response
     {
-        $articleRepository = $this->getArticleRepository();
-
-        $article = $articleRepository->findNewsBySlug($code);
+        $article = $this->articleRepository->findNewsBySlug($code);
         if (null === $article) {
             throw $this->createNotFoundException();
         }
@@ -44,8 +42,8 @@ class NewsController extends AbstractController
         return $this->view->render('site/news/display.html.twig', [
             'article' => $article,
             'header_image' => $this->getHeaderImageUrl($article),
-            'previous' => $articleRepository->findPrevious($article),
-            'next' => $articleRepository->findNext($article),
+            'previous' => $this->articleRepository->findPrevious($article),
+            'next' => $this->articleRepository->findNext($article),
             'related_event' => $this->getRelatedEvent($article),
         ]);
     }
@@ -56,7 +54,7 @@ class NewsController extends AbstractController
             return null;
         }
 
-        return $this->repositoryFactory->get(EventRepository::class)->get($eventId);
+        return $this->eventRepository->get($eventId);
     }
 
     private function getHeaderImageUrl(Article $article): ?string
@@ -88,19 +86,11 @@ class NewsController extends AbstractController
 
         return $this->view->render('site/news/list.html.twig', [
             'filters' => $filters,
-            'articles' => $this->getArticleRepository()->findPublishedNews($page, self::ARTICLES_PER_PAGE, $filters),
-            'total_items' => $this->getArticleRepository()->countPublishedNews($filters),
+            'articles' => $this->articleRepository->findPublishedNews($page, self::ARTICLES_PER_PAGE, $filters),
+            'total_items' => $this->articleRepository->countPublishedNews($filters),
             'current_page' => $page,
             'articles_per_page' => self::ARTICLES_PER_PAGE,
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @return ArticleRepository
-     */
-    private function getArticleRepository()
-    {
-        return $this->repositoryFactory->get(ArticleRepository::class);
     }
 }

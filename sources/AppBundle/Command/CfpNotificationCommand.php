@@ -10,7 +10,6 @@ use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Notifier\SlackNotifier;
 use AppBundle\Slack\MessageFactory;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,7 +20,9 @@ class CfpNotificationCommand extends Command
     public function __construct(
         private readonly MessageFactory $messageFactory,
         private readonly SlackNotifier $slackNotifier,
-        private readonly RepositoryFactory $ting,
+        private readonly EventRepository $eventRepository,
+        private readonly TalkRepository $talkRepository,
+        private readonly TalkToSpeakersRepository $talkToSpeakersRepository,
     ) {
         parent::__construct();
     }
@@ -35,7 +36,6 @@ class CfpNotificationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $eventRepository = $this->ting->get(EventRepository::class);
         $since = null;
 
         if ($input->getOption('display-diff')) {
@@ -46,15 +46,15 @@ class CfpNotificationCommand extends Command
         $currentDate = new \DateTime();
 
         /** @var Event $event */
-        foreach ($eventRepository->getNextEvents() as $event) {
+        foreach ($this->eventRepository->getNextEvents() as $event) {
             if ($currentDate > $event->getDateEndCallForPapers()) {
                 continue;
             }
 
             $message = $this->messageFactory->createMessageForCfpStats(
                 $event,
-                $this->ting->get(TalkRepository::class),
-                $this->ting->get(TalkToSpeakersRepository::class),
+                $this->talkRepository,
+                $this->talkToSpeakersRepository,
                 $currentDate,
                 $since,
             );

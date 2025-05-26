@@ -8,7 +8,7 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use Sabre\VObject\Component\VCalendar;
 
-class IcsPLanningGenerator
+class IcsPlanningGenerator
 {
     public function __construct(private readonly TalkRepository $talkRepository) {}
 

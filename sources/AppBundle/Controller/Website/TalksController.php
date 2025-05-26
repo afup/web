@@ -13,7 +13,6 @@ use AppBundle\Joindin\JoindinComments;
 use AppBundle\Joindin\JoindinTalk;
 use AppBundle\Subtitles\Parser;
 use AppBundle\Twig\ViewRenderer;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,9 +23,12 @@ class TalksController extends AbstractController
 {
     public function __construct(
         private readonly ViewRenderer $view,
-        private readonly RepositoryFactory $repositoryFactory,
         private readonly JoindinComments $joindinComments,
         private readonly JoindinTalk $joindinTalk,
+        private readonly TalkRepository $talkRepository,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly PlanningRepository $planningRepository,
+        private readonly EventRepository $eventRepository,
         private readonly string $algoliaAppId,
         private readonly string $algoliaFrontendApikey,
     ) {}
@@ -64,15 +66,15 @@ class TalksController extends AbstractController
      */
     public function show($id, $slug): Response
     {
-        $talk = $this->repositoryFactory->get(TalkRepository::class)->get($id);
+        $talk = $this->talkRepository->get($id);
 
         if (null === $talk || $talk->getSlug() != $slug || !$talk->isDisplayedOnHistory()) {
             throw $this->createNotFoundException();
         }
 
-        $speakers = $this->repositoryFactory->get(SpeakerRepository::class)->getSpeakersByTalk($talk);
-        $planning = $this->repositoryFactory->get(PlanningRepository::class)->getByTalk($talk);
-        $event = $this->repositoryFactory->get(EventRepository::class)->get($planning->getEventId());
+        $speakers = $this->speakerRepository->getSpeakersByTalk($talk);
+        $planning = $this->planningRepository->getByTalk($talk);
+        $event = $this->eventRepository->get($planning->getEventId());
         $comments = $this->joindinComments->getCommentsFromTalk($talk);
 
         $parser = new Parser();
@@ -89,7 +91,7 @@ class TalksController extends AbstractController
 
     public function joindin($id, $slug): RedirectResponse
     {
-        $talk = $this->repositoryFactory->get(TalkRepository::class)->get($id);
+        $talk = $this->talkRepository->get($id);
 
         if (null === $talk || $talk->getSlug() != $slug || !$talk->isDisplayedOnHistory()) {
             throw $this->createNotFoundException();

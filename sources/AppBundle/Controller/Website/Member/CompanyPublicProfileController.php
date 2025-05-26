@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\Member;
 
 use AppBundle\Association\Form\CompanyPublicProfile;
-use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\User;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,19 +14,15 @@ use Symfony\Component\HttpFoundation\Request;
 class CompanyPublicProfileController extends AbstractController
 {
     public function __construct(
-        private readonly RepositoryFactory $repositoryFactory,
+        private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly string $storageDir,
     ) {}
+
     public function index(Request $request)
     {
-        /**
-         * @var CompanyMemberRepository $companyRepository
-         */
-        $companyRepository = $this->repositoryFactory->get(CompanyMemberRepository::class);
         $companyMember = null;
         if ($this->getUser() instanceof User) {
-            /** @var CompanyMember $companyMember */
-            $companyMember = $companyRepository->get($this->getUser()->getCompanyId());
+            $companyMember = $this->companyMemberRepository->get($this->getUser()->getCompanyId());
         }
 
         if ($companyMember === null) {
@@ -82,7 +76,7 @@ class CompanyPublicProfileController extends AbstractController
                 ->setMembershipReason($data['membership_reason'])
             ;
 
-            $companyRepository->save($companyMember);
+            $this->companyMemberRepository->save($companyMember);
 
             $this->addFlash('success', 'Modifications enregistrées');
             return $this->redirectToRoute('member_company_public_profile');

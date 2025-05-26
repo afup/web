@@ -17,7 +17,6 @@ use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Model\Article;
 use AppBundle\Site\Model\Repository\ArticleRepository;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
 use Presta\SitemapBundle\Service\UrlContainerInterface;
 use Presta\SitemapBundle\Sitemap\Url\GoogleVideo;
@@ -30,7 +29,11 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly RepositoryFactory $ting,
+        private readonly TalkRepository $talkRepository,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly EventRepository $eventRepository,
+        private readonly ArticleRepository $articleRepository,
+        private readonly CompanyMemberRepository $companyMemberRepository,
     ) {}
 
     public static function getSubscribedEvents(): array
@@ -53,7 +56,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
     public function registerTalksUrls(UrlContainerInterface $urls): void
     {
         /** @var Talk[] $talks */
-        $talks = $this->ting->get(TalkRepository::class)->getAllPastTalks(new \DateTime());
+        $talks = $this->talkRepository->getAllPastTalks(new \DateTime());
 
         foreach ($talks as $talk) {
             if (!$talk->isDisplayedOnHistory()) {
@@ -87,7 +90,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
     public function registerSpeakersTalksUrls(UrlContainerInterface $urls): void
     {
         /** @var Speaker[] $speakers */
-        $speakers = $this->ting->get(SpeakerRepository::class)->getAll();
+        $speakers = $this->speakerRepository->getAll();
         foreach ($speakers as $speaker) {
             $url = new UrlConcrete(
                 $this->urlGenerator->generate(
@@ -103,7 +106,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
     public function registerEventsTalksUrls(UrlContainerInterface $urls): void
     {
         /** @var Event[] $events */
-        $events = $this->ting->get(EventRepository::class)->getAll();
+        $events = $this->eventRepository->getAll();
         foreach ($events as $event) {
             $url = new UrlConcrete(
                 $this->urlGenerator->generate(
@@ -121,10 +124,8 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
 
     public function registerNewsUrls(UrlContainerInterface $urls): void
     {
-        $articleRepository = $this->ting->get(ArticleRepository::class);
-
         /** @var Article[] $news */
-        $news = $articleRepository->findAllPublishedNews();
+        $news = $this->articleRepository->findAllPublishedNews();
 
         foreach ($news as $article) {
             $urls->addUrl(
@@ -142,7 +143,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
             );
         }
 
-        $total = $articleRepository->countPublishedNews([]);
+        $total = $this->articleRepository->countPublishedNews([]);
         $byPage = NewsController::ARTICLES_PER_PAGE;
         $lastPage = ceil($total / $byPage);
 
@@ -163,7 +164,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
     private function registerMembers(UrlContainerInterface $urls): void
     {
         /** @var CompanyMember[] $members */
-        $members = $this->ting->get(CompanyMemberRepository::class)->findDisplayableCompanies();
+        $members = $this->companyMemberRepository->findDisplayableCompanies();
 
         foreach ($members as $member) {
             $urls->addUrl(

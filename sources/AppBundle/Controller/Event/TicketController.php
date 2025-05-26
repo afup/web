@@ -18,7 +18,6 @@ use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
-use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Model\TicketFactory;
 use AppBundle\Event\Ticket\PurchaseTypeFactory;
@@ -28,7 +27,6 @@ use AppBundle\Payment\PayboxFactory;
 use AppBundle\Payment\PayboxResponse;
 use AppBundle\Payment\PayboxResponseFactory;
 use AppBundle\Security\ActionThrottling\ActionThrottling;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -42,7 +40,6 @@ class TicketController extends AbstractController
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly LoggerInterface $logger,
-        private readonly RepositoryFactory $repositoryFactory,
         private readonly ActionThrottling $actionThrottling,
         private readonly TicketFactory $ticketFactory,
         private readonly SponsorTicketHelper $sponsorTicketHelper,
@@ -53,6 +50,8 @@ class TicketController extends AbstractController
         private readonly TicketRepository $ticketRepository,
         private readonly PayboxFactory $payboxFactory,
         private readonly EventActionHelper $eventActionHelper,
+        private readonly SponsorTicketRepository $sponsorTicketRepository,
+        private readonly TicketEventTypeRepository $ticketEventTypeRepository,
     ) {}
 
     public function sponsorTicket(Request $request, $eventSlug)
@@ -74,10 +73,7 @@ class TicketController extends AbstractController
                 $errors[] = 'Token absent';
             } else {
                 $token = $request->request->get('sponsor_token');
-                /**
-                 * @var SponsorTicket $sponsorTicket
-                 */
-                $sponsorTicket = $this->repositoryFactory->get(SponsorTicketRepository::class)->getOneBy(['token' => $token]);
+                $sponsorTicket = $this->sponsorTicketRepository->getOneBy(['token' => $token]);
                 if (
                     $this->actionThrottling->isActionBlocked('sponsor_token', $request->getClientIp())
                     ||
@@ -111,10 +107,7 @@ class TicketController extends AbstractController
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
 
-        /**
-         * @var SponsorTicket $sponsorTicket
-         */
-        $sponsorTicket = $this->repositoryFactory->get(SponsorTicketRepository::class)->get($request->getSession()->get('sponsor_ticket_id'));
+        $sponsorTicket = $this->sponsorTicketRepository->get($request->getSession()->get('sponsor_ticket_id'));
         if ($sponsorTicket === null) {
             $this->addFlash('error', 'Token invalide');
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
@@ -125,10 +118,7 @@ class TicketController extends AbstractController
         $sponsorTicketHelper = $this->sponsorTicketHelper;
         $edit = false;
         if ($request->query->has('ticket')) {
-            /**
-             * @var Ticket $ticket
-             */
-            $ticket = $this->repositoryFactory->get(TicketRepository::class)->get($request->query->get('ticket'));
+            $ticket = $this->ticketRepository->get($request->query->get('ticket'));
 
             if ($ticket === null || $sponsorTicketHelper->doesTicketBelongsToSponsor($sponsorTicket, $ticket) === false) {
                 throw $this->createNotFoundException();
@@ -157,10 +147,7 @@ class TicketController extends AbstractController
             $this->addFlash('notice', 'Invitation enregistrée');
             return $this->redirectToRoute('sponsor_ticket_form', ['eventSlug' => $eventSlug]);
         } elseif ($request->isMethod(Request::METHOD_POST) && $request->request->has('delete')) {
-            /**
-             * @var Ticket $ticket
-             */
-            $ticket = $this->repositoryFactory->get(TicketRepository::class)->get($request->request->get('delete'));
+            $ticket = $this->ticketRepository->get($request->request->get('delete'));
 
             if ($ticket === null) {
                 $this->addFlash('error', 'Impossible de trouver ce ticket');
@@ -271,8 +258,7 @@ class TicketController extends AbstractController
             'isSubjectedToVat' => Vat::isSubjectedToVat(new \DateTime('now')),
             'hasPricesDefinedWithVat' => $event->hasPricesDefinedWithVat(),
             'soldTicketsForMember' => $totalOfSoldTicketsByMember,
-            'hasMembersTickets' => $this->repositoryFactory->get(TicketEventTypeRepository::class)->doesEventHasRestrictedToMembersTickets($event, true, TicketEventTypeRepository::REMOVE_PAST_TICKETS),
-
+            'hasMembersTickets' => $this->ticketEventTypeRepository->doesEventHasRestrictedToMembersTickets($event, true, TicketEventTypeRepository::REMOVE_PAST_TICKETS),
         ]);
     }
 
