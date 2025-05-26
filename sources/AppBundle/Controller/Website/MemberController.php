@@ -11,7 +11,6 @@ use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\Twig\ViewRenderer;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,7 +24,7 @@ class MemberController extends AbstractController
         private readonly UserService $userService,
         private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
         private readonly BadgesComputer $badgesComputer,
-        private readonly RepositoryFactory $repositoryFactory,
+        private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
     ) {}
 
     public function index(): Response
@@ -62,7 +61,7 @@ class MemberController extends AbstractController
         return $this->view->render('site/member/index.html.twig', [
             'badges' => $this->badgesComputer->getBadges($user),
             'user' => $user,
-            'has_member_subscribed_to_techletter' => $this->repositoryFactory->get(TechletterSubscriptionsRepository::class)->hasUserSubscribed($user),
+            'has_member_subscribed_to_techletter' => $this->techletterSubscriptionsRepository->hasUserSubscribed($user),
             'membership_fee_call_to_update' => null === $daysBeforeMembershipExpiration || $daysBeforeMembershipExpiration < self::DAYS_BEFORE_CALL_TO_UPDATE,
             'has_up_to_date_membership_fee' => $user->hasUpToDateMembershipFee(),
             'office_label' => $user->getNearestOfficeLabel(),

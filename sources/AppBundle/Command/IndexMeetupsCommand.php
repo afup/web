@@ -8,7 +8,6 @@ use Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
 use Algolia\AlgoliaSearch\SearchClient;
 use AppBundle\Event\Model\Repository\MeetupRepository;
 use AppBundle\Indexation\Meetups\Runner;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,8 +16,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class IndexMeetupsCommand extends Command
 {
     public function __construct(
-        private readonly RepositoryFactory $ting,
         private readonly SearchClient $searchClient,
+        private readonly MeetupRepository $meetupRepository,
     ) {
         parent::__construct();
     }
@@ -37,13 +36,11 @@ class IndexMeetupsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $meetupRepository = $this->ting->get(MeetupRepository::class);
-
         if ($input->getOption('run-scraping')) {
             $this->runScraping($output);
         }
 
-        $runner = new Runner($this->searchClient, $meetupRepository);
+        $runner = new Runner($this->searchClient, $this->meetupRepository);
         $runner->run();
 
         return Command::SUCCESS;

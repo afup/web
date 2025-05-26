@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Event;
 
-use AppBundle\Calendar\IcsPLanningGenerator;
+use AppBundle\Calendar\IcsPlanningGenerator;
 use AppBundle\Calendar\JsonPlanningGenerator;
-use AppBundle\CFP\PhotoStorage;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
 use AppBundle\Openfeedback\OpenfeedbackJsonGenerator;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,18 +18,18 @@ use Symfony\Component\HttpFoundation\Response;
 class EventController extends AbstractController
 {
     public function __construct(
-        private readonly RepositoryFactory $repositoryFactory,
-        private readonly PhotoStorage $photoStorage,
         private readonly EventActionHelper $eventActionHelper,
+        private readonly TalkRepository $talkRepository,
+        private readonly EventRepository $eventRepository,
+        private readonly VoteRepository $voteRepository,
+        private readonly IcsPlanningGenerator $icsPlanningGenerator,
+        private readonly JsonPlanningGenerator $jsonPlanningGenerator,
+        private readonly OpenfeedbackJsonGenerator $openfeedbackJsonGenerator,
     ) {}
 
     public function index()
     {
-        /**
-         * @var EventRepository $eventRepository
-         */
-        $eventRepository = $this->repositoryFactory->get(EventRepository::class);
-        $events = $eventRepository->getNextEvents();
+        $events = $this->eventRepository->getNextEvents();
 
         if ($events === null) {
             return $this->render('event/none.html.twig');
@@ -45,11 +43,7 @@ class EventController extends AbstractController
 
     public function speakerInfosIndex()
     {
-        /**
-         * @var EventRepository $eventRepository
-         */
-        $eventRepository = $this->repositoryFactory->get(EventRepository::class);
-        $event = $eventRepository->getNextEventForGithubUser($this->getUser());
+        $event = $this->eventRepository->getNextEventForGithubUser($this->getUser());
 
         if ($event === null) {
             return $this->render('event/none.html.twig');
@@ -62,8 +56,8 @@ class EventController extends AbstractController
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
 
-        $talks = $this->repositoryFactory->get(TalkRepository::class)->getNumberOfTalksByEvent($event);
-        $votes = $this->repositoryFactory->get(VoteRepository::class)->getNumberOfVotesByEvent($event);
+        $talks = $this->talkRepository->getNumberOfTalksByEvent($event);
+        $votes = $this->voteRepository->getNumberOfVotesByEvent($event);
 
         $currentDate = new \DateTime();
 
@@ -85,9 +79,7 @@ class EventController extends AbstractController
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
 
-        $icsPlanningGenerator = new IcsPLanningGenerator($this->repositoryFactory->get(TalkRepository::class));
-
-        $response = new Response($icsPlanningGenerator->generateForEvent($event));
+        $response = new Response($this->icsPlanningGenerator->generateForEvent($event));
 
         $response->headers->add([
             'Content-Type' => 'text/Calendar; charset=UTF-8',
@@ -106,13 +98,7 @@ class EventController extends AbstractController
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
 
-        $photoStorage = $this->photoStorage;
-        $ting = $this->repositoryFactory;
-        $talkRepository = $ting->get(TalkRepository::class);
-
-        $jsonPlanningGenerator = new JsonPlanningGenerator($talkRepository, $photoStorage);
-
-        return new JsonResponse($jsonPlanningGenerator->generate($event));
+        return new JsonResponse($this->jsonPlanningGenerator->generate($event));
     }
 
     /**
@@ -134,7 +120,7 @@ class EventController extends AbstractController
      */
     public function calendarLatest()
     {
-        $event = $this->repositoryFactory->get(EventRepository::class)->getCurrentEvent();
+        $event = $this->eventRepository->getCurrentEvent();
 
         return new RedirectResponse($this->generateUrl('event_calendar', ['eventSlug' => $event->getPath()]));
     }
@@ -143,13 +129,7 @@ class EventController extends AbstractController
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
 
-        $photoStorage = $this->photoStorage;
-        $ting = $this->repositoryFactory;
-        $talkRepository = $ting->get(TalkRepository::class);
-
-        $generator = new OpenfeedbackJsonGenerator($talkRepository, $photoStorage);
-
-        $response =  new JsonResponse($generator->generate($event));
+        $response =  new JsonResponse($this->openfeedbackJsonGenerator->generate($event));
 
         $response->headers->set('Access-Control-Allow-Origin', 'https://openfeedback.io');
 

@@ -5,20 +5,19 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website;
 
 use AppBundle\Event\Model\Repository\BadgeRepository;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class BadgeController extends AbstractController
 {
     public function __construct(
-        private readonly RepositoryFactory $repositoryFactory,
+        private readonly BadgeRepository $badgeRepository,
         private readonly string $storageDir,
     ) {}
 
     public function badge($id)
     {
-        $badge = $this->repositoryFactory->get(BadgeRepository::class)->get($id);
+        $badge = $this->badgeRepository->get($id);
         if (null === $badge) {
             throw $this->createNotFoundException();
         }

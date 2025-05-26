@@ -6,7 +6,6 @@ namespace AppBundle\Command;
 
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,8 +13,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class VideosDataCommand extends Command
 {
-    public function __construct(private readonly RepositoryFactory $ting)
-    {
+    public function __construct(
+        private readonly TalkRepository $talkRepository,
+        private readonly EventRepository $eventRepository,
+    ) {
         parent::__construct();
     }
 
@@ -29,19 +30,13 @@ class VideosDataCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var TalkRepository $talkRepository */
-        $talkRepository = $this->ting->get(TalkRepository::class);
-
-        /** @var EventRepository $eventRepository */
-        $eventRepository = $this->ting->get(EventRepository::class);
-
-        $event = $eventRepository->getByPath($input->getArgument('path'));
+        $event = $this->eventRepository->getByPath($input->getArgument('path'));
 
         if (null === $event) {
             throw new \InvalidArgumentException("Event not found");
         }
 
-        $talkAggregates = $talkRepository->getByEventWithSpeakers($event);
+        $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event);
 
         $data = [];
 

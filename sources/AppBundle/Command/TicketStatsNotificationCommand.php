@@ -10,7 +10,6 @@ use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Notifier\SlackNotifier;
 use AppBundle\Slack\MessageFactory;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -22,7 +21,8 @@ class TicketStatsNotificationCommand extends Command
         private readonly MessageFactory $messageFactory,
         private readonly EventStatsRepository $eventStatsRepository,
         private readonly SlackNotifier $slackNotifier,
-        private readonly RepositoryFactory $ting,
+        private readonly EventRepository $eventRepository,
+        private readonly TicketTypeRepository $ticketTypeRepository,
     ) {
         parent::__construct();
     }
@@ -42,9 +42,6 @@ class TicketStatsNotificationCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $eventReposotory = $this->ting->get(EventRepository::class);
-        $ticketRepository = $this->ting->get(TicketTypeRepository::class);
-
         $date = null;
 
         if ($input->getOption('display-diff')) {
@@ -53,11 +50,11 @@ class TicketStatsNotificationCommand extends Command
         }
 
         /** @var Event $event */
-        foreach ($eventReposotory->getNextEvents() as $event) {
+        foreach ($this->eventRepository->getNextEvents() as $event) {
             $message = $this->messageFactory->createMessageForTicketStats(
                 $event,
                 $this->eventStatsRepository,
-                $ticketRepository,
+                $this->ticketTypeRepository,
                 $date,
             );
 

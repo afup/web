@@ -6,17 +6,16 @@ namespace AppBundle\Controller\Website;
 
 use AppBundle\Site\Model\Article;
 use AppBundle\Site\Model\Repository\ArticleRepository;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 class RssFeedController extends AbstractController
 {
-    public function __construct(private readonly RepositoryFactory $repositoryFactory) {}
+    public function __construct(private readonly ArticleRepository $articleRepository) {}
 
     public function __invoke(): Response
     {
-        $articles = $this->repositoryFactory->get(ArticleRepository::class)->findPublishedNews(1, 20, []);
+        $articles = $this->articleRepository->findPublishedNews(1, 20, []);
         $derniersArticles = [];
         foreach ($articles as $article) {
             /** @var Article $article */

@@ -11,17 +11,18 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Talk;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 
 class Runner
 {
-    protected Transformer $transformer;
+    private readonly Transformer $transformer;
 
     public function __construct(
-        protected SearchClient $algoliaClient,
-        protected RepositoryFactory $ting,
+        private readonly SearchClient $algoliaClient,
+        private readonly PlanningRepository $planningRepository,
+        private readonly TalkRepository $talkRepository,
+        private readonly EventRepository $eventRepository,
+        private readonly SpeakerRepository $speakerRepository,
     ) {
         $this->transformer = new Transformer();
     }
@@ -83,7 +84,7 @@ class Runner
      */
     protected function getAllPlannings()
     {
-        return $this->ting->get(PlanningRepository::class)->getAll();
+        return $this->planningRepository->getAll();
     }
 
     protected function prepareObject(Planning $planning): ?array
@@ -92,20 +93,19 @@ class Runner
             return null;
         }
 
-        /** @var Talk|null $talk */
-        $talk = $this->ting->get(TalkRepository::class)->get($planning->getTalkId());
+        $talk = $this->talkRepository->get($planning->getTalkId());
 
         if (null === $talk || !$talk->isDisplayedOnHistory()) {
             return  null;
         }
 
-        $event = $this->ting->get(EventRepository::class)->get($planning->getEventId());
+        $event = $this->eventRepository->get($planning->getEventId());
 
         if (null === $event) {
             return null;
         }
 
-        $speakers = $this->ting->get(SpeakerRepository::class)->getSpeakersByTalk($talk);
+        $speakers = $this->speakerRepository->getSpeakersByTalk($talk);
 
         return $this->transformer->transform($planning, $talk, $event, $speakers);
     }

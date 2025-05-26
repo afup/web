@@ -6,7 +6,6 @@ namespace AppBundle\Command;
 
 use AppBundle\Event\Model\Repository\MeetupRepository;
 use AppBundle\Indexation\Meetups\MeetupClient;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,8 +17,8 @@ class ScrappingMeetupEventsCommand extends Command
     use LockableTrait;
 
     public function __construct(
-        private RepositoryFactory $ting,
-        private MeetupClient $meetupClient,
+        private readonly MeetupClient $meetupClient,
+        private readonly MeetupRepository $meetupRepository,
     ) {
         parent::__construct();
     }
@@ -47,15 +46,12 @@ class ScrappingMeetupEventsCommand extends Command
         try {
             $meetups = $this->meetupClient->getEvents();
 
-            /** @var MeetupRepository $meetupRepository */
-            $meetupRepository = $this->ting->get(MeetupRepository::class);
-
             $io->progressStart(count($meetups));
             foreach ($meetups as $meetup) {
                 $io->progressAdvance();
 
                 $id = $meetup->getId();
-                $existingMeetup = $meetupRepository->get($id);
+                $existingMeetup = $this->meetupRepository->get($id);
 
                 // Si le meetup est déjà présent en base, il est mis à jour.
                 if ($existingMeetup) {
@@ -69,16 +65,17 @@ class ScrappingMeetupEventsCommand extends Command
                     $meetup = $existingMeetup;
                 }
 
-                $meetupRepository->save($meetup);
+                $this->meetupRepository->save($meetup);
             }
 
             $io->progressFinish();
             $io->success('Terminé avec succès');
 
-            return Command::FAILURE;
+            return Command::SUCCESS;
         } catch (\Exception $e) {
             throw new \Exception('Problème lors du scraping ou de la sauvegarde des évènements Meetup', $e->getCode(), $e);
         }
-        return Command::SUCCESS;
+
+        return Command::FAILURE;
     }
 }

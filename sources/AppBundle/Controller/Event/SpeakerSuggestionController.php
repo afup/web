@@ -10,7 +10,6 @@ use AppBundle\Event\Form\SpeakerSuggestionType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\SpeakerSuggestionRepository;
 use AppBundle\Event\Model\SpeakerSuggestion;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +19,8 @@ class SpeakerSuggestionController extends AbstractController
 {
     public function __construct(
         private readonly Mailer $mailer,
-        private readonly RepositoryFactory $repositoryFactory,
         private readonly EventActionHelper $eventActionHelper,
+        private readonly SpeakerSuggestionRepository $speakerSuggestionRepository,
     ) {}
 
     /**
@@ -48,8 +47,7 @@ class SpeakerSuggestionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $speakerSuggestion = $this->createSpeakerSuggestion($event, $form->getData());
 
-            $this->repositoryFactory
-                ->get(SpeakerSuggestionRepository::class)
+            $this->speakerSuggestionRepository
                 ->save($speakerSuggestion)
             ;
 

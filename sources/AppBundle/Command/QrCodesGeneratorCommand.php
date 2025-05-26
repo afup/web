@@ -6,7 +6,6 @@ namespace AppBundle\Command;
 
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Ticket\QrCodeGenerator;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -17,7 +16,7 @@ class QrCodesGeneratorCommand extends Command
 {
     public function __construct(
         private readonly QrCodeGenerator $qrCodeGenerator,
-        private readonly RepositoryFactory $ting,
+        private readonly TicketRepository $ticketRepository,
     ) {
         parent::__construct();
     }
@@ -45,9 +44,7 @@ class QrCodesGeneratorCommand extends Command
         $io->title('Génération des QR codes pour les badges des participant.e.s pour les évènements.');
 
         try {
-            /** @var TicketRepository $ticketRepository */
-            $ticketRepository = $this->ting->get(TicketRepository::class);
-            $tickets = $ticketRepository->getByEmptyQrCodes();
+            $tickets = $this->ticketRepository->getByEmptyQrCodes();
 
             if (count($tickets) === 0) {
                 $io->text('Aucun nouveau code à générer');
@@ -69,7 +66,7 @@ class QrCodesGeneratorCommand extends Command
 
                 $io->progressAdvance();
                 $ticket->setQrCode($this->qrCodeGenerator->generate($ticket->getId()));
-                $ticketRepository->save($ticket);
+                $this->ticketRepository->save($ticket);
             }
             $io->progressFinish();
         } catch (\Exception $e) {

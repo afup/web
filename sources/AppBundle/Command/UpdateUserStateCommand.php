@@ -6,14 +6,13 @@ namespace AppBundle\Command;
 
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateUserStateCommand extends Command
 {
-    public function __construct(private readonly RepositoryFactory $ting)
+    public function __construct(private readonly UserRepository $userRepository)
     {
         parent::__construct();
     }
@@ -27,13 +26,10 @@ class UpdateUserStateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var UserRepository $userRepository */
-        $userRepository = $this->ting->get(UserRepository::class);
-
-        foreach ($userRepository->loadAll() as $user) {
+        foreach ($this->userRepository->loadAll() as $user) {
             $hasUptoDateMembershipFee = $user->hasUpToDateMembershipFee();
             $user->setStatus($hasUptoDateMembershipFee ? User::STATUS_ACTIVE : User::STATUS_INACTIVE);
-            $userRepository->save($user);
+            $this->userRepository->save($user);
         }
 
         return Command::SUCCESS;

@@ -11,7 +11,6 @@ use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Model\Repository\ArticleRepository;
 use AppBundle\Twig\ViewRenderer;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,7 +18,9 @@ class HtmlSitemapController extends AbstractController
 {
     public function __construct(
         private readonly ViewRenderer $view,
-        private readonly RepositoryFactory $repositoryFactory,
+        private readonly CompanyMemberRepository $companyMemberRepository,
+        private readonly ArticleRepository $articleRepository,
+        private readonly TalkRepository $talkRepository,
     ) {}
 
     public function display(): Response
@@ -55,11 +56,7 @@ class HtmlSitemapController extends AbstractController
 
     private function members(): array
     {
-        /**
-         * @var CompanyMemberRepository $companyRepository
-         */
-        $companyRepository = $this->repositoryFactory->get(CompanyMemberRepository::class);
-        $displayableCompanies = $companyRepository->findDisplayableCompanies();
+        $displayableCompanies = $this->companyMemberRepository->findDisplayableCompanies();
 
         $members = [];
         foreach ($displayableCompanies as $member) {
@@ -78,10 +75,8 @@ class HtmlSitemapController extends AbstractController
 
     private function news(): array
     {
-        $repository = $this->repositoryFactory->get(ArticleRepository::class);
-
         $news = [];
-        $newsList = $repository->findAllPublishedNews();
+        $newsList = $this->articleRepository->findAllPublishedNews();
         foreach ($newsList as $newsItem) {
             $url = $this->generateUrl('news_display', [
                 'code' => $newsItem->getSlug(),
@@ -98,10 +93,8 @@ class HtmlSitemapController extends AbstractController
 
     private function talks(): array
     {
-        $repository = $this->repositoryFactory->get(TalkRepository::class);
-
         $talks = [];
-        $talkList = $repository->getAllPastTalks((new \DateTime())->setTime(29,59,59));
+        $talkList = $this->talkRepository->getAllPastTalks((new \DateTime())->setTime(29,59,59));
 
         /** @var Talk $talk */
         foreach ($talkList as $talk) {

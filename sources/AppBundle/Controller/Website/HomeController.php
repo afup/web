@@ -13,7 +13,6 @@ use AppBundle\Event\Model\Meetup;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Twig\ViewRenderer;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
@@ -28,9 +27,9 @@ class HomeController extends AbstractController
     public function __construct(
         private readonly ViewRenderer $view,
         private readonly LoggerInterface $logger,
-        private readonly RepositoryFactory $repositoryFactory,
         private readonly CacheItemPoolInterface $cache,
         private readonly SearchClient $client,
+        private readonly TalkRepository $talkRepository,
         private readonly bool $homeAlgoliaEnabled,
     ) {}
 
@@ -57,7 +56,7 @@ class HomeController extends AbstractController
 
     protected function getTalkOfTheDay(): Talk
     {
-        return $this->repositoryFactory->get(TalkRepository::class)->getTalkOfTheDay(new \DateTime());
+        return $this->talkRepository->getTalkOfTheDay(new \DateTime());
     }
 
     /**

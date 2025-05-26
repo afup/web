@@ -7,7 +7,6 @@ namespace AppBundle\Controller\Website;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Twig\ViewRenderer;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,17 +14,12 @@ class CompanyPublicProfileListController extends AbstractController
 {
     public function __construct(
         private readonly ViewRenderer $view,
-        private readonly RepositoryFactory $repositoryFactory,
+        private readonly CompanyMemberRepository $companyMemberRepository,
     ) {}
 
     public function index(): Response
     {
-        /**
-         * @var CompanyMemberRepository $companyRepository
-         */
-        $companyRepository = $this->repositoryFactory->get(CompanyMemberRepository::class);
-
-        $displayableCompanies = $companyRepository->findDisplayableCompanies();
+        $displayableCompanies = $this->companyMemberRepository->findDisplayableCompanies();
 
         usort($displayableCompanies, function (CompanyMember $companyMemberA, CompanyMember $companyMemberB): int {
             $a = $companyMemberA->getCompanyName();

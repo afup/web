@@ -10,9 +10,6 @@ use AppBundle\Event\Model\Repository\SponsorScanRepository;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\SponsorScan;
-use AppBundle\Event\Model\SponsorTicket;
-use AppBundle\Event\Model\Ticket;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,8 +19,10 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class SponsorScanController extends AbstractController
 {
     public function __construct(
-        private readonly RepositoryFactory $repositoryFactory,
         private readonly EventActionHelper $eventActionHelper,
+        private readonly SponsorScanRepository $sponsorScanRepository,
+        private readonly SponsorTicketRepository $sponsorTicketRepository,
+        private readonly TicketRepository $ticketRepository,
     ) {}
 
     public function index(Request $request, $eventSlug)
@@ -37,9 +36,7 @@ class SponsorScanController extends AbstractController
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
 
-        /** @var SponsorScanRepository $scanRepository */
-        $scanRepository = $this->repositoryFactory->get(SponsorScanRepository::class);
-        $scans = $scanRepository->getBySponsorTicket($sponsorTicket);
+        $scans = $this->sponsorScanRepository->getBySponsorTicket($sponsorTicket);
 
         return $this->render('event/sponsor/scan.html.twig', [
             'event' => $event,
@@ -88,19 +85,14 @@ class SponsorScanController extends AbstractController
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
 
-        /** @var TicketRepository $ticketRepository */
-        $ticketRepository = $this->repositoryFactory->get(TicketRepository::class);
-        /** @var Ticket $ticket */
-        $ticket = $ticketRepository->getOneBy(['forumId' => $event->getId(), 'qrCode' => $code]);
+        $ticket = $this->ticketRepository->getOneBy(['forumId' => $event->getId(), 'qrCode' => $code]);
 
         if ($ticket === null) {
             $this->addFlash('error', 'Code inexistant ou invalide');
             return $this->redirectToRoute('sponsor_scan', ['eventSlug' => $eventSlug]);
         }
 
-        /** @var SponsorScanRepository $scanRepository */
-        $scanRepository = $this->repositoryFactory->get(SponsorScanRepository::class);
-        $scan = $scanRepository->getOneBy(['sponsorTicketId' => $sponsorTicket->getId(), 'ticketId' => $ticket->getId()]);
+        $scan = $this->sponsorScanRepository->getOneBy(['sponsorTicketId' => $sponsorTicket->getId(), 'ticketId' => $ticket->getId()]);
 
         if ($scan instanceof SponsorScan && $scan->getDeletedOn() === null) {
             $this->addFlash('error', 'Code déjà scanné.');
@@ -115,7 +107,7 @@ class SponsorScanController extends AbstractController
 
         $scan->setCreatedOn(new \DateTime('now'))
             ->setDeletedOn(null);
-        $scanRepository->save($scan);
+        $this->sponsorScanRepository->save($scan);
 
         $this->addFlash('success', 'QR Code ajouté !');
 
@@ -136,8 +128,7 @@ class SponsorScanController extends AbstractController
         $tmpFile = tempnam(sys_get_temp_dir(), $baseName);
         $file = new \SplFileObject($tmpFile, 'w');
 
-        $scanRepository = $this->repositoryFactory->get(SponsorScanRepository::class);
-        $scans = $scanRepository->getBySponsorTicket($sponsorTicket);
+        $scans = $this->sponsorScanRepository->getBySponsorTicket($sponsorTicket);
 
         $file->fputcsv(['Nom', 'Prénom', 'Email', 'Date']);
 
@@ -167,13 +158,11 @@ class SponsorScanController extends AbstractController
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
 
-        /** @var SponsorScanRepository $scanRepository */
-        $scanRepository = $this->repositoryFactory->get(SponsorScanRepository::class);
-        $scan = $scanRepository->getOneBy(['sponsorTicketId' => $sponsorTicket->getId(), 'id' => $scanId]);
+        $scan = $this->sponsorScanRepository->getOneBy(['sponsorTicketId' => $sponsorTicket->getId(), 'id' => $scanId]);
 
         if ($scan instanceof SponsorScan) {
             $scan->setDeletedOn(new \DateTime('now'));
-            $scanRepository->save($scan);
+            $this->sponsorScanRepository->save($scan);
             $this->addFlash('success', "QR Code supprimé !");
         }
 
@@ -186,10 +175,7 @@ class SponsorScanController extends AbstractController
             throw new InvalidSponsorTokenException('Merci de renseigner votre token.');
         }
 
-        /**
-         * @var SponsorTicket $sponsorTicket
-         */
-        $sponsorTicket = $this->repositoryFactory->get(SponsorTicketRepository::class)->get($request->getSession()->get('sponsor_ticket_id'));
+        $sponsorTicket = $this->sponsorTicketRepository->get($request->getSession()->get('sponsor_ticket_id'));
         if ($sponsorTicket === null) {
             throw new InvalidSponsorTokenException('Token invalide.');
         }

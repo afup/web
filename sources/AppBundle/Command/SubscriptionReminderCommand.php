@@ -16,7 +16,6 @@ use AppBundle\Association\UserMembership\ReminderDDay;
 use AppBundle\Association\UserMembership\UserReminderFactory;
 use AppBundle\Email\Mailer\Mailer;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
-use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,7 +25,8 @@ class SubscriptionReminderCommand extends Command
 {
     public function __construct(
         private readonly Mailer $mailer,
-        private readonly RepositoryFactory $ting,
+        private readonly SubscriptionReminderLogRepository $subscriptionReminderLogRepository,
+        private readonly UserRepository $userRepository,
     ) {
         parent::__construct();
     }
@@ -48,16 +48,11 @@ class SubscriptionReminderCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $mailer = $this->mailer;
-        $factory = new UserReminderFactory($mailer, $this->ting->get(SubscriptionReminderLogRepository::class));
+        $factory = new UserReminderFactory($mailer, $this->subscriptionReminderLogRepository);
         $companyFactory = new CompanyReminderFactory(
             $mailer,
-            $this->ting->get(SubscriptionReminderLogRepository::class),
+            $this->subscriptionReminderLogRepository,
         );
-
-        /**
-         * @var UserRepository $repository
-         */
-        $repository = $this->ting->get(UserRepository::class);
 
         $dryRun = $input->getOption('dry-run');
 
@@ -89,7 +84,7 @@ class SubscriptionReminderCommand extends Command
         $output->writeln('<info>Reminders des souscriptions</info>');
         foreach ($reminders as $name => $details) {
             $reminder = $factory->getReminder($details['physical']);
-            $users = $repository->getUsersByEndOfMembership($details['date'], UserRepository::USER_TYPE_PHYSICAL);
+            $users = $this->userRepository->getUsersByEndOfMembership($details['date'], UserRepository::USER_TYPE_PHYSICAL);
 
             $output->writeln(sprintf('%s (%s)', $name, $details['date']->format('d/m/Y')));
             $output->writeln(sprintf('<info>%s membres</info>', $users->count()));
@@ -97,7 +92,7 @@ class SubscriptionReminderCommand extends Command
 
 
             $reminder = $companyFactory->getReminder($details['company']);
-            $users = $repository->getUsersByEndOfMembership($details['date'], UserRepository::USER_TYPE_COMPANY);
+            $users = $this->userRepository->getUsersByEndOfMembership($details['date'], UserRepository::USER_TYPE_COMPANY);
             $output->writeln(sprintf('<info>%s entreprises</info>', $users->count()));
             $this->handleReminders($output, $reminder, $users, $dryRun);
         }
