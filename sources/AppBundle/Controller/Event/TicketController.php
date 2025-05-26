@@ -79,7 +79,7 @@ class TicketController extends AbstractController
                  */
                 $sponsorTicket = $this->repositoryFactory->get(SponsorTicketRepository::class)->getOneBy(['token' => $token]);
                 if (
-                    $this->actionThrottling->isActionBlocked('sponsor_token', $request->getClientIp(), null)
+                    $this->actionThrottling->isActionBlocked('sponsor_token', $request->getClientIp())
                     ||
                     $sponsorTicket === null
                 ) {
@@ -87,7 +87,7 @@ class TicketController extends AbstractController
                     // L'ip est bloquée pendant un temps mais il ne faut pas en informer celui qui tente - pour éviter
                     // qu'il ne change d'IP
                     $errors[] = 'Ce token n\'existe pas.';
-                    $this->actionThrottling->log('sponsor_token', $request->getClientIp(), null);
+                    $this->actionThrottling->log('sponsor_token', $request->getClientIp());
                 } else {
                     $session->set('sponsor_ticket_id', $sponsorTicket->getId());
                     $this->actionThrottling->clearLogsForIp('sponsor_token', $request->getClientIp());
