@@ -88,7 +88,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
             $filters = array_filter(array_map('trim', $filters));
             $ors = [];
             foreach ($filters as $i => $value) {
-                $ors[] = "apm.raison_sociale LIKE :filter$i OR apm.ville LIKE :filter$i";
+                $ors[] = "LOWER(apm.raison_sociale) LIKE LOWER(:filter$i) OR apm.ville LIKE :filter$i";
                 $queryBuilder->bindValue('filter' . $i, '%' . $value . '%');
             }
             $queryBuilder->where('(' . implode(' OR ', $ors) . ')');
