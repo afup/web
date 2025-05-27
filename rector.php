@@ -10,7 +10,6 @@ use Rector\Symfony\Set\TwigSetList;
 
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__ . '/app',
         __DIR__ . '/db',
         __DIR__ . '/htdocs/pages',
         __DIR__ . '/sources',
