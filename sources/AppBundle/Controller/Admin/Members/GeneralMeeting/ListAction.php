@@ -40,7 +40,7 @@ class ListAction
         }
         $selectedDate = $latestDate;
         if ($request->query->has('date')) {
-            $selectedDate = new \DateTimeImmutable('@' . $request->get('date')) ?: null;
+            $selectedDate = \DateTimeImmutable::createFromFormat('U', $request->get('date')) ?: null;
         }
         $attendees = null !== $selectedDate ? $this->generalMeetingRepository->getAttendees($selectedDate, $sort, $direction) : [];
 

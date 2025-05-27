@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,11 +38,14 @@ class ReportsAction extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $reportFile */
             $reportFile = $form->get('file')->getData();
-            if ($reportFile->move($basePath, $reportFile->getClientOriginalName())) {
+
+            try {
+                $reportFile->move($basePath, $reportFile->getClientOriginalName());
                 $this->addFlash('notice', 'Le compte rendu a correctement été ajouté.');
-            } else {
+            } catch (FileException) {
                 $this->addFlash('error', 'Le compte rendu n\'a pas été ajouté.');
             }
+
             return $this->redirectToRoute($request->attributes->get('_route'));
         }
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members\GeneralMeetingVote;
 
-use AppBundle\Association\Model\GeneralMeetingQuestion;
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,7 +17,6 @@ class CloseAction extends AbstractController
     {
         $questionId = $request->query->getInt('id');
 
-        /** @var GeneralMeetingQuestion $question */
         $question = $this->generalMeetingQuestionRepository->get($questionId);
 
         if (null === $question) {
