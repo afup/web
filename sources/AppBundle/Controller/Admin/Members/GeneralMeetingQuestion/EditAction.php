@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members\GeneralMeetingQuestion;
 
-use AppBundle\Association\Model\GeneralMeetingQuestion;
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
 use AppBundle\GeneralMeeting\GeneralMeetingQuestionFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +15,6 @@ class EditAction extends AbstractController
 
     public function __invoke(Request $request, $id)
     {
-        /** @var GeneralMeetingQuestion $question */
         $question = $this->generalMeetingQuestionRepository->get($id);
 
         if (null === $question) {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members\GeneralMeetingQuestion;
 
-use AppBundle\Association\Model\GeneralMeetingQuestion;
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
 use AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +18,6 @@ class DeleteAction extends AbstractController
 
     public function __invoke($id): RedirectResponse
     {
-        /** @var GeneralMeetingQuestion $question */
         $question = $this->generalMeetingQuestionRepository->get($id);
 
         if (null === $question) {
