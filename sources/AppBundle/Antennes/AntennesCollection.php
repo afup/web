@@ -27,17 +27,6 @@ final class AntennesCollection
         return $this->antennes;
     }
 
-    public function findByMeetupId(string $meetupId): ?Antenne
-    {
-        foreach ($this->getAll() as $antenne) {
-            if ($antenne->meetup !== null && $antenne->meetup->id === $meetupId) {
-                return $antenne;
-            }
-        }
-
-        throw new \InvalidArgumentException("Antenne introuvable via l'id meetup $meetupId");
-    }
-
     /**
      * @return array<string, Antenne>
      */
