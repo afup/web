@@ -21,19 +21,12 @@ return RectorConfig::configure()
     ->withCodeQualityLevel(10)
     ->withImportNames(true, true, false)
     ->withSymfonyContainerXml(__DIR__ . '/var/cache/dev/AppKernelDevDebugContainer.xml')
+    ->withComposerBased(
+        twig: true,
+        phpunit: true,
+        symfony: true,
+    )
     ->withSets([
-        SymfonySetList::SYMFONY_44,
-        SymfonySetList::SYMFONY_50,
-        SymfonySetList::SYMFONY_51,
-        SymfonySetList::SYMFONY_52,
-        SymfonySetList::SYMFONY_53,
-        SymfonySetList::SYMFONY_54,
-        SymfonySetList::SYMFONY_CODE_QUALITY,
-        SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
-        TwigSetList::TWIG_UNDERSCORE_TO_NAMESPACE,
         LevelSetList::UP_TO_PHP_82,
-        PHPUnitSetList::PHPUNIT_90,
-        PHPUnitSetList::PHPUNIT_100,
-        PHPUnitSetList::PHPUNIT_110,
     ])
 ;
