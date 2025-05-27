@@ -239,10 +239,6 @@
                     </td>
                 {/if}
             <td style="text-align: right" nowrap="nowrap">
-                {if $inscription.type_inscription == AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION && $inscription.etat != 1}
-                <a href="index.php?page=forum_inscriptions&amp;action=generer_mail_inscription_afup&amp;id={$inscription.id}"><img src="{$chemin_template}images/famfamfam/email_edit.png" alt="Générer un mail pour demander la confirmation d'adhésion à l'AFUP" /></a>
-                <a href="index.php?page=forum_inscriptions&amp;action=generer_inscription_afup&amp;id={$inscription.id}"><img src="{$chemin_template}images/famfamfam/group_add.png" alt="Transformer en adhésion AFUP" /></a>
-                {/if}
                 <a href="index.php?page=forum_inscriptions&amp;action=modifier&amp;id={$inscription.id}"
                    data-position="left center"
                    data-tooltip="Modifier la fiche de {$inscription.nom} {$inscription.prenom}"
@@ -273,26 +269,6 @@
         </div>
     {/if}
     </div>
-{elseif $action == 'generer_mail_inscription_afup'}
-    <textarea rows="37" cols="100">Bonjour,
-
-Lors de votre inscription au {$info_forum.titre}, vous avez souhaité profiter de notre offre inscription/adhésion.
-
-Être membre de l'AFUP vous ouvre la porte à une multitude d'avantages :
- - un accès au back-office, qui vous permettra de nous aider à nourrir les projets.
- - des invitations aux Rendez-vous AFUP : conférences thématiques, à Paris ou en province, animées par des experts. Le coût de ces conférences étant pris en charge par l'AFUP, elles sont gratuites pour les participants !
- - des Apéros PHP : des développeurs se réunissent régulièrement autour d'un verre pour discuter PHP. Soyez tenu au courant de ces apéros, participez à ceux qui se déroulent dans votre ville, rencontrez des développeurs PHP près de chez vous.
- - un tarif préférentiel au Forum PHP et au PHP Tour: votre adhésion à l'AFUP vous donnera droit au tarif « membre AFUP » lors de ces prochains évènements.
- - des réductions exclusives négociées auprès de nos partenaires sur leurs formations et leurs services
- - l'inscription à la mailing-list des membres de l'AFUP: un problème de code ? Besoin d'un conseil ? Une offre d'emploi à diffuser ? Une actualité qui pourrait intéresser la communauté ? Ecrivez à la mailing-list membres@afup.org et échangez avec les centaines de membres de l'AFUP.
-
-Pour confirmer votre adhésion, vous devez valider les informations suivantes :
-{$texte_mail}
-Cette validation s'effectuera par l'envoi d'un mail en réponse à celui-ci portant la mention :
-"Je reconnais avoir pris connaissance et accepter le règlement intérieur de l'AFUP : https://afup.org/pages/site/?route=vie-associative-afup/21/reglement-interieur"
-
-Cordialement,
-</textarea>
 {else}
     {if $action == 'ajouter'}
     <h2>Ajouter une inscription pour le {$forum_name}</h2>

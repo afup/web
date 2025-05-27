@@ -23,7 +23,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 
 checkForumRedirection();
 
-$action = verifierAction(['lister', 'ajouter', 'modifier', 'supprimer','envoyer_convocation', 'generer_mail_inscription_afup', 'generer_inscription_afup']);
+$action = verifierAction(['lister', 'ajouter', 'modifier', 'supprimer','envoyer_convocation']);
 $tris_valides = ['i.date', 'i.nom', 'f.societe', 'i.etat'];
 $sens_valides = [ 'desc','asc' ];
 $smarty->assign('action', $action);
@@ -135,37 +135,6 @@ if ($action == 'lister') {
     } else {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'inscription', 'index.php?page=forum_inscriptions&action=lister', true);
     }
-} elseif ($action == 'generer_mail_inscription_afup') {
-    $champs = $forum_inscriptions->obtenir($_GET['id']);
-    $champs2 = $forum_facturation->obtenir($champs['reference']);
-    $info_forum = $forum->obtenir($champs['id_forum']);
-    $texte  = ' - civilité :    ' . $champs['civilite'] . PHP_EOL;
-    $texte .= ' - nom :         ' . $champs['nom'] . PHP_EOL;
-    $texte .= ' - prénom :      ' . $champs['prenom'] . PHP_EOL;
-    $texte .= ' - email :       ' . $champs['email'] . PHP_EOL;
-    $texte .= ' - adresse :     ' . $champs2['adresse'] . PHP_EOL;
-    $texte .= ' - code postal : ' . $champs2['code_postal'] . PHP_EOL;
-    $texte .= ' - ville :       ' . $champs2['ville'] . PHP_EOL;
-    $texte .= ' - pays :        ' . $champs2['id_pays'] . PHP_EOL;
-    $smarty->assign('texte_mail', $texte);
-    $smarty->assign('info_forum', $info_forum);
-} elseif ($action == 'generer_inscription_afup') {
-    $champs = $forum_inscriptions->obtenir($_GET['id']);
-    $champs2 = $forum_facturation->obtenir($champs['reference']);
-    $session->set('generer_personne_physique', [
-        'civilite' => $champs['civilite'],
-        'nom' => $champs['nom'],
-        'prenom' => $champs['prenom'],
-        'email' => $champs['email'],
-        'adresse' => $champs2['adresse'],
-        'code_postal' => $champs2['code_postal'],
-        'ville' => $champs2['ville'],
-        'id_pays' => $champs2['id_pays'],
-        'telephone_fixe' => $champs['telephone'],
-        'telephone_portable' => $champs['telephone'],
-        'etat' => 1,
-    ]);
-    afficherMessage("L'inscription a été pré-remplie\nPensez à générer le login",  $urlGenerator->generate('admin_members_add'));
 } else {
     $pays = new Pays($bdd);
 
