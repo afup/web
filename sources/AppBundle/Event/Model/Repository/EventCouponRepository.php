@@ -76,7 +76,7 @@ class EventCouponRepository extends Repository implements MetadataInitializer
     public function couponsListForEventImploded(Event $event, string $separator = ', '): string
     {
         $eventCoupons = $this->couponsListForEvent($event);
-        $array = array_map(static fn(EventCoupon $coupon) => $coupon->getText(), iterator_to_array($eventCoupons));
+        $array = array_map(static fn(EventCoupon $coupon): string => $coupon->getText(), iterator_to_array($eventCoupons));
 
         return implode($separator, $array);
     }

@@ -10,87 +10,59 @@ use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 class EventCoupon implements NotifyPropertyInterface
 {
     use NotifyProperty;
-    /**
-     * @var null|int
-     */
-    private $id;
 
-    /**
-     * @var null|int
-     */
-    private $idEvent;
+    private ?int $id = null;
 
-    /**
-     * @var null|string
-     */
-    private $text;
+    private int $idEvent;
 
-    /**
-     * @param Event $event
-     * @param string $coupon
-     * @return self
-     */
-    public static function initForEventAndCoupon(Event $event, $coupon)
+    private string $text;
+
+    public static function initForEventAndCoupon(Event $event, string $coupon): self
     {
         if ($event->getId() === null) {
             throw new \Exception('Event has no ID');
         }
-        if (empty($coupon) === true || is_string($coupon) === false) {
+
+        if (strlen($coupon) === 0) {
             throw new \Exception('Coupon argument is not a not empty string');
         }
+
         $eventCoupon = new self();
         $eventCoupon->setIdEvent($event->getId());
         $eventCoupon->setText($coupon);
+
         return $eventCoupon;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int|null $id
-     */
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getIdEvent()
+    public function getIdEvent(): ?int
     {
         return $this->idEvent;
     }
 
-    /**
-     * @param int|null $idEvent
-     */
-    public function setIdEvent($idEvent): void
+    public function setIdEvent(int $idEvent): void
     {
-        $this->propertyChanged('idEvent', $this->idEvent, $idEvent);
+        $this->propertyChanged('idEvent', $this->idEvent ?? '', $idEvent);
         $this->idEvent = $idEvent;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getText()
+    public function getText(): string
     {
         return $this->text;
     }
 
-    /**
-     * @param string|null $text
-     */
-    public function setText($text): void
+    public function setText(string $text): void
     {
-        $this->propertyChanged('text', $this->text, $text);
+        $this->propertyChanged('text', $this->text ?? '', $text);
         $this->text = $text;
     }
 }

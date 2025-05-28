@@ -91,9 +91,6 @@ class Talk implements NotifyPropertyInterface
     #[Assert\NotNull]
     private bool $hasAllowedToSharingWithLocalOffices = false;
 
-    /**
-     * @return int
-     */
     public function getId(): ?int
     {
         return $this->id;
@@ -106,9 +103,6 @@ class Talk implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getForumId(): ?int
     {
         return $this->forumId;
@@ -405,10 +399,7 @@ class Talk implements NotifyPropertyInterface
         return null !== $this->getInterviewUrl();
     }
 
-    /**
-     * @return string
-     */
-    public function getSlug()
+    public function getSlug(): string
     {
         $slugify = new Slugify();
         return $slugify->slugify($this->getTitle());
