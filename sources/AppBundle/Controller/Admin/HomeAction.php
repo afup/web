@@ -32,7 +32,7 @@ class HomeAction extends AbstractController
         $cards = [];
         if ($this->isGranted('ROLE_FORUM') && $nextevents) {
             foreach ($nextevents as $event) {
-                $stats = $this->eventStatsRepository->getStats($event->getId());
+                $stats = $this->eventStatsRepository->getStats((int) $event->getId());
                 $info = [];
                 if ($event->lastsOneDay()) {
                     $info['statistics']['entrées'] = $stats->firstDay->registered;
