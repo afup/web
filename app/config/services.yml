@@ -54,8 +54,6 @@ services:
         autoconfigure: true
         public: false
 
-    Psr\Clock\ClockInterface: '@AppBundle\Clock\NativeClock'
-
     ### Pages legacy - DEBUT
     # Les anciennes pages ont besoin que certains services soient publics,
     # car récupérés via `$container->get()`. Ils sont listés ici :
