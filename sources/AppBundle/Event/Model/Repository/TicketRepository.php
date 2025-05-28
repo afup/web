@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\HydratorArrayCallable;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Model\TicketType;
+use AppBundle\Ting\DateTimeWithTimeZoneSerializer;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -225,7 +227,7 @@ class TicketRepository extends Repository implements MetadataInitializer
         ];
 
         $params = [
-            'eventId' => $event->getId()
+            'eventId' => $event->getId(),
         ];
 
         $sql = <<<SQL
@@ -268,7 +270,13 @@ SQL;
         return $this
             ->getPreparedQuery($sql)
             ->setParams($params)
-            ->query($this->getCollection(new HydratorArray()))
+            ->query($this->getCollection(new HydratorArrayCallable(function (mixed $key, array &$data): void {
+                if (!$data['lastsubscription']) {
+                    return;
+                }
+
+                $data['lastsubscription'] = (new DateTimeWithTimeZoneSerializer())->unserialize($data['lastsubscription'], ['format' => 'U']);
+            })))
         ;
     }
 
@@ -300,6 +308,7 @@ SQL;
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['format' => 'U'],
                 ],
+                'serializer' => DateTimeWithTimeZoneSerializer::class,
             ])
             ->addField([
                 'columnName' => 'reference',

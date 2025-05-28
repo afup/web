@@ -11,6 +11,7 @@ class Inscriptions extends AbstractSeed
         // Inscriptions
         $data = [
             [
+                'date' => time(),
                 'reference' => 'REF-TEST-001',
                 'type_inscription' => AFUP_FORUM_2_JOURNEES,
                 'montant' => $GLOBALS['AFUP_Tarifs_Forum'][AFUP_FORUM_2_JOURNEES],
@@ -26,6 +27,7 @@ class Inscriptions extends AbstractSeed
                 'etat' => AFUP_FORUM_ETAT_REGLE,
             ],
             [
+                'date' => time(),
                 'reference' => 'REF-TEST-002',
                 'type_inscription' => AFUP_FORUM_2_JOURNEES,
                 'montant' => $GLOBALS['AFUP_Tarifs_Forum'][AFUP_FORUM_2_JOURNEES],
@@ -41,6 +43,7 @@ class Inscriptions extends AbstractSeed
                 'etat' => AFUP_FORUM_ETAT_REGLE,
             ],
             [
+                'date' => time(),
                 'reference' => 'REF-TEST-003',
                 'type_inscription' => AFUP_FORUM_2_JOURNEES,
                 'montant' => $GLOBALS['AFUP_Tarifs_Forum'][AFUP_FORUM_2_JOURNEES],

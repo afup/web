@@ -203,7 +203,7 @@ class MessageFactory
         $attachment = new Attachment();
         $attachment
             ->setTitle('Total des inscriptions')
-            ->setTitleLink('https://afup.org/pages/administration/index.php?page=forum_inscriptions')
+            ->setTitleLink('https://afup.org/admin/event/inscription')
         ;
 
 
