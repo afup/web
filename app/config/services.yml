@@ -214,11 +214,6 @@ services:
         arguments:
             $backOfficePages: '%app.pages_backoffice%'
 
-    AppBundle\Association\Form\HelpMessageExtension:
-        autowire: true
-        tags:
-            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
-
     AppBundle\Listener\LocaleEventSubscriber:
         arguments: [ "%kernel.default_locale%" ]
         tags:
@@ -233,11 +228,6 @@ services:
         arguments: ['@AppBundle\Event\Model\Repository\SpeakerRepository']
         tags:
           - { name: security.voter }
-        public: false
-
-    AppBundle\Security\LegacyHasher:
-        autowire: true
-        autoconfigure: true
         public: false
 
     AppBundle\CFP\PhotoStorage:
@@ -257,11 +247,6 @@ services:
         class: Twig_Extensions_Extension_Intl
         tags:
             - { name: twig.extension }
-
-    AppBundle\Validator\Constraints\UniqueEntityValidator:
-        autowire: true
-        tags:
-            - { name: validator.constraint_validator }
 
     AppBundle\Payment\PayboxFactory:
         autowire: true
@@ -346,16 +331,6 @@ services:
         autowire: true
         arguments: ["%qr_code_salt%"]
 
-    AppBundle\Event\Form\TicketType:
-        autowire: true
-        tags:
-          - {name: form.type}
-
-    AppBundle\Site\Form\NewsFiltersType:
-        autowire: true
-        tags:
-          - {name: form.type}
-
     Afup\Site\Forum\AppelConferencier:
         class: Afup\Site\Forum\AppelConferencier
         factory: ['@AppBundle\LegacyModelFactory', 'createObject']
@@ -387,31 +362,6 @@ services:
         calls:
           - [setCompanyMemberRepository, ['@AppBundle\Association\Model\Repository\CompanyMemberRepository']]
 
-    AppBundle\Event\Form\PurchaseType:
-        autowire: true
-        tags:
-          - {name: form.type}
-
-    AppBundle\Event\Validator\Constraints\LoggedInMemberValidator:
-        autowire: true
-        tags:
-          - { name: validator.constraint_validator }
-
-    AppBundle\Event\Validator\Constraints\PublicTicketValidator:
-        autowire: true
-        tags:
-          - { name: validator.constraint_validator }
-
-    AppBundle\Event\Validator\Constraints\CorporateMemberValidator:
-        autowire: true
-        tags:
-          - { name: validator.constraint_validator }
-
-    AppBundle\Event\Validator\Constraints\AvailableTicketValidator:
-        autowire: true
-        tags:
-          - { name: validator.constraint_validator }
-
     Parsedown:
         class: Parsedown
         autowire: true
@@ -430,24 +380,10 @@ services:
     AppBundle\Event\Ticket\RegistrationsExportGenerator:
         arguments: ['@AppBundle\Offices\OfficeFinder', '@AppBundle\Association\UserMembership\SeniorityComputer', '@AppBundle\Event\Model\Repository\TicketRepository', '@AppBundle\Event\Model\Repository\InvoiceRepository', '@AppBundle\Association\Model\Repository\UserRepository']
 
-    AppBundle\SpeakerInfos\Form\HotelReservationType:
-        arguments: ["@translator"]
-        tags:
-          - {name: form.type}
-
-    AppBundle\Association\Form\UserBadgeType:
-        autowire: true
-        tags:
-            - {name: form.type}
-
     AppBundle\Subscriber\SitemapXmlSubscriber:
         autowire: true
         tags:
             - { name: "kernel.event_subscriber", priority: 100 }
-
-    AppBundle\Association\Form\ContactDetailsType:
-        autowire: true
-        tags: [form.type]
 
     Twig_Extensions_Extension_Text:
         class: Twig_Extensions_Extension_Text
@@ -459,10 +395,6 @@ services:
         factory: '@AppBundle\Doctrine\ConnectionFactory'
         arguments:
             $url: 'mysql://%database_user%:%database_password%@%database_host%:%database_port%/%database_name%?charset=utf8mb4'
-
-    Symfony\Component\Routing\Generator\UrlGeneratorInterface:
-        alias: 'router'
-        public: true
 
     AppBundle\Github\GithubClient:
         arguments:
