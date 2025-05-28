@@ -43,11 +43,11 @@
             {% set payantsTotal = 0 %}
             {% set montantTotal = 0 %}
 
-            {% for forumTarifKey, forumTarif in forumTarifs %}
-                {% set inscrits = statistiques.types_inscriptions.inscrits[forumTarifKey]|default(0) %}
-                {% set confirmes = statistiques.types_inscriptions.confirmes[forumTarifKey]|default(0) %}
-                {% set payants = statistiques.types_inscriptions.payants[forumTarifKey]|default(0) %}
-                {% set montant = (statistiques.types_inscriptions.payants[forumTarifKey]|default(0)) * forumTarif %}
+            {% for ticketTypeId, ticketTypeDetails in ticketTypesDetailsCollection.ticketTypeDetailsCollectionDto %}
+                {% set inscrits = statistiques.types_inscriptions.inscrits[ticketTypeId]|default(0) %}
+                {% set confirmes = statistiques.types_inscriptions.confirmes[ticketTypeId]|default(0) %}
+                {% set payants = statistiques.types_inscriptions.payants[ticketTypeId]|default(0) %}
+                {% set montant = (statistiques.types_inscriptions.payants[ticketTypeId]|default(0)) * ticketTypeDetails.price %}
                 {% set inscritsTotal = inscritsTotal + inscrits %}
                 {% set confirmesTotal = confirmesTotal + confirmes %}
                 {% set payantsTotal = payantsTotal + payants %}
@@ -56,31 +56,30 @@
                 {% if inscrits != 0 %}
                     <tr>
                         <td>
-                            {{ forumTarifsLib[forumTarifKey] }}
+                            {{ ticketTypeDetails.name }}
                         </td>
-                        <td class="right aligned">{{ forumTarif}} €</td>
+                        <td class="right aligned">{{ ticketTypeDetails.price }} €</td>
                         <td class="right aligned">{{ inscrits }}</td>
                         <td class="right aligned">{{ confirmes }}</td>
                         <td class="right aligned">{{ payants }}</td>
-                        <td class="right aligned"> {{ montant }}</td>
-                        <td class="right aligned"> {{ remainingTickets[forumTarifKey]|default('') }}</td>
+                        <td class="right aligned">{{ montant }}</td>
+                        <td class="right aligned">{{ ticketTypeDetails.remainingTickets|default('') }}</td>
 
                     </tr>
                 {% endif %}
             {% endfor %}
-            <tr>
             </tbody>
             <tfoot>
-            <th></th>
-            <th></th>
-            <th class="right aligned">{{ inscritsTotal }}</th>
-            <th class="right aligned">{{ confirmesTotal }}</th>
-            <th class="right aligned">{{ payantsTotal }}</th>
-            <th class="right aligned">{{ montantTotal }}</th>
-            <th></th>
-            </tfoot>
+            <tr>
+                <th></th>
+                <th></th>
+                <th class="right aligned">{{ inscritsTotal }}</th>
+                <th class="right aligned">{{ confirmesTotal }}</th>
+                <th class="right aligned">{{ payantsTotal }}</th>
+                <th class="right aligned">{{ montantTotal }}</th>
+                <th></th>
             </tr>
-
+            </tfoot>
         </table>
 
         <table class="ui table striped very compact celled">
@@ -163,114 +162,109 @@
                         })) }}">Etat</a></th>
                     <th align="left">Règ.</th>
                     <th title="Applicable uniquement aux tarifs afup">Statut cotisation</th>
-                <th>&nbsp;</th>
+                    <th>&nbsp;</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for key, inscription in inscriptions %}
                     <tr class="{% if key is odd %}odd{% else %}even{% endif %}" {% if inscription.etat == 1 %} style="color:#999;font-style:italic"{% endif %}>
-                    <td nowrap="nowrap">{% if inscription.date.timestamp is defined %}{{ inscription.date|date("d/m/Y H:m:s")}}{% endif %}</td>
-                    <td>
-                        <strong>{{ inscription.prenom }} {{ inscription.nom }}</strong>
-                        <a href="{{ path('admin_members_user_list', {'filter': inscription.nom~' '~inscription.email}) }}"
-                           data-position="right center"
-                           data-tooltip="Rechercher dans les membres"
-                           class="compact ui icon mini button"
-                        >
-                            <i class="search icon"></i>
-                        </a>
-                    </td>
-                    <td>
-                        {{ inscription.societe }}
-                        {% if inscription.societe %}
-                            <a href="{{ path('admin_members_company_list', {'filter': inscription.societe}) }}"
+                        <td nowrap="nowrap">{% if inscription.date > 0 %}{{ inscription.date|date("d/m/Y H:m:s") }}{% endif %}</td>
+                        <td>
+                            <strong>{{ inscription.prenom }} {{ inscription.nom }}</strong>
+                            <a href="{{ path('admin_members_user_list', {'filter': inscription.nom~' '~inscription.email}) }}"
                                data-position="right center"
-                               data-tooltip="Rechercher dans les personnes morales"
+                               data-tooltip="Rechercher dans les membres"
                                class="compact ui icon mini button"
                             >
                                 <i class="search icon"></i>
                             </a>
-                        {% endif %}
-                    </td>
-                    <td>{{ forumTarifsLib[inscription.type_inscription] }}</td>
-                    <td class="center aligned">
-                        {% if inscription.etat == 0 %}
-                            <span class="ui orange label">Créé</span>
-                        {% elseif inscription.etat == 1 %}
-                            <span class="ui label">Annulé</span>
-                        {% elseif inscription.etat == 2 %}
-                            <span class="ui red label">Erreur</span>
-                        {% elseif inscription.etat == 3 %}
-                            <span class="ui red label">Refusé</span>
-                        {% elseif inscription.etat == 4 %}
-                            <span class="ui green label">Reglé</span>
-                        {% elseif inscription.etat == 5 %}
-                            <span class="ui green label">Invité</span>
-                        {% elseif inscription.etat == 6 %}
-                            <span class="ui orange label">Attente règlement</span>
-                        {% elseif inscription.etat == 7 %}
-                            Facturé
-                        {% endif %}
-                    </td>
-                    <td>{% if inscription.type_reglement == 0 %}CB{% elseif inscription.type_reglement == 1 %}CHQ{% elseif inscription.type_reglement == 2 %}VIR{% endif %}</td>
-                    {% if inscription.type_inscription in forumTarifsMembers %}
-                        {% if inscription.lastsubscription == null %}
-                            <td>
-                                                <span class="ui blue label">
-                                                    Non trouvée
-                                                </span>
-                            </td>
-                        {% elseif inscription.lastsubscription < now %}
-                            <td class="single line">
+                        </td>
+                        <td>
+                            {{ inscription.societe }}
+                            {% if inscription.societe %}
+                                <a href="{{ path('admin_members_company_list', {'filter': inscription.societe}) }}"
+                                   data-position="right center"
+                                   data-tooltip="Rechercher dans les personnes morales"
+                                   class="compact ui icon mini button"
+                                >
+                                    <i class="search icon"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td>{{ ticketTypesDetailsCollection.ticketTypeDetails(inscription.type_inscription).name|default() }}</td>
+                        <td class="center aligned">
+                            {% if inscription.etat == 0 %}
+                                <span class="ui orange label">Créé</span>
+                            {% elseif inscription.etat == 1 %}
+                                <span class="ui label">Annulé</span>
+                            {% elseif inscription.etat == 2 %}
+                                <span class="ui red label">Erreur</span>
+                            {% elseif inscription.etat == 3 %}
+                                <span class="ui red label">Refusé</span>
+                            {% elseif inscription.etat == 4 %}
+                                <span class="ui green label">Reglé</span>
+                            {% elseif inscription.etat == 5 %}
+                                <span class="ui green label">Invité</span>
+                            {% elseif inscription.etat == 6 %}
+                                <span class="ui orange label">Attente règlement</span>
+                            {% elseif inscription.etat == 7 %}
+                                Facturé
+                            {% endif %}
+                        </td>
+                        <td>{% if inscription.type_reglement == 0 %}CB{% elseif inscription.type_reglement == 1 %}CHQ{% elseif inscription.type_reglement == 2 %}VIR{% endif %}</td>
+                        {% if inscription.type_inscription in ticketTypesDetailsCollection.ticketTypeForMemberOnly %}
+                            {% if inscription.lastsubscription == null %}
+                                <td>
+                                    <span class="ui blue label">
+                                        Non trouvée
+                                    </span>
+                                </td>
+                            {% elseif inscription.lastsubscription < now %}
+                                <td class="single line">
                                 <span class="ui red label">
-                                    A expiré le {{ inscription.lastsubscription|date('%d/%m/%Y') }}
+                                    A expiré le {{ inscription.lastsubscription|date('d/m/Y') }}
                                 </span>
-                                <a class="compact ui tiny icon button" href="/pages/event-payment/?ref=ins-{{ inscription.id }}&forum={{ event.id }}">
-                                    URL Paiement
-                                </a>
-                            </td>
-                        {% elseif inscription.lastsubscription < event.dateEnd %}
-                            <td class="single line">
+                                    <a class="compact ui tiny icon button" href="/pages/event-payment/?ref=ins-{{ inscription.id }}&forum={{ event.id }}">
+                                        URL Paiement
+                                    </a>
+                                </td>
+                            {% elseif inscription.lastsubscription < event.dateEnd %}
+                                <td class="single line">
                                 <span class="ui {% if inscription.etat != 1 %}orange{% endif %} label">
-                                    Expire le {{ inscription.lastsubscription|date('%d/%m/%Y') }}
+                                    Expire le {{ inscription.lastsubscription|date('d/m/Y') }}
                                 </span>
-                                <a class="compact ui tiny icon button" href="/pages/event-payment/?ref=ins-{{ inscription.id }}&forum={{ id_forum }}">
-                                    URL Paiement
-                                </a>
-                            </td>
+                                    <a class="compact ui tiny icon button" href="/pages/event-payment/?ref=ins-{{ inscription.id }}&forum={{ event.id }}">
+                                        URL Paiement
+                                    </a>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <span class="ui green label">OK</span>
+                                </td>
+                            {% endif %}
                         {% else %}
                             <td>
-                                <span class="ui green label">OK</span>
+                                <span class="ui label">n/a</span>
                             </td>
                         {% endif %}
-                    {% else %}
-                        <td>
-                            <span class="ui label">n/a</span>
-                        </td>
-                    {% endif %}
-                    <td style="text-align: right" nowrap="nowrap">
-                        {% if inscription.type_inscription == constant('AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION') and inscription.etat != 1%}
-                            {# TODO RAPH "cheminTemplate" #}
-                            <a href="/pages/administration/index.php?page=forum_inscriptions&action=generer_mail_inscription_afup&id={{ inscription.id }}"><img src="{$chemin_template}images/famfamfam/email_edit.png" alt="Générer un mail pour demander la confirmation d'adhésion à l'AFUP" /></a>
-                            <a href="/pages/administration/index.php?page=forum_inscriptions&action=generer_inscription_afup&id={{ inscription.id }}"><img src="{$chemin_template}images/famfamfam/group_add.png" alt="Transformer en adhésion AFUP" /></a>
-                        {% endif %}
-                        <a href="/pages/administration/index.php?page=forum_inscriptions&action=modifier&id={{ inscription.id }}"
-                           data-position="left center"
-                           data-tooltip="Modifier la fiche de {{ inscription.nom }} {{ inscription.prenom }}"
-                           class="compact ui icon button"
-                        >
-                            <i class="pencil alernate icon"></i>
-                        </a>
+                        <td style="text-align: right" nowrap="nowrap">
+                            <a href="/pages/administration/index.php?page=forum_inscriptions&action=modifier&id={{ inscription.id }}"
+                               data-position="left center"
+                               data-tooltip="Modifier la fiche de {{ inscription.nom }} {{ inscription.prenom }}"
+                               class="compact ui icon button"
+                            >
+                                <i class="pencil alernate icon"></i>
+                            </a>
 
-                        <a href="/pages/administration/index.php?page=forum_inscriptions&action=supprimer&id={{ inscription.id }}"
-                           data-position="left center"
-                           data-tooltip="Supprimer la fiche de {{ inscription.nom }} {{ inscription.prenom }}"
-                           class="compact ui red icon button confirmable"
-                           data-confirmable-label="Etes-vous sûr de vouloir supprimer la fiche de {{ inscription.nom }} {{ inscription.prenom }} ?"
-                        >
-                            <i class="trash icon"></i>
-                        </a>
-                    </td>
+                            <a href="/pages/administration/index.php?page=forum_inscriptions&action=supprimer&id={{ inscription.id }}"
+                               data-position="left center"
+                               data-tooltip="Supprimer la fiche de {{ inscription.nom }} {{ inscription.prenom }}"
+                               class="compact ui red icon button confirmable"
+                               data-confirmable-label="Etes-vous sûr de vouloir supprimer la fiche de {{ inscription.nom }} {{ inscription.prenom }} ?"
+                            >
+                                <i class="trash icon"></i>
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
