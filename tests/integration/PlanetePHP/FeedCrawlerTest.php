@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace PlanetePHP\IntegrationTests;
 
 use Afup\Tests\Support\IntegrationTestCase;
-use Afup\Tests\Support\MockClock;
 use PlanetePHP\DisplayableFeedArticle;
 use PlanetePHP\FeedArticleRepository;
 use PlanetePHP\FeedCrawler;
 use PlanetePHP\FeedRepository;
 use PlanetePHP\SymfonyFeedClient;
 use Psr\Log\NullLogger;
+use Symfony\Component\Clock\MockClock;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 

@@ -43,6 +43,7 @@
     "setasign/tfpdf": "^1.33",
     "smarty/smarty": "^5.4",
     "symfony/asset": "6.4.*",
+    "symfony/clock": "7.2.*",
     "symfony/console": "6.4.*",
     "symfony/expression-language": "6.4.*",
     "symfony/form": "6.4.*",
