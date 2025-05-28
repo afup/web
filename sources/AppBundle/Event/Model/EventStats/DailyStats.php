@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model\EventStats;
 
-class DailyStats
+final readonly class DailyStats
 {
-    /** @var int */
-    public $registered = 0;
-    /** @var int */
-    public $confirmed = 0;
-    /** @var int */
-    public $pending = 0;
+    public function __construct(
+        public int $registered,
+        public int $confirmed,
+        public int $pending,
+    ) {}
 }

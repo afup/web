@@ -103,7 +103,7 @@ if ($action == 'lister') {
     $smarty->assign('forum_tarifs_lib',$AFUP_Tarifs_Forum_Lib);
     $smarty->assign('forum_tarifs_restantes', $restantes);
     $smarty->assign('forum_tarifs',$AFUP_Tarifs_Forum);
-    $stats = $eventStatsRepository->getStats($_GET['id_forum']);
+    $stats = $eventStatsRepository->getStats((int) $_GET['id_forum']);
     $smarty->assign('statistiques', [
         'premier_jour' => [
             'inscrits' => $stats->firstDay->registered,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model\Repository;
 
+use AppBundle\Event\Model\EventStats\TicketTypeStats;
 use AppBundle\Event\Model\EventStats;
 use AppBundle\Event\Model\EventStats\DailyStats;
 use Assert\Assertion;
@@ -13,20 +14,23 @@ use Doctrine\DBAL\Connection;
 
 class EventStatsRepository
 {
-    public const DAY_ONE = 'one';
-    public const DAY_TWO = 'two';
-    public const DAYS = [self::DAY_ONE, self::DAY_TWO];
+    private const DAY_ONE = 'one';
+    private const DAY_TWO = 'two';
+    private const DAYS = [self::DAY_ONE, self::DAY_TWO];
 
     public function __construct(private readonly Connection $connection) {}
 
-    /**
-     * @param int $eventId
-     */
-    public function getStats($eventId, Datetime $from = null): EventStats
+    public function getStats(int $eventId, Datetime $from = null): EventStats
     {
-        $stats = new EventStats();
-        $stats->firstDay = $this->getStatsForDay($eventId, self::DAY_ONE, $from);
-        $stats->secondDay = $this->getStatsForDay($eventId, self::DAY_TWO, $from);
+        return new EventStats(
+            $this->getStatsForDay($eventId, self::DAY_ONE, $from),
+            $this->getStatsForDay($eventId, self::DAY_TWO, $from),
+            $this->getStatsForTicketTypes($eventId, $from),
+        );
+    }
+
+    public function getStatsForTicketTypes(int $eventId, ?Datetime $from): TicketTypeStats
+    {
         // Nombre de personnes validées par type d'inscription
         $baseQueryBuilder = $this->connection->createQueryBuilder()
             ->select('type_inscription', 'COUNT(*) AS c')
@@ -45,8 +49,9 @@ class EventStatsRepository
             ->setParameter('states', [AFUP_FORUM_ETAT_REGLE, AFUP_FORUM_ETAT_ATTENTE_REGLEMENT, AFUP_FORUM_ETAT_INVITE], ArrayParameterType::INTEGER)
             ->executeQuery();
 
+        $confirmed = [];
         foreach ($statement->fetchAllAssociative() as $row) {
-            $stats->ticketType->confirmed[$row['type_inscription']] = $row['c'];
+            $confirmed[$row['type_inscription']] = $row['c'];
         }
 
         $queryBuilder = clone $baseQueryBuilder;
@@ -54,8 +59,9 @@ class EventStatsRepository
             ->setParameter('states', [AFUP_FORUM_ETAT_REGLE, AFUP_FORUM_ETAT_ATTENTE_REGLEMENT], ArrayParameterType::INTEGER)
             ->executeQuery();
 
+        $paying = [];
         foreach ($statement->fetchAllAssociative() as $row) {
-            $stats->ticketType->paying[$row['type_inscription']] = $row['c'];
+            $paying[$row['type_inscription']] = $row['c'];
         }
 
         $queryBuilder = clone $baseQueryBuilder;
@@ -63,19 +69,15 @@ class EventStatsRepository
             ->setParameter('states', [AFUP_FORUM_ETAT_ANNULE, AFUP_FORUM_ETAT_ERREUR, AFUP_FORUM_ETAT_REFUSE], ArrayParameterType::INTEGER)
             ->executeQuery();
 
+        $registered = [];
         foreach ($statement->fetchAllAssociative() as $row) {
-            $stats->ticketType->registered[$row['type_inscription']] = $row['c'];
+            $registered[$row['type_inscription']] = $row['c'];
         }
 
-        return $stats;
+        return new TicketTypeStats($confirmed, $registered, $paying);
     }
 
-    /**
-     * @param int           $eventId
-     * @param Datetime|null $from
-     *
-     */
-    private function getStatsForDay($eventId, string $day, Datetime $from = null): DailyStats
+    private function getStatsForDay(int $eventId, string $day, ?Datetime $from = null): DailyStats
     {
         Assertion::inArray($day, self::DAYS);
         $baseQueryBuilder = $this->connection->createQueryBuilder()
@@ -91,25 +93,24 @@ class EventStatsRepository
                 ->setParameter('from', $from->getTimestamp());
         }
 
-        $dailyStats = new DailyStats();
         $queryBuilder = clone $baseQueryBuilder;
-        $dailyStats->registered = $queryBuilder->andWhere('etat NOT IN(:states)')
+        $registered = $queryBuilder->andWhere('etat NOT IN(:states)')
             ->setParameter('states', [AFUP_FORUM_ETAT_ANNULE, AFUP_FORUM_ETAT_ERREUR, AFUP_FORUM_ETAT_REFUSE], ArrayParameterType::INTEGER)
             ->executeQuery()
             ->fetchOne();
 
         $queryBuilder = clone $baseQueryBuilder;
-        $dailyStats->confirmed = $queryBuilder->andWhere('etat IN(:states)')
+        $confirmed = $queryBuilder->andWhere('etat IN(:states)')
             ->setParameter('states', [AFUP_FORUM_ETAT_REGLE, AFUP_FORUM_ETAT_INVITE, AFUP_FORUM_ETAT_CONFIRME], ArrayParameterType::INTEGER)
             ->executeQuery()
             ->fetchOne();
 
         $queryBuilder = clone $baseQueryBuilder;
-        $dailyStats->pending = $queryBuilder->andWhere('etat = :state')
+        $pending = $queryBuilder->andWhere('etat = :state')
             ->setParameter('state', AFUP_FORUM_ETAT_ATTENTE_REGLEMENT)
             ->executeQuery()
             ->fetchOne();
 
-        return $dailyStats;
+        return new DailyStats($registered, $confirmed, $pending);
     }
 }
