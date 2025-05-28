@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model\EventStats;
 
-class TicketTypeStats
+final readonly class TicketTypeStats
 {
-    /** @var array<int, int> */
-    public $confirmed = [];
-    /** @var array<int, int> */
-    public $registered = [];
-    /** @var array<int, int> */
-    public $paying = [];
+    public function __construct(
+        /** @var list<int> */
+        public array $confirmed,
+
+        /** @var list<int> */
+        public array $registered,
+
+        /** @var list<int> */
+        public array $paying,
+    ) {}
 }
