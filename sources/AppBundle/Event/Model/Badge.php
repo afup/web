@@ -10,77 +10,47 @@ use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 class Badge implements NotifyPropertyInterface
 {
     use NotifyProperty;
+
     private ?int $id = null;
 
-    /**
-     * @var string
-     */
-    private $label;
+    private string $label;
 
-    /**
-     * @var string
-     */
-    private $url;
+    private string $url;
 
-    /**
-     * @return int
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return $this
-     */
-    public function setId($id): self
+    public function setId(int $id): self
     {
-        $id = (int) $id;
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
 
-    /**
-     * @param string $label
-     *
-     * @return $this
-     */
-    public function setLabel($label): self
+    public function setLabel(string $label): self
     {
-        $this->propertyChanged('label', $this->label, $label);
+        $this->propertyChanged('label', $this->label ?? '', $label);
         $this->label = $label;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @param string $url
-     *
-     * @return $this
-     */
-    public function setUrl($url): self
+    public function setUrl(string $url): self
     {
-        $this->propertyChanged('url', $this->url, $url);
+        $this->propertyChanged('url', $this->url ?? '', $url);
         $this->url = $url;
 
         return $this;
