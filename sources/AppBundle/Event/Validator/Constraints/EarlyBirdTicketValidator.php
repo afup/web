@@ -7,15 +7,19 @@ namespace AppBundle\Event\Validator\Constraints;
 use AppBundle\Event\Model\Ticket;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class EarlyBirdTicketValidator extends ConstraintValidator
 {
     /**
      * @param Ticket[] $value
-     * @param EarlyBirdTicket $constraint
      */
     public function validate($value, Constraint $constraint): void
     {
+        if (!$constraint instanceof EarlyBirdTicket) {
+            throw new UnexpectedTypeException($constraint, EarlyBirdTicket::class);
+        }
+
         $count = 0;
 
         foreach ($value as $index => $ticket) {

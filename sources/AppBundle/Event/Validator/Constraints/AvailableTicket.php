@@ -6,14 +6,12 @@ namespace AppBundle\Event\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class AvailableTicket extends Constraint
 {
-    public $message = 'This ticket is not available anymore.';
+    public string $message = 'This ticket is not available anymore.';
 
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

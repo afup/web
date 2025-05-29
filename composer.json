@@ -18,7 +18,6 @@
     "cocur/slugify": "^2.3",
     "cuyz/valinor": "^1.15",
     "cweagans/composer-patches": "^1.7",
-    "doctrine/annotations": "2.*",
     "doctrine/dbal": "4.*",
     "drewm/mailchimp-api": "^2.5",
     "ekino/newrelic-bundle": "^2.4",
