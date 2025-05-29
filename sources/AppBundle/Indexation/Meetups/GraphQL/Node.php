@@ -6,10 +6,7 @@ namespace AppBundle\Indexation\Meetups\GraphQL;
 
 use DateTime;
 
-/**
- * @readonly
- */
-final class Node
+final readonly class Node
 {
     public function __construct(
         public string $id,
