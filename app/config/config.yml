@@ -326,10 +326,7 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:
-        enable_annotations: true
         email_validation_mode: html5
-    #serializer:      { enable_annotations: true }
-    annotations: true
     default_locale:  "%locale%"
     trusted_hosts:   ~
     session:

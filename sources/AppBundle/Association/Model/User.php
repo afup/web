@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Association\Model;
 
 use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\NotifiableInterface;
 use AppBundle\Validator\Constraints as AppAssert;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -12,10 +13,8 @@ use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @AppAssert\UniqueEntity(fields={"username"}, repository="\AppBundle\Association\Model\Repository\UserRepository")
- * @AppAssert\UniqueEntity(fields={"email"}, repository="\AppBundle\Association\Model\Repository\UserRepository")
- */
+#[AppAssert\UniqueEntity(fields: ['username'], repository: UserRepository::class)]
+#[AppAssert\UniqueEntity(fields: ['email'], repository: UserRepository::class)]
 class User implements NotifyPropertyInterface, NotifiableInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
     use NotifyProperty;
