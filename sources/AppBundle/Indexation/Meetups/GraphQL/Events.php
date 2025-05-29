@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Indexation\Meetups\GraphQL;
 
-/**
- * @readonly
- */
-final class Events
+final readonly class Events
 {
     /**
      * @param list<Edge> $edges

@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\SocialNetwork;
 
-/**
- * @readonly
- */
-final class Status
+final readonly class Status
 {
     public function __construct(
         public string $text,
