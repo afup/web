@@ -11,9 +11,9 @@ use AppBundle\Email\Mailer\Message;
 use AppBundle\Mailchimp\Mailchimp;
 use AppBundle\TechLetter\DataExtractor;
 use AppBundle\TechLetter\Form\SendingType;
-use AppBundle\TechLetter\Model as Techletter;
 use AppBundle\TechLetter\Model\News;
 use AppBundle\TechLetter\Model\Repository\SendingRepository;
+use AppBundle\TechLetter\Model\TechLetterFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,6 +28,7 @@ class TechLetterGenerateController extends AbstractController
         private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
         private readonly Mailer $mailer,
         private readonly Mailchimp $mailchimp,
+        private readonly TechLetterFactory $techLetterFactory,
         private readonly string $techletterTestEmailAddress,
         private readonly string $mailchimpTechletterList,
     ) {}
@@ -62,7 +63,7 @@ class TechLetterGenerateController extends AbstractController
                 'date' => $sending->getSendingDate(),
             ];
 
-            $techLetter = Techletter\TechLetterFactory::createTechLetterFromJson($sending->getTechletter());
+            $techLetter = $this->techLetterFactory->createTechLetterFromJson($sending->getTechletter());
 
             if (($firstNews = $techLetter->getFirstNews()) instanceof News) {
                 $url = $firstNews->getUrl();
@@ -115,7 +116,7 @@ class TechLetterGenerateController extends AbstractController
             throw $this->createAccessDeniedException('You cannot edit a sent techletter');
         }
 
-        $techLetter = Techletter\TechLetterFactory::createTechLetterFromJson($sending->getTechletter());
+        $techLetter = $this->techLetterFactory->createTechLetterFromJson($sending->getTechletter());
 
         // Save the date
         if ($request->getMethod() === Request::METHOD_POST
@@ -226,7 +227,7 @@ class TechLetterGenerateController extends AbstractController
             throw $this->createAccessDeniedException('You cannot edit this techletter');
         }
 
-        $techletter = Techletter\TechLetterFactory::createTechLetterFromJson($request->request->get('techletter'));
+        $techletter = $this->techLetterFactory->createTechLetterFromJson($request->request->get('techletter'));
         // @todo could be better elsewhere
         $sending->setTechletter(json_encode($techletter->jsonSerialize()));
         $this->sendingRepository->save($sending);
@@ -252,7 +253,7 @@ class TechLetterGenerateController extends AbstractController
 
         $subject = sprintf("[Test] Veille de l'AFUP du %s", $sending->getSendingDate()->format('d/m/Y'));
 
-        $techLetter = Techletter\TechLetterFactory::createTechLetterFromJson($sending->getTechletter());
+        $techLetter = $this->techLetterFactory->createTechLetterFromJson($sending->getTechletter());
 
         $message = new Message($subject, null, new MailUser($this->techletterTestEmailAddress));
         $this->mailer->renderTemplate($message,'admin/techletter/mail_template.html.twig', [
