@@ -16,7 +16,7 @@
     "captioning/captioning": "^2.6",
     "ccmbenchmark/ting_bundle": "^3.8",
     "cocur/slugify": "^2.3",
-    "cuyz/valinor": "^1.15",
+    "cuyz/valinor-bundle": "^1.0",
     "cweagans/composer-patches": "^1.7",
     "doctrine/dbal": "4.*",
     "drewm/mailchimp-api": "^2.5",

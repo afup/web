@@ -20,6 +20,7 @@ final class BlueskyTransport implements Transport
 
     public function __construct(
         private readonly HttpClientInterface $httpClient,
+        private readonly MapperBuilder $mapperBuilder,
         private readonly string $apiIdentifier,
         private readonly string $apiAppPassword,
     ) {}
@@ -77,7 +78,7 @@ final class BlueskyTransport implements Transport
                 ],
             ]);
 
-            $this->session = (new MapperBuilder())
+            $this->session = $this->mapperBuilder
                 ->allowSuperfluousKeys()
                 ->mapper()
                 ->map(Session::class, Source::array($response->toArray()));

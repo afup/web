@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c016064203104af2bafe38b5cc6d786f",
+    "content-hash": "df2a5156b0e703ebc88301d9b2f6f223",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -759,16 +759,16 @@
         },
         {
             "name": "cuyz/valinor",
-            "version": "1.15.0",
+            "version": "1.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CuyZ/Valinor.git",
-                "reference": "c3cb63a35bb0c0b1b130117cd8962def1ede9e6f"
+                "reference": "acbda7ff3c25e5749f1e04ed183b3795434264c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CuyZ/Valinor/zipball/c3cb63a35bb0c0b1b130117cd8962def1ede9e6f",
-                "reference": "c3cb63a35bb0c0b1b130117cd8962def1ede9e6f",
+                "url": "https://api.github.com/repos/CuyZ/Valinor/zipball/acbda7ff3c25e5749f1e04ed183b3795434264c0",
+                "reference": "acbda7ff3c25e5749f1e04ed183b3795434264c0",
                 "shasum": ""
             },
             "require": {
@@ -825,7 +825,7 @@
             ],
             "support": {
                 "issues": "https://github.com/CuyZ/Valinor/issues",
-                "source": "https://github.com/CuyZ/Valinor/tree/1.15.0"
+                "source": "https://github.com/CuyZ/Valinor/tree/1.16.1"
             },
             "funding": [
                 {
@@ -833,7 +833,72 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-30T22:35:46+00:00"
+            "time": "2025-05-19T13:46:02+00:00"
+        },
+        {
+            "name": "cuyz/valinor-bundle",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CuyZ/Valinor-Bundle.git",
+                "reference": "991247f73477994b08cffa0e93002efd8bb65331"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CuyZ/Valinor-Bundle/zipball/991247f73477994b08cffa0e93002efd8bb65331",
+                "reference": "991247f73477994b08cffa0e93002efd8bb65331",
+                "shasum": ""
+            },
+            "require": {
+                "cuyz/valinor": "^1.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
+                "symfony/config": "^5.4 || ^6.4 || ^7.0",
+                "symfony/dependency-injection": "^5.4 || ^6.4 || ^7.0",
+                "symfony/http-kernel": "^5.4 || ^6.4 || ^7.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.21",
+                "infection/infection": "^0.27.0",
+                "marcocesarato/php-conventional-changelog": "^1.17",
+                "phpstan/phpstan": "^1.10",
+                "phpstan/phpstan-phpunit": "^1.3",
+                "phpstan/phpstan-strict-rules": "^1.5",
+                "phpstan/phpstan-symfony": "^1.3",
+                "phpunit/phpunit": "^10.2",
+                "symfony/console": "^5.4 || ^6.4 || ^7.0",
+                "symfony/framework-bundle": "^5.4 || ^6.4 || ^7.0",
+                "symfony/runtime": "^5.4 || ^6.4 || ^7.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "CuyZ\\ValinorBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Romain Canon",
+                    "email": "romain.hydrocanon@gmail.com",
+                    "homepage": "https://github.com/romm"
+                }
+            ],
+            "description": "Symfony integration of `cuyz/valinor` — a library that helps to map any input into a strongly-typed value object structure.",
+            "homepage": "https://github.com/CuyZ/Valinor-Bundle",
+            "support": {
+                "issues": "https://github.com/CuyZ/Valinor-Bundle/issues",
+                "source": "https://github.com/CuyZ/Valinor-Bundle/tree/1.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/romm",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-05-29T12:37:56+00:00"
         },
         {
             "name": "cweagans/composer-patches",
