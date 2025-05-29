@@ -8,11 +8,9 @@ use AppBundle\Event\Validator\Constraints as Assert;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 
-/**
- * @Assert\LoggedInMember(groups={"personal"})
- * @Assert\PublicTicket(groups={"not_logged_in"})
- * @Assert\AvailableTicket()
- */
+#[Assert\LoggedInMember(groups: ['personal'])]
+#[Assert\PublicTicket(groups: ['not_logged_in'])]
+#[Assert\AvailableTicket]
 class Ticket implements NotifyPropertyInterface
 {
     use NotifyProperty;

@@ -48,11 +48,11 @@ class PricesAddAction extends AbstractController
             $ticketEventType->setTicketTypeId($ticketEventType->getTicketType()->getId());
 
             $violations = $this->validator->validate($ticketEventType, [
-                new UniqueEntity([
-                    'fields' => ['ticketTypeId', 'eventId'],
-                    'repository' => $this->ticketEventTypeRepository,
-                    'message' => 'Ce type de ticket existe déjà pour cet évènement.',
-                ]),
+                new UniqueEntity(
+                    ['ticketTypeId', 'eventId'],
+                    $this->ticketEventTypeRepository,
+                    'Ce type de ticket existe déjà pour cet évènement.',
+                ),
             ]);
             foreach ($violations as $violation) {
                 $form->get('ticketType')->addError(new FormError($violation->getMessage()));

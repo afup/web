@@ -6,15 +6,12 @@ namespace AppBundle\Event\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * Class PublicTicket
- * @Annotation
- */
+#[\Attribute]
 class PublicTicket extends Constraint
 {
-    public $messageNotLoggedIn = 'You must be connected with a valid membership to order this ticket.';
+    public string $messageNotLoggedIn = 'You must be connected with a valid membership to order this ticket.';
 
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }
