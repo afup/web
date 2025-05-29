@@ -9,6 +9,7 @@ use AppBundle\TechLetter\Model\News;
 use AppBundle\TechLetter\Model\Project;
 use AppBundle\TechLetter\Model\TechLetter;
 use AppBundle\TechLetter\Model\TechLetterFactory;
+use CuyZ\Valinor\MapperBuilder;
 use DateTimeImmutable;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -26,7 +27,7 @@ class TechLetterFactoryTest extends TestCase
             self::assertIsString($json);
         }
 
-        $actualTechLetter = TechLetterFactory::createTechLetterFromJson($json);
+        $actualTechLetter = (new TechLetterFactory(new MapperBuilder()))->createTechLetterFromJson($json);
 
         self::assertEquals($expectedTechLetter, $actualTechLetter);
     }

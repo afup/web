@@ -6,6 +6,7 @@ namespace AppBundle\Tests\Indexation\Meetups;
 
 use AppBundle\Antennes\AntennesCollection;
 use AppBundle\Indexation\Meetups\MeetupClient;
+use CuyZ\Valinor\MapperBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -20,7 +21,7 @@ final class MeetupClientTest extends TestCase
     {
         $httpClient = $this->makeGuzzleMockClient($response);
 
-        $meetupClient = new MeetupClient($httpClient, new AntennesCollection());
+        $meetupClient = new MeetupClient($httpClient, new AntennesCollection(), new MapperBuilder());
 
         self::expectException(\Exception::class);
         self::expectExceptionMessage($expectedExceptionMessage);
@@ -102,7 +103,7 @@ final class MeetupClientTest extends TestCase
             ),
         );
 
-        $meetupClient = new MeetupClient($httpClient, new AntennesCollection());
+        $meetupClient = new MeetupClient($httpClient, new AntennesCollection(), new MapperBuilder());
 
         $antennes = $meetupClient->getEvents();
 

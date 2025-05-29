@@ -19,6 +19,7 @@ final readonly class MeetupClient
     public function __construct(
         private HttpClientInterface $httpClient,
         private AntennesCollection $antennesCollection,
+        private MapperBuilder $mapperBuilder,
     ) {}
 
     /**
@@ -37,7 +38,7 @@ final readonly class MeetupClient
         ]);
 
         /** @var QueryGroupsResponse $groupResponse */
-        $groupResponse = (new MapperBuilder())
+        $groupResponse = $this->mapperBuilder
             ->allowSuperfluousKeys()
             ->supportDateFormats('Y-m-d\TH:iP')
             ->mapper()
