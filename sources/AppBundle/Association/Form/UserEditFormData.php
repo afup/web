@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Form;
 
+use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-/**
- * @AppAssert\UniqueEntity(fields={"username"}, repository="\AppBundle\Association\Model\Repository\UserRepository")
- * @AppAssert\UniqueEntity(fields={"email"}, repository="\AppBundle\Association\Model\Repository\UserRepository")
- */
+#[AppAssert\UniqueEntity(fields: ['username'], repository: UserRepository::class)]
+#[AppAssert\UniqueEntity(fields: ['email'], repository: UserRepository::class)]
 class UserEditFormData
 {
     public $companyId;

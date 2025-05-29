@@ -26,10 +26,10 @@ class GithubUserType extends AbstractType
         $builder
             ->add('user', TextType::class, [
                 'constraints' => [
-                    new UniqueEntity([
-                        'repository' => $options['github_user_repository'],
-                        'fields' => ['login'],
-                    ]),
+                    new UniqueEntity(
+                        ['login'],
+                        $options['github_user_repository'],
+                    ),
                 ],
                 'invalid_message' => 'Impossible de charger les informations de l\'utilisateur GitHub.',
             ])

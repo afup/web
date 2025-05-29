@@ -6,17 +6,14 @@ namespace AppBundle\Event\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * Class CorporateMember
- * @Annotation
- */
+#[\Attribute]
 class CorporateMember extends Constraint
 {
-    public $messageNotLoggedIn = 'You must be connected to order this ticket.';
-    public $messageFeeOutOfDate = 'You must have paid your membership fee to order this ticket.';
-    public $messageTooMuchRestrictedTickets = 'You cannot order as many tickets at the discounted rate.';
+    public string $messageNotLoggedIn = 'You must be connected to order this ticket.';
+    public string $messageFeeOutOfDate = 'You must have paid your membership fee to order this ticket.';
+    public string $messageTooMuchRestrictedTickets = 'You cannot order as many tickets at the discounted rate.';
 
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::PROPERTY_CONSTRAINT;
     }
