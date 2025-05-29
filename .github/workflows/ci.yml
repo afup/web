@@ -56,14 +56,13 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.php_version }}
-          tools: phpstan
 
       - uses: ramsey/composer-install@v3
         with:
           composer-options: "--no-scripts"
 
       - name: PHPStan
-        run: phpstan analyse
+        run: make phpstan
 
   functional:
     name: "Functional tests"

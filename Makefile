@@ -109,9 +109,9 @@ test-integration-ci:
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp ./bin/phpunit --testsuite integration
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest
 
-### Analyse PHPStan
+### (Dans Docker) Analyse PHPStan
 phpstan:
-	docker run -v $(shell pwd):/app --rm ghcr.io/phpstan/phpstan
+	./bin/phpstan --memory-limit=-1
 
 ##@ Frontend
 

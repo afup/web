@@ -1,5 +1,7 @@
+includes:
+    - vendor/cuyz/valinor/qa/PHPStan/valinor-phpstan-configuration.php
+
 parameters:
-    phpVersion: 80200 # PHP 8.2
     level: 3
     paths:
         - sources
