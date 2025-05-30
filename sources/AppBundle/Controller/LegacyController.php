@@ -76,14 +76,6 @@ class LegacyController extends AbstractController
         // Initialisation de AFUP_Log
         Logs::initialiser($bdd, $droits->obtenirIdentifiant());
         require_once __DIR__ . '/../../../htdocs/pages/administration/' . $_GET['page'] . '.php';
-        // On gère des infos popups
-        if (isset($_SESSION['flash']['message'])) {
-            $this->addFlash('notice', $_SESSION['flash']['message']);
-        }
-        if (isset($_SESSION['flash']['erreur'])) {
-            $this->addFlash('error', $_SESSION['flash']['erreur']);
-        }
-        unset($_SESSION['flash']);
         // Récupération du contenu de la page généré par smarty
         $content = $smarty->fetch($_GET['page'] . '.html');
 
