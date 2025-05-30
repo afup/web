@@ -200,8 +200,8 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             $filters = array_filter(array_map('trim', $filters));
             $ors = [];
             foreach ($filters as $i => $value) {
-                $ors[] = "app.login LIKE :filter$i OR app.nom LIKE :filter$i OR app.prenom LIKE :filter$i
-                    OR app.code_postal LIKE :filter$i OR app.ville LIKE :filter$i OR app.email LIKE :filter$i";
+                $ors[] = "LOWER(app.login) LIKE LOWER(:filter$i) OR LOWER(app.nom) LIKE LOWER(:filter$i) OR LOWER(app.prenom) LIKE LOWER(:filter$i)
+                    OR app.code_postal LIKE :filter$i OR LOWER(app.ville) LIKE LOWER(:filter$i) OR LOWER(app.email) LIKE LOWER(:filter$i)";
                 $queryBuilder->bindValue('filter' . $i, '%' . $value . '%');
             }
             $queryBuilder->where('(' . implode(' OR ', $ors) . ')');
