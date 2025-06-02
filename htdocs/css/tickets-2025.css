@@ -129,6 +129,11 @@ button {
 .step-item.completed {
   opacity: 0.8;
   color: var(--primary-color);
+  cursor: pointer;
+}
+
+.step-item.completed:hover{
+  opacity: 1;
 }
 
 .step-item.completed::after {
@@ -820,8 +825,11 @@ button {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.btn i {
+.btn-next i, .btn-primary i {
   margin-left: 0.5rem;
+}
+.btn-prev i {
+  margin-right: 0.5rem;
 }
 
 .btn-primary i {
@@ -1195,6 +1203,10 @@ button {
     padding: 0.7rem 1.25rem;
     font-size: 0.95rem;
   }
+}
+
+span.label-font {
+  font-family: Glegoo,Helvetica,Arial,sans-serif;
 }
 
 /* Animation */

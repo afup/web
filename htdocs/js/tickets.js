@@ -496,6 +496,12 @@ $(document).ready(function() {
             goToStep(currentStep - 1);
         });
 
+        $('.step-item').click(function(e) {
+            if (!$(this).hasClass('completed')) return;
+            e.preventDefault();
+            goToStep($(this).data('step'));
+        })
+
         // Set up number of tickets selection
         $('#purchase_nbPersonnes').change(function() {
             manageTicketSections();
