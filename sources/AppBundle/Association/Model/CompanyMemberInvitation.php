@@ -16,158 +16,110 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
     public const STATUS_ACCEPTED = 1;
     public const STATUS_CANCELLED = 2;
 
-    /**
-     * @var int
-     */
-    private $id;
+    private int $id;
 
-    /**
-     * @var int
-     */
-    private $companyId;
+    private int $companyId;
 
-    /**
-     * @var string
-     */
     #[Assert\Email]
-    private $email;
+    private string $email;
+
+    private string $token;
+
+    private bool $manager = false;
+
+    private \DateTime $submittedOn;
 
     /**
-     * @var string
+     * @var self::STATUS_*
      */
-    private $token;
+    private int $status = self::STATUS_PENDING;
 
-    /**
-     * @var bool
-     */
-    private $manager = false;
-
-    private ?\DateTime $submittedOn = null;
-
-    /**
-     * @var int
-     */
-    private $status = self::STATUS_PENDING;
-
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id): self
+    public function setId(int $id): self
     {
-        $this->propertyChanged('id', $this->id, $id);
+        $this->propertyChanged('id', $this->id ?? null, $id);
         $this->id = $id;
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getCompanyId()
+    public function getCompanyId(): int
     {
         return $this->companyId;
     }
 
-    /**
-     * @param int $companyId
-     */
-    public function setCompanyId($companyId): self
+    public function setCompanyId(int $companyId): self
     {
-        $this->propertyChanged('companyId', $this->companyId, $companyId);
+        $this->propertyChanged('companyId', $this->companyId ?? null, $companyId);
         $this->companyId = $companyId;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     */
-    public function setEmail($email): self
+    public function setEmail(string $email): self
     {
-        $this->propertyChanged('email', $this->email, $email);
+        $this->propertyChanged('email', $this->email ?? null, $email);
         $this->email = $email;
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getManager()
+    public function getManager(): bool
     {
         return $this->manager;
     }
 
-    /**
-     * @param boolean $manager
-     */
-    public function setManager($manager): self
+    public function setManager(bool $manager): self
     {
-        $this->propertyChanged('manager', $this->manager, $manager);
+        $this->propertyChanged('manager', $this->manager ?? null, $manager);
         $this->manager = $manager;
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getSubmittedOn(): ?\DateTime
+    public function getSubmittedOn(): \DateTime
     {
         return $this->submittedOn;
     }
 
     public function setSubmittedOn(\DateTime $submittedOn): self
     {
-        $this->propertyChanged('submittedOn', $this->submittedOn, $submittedOn);
+        $this->propertyChanged('submittedOn', $this->submittedOn ?? null, $submittedOn);
         $this->submittedOn = $submittedOn;
         return $this;
     }
 
     /**
-     * @return int
+     * @return self::STATUS_*
      */
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }
 
     /**
-     * @param int $status
+     * @param self::STATUS_* $status
      */
-    public function setStatus($status): self
+    public function setStatus(int $status): self
     {
-        $this->propertyChanged('status', $this->status, $status);
+        $this->propertyChanged('status', $this->status ?? null, $status);
         $this->status = $status;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getToken()
+    public function getToken(): string
     {
         return $this->token;
     }
 
-    /**
-     * @param string $token
-     */
-    public function setToken($token): self
+    public function setToken(string $token): self
     {
-        $this->propertyChanged('token', $this->token, $token);
+        $this->propertyChanged('token', $this->token ?? null, $token);
         $this->token = $token;
         return $this;
     }
