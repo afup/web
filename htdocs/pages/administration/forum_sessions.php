@@ -169,7 +169,6 @@ if ($action == 'lister') {
     $formulaire->addElement('checkbox', 'with_workshop', "Propose un atelier");
     $formulaire->addElement('textarea', 'workshop_abstract', 'Résumé de l\'atelier', ['cols' => 40, 'rows' => 15]);
 
-
     if ($action != 'ajouter') {
         $formulaire->addElement('text'    , 'joindin'          , 'Id de la conférence chez joind.in' , ['size' => 40, 'maxlength' => 10]);
         $formulaire->addElement('text'    , 'youtube_id'          , 'Id de la conférence sur youtube' , ['size' => 40, 'maxlength' => 30]);
@@ -186,7 +185,7 @@ if ($action == 'lister') {
         $formulaire->addElement('textarea'    , 'transcript'          , "Sous titres en français (format SRT)", ['style' => "width:100%;min-height:100px"]);
         $formulaire->addElement('textarea', 'verbatim', 'Verbatim', ['cols' => 40, 'rows' => 15,'class' => 'simplemde']);
     }
-
+    $formulaire->addElement('checkbox', 'has_allowed_to_sharing_with_local_offices', 'Accord pour le partage aux antennes');
 
     $formulaire->addElement('header', null, 'Conférencier(s)');
     $event = $eventRepository->get($_GET['id_forum']);
