@@ -551,7 +551,7 @@ class MemberShipController extends AbstractController
         Assertion::isInstanceOf($user, User::class);
         $title = 'Présence prochaine AG';
         $generalMeetingRepository = $this->generalMeetingRepository;
-        $latestDate = $generalMeetingRepository->getLatestDate();
+        $latestDate = $generalMeetingRepository->getLatestAttendanceDate();
         Assertion::notNull($latestDate);
         $generalMeetingPlanned = $generalMeetingRepository->hasGeneralMeetingPlanned();
 

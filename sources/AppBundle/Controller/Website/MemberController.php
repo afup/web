@@ -45,8 +45,8 @@ class MemberController extends AbstractController
         $generalMeetingRepository = $this->generalMeetingRepository;
         $generalMeetingQuestionRepository = $this->generalMeetingQuestionRepository;
 
-        $latestDate = $generalMeetingRepository->getLatestDate();
-        $hasGeneralMeetingPlanned = $generalMeetingFactory->hasGeneralMeetingPlanned($latestDate);
+        $latestDate = $generalMeetingRepository->getLatestGeneralAssemblyDate();
+        $hasGeneralMeetingPlanned = $generalMeetingFactory->hasGeneralMeetingPlanned();
 
         $displayLinkToGeneralMeetingVote = false;
 

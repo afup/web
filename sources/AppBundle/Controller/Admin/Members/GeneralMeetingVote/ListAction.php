@@ -24,7 +24,7 @@ class ListAction
     public function __invoke(Request $request): Response
     {
         $dates = $this->generalMeetingRepository->getAllDates();
-        $latestDate = $this->generalMeetingRepository->getLatestDate();
+        $latestDate = $this->generalMeetingRepository->getLatestAttendanceDate();
 
         $selectedDate = $latestDate;
         if ($request->query->has('date')) {

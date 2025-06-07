@@ -24,7 +24,7 @@ class ListAction
 
     public function __invoke(Request $request): Response
     {
-        $latestDate = $this->generalMeetingRepository->getLatestDate();
+        $latestDate = $this->generalMeetingRepository->getLatestAttendanceDate();
         $sort = $request->query->get('sort', 'nom');
         $direction = $request->query->get('direction', 'asc');
         Assertion::inArray($sort, self::VALID_SORTS);
