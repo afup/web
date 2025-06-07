@@ -32,9 +32,17 @@ SQL
     /**
      * @return DateTimeImmutable|null
      */
-    public function getLatestDate()
+    public function getLatestAttendanceDate()
     {
         $query = $this->connection->executeQuery('SELECT MAX(date) maxDate FROM afup_presences_assemblee_generale LIMIT 1');
+        $maxDate = $query->fetchOne();
+
+        return null !== $maxDate ? new DateTimeImmutable('@' . $maxDate) : null;
+    }
+
+    public function getLatestGeneralAssemblyDate()
+    {
+        $query = $this->connection->executeQuery('SELECT MAX(date) maxDate FROM afup_assemblee_generale LIMIT 1');
         $maxDate = $query->fetchOne();
 
         return null !== $maxDate ? new DateTimeImmutable('@' . $maxDate) : null;
@@ -45,7 +53,7 @@ SQL
         if (!$currentDate instanceof \DateTimeInterface) {
             $currentDate = new DateTime();
         }
-        $latestDate = $this->getLatestDate();
+        $latestDate = $this->getLatestGeneralAssemblyDate();
 
         return null !== $latestDate && $latestDate->getTimestamp() > strtotime('-1 day', $currentDate->getTimestamp());
     }
@@ -404,7 +412,7 @@ SQL
     public function hasUserRspvedToLastGeneralMeeting(User $user): bool
     {
         $generalMeeting = null;
-        $latestDate = $this->getLatestDate();
+        $latestDate = $this->getLatestAttendanceDate();
         if (null !== $latestDate) {
             $generalMeeting = $this->findOneByLoginAndDate($user->getUsername(), $latestDate);
         }

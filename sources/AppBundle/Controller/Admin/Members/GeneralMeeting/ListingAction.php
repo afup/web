@@ -18,7 +18,7 @@ class ListingAction
 
     public function __invoke(Request $request): BinaryFileResponse
     {
-        $latestDate = $this->generalMeetingRepository->getLatestDate();
+        $latestDate = $this->generalMeetingRepository->getLatestAttendanceDate();
         Assertion::notNull($latestDate);
         $selectedDate = $latestDate;
         if ($request->query->has('date')) {
