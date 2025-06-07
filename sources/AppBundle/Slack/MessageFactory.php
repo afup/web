@@ -145,7 +145,7 @@ class MessageFactory
 
     public function createMessageForGeneralMeeting(GeneralMeetingRepository $generalMeetingRepository, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator): Message
     {
-        $latestDate = $generalMeetingRepository->getLatestDate();
+        $latestDate = $generalMeetingRepository->getLatestAttendanceDate();
         Assertion::notNull($latestDate);
         $nombrePersonnesAJourDeCotisation = count($userRepository->getActiveMembers(UserRepository::USER_TYPE_ALL));
 
