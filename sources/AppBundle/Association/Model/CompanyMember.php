@@ -17,345 +17,212 @@ class CompanyMember implements NotifyPropertyInterface
     public const STATUS_ACTIVE = 1;
     public const STATUS_INACTIVE = 0;
 
-    /**
-     * @var int
-     */
-    private $id;
+    private int $id;
 
-    /**
-     * @var string
-     */
     #[Assert\NotBlank]
-    private $firstName;
+    private string $firstName = '';
 
-    /**
-     * @var string
-     */
     #[Assert\NotBlank]
-    private $lastName;
+    private string $lastName = '';
 
-    /**
-     * @var string
-     */
     #[Assert\NotBlank]
     #[Assert\Email]
-    private $email;
+    private string $email = '';
 
-    /**
-     * @var string
-     */
     #[Assert\NotBlank(message: 'Raison sociale manquante')]
-    private $companyName;
+    private string $companyName = '';
 
-    /**
-     * @var string
-     */
     #[Assert\NotBlank]
-    private $siret;
+    private string $siret = '';
 
-    /**
-     * @var string
-     */
     #[Assert\NotBlank]
-    private $address;
+    private string $address = '';
 
-    /**
-     * @var string
-     */
     #[Assert\NotBlank]
-    private $zipCode;
+    private string $zipCode = '';
 
-    /**
-     * @var string
-     */
     #[Assert\NotBlank]
-    private $city;
+    private string $city = '';
 
-    /**
-     * @var string
-     */
     #[Assert\NotBlank]
-    private $country = 'FR';
+    private string $country = 'FR';
+
+    private ?string $phone = null;
+
+    private ?string $cellphone = null;
 
     /**
-     * @var string
+     * @var self::STATUS_*
      */
-    private $phone;
+    private int $status = self::STATUS_ACTIVE;
 
-    /** @var string|null */
-    private $cellphone;
+    private ?int $maxMembers = 0;
 
-    /**
-     * @var int
-     */
-    private $status = self::STATUS_ACTIVE;
+    private ?bool $publicProfileEnabled = false;
 
-    /**
-     * @var int
-     */
-    private $maxMembers = 0;
+    private ?string $description = null;
+
+    private ?string $logoUrl = null;
+
+    private ?string $websiteUrl = null;
+
+    private ?string $contactPageUrl = null;
+
+    private ?string $careersPageUrl = null;
+
+    private ?string $twitterHandle = null;
+
+    private ?string $relatedAfupOffices = null;
+
+    private ?string $membershipReason = null;
 
     /**
      * @var CompanyMemberInvitation[]
      */
-    private ?array $invitations = null;
-
-    /**
-     * @var bool
-     */
-    private $publicProfileEnabled = false;
-
-    /**
-     * @var string|null
-     */
-    private $description;
-
-    /**
-     * @var string|null
-     */
-    private $logoUrl;
-
-    /**
-     * @var string|null
-     */
-    private $websiteUrl;
-
-    /**
-     * @var string|null
-     */
-    private $contactPageUrl;
-
-    /**
-     * @var string|null
-     */
-    private $careersPageUrl;
-
-    /**
-     * @var string|null
-     */
-    private $twitterHandle;
-
-    /**
-     * @var string|null
-     */
-    private $relatedAfupOffices;
-
-    /**
-     * @var string|null
-     */
-    private $membershipReason;
+    private array $invitations = [];
 
     private ?\DateTimeImmutable $lastSubscription = null;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getFirstName()
+    public function getFirstName(): string
     {
         return $this->firstName;
     }
 
-    /**
-     * @param string $firstName
-     */
-    public function setFirstName($firstName): self
+    public function setFirstName(?string $firstName): self
     {
         $this->propertyChanged('firstName', $this->firstName, $firstName);
-        $this->firstName = $firstName;
+        $this->firstName = (string) $firstName;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getLastName()
+    public function getLastName(): string
     {
         return $this->lastName;
     }
 
-    /**
-     * @param string $lastName
-     */
-    public function setLastName($lastName): self
+    public function setLastName(?string $lastName): self
     {
         $this->propertyChanged('lastName', $this->lastName, $lastName);
-        $this->lastName = $lastName;
+        $this->lastName = (string) $lastName;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     */
-    public function setEmail($email): self
+    public function setEmail(?string $email): self
     {
         $this->propertyChanged('email', $this->email, $email);
-        $this->email = $email;
+        $this->email = (string) $email;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getCompanyName()
+    public function getCompanyName(): string
     {
         return $this->companyName;
     }
 
-    /**
-     * @param string $companyName
-     */
-    public function setCompanyName($companyName): self
+    public function setCompanyName(?string $companyName): self
     {
         $this->propertyChanged('companyName', $this->companyName, $companyName);
-        $this->companyName = $companyName;
+        $this->companyName = (string) $companyName;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getSiret()
+    public function getSiret(): string
     {
         return $this->siret;
     }
 
-    /**
-     * @param string $siret
-     */
-    public function setSiret($siret): self
+    public function setSiret(?string $siret): self
     {
         $this->propertyChanged('siret', $this->siret, $siret);
-        $this->siret = $siret;
+        $this->siret = (string) $siret;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getAddress()
+    public function getAddress(): string
     {
         return $this->address;
     }
 
-    /**
-     * @param string $address
-     */
-    public function setAddress($address): self
+    public function setAddress(?string $address): self
     {
         $this->propertyChanged('address', $this->address, $address);
-        $this->address = $address;
+        $this->address = (string) $address;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getZipCode()
+    public function getZipCode(): string
     {
         return $this->zipCode;
     }
 
-    /**
-     * @param string $zipCode
-     */
-    public function setZipCode($zipCode): self
+    public function setZipCode(?string $zipCode): self
     {
         $this->propertyChanged('zipCode', $this->zipCode, $zipCode);
-        $this->zipCode = $zipCode;
+        $this->zipCode = (string) $zipCode;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getCity()
+    public function getCity(): string
     {
         return $this->city;
     }
 
-    /**
-     * @param string $city
-     */
-    public function setCity($city): self
+    public function setCity(?string $city): self
     {
         $this->propertyChanged('city', $this->city, $city);
-        $this->city = $city;
+        $this->city = (string) $city;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getCountry()
+    public function getCountry(): string
     {
         return $this->country;
     }
 
-    /**
-     * @param string $country
-     */
-    public function setCountry($country): self
+    public function setCountry(string $country): self
     {
         $this->propertyChanged('country', $this->country, $country);
         $this->country = $country;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getPhone()
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
 
-    /**
-     * @param string $phone
-     */
-    public function setPhone($phone): self
+    public function setPhone(?string $phone): self
     {
         $this->propertyChanged('phone', $this->phone, $phone);
         $this->phone = $phone;
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }
 
     /**
-     * @param int $status
+     * @param self::STATUS_* $status
      */
-    public function setStatus($status): self
+    public function setStatus(int $status): self
     {
         $this->propertyChanged('status', $this->status, $status);
         $this->status = $status;
@@ -365,33 +232,27 @@ class CompanyMember implements NotifyPropertyInterface
     /**
      * @return CompanyMemberInvitation[]
      */
-    public function getInvitations(): ?array
+    public function getInvitations(): array
     {
-        return $this->invitations;
+        return $this->invitations ?? [];
     }
 
     /**
      * @param CompanyMemberInvitation[] $invitations
      */
-    public function setInvitations($invitations): self
+    public function setInvitations(array $invitations): self
     {
         $this->invitations = array_filter($invitations, static fn($invitation): bool => $invitation instanceof CompanyMemberInvitation);
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getMaxMembers()
+    public function getMaxMembers(): int
     {
-        return $this->maxMembers;
+        return $this->maxMembers ?? 0;
     }
 
-    /**
-     * @param int $maxMembers
-     */
-    public function setMaxMembers($maxMembers): self
+    public function setMaxMembers(int $maxMembers): self
     {
         $this->propertyChanged('maxMembers', $this->maxMembers, $maxMembers);
         $this->maxMembers = $maxMembers;
@@ -403,10 +264,7 @@ class CompanyMember implements NotifyPropertyInterface
         return (bool) $this->publicProfileEnabled;
     }
 
-    /**
-     * @param bool $publicProfileEnabled
-     */
-    public function setPublicProfileEnabled($publicProfileEnabled): self
+    public function setPublicProfileEnabled(bool $publicProfileEnabled): self
     {
         $this->propertyChanged('publicProfileEnabled', $this->publicProfileEnabled, $publicProfileEnabled);
         $this->publicProfileEnabled = $publicProfileEnabled;
@@ -414,20 +272,12 @@ class CompanyMember implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param string|null $description
-     *
-     * @return $this
-     */
-    public function setDescription($description = null): self
+    public function setDescription(?string $description): self
     {
         $this->propertyChanged('description', $this->description, $description);
         $this->description = $description;
@@ -440,20 +290,12 @@ class CompanyMember implements NotifyPropertyInterface
         return null !== $this->getLogoUrl();
     }
 
-    /**
-     * @return string|null
-     */
-    public function getLogoUrl()
+    public function getLogoUrl(): ?string
     {
         return $this->logoUrl;
     }
 
-    /**
-     * @param string|null $logoUrl
-     *
-     * @return $this
-     */
-    public function setLogoUrl($logoUrl): self
+    public function setLogoUrl(?string $logoUrl): self
     {
         $this->propertyChanged('logoUrl', $this->logoUrl, $logoUrl);
         $this->logoUrl = $logoUrl;
@@ -461,18 +303,12 @@ class CompanyMember implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getWebsiteUrl()
+    public function getWebsiteUrl(): ?string
     {
         return $this->websiteUrl;
     }
 
-    /**
-     * @param string|null $websiteUrl
-     */
-    public function setWebsiteUrl($websiteUrl): self
+    public function setWebsiteUrl(?string $websiteUrl): self
     {
         $this->propertyChanged('websiteUrl', $this->websiteUrl, $websiteUrl);
         $this->websiteUrl = $websiteUrl;
@@ -480,20 +316,12 @@ class CompanyMember implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getContactPageUrl()
+    public function getContactPageUrl(): ?string
     {
         return $this->contactPageUrl;
     }
 
-    /**
-     * @param string|null $contactPageUrl
-     *
-     * @return $this
-     */
-    public function setContactPageUrl($contactPageUrl): self
+    public function setContactPageUrl(?string $contactPageUrl): self
     {
         $this->propertyChanged('contactPageUrl', $this->contactPageUrl, $contactPageUrl);
         $this->contactPageUrl = $contactPageUrl;
@@ -501,20 +329,12 @@ class CompanyMember implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getCareersPageUrl()
+    public function getCareersPageUrl(): ?string
     {
         return $this->careersPageUrl;
     }
 
-    /**
-     * @param string|null $careersPageUrl
-     *
-     * @return $this
-     */
-    public function setCareersPageUrl($careersPageUrl): self
+    public function setCareersPageUrl(?string $careersPageUrl): self
     {
         $this->propertyChanged('careersPageUrl', $this->careersPageUrl, $careersPageUrl);
         $this->careersPageUrl = $careersPageUrl;
@@ -522,10 +342,7 @@ class CompanyMember implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getTwitterHandle()
+    public function getTwitterHandle(): ?string
     {
         return $this->twitterHandle;
     }
@@ -547,12 +364,7 @@ class CompanyMember implements NotifyPropertyInterface
         return $twitter;
     }
 
-    /**
-     * @param string|null $twitterHandle
-     *
-     * @return $this
-     */
-    public function setTwitterHandle($twitterHandle): self
+    public function setTwitterHandle(?string $twitterHandle): self
     {
         $this->propertyChanged('twitterHandle', $this->twitterHandle, $twitterHandle);
         $this->twitterHandle = $twitterHandle;
@@ -560,20 +372,12 @@ class CompanyMember implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getRelatedAfupOffices()
+    public function getRelatedAfupOffices(): ?string
     {
         return $this->relatedAfupOffices;
     }
 
-    /**
-     * @param string|null $relatedAfupOffices
-     *
-     * @return $this
-     */
-    public function setRelatedAfupOffices($relatedAfupOffices): self
+    public function setRelatedAfupOffices(?string $relatedAfupOffices): self
     {
         $this->propertyChanged('relatedAfupOffices', $this->relatedAfupOffices, $relatedAfupOffices);
         $this->relatedAfupOffices = $relatedAfupOffices;
@@ -582,9 +386,9 @@ class CompanyMember implements NotifyPropertyInterface
     }
 
     /**
-     * @return array
+     * @return array<string>
      */
-    public function getFormattedRelatedAfupOffices()
+    public function getFormattedRelatedAfupOffices(): array
     {
         $relatedAfupOffices = $this->getRelatedAfupOffices();
         if (null === $relatedAfupOffices) {
@@ -595,7 +399,7 @@ class CompanyMember implements NotifyPropertyInterface
     }
 
     /**
-     * @return $this
+     * @param array<string> $relatedAfupOffices
      */
     public function setFormattedRelatedAfupOffices(array $relatedAfupOffices): self
     {
@@ -610,11 +414,7 @@ class CompanyMember implements NotifyPropertyInterface
         return $this;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getSlug()
+    public function getSlug(): string
     {
         $slugify = new Slugify();
         return $slugify->slugify($this->getCompanyName());
@@ -640,20 +440,12 @@ class CompanyMember implements NotifyPropertyInterface
         return $this->getLastSubscription() > $now;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getMembershipReason()
+    public function getMembershipReason(): ?string
     {
         return $this->membershipReason;
     }
 
-    /**
-     * @param string|null $membershipReason
-     *
-     * @return $this
-     */
-    public function setMembershipReason($membershipReason): self
+    public function setMembershipReason(?string $membershipReason): self
     {
         $this->propertyChanged('membershipReason', $this->membershipReason, $membershipReason);
         $this->membershipReason = $membershipReason;
@@ -661,14 +453,12 @@ class CompanyMember implements NotifyPropertyInterface
         return $this;
     }
 
-    /** @return string|null */
-    public function getCellphone()
+    public function getCellphone(): ?string
     {
         return $this->cellphone;
     }
 
-    /** @param string|null $cellphone */
-    public function setCellphone($cellphone): void
+    public function setCellphone(?string $cellphone): void
     {
         $this->propertyChanged('cellphone', $this->cellphone, $cellphone);
         $this->cellphone = $cellphone;
