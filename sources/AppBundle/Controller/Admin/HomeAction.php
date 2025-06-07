@@ -82,8 +82,8 @@ class HomeAction extends AbstractController
                 'url' => $this->generateUrl('admin_members_reporting'),
             ];
 
-            $latestDate = $this->generalMeetingRepository->getLatestDate();
-            if ($this->generalMeetingRepository->hasGeneralMeetingPlanned($latestDate)) {
+            $latestDate = $this->generalMeetingRepository->getLatestGeneralAssemblyDate();
+            if ($this->generalMeetingRepository->hasGeneralMeetingPlanned()) {
                 $cards[] = [
                     'title' => 'Assemblée générale',
                     'statistics' => [
