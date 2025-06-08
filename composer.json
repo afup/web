@@ -35,7 +35,7 @@
     "phpmailer/phpmailer": "^6.9",
     "phpoffice/phpspreadsheet": "^1.6",
     "pimple/pimple": "^3.5",
-    "presta/sitemap-bundle": "3.3.0",
+    "presta/sitemap-bundle": "4.*",
     "psr/clock": "^1.0",
     "robmorgan/phinx": "^0.14.0",
     "sabre/vobject": "^4.1",
