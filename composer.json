@@ -37,7 +37,7 @@
     "pimple/pimple": "^3.5",
     "presta/sitemap-bundle": "4.*",
     "psr/clock": "^1.0",
-    "robmorgan/phinx": "^0.14.0",
+    "robmorgan/phinx": "0.16.*",
     "sabre/vobject": "^4.1",
     "setasign/tfpdf": "^1.33",
     "smarty/smarty": "^5.4",
