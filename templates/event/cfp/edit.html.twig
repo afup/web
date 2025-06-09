@@ -41,7 +41,7 @@
                             {% if vote.githubUser.afupCrew == true %}
                                 <p class="cfp--vote-afup" title="{{ 'Ce commentaire a été déposé par un membre du staff'|trans|e('html_attr') }}">AFUP</p>
                             {% endif %}
-                            <p>{{ vote.submittedOn|localizeddate }}</p>
+                            <p>{{ vote.submittedOn|format_date }}</p>
                             <div class="event--vote-stars">
                                 <div style="display: inline-block">
                                     <div class="stars">

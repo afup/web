@@ -21,7 +21,7 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@afup" />
     <meta name="twitter:title" content="Prenez votre place pour le {{ event.title }}" />
-    <meta name="twitter:description" content="Ne manquez pas le grand rendez-vous de la communauté PHP, {% if event.dateStart == event.dateEnd %}{{ event.dateStart|date('d') }}{% else %}{{ event.dateStart|date('d') }}-{{ event.dateEnd|date('d') }}{% endif %} {{ event.dateEnd|localizeddate('none', 'none', 'fr', 'Europe/Paris', 'MMMM') }}." />
+    <meta name="twitter:description" content="Ne manquez pas le grand rendez-vous de la communauté PHP, {% if event.dateStart == event.dateEnd %}{{ event.dateStart|date('d') }}{% else %}{{ event.dateStart|date('d') }}-{{ event.dateEnd|date('d') }}{% endif %} {{ event.dateEnd|format_date('none', 'MMMM') }}." />
     {% if event.logoUrl %}
         <meta name="twitter:image" content="{{ event.logoUrl }}" />
     {% endif %}

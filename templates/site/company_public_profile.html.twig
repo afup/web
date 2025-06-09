@@ -19,7 +19,7 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@afup" />
     <meta name="twitter:title" content="AFUP - Profil entreprise - {{ company_member.companyName }}" />
-    <meta name="twitter:description" content="{{ company_member.description|truncate(200) }}" />
+    <meta name="twitter:description" content="{{ company_member.description|u.truncate(200) }}" />
     <meta name="twitter:image" content="{{ app.request.getSchemeAndHttpHost() }}{{ logo_url }}" />
 {% endblock %}
 

@@ -10,7 +10,7 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@afup" />
     <meta name="twitter:title" content="AFUP - Soumettez une conférence pour le {{ event.title }}" />
-    <meta name="twitter:description" content="Proposez une conférence pour le {{ event.title }} qui aura lieu {% if event.dateStart == event.dateEnd %}le {{ event.dateStart|date('d') }}{% else %}les {{ event.dateStart|date('d') }}-{{ event.dateEnd|date('d') }}{% endif %} {{ event.dateEnd|localizeddate('none', 'none', 'fr', 'Europe/Paris', 'MMMM') }}." />
+    <meta name="twitter:description" content="Proposez une conférence pour le {{ event.title }} qui aura lieu {% if event.dateStart == event.dateEnd %}le {{ event.dateStart|date('d') }}{% else %}les {{ event.dateStart|date('d') }}-{{ event.dateEnd|date('d') }}{% endif %} {{ event.dateEnd|format_date('none', 'MMMM') }}." />
     {% if event.logoUrl %}
         <meta name="twitter:image" content="{{ event.logoUrl }}" />
     {% endif %}
@@ -43,7 +43,7 @@
             update();
         })
     </script>
-    <p id="endTitle">{{ 'Le CFP est ouvert jusqu\'au %date%.' | trans({ '%date%': event.dateEndCallForPapers|localizeddate('long', 'none', app.request.locale) }) }}</p>
+    <p id="endTitle">{{ 'Le CFP est ouvert jusqu\'au %date%.' | trans({ '%date%': event.dateEndCallForPapers|format_date('long') }) }}</p>
     {# <p id="date">{{  }}</p> #}
     <p id="countdown">{{ 'Il vous reste donc <span id="end"></span>.' | trans | raw }}</p>
     <div id="homeButtons">
