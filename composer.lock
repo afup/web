@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "80b38943c1db47c247caaf9a8a60346a",
+    "content-hash": "5ad34f8207f9aafb38ca1e03dd24c70f",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -1489,39 +1489,36 @@
         },
         {
             "name": "ekino/newrelic-bundle",
-            "version": "2.4.0",
+            "version": "dev-patch-1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ekino/EkinoNewRelicBundle.git",
-                "reference": "aa29fd8e1f2086402d0112e0194b9bdc910e5345"
+                "url": "https://github.com/webgriffe/EkinoNewRelicBundle.git",
+                "reference": "2cd9951c163bda2d18a1515b43ee574e51aac871"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ekino/EkinoNewRelicBundle/zipball/aa29fd8e1f2086402d0112e0194b9bdc910e5345",
-                "reference": "aa29fd8e1f2086402d0112e0194b9bdc910e5345",
+                "url": "https://api.github.com/repos/webgriffe/EkinoNewRelicBundle/zipball/2cd9951c163bda2d18a1515b43ee574e51aac871",
+                "reference": "2cd9951c163bda2d18a1515b43ee574e51aac871",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1 | ^8.0",
-                "symfony/config": "^3.4|^4.0|^5.0|^6.0",
-                "symfony/console": "^3.4|^4.0|^5.0|^6.0",
-                "symfony/dependency-injection": "^3.4|^4.0|^5.0|^6.0",
-                "symfony/event-dispatcher": "^3.4|^4.0|^5.0|^6.0",
-                "symfony/http-kernel": "^3.4|^4.0|^5.0|^6.0"
-            },
-            "conflict": {
-                "twig/twig": "<1.32"
+                "monolog/monolog": "^3.0",
+                "php": "^8.1",
+                "symfony/config": "^6.4|^7.0",
+                "symfony/console": "^6.4|^7.0",
+                "symfony/dependency-injection": "^6.4|^7.0",
+                "symfony/event-dispatcher": "^6.4|^7.0",
+                "symfony/http-kernel": "^6.4|^7.0"
             },
             "require-dev": {
-                "matthiasnoback/symfony-dependency-injection-test": "^3.1|^4.0",
-                "symfony/debug": ">3.4.21",
-                "symfony/framework-bundle": "^3.4|^4.0|^5.0|^6.0",
-                "symfony/monolog-bundle": "^3.2",
-                "symfony/phpunit-bridge": "^5.3",
-                "twig/twig": "^1.32|^2.4"
+                "matthiasnoback/symfony-dependency-injection-test": "^4.3|^5.1",
+                "symfony/framework-bundle": "^6.4|^7.0",
+                "symfony/monolog-bundle": "^3.10",
+                "symfony/phpunit-bridge": "^5.3|^6.0|^7.0",
+                "twig/twig": "^1.32|^2.4|^3.0"
             },
             "suggest": {
-                "symfony/monolog-bundle": "^3.2"
+                "symfony/monolog-bundle": "^3.10"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -1537,7 +1534,11 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Ekino\\NewRelicBundle\\Tests\\": "Tests/"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -1556,10 +1557,9 @@
                 "performance"
             ],
             "support": {
-                "issues": "https://github.com/ekino/EkinoNewRelicBundle/issues",
-                "source": "https://github.com/ekino/EkinoNewRelicBundle/tree/2.4.0"
+                "source": "https://github.com/webgriffe/EkinoNewRelicBundle/tree/patch-1"
             },
-            "time": "2022-03-25T09:15:31+00:00"
+            "time": "2024-05-06T12:52:23+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -13717,7 +13717,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "ekino/newrelic-bundle": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

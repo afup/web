@@ -20,7 +20,7 @@
     "cweagans/composer-patches": "^1.7",
     "doctrine/dbal": "4.*",
     "drewm/mailchimp-api": "^2.5",
-    "ekino/newrelic-bundle": "^2.4",
+    "ekino/newrelic-bundle": "dev-patch-1#2cd9951c163bda2d18a1515b43ee574e51aac871",
     "erusev/parsedown": "^1.6",
     "excelwebzone/recaptcha-bundle": "^1.5",
     "friendsofpear/pear_exception": "0.0.*",
@@ -199,6 +199,10 @@
           ]
         }
       }
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/webgriffe/EkinoNewRelicBundle"
     }
   ],
   "replace": {
