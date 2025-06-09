@@ -241,11 +241,6 @@ services:
         arguments:
             $basePath: "%kernel.project_dir%/../htdocs/uploads/speaker_expenses"
 
-    Twig_Extensions_Extension_Intl:
-        class: Twig_Extensions_Extension_Intl
-        tags:
-            - { name: twig.extension }
-
     AppBundle\Payment\PayboxFactory:
         autowire: true
         arguments: ["@router", "%paybox_domain_server%", "%paybox_secret_key%", "%paybox_site%", "%paybox_rang%", "%paybox_identifiant%"]
@@ -382,11 +377,6 @@ services:
         autowire: true
         tags:
             - { name: "kernel.event_subscriber", priority: 100 }
-
-    Twig_Extensions_Extension_Text:
-        class: Twig_Extensions_Extension_Text
-        tags:
-            - { name: twig.extension }
 
     AppBundle\Doctrine\ConnectionFactory: ~
     Doctrine\DBAL\Connection:
