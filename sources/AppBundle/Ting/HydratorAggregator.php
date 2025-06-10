@@ -24,58 +24,40 @@ declare(strict_types=1);
  *
  **********************************************************************/
 
-namespace AppBundle\Event\Model;
+namespace AppBundle\Ting;
 
 use CCMBenchmark\Ting\Repository\Hydrator;
+use Closure;
+use Generator;
 
 class HydratorAggregator extends Hydrator
 {
-    /**
-     * @var callable
-     */
-    protected $callableForId;
+    private Closure $callableForId;
+    private Closure $callableForData;
+    private ?Closure $callableFinalizeAggregate = null;
 
-    /**
-     * @var callable
-     */
-    protected $callableForData;
-
-    /**
-     * @var callable
-     */
-    protected $callableFinalizeAggregate;
-
-    /**
-     * @return $this
-     */
-    public function callableIdIs(callable $callableForId): self
+    public function callableIdIs(Closure $callableForId): static
     {
         $this->callableForId = $callableForId;
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function callableDataIs(callable $callableForData): self
+    public function callableDataIs(Closure $callableForData): static
     {
         $this->callableForData = $callableForData;
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function callableFinalizeAggregate(callable $callableFinalizeAggregate): self
+    public function callableFinalizeAggregate(Closure $callableFinalizeAggregate): static
     {
         $this->callableFinalizeAggregate = $callableFinalizeAggregate;
         return $this;
     }
 
     /**
-     * @return \Generator
+     * @return Generator
      */
-    public function getIterator()
+    public function getIterator(): Generator
     {
         $knownIdentifiers = [];
         $callableForId = $this->callableForId;

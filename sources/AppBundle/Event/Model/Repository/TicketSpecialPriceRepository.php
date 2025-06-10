@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\JoinHydrator;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Model\TicketSpecialPrice;
+use AppBundle\Ting\JoinHydrator;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
