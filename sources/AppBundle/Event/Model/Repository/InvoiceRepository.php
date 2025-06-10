@@ -6,8 +6,8 @@ namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
-use AppBundle\Event\Model\JoinHydrator;
 use AppBundle\Event\Model\Ticket;
+use AppBundle\Ting\JoinHydrator;
 use Aura\SqlQuery\Mysql\Select;
 use CCMBenchmark\Ting\Driver\Exception;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;

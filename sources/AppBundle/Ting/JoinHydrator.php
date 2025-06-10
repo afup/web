@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Event\Model;
+namespace AppBundle\Ting;
 
 class JoinHydrator extends HydratorAggregator
 {
-    public function aggregateOn($mainObjectAlias, $joinedObjectAlias, $mainObjectGetter): self
+    public function aggregateOn(string $mainObjectAlias, string $joinedObjectAlias, string $mainObjectGetter): static
     {
-        $this
+        return $this
             ->callableDataIs(fn($result) => $result[$joinedObjectAlias])
             ->callableIdIs(fn($result) => $result[$mainObjectAlias]->$mainObjectGetter())
             ->callableFinalizeAggregate(function (array $result, $aggregate) use ($joinedObjectAlias) {
@@ -16,6 +16,5 @@ class JoinHydrator extends HydratorAggregator
                 return $result;
             })
         ;
-        return $this;
     }
 }

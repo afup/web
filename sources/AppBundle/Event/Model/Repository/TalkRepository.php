@@ -6,10 +6,10 @@ namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\GithubUser;
-use AppBundle\Event\Model\JoinHydrator;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\TalkAggregate;
+use AppBundle\Ting\JoinHydrator;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;

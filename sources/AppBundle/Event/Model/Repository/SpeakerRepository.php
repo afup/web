@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\JoinHydrator;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
+use AppBundle\Ting\JoinHydrator;
 use Assert\Assertion;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
