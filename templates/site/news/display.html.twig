@@ -40,7 +40,7 @@
 
                     <h1>{{ article.getTitle }}</h1>
 
-                    <h4>{{ article.publishedAt|localizeddate('long', 'none') }}</h4>
+                    <h4>{{ article.publishedAt|format_date('long') }}</h4>
 
                     <blockquote>
                         {{ article.leadParagraph|raw }}

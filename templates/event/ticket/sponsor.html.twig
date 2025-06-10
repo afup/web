@@ -24,7 +24,7 @@
 
             {% else %}
                 <p>
-                    {% trans with { '%date%': "<b>" ~ event.dateEndSalesSponsorToken|localizeddate('full', 'none') ~ "</b>" } %}
+                    {% trans with { '%date%': "<b>" ~ event.dateEndSalesSponsorToken|format_date('full', 'none') ~ "</b>" } %}
                         Enregistrez vous-même vos invités avant le %date% dernier délai. Vos invités recevront leur convocation quelques jours avant l’évènement.
                     {% endtrans %}
                 </p>
