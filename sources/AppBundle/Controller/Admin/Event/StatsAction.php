@@ -84,7 +84,7 @@ class StatsAction extends AbstractController
             ],
         ];
 
-        $rawStatsByType = $this->eventStatsRepository->getStats((int) $event->getId())->ticketType->paying;
+        $rawStatsByType = $this->eventStatsRepository->getStats($event->getId())->ticketType->paying;
         $totalInscrits = array_sum($rawStatsByType);
         array_walk($rawStatsByType, function (&$item, $key) use (&$ticketTypes, $totalInscrits): void {
             if (isset($ticketTypes[$key]) === false) {

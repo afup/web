@@ -11,20 +11,20 @@ class Badge implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    private ?int $id = null;
+    private int $id;
 
     private string $label;
 
     private string $url;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
     public function setId(int $id): self
     {
-        $this->propertyChanged('id', $this->id, $id);
+        $this->propertyChanged('id', $this->id ?? null, $id);
         $this->id = $id;
 
         return $this;

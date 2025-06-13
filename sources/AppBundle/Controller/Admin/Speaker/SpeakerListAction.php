@@ -58,7 +58,7 @@ class SpeakerListAction implements AdminActionWithEventSelector
         $events = $this->eventRepository->getAll();
 
         return new Response($this->twig->render('admin/speaker/list.html.twig', [
-            'eventId' => $event === null ? null : $event->getId(),
+            'eventId' => $event?->tryGetId(),
             'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
             'events' => $events,
             'speakers' => $speakers,

@@ -35,7 +35,7 @@ class EventAction extends AbstractController
 
         $form = $this->createForm(EventType::class, $event);
 
-        if ($event->getId() && $couponsImploded = $this->couponRepository->couponsListForEventImploded($event)) {
+        if ($event->tryGetId() !== null && $couponsImploded = $this->couponRepository->couponsListForEventImploded($event)) {
             $form->get('coupons')->setData($couponsImploded);
         }
 

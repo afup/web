@@ -175,7 +175,7 @@ class MessageFactory
 
     public function createMessageForTicketStats(Event $event, EventStatsRepository $eventStatsRepository, TicketTypeRepository $ticketRepository, \DateTime $date = null): Message
     {
-        $eventStats = $eventStatsRepository->getStats((int) $event->getId());
+        $eventStats = $eventStatsRepository->getStats($event->getId());
         $message = new Message();
         $message
             ->setChannel($event->isAfupDay() ? 'afupday' : 'pole-forum')
@@ -184,7 +184,7 @@ class MessageFactory
         ;
 
         if ($date instanceof \DateTime) {
-            $eventStatsFiltered = $eventStatsRepository->getStats((int) $event->getId(), $date);
+            $eventStatsFiltered = $eventStatsRepository->getStats($event->getId(), $date);
 
             $attachment = new Attachment();
             $attachment

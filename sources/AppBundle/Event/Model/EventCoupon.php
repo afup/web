@@ -11,7 +11,7 @@ class EventCoupon implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    private ?int $id = null;
+    private int $id;
 
     private int $idEvent;
 
@@ -19,7 +19,7 @@ class EventCoupon implements NotifyPropertyInterface
 
     public static function initForEventAndCoupon(Event $event, string $coupon): self
     {
-        if ($event->getId() === null) {
+        if ($event->tryGetId() === null) {
             throw new \Exception('Event has no ID');
         }
 
@@ -34,7 +34,7 @@ class EventCoupon implements NotifyPropertyInterface
         return $eventCoupon;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

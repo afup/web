@@ -12,7 +12,7 @@ class Event implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    private ?int $id = null;
+    private int $id;
 
     private ?string $title = null;
 
@@ -98,22 +98,19 @@ class Event implements NotifyPropertyInterface
 
     private ?DateTime $archivedAt = null;
 
-    /**
-     * @return int
-     */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     * @return Event
-     */
-    public function setId($id): self
+    public function tryGetId(): ?int
     {
-        $id = (int) $id;
-        $this->propertyChanged('id', $this->id, $id);
+        return $this->id ?? null;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->propertyChanged('id', $this->id ?? null, $id);
         $this->id = $id;
         return $this;
     }

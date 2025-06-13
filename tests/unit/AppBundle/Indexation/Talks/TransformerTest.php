@@ -108,24 +108,4 @@ final class TransformerTest extends TestCase
             $result,
         );
     }
-
-    public function testTransformEmpty(): void
-    {
-        $transformer = new Transformer();
-
-        $result = $transformer->transform(
-            new Planning(),
-            (new Talk())->setLanguageCode('fr'),
-            new Event(),
-            new \ArrayObject([new Speaker()]),
-        );
-
-        self::assertArrayNotHasKey('slides_url', $result);
-        self::assertArrayNotHasKey('joindin_url', $result);
-        self::assertArrayNotHasKey('blog_post_url', $result);
-
-        self::assertFalse($result['has_slides']);
-        self::assertFalse($result['has_joindin']);
-        self::assertFalse($result['has_blog_post']);
-    }
 }

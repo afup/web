@@ -12,7 +12,7 @@ class Vote implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    private ?int $id = null;
+    private int $id;
 
     #[Assert\NotBlank]
     #[Assert\GreaterThan(0)]
@@ -41,7 +41,7 @@ class Vote implements NotifyPropertyInterface
 
     public function setId(int $id): self
     {
-        $this->propertyChanged('id', $this->id, $id);
+        $this->propertyChanged('id', $this->id ?? null, $id);
         $this->id = $id;
         return $this;
     }

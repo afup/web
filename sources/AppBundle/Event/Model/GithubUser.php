@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model;
 
+use AppBundle\Model\ModelWithUniqueId;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInterface, \Stringable
+class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInterface, \Stringable, ModelWithUniqueId
 {
     use NotifyProperty;
 
-    private ?int $id = null;
+    private int $id;
 
     private ?int $githubId = null;
 
@@ -34,9 +35,14 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
         return $this->getLabel();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
+    }
+
+    public function tryGetId(): ?int
+    {
+        return $this->id ?? null;
     }
 
     public function getLabel(): string
@@ -64,7 +70,7 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
 
     public function setId(int $id): self
     {
-        $this->propertyChanged('id', $this->id, $id);
+        $this->propertyChanged('id', $this->id ?? null, $id);
         $this->id = $id;
         return $this;
     }
@@ -205,9 +211,23 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
 
     public function isEqualTo(UserInterface $user): bool
     {
-        /**
-         * @var self $user
-         */
-        return ($user->getId() === $this->id);
+        if (!$user instanceof self) {
+            return false;
+        }
+
+        if (!isset($user->id) || !isset($this->id)) {
+            return false;
+        }
+
+        return $user->id === $this->id;
+    }
+
+    public function getUniqueId(): ?string
+    {
+        if (!isset($this->id)) {
+            return null;
+        }
+
+        return (string) $this->id;
     }
 }
