@@ -11,7 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Planning implements NotifyPropertyInterface
 {
     use NotifyProperty;
-    private ?int $id = null;
+
+    private int $id;
 
     #[Assert\NotBlank]
     #[Assert\GreaterThan(0)]
@@ -30,23 +31,14 @@ class Planning implements NotifyPropertyInterface
      */
     private $isKeynote = false;
 
-    /**
-     * @return int
-     */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return $this
-     */
-    public function setId($id): self
+    public function setId(int $id): self
     {
-        $id = (int) $id;
-        $this->propertyChanged('id', $this->id, $id);
+        $this->propertyChanged('id', $this->id ?? null, $id);
         $this->id = $id;
         return $this;
     }
