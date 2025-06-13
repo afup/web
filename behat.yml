@@ -12,9 +12,7 @@ default:
     Behat\MinkExtension:
       base_url:  'https://apachephptest:80'
       files_path: '%paths.base%/tests/behat/files'
-      sessions:
-        default:
-          goutte:
-            server_parameters:
-              verify_peer: false
-              verify_host: false
+      browserkit_http:
+        http_client_parameters:
+          verify_peer: false
+          verify_host: false
