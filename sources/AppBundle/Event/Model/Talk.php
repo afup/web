@@ -30,7 +30,7 @@ class Talk implements NotifyPropertyInterface
     public const LANGUAGE_CODE_FR = 'fr';
     public const LANGUAGE_CODE_EN = 'en';
 
-    private ?int $id = null;
+    private int $id;
 
     #[Assert\NotBlank]
     #[Assert\GreaterThan(0)]
@@ -91,14 +91,14 @@ class Talk implements NotifyPropertyInterface
     #[Assert\NotNull]
     private bool $hasAllowedToSharingWithLocalOffices = false;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
     public function setId(int $id): self
     {
-        $this->propertyChanged('id', $this->id, $id);
+        $this->propertyChanged('id', $this->id ?? null, $id);
         $this->id = $id;
         return $this;
     }
