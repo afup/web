@@ -35,10 +35,8 @@ class ViewRenderer
             $requestUri = $this->requestStack->getCurrentRequest()->getRequestUri();
             $page = new Page();
             $blocks = [
-                'community' => $page->community(),
                 'header' => $page->header($requestUri, $this->security->getUser()),
                 'sidebar' => $page->getRightColumn(),
-                'social' => $page->social(),
                 'footer' => $page->footer(),
             ];
         }

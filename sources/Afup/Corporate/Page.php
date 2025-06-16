@@ -4,64 +4,15 @@ declare(strict_types=1);
 
 namespace Afup\Site\Corporate;
 
-use Afup\Site\Utils\Configuration;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class Page
+final readonly class Page
 {
-    public $route = "";
-    public $content;
-    public $title;
+    private _Site_Base_De_Donnees $bdd;
 
-
-    /**
-     * @var Configuration
-     */
-    public $conf;
-
-    /**
-     * @var _Site_Base_De_Donnees
-     */
-    private $bdd;
-
-    public function __construct($bdd = false)
+    public function __construct()
     {
-        $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
-        $this->conf = $GLOBALS['AFUP_CONF'];
-    }
-
-    public function definirRoute($route): void
-    {
-        $this->route = $route;
-        switch (true) {
-            case preg_match("%\s*/[0-9]*/\s*%", (string) $this->route):
-                [, $id, ] = explode("/", (string) $this->route);
-                $article = new Article($id, $this->bdd);
-                $article->charger();
-                $this->title = $article->titre;
-                $this->content = $article->afficher();
-                break;
-
-            case preg_match("%s*/[0-9]*%", (string) $this->route):
-                [, $id] = explode("/", (string) $this->route);
-                $rubrique = new Rubrique($id, $this->bdd);
-                $rubrique->charger();
-                $this->title = $rubrique->nom;
-                $this->content = $rubrique->afficher();
-                break;
-
-            default:
-                $accueil = new Accueil($this->bdd);
-                $accueil->charger();
-                $this->title = "promouvoir le PHP aupr&egrave;s des professionnels";
-                $this->content = $accueil->afficher();
-        }
-    }
-
-    public function community(): string
-    {
-        $branche = new Branche($this->bdd);
-        return $branche->naviguer(5, 2);
+        $this->bdd = new _Site_Base_De_Donnees();
     }
 
     public function header($url = null, UserInterface $user = null): string
@@ -141,28 +92,6 @@ class Page
         }
 
         return $str . '<ul>';
-    }
-
-    public function content()
-    {
-        return $this->content;
-    }
-
-    public function social(): string
-    {
-        return
-            '<ul id="menufooter-share">
-                <li>
-                    <a href="' . Site::WEB_PATH . Site::WEB_PREFIX . Site::WEB_QUERY_PREFIX . 'faq/53/comment-contacter-l-afup" class="spriteshare spriteshare-mail">Nous contacter</a>
-                </li>
-                <li>
-                    <a href="http://www.facebook.com/fandelafup" class="spriteshare spriteshare-facebook">L\'AFUP sur Facebook</a>
-                </li>
-                <li>
-                    <a href="https://twitter.com/afup" class="spriteshare spriteshare-twitter">L\'AFUP sur Twitter</a>
-                </li>
-            </ul>
-                ';
     }
 
     /**
