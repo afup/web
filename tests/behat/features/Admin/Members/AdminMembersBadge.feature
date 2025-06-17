@@ -20,5 +20,6 @@ Feature: Administration - Partie Badge
     # Suit le lien "Modifier la fiche de Personne Paul"
     And I follow "modifier_5"
     # Valide l'ajout du badge
+    And I fill in "user_badge_date" with "2025-06-16"
     And I press "user_badge_save"
     Then the "table.ui.table.striped.compact.celled" element should contain "Un super Badge"
