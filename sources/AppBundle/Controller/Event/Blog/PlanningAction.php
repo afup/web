@@ -2,44 +2,24 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Event;
+namespace AppBundle\Controller\Event\Blog;
 
+use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\JsonLd;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class BlogController extends AbstractController
+final class PlanningAction extends AbstractController
 {
     public function __construct(
         private readonly JsonLd $jsonLd,
         private readonly EventActionHelper $eventActionHelper,
         private readonly TalkRepository $talkRepository,
-        private readonly SpeakerRepository $speakerRepository,
     ) {}
 
-    public function program(Request $request, $eventSlug): Response
-    {
-        $event = $this->eventActionHelper->getEvent($eventSlug);
-        $jsonld = $this->jsonLd->getDataForEvent($event);
-        $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true));
-        $now = new \DateTime();
-
-        return $this->render(
-            'blog/program.html.twig',
-            [
-                'talks' => iterator_to_array($talkAggregates),
-                'event' => $event,
-                'jsonld' => $jsonld,
-                'speakersPagePrefix' => $request->query->get('speakers-page-prefix', '/' . $event->getPath() . '/speakers/'),
-                'display_joindin_links' => $now >= $event->getDateStart() && $now <= \DateTimeImmutable::createFromMutable($event->getDateEnd())->modify('+10 days'),
-            ],
-        );
-    }
-
-    public function planning(Request $request, string $eventSlug): Response
+    public function __invoke(Request $request, string $eventSlug): Response
     {
         $eventSlugs = explode(',', $eventSlug);
         $events = [];
@@ -124,57 +104,15 @@ class BlogController extends AbstractController
 
         return $this->render(
             'blog/planning.html.twig',
-                [
-                    'planning' => $eventPlanning,
-                    'events' => $events,
-                    'planningDisplayable' => false === $applyPublicationDateFilters || $hasAllEventsDisplayable,
-                    'rooms' => $rooms,
-                    'hourMin' => $hourMin,
-                    'hourMax' => $hourMax,
-                    'precision' => 5,
-                    'jsonld' => $jsonld,
-                ],
-        );
-    }
-
-    public function talkWidget(Request $request): Response
-    {
-        $talks = $this->talkRepository->getBy(['id' => explode(',', (string) $request->get('ids'))]);
-
-        $speakers = [];
-        $talksInfos = [];
-        foreach ($talks as $talk) {
-            foreach ($this->talkRepository->getByTalkWithSpeakers($talk) as $row) {
-                $talksInfos[] = $row;
-                foreach ($row['.aggregation']['speaker'] as $speaker) {
-                    $speakers[$speaker->getId()] = $speaker;
-                }
-            }
-        }
-
-        return $this->render(
-            'blog/talk.html.twig',
             [
-                'talks_infos' => $talksInfos,
-                'speakers' => $speakers,
-                'widget_type' => $request->get('type', 'all'),
-            ],
-        );
-    }
-
-    public function speakers(Request $request, string $eventSlug): Response
-    {
-        $event = $this->eventActionHelper->getEvent($eventSlug);
-        $speakers = $this->speakerRepository->getScheduledSpeakersByEvent($event, !$request->query->getBoolean('apply-publication-date-filters', true));
-        $jsonld = $this->jsonLd->getDataForEvent($event);
-
-        return $this->render(
-            'blog/speakers.html.twig',
-            [
-                'speakers' => iterator_to_array($speakers),
-                'event' => $event,
+                'planning' => $eventPlanning,
+                'events' => $events,
+                'planningDisplayable' => false === $applyPublicationDateFilters || $hasAllEventsDisplayable,
+                'rooms' => $rooms,
+                'hourMin' => $hourMin,
+                'hourMax' => $hourMax,
+                'precision' => 5,
                 'jsonld' => $jsonld,
-                'programPagePrefix' => $request->query->get('program-page-prefix', '/' . $event->getPath() . '/programme/'),
             ],
         );
     }
