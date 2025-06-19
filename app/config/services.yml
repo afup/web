@@ -190,15 +190,6 @@ services:
         arguments:
             $backOfficePages: '%app.pages_backoffice%'
 
-    AppBundle\Controller\Admin\TechLetter\TechLetterGenerateController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $mailchimp: '@app.mailchimp_techletter_api'
-            $techletterTestEmailAddress: '%techletter_test_email_address%'
-            $mailchimpTechletterList: '%mailchimp_techletter_list%'
-
     AppBundle\Mailchimp\Runner:
         autowire: true
         arguments:
