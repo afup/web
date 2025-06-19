@@ -277,9 +277,6 @@ parameters:
                 logs:
                     nom: 'Logs'
                     niveau: 'ROLE_ADMIN'
-                forum_partenaire:
-                    nom: 'Sponsors/Partenaires'
-                    niveau: 'ROLE_ADMIN'
                 healthcheck:
                     nom: 'Healthcheck'
                     niveau: 'ROLE_ADMIN'
