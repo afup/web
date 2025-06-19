@@ -2,33 +2,31 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Event;
+namespace AppBundle\Controller\Event\Lead;
 
+use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Event\Form\LeadType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Lead;
-use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Sponsorship\SponsorshipLeadMail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class LeadController extends AbstractController
+final class BecomeSponsorAction extends AbstractController
 {
     public function __construct(
         private readonly Mailer $mailer,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly SponsorshipLeadMail $sponsorshipLeadMail,
         private readonly EventActionHelper $eventActionHelper,
-        private readonly EventRepository $eventRepository,
     ) {}
 
-    public function becomeSponsor($eventSlug, Request $request)
+    public function __invoke(string $eventSlug, Request $request): Response
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
 
@@ -56,24 +54,6 @@ class LeadController extends AbstractController
             'event' => $event,
             'leadForm' => $leadForm->createView(),
         ]);
-    }
-
-    public function postLead($eventSlug): Response
-    {
-        $event = $this->eventActionHelper->getEvent($eventSlug);
-        return $this->render('event/sponsorship_file/thanks.html.twig', ['event' => $event]);
-    }
-
-    /**
-     * Redirige vers la page de sponsoring du dernier évènement.
-     *
-     * @return RedirectResponse
-     */
-    public function becomeSponsorLatest()
-    {
-        $event = $this->eventRepository->getCurrentEvent();
-
-        return new RedirectResponse($this->generateUrl('sponsor_leads', ['eventSlug' => $event->getPath()]));
     }
 
     private function sendMailToTeamSponsor(Event $event, Lead $lead): void

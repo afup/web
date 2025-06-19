@@ -94,11 +94,11 @@ ticket_paybox_redirect:
 
 sponsor_leads:
   path: /{eventSlug}/sponsor/become-sponsor
-  defaults: { _controller: AppBundle\Controller\Event\LeadController::becomeSponsor }
+  defaults: { _controller: AppBundle\Controller\Event\Lead\BecomeSponsorAction }
 
 sponsor_leads_post:
   path: /{eventSlug}/sponsor/thank-you
-  defaults: { _controller: AppBundle\Controller\Event\LeadController::postLead }
+  defaults: { _controller: AppBundle\Controller\Event\Lead\PostLeadAction }
 
 sponsor_scan:
   path: /{eventSlug}/sponsor/scan
