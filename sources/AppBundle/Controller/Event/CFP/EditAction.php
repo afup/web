@@ -45,7 +45,7 @@ class EditAction extends AbstractController
     public function __invoke(Request $request)
     {
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
-        $user = $this->eventActionHelper->getUser();
+        $githubUser = $this->eventActionHelper->getGithubUser();
         if ($event->getDateEndCallForPapers() < new DateTime()) {
             return $this->render('event/cfp/closed.html.twig', ['event' => $event]);
         }
@@ -82,8 +82,8 @@ class EditAction extends AbstractController
                 'talkId' => $talk->getId(),
             ]);
         }
-        $invitationForm = $this->createInvitationForm($user, $talk);
-        $invitationSent = $this->invitationFormHandler->handle($request, $event, $invitationForm, $user, $talk);
+        $invitationForm = $this->createInvitationForm($githubUser, $talk);
+        $invitationSent = $this->invitationFormHandler->handle($request, $event, $invitationForm, $githubUser, $talk);
         if ($invitationSent) {
             $this->addFlash('success', $this->translator->trans('Invitation envoyée !'));
         }

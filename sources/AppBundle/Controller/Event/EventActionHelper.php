@@ -11,21 +11,17 @@ use Assert\Assertion;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class EventActionHelper
+final readonly class EventActionHelper
 {
     public function __construct(
-        protected EventRepository $eventRepository,
-        private readonly TokenStorageInterface $tokenStorage,
+        private EventRepository $eventRepository,
+        private TokenStorageInterface $tokenStorage,
     ) {}
 
     /**
-     * @param string $eventSlug
-     *
-     * @return Event
-     *
      * @throws NotFoundHttpException
      */
-    public function getEvent($eventSlug)
+    public function getEvent(string $eventSlug): Event
     {
         $event = $this->eventRepository->getOneBy(['path' => $eventSlug]);
         if ($event === null) {
@@ -36,12 +32,9 @@ class EventActionHelper
     }
 
     /**
-     * @param int|null $id
-     * @param bool     $allowFallback
-     *
-     * @return Event
+     * @throws NotFoundHttpException
      */
-    public function getEventById($id = null, $allowFallback = true)
+    public function getEventById(int|string|null $id = null, bool $allowFallback = true): Event
     {
         $event = null;
         if (null !== $id) {
@@ -61,14 +54,11 @@ class EventActionHelper
         return $event;
     }
 
-    /**
-     * @return GithubUser
-     */
-    public function getUser()
+    public function getGithubUser(): GithubUser
     {
         $token = $this->tokenStorage->getToken();
         Assertion::notNull($token);
-        /** @var GithubUser $user */
+
         $user = $token->getUser();
         Assertion::isInstanceOf($user, GithubUser::class);
 
