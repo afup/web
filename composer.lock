@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92febc8873031064f2a1956c49b6a384",
+    "content-hash": "3b753384c88cad7f3c76df6a01e8ad48",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -10966,6 +10966,55 @@
                 }
             ],
             "time": "2025-05-21T20:55:28+00:00"
+        },
+        {
+            "name": "phpstan/phpstan-beberlei-assert",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan-beberlei-assert.git",
+                "reference": "24bd4c7e37568dec556c039c55ef04e3ecafa98d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan-beberlei-assert/zipball/24bd4c7e37568dec556c039c55ef04e3ecafa98d",
+                "reference": "24bd4c7e37568dec556c039c55ef04e3ecafa98d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0",
+                "phpstan/phpstan": "^2.0"
+            },
+            "require-dev": {
+                "beberlei/assert": "^3.3.0",
+                "php-parallel-lint/php-parallel-lint": "^1.4",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpunit/phpunit": "^9.6"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "extension.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan beberlei/assert extension",
+            "support": {
+                "issues": "https://github.com/phpstan/phpstan-beberlei-assert/issues",
+                "source": "https://github.com/phpstan/phpstan-beberlei-assert/tree/2.0.1"
+            },
+            "time": "2025-05-05T15:51:52+00:00"
         },
         {
             "name": "phpstan/phpstan-symfony",
