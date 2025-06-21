@@ -14,17 +14,17 @@ event:
 
 vote_index:
   path: /{eventSlug}/vote
-  defaults: { _controller: AppBundle\Controller\Event\VoteController::index, all: false, page: 1 }
+  defaults: { _controller: AppBundle\Controller\Event\Vote\IndexAction, all: false, page: 1 }
 
 vote_index_paginated:
   path: /{eventSlug}/vote/{page}
-  defaults: { _controller: AppBundle\Controller\Event\VoteController::index, all: false }
+  defaults: { _controller: AppBundle\Controller\Event\Vote\IndexAction, all: false }
   requirements:
     page: '\d+'
 
 vote_all:
   path: /{eventSlug}/vote-all
-  defaults: { _controller: AppBundle\Controller\Event\VoteController::index, all: true, page: 1 }
+  defaults: { _controller: AppBundle\Controller\Event\Vote\IndexAction, all: true, page: 1 }
 
 speaker-suggestion:
   path: /{eventSlug}/speaker-suggestion
@@ -32,13 +32,13 @@ speaker-suggestion:
 
 vote_all_paginated:
   path: /{eventSlug}/vote-all/{page}
-  defaults: { _controller: AppBundle\Controller\Event\VoteController::index, all: true }
+  defaults: { _controller: AppBundle\Controller\Event\Vote\IndexAction, all: true }
   requirements:
     page: '\d+'
 
 vote_new:
   path: /{eventSlug}/vote/new/{talkId}
-  defaults: { _controller: AppBundle\Controller\Event\VoteController::new }
+  defaults: { _controller: AppBundle\Controller\Event\Vote\NewAction }
   methods: [ POST ]
   requirements:
     talkId: '\d+'

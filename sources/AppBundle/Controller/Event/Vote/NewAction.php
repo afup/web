@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Event;
+namespace AppBundle\Controller\Event\Vote;
 
-use AppBundle\Event\Form\VoteType;
+use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
@@ -12,19 +12,15 @@ use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
 use AppBundle\Notifier\SlackNotifier;
 use CCMBenchmark\Ting\Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class VoteController extends AbstractController
+final class NewAction extends VoteController
 {
     public function __construct(
-        private readonly RequestStack $requestStack,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly SlackNotifier $slackNotifier,
         private readonly EventActionHelper $eventActionHelper,
@@ -32,66 +28,7 @@ class VoteController extends AbstractController
         private readonly VoteRepository $voteRepository,
     ) {}
 
-    /**
-     * @param bool $all if true => show all talks to rate even if already rated by the current user
-     */
-    public function index(string $eventSlug, int $page = 1, bool $all = false): Response
-    {
-        $event = $this->eventActionHelper->getEvent($eventSlug);
-        if (!$event->isVoteAvailable()) {
-            return $this->render('event/cfp/closed.html.twig', ['event' => $event]);
-        }
-
-        // Get a random list of unrated talks
-        if ($all === false) {
-            $talks = $this->talkRepository->getNewTalksToRate($event, $this->getUser(), crc32($this->requestStack->getSession()->getId()), $page);
-        } else {
-            $talks = $this->talkRepository->getAllTalksAndRatingsForUser($event, $this->getUser(), crc32($this->requestStack->getSession()->getId()), $page);
-        }
-
-        $vote = new Vote();
-        $forms = function () use ($talks, $vote, $eventSlug) {
-            foreach ($talks as $session) {
-                /** @var Talk $talk */
-                $talk = $session['sessions'];
-                $myVote = $session['asvg'] ?? clone $vote;
-                /*
-                 * By using a yield here, there will be only one iteration over the talks for the entire page
-                 */
-                yield [
-                    'form' => $this->createVoteForm($eventSlug, $talk->getId(), $myVote)->createView(),
-                    'talk' => $talk,
-                ];
-            }
-        };
-
-        return $this->render('event/vote/liste.html.twig', [
-            'numberOfTalks' => $talks->count(),
-            'route' => ($all === true ? 'vote_all_paginated' : 'vote_index_paginated'),
-            'page' => $page,
-            'talks' => $forms(),
-            'event' => $event,
-            'all' => $all,
-        ]);
-    }
-
-    private function createVoteForm(string $eventSlug, int $talkId, Vote $vote): FormInterface
-    {
-        $vote->setSessionId($talkId);
-
-        return $this
-            ->createFormBuilder()->create(
-                'vote' . $talkId,
-                VoteType::class,
-                ['data' => $vote],
-            )->setAction(
-                $this->generateUrl('vote_new', ['talkId' => $talkId, 'eventSlug' => $eventSlug]),
-            )
-            ->setMethod(Request::METHOD_POST)
-            ->getForm();
-    }
-
-    public function new(Request $request, string $eventSlug, int $talkId): JsonResponse
+    public function __invoke(Request $request, string $eventSlug, int $talkId): JsonResponse
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
         if (!$event->isVoteAvailable()) {
