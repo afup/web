@@ -1,6 +1,6 @@
 home:
   path: /home
-  defaults: { _controller: AppBundle\Controller\Website\HomeController::display }
+  defaults: { _controller: AppBundle\Controller\Website\Global\HomeAction }
   options:
     sitemap: true
 
@@ -10,6 +10,6 @@ become_sponsor_latest:
 
 sitemap:
   path: /plan-du-site
-  defaults: { _controller: AppBundle\Controller\Website\HtmlSitemapController::display }
+  defaults: { _controller: AppBundle\Controller\Website\Global\HtmlSitemapAction }
   options:
     sitemap: true
