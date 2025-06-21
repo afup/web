@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Website;
+namespace AppBundle\Controller\Website\CompanyPublicProfile;
 
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
@@ -10,7 +10,7 @@ use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class CompanyPublicProfileListController extends AbstractController
+final class ListAction extends AbstractController
 {
     public function __construct(
         private readonly ViewRenderer $view,
