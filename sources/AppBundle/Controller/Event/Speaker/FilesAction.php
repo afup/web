@@ -2,20 +2,21 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Event;
+namespace AppBundle\Controller\Event\Speaker;
 
+use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\SpeakerInfos\SpeakersExpensesStorage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class SpeakerFilesAction
+final readonly class FilesAction
 {
     public function __construct(
-        private readonly SpeakersExpensesStorage $speakersExpensesStorage,
-        private readonly SpeakerRepository $speakerRepository,
-        private readonly EventActionHelper $eventActionHelper,
+        private SpeakersExpensesStorage $speakersExpensesStorage,
+        private SpeakerRepository $speakerRepository,
+        private EventActionHelper $eventActionHelper,
     ) {}
 
     public function __invoke(Request $request): BinaryFileResponse
