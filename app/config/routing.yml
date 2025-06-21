@@ -51,7 +51,7 @@ planete_php_api:
 
 badge_image:
     path: /profile/badge/{id}
-    defaults: {_controller: AppBundle\Controller\Website\BadgeController::badge }
+    defaults: { _controller: AppBundle\Controller\Website\Badge\ImageAction }
 
 company_public_profile_logo:
     path: /profile/company/{id}-{slug}/logo
