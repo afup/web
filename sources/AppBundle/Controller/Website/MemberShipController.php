@@ -45,6 +45,7 @@ use AppBundle\TechLetter\Model\Repository\SendingRepository;
 use AppBundle\Twig\ViewRenderer;
 use Assert\Assertion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -78,6 +79,7 @@ class MemberShipController extends AbstractController
         private CompanyMemberRepository $companyMemberRepository,
         private UserService $userService,
         private UserAuthenticatorInterface $userAuthenticator,
+        #[Autowire('@security.authenticator.form_login.legacy_secured_area')]
         private FormLoginAuthenticator $formLoginAuthenticator,
         private InvitationMail $invitationMail,
         private SubscriptionManagement $subscriptionManagement,
@@ -88,12 +90,14 @@ class MemberShipController extends AbstractController
         private GeneralMeetingRepository $generalMeetingRepository,
         private GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
         private GeneralMeetingVoteRepository $generalMeetingVoteRepository,
+        #[Autowire('%app.general_meetings_dir%')]
         private string $storageDir,
         private UserPasswordHasherInterface $passwordHasher,
         private CompanyMemberInvitationRepository $companyMemberInvitationRepository,
         private TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
         private TechletterUnsubscriptionsRepository $techletterUnsubscriptionsRepository,
         private SendingRepository $sendingRepository,
+        private Cotisations $cotisations,
     ) {}
 
     public function becomeMember(): Response
@@ -183,11 +187,7 @@ class MemberShipController extends AbstractController
 
     public function payment(string $invoiceNumber, ?string $token): Response
     {
-        /**
-         * @var Cotisations $subscription
-         */
-        $subscription = $this->legacyModelFactory->createObject(Cotisations::class);
-        $invoice = $subscription->getByInvoice($invoiceNumber, $token);
+        $invoice = $this->cotisations->getByInvoice($invoiceNumber, $token);
         $company = $this->companyMemberRepository->get($invoice['id_personne']);
 
         if (!$invoice || $company === null) {
@@ -220,18 +220,14 @@ class MemberShipController extends AbstractController
 
     public function invoice(string $invoiceNumber, ?string $token): Response
     {
-        /**
-         * @var Cotisations $subscription
-         */
-        $subscription = $this->legacyModelFactory->createObject(Cotisations::class);
-        $invoice = $subscription->getByInvoice($invoiceNumber, $token);
+        $invoice = $this->cotisations->getByInvoice($invoiceNumber, $token);
 
         if (!$invoice) {
             throw $this->createNotFoundException(sprintf('Could not find the invoice "%s" with token "%s"', $invoiceNumber, $token));
         }
 
         ob_start();
-        $subscription->genererFacture($invoice['id']);
+        $this->cotisations->genererFacture($invoice['id']);
         $pdf = ob_get_clean();
 
         $response = new Response($pdf);
@@ -309,11 +305,7 @@ class MemberShipController extends AbstractController
     public function payboxCallback(Request $request)
     {
         $payboxResponse = PayboxResponseFactory::createFromRequest($request);
-        /**
-         * @var Cotisations $cotisations
-         */
-        $cotisations = $this->legacyModelFactory->createObject(Cotisations::class);
-        $cotisations->setCompanyMemberRepository($this->companyMemberRepository);
+        $this->cotisations->setCompanyMemberRepository($this->companyMemberRepository);
         $logs = $this->legacyModelFactory->createObject(Logs::class);
 
         $status = $payboxResponse->getStatus();
@@ -331,16 +323,16 @@ class MemberShipController extends AbstractController
         }
 
         if ($etat == AFUP_COTISATIONS_PAIEMENT_REGLE) {
-            $account = $cotisations->getAccountFromCmd($payboxResponse->getCmd());
-            $lastCotisation = $cotisations->obtenirDerniere($account['type'], $account['id']);
+            $account = $this->cotisations->getAccountFromCmd($payboxResponse->getCmd());
+            $lastCotisation = $this->cotisations->obtenirDerniere($account['type'], $account['id']);
 
             if ($lastCotisation === false && $account['type'] == UserRepository::USER_TYPE_PHYSICAL) {
                 $user = $this->userRepository->get($account['id']);
                 $this->eventDispatcher->dispatch(new NewMemberEvent($user));
             }
 
-            $cotisations->validerReglementEnLigne($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId());
-            $cotisations->notifierReglementEnLigneAuTresorier($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId(), $this->userRepository);
+            $this->cotisations->validerReglementEnLigne($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId());
+            $this->cotisations->notifierReglementEnLigneAuTresorier($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId(), $this->userRepository);
             $logs::log("Ajout de la cotisation " . $payboxResponse->getCmd() . " via Paybox.");
         }
         return new Response();
@@ -389,7 +381,6 @@ class MemberShipController extends AbstractController
     public function membershipFee(): Response
     {
         $userService = $this->userService;
-        $cotisations = $this->getCotisations();
 
         $identifiant = $this->getDroits()->obtenirIdentifiant();
         $user = $this->userRepository->get($identifiant);
@@ -401,7 +392,7 @@ class MemberShipController extends AbstractController
         if (!$cotisation) {
             $message = '';
         } else {
-            $endSubscription = $cotisations->finProchaineCotisation($cotisation);
+            $endSubscription = $this->cotisations->finProchaineCotisation($cotisation);
             $message = sprintf(
                 'Votre dernière cotisation -- %s %s -- est valable jusqu\'au %s. <br />
         Si vous renouvelez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s.',
@@ -412,8 +403,8 @@ class MemberShipController extends AbstractController
             );
         }
 
-        $cotisations_physique = $cotisations->obtenirListe(0, $user->getId());
-        $cotisations_morale = $cotisations->obtenirListe(1, $user->getCompanyId());
+        $cotisations_physique = $this->cotisations->obtenirListe(0, $user->getId());
+        $cotisations_morale = $this->cotisations->obtenirListe(1, $user->getCompanyId());
 
         if (is_array($cotisations_morale) && is_array($cotisations_physique)) {
             $liste_cotisations = array_merge($cotisations_physique, $cotisations_morale);
@@ -426,7 +417,7 @@ class MemberShipController extends AbstractController
         }
 
         foreach ($liste_cotisations as $k => $cotisation) {
-            $liste_cotisations[$k]['telecharger_facture'] = $cotisations->isCurrentUserAllowedToReadInvoice($cotisation['id']);
+            $liste_cotisations[$k]['telecharger_facture'] = $this->cotisations->isCurrentUserAllowedToReadInvoice($cotisation['id']);
         }
 
         if ($user->getCompanyId() > 0) {
@@ -485,20 +476,19 @@ class MemberShipController extends AbstractController
 
     public function membershipFeeDownload(Request $request): BinaryFileResponse
     {
-        $cotisations = $this->getCotisations();
         $identifiant = $this->getDroits()->obtenirIdentifiant();
         $id = $request->get('id');
 
         $logs = $this->legacyModelFactory->createObject(Logs::class);
 
-        if (false === $cotisations->isCurrentUserAllowedToReadInvoice($id)) {
+        if (false === $this->cotisations->isCurrentUserAllowedToReadInvoice($id)) {
             $logs::log("L'utilisateur id: " . $identifiant . ' a tenté de voir la facture id:' . $id);
             throw $this->createAccessDeniedException('Cette facture ne vous appartient pas, vous ne pouvez la visualiser.');
         }
 
         $tempfile = tempnam(sys_get_temp_dir(), 'membership_fee_download');
-        $numeroFacture = $cotisations->genererFacture($id, $tempfile);
-        $cotisation = $cotisations->obtenir($id);
+        $numeroFacture = $this->cotisations->genererFacture($id, $tempfile);
+        $cotisation = $this->cotisations->obtenir($id);
 
         if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
             $company = $this->companyMemberRepository->get($cotisation['id_personne']);
@@ -521,19 +511,18 @@ class MemberShipController extends AbstractController
 
     public function membershipFeeSendMail(Request $request): RedirectResponse
     {
-        $cotisations = $this->getCotisations();
         $identifiant = $this->getDroits()->obtenirIdentifiant();
         $id = $request->get('id');
 
         $logs = $this->legacyModelFactory->createObject(Logs::class);
         $userRepository = $this->userRepository;
 
-        if (false === $cotisations->isCurrentUserAllowedToReadInvoice($id)) {
+        if (false === $this->cotisations->isCurrentUserAllowedToReadInvoice($id)) {
             $logs::log("L'utilisateur id: " . $identifiant . ' a tenté de voir la facture id:' . $id);
             throw $this->createAccessDeniedException('Cette facture ne vous appartient pas, vous ne pouvez la visualiser.');
         }
 
-        if ($cotisations->envoyerFacture($id, $this->mailer, $userRepository)) {
+        if ($this->cotisations->envoyerFacture($id, $this->mailer, $userRepository)) {
             $logs::log('Envoi par email de la facture pour la cotisation n°' . $id);
             $this->addFlash('success', 'La facture a été envoyée par mail');
         } else {
