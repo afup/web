@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Website;
+namespace AppBundle\Controller\Website\Member;
 
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
@@ -14,7 +14,7 @@ use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class MemberController extends AbstractController
+final class IndexAction extends AbstractController
 {
     public const DAYS_BEFORE_CALL_TO_UPDATE = 15;
 
@@ -27,7 +27,7 @@ class MemberController extends AbstractController
         private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
     ) {}
 
-    public function index(): Response
+    public function __invoke(): Response
     {
         /** @var User $user */
         $user = $this->getUser();
