@@ -96,13 +96,6 @@ services:
         arguments:
             $storageDir: '%app.badge_dir%'
 
-    AppBundle\Controller\Website\HomeController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $homeAlgoliaEnabled: '%home_algolia_enabled%'
-
     AppBundle\Controller\Website\MeetupsController:
         autowire: true
         autoconfigure: true

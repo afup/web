@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Website;
+namespace AppBundle\Controller\Website\Global;
 
 use Afup\Site\Corporate\Articles;
 use Afup\Site\Corporate\Branche;
@@ -17,9 +17,10 @@ use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
 
-class HomeController extends AbstractController
+final class HomeAction extends AbstractController
 {
     public const MAX_ARTICLES = 5;
     public const MAX_MEETUPS = 10;
@@ -30,10 +31,11 @@ class HomeController extends AbstractController
         private readonly CacheItemPoolInterface $cache,
         private readonly SearchClient $client,
         private readonly TalkRepository $talkRepository,
+        #[Autowire('%home_algolia_enabled%')]
         private readonly bool $homeAlgoliaEnabled,
     ) {}
 
-    public function display(): Response
+    public function __invoke(): Response
     {
         $articles = new Articles();
         $derniers_articles = $articles->chargerDerniersAjouts(self::MAX_ARTICLES);

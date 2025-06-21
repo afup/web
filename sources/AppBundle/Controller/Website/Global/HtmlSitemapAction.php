@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Website;
+namespace AppBundle\Controller\Website\Global;
 
 use Afup\Site\Corporate\Branche;
 use Afup\Site\Corporate\Feuille;
@@ -14,7 +14,7 @@ use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class HtmlSitemapController extends AbstractController
+final class HtmlSitemapAction extends AbstractController
 {
     public function __construct(
         private readonly ViewRenderer $view,
@@ -23,7 +23,7 @@ class HtmlSitemapController extends AbstractController
         private readonly TalkRepository $talkRepository,
     ) {}
 
-    public function display(): Response
+    public function __invoke(): Response
     {
         $branche = new Branche();
 
