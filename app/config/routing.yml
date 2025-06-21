@@ -55,15 +55,15 @@ badge_image:
 
 company_public_profile_logo:
     path: /profile/company/{id}-{slug}/logo
-    defaults: {_controller: AppBundle\Controller\Website\CompanyPublicProfileController::logo }
+    defaults: { _controller: AppBundle\Controller\Website\CompanyPublicProfile\LogoAction }
 
 company_public_profile:
     path: /profile/company/{id}-{slug}
-    defaults: {_controller: AppBundle\Controller\Website\CompanyPublicProfileController::index }
+    defaults: { _controller: AppBundle\Controller\Website\CompanyPublicProfile\IndexAction }
 
 company_public_profile_list:
     path: /profile/company
-    defaults: {_controller: AppBundle\Controller\Website\CompanyPublicProfileListController::index }
+    defaults: { _controller: AppBundle\Controller\Website\CompanyPublicProfile\ListAction }
     options:
         sitemap: true
 

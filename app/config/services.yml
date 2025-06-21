@@ -118,20 +118,6 @@ services:
             $algoliaAppId: '%algolia_app_id%'
             $algoliaFrontendApikey: '%algolia_frontend_api_key%'
 
-    AppBundle\Controller\Website\CompanyPublicProfileController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $storageDir: '%app.members_logo_dir%'
-
-    AppBundle\Controller\Website\Member\CompanyPublicProfileController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $storageDir: '%app.members_logo_dir%'
-
     AppBundle\Controller\Website\MemberShipController:
         autowire: true
         autoconfigure: true

@@ -8,6 +8,7 @@ use AppBundle\Association\Form\CompanyPublicProfile;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,6 +16,7 @@ class CompanyPublicProfileController extends AbstractController
 {
     public function __construct(
         private readonly CompanyMemberRepository $companyMemberRepository,
+        #[Autowire('%app.members_logo_dir%')]
         private readonly string $storageDir,
     ) {}
 
