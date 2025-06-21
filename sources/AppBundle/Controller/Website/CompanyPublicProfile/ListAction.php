@@ -17,7 +17,7 @@ final class ListAction extends AbstractController
         private readonly CompanyMemberRepository $companyMemberRepository,
     ) {}
 
-    public function index(): Response
+    public function __invoke(): Response
     {
         $displayableCompanies = $this->companyMemberRepository->findDisplayableCompanies();
 
