@@ -110,14 +110,6 @@ services:
         arguments:
             $homeAlgoliaEnabled: '%home_algolia_enabled%'
 
-    AppBundle\Controller\Website\MeetupsController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $algoliaAppId: '%algolia_app_id%'
-            $algoliaFrontendApikey: '%algolia_frontend_api_key%'
-
     AppBundle\Controller\Website\CompanyPublicProfileController:
         autowire: true
         autoconfigure: true
