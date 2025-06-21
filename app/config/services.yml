@@ -111,14 +111,6 @@ services:
             $algoliaAppId: '%algolia_app_id%'
             $algoliaFrontendApikey: '%algolia_frontend_api_key%'
 
-    AppBundle\Controller\Website\MemberShipController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $storageDir: '%app.general_meetings_dir%'
-            $formLoginAuthenticator: '@security.authenticator.form_login.legacy_secured_area'
-
     AppBundle\Controller\Website\NewsletterController:
         autowire: true
         autoconfigure: true
@@ -311,12 +303,11 @@ services:
         arguments:
           - 'Afup\Site\Forum\Inscriptions'
 
+    Afup\Site\Association\CotisationsFactory:
+        autowire: true
+
     Afup\Site\Association\Cotisations:
-        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
-        arguments:
-          - 'Afup\Site\Association\Cotisations'
-        calls:
-          - [setCompanyMemberRepository, ['@AppBundle\Association\Model\Repository\CompanyMemberRepository']]
+        factory: ['@Afup\Site\Association\CotisationsFactory', 'create']
 
     Parsedown:
         class: Parsedown
