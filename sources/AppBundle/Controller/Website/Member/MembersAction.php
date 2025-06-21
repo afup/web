@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-class MembersController extends AbstractController
+final class MembersAction extends AbstractController
 {
     public function __construct(
         private readonly CompanyMemberRepository $companyMemberRepository,
