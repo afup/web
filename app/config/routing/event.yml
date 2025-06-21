@@ -28,7 +28,7 @@ vote_all:
 
 speaker-suggestion:
   path: /{eventSlug}/speaker-suggestion
-  defaults: { _controller: AppBundle\Controller\Event\SpeakerSuggestionController::index }
+  defaults: { _controller: AppBundle\Controller\Event\Speaker\SuggestionAction }
 
 vote_all_paginated:
   path: /{eventSlug}/vote-all/{page}
@@ -122,11 +122,11 @@ sponsor_scan_delete:
 
 speaker-infos:
   path: /{eventSlug}/speaker-infos
-  defaults: { _controller: AppBundle\Controller\Event\SpeakerPageAction }
+  defaults: { _controller: AppBundle\Controller\Event\Speaker\PageAction }
 
 speaker-infos-files:
   path: /{eventSlug}/speaker-infos/files/{speakerId}/{filename}
-  defaults: { _controller: AppBundle\Controller\Event\SpeakerFilesAction }
+  defaults: { _controller: AppBundle\Controller\Event\Speaker\FilesAction }
 
 planning_ics:
   path: /{eventSlug}/planning.ics
