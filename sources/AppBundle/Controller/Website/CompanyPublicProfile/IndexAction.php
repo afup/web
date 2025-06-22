@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Website;
+namespace AppBundle\Controller\Website\CompanyPublicProfile;
 
 use AppBundle\Antennes\Antenne;
 use AppBundle\Antennes\AntennesCollection;
@@ -10,20 +10,19 @@ use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Twig\ViewRenderer;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class CompanyPublicProfileController extends AbstractController
+final class IndexAction extends CompanyPublicProfileController
 {
     public function __construct(
+        CompanyMemberRepository $companyMemberRepository,
         private readonly ViewRenderer $view,
         private readonly BadgesComputer $badgesComputer,
-        private readonly CompanyMemberRepository $companyMemberRepository,
-        private readonly string $storageDir,
-    ) {}
+    ) {
+        parent::__construct($companyMemberRepository);
+    }
 
-    public function index($id, $slug): Response
+    public function __invoke(int $id, string $slug): Response
     {
         $companyMember = $this->checkAndGetCompanyMember($id, $slug);
 
@@ -32,40 +31,6 @@ class CompanyPublicProfileController extends AbstractController
             'antennes' => $this->getRelatedAfupAntennes($companyMember),
             'badges' => $this->badgesComputer->getCompanyBadges($companyMember),
         ]);
-    }
-
-    /**
-     * @param string $id
-     * @param string $slug
-     *
-     * @return CompanyMember
-     */
-    private function checkAndGetCompanyMember($id, $slug)
-    {
-        $companyMember = $this->companyMemberRepository->findById($id);
-
-        if ($companyMember === null
-            || $companyMember->getSlug() != $slug
-            || false === $companyMember->getPublicProfileEnabled()
-            || false === $companyMember->hasUpToDateMembershipFee()
-        ) {
-            throw $this->createNotFoundException("Company member not found");
-        }
-
-        return $companyMember;
-    }
-
-    public function logo($id, $slug)
-    {
-        $companyMember = $this->checkAndGetCompanyMember($id, $slug);
-
-        $filepath = $this->storageDir . DIRECTORY_SEPARATOR . $companyMember->getLogoUrl();
-
-        if (false === is_file($filepath)) {
-            throw $this->createNotFoundException();
-        }
-
-        return new BinaryFileResponse($filepath);
     }
 
     /**
