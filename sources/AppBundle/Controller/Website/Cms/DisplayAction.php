@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Website;
+namespace AppBundle\Controller\Website\Cms;
 
 use Afup\Site\Corporate\Article;
 use Afup\Site\Corporate\Rubrique;
@@ -10,11 +10,11 @@ use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class CmsPageController extends AbstractController
+final class DisplayAction extends AbstractController
 {
     public function __construct(private readonly ViewRenderer $view) {}
 
-    public function display($code): Response
+    public function __invoke(string $code): Response
     {
         $articleRepository = new Article(null, $GLOBALS['AFUP_DB']);
         $articleRepository->chargerDepuisRaccourci($code);
