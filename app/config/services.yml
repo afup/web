@@ -96,14 +96,6 @@ services:
         arguments:
             $storageDir: '%app.badge_dir%'
 
-    AppBundle\Controller\Website\MeetupsController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $algoliaAppId: '%algolia_app_id%'
-            $algoliaFrontendApikey: '%algolia_frontend_api_key%'
-
     AppBundle\Controller\Website\NewsletterController:
         autowire: true
         autoconfigure: true
