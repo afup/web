@@ -1,5 +1,5 @@
 meetups_list:
   path: /
-  defaults: { _controller: AppBundle\Controller\Website\Meetups\List }
+  defaults: { _controller: AppBundle\Controller\Website\Meetups\ListAction }
   options:
     sitemap: true
