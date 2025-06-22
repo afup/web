@@ -102,23 +102,23 @@ sponsor_leads_post:
 
 sponsor_scan:
   path: /{eventSlug}/sponsor/scan
-  defaults: { _controller: AppBundle\Controller\Event\SponsorScanController::index }
+  defaults: { _controller: AppBundle\Controller\Event\SponsorScan\IndexAction }
 
 sponsor_scan_export:
   path: /{eventSlug}/sponsor/scan/export
-  defaults: { _controller: AppBundle\Controller\Event\SponsorScanController::export }
+  defaults: { _controller: AppBundle\Controller\Event\SponsorScan\ExportAction }
 
 sponsor_scan_new:
   path: /{eventSlug}/sponsor/scan/new
-  defaults: { _controller: AppBundle\Controller\Event\SponsorScanController::new }
+  defaults: { _controller: AppBundle\Controller\Event\SponsorScan\NewAction }
 
 sponsor_scan_flash:
   path: /{eventSlug}/sponsor/scan/flash/{code}
-  defaults: { _controller: AppBundle\Controller\Event\SponsorScanController::flash }
+  defaults: { _controller: AppBundle\Controller\Event\SponsorScan\FlashAction }
 
 sponsor_scan_delete:
   path: /{eventSlug}/sponsor/scan/delete/{scanId}
-  defaults: { _controller: AppBundle\Controller\Event\SponsorScanController::delete }
+  defaults: { _controller: AppBundle\Controller\Event\SponsorScan\DeleteAction }
 
 speaker-infos:
   path: /{eventSlug}/speaker-infos
