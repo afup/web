@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Event;
+namespace AppBundle\Controller\Event\Speaker;
 
+use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Event\Form\SpeakerSuggestionType;
@@ -15,7 +16,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class SpeakerSuggestionController extends AbstractController
+final class SuggestionAction extends AbstractController
 {
     public function __construct(
         private readonly Mailer $mailer,
@@ -23,12 +24,7 @@ class SpeakerSuggestionController extends AbstractController
         private readonly SpeakerSuggestionRepository $speakerSuggestionRepository,
     ) {}
 
-    /**
-     * @param string $eventSlug
-     *
-     * @return Response
-     */
-    public function index(Request $request, $eventSlug)
+    public function __invoke(Request $request, string $eventSlug): Response
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
 
