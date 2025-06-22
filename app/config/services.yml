@@ -119,13 +119,6 @@ services:
             $storageDir: '%app.general_meetings_dir%'
             $formLoginAuthenticator: '@security.authenticator.form_login.legacy_secured_area'
 
-    AppBundle\Controller\Website\NewsController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $projectDir: '%kernel.project_dir%'
-
     AppBundle\Controller\Website\NewsletterController:
         autowire: true
         autoconfigure: true

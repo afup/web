@@ -8,7 +8,7 @@ use Afup\Site\Corporate\Branche;
 use Afup\Site\Corporate\Feuille;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
-use AppBundle\Controller\Website\NewsController;
+use AppBundle\Controller\Website\News\ListAction;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
@@ -144,7 +144,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
         }
 
         $total = $this->articleRepository->countPublishedNews([]);
-        $byPage = NewsController::ARTICLES_PER_PAGE;
+        $byPage = ListAction::ARTICLES_PER_PAGE;
         $lastPage = ceil($total / $byPage);
 
         for ($page = max($lastPage, 1); $page <= $lastPage; $page++) {
