@@ -1,6 +1,6 @@
 member_index:
   path: /
-  defaults: { _controller: AppBundle\Controller\Website\MemberController::index }
+  defaults: { _controller: AppBundle\Controller\Website\Member\IndexAction }
 
 member_contact:
   path: /contact
@@ -49,12 +49,12 @@ member_slack_invite:
 
 member_company:
   path: /company
-  defaults: { _controller: AppBundle\Controller\Website\Member\CompanyController }
+  defaults: { _controller: AppBundle\Controller\Website\Member\CompanyAction }
 
 member_company_members:
   path: /company/members/{id}
-  defaults: { _controller: AppBundle\Controller\Website\Member\MembersController, id: ~ }
+  defaults: { _controller: AppBundle\Controller\Website\Member\MembersAction, id: ~ }
 
 member_company_public_profile:
   path: /company/public_profile
-  defaults: { _controller: AppBundle\Controller\Website\Member\CompanyPublicProfileController::index }
+  defaults: { _controller: AppBundle\Controller\Website\Member\CompanyPublicProfileAction }
