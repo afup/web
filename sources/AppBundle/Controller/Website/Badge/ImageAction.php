@@ -2,20 +2,23 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Website;
+namespace AppBundle\Controller\Website\Badge;
 
 use AppBundle\Event\Model\Repository\BadgeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response;
 
-class BadgeController extends AbstractController
+final class ImageAction extends AbstractController
 {
     public function __construct(
         private readonly BadgeRepository $badgeRepository,
+        #[Autowire('%app.badge_dir%')]
         private readonly string $storageDir,
     ) {}
 
-    public function badge($id)
+    public function __invoke(int $id): Response
     {
         $badge = $this->badgeRepository->get($id);
         if (null === $badge) {

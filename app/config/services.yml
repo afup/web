@@ -96,13 +96,6 @@ services:
         arguments:
             $storageDir: '%app.badge_dir%'
 
-    AppBundle\Controller\Website\BadgeController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $storageDir: '%app.badge_dir%'
-
     AppBundle\Controller\Website\HomeController:
         autowire: true
         autoconfigure: true
