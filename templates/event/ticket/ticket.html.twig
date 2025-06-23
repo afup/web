@@ -153,47 +153,51 @@
                             <ul class="ticket-type-list">
                                 {% set endDate = null %}
                                 {% for type in ticket.ticketEventType %}
+                                    {% if endDate == null and (type.vars.attr['disabled'] ?? false) == false %}
+                                        {% set endDate=type.vars.attr['data-date-end-raw'] %}
+                                    {% endif %}
                                     <li class="ticket-type-item {% if endDate != type.vars.attr['data-date-end-raw'] and endDate != null %}ticket-type-item-emphasized{% endif %}">
                                         {% if endDate != type.vars.attr['data-date-end-raw'] and endDate != null and endDate > currentDate %}
                                             <div class="ticket-type-promo">Vous souhaitez soutenir l'AFUP ? Vous pouvez prendre ces billets dès aujourd'hui.</div>
                                         {% endif %}
-                                        {% set endDate=type.vars.attr['data-date-end-raw'] %}
-                                        {{ form_widget(type) }}
-                                        <div class="ticket-type-content">
-                                            <div class="ticket-type-title">{{ form_label(type) }}</div>
-                                            <div class="ticket-type-price">
-                                                {% if type.vars.attr['data-price'] == 0 %}
-                                                    OFFERT
-                                                {% else %}
-                                                    {{ type.vars.attr['data-price'] }}€
-                                                    {% if isSubjectedToVat %}
-                                                        {% if hasPricesDefinedWithVat %}
-                                                            TTC
-                                                        {% else %}
-                                                            HT
+                                        <div class="ticket-type-item-content">
+                                            {{ form_widget(type) }}
+                                            <div class="ticket-type-content">
+                                                <div class="ticket-type-title">{{ form_label(type) }}</div>
+                                                <div class="ticket-type-price">
+                                                    {% if type.vars.attr['data-price'] == 0 %}
+                                                        OFFERT
+                                                    {% else %}
+                                                        {{ type.vars.attr['data-price'] }}€
+                                                        {% if isSubjectedToVat %}
+                                                            {% if hasPricesDefinedWithVat %}
+                                                                TTC
+                                                            {% else %}
+                                                                HT
+                                                            {% endif %}
                                                         {% endif %}
                                                     {% endif %}
-                                                {% endif %}
-                                            </div>
-                                            <div class="ticket-type-details">
+                                                </div>
+                                                <div class="ticket-type-details">
                                                 <span class="ticket-type-dateEnd">
                                                     Disponible jusqu'au {{ type.vars.attr['data-date-end'] }}
                                                     {% if type.vars.attr['data-max-tickets'] > 0 %}
                                                         (ou jusqu'à écoulement des {{ type.vars.attr['data-max-tickets'] }} billets à ce tarif).
                                                     {% endif %}
                                                 </span>
-                                                {% if type.vars.attr['data-members-only'] %} - <span class="ticket-type-members">Réservé aux membres AFUP</span>{% endif %}
-                                                {% if type.vars.attr['data-stock'] <= 0 %}
-                                                    <div class="ticket-type-stock sold-out">Plus aucun billet disponible</div>
-                                                {% elseif type.vars.attr['data-stock'] < 10 %}
-                                                    <div class="ticket-type-stock ticket-type-stock-close-to-sold-out">Peu de billets disponibles</div>
+                                                    {% if type.vars.attr['data-members-only'] %} - <span class="ticket-type-members">Réservé aux membres AFUP</span>{% endif %}
+                                                    {% if type.vars.attr['data-stock'] <= 0 %}
+                                                        <div class="ticket-type-stock sold-out">Plus aucun billet disponible</div>
+                                                    {% elseif type.vars.attr['data-stock'] < 10 %}
+                                                        <div class="ticket-type-stock ticket-type-stock-close-to-sold-out">Peu de billets disponibles</div>
+                                                    {% endif %}
+                                                </div>
+                                                {% if type.vars.attr['data-description'] %}
+                                                    <div class="ticket-type-description">
+                                                        {{ type.vars.attr['data-description']|markdown }}
+                                                    </div>
                                                 {% endif %}
                                             </div>
-                                            {% if type.vars.attr['data-description'] %}
-                                                <div class="ticket-type-description">
-                                                    {{ type.vars.attr['data-description']|markdown }}
-                                                </div>
-                                            {% endif %}
                                         </div>
                                     </li>
                                 {% endfor %}

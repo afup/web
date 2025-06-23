@@ -378,13 +378,16 @@ button {
   border: 2px solid var(--medium-gray);
   border-radius: var(--border-radius);
   margin-bottom: 1.25rem;
-  padding: 1.25rem;
   transition: var(--transition);
+  background-color: white;
+  box-shadow: var(--shadow);
+}
+
+.ticket-type-item-content {
   position: relative;
   display: flex;
   align-items: flex-start;
-  background-color: white;
-  box-shadow: var(--shadow);
+  padding: 1.25rem;
 }
 
 .ticket-type-item:hover {
@@ -474,7 +477,6 @@ button {
 }
 
 .ticket-type-promo {
-  margin: -1.25rem -1.25rem 1rem -1.25rem;
   padding: 0.75rem 1.25rem;
   background-color: rgba(80, 160, 221, 0.1);
   color: var(--primary-dark);
@@ -974,10 +976,6 @@ button {
   
   .form-section {
     padding: 1.25rem 1rem;
-  }
-  
-  .ticket-type-item {
-    padding: 1rem;
   }
   
   .ticket-type-content {
