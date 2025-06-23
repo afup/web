@@ -2,28 +2,22 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Website;
+namespace AppBundle\Controller\Website\Techletter;
 
 use AppBundle\Association\Model\Repository\TechletterUnsubscriptionsRepository;
-use AppBundle\Twig\ViewRenderer;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class TechletterController extends AbstractController
+final readonly class WebhookAction
 {
     public function __construct(
-        private readonly ViewRenderer $view,
-        private readonly TechletterUnsubscriptionsRepository $techletterUnsubscriptionsRepository,
-        private readonly string $mailchimpTechletterWebhookKey,
+        private TechletterUnsubscriptionsRepository $techletterUnsubscriptionsRepository,
+        #[Autowire('%mailchimp_techletter_webhook_key%')]
+        private string $mailchimpTechletterWebhookKey,
     ) {}
 
-    public function index(): Response
-    {
-        return $this->view->render('site/techletter/index.html.twig');
-    }
-
-    public function webhook(Request $request): Response
+    public function __invoke(Request $request): Response
     {
         if ($request->get('webhook_key') !== $this->mailchimpTechletterWebhookKey) {
             return new Response('ko', Response::HTTP_UNAUTHORIZED);

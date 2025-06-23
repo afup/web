@@ -72,11 +72,11 @@ membership_payment_redirect:
 
 techletter:
   path: /techletter
-  defaults: { _controller: AppBundle\Controller\Website\TechletterController::index }
+  defaults: { _controller: AppBundle\Controller\Website\Techletter\IndexAction }
   options:
     sitemap: true
 
 techletter_webhook:
   path: /techletter/webhook
-  defaults: { _controller: AppBundle\Controller\Website\TechletterController::webhook }
+  defaults: { _controller: AppBundle\Controller\Website\Techletter\WebhookAction }
   methods: [ "GET", "POST" ]
