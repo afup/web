@@ -119,14 +119,6 @@ services:
             $algoliaAppId: '%algolia_app_id%'
             $algoliaFrontendApikey: '%algolia_frontend_api_key%'
 
-    AppBundle\Controller\Website\TechnoWatchController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $technoWatchCalendarKey: '%techno_watch_calendar_key%'
-            $technoWatchCalendarUrl: '%techno_watch_calendar_url%'
-
     AppBundle\Controller\Admin\GetMenuAction:
         autowire: true
         arguments:

@@ -2,21 +2,24 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Website;
+namespace AppBundle\Controller\Website\TechnoWatch;
 
 use AppBundle\Calendar\TechnoWatchCalendarGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class TechnoWatchController extends AbstractController
+final class CalendarAction extends AbstractController
 {
     public function __construct(
+        #[Autowire('%techno_watch_calendar_key%')]
         private readonly string $technoWatchCalendarKey,
+        #[Autowire('%techno_watch_calendar_url%')]
         private readonly string $technoWatchCalendarUrl,
     ) {}
 
-    public function calendar(Request $request): Response
+    public function __invoke(Request $request): Response
     {
         if ($request->query->get('key') !== $this->technoWatchCalendarKey) {
             throw $this->createNotFoundException();
