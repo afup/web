@@ -64,11 +64,10 @@ membership_payment:
 membership_payment_redirect:
   path: /paybox-redirect/{type}
   defaults:
-    _controller: AppBundle\Controller\Website\PayboxRedirectController::index
+    _controller: AppBundle\Controller\Website\Paybox\RedirectAction
     type: success
   requirements:
     type: success|error|canceled|refused
-
 
 techletter:
   path: /techletter
