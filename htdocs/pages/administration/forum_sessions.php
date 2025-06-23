@@ -10,6 +10,7 @@ use Afup\Site\Utils\Pays;
 use AppBundle\Controller\LegacyController;
 use AppBundle\Event\Model\Talk;
 use Assert\Assertion;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /** @var LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -180,7 +181,15 @@ if ($action == 'lister') {
 
         $formulaire->addElement('checkbox'    , 'video_has_fr_subtitles'          , "Sous titres FR présents");
         $formulaire->addElement('checkbox'    , 'video_has_en_subtitles'          , "Sous titres EN présents");
-        $formulaire->addElement('date'  , 'date_publication'       , 'Date de publication'               , ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => date('Y') - 5, 'maxYear' => date('Y') + 5]);
+
+        $dateElement = $formulaire->addElement('date'  , 'date_publication'       , 'Date de publication'               , ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => date('Y') - 5, 'maxYear' => date('Y') + 5]);
+
+        /** @var HTML_QuickForm_select $dateElementSelect */
+        $dateElementSelect = PropertyAccess::createPropertyAccessor()->getValue($dateElement, '_elements[2]');
+        if (!isset($dateElementSelect->getSelected()[0])) {
+            $dateElementSelect->setSelected([date('Y')]);
+        }
+
         $formulaire->addElement('textarea'    , 'tweets'          , "Tweets", ['style' => "width:100%;min-height:100px"]);
         $formulaire->addElement('textarea'    , 'transcript'          , "Sous titres en français (format SRT)", ['style' => "width:100%;min-height:100px"]);
         $formulaire->addElement('textarea', 'verbatim', 'Verbatim', ['cols' => 40, 'rows' => 15,'class' => 'simplemde']);
