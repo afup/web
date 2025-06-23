@@ -104,14 +104,6 @@ services:
             $mailchimp: '@app.mailchimp_api'
             $mailchimpSubscribersList: '%mailchimp_subscribers_list%'
 
-    AppBundle\Controller\Website\TalksController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $algoliaAppId: '%algolia_app_id%'
-            $algoliaFrontendApikey: '%algolia_frontend_api_key%'
-
     AppBundle\Controller\Admin\GetMenuAction:
         autowire: true
         arguments:
