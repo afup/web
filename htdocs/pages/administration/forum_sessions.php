@@ -180,7 +180,7 @@ if ($action == 'lister') {
 
         $formulaire->addElement('checkbox'    , 'video_has_fr_subtitles'          , "Sous titres FR présents");
         $formulaire->addElement('checkbox'    , 'video_has_en_subtitles'          , "Sous titres EN présents");
-        $formulaire->addElement('date'  , 'date_publication'       , 'Date de publication'               , ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 5]);
+        $formulaire->addElement('date'  , 'date_publication'       , 'Date de publication'               , ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => date('Y') - 5, 'maxYear' => date('Y') + 5]);
         $formulaire->addElement('textarea'    , 'tweets'          , "Tweets", ['style' => "width:100%;min-height:100px"]);
         $formulaire->addElement('textarea'    , 'transcript'          , "Sous titres en français (format SRT)", ['style' => "width:100%;min-height:100px"]);
         $formulaire->addElement('textarea', 'verbatim', 'Verbatim', ['cols' => 40, 'rows' => 15,'class' => 'simplemde']);
