@@ -119,13 +119,6 @@ services:
             $algoliaAppId: '%algolia_app_id%'
             $algoliaFrontendApikey: '%algolia_frontend_api_key%'
 
-    AppBundle\Controller\Website\TechletterController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $mailchimpTechletterWebhookKey: '%mailchimp_techletter_webhook_key%'
-
     AppBundle\Controller\Website\TechnoWatchController:
         autowire: true
         autoconfigure: true
