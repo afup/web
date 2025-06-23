@@ -104,13 +104,6 @@ services:
             $mailchimp: '@app.mailchimp_api'
             $mailchimpSubscribersList: '%mailchimp_subscribers_list%'
 
-    AppBundle\Controller\Website\StaticController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $superAperoCsvUrl: '%super_apero_csv_url%'
-
     AppBundle\Controller\Website\TalksController:
         autowire: true
         autoconfigure: true

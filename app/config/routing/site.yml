@@ -39,19 +39,19 @@ company_invitation:
 
 offices:
   path: /antennes
-  defaults: { _controller: AppBundle\Controller\Website\StaticController::offices }
+  defaults: { _controller: AppBundle\Controller\Website\Static\OfficesAction }
   options:
     sitemap: true
 
 superapero:
   path: /super-apero
-  defaults: { _controller: AppBundle\Controller\Website\StaticController::superApero }
+  defaults: { _controller: AppBundle\Controller\Website\Static\SuperAperoAction }
   options:
     sitemap: true
 
 void:
   path: /void-route
-  defaults: { _controller: AppBundle\Controller\Website\StaticController::void }
+  defaults: { _controller: AppBundle\Controller\Website\Static\VoidAction }
 
 newsletter_subscribe:
   path: /newsletter-subscribe
