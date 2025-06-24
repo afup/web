@@ -46,9 +46,6 @@ class StatsAction extends AbstractController
 
         $legacyInscriptions = $this->legacyModelFactory->createObject(Inscriptions::class);
         $stats = $legacyInscriptions->obtenirSuivi($event->getId(), $comparedEvent->getId());
-        $ticketsDayOne = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_ONE, $event);
-        $ticketsDayTwo = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_TWO, $event);
-
         $ticketTypes = [];
 
         $chart = [
@@ -139,8 +136,6 @@ class StatsAction extends AbstractController
             'stats' => $stats,
             'seats' => [
                 'available' => $event->getSeats(),
-                'one' => $ticketsDayOne,
-                'two' => $ticketsDayTwo,
             ],
             'event_compare_form' => $comparedEventForm->createView(),
         ]);
