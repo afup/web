@@ -26,7 +26,8 @@
     "webpack": "^3.6"
   },
   "scripts": {
-    "build": "./node_modules/.bin/webpack -p"
+    "build": "./node_modules/.bin/webpack -p",
+    "watch": "./node_modules/.bin/webpack --progress --colors --watch"
   },
   "repository": {
     "type": "git",
