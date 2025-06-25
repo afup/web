@@ -11,7 +11,6 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
-use AppBundle\Event\Model\Ticket;
 use AppBundle\LegacyModelFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,9 +45,6 @@ class StatsAction extends AbstractController
 
         $legacyInscriptions = $this->legacyModelFactory->createObject(Inscriptions::class);
         $stats = $legacyInscriptions->obtenirSuivi($event->getId(), $comparedEvent->getId());
-        $ticketsDayOne = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_ONE, $event);
-        $ticketsDayTwo = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_TWO, $event);
-
         $ticketTypes = [];
 
         $chart = [
@@ -139,8 +135,6 @@ class StatsAction extends AbstractController
             'stats' => $stats,
             'seats' => [
                 'available' => $event->getSeats(),
-                'one' => $ticketsDayOne,
-                'two' => $ticketsDayTwo,
             ],
             'event_compare_form' => $comparedEventForm->createView(),
         ]);
