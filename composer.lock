@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "32cfc45b2b5228782c7d3aa70dbd97da",
+    "content-hash": "83de42cafc1225e87c29944bd604621b",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -850,22 +850,21 @@
         },
         {
             "name": "cuyz/valinor",
-            "version": "1.17.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CuyZ/Valinor.git",
-                "reference": "9eb2802797e36f3af1fd6e13ff23e4e3d0058022"
+                "reference": "914a8cbe64c71f9f0a9728df75e7d92a2988fb40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CuyZ/Valinor/zipball/9eb2802797e36f3af1fd6e13ff23e4e3d0058022",
-                "reference": "9eb2802797e36f3af1fd6e13ff23e4e3d0058022",
+                "url": "https://api.github.com/repos/CuyZ/Valinor/zipball/914a8cbe64c71f9f0a9728df75e7d92a2988fb40",
+                "reference": "914a8cbe64c71f9f0a9728df75e7d92a2988fb40",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0",
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
-                "psr/simple-cache": "^1.0 || ^2.0 || ^3.0"
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0"
             },
             "conflict": {
                 "phpstan/phpstan": "<1.0 || >= 3.0",
@@ -916,7 +915,7 @@
             ],
             "support": {
                 "issues": "https://github.com/CuyZ/Valinor/issues",
-                "source": "https://github.com/CuyZ/Valinor/tree/1.17.0"
+                "source": "https://github.com/CuyZ/Valinor/tree/2.0.0"
             },
             "funding": [
                 {
@@ -924,24 +923,24 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-06-20T06:40:38+00:00"
+            "time": "2025-06-27T06:38:26+00:00"
         },
         {
             "name": "cuyz/valinor-bundle",
-            "version": "1.0.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CuyZ/Valinor-Bundle.git",
-                "reference": "991247f73477994b08cffa0e93002efd8bb65331"
+                "reference": "044122ebcb8e2bfff0ef0951f848f776eacb22ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CuyZ/Valinor-Bundle/zipball/991247f73477994b08cffa0e93002efd8bb65331",
-                "reference": "991247f73477994b08cffa0e93002efd8bb65331",
+                "url": "https://api.github.com/repos/CuyZ/Valinor-Bundle/zipball/044122ebcb8e2bfff0ef0951f848f776eacb22ba",
+                "reference": "044122ebcb8e2bfff0ef0951f848f776eacb22ba",
                 "shasum": ""
             },
             "require": {
-                "cuyz/valinor": "^1.0",
+                "cuyz/valinor": "^2.0",
                 "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
                 "symfony/config": "^5.4 || ^6.4 || ^7.0",
                 "symfony/dependency-injection": "^5.4 || ^6.4 || ^7.0",
@@ -981,7 +980,7 @@
             "homepage": "https://github.com/CuyZ/Valinor-Bundle",
             "support": {
                 "issues": "https://github.com/CuyZ/Valinor-Bundle/issues",
-                "source": "https://github.com/CuyZ/Valinor-Bundle/tree/1.0.0"
+                "source": "https://github.com/CuyZ/Valinor-Bundle/tree/2.0.0"
             },
             "funding": [
                 {
@@ -989,7 +988,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-05-29T12:37:56+00:00"
+            "time": "2025-06-27T07:30:10+00:00"
         },
         {
             "name": "cweagans/composer-patches",
