@@ -69,35 +69,36 @@ class MemberShipController extends AbstractController
     use DbLoggerTrait;
 
     public function __construct(
-        private ViewRenderer $view,
-        private EventDispatcherInterface $eventDispatcher,
-        private TokenStorageInterface $tokenStorage,
-        private AuthorizationCheckerInterface $authorizationChecker,
-        private CsrfTokenManagerInterface $csrfTokenManager,
-        private UserFactory $userFactory,
-        private UserRepository $userRepository,
-        private CompanyMemberRepository $companyMemberRepository,
-        private UserService $userService,
-        private UserAuthenticatorInterface $userAuthenticator,
+        private readonly ViewRenderer $view,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private readonly UserFactory $userFactory,
+        private readonly UserRepository $userRepository,
+        private readonly CompanyMemberRepository $companyMemberRepository,
+        private readonly UserService $userService,
+        private readonly UserAuthenticatorInterface $userAuthenticator,
         #[Autowire('@security.authenticator.form_login.legacy_secured_area')]
-        private FormLoginAuthenticator $formLoginAuthenticator,
-        private InvitationMail $invitationMail,
-        private SubscriptionManagement $subscriptionManagement,
-        private LegacyModelFactory $legacyModelFactory,
-        private PayboxFactory $payboxFactory,
-        private LegacyClient $legacyClient,
-        private Mailer $mailer,
-        private GeneralMeetingRepository $generalMeetingRepository,
-        private GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
-        private GeneralMeetingVoteRepository $generalMeetingVoteRepository,
+        private readonly FormLoginAuthenticator $formLoginAuthenticator,
+        private readonly InvitationMail $invitationMail,
+        private readonly SubscriptionManagement $subscriptionManagement,
+        private readonly LegacyModelFactory $legacyModelFactory,
+        private readonly PayboxFactory $payboxFactory,
+        private readonly LegacyClient $legacyClient,
+        private readonly Mailer $mailer,
+        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
+        private readonly GeneralMeetingVoteRepository $generalMeetingVoteRepository,
         #[Autowire('%app.general_meetings_dir%')]
-        private string $storageDir,
-        private UserPasswordHasherInterface $passwordHasher,
-        private CompanyMemberInvitationRepository $companyMemberInvitationRepository,
-        private TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
-        private TechletterUnsubscriptionsRepository $techletterUnsubscriptionsRepository,
-        private SendingRepository $sendingRepository,
-        private Cotisations $cotisations,
+        private readonly string $storageDir,
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly CompanyMemberInvitationRepository $companyMemberInvitationRepository,
+        private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
+        private readonly TechletterUnsubscriptionsRepository $techletterUnsubscriptionsRepository,
+        private readonly SendingRepository $sendingRepository,
+        private readonly Cotisations $cotisations,
+        private readonly Droits $droits,
     ) {}
 
     public function becomeMember(): Response
@@ -134,7 +135,7 @@ class MemberShipController extends AbstractController
         ]);
     }
 
-    public function company(Request $request)
+    public function company(Request $request): Response
     {
         $data = new CompanyMember();
         $data->setInvitations([
@@ -236,7 +237,7 @@ class MemberShipController extends AbstractController
         return $response;
     }
 
-    public function memberInvitation(Request $request, $invitationId, $token)
+    public function memberInvitation(Request $request, int $invitationId, string $token): Response
     {
         $invitation = $this->companyMemberInvitationRepository->getOneBy(['id' => $invitationId, 'token' => $token, 'status' => CompanyMemberInvitation::STATUS_PENDING]);
         $company = null;
@@ -302,7 +303,7 @@ class MemberShipController extends AbstractController
         return $this->redirectToRoute('admin_home');
     }
 
-    public function payboxCallback(Request $request)
+    public function payboxCallback(Request $request): Response
     {
         $payboxResponse = PayboxResponseFactory::createFromRequest($request);
         $this->cotisations->setCompanyMemberRepository($this->companyMemberRepository);
@@ -338,13 +339,11 @@ class MemberShipController extends AbstractController
         return new Response();
     }
 
-
-
     public function contactDetails(Request $request): Response
     {
         $logs = $this->legacyModelFactory->createObject(Logs::class);
 
-        $user = $this->userRepository->get($this->getUserId());
+        $user = $this->userRepository->get($this->droits->obtenirIdentifiant());
 
         $userForm = $this->createForm(ContactDetailsType::class, $user);
         $userForm->handleRequest($request);
@@ -368,21 +367,11 @@ class MemberShipController extends AbstractController
         ]);
     }
 
-    private function getUserId()
-    {
-        return $this->getDroits()->obtenirIdentifiant();
-    }
-
-    private function getDroits(): Droits
-    {
-        return Utils::fabriqueDroits($this->tokenStorage, $this->authorizationChecker);
-    }
-
     public function membershipFee(): Response
     {
         $userService = $this->userService;
 
-        $identifiant = $this->getDroits()->obtenirIdentifiant();
+        $identifiant = $this->droits->obtenirIdentifiant();
         $user = $this->userRepository->get($identifiant);
         Assertion::notNull($user);
         $cotisation = $userService->getLastSubscription($user);
@@ -467,16 +456,9 @@ class MemberShipController extends AbstractController
         ]);
     }
 
-    private function getCotisations(): Cotisations
-    {
-        $cotisation =  new Cotisations($GLOBALS['AFUP_DB'], $this->getDroits());
-        $cotisation->setCompanyMemberRepository($this->companyMemberRepository);
-        return $cotisation;
-    }
-
     public function membershipFeeDownload(Request $request): BinaryFileResponse
     {
-        $identifiant = $this->getDroits()->obtenirIdentifiant();
+        $identifiant = $this->droits->obtenirIdentifiant();
         $id = $request->get('id');
 
         $logs = $this->legacyModelFactory->createObject(Logs::class);
@@ -511,7 +493,7 @@ class MemberShipController extends AbstractController
 
     public function membershipFeeSendMail(Request $request): RedirectResponse
     {
-        $identifiant = $this->getDroits()->obtenirIdentifiant();
+        $identifiant = $this->droits->obtenirIdentifiant();
         $id = $request->get('id');
 
         $logs = $this->legacyModelFactory->createObject(Logs::class);
@@ -532,7 +514,7 @@ class MemberShipController extends AbstractController
         return $this->redirectToRoute('member_membership_fee');
     }
 
-    public function generalMeeting(Request $request)
+    public function generalMeeting(Request $request): Response
     {
         $userService = $this->userService;
         /** @var User $user */
@@ -636,7 +618,7 @@ class MemberShipController extends AbstractController
 
         $voteForCurrentQuestion = null;
         if (null !== $currentQuestion) {
-            $voteForCurrentQuestion = $generalMeetingVoteRepository->loadByQuestionIdAndUserId($currentQuestion->getId(), $this->getUserId());
+            $voteForCurrentQuestion = $generalMeetingVoteRepository->loadByQuestionIdAndUserId($currentQuestion->getId(), $this->droits->obtenirIdentifiant());
         }
 
         $questionResults = [];
@@ -666,7 +648,7 @@ class MemberShipController extends AbstractController
         ]);
     }
 
-    public function generalMeetingVote(Request $request)
+    public function generalMeetingVote(Request $request): RedirectResponse
     {
         $generalMeetingRepository = $this->generalMeetingRepository;
         $generalMeetingQuestionRepository = $this->generalMeetingQuestionRepository;
@@ -694,7 +676,7 @@ class MemberShipController extends AbstractController
             return $redirection;
         }
 
-        $userId = $this->getUserId();
+        $userId = $this->droits->obtenirIdentifiant();
 
         if (null !== $generalMeetingVoteRepository->loadByQuestionIdAndUserId($questionId, $userId)) {
             $this->addFlash('error', 'Vous avez déjà voté pour cette question');
@@ -706,7 +688,7 @@ class MemberShipController extends AbstractController
         $generalMeetingVote = new GeneralMeetingVote();
         $generalMeetingVote
             ->setQuestionId($question->getId())
-            ->setUserId($this->getUserId())
+            ->setUserId($this->droits->obtenirIdentifiant())
             ->setWeight($weight)
             ->setValue($vote)
             ->setCreatedAt(new \DateTime())
@@ -719,7 +701,7 @@ class MemberShipController extends AbstractController
         return $redirection;
     }
 
-    public function generalMettingDownloadReport($filename)
+    public function generalMettingDownloadReport($filename): BinaryFileResponse
     {
         $reports = $this->prepareGeneralMeetingsReportsList();
 
