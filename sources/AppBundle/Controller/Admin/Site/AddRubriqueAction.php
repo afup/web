@@ -9,15 +9,17 @@ use AppBundle\Site\Form\RubriqueType;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
 use AppBundle\Site\Model\Rubrique;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AddRubriqueAction extends AbstractController
+final class AddRubriqueAction extends AbstractController
 {
     use DbLoggerTrait;
 
     public function __construct(
         private readonly RubriqueRepository $rubriqueRepository,
+        #[Autowire('%kernel.project_dir%/../htdocs/templates/site/images')]
         private string $storageDir,
     ) {}
 

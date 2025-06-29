@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin;
 
 use Assert\Assertion;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -15,6 +16,7 @@ class GetMenuAction
         private readonly RequestStack $requestStack,
         private readonly Environment $twig,
         /** @var array<string, mixed> */
+        #[Autowire('%app.pages_backoffice%')]
         private readonly array $backOfficePages,
     ) {}
 

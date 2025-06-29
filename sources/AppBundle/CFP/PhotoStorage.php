@@ -7,15 +7,16 @@ namespace AppBundle\CFP;
 use Afup\Site\Utils\Utils;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Speaker;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class PhotoStorage
+final readonly class PhotoStorage
 {
-    private readonly Filesystem $filesystem;
+    private Filesystem $filesystem;
 
     public const DIR_ORIGINAL = 'originals';
     public const DIR_THUMBS = 'thumbnails';
@@ -26,9 +27,10 @@ class PhotoStorage
     ];
 
     public function __construct(
-        private $basePath,
-        private $publicPath,
-        private $legacyBasePath,
+        #[Autowire('%kernel.project_dir%/../htdocs/uploads/speakers')]
+        private string $basePath,
+        #[Autowire('%kernel.project_dir%/../htdocs')]
+        private string $legacyBasePath,
     ) {
         $this->filesystem = new Filesystem();
     }
@@ -65,7 +67,7 @@ class PhotoStorage
         }
 
         if ($this->filesystem->exists($this->getPath($speaker, $format))) {
-            return $this->publicPath . '/' . $speaker->getEventId() . '/' . $format . '/' . $speaker->getPhoto();
+            return '/uploads/speakers/' . $speaker->getEventId() . '/' . $format . '/' . $speaker->getPhoto();
         }
 
         return null;
