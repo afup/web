@@ -1,16 +1,16 @@
 event_index:
   path: /
-  defaults: { _controller: AppBundle\Controller\Event\EventController::index }
+  defaults: { _controller: AppBundle\Controller\Event\Event\IndexAction }
   options:
     sitemap: true
 
 event_index_speaker_infos:
   path: /speaker-infos
-  defaults: { _controller: AppBundle\Controller\Event\EventController::speakerInfosIndex }
+  defaults: { _controller: AppBundle\Controller\Event\Event\SpeakerInfosIndexAction }
 
 event:
   path: /{eventSlug}
-  defaults: { _controller: AppBundle\Controller\Event\EventController::event }
+  defaults: { _controller: AppBundle\Controller\Event\Event\ShowAction }
 
 vote_index:
   path: /{eventSlug}/vote
@@ -130,20 +130,20 @@ speaker-infos-files:
 
 planning_ics:
   path: /{eventSlug}/planning.ics
-  defaults: { _controller: AppBundle\Controller\Event\EventController::planningIcs }
+  defaults: { _controller: AppBundle\Controller\Event\Event\PlanningIcsAction }
 
 event_calendar_latest:
   path: /latest/calendar
-  defaults: { _controller: AppBundle\Controller\Event\EventController::calendarLatest }
+  defaults: { _controller: AppBundle\Controller\Event\Event\CalendarLatestAction }
 
 event_calendar:
   path: /{eventSlug}/calendar
-  defaults: { _controller: AppBundle\Controller\Event\EventController::calendar }
+  defaults: { _controller: AppBundle\Controller\Event\Event\CalendarAction }
 
 planning_json:
   path: /{eventSlug}/planning.json
-  defaults: { _controller: AppBundle\Controller\Event\EventController::planningJson }
+  defaults: { _controller: AppBundle\Controller\Event\Event\PlanningJsonAction }
 
 openfeedback_json:
   path: /{eventSlug}/openfeedback.json
-  defaults: { _controller: AppBundle\Controller\Event\EventController::openfeedbackJson }
+  defaults: { _controller: AppBundle\Controller\Event\Event\OpenFeedbackJsonAction }
