@@ -8,6 +8,7 @@ use AppBundle\Mailchimp\Mailchimp;
 use AppBundle\Mailchimp\SubscriberType;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +17,9 @@ class NewsletterController extends AbstractController
 {
     public function __construct(
         private readonly ViewRenderer $view,
+        #[Autowire('@app.mailchimp_api')]
         private readonly Mailchimp $mailchimp,
+        #[Autowire('%mailchimp_subscribers_list%')]
         private readonly string $mailchimpSubscribersList,
     ) {}
 

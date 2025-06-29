@@ -6,21 +6,16 @@ namespace AppBundle\Mailchimp;
 
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-class Runner
+final readonly class Runner
 {
-    /**
-     * Runner constructor.
-     * @param $membersListId
-     * @param string $membersListId
-     */
     public function __construct(
-        private readonly Mailchimp $mailchimp,
-        private readonly UserRepository $userRepository,
-        /**
-         * @var string id of the mailchimp list to use
-         */
-        private $membersListId,
+        #[Autowire('@app.mailchimp_api')]
+        private Mailchimp $mailchimp,
+        private UserRepository $userRepository,
+        #[Autowire('%mailchimp_members_list%')]
+        private string $membersListId,
     ) {}
 
     /**

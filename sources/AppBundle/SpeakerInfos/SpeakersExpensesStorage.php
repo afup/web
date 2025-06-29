@@ -7,6 +7,7 @@ namespace AppBundle\SpeakerInfos;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Speaker;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -18,9 +19,10 @@ final readonly class SpeakersExpensesStorage
     private Filesystem $filesystem;
 
     public function __construct(
+        #[Autowire('%kernel.project_dir%/../htdocs/uploads/speaker_expenses')]
         private string $basePath,
-                                private EventRepository $eventRepository,
-                                private LoggerInterface $logger,
+        private EventRepository $eventRepository,
+        private LoggerInterface $logger,
     ) {
         $this->filesystem = new Filesystem();
     }

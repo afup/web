@@ -8,15 +8,17 @@ use AppBundle\Association\Form\BadgeType;
 use AppBundle\Event\Model\Badge;
 use AppBundle\Event\Model\Repository\BadgeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class BadgeNewAction extends AbstractController
+final class BadgeNewAction extends AbstractController
 {
     public function __construct(
         private readonly BadgeRepository $badgeRepository,
         private readonly Filesystem $filesystem,
+        #[Autowire('%app.badge_dir%')]
         private readonly string $storageDir,
     ) {}
 

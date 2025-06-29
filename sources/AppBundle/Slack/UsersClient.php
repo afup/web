@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace AppBundle\Slack;
 
 use RuntimeException;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-class UsersClient
+final readonly class UsersClient
 {
     public const USER_LIST_API = '/users.list';
 
-    /**
-     * @param string $token Token des API Slack
-     * @param string $apiBaseUrl URL de base des API Slack
-     */
     public function __construct(
-        private $token,
-        private $apiBaseUrl,
+        #[Autowire('%slack_membre_token%')]
+        private string $token,
+        #[Autowire('%slack_api_url%')]
+        private string $apiBaseUrl,
     ) {}
 
     /**
