@@ -20,5 +20,4 @@ final class CalendarAction extends AbstractController
 
         return $this->render('event/calendar.html.twig', ['event' => $event]);
     }
-
 }
