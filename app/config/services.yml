@@ -264,6 +264,9 @@ services:
     Afup\Site\Association\Cotisations:
         factory: ['@Afup\Site\Association\CotisationsFactory', 'create']
 
+    Afup\Site\Droits:
+        autowire: true
+
     Parsedown:
         class: Parsedown
         autowire: true
