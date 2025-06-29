@@ -70,27 +70,27 @@ cfp_invite:
 
 sponsor_ticket_home:
   path: /{eventSlug}/tickets/sponsor
-  defaults: { _controller: AppBundle\Controller\Event\TicketController::sponsorTicket }
+  defaults: { _controller: AppBundle\Controller\Event\Ticket\SponsorTicketAction }
 
 sponsor_ticket_form:
   path: /{eventSlug}/tickets/sponsor-form
-  defaults: { _controller: AppBundle\Controller\Event\TicketController::sponsorTicketForm }
+  defaults: { _controller: AppBundle\Controller\Event\Ticket\SponsorTicketFormAction }
 
 ticket:
   path: /{eventSlug}/tickets
-  defaults: { _controller: AppBundle\Controller\Event\TicketController::ticket }
+  defaults: { _controller: AppBundle\Controller\Event\Ticket\TicketAction }
 
 ticket_payment:
   path: /{eventSlug}/tickets/payment
-  defaults: { _controller: AppBundle\Controller\Event\TicketController::payment }
+  defaults: { _controller: AppBundle\Controller\Event\Ticket\PaymentAction }
 
 ticket_paybox_callback:
   path: /{eventSlug}/tickets/paybox-callback
-  defaults: { _controller: AppBundle\Controller\Event\TicketController::payboxCallback }
+  defaults: { _controller: AppBundle\Controller\Event\Ticket\PayboxCallbackAction }
 
 ticket_paybox_redirect:
   path: /{eventSlug}/tickets/paybox-redirect
-  defaults: { _controller: AppBundle\Controller\Event\TicketController::payboxRedirect }
+  defaults: { _controller: AppBundle\Controller\Event\Ticket\PayboxRedirectAction }
 
 sponsor_leads:
   path: /{eventSlug}/sponsor/become-sponsor
