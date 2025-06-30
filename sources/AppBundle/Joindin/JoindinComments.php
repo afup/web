@@ -6,10 +6,14 @@ namespace AppBundle\Joindin;
 
 use AppBundle\Event\Model\Talk;
 use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-class JoindinComments
+final readonly class JoindinComments
 {
-    public function __construct(private readonly CacheItemPoolInterface $cache) {}
+    public function __construct(
+        #[Autowire('@cache.system')]
+        private CacheItemPoolInterface $cache,
+    ) {}
 
     public function getCommentsFromTalk(Talk $talk): array
     {

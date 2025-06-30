@@ -4,34 +4,32 @@ declare(strict_types=1);
 
 namespace AppBundle\Command;
 
+use Symfony\Component\Console\Attribute\Option;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Mailchimp\Mailchimp;
 use AppBundle\Mailchimp\Runner;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-class UpdateMailchimpMembersCommand extends Command
+#[AsCommand(name: 'mailchimp:update-members')]
+final readonly class UpdateMailchimpMembersCommand
 {
     public function __construct(
-        private readonly Mailchimp $mailchimp,
-        private readonly UserRepository $userRepository,
-        private readonly string $mailchimpMembersList,
-    ) {
-        parent::__construct();
-    }
+        #[Autowire('@app.mailchimp_api')]
+        private Mailchimp $mailchimp,
+        private UserRepository $userRepository,
+        #[Autowire('%mailchimp_members_list%')]
+        private string $mailchimpMembersList,
+    ) {}
 
-    protected function configure(): void
-    {
-        $this
-            ->setName('mailchimp:update-members')
-            ->addOption('init', null, null, "Add all active members to the list")
-        ;
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
+    public function __invoke(
+        #[Option(description: 'Add all active members to the list')]
+        bool $init,
+        OutputInterface $output,
+    ): int {
         $mailchimp = $this->mailchimp;
 
         $runner = new Runner(
@@ -40,7 +38,7 @@ class UpdateMailchimpMembersCommand extends Command
             $this->mailchimpMembersList,
         );
 
-        $errors = $input->getOption('init') === true ? $runner->initList() : $runner->updateList();
+        $errors = $init ? $runner->initList() : $runner->updateList();
         if ($errors !== []) {
             $table = new Table($output);
             $table

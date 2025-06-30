@@ -69,87 +69,12 @@ services:
 
     ### Pages legacy - FIN
 
-    AppBundle\Command\UpdateMailchimpMembersCommand:
-        autoconfigure: true
-        autowire: true
-        arguments:
-            $mailchimp: '@app.mailchimp_api'
-            $mailchimpMembersList: "%mailchimp_members_list%"
-
-    AppBundle\Controller\Admin\Site\AddRubriqueAction:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments :
-            $storageDir: '%kernel.project_dir%/../htdocs/templates/site/images'
-
-    AppBundle\Controller\Admin\Site\EditRubriqueAction:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments :
-            $storageDir: '%kernel.project_dir%/../htdocs/templates/site/images'
-
-    AppBundle\Controller\Admin\Members\BadgeNewAction:
-        autowire: true
-        autoconfigure: true
-        arguments:
-            $storageDir: '%app.badge_dir%'
-
-    AppBundle\Controller\Website\NewsletterController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $mailchimp: '@app.mailchimp_api'
-            $mailchimpSubscribersList: '%mailchimp_subscribers_list%'
-
-    AppBundle\Controller\Admin\GetMenuAction:
-        autowire: true
-        arguments:
-            $backOfficePages: '%app.pages_backoffice%'
-
-    AppBundle\Mailchimp\Runner:
-        autowire: true
-        arguments:
-            $mailchimp: '@app.mailchimp_api'
-            $membersListId: '%mailchimp_members_list%'
-
     AppBundle\Controller\LegacyController:
         autowire: true
         autoconfigure: true
         public: false
         arguments:
             $backOfficePages: '%app.pages_backoffice%'
-
-    AppBundle\Listener\LocaleEventSubscriber:
-        arguments: [ "%kernel.default_locale%" ]
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, priority: 100 }
-
-    AppBundle\CFP\SpeakerFactory:
-        autowire: true
-        arguments:
-            $tokenStorage: '@security.token_storage'
-
-    AppBundle\Security\TalkVoter:
-        arguments: ['@AppBundle\Event\Model\Repository\SpeakerRepository']
-        tags:
-          - { name: security.voter }
-        public: false
-
-    AppBundle\CFP\PhotoStorage:
-        arguments:
-            $basePath: "%kernel.project_dir%/../htdocs/uploads/speakers"
-            $publicPath: "/uploads/speakers"
-            $legacyBasePath: "%kernel.project_dir%/../htdocs"
-
-    AppBundle\SpeakerInfos\SpeakersExpensesStorage:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $basePath: "%kernel.project_dir%/../htdocs/uploads/speaker_expenses"
 
     AppBundle\Payment\PayboxFactory:
         autowire: true
@@ -158,26 +83,9 @@ services:
     AppBundle\Slack\LegacyClient:
         arguments: ["%slack_members_legacy_token%"]
 
-    AppBundle\Slack\UsersClient:
-        autowire: true
-        arguments: ["%slack_membre_token%", "%slack_api_url%"]
-
-    AppBundle\Notifier\SlackNotifier:
-        arguments:
-            $postUrl: "%slack_url%"
-            $messageFactory: '@AppBundle\Slack\MessageFactory'
-            $serializer: '@jms_serializer.serializer'
-            $httpClient: '@http_client'
-
     Algolia\AlgoliaSearch\SearchClient:
         factory: [ Algolia\AlgoliaSearch\SearchClient, create ]
         arguments: ["%algolia_app_id%", "%algolia_backend_api_key%"]
-
-    AppBundle\Joindin\JoindinComments:
-        arguments: ["@cache.system"]
-
-    AppBundle\Joindin\JoindinTalk:
-        arguments: ["@cache.system"]
 
     # API/Client Meetup techletter
     app.mailchimp_techletter_client:
@@ -281,9 +189,6 @@ services:
 
     AppBundle\Offices\OfficeFinder:
         arguments: ['@geocoder']
-
-    AppBundle\Event\Ticket\RegistrationsExportGenerator:
-        arguments: ['@AppBundle\Offices\OfficeFinder', '@AppBundle\Association\UserMembership\SeniorityComputer', '@AppBundle\Event\Model\Repository\TicketRepository', '@AppBundle\Event\Model\Repository\InvoiceRepository', '@AppBundle\Association\Model\Repository\UserRepository']
 
     AppBundle\Subscriber\SitemapXmlSubscriber:
         autowire: true
