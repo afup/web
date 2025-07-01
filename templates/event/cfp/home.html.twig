@@ -39,6 +39,7 @@
                             {% endif %}
                         </div>
                     </div>
+                    {{ include('event/cfp/list_votes.html.twig', {votes: talk.votes}, with_context: false) }}
                 {% endfor %}
             {% else %}
                 <p>{{ 'Aucune proposition enregistrée pour le moment.'|trans }}</p>

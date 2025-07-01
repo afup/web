@@ -39,7 +39,7 @@ class IndexAction extends AbstractController
         }
         $speaker = $this->speakerFactory->getSpeaker($event);
         $eventTalkList = new EventTalkList($event);
-        foreach ($this->talkRepository->getTalksBySpeaker($event, $speaker) as $talk) {
+        foreach ($this->talkRepository->getTalksBySpeakerWithVotes($event, $speaker) as $talk) {
             $eventTalkList->addTalk($talk);
         }
         /** @var EventTalkList[] $previousEventTalkLists */
