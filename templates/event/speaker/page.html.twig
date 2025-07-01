@@ -12,6 +12,7 @@
 
 {% form_theme speakers_diner_form 'bootstrap_3_layout.html.twig' %}
 {% form_theme hotel_reservation_form 'bootstrap_3_layout.html.twig' %}
+{% form_theme travel_sponsor_form 'bootstrap_3_layout.html.twig' %}
 
 {% block content %}
 
@@ -42,6 +43,9 @@
         }
         .speakers-infos-form .submit-container {
             padding: 0 15px 0 0;
+        }
+        .submit-container {
+            margin-top: 15px;
         }
 
         .speakers-infos-form--phone label {
@@ -110,9 +114,9 @@
                     {{ form_widget(speakers_contact_form.phone_number) }}
                     {{ form_errors(speakers_contact_form.phone_number) }}
                 </span>
-                <span>
+                <div class="submit-container">
                     {{ form_widget(speakers_contact_form.submit, {attr: {title: "Enregistrer le contact"}}) }}
-                </span>
+                </div>
             </div>
 
             {{ form_end(speakers_contact_form) }}
@@ -183,15 +187,18 @@
             {% if should_display_hotel_reservation_form %}
                 {{ form_start(hotel_reservation_form, { attr: { class: 'speakers-infos-form'}, action: '#hotel'}) }}
 
-                <div class="container">
+                <div class="container" id="hotel-reservation-choices-form-container">
                     <div class="col-md-6">
                         {{ form_label(hotel_reservation_form.nights) }}
                         {{ form_errors(hotel_reservation_form.nights) }}
                         {{ form_widget(hotel_reservation_form.nights) }}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 pt3">
                         <i>{% trans %}Vous disposez de deux nuits d'hôtel maximum. Donnez-nous les dates qui vous conviennent, nous nous chargeons de la réservation ! (les speakers intercontinentaux peuvent bénéficier de plus de nuités, si vous êtes dans ce cas, le pôle conférence vous aura contacté).{% endtrans %}</i>
 
+                        <div class="pt1">
+                            <i>{% trans %}speaker_infos.hosting_sponsor.intro{% endtrans %}</i>
+                        </div>
                     </div>
                 </div>
 
@@ -222,7 +229,25 @@
 
             <h2><a id="expenses" href="#expenses">💶 {% trans %}Nous vous défrayons{% endtrans %}</a></h2>
 
-            <div class="container">
+            {{ form_start(travel_sponsor_form, { attr: { class: 'speakers-infos-form'}, action: '#expenses' }) }}
+                <div class="container">
+                    <div class="col-md-6">
+                        {{ form_errors(travel_sponsor_form.choices) }}
+                        {{ form_widget(travel_sponsor_form.choices) }}
+
+                        <div>
+                            <small>
+                                {% trans %}speaker_infos.sponsor.travel.intro{% endtrans %}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_widget(travel_sponsor_form.submit, {attr: {title: "Enregistrer le travel sponsor"}}) }}
+                    </div>
+                </div>
+            {{ form_end(travel_sponsor_form) }}
+
+            <div class="container mt2" id="travel-expenses-form-container">
                 <p>
                     {% trans %}venue_speaker.expenses.intro{% endtrans %}
                 </p>

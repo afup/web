@@ -29,9 +29,40 @@ Feature: Event > Profil speaker
     When I check "hotel_reservation_nights_0"
     And I press "Enregistrer les nuitées"
     Then I should see "Informations sur votre venue à l'hôtel enregistrées"
-    Then the "hotel_reservation_nights_0" checkbox is checked
+    Then the "hotel_reservation_nights_0" checkbox should be checked
 
     When I attach the file "test_file2.pdf" to "speakers_expenses[files][]"
     And I press "Ajouter des fichiers"
     When I should see "Fichiers ajoutés"
     Then I should see "test_file2.pdf"
+
+  @reloadDbWithTestData
+  Scenario: Saisie du hosting sponsor
+    Given I go to "/event/forum/speaker-infos"
+    When I follow "Connect as agallou"
+
+    When I check "hotel_reservation_nights_4"
+    And I press "Enregistrer les nuitées"
+    Then I should see "Informations sur votre venue à l'hôtel enregistrées"
+    Then the "hotel_reservation_nights_3" checkbox should be checked
+    Then the "hotel_reservation_nights_4" checkbox should be checked
+
+  @reloadDbWithTestData
+  Scenario: Saisie du travel - pas besoin
+    Given I go to "/event/forum/speaker-infos"
+    When I follow "Connect as agallou"
+
+    When I check "travel_sponsor_choices_0"
+    And I press "Enregistrer le travel sponsor"
+    Then I should see "Informations sur vos transports enregistrées "
+    Then the "travel_sponsor_choices_0" checkbox should be checked
+
+  @reloadDbWithTestData
+  Scenario: Saisie du travel - sponsorisé
+    Given I go to "/event/forum/speaker-infos"
+    When I follow "Connect as agallou"
+
+    When I check "travel_sponsor_choices_1"
+    And I press "Enregistrer le travel sponsor"
+    Then I should see "Informations sur vos transports enregistrées "
+    Then the "travel_sponsor_choices_1" checkbox should be checked

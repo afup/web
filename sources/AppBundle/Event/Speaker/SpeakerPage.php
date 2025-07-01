@@ -15,6 +15,7 @@ use AppBundle\SpeakerInfos\Form\HotelReservationType;
 use AppBundle\SpeakerInfos\Form\SpeakersContactType;
 use AppBundle\SpeakerInfos\Form\SpeakersDinerType;
 use AppBundle\SpeakerInfos\Form\SpeakersExpensesType;
+use AppBundle\SpeakerInfos\Form\TravelSponsorType;
 use AppBundle\SpeakerInfos\SpeakersExpensesStorage;
 use DateTime;
 use DateTimeImmutable;
@@ -80,6 +81,10 @@ class SpeakerPage extends AbstractController
             $nights[] = HotelReservationType::NIGHT_NONE;
         }
 
+        if ($speaker->hasHostingSponsor()) {
+            $nights[] = HotelReservationType::NIGHT_TRAVEL_SPONSOR;
+        }
+
         $hotelReservationDefaults = [
             'nights' => $nights,
         ];
@@ -91,7 +96,26 @@ class SpeakerPage extends AbstractController
 
         if ($shouldDisplayHotelReservationForm && $hotelReservationType->isSubmitted() && $hotelReservationType->isValid()) {
             $hotelReservationData = $hotelReservationType->getData();
-            $speaker->setHotelNightsArray($hotelReservationData['nights']);
+            if (is_array($hotelReservationData['nights'])) {
+                $hasHostingSponsor = false;
+
+                $nights = array_filter($hotelReservationData['nights'], function (mixed $value) use (&$hasHostingSponsor) {
+                    if ($value === HotelReservationType::NIGHT_TRAVEL_SPONSOR) {
+                        $hasHostingSponsor = true;
+
+                        return false;
+                    }
+
+                    if ($value === HotelReservationType::NIGHT_NONE) {
+                        return false;
+                    }
+
+                    return true;
+                });
+
+                $speaker->setHasHostingSponsor($hasHostingSponsor);
+                $speaker->setHotelNightsArray($nights);
+            }
 
             $this->speakerRepository->save($speaker);
             $this->addFlash('notice', "Informations sur votre venue à l'hôtel enregistrées");
@@ -107,6 +131,20 @@ class SpeakerPage extends AbstractController
                 $this->speakersExpensesStorage->store($file, $speaker);
             }
             $this->addFlash('notice', 'Fichiers ajoutés');
+
+            return $this->redirectFromRequest($request);
+        }
+
+        $travelSponsorType = $this->createForm(TravelSponsorType::class, TravelSponsorType::buildDefaultFromSpeaker($speaker));
+        $travelSponsorType->handleRequest($request);
+        if ($travelSponsorType->isSubmitted() && $travelSponsorType->isValid()) {
+            $travelSponsorData = $travelSponsorType->getData();
+
+            $speaker->setTravelRefundNeeded(!in_array(TravelSponsorType::OPTION_NOT_NEEDED, $travelSponsorData['choices'], true));
+            $speaker->setTravelRefundSponsored(in_array(TravelSponsorType::OPTION_SPONSORED, $travelSponsorData['choices'], true));
+
+            $this->speakerRepository->save($speaker);
+            $this->addFlash('notice', "Informations sur vos transports enregistrées");
 
             return $this->redirectFromRequest($request);
         }
@@ -135,6 +173,7 @@ class SpeakerPage extends AbstractController
             'should_display_hotel_reservation_form' => $shouldDisplayHotelReservationForm,
             'speakers_expenses_form' => $speakersExpensesType->createView(),
             'speakers_expenses_files' => $this->speakersExpensesStorage->getFiles($speaker),
+            'travel_sponsor_form' => $travelSponsorType->createView(),
             'speakers_diner_form' => $speakersDinerType->createView(),
             'hotel_reservation_form' => $hotelReservationType->createView(),
             'speakers_contact_form' => $speakersContactType->createView(),

@@ -229,3 +229,8 @@ cfp_propose_workshop: |
 cfp_authorize_forward: |
   Les équipes des antennes AFUP peuvent être intéressées par votre sujet en vue d’un événement local
   (meetup, Super Apéro PHP, soirée d’élection dans l’antenne...) et pourrait aimer vous inviter dans leur ville.
+speaker_infos.sponsor.hosting.checkbox_label: "Mon logement est sponsorisé"
+speaker_infos.hosting_sponsor.intro: "Si votre hébergement est pris en charge par votre entreprise, merci de cocher la case correspondante."
+speaker_infos.travel_expenses.checkbox_label.not_needed: "Je n’en n’ai pas besoin"
+speaker_infos.travel_expenses.checkbox_label.sponsored: "Mon transport est sponsorisé"
+speaker_infos.sponsor.travel.intro: "Cochez une de ces cases si vous n'avez pas besoin de défrayment ou si votre transport est pris en charge par votre entreprise."

@@ -60,7 +60,10 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         speaker.referent_person_email,
         speaker.special_diet_description,
         speaker.hotel_nights,
-        speaker.phone_number
+        speaker.phone_number,
+        speaker.has_hosting_sponsor,
+        speaker.travel_refund_needed,
+        speaker.travel_refund_sponsored
         FROM afup_conferenciers speaker
         INNER JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = speaker.conferencier_id
         INNER JOIN afup_sessions talk ON talk.session_id = cs.session_id
@@ -293,6 +296,24 @@ SQL
                 'columnName' => 'referent_person_email',
                 'fieldName' => 'referentPersonEmail',
                 'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'has_hosting_sponsor',
+                'fieldName' => 'hasHostingSponsor',
+                'type' => 'bool',
+                'serializer' => Boolean::class,
+            ])
+            ->addField([
+                'columnName' => 'travel_refund_needed',
+                'fieldName' => 'travelRefundNeeded',
+                'type' => 'bool',
+                'serializer' => Boolean::class,
+            ])
+            ->addField([
+                'columnName' => 'travel_refund_sponsored',
+                'fieldName' => 'travelRefundSponsored',
+                'type' => 'bool',
+                'serializer' => Boolean::class,
             ])
         ;
 
