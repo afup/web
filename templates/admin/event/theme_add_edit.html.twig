@@ -1,0 +1,97 @@
+{% form_theme form 'form_theme_admin.html.twig' %}
+
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>{% if new %}Ajouter{% else %}Modifier{% endif%} un thème</h2>
+
+
+        {{ form_start(form, {'attr': {novalidate: true}}) }}
+        {{ form_errors(form) }}
+    <div class="ui segment">
+        <h2 class="ui header">Thème</h2>
+        <div class="ui clearing divider"></div>
+
+        <div class="ui form">
+            {{ form_row(form.idForum) }}
+            {{ form_row(form.name) }}
+
+
+            <div class="inline fields ui grid">
+                {{ form_label(form.description) }}
+                <div class="field">
+                    {{ form_widget(form.description) }}
+                    {{ form_errors(form.description) }}
+                </div>
+            </div>
+        </div>
+        <div class="inline fields ui grid">
+            <label class="three wide column">
+            </label>
+            <div class="seven wide column">
+                <input name="soumettre" value="Soumettre" type="submit" class="ui primary button">
+            </div>
+        </div>
+    </div>
+
+    <div class="ui form">
+    </div>
+
+    {% if talks|length > 0 %}
+        <div class="ui segment">
+            <details>
+            <summary style="font-size:1.71428571rem; font-weight: bold">Suggestion de prompt pour générer la description
+                    <button id="prompt-button" class="ui button">Copier</button>
+            </summary>
+            <pre style="white-space: pre-wrap" id="prompt-suggestion">
+## Prompt
+Tu es un assistant expert en webmarketing chargé de rédiger une courte description promotionnelle pour une thématique de talks lors du prochain événement de l'AFUP.
+En entrée, tu recevras une liste de talks portant sur une même thématique ainsi que des informations sur les speakers.
+Ton objectif : rédiger un texte accrocheur et fluide qui donne envie d'assister aux talks, tout en mettant en valeur les enjeux et les mots-clés de la thématique (SEO-friendly, sans excès).
+Contraintes :
+– Texte dynamique, sans répétitions, ni énumérations
+– Majuscules uniquement là où elles sont grammaticalement nécessaires
+– Pas de ponctuation ou de mise en forme inutile (pas de tirets quadratins ni d’émojis, sauf si justifiés)
+– 600 caractères maximum
+
+Ne fournis que la description, sans commentaire ni mise en contexte.
+
+## Thématique
+{{ eventTheme.name }}
+
+## Talks
+{% for talk in talks %}
+### Titre: {{ talk.talk.title }}
+{% for speaker in talk.speakers %}
+{% if speaker is not null %}
+### Speaker: {{ speaker.label }}
+{% endif ~%}
+{% endfor ~%}
+### Description du talk
+{{ talk.talk.description }}
+
+{% endfor ~%}
+            </pre>
+
+            </details>
+        </div>
+    {% endif %}
+
+    <div class="ui segment">
+        <p><span class="obligatoire">*</span> indique un champ obligatoire</p>
+    </div>
+    {{ form_end(form) }}
+<script>
+    const promptButton = document.getElementById('prompt-button')
+    promptButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        navigator.clipboard.writeText(document.getElementById('prompt-suggestion').textContent);
+        promptButton.textContent = 'Copié ✔';
+        promptButton.classList.add('positive');
+        setTimeout(function () {
+            promptButton.textContent = 'Copier';
+            promptButton.classList.remove('positive');
+        }, 2000);
+    })
+</script>
+{% endblock %}

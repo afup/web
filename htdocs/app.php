@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 use Composer\Autoload\ClassLoader;
 use Symfony\Component\HttpFoundation\Request;
+ use Symfony\Component\Dotenv\Dotenv;
 
 $isDevEnv = isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'dev';
 $isTestEnv = isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'test';
 
+/** @var ClassLoader $loader */
+$loader = require __DIR__ . '/../vendor/autoload.php';
+$env = $isDevEnv ? 'dev' : ($isTestEnv ? 'test' : 'prod');
+(new Dotenv())->bootEnv(dirname(__DIR__).'/.env', $env);
 if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv || $isTestEnv) {
     if (!$isDevEnv && !$isTestEnv
         &&
@@ -21,14 +26,8 @@ if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv || $isTestEnv) {
         exit('You are not allowed to access this file. Check ' . basename(__FILE__) . ' for more information.');
     }
 
-    /** @var ClassLoader $loader */
-    $loader = require __DIR__ . '/../vendor/autoload.php';
-
     $kernel = $isDevEnv ? new AppKernel('dev', true) : new AppKernel('test', true);
 } else {
-    /** @var ClassLoader $loader */
-    $loader = require __DIR__ . '/../vendor/autoload.php';
-
     $kernel = new AppKernel('prod', false);
 }
 

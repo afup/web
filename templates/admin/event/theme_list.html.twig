@@ -1,0 +1,229 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    {% set token_delete=csrf_token('forum_delete') %}
+    <h2>Liste des thèmes</h2>
+
+    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
+    <div class="ui menu">
+        <a href="{{ path('admin_event_themes_add', {'idForum': event.id}) }}" class="item">
+            <div data-tooltip="Ajouter un thème" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+        <div class="item">
+            <button id="save-priorities" class="ui green button">
+                <i class="save icon"></i>
+                Sauvegarder les positions
+            </button>
+        </div>
+    </div>
+
+    <h3>Gestion des thèmes et de leurs positions</h3>
+    <table class="ui table striped celled">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Position</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for theme in themes %}
+            <tr data-theme-id="{{ theme.id }}">
+                <td>{{ theme.name }}</td>
+                <td>
+                    <input type="number" 
+                           class="priority-input" 
+                           value="{{ theme.priority }}" 
+                           min="0" 
+                           step="1"
+                           data-theme-id="{{ theme.id }}"
+                           style="width: 80px;">
+                </td>
+                <td style="text-align: right" nowrap="nowrap">
+                    <a href="{{ path('admin_event_themes_edit', {'id': theme.id}) }}"
+                       data-tooltip="Modifier le thème {{ theme.name|e('html') }}"
+                       data-position="left center"
+                       class="compact ui icon button"
+                    >
+                        <i class="pencil alternate icon"></i>
+                    </a>
+                    <form action="{{ path('admin_event_themes_list', {'id': theme.id}) }}" method="post" class="inline-form" style="display: inline-block;" onsubmit="return confirm('Voulez-vous vraiment supprimer ce thème ?')">
+                        <input type="hidden" name="theme_id" value="{{ theme.id }}" />
+                        <input type="submit" name="delete" value="Supprimer"
+                               class="compact ui red button"
+                        />
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3" style="text-align: center;">
+                    <div class="ui icon header">
+                        <i class="meh outline icon"></i>
+                        Aucun thème. {% if event == null %}Essayez de changer d'évènement !{% endif %}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Association des conférences aux thèmes <span id="theme-success-message" class="ui green label" style="display: none;"><i class="check icon"></i>Sauvegardé</span></h3>
+    <div id="talks-section">
+        {% if scheduled_talks %}
+            <table class="ui table striped celled form">
+                <thead>
+                <tr>
+                    <th style="width: 20%;">Conférence</th>
+                    <th style="width: 70%;">Résumé</th>
+                    <th style="">Thème</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for talk in scheduled_talks %}
+                    <tr data-talk-id="{{ talk.id }}">
+                        <td>
+                            <strong>{{ talk.title }}</strong>
+                        </td>
+                        <td>
+                            {% set abstract = talk.abstract %}
+                            {% if abstract|length > 400 %}
+                                <div class="abstract-content">
+                                    <span class="abstract-short">{{ abstract|slice(0, 400) }}...</span>
+                                    <span class="abstract-full" style="display: none;">{{ abstract|raw|markdown }}</span>
+                                    <br>
+                                    <a href="#" class="toggle-abstract">Voir plus</a>
+                                </div>
+                            {% else %}
+                                <div class="abstract-content">
+                                    <span class="abstract-full">{{ abstract|raw|markdown }}</span>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="inline fields">
+                                <select class="theme-select ui " data-talk-id="{{ talk.id }}">
+                                    <option value="">Aucun thème</option>
+                                    {% for theme in themes %}
+                                        <option value="{{ theme.id }}" 
+                                                {% if talk.theme == theme.id %}selected{% endif %}>
+                                            {{ theme.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucune conférence planifiée pour cet événement.
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Wait for jQuery to be available
+        function waitForJQuery(callback) {
+            if (typeof $ !== 'undefined') {
+                callback();
+            } else {
+                setTimeout(function() { waitForJQuery(callback); }, 100);
+            }
+        }
+        
+        waitForJQuery(function() {
+            // Handle theme selection for talks with native selects
+            $('.theme-select').on('change', function() {
+                var talkId = $(this).data('talk-id');
+                var themeId = $(this).val();
+                
+                $.ajax({
+                    url: '{{ path('admin_event_themes_list', {'id': event.id}) }}',
+                    method: 'POST',
+                    data: {
+                        action: 'update_talk_theme',
+                        talk_id: talkId,
+                        theme_id: themeId
+                    },
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Show success message
+                            $('#theme-success-message').show();
+                            setTimeout(function() {
+                                $('#theme-success-message').fadeOut();
+                            }, 2000);
+                        }
+                    },
+                    error: function() {
+                        alert('Erreur lors de la mise à jour du thème');
+                    }
+                });
+            });
+            
+            // Handle priority updates
+            $('#save-priorities').click(function() {
+                var priorities = [];
+                $('.priority-input').each(function() {
+                    priorities.push({
+                        theme_id: $(this).data('theme-id'),
+                        priority: $(this).val()
+                    });
+                });
+                
+                // Send multiple updates
+                var promises = priorities.map(function(item) {
+                    return $.ajax({
+                        url: '{{ path('admin_event_themes_list', {'id': event.id}) }}',
+                        method: 'POST',
+                        data: {
+                            action: 'update_theme_priority',
+                            theme_id: item.theme_id,
+                            priority: item.priority
+                        },
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                });
+                
+                Promise.all(promises).then(function() {
+                    alert('Positions sauvegardées avec succès');
+                    location.reload();
+                }).catch(function() {
+                    alert('Erreur lors de la sauvegarde');
+                });
+            });
+            
+            // Handle abstract toggle
+            $('.toggle-abstract').click(function(e) {
+                e.preventDefault();
+                var container = $(this).closest('.abstract-content');
+                var shortVersion = container.find('.abstract-short');
+                var fullVersion = container.find('.abstract-full');
+                
+                if (fullVersion.is(':visible')) {
+                    fullVersion.hide();
+                    shortVersion.show();
+                    $(this).text('Voir plus');
+                } else {
+                    shortVersion.hide();
+                    fullVersion.show();
+                    $(this).text('Voir moins');
+                }
+            });
+        });
+    });
+    </script>
+
+{% endblock %}

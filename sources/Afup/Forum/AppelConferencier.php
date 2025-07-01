@@ -408,6 +408,7 @@ class AppelConferencier
         $tweets = null,
         $transcript = null,
         $verbatim = null,
+        $theme_id = null,
     ) {
         $this->_bdd->executer("SET NAMES utf8mb4");
 
@@ -466,6 +467,9 @@ class AppelConferencier
         }
         if ($verbatim !== null) {
             $requete .= 'verbatim = ' . $this->_bdd->echapper($verbatim) . ', ';
+        }
+        if ($theme_id !== null) {
+            $requete .= 'theme = ' . $this->_bdd->echapper($theme_id) . ', ';
         }
         $requete .= ' plannifie = ' . $this->_bdd->echapper($plannifie) . ' ';
         $requete .= ' WHERE session_id = ' . (int) $id;

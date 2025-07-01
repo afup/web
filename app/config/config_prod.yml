@@ -1,6 +1,9 @@
 imports:
     - { resource: config.yml }
 
+parameters:
+    database_host: "%env(DATABASE_HOST)%"
+
 #doctrine:
 #    orm:
 #        metadata_cache_driver: apc

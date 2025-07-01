@@ -1,5 +1,4 @@
 imports:
-    - { resource: config.php }
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: packages/http_client.yaml }
@@ -160,6 +159,14 @@ parameters:
                 forum_sessions:
                     nom: 'Conférences'
                     niveau: 'ROLE_FORUM'
+                admin_event_themes_list:
+                    nom: 'Thèmes'
+                    niveau: 'ROLE_FORUM'
+                    url: '/admin/event/themes'
+                    extra_routes:
+                        - admin_event_themes_list
+                        - admin_event_themes_add
+                        - admin_event_themes_edit
                 forum_vote_github:
                     nom: 'Votes visiteurs'
                     niveau: 'ROLE_FORUM'
@@ -315,7 +322,7 @@ framework:
         fallbacks: ["%locale%"]
         enabled: true
         default_path: "%kernel.project_dir%/../translations"
-    secret:          "%secret%"
+    secret:          "%env(SECRET)%"
     router:
         resource: "%kernel.project_dir%/config/routing.yml"
         strict_requirements: ~
@@ -351,7 +358,7 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
       photo_storage: '@AppBundle\CFP\PhotoStorage'
-      global_menu_event_label: '%afup_global_menu_event_label%'
+      global_menu_event_label: '%env(AFUP_GLOBAL_MENU_EVENT_LABEL)%'
     form_themes: ['form_theme.html.twig']
     exception_controller: null
     default_path: "%kernel.project_dir%/../templates"
@@ -363,9 +370,9 @@ ting:
             charset: utf8mb4
             master:
                 host:     "%database_host%"
-                port:     "%database_port%"
-                user:     "%database_user%"
-                password: "%database_password%"
+                port:     "%env(int:DATABASE_PORT)%"
+                user:     "%env(DATABASE_USER)%"
+                password: "%env(DATABASE_PASSWORD)%"
 
     repositories:
         event:
@@ -374,14 +381,14 @@ ting:
             options:
                 default:
                     connection: main
-                    database: '%database_name%'
+                    database: '%env(DATABASE_NAME)%'
         site:
             namespace : AppBundle\Site\Model\Repository
             directory : "@AppBundle/Site/Model/Repository"
             options:
                 default:
                     connection: main
-                    database: '%database_name%'
+                    database: '%env(DATABASE_NAME)%'
 
         association:
             namespace : AppBundle\Association\Model\Repository
@@ -389,35 +396,35 @@ ting:
             options:
                 default:
                     connection: main
-                    database: '%database_name%'
+                    database: '%env(DATABASE_NAME)%'
         throttling:
             namespace : AppBundle\Security\ActionThrottling
             directory : "@AppBundle/Security/ActionThrottling"
             options:
                 default:
                     connection: main
-                    database: '%database_name%'
+                    database: '%env(DATABASE_NAME)%'
         techletter:
             namespace: AppBundle\TechLetter\Model\Repository
             directory: "@AppBundle/TechLetter/Model/Repository"
             options:
                 default:
                     connection: main
-                    database: "%database_name%"
+                    database: "%env(DATABASE_NAME)%"
 
 knpu_oauth2_client:
     clients:
         # will create a service: knpu.oauth2.client.facebook_main
         github_main:
             type: github
-            client_id: "%github_client_id%"
-            client_secret: "%github_client_secret%"
+            client_id: "%env(GITHUB_CLIENT_ID)%"
+            client_secret: "%env(GITHUB_CLIENT_SECRET)%"
             # see below
             redirect_route: connection_github_check
 
 ewz_recaptcha:
-    public_key: '%recaptcha_public_key%'
-    private_key: '%recaptcha_private_key%'
+    public_key: '%env(RECAPTCHA_PUBLIC_KEY)%'
+    private_key: '%env(RECAPTCHA_PRIVATE_KEY)%'
 
 
 ekino_new_relic:
