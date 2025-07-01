@@ -192,23 +192,25 @@ class TalkRepository extends Repository implements MetadataInitializer
 
     /**
      * @param bool $applyPublicationdateFilters
+     * @param bool $orderByTheme
      *
      * @return array<TalkAggregate>
      * @throws QueryException
      */
-    public function getByEventWithSpeakers(Event $event, $applyPublicationdateFilters = true): array
+    public function getByEventWithSpeakers(Event $event, bool $applyPublicationdateFilters = true, bool $orderByTheme = false): array
     {
-        return $this->getByEventsWithSpeakers([$event], $applyPublicationdateFilters);
+        return $this->getByEventsWithSpeakers([$event], $applyPublicationdateFilters, $orderByTheme);
     }
 
     /**
      * @param list<Event> $events
      * @param bool $applyPublicationdateFilters
+     * @param bool $orderByTheme
      *
      * @return array<TalkAggregate>
      * @throws QueryException
      */
-    public function getByEventsWithSpeakers(array $events, $applyPublicationdateFilters = true): array
+    public function getByEventsWithSpeakers(array $events, bool $applyPublicationdateFilters = true, bool $orderByTheme = false): array
     {
         $hydrator = new JoinHydrator();
         $hydrator->aggregateOn('talk', 'speaker', 'getId');
@@ -233,7 +235,7 @@ class TalkRepository extends Repository implements MetadataInitializer
 
         $query = $this->getPreparedQuery(
             sprintf('SELECT talk.id_forum, talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code,
-            talk.joindin,
+            talk.joindin, talk.theme,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe,
             planning.debut, planning.fin, room.id, room.nom
             FROM afup_sessions AS talk
@@ -241,8 +243,9 @@ class TalkRepository extends Repository implements MetadataInitializer
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
             LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
             LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
+            LEFT JOIN afup_conference_theme ON afup_conference_theme.id = talk.theme
             WHERE talk.id_forum IN(%s) AND plannifie = 1 %s
-            ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC ', $inEvents, $publicationdateFilters),
+            ORDER BY %s ', $inEvents, $publicationdateFilters, $orderByTheme ? 'afup_conference_theme.name ASC' : 'planning.debut ASC, room.id ASC, talk.session_id ASC'),
         )->setParams($params);
 
         $result = $query->query($this->getCollection($hydrator));
@@ -480,7 +483,13 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'hasAllowedToSharingWithLocalOffices',
                 'type' => 'bool',
                 'serializer' => Boolean::class,
-            ]);
+            ])
+            ->addField([
+                'columnName' => 'theme',
+                'fieldName' => 'theme',
+                'type' => 'int',
+            ])
+        ;
 
         return $metadata;
     }

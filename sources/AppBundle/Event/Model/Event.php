@@ -98,6 +98,8 @@ class Event implements NotifyPropertyInterface
 
     private ?DateTime $archivedAt = null;
 
+    private ?bool $hasThemes = false;
+
     /**
      * @return int
      */
@@ -707,6 +709,19 @@ class Event implements NotifyPropertyInterface
     public function isOnline(): bool
     {
         return str_contains($this->getPath(), 'enligne');
+    }
+
+    public function getHasThemes(): bool
+    {
+        return $this->hasThemes;
+    }
+
+    public function setHasThemes(bool $hasThemes): self
+    {
+        $this->propertyChanged('hasThemes', $this->hasThemes, $hasThemes);
+        $this->hasThemes = $hasThemes;
+
+        return $this;
     }
 
     public static function getInscriptionAttachmentDir(): string

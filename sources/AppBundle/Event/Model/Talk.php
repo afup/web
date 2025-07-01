@@ -91,6 +91,8 @@ class Talk implements NotifyPropertyInterface
     #[Assert\NotNull]
     private bool $hasAllowedToSharingWithLocalOffices = false;
 
+    private ?int $theme = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -588,5 +590,16 @@ class Talk implements NotifyPropertyInterface
         $this->hasAllowedToSharingWithLocalOffices = $hasAllowedToSharingWithLocalOffices;
 
         return $this;
+    }
+
+    public function getTheme(): ?int
+    {
+        return $this->theme;
+    }
+
+    public function setTheme(?int $theme): void
+    {
+        $this->propertyChanged('theme', $this->theme, $theme);
+        $this->theme = $theme;
     }
 }

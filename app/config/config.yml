@@ -160,6 +160,14 @@ parameters:
                 forum_sessions:
                     nom: 'Conférences'
                     niveau: 'ROLE_FORUM'
+                admin_event_themes_list:
+                    nom: 'Thèmes'
+                    niveau: 'ROLE_FORUM'
+                    url: '/admin/event/themes'
+                    extra_routes:
+                        - admin_event_themes_list
+                        - admin_event_themes_add
+                        - admin_event_themes_edit
                 forum_vote_github:
                     nom: 'Votes visiteurs'
                     niveau: 'ROLE_FORUM'
