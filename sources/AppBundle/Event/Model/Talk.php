@@ -605,13 +605,4 @@ class Talk implements NotifyPropertyInterface
         $this->votes = $votes;
         return $this;
     }
-
-    public function getAverageVote(): ?float
-    {
-        $votes = $this->getVotes();
-        if (count($votes) === 0) {
-            return null;
-        }
-        return array_reduce($votes, function ($carry, Vote $vote) {$carry += $vote->getVote(); return $carry;}) / count($votes);
-    }
 }

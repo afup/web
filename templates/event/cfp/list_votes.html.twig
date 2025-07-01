@@ -1,5 +1,6 @@
 {% if votes|length > 0 %}
-    <h3>{{ 'Votes'|trans }} ({{ votes|length }})    </h3>
+    {% set average = (votes | reduce((sum, val) => sum + val.vote, 0)) / (votes | length) %}
+    <h3>{{ 'Votes'|trans }} ({{ votes|length }} - {{ average|number_format(1) }}/5)    </h3>
     <p>{{ "Retrouvez ici les votes déposés sur cette proposition. Ils peuvent vous aider à l'améliorer si nécessaire."|trans }}</p>
     {% include 'common/star.html.twig' %}
     <div class="cfp--votes">
