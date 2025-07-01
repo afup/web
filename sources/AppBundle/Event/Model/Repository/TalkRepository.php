@@ -242,7 +242,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
             LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
             WHERE talk.id_forum IN(%s) AND plannifie = 1 %s
-            ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC ', $inEvents, $publicationdateFilters),
+            ORDER BY planning.debut ASC, room.id ASC, talk.date_publication DESC, talk.session_id ASC ', $inEvents, $publicationdateFilters),
         )->setParams($params);
 
         $result = $query->query($this->getCollection($hydrator));
