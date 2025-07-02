@@ -29,7 +29,7 @@
         <h3>{{ 'Faire cette conférence à plusieurs'|trans }}</h3>
         <p>{{ "Si vous présentez ce sujet à plusieurs, vous pouvez inviter d'autres conférenciers via le formulaire ci-dessous."|trans }}</p>
         {{ form(invitationForm) }}
-        {{ include('event/cfp/list_votes.html.twig') }}
+        {{ include('event/cfp/list_votes.html.twig', {cfp_open: event.cfpOpen}) }}
     </div>
     {{ sidebar|raw }}
 {% endblock %}
