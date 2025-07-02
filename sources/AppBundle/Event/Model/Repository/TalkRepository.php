@@ -16,7 +16,6 @@ use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
-use CCMBenchmark\Ting\Repository\Hydrator;
 use CCMBenchmark\Ting\Repository\Hydrator\RelationMany;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorRelational;
