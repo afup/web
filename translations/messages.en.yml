@@ -204,3 +204,8 @@ speaker_from_previous_event: "We filled the form with the profile you used on a 
 sponsor.qr_code_scanner.disclaimer: Please confirm that the participant agrees for you to scan their badge!
 sponsor.qr_code_scanner.valid_code: Code valid! Please wait...
 sponsor.qr_code_scanner.invalid_code: Incorrect QR Code!
+speaker_infos.sponsor.hosting.checkbox_label: "My hosting is sponsored"
+speaker_infos.hosting_sponsor.intro: "If your hosting is sponsored by your company, please check the corresponding box."
+speaker_infos.travel_expenses.checkbox_label.not_needed: "I don't need it"
+speaker_infos.travel_expenses.checkbox_label.sponsored: "My transports costs are sponsored"
+speaker_infos.sponsor.travel.intro: "Check one of these boxes if you don't need to be refunded your transports costs or if they are are sponsored by your company."

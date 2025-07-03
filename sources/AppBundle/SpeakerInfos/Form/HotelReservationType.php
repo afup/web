@@ -19,6 +19,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class HotelReservationType extends AbstractType
 {
     public const NIGHT_NONE = 'none';
+    public const NIGHT_TRAVEL_SPONSOR = 'hosting_sponsor';
 
     public function __construct(private readonly TranslatorInterface $translator) {}
 
@@ -35,7 +36,6 @@ class HotelReservationType extends AbstractType
         $start = \DateTimeImmutable::createFromMutable($event->getDateStart());
         $end = \DateTimeImmutable::createFromMutable($event->getDateEnd());
 
-
         $nights = [
             Speaker::NIGHT_BEFORE => ['from' => $start->modify('-1 day'), 'to' => $start],
             Speaker::NIGHT_BETWEEN => ['from' => $start, 'to' => $end],
@@ -48,6 +48,7 @@ class HotelReservationType extends AbstractType
         }
 
         $choices['Aucune nuité'] = self::NIGHT_NONE;
+        $choices['speaker_infos.sponsor.hosting.checkbox_label'] = self::NIGHT_TRAVEL_SPONSOR;
 
         $builder
             ->add(
@@ -61,8 +62,15 @@ class HotelReservationType extends AbstractType
                     'constraints' => [
                         new Choice(['choices' => array_values($choices), 'multiple' => true, 'min' => 1, 'strict' => true]),
                         new Callback(['callback' => function ($values, ExecutionContextInterface $context): void {
+                            if (count($values) === 2
+                                && in_array(self::NIGHT_NONE, $values)
+                                && in_array(self::NIGHT_TRAVEL_SPONSOR, $values)
+                            ) {
+                                return;
+                            }
+
                             if (in_array(self::NIGHT_NONE, $values)
-                            && 1 !== count($values)) {
+                                && 1 !== count($values)) {
                                 $context
                                     ->buildViolation('Impossible de choisir à la fois aucune nuité et une nuité')
                                     ->addViolation()

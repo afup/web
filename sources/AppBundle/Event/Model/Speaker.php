@@ -135,6 +135,11 @@ class Speaker implements NotifyPropertyInterface
      */
     private $referentPersonEmail;
 
+    private bool $hasHostingSponsor = false;
+
+    private bool $travelRefundNeeded = true;
+    private bool $travelRefundSponsored = false;
+
     /**
      * @return int
      */
@@ -637,6 +642,42 @@ class Speaker implements NotifyPropertyInterface
         $this->propertyChanged('hotelNights', $this->hotelNights, $hotelNights);
         $this->hotelNights = $hotelNights;
 
+        return $this;
+    }
+
+    public function hasHostingSponsor(): bool
+    {
+        return $this->hasHostingSponsor;
+    }
+
+    public function setHasHostingSponsor(bool $hasHostingSponsor): self
+    {
+        $this->propertyChanged('hasHostingSponsor', $this->hasHostingSponsor, $hasHostingSponsor);
+        $this->hasHostingSponsor = $hasHostingSponsor;
+        return $this;
+    }
+
+    public function isTravelRefundNeeded(): bool
+    {
+        return $this->travelRefundNeeded;
+    }
+
+    public function setTravelRefundNeeded(bool $travelRefundNeeded): self
+    {
+        $this->propertyChanged('travelRefundNeeded', $this->travelRefundNeeded, $travelRefundNeeded);
+        $this->travelRefundNeeded = $travelRefundNeeded;
+        return $this;
+    }
+
+    public function isTravelRefundSponsored(): bool
+    {
+        return $this->travelRefundSponsored;
+    }
+
+    public function setTravelRefundSponsored(bool $travelRefundSponsored): self
+    {
+        $this->propertyChanged('travelRefundSponsored', $this->travelRefundSponsored, $travelRefundSponsored);
+        $this->travelRefundSponsored = $travelRefundSponsored;
         return $this;
     }
 
