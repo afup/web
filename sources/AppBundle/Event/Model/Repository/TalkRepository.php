@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model\Repository;
 
+use CCMBenchmark\Ting\Repository\Hydrator\AggregateFrom;
+use CCMBenchmark\Ting\Repository\Hydrator\AggregateTo;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Speaker;
@@ -14,7 +16,9 @@ use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
+use CCMBenchmark\Ting\Repository\Hydrator\RelationMany;
 use CCMBenchmark\Ting\Repository\HydratorArray;
+use CCMBenchmark\Ting\Repository\HydratorRelational;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -65,6 +69,33 @@ class TalkRepository extends Repository implements MetadataInitializer
         )->setParams(['event' => $event->getId(), 'speaker' => $speaker->getId()]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+    /**
+     * @return CollectionInterface&iterable<Talk>
+     */
+    public function getTalksBySpeakerWithVotes(Event $event, Speaker $speaker)
+    {
+        $query = $this->getPreparedQuery(
+            'SELECT sessions.session_id, titre, abstract, id_forum, sessions.plannifie, skill, genre, votes.*
+            FROM afup_sessions sessions
+            LEFT JOIN afup_conferenciers_sessions cs ON cs.session_id = sessions.session_id
+            LEFT JOIN afup_sessions_vote_github votes ON votes.session_id = sessions.session_id
+            LEFT JOIN afup_user_github aug ON aug.id = votes.user
+            INNER JOIN (
+                SELECT afup_sessions.session_id
+                FROM afup_sessions
+                WHERE id_forum = :event
+                LIMIT 0, 20
+            ) as s2 ON s2.session_id = sessions.session_id
+            WHERE cs.conferencier_id = :speaker
+            ORDER BY titre
+        ',
+        )->setParams(['event' => $event->getId(), 'speaker' => $speaker->getId()]);
+        $hydrator = new HydratorRelational();
+        $hydrator->addRelation(new RelationMany(new AggregateFrom('github_user'), new AggregateTo('votes'), 'setGithubUser'));
+        $hydrator->addRelation(new RelationMany(new AggregateFrom('votes'), new AggregateTo('sessions'), 'setVotes'));
+        $hydrator->callableFinalizeAggregate(fn(array $row) => $row['sessions']);
+        return $query->query($this->getCollection($hydrator));
     }
 
     /**

@@ -91,6 +91,11 @@ class Talk implements NotifyPropertyInterface
     #[Assert\NotNull]
     private bool $hasAllowedToSharingWithLocalOffices = false;
 
+    /**
+     * @var Vote[]
+     */
+    private array $votes = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -587,6 +592,17 @@ class Talk implements NotifyPropertyInterface
         $this->propertyChanged('hasAllowedToSharingWithLocalOffices', $this->hasAllowedToSharingWithLocalOffices, $hasAllowedToSharingWithLocalOffices);
         $this->hasAllowedToSharingWithLocalOffices = $hasAllowedToSharingWithLocalOffices;
 
+        return $this;
+    }
+
+    public function getVotes(): array
+    {
+        return $this->votes;
+    }
+
+    public function setVotes(array $votes): self
+    {
+        $this->votes = $votes;
         return $this;
     }
 }

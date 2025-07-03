@@ -31,12 +31,13 @@ class SpeakerAction extends AbstractController
     public function __invoke(Request $request): Response
     {
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
-        if ($event->getDateEndCallForPapers() < new DateTime()) {
+
+        $speaker = $this->speakerFactory->getSpeaker($event);
+        if ($event->getDateEndCallForPapers() < new DateTime() && $speaker->getId() === null) {
             return $this->render('event/cfp/closed.html.twig', [
                 'event' => $event,
             ]);
         }
-        $speaker = $this->speakerFactory->getSpeaker($event);
 
         $form = $this->createForm(SpeakerType::class, $speaker, [
             SpeakerType::OPT_PHOTO_REQUIRED => null === $speaker->getPhoto(),
