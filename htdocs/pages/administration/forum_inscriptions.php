@@ -333,8 +333,8 @@ if ($action == 'lister') {
             $ticket->setEmail($valeurs['email']);
             $ticket->setPhoneNumber($valeurs['telephone']);
             $ticket->setVoucher($valeurs['coupon']);
-            $ticket->setCompanyCitation($valeurs['citer_societe']);
-            $ticket->setNewsletter($valeurs['newsletter_afup']);
+            $ticket->setCompanyCitation((bool) $valeurs['citer_societe']);
+            $ticket->setNewsletter((bool) $valeurs['newsletter_afup']);
             $ticket->setOptin((bool) $valeurs['mail_partenaire']);
             $ticket->setComments($valeurs['commentaires']);
             $ticket->setStatus($valeurs['etat']);
