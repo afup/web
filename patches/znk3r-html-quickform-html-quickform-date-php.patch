@@ -1,6 +1,52 @@
---- /dev/null
-+++ ../HTML/QuickForm/date.php
-@@ -317,7 +317,7 @@
+diff --git i/HTML/QuickForm/date.php w/HTML/QuickForm/date.php
+index fbe7f71..fcba67c 100644
+--- i/HTML/QuickForm/date.php
++++ w/HTML/QuickForm/date.php
+@@ -51,7 +51,8 @@ class HTML_QuickForm_date extends HTML_QuickForm_group
+         'addEmptyOption'   => false,
+         'emptyOptionValue' => '',
+         'emptyOptionText'  => '&nbsp;',
+-        'optionIncrement'  => array('i' => 1, 's' => 1)
++        'optionIncrement'  => array('i' => 1, 's' => 1),
++        'singleInput'       => false,
+     );
+ 
+    /**
+@@ -311,13 +312,41 @@ class HTML_QuickForm_date extends HTML_QuickForm_group
+     // {{{ _createElements()
+ 
+     function _createElements()
++    {
++        if ($this->_options['singleInput']) {
++            $this->createNativeElement();
++        } else {
++            $this->createSelectElements();
++        }
++    }
++
++
++    function createNativeElement()
++    {
++        if (isset($this->_options['format']) && str_contains($this->_options['format'], 'H:i')) {
++            $this->_attributes['type'] = 'datetime-local';
++        } else {
++            $this->_attributes['type'] = 'date';
++        }
++        if (isset($this->_options['minYear'])) {
++            $date = DateTime::createFromFormat('Y-m-d', $this->_options['minYear'].'-01-01');
++            $this->_attributes['min'] = $date->format('Y-m-d');
++        }
++        if (isset($this->_options['maxYear'])) {
++            $date = DateTime::createFromFormat('Y-m-d', $this->_options['maxYear'].'-12-31');
++            $this->_attributes['max'] = $date->format('Y-m-d');
++        }
++        $this->_elements[] = new HTML_QuickForm_input(null, null, $this->getAttributes());
++    }
++
++    function createSelectElements()
+     {
+         $this->_separator = $this->_elements = array();
+         $separator =  '';
          $locale    = $this->_locale[$this->_options['language']];
          $backslash =  false;
          for ($i = 0, $length = strlen($this->_options['format']); $i < $length; $i++) {
@@ -9,3 +55,47 @@
              if ($backslash) {
                  $backslash  = false;
                  $separator .= $sign;
+@@ -463,6 +492,33 @@ class HTML_QuickForm_date extends HTML_QuickForm_group
+     // {{{ setValue()
+ 
+     function setValue($value)
++    {
++        if ($this->_options['singleInput']) {
++            $value = $this->setNativeValue($value);
++        } else {
++            $value = $this->setSelectValue($value);
++        }
++
++        parent::setValue($value);
++    }
++
++    public function setNativeValue($value)
++    {
++        $dateFormat = str_contains($this->_options['format'], 'H:i') ? 'Y-m-d\TH:i' : 'Y-m-d';
++        $timeZone = new \DateTimeZone("Europe/Paris");
++        if (is_numeric($value)) {
++            $date = new DateTime('@' . $value);
++            $date->setTimeZone($timeZone);
++            $value = $date->format($dateFormat);
++        } else {
++            $date = new DateTime($value);
++            $value = $date->format($dateFormat);
++        }
++
++        return $value;
++    }
++
++    public function setSelectValue($value)
+     {
+         if (empty($value)) {
+             $value = array();
+@@ -493,7 +549,8 @@ class HTML_QuickForm_date extends HTML_QuickForm_group
+         } else {
+             $value = array_map(array($this, '_trimLeadingZeros'), $value);
+         }
+-        parent::setValue($value);
++
++        return $value;
+     }
+ 
+     // }}}

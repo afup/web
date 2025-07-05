@@ -10,7 +10,6 @@ use Afup\Site\Utils\Pays;
 use AppBundle\Controller\LegacyController;
 use AppBundle\Event\Model\Talk;
 use Assert\Assertion;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /** @var LegacyController $this */
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -131,7 +130,7 @@ if ($action == 'lister') {
 
     $formulaire->addElement('header', null, 'Présentation');
 
-    $formulaire->addElement('date'    , 'date_soumission', 'Soumission', ['language' => 'fr', 'minYear' => date('Y') - 5, 'maxYear' => date('Y') + 5]);
+    $formulaire->addElement('date'    , 'date_soumission', 'Soumission', ['language' => 'fr', 'minYear' => date('Y') - 5, 'maxYear' => date('Y') + 5, 'singleInput' => true]);
     $formulaire->addElement('text'    , 'titre'          , 'Titre' , ['size' => 40, 'maxlength' => 150]);
 
     $abstractClass = 'simplemde';
@@ -182,12 +181,9 @@ if ($action == 'lister') {
         $formulaire->addElement('checkbox'    , 'video_has_fr_subtitles'          , "Sous titres FR présents");
         $formulaire->addElement('checkbox'    , 'video_has_en_subtitles'          , "Sous titres EN présents");
 
-        $dateElement = $formulaire->addElement('date'  , 'date_publication'       , 'Date de publication'               , ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => date('Y') - 5, 'maxYear' => date('Y') + 5]);
-
-        /** @var HTML_QuickForm_select $dateElementSelect */
-        $dateElementSelect = PropertyAccess::createPropertyAccessor()->getValue($dateElement, '_elements[2]');
-        if (!isset($dateElementSelect->getSelected()[0])) {
-            $dateElementSelect->setSelected([date('Y')]);
+        $dateElement = $formulaire->addElement('date'  , 'date_publication'       , 'Date de publication'               , ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => date('Y') - 5, 'maxYear' => date('Y') + 5,  'singleInput' => true]);
+        if (empty($dateElement->getValue())) {
+            $dateElement->setValue(date('Y') . '-01-01 00:00:00');
         }
 
         $formulaire->addElement('textarea'    , 'tweets'          , "Tweets", ['style' => "width:100%;min-height:100px"]);
@@ -249,7 +245,7 @@ if ($action == 'lister') {
         if ($action == 'ajouter') {
             $session_id = $forum_appel->ajouterSession(
                 $valeurs['id_forum'],
-                $valeurs['date_soumission']['Y'] . '-' . $valeurs['date_soumission']['M'] . '-' . $valeurs['date_soumission']['d'],
+                $valeurs['date_soumission'],
                 $valeurs['titre'],
                 $valeurs['abstract'],
                 (int) $valeurs['genre'],
@@ -263,7 +259,7 @@ if ($action == 'lister') {
             $session_id = (int) $_GET['id'];
             $ok = $forum_appel->modifierSession($session_id,
                                                 $valeurs['id_forum'],
-                                                $valeurs['date_soumission']['Y'] . '-' . $valeurs['date_soumission']['M'] . '-' . $valeurs['date_soumission']['d'],
+                                                $valeurs['date_soumission'],
                                                 $valeurs['titre'],
                                                 $valeurs['abstract'],
                                                 (int) $valeurs['genre'],
@@ -280,7 +276,7 @@ if ($action == 'lister') {
                                                 $valeurs['use_markdown'],
                                                 $valeurs['video_has_fr_subtitles'],
                                                 $valeurs['video_has_en_subtitles'],
-                                                $valeurs['date_publication']['Y'] . '-' . $valeurs['date_publication']['M'] . '-' . $valeurs['date_publication']['d'] . ' ' . $valeurs['date_publication']['H'] . ':' . $valeurs['date_publication']['i'] . ':' . $valeurs['date_publication']['s'],
+                                                $valeurs['date_publication'],
                                                 $valeurs['tweets'],
                                                 $valeurs['transcript'],
                                                 $valeurs['verbatim'],

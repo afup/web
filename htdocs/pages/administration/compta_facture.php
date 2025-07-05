@@ -63,7 +63,6 @@ if ($action == 'lister') {
 
     if ($action === 'modifier') {
         $champsRecup = $comptaFact->obtenir($_GET['id']);
-
         $factureId = $champsRecup['id'];
 
         $champs['date_facture']          = $champsRecup['date_facture'];
@@ -119,12 +118,16 @@ if ($action == 'lister') {
         $formulaire->addElement('date'    , 'date_facture'     , 'Date facture', ['language' => 'fr',
             'format'   => 'd F Y',
             'minYear' => date('Y') - 3,
-            'maxYear' => date('Y')]);
+            'maxYear' => date('Y'),
+            'singleInput' => true,
+        ]);
     } else {
         $formulaire->addElement('date'    , 'date_facture'     , 'Date facture', ['language' => 'fr',
             'format'   => 'd F Y',
             'minYear' => date('Y'),
-            'maxYear' => date('Y')]);
+            'maxYear' => date('Y'),
+            'singleInput' => true,
+        ]);
     }
     $formulaire->addElement('header'  , ''                       , 'Facturation');
     $formulaire->addElement('static'  , 'note'                   , ''               , 'Ces informations concernent la personne ou la société qui sera facturée<br /><br />');
@@ -172,7 +175,7 @@ if ($action == 'lister') {
     $formulaire->addElement('select', 'devise_facture'  , 'Monnaie de la facture', ['EUR' => 'Euro',
         'DOL' => 'Dollar'], ['size' => 2]);
     $formulaire->addElement('select', 'etat_paiement'  , 'Etat paiement', ['En attente de paiement', 'Payé', 'Annulé'], ['size' => 3]);
-    $formulaire->addElement('date'    , 'date_paiement'     , 'Date paiement', ['language' => 'fr', 'format'   => 'd F Y', 'minYear' => date('Y') - 5, 'maxYear' => date('Y')]);
+    $formulaire->addElement('date'    , 'date_paiement'     , 'Date paiement', ['language' => 'fr', 'format'   => 'd F Y', 'minYear' => date('Y') - 5, 'maxYear' => date('Y'), 'singleInput' => true]);
 
 
 
@@ -214,8 +217,8 @@ if ($action == 'lister') {
     if ($formulaire->validate()) {
         $valeur = $formulaire->exportValues();
 
-        $date_ecriture = $valeur['date_facture']['Y'] . "-" . $valeur['date_facture']['F'] . "-" . $valeur['date_facture']['d'] ;
-        $date_paiement = $valeur['date_paiement']['Y'] . "-" . $valeur['date_paiement']['F'] . "-" . $valeur['date_paiement']['d'] ;
+        $date_ecriture = $valeur['date_facture'];
+        $date_paiement = $valeur['date_paiement'];
         if ($action === 'ajouter') {
             // il faut passser obligatoirement par un devis
         } else {

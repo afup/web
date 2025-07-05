@@ -70,7 +70,6 @@ if ($action == 'lister') {
         $champs['debut'] = $forum_donnees['date_debut'];
         $champs['fin'] = $forum_donnees['date_debut'];
     }
-
     $formulaire->setDefaults($champs);
     $id = $_GET['id'] ?? 0;
 
@@ -87,8 +86,8 @@ if ($action == 'lister') {
     }
 
     $formulaire->addElement('header', null, 'Plannification');
-    $formulaire->addElement('date'	, 'debut'   , 'Début', ['language' => 'fr', 'format' => "dMY H:i", 'minYear' => date('Y'), 'maxYear' => date('Y') + 1, 'minHour' => 8, 'maxHour' => 18, 'optionIncrement' => ['i' => 5]]);
-    $formulaire->addElement('date'	, 'fin'	 , 'Fin'  , ['language' => 'fr', 'format' => "dMY H:i", 'minYear' => date('Y'), 'maxYear' => date('Y') + 1, 'optionIncrement' => ['i' => 5], 'minHour' => 8, 'maxHour' => 18]);
+    $formulaire->addElement('date'	, 'debut'   , 'Début', ['language' => 'fr', 'format' => "dMY H:i", 'minYear' => date('Y'), 'maxYear' => date('Y') + 1, 'minHour' => 8, 'maxHour' => 18, 'optionIncrement' => ['i' => 5], 'singleInput' => true]);
+    $formulaire->addElement('date'	, 'fin'	 , 'Fin'  , ['language' => 'fr', 'format' => "dMY H:i", 'minYear' => date('Y'), 'maxYear' => date('Y') + 1, 'optionIncrement' => ['i' => 5], 'minHour' => 8, 'maxHour' => 18, 'singleInput' => true]);
     $formulaire->addElement('select'  , 'id_salle', 'Salle', [null => '' ] + $forum_appel->obtenirListeSalles($champs['id_forum'], true));
     $formulaire->addElement('text'    , 'joindin'          , 'Id de la conférence chez joind.in' , ['size' => 40, 'maxlength' => 10]);
 
@@ -105,8 +104,8 @@ if ($action == 'lister') {
         if ($id == 0 || 0 === strlen(trim((string) $id))) {
             $planning_id = $forum_appel->ajouterSessionDansPlanning($valeurs['id_forum'],
                 $valeurs['id_session'],
-                mktime((int) $valeurs['debut']['H'], (int) $valeurs['debut']['i'], 0, (int) $valeurs['debut']['M'], (int) $valeurs['debut']['d'], (int) $valeurs['debut']['Y']),
-                mktime((int) $valeurs['fin']['H'], (int) $valeurs['fin']['i'], 0, (int) $valeurs['fin']['M'], (int) $valeurs['fin']['d'], (int) $valeurs['fin']['Y']),
+                (new DateTime($valeurs['debut']))->getTimestamp(),
+                (new DateTime($valeurs['fin']))->getTimestamp(),
                 $valeurs['id_salle']);
 
             $ok = (bool) $planning_id;
@@ -115,8 +114,8 @@ if ($action == 'lister') {
             $ok = $forum_appel->modifierSessionDuPlanning($planning_id,
                 $valeurs['id_forum'],
                 $valeurs['id_session'],
-                mktime((int) $valeurs['debut']['H'], (int) $valeurs['debut']['i'], 0, (int) $valeurs['debut']['M'], (int) $valeurs['debut']['d'], (int) $valeurs['debut']['Y']),
-                mktime((int) $valeurs['fin']['H'],(int) $valeurs['fin']['i'], 0,(int) $valeurs['fin']['M'],(int) $valeurs['fin']['d'], (int) $valeurs['fin']['Y']),
+                (new DateTime($valeurs['debut']))->getTimestamp(),
+                (new DateTime($valeurs['fin']))->getTimestamp(),
                 $valeurs['id_salle']);
             $forum_appel->modifierJoindinSession($valeurs['id_session'], $valeurs['joindin']);
         }

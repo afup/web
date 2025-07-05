@@ -249,7 +249,7 @@ if ($action == 'lister') {
 
 
     $current = $forum->obtenir($_GET['id_forum']);
-    $formulaire->addElement('date'    , 'date_reglement'     , 'Date', ['language' => 'fr', 'minYear' => $current['forum_annee'] - 2, 'maxYear' => $current['forum_annee'] + 2]);
+    $formulaire->addElement('date'    , 'date_reglement'     , 'Date', ['language' => 'fr', 'minYear' => $current['forum_annee'] - 2, 'maxYear' => $current['forum_annee'] + 2, 'singleInput' => true]);
 
 
     $formulaire->addElement('header'  , ''                       , 'Facturation');
@@ -307,10 +307,11 @@ if ($action == 'lister') {
         $valeurs = $formulaire->exportValues();
 
         // Date de réglement au 01/01 => non defini
-        if ($valeurs['date_reglement']['d'] == 1 && $valeurs['date_reglement']['M'] == 1) {
+        $dateReglement = new DateTime($valeurs['date_reglement']);
+        if ($dateReglement->format('j') == 1 && $dateReglement->format('n') == 1) {
             $valeurs['date_reglement'] = null;
         } else {
-            $valeurs['date_reglement'] = mktime(0,0,0, (int) $valeurs['date_reglement']['M'], (int) $valeurs['date_reglement']['d'], (int) $valeurs['date_reglement']['Y']);
+            $valeurs['date_reglement'] = $dateReglement->getTimestamp();
         }
 
         if ($action == 'ajouter') {

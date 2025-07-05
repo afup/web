@@ -115,7 +115,7 @@ if ($action == 'lister') {
     $formulaire->addElement('text'    , 'raccourci'                , 'Raccourci'      , ['size' => 60, 'maxlength' => 255]);
     $formulaire->addElement('select'  , 'id_site_rubrique'         , 'Rubrique'       , [null => '' ] + $rubriques->obtenirListe('id, nom', 'nom', null, true));
     $formulaire->addElement('select'  , 'id_personne_physique'     , 'Auteur'         , $users);
-    $formulaire->addElement('date'    , 'date'                     , 'Date'           , ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 1]);
+    $formulaire->addElement('date'    , 'date'                     , 'Date'           , ['language' => 'fr', 'format' => "dMYH:i:s", 'minYear' => 2001, 'maxYear' => date('Y') + 1, 'singleInput' => true]);
     $formulaire->addElement('select'  , 'position'                 , 'Position'       , $article->positionable());
     $formulaire->addElement('select'  , 'etat'                     , 'Etat'           , [-1 => 'Hors ligne', 0 => 'En attente', 1 => 'En ligne']);
     $formulaire->addElement('select'  , 'theme'                    , 'Thème'          , ['' => ''] + Article::getThemesLabels());
@@ -143,8 +143,7 @@ if ($action == 'lister') {
         $article->type_contenu = $formulaire->exportValue('type_contenu');
         $article->position = $formulaire->exportValue('position');
         $date = $formulaire->exportValue('date');
-
-        $article->date = mktime((int) $date['H'],(int) $date['i'], (int) $date['s'], (int) $date['M'], (int) $date['d'], (int) $date['Y']);
+        $article->date = (new \DateTime($date))->getTimestamp();
         $article->etat = $formulaire->exportValue('etat');
         $article->theme = $formulaire->exportValue('theme');
         $article->id_forum = $formulaire->exportValue('id_forum');
