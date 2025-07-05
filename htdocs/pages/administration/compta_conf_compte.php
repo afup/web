@@ -53,7 +53,6 @@ if ($action == 'lister') {
                                     $valeur['nom_compte'],
                                     );
         } else {
-            dump($valeur);
             $ok = $compta->modifierConfig(
                                     'compta_compte',
                                        $valeur['id'],

@@ -118,7 +118,8 @@ if ($action == 'lister') {
     $formulaire->addElement('date'    , 'date_saisie'     , 'Date saisie', ['language' => 'fr',
         'format'   => 'd F Y',
         'minYear' => date('Y') - 5,
-        'maxYear' => date('Y') + 1]);
+        'maxYear' => date('Y') + 1,
+        'singleInput' => true]);
 
     $formulaire->addElement('select'  , 'idcategorie', 'Type de compte', $compta->obtenirListCategories());
     $formulaire->addElement('text', 'nom_frs', 'Nom fournisseurs' , ['size' => 30, 'maxlength' => 40]);
@@ -146,7 +147,9 @@ if ($action == 'lister') {
     $formulaire->addElement('date'    , 'date_reglement'     , 'Date', ['language' => 'fr',
         'format'   => 'd F Y',
         'minYear' => date('Y') - 5,
-        'maxYear' => date('Y') + 1]);
+        'maxYear' => date('Y') + 1,
+        'singleInput' => true,
+    ]);
     $formulaire->addElement('text', 'obs_regl', 'Info reglement' , ['size' => 30, 'maxlength' => 40]);
 
 
@@ -185,22 +188,19 @@ if ($action == 'lister') {
     if ($formulaire->validate()) {
         $valeur = $formulaire->exportValues();
 
-        $date_ecriture = $valeur['date_saisie']['Y'] . "-" . $valeur['date_saisie']['F'] . "-" . $valeur['date_saisie']['d'] ;
-        $date_regl = $valeur['date_reglement']['Y'] . "-" . $valeur['date_reglement']['F'] . "-" . $valeur['date_reglement']['d'] ;
-
         if ($action === 'ajouter') {
             $ok = $compta->ajouter(
                                     $valeur['idoperation'],
                                     $valeur['idcompte'],
                                     $valeur['idcategorie'],
-                                    $date_ecriture,
+                                    $valeur['date_saisie'],
                                     $valeur['nom_frs'],
                                     $valeur['tva_intra'],
                                     $valeur['montant'],
                                     $valeur['description'],
                                     $valeur['numero'],
                                     $valeur['idmode_regl'],
-                                    $date_regl,
+                                    $valeur['date_reglement'],
                                     $valeur['obs_regl'],
                                     $valeur['idevenement'],
                                     $valeur['comment'],
@@ -218,14 +218,14 @@ if ($action == 'lister') {
                                     $valeur['idoperation'],
                                     $valeur['idcompte'],
                                     $valeur['idcategorie'],
-                                    $date_ecriture,
+                                    $valeur['date_saisie'],
                                     $valeur['nom_frs'],
                                     $valeur['tva_intra'],
                                     $valeur['montant'],
                                     $valeur['description'],
                                     $valeur['numero'],
                                     $valeur['idmode_regl'],
-                                    $date_regl,
+                                    $valeur['date_reglement'],
                                     $valeur['obs_regl'],
                                     $valeur['idevenement'],
                                     $valeur['comment'],
@@ -248,7 +248,7 @@ if ($action == 'lister') {
             if (isset($_POST['soumettrepasser']) && isset($passer)) {
                 $urlredirect = 'index.php?page=compta_journal&action=modifier&id=' . $passer;
             } else {
-                $urlredirect = 'index.php?page=compta_journal&action=lister#L' . $valeur['id'];
+                $urlredirect = 'index.php?page=compta_journal&action=lister#L' . ($valeur['id'] ?? '')    ;
             }
             afficherMessage('L\'écriture a été ' . (($action === 'ajouter') ? 'ajoutée' : 'modifiée'), $urlredirect);
         } else {
