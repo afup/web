@@ -82,9 +82,11 @@ class TalkRepository extends Repository implements MetadataInitializer
             LEFT JOIN afup_sessions_vote_github votes ON votes.session_id = sessions.session_id
             LEFT JOIN afup_user_github aug ON aug.id = votes.user
             INNER JOIN (
-                SELECT afup_sessions.session_id
-                FROM afup_sessions
-                WHERE id_forum = :event
+                SELECT afup_conferenciers_sessions.session_id
+                FROM afup_conferenciers_sessions
+                INNER JOIN afup_sessions ON afup_conferenciers_sessions.session_id = afup_sessions.session_id
+                WHERE afup_sessions.id_forum = :event
+                AND afup_conferenciers_sessions.conferencier_id = :speaker
                 LIMIT 0, 20
             ) as s2 ON s2.session_id = sessions.session_id
             WHERE cs.conferencier_id = :speaker
