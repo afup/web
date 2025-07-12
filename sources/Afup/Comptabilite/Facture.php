@@ -672,7 +672,12 @@ class Facture
         }
 
         $pdf->Ln();
-        $pdf->Cell(10, 5, 'Payable à réception');
+        $pdf->Cell(10, 5, 'Payable à réception.');
+        if ($dateFacture >= new \DateTime('2025-01-01')) {
+            $pdf->Ln();
+            $pdf->MultiCell(190, 5, "Pas d'escompte en cas de paiement anticipé.");
+        }
+
         $pdf->Ln(10);
         if ($coordonnees['observation']) {
             $pdf->Cell(10, 5, 'Observations : ');
