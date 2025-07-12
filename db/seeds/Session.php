@@ -14,6 +14,7 @@ class Session extends AbstractSeed
     public function run(): void
     {
         $dateDebut = DateTimeImmutable::createFromFormat('U', (string) strtotime('-5 days 09:00:00'));
+        $dateFin = DateTimeImmutable::createFromFormat('U', (string) strtotime('-5 days 20:00:00'));
         $date = DateTimeImmutable::createFromFormat('U', (string) strtotime('-1 days 20:00:00'));
 
         $sessions = [
@@ -167,7 +168,7 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
                 'id' => $i,
                 'id_session' => $session['session_id'],
                 'debut' => $dateDebut->format('U'),
-                'fin' => $date->format('U'),
+                'fin' => $dateFin->format('U'),
                 'id_salle' => 1,
                 'id_forum' => Event::ID_FORUM,
                 'keynote' => 0,

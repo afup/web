@@ -28,7 +28,7 @@
                 <td style="text-align: right">
                     <a href="index.php?page=compta_conf_reglement&amp;action=modifier&amp;id={$ecriture.id}"
                        data-position="left center"
-                       data-tooltip="Modifier la ligne {$ecriture.description}"
+                       data-tooltip="Modifier la ligne {$ecriture.description|default:''}"
                        class="compact ui icon button"
                     >
                         <i class="pencil alernate icon"></i>

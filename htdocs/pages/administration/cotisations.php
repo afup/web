@@ -88,11 +88,13 @@ if ($action == 'lister') {
     $formulaire->addElement('date'   , 'date_debut'            , 'Date début', ['language' => 'fr',
         'format'   => 'd F Y',
         'minYear'  => 2002,
-        'maxYear'  => date('Y') + 5]);
+        'maxYear'  => date('Y') + 5,
+        'singleInput' => true]);
     $formulaire->addElement('date'   , 'date_fin'              , 'Date fin', ['language' => 'fr',
         'format'   => 'd F Y',
         'minYear'  => 2002,
-        'maxYear'  => date('Y') + 5]);
+        'maxYear'  => date('Y') + 5,
+        'singleInput' => true]);
     $formulaire->addElement('textarea', 'commentaires'         , 'Commentaires', ['cols' => 42, 'rows' => 5]);
 
     $formulaire->addElement('header', 'boutons'          , '');
@@ -104,9 +106,9 @@ if ($action == 'lister') {
     if ($formulaire->validate()) {
         $nom        = ($_GET['type_personne'] == AFUP_PERSONNES_PHYSIQUES) ? $personne['prenom'] . ' ' . $personne['nom'] : $personne['raison_sociale'];
         $date_debut = $formulaire->exportValue('date_debut');
-        $date_debut = mktime(0, 0, 0, (int) $date_debut['F'], (int) $date_debut['d'],(int) $date_debut['Y']);
+        $date_debut = (new \DateTime($date_debut))->getTimestamp();
         $date_fin   = $formulaire->exportValue('date_fin');
-        $date_fin   = mktime(0, 0, 0, (int) $date_fin['F'], (int) $date_fin['d'], (int) $date_fin['Y']);
+        $date_fin = (new \DateTime($date_fin))->getTimestamp();
 
         if ($action == 'ajouter') {
             if ($cotisations->ajouter(
