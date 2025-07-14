@@ -26,9 +26,9 @@ final readonly class UpdateMailchimpMembersCommand
     ) {}
 
     public function __invoke(
-        #[Option(description: 'Add all active members to the list')]
-        bool $init,
         OutputInterface $output,
+        #[Option(description: 'Add all active members to the list')]
+        bool $init = false,
     ): int {
         $mailchimp = $this->mailchimp;
 
