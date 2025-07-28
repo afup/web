@@ -36,20 +36,15 @@ class FeedArticleRepository
     }
 
     /**
-     * @param string $sort
-     * @param string $direction
-     * @param int    $limit
-     *
      * @return FeedArticle[]
      */
-    public function search($sort, $direction, $limit = 20): array
+    public function search(string $sort, string $direction, int $limit = 20): array
     {
         $sorts = [
             'title' => 'b.titre',
             'content' => 'b.contenu',
             'status' => 'b.etat',
         ];
-        Assertion::integer($limit);
         Assertion::keyExists($sorts, $sort);
         Assertion::inArray($direction, ['asc', 'desc']);
         $qb = $this->connection->createQueryBuilder();
