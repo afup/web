@@ -9,17 +9,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class FeedArticleListAction
+final readonly class FeedArticleListAction
 {
     public function __construct(
-        private readonly FeedArticleRepository $feedArticleRepository,
-        private readonly Environment $twig,
+        private FeedArticleRepository $feedArticleRepository,
+        private Environment $twig,
     ) {}
 
     public function __invoke(Request $request): Response
     {
-        $sort = $request->query->get('sort', 'title');
-        $direction = $request->query->get('direction', 'asc');
+        $sort = $request->query->getString('sort', 'title');
+        $direction = $request->query->getString('direction', 'asc');
 
         return new Response($this->twig->render('admin/planete/feed_article_list.html.twig', [
             'articles' => $this->feedArticleRepository->search($sort, $direction, 20),
