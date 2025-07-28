@@ -78,6 +78,8 @@ services:
 
 ## Base de données
 
+### MySQL
+
 Config par défaut :
 
 - user : `afup`
@@ -87,6 +89,24 @@ Config par défaut :
 - database : `web`
 
 La base de donnée est accessible via le script `docker/bin/mysql`.
+
+### Algolia (recherche à facettes)
+
+Pour que la recherche à facettes fonctionne, il faut créer un compte gratuit sur [www.algolia.com](https://dashboard.algolia.com/users/sign_up) et créer une application Algolia.
+Une fois l'application crée, mettre à jour le fichier `.env` avec les clés d'API automatiquement générées et relancer le projet via Docker.
+
+```dotenv
+ALGOLIA_APP_ID=DVB92YWTPE # Algolia Application ID
+ALGOLIA_BACKEND_API_KEY=78e71e5r5c2Rb353f5a03376gb9878779 # Algolia Write API Key
+ALGOLIA_FRONTEND_API_KEY=74e71e5r5c2Rb353f5a03376gb9878777 # Algolia Search API Key
+```
+
+Lancer les commandes suivantes pour créer les différents index :
+```bash
+php bin/console indexing:meetups
+php bin/console indexing:planete
+php bin/console indexing:talks
+```
 
 ## Tests
 
