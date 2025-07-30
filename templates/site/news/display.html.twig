@@ -43,10 +43,10 @@
                     <h4>{{ article.publishedAt|format_date('long') }}</h4>
 
                     <blockquote>
-                        {{ article.leadParagraph|raw }}
+                        {{ article.formatedLeadParagraph|raw }}
                     </blockquote>
 
-                    {{ article.getContent|raw }}
+                    {{ article.formatedContent|raw }}
 
                     <hr />
 

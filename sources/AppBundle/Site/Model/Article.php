@@ -48,14 +48,23 @@ class Article implements NotifyPropertyInterface
      */
     private $theme;
 
-    /**
-     * @var int
-     */
-    private $eventId;
+    private ?int $eventId = null;
 
     private ?\DateTime $publishedAt = null;
 
     private ?int $state = null;
+
+    private ?int $position = null;
+
+    private ?int $authorId = null;
+
+    public function __construct()
+    {
+        $this->position = 0;
+        $this->state = 0;
+        $this->contentType = 'markdown';
+        $this->publishedAt = new \DateTime();
+    }
 
     /**
      * @return int
@@ -146,7 +155,7 @@ class Article implements NotifyPropertyInterface
     /**
      * @return string
      */
-    public function getLeadParagraph()
+    public function getFormatedLeadParagraph()
     {
         $leadParagraph = $this->leadParagraph;
 
@@ -156,6 +165,11 @@ class Article implements NotifyPropertyInterface
         }
 
         return $leadParagraph;
+    }
+
+    public function getLeadParagraph()
+    {
+        return $this->leadParagraph;
     }
 
     /**
@@ -175,6 +189,11 @@ class Article implements NotifyPropertyInterface
      * @return string
      */
     public function getContent()
+    {
+        return $this->content;
+    }
+
+    public function getFormatedContent()
     {
         $content = $this->content;
 
@@ -303,8 +322,8 @@ class Article implements NotifyPropertyInterface
      */
     public function getTeaser()
     {
-        if (strlen($leadParagraph = $this->getLeadParagraph()) !== 0) {
-            return strip_tags($leadParagraph);
+        if (strlen((string) $leadParagraph = $this->getLeadParagraph()) !== 0) {
+            return strip_tags((string) $leadParagraph);
         }
 
         return  substr(strip_tags($this->getContent()), 0, 200);
@@ -338,5 +357,35 @@ class Article implements NotifyPropertyInterface
         $this->propertyChanged('state', $this->state, $state);
         $this->state = $state;
         return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): self
+    {
+        $this->propertyChanged('position', $this->position, $position);
+        $this->position = $position;
+        return $this;
+    }
+
+
+    public function getAuthorId(): ?int
+    {
+        return $this->authorId;
+    }
+
+    public function setAuthorId(?int $authorId): self
+    {
+        $this->propertyChanged('authorId', $this->authorId, $authorId);
+        $this->authorId = $authorId;
+        return $this;
+    }
+
+    public function usesMarkdown(): bool
+    {
+        return $this->getContentType() === 'markdown';
     }
 }

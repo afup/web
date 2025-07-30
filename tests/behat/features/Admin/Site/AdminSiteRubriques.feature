@@ -35,7 +35,7 @@ Feature: Administration - Partie Site
     Then I should see "Liste des articles"
     When I follow "Ajouter"
     Then I should see "Ajouter un article"
-    Then The "id_site_rubrique" field should only contain the follow values '["", "Actualités", "Évènements"]'
+    Then The "article[rubricId]" field should only contain the follow values '["", "Actualités", "Évènements"]'
 
     # suppression d'une rubrique
     When I follow "Rubriques"

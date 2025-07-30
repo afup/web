@@ -6,6 +6,7 @@ namespace AppBundle\Site\Model\Repository;
 
 use Afup\Site\Corporate\Rubrique;
 use AppBundle\Site\Model\Article;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -239,6 +240,39 @@ class ArticleRepository extends Repository implements MetadataInitializer
         return $events->first();
     }
 
+    public function getAllArticlesWithCategoryAndTheme(string $ordre = 'titre', string $direction = 'desc', string $filtre = '%'): CollectionInterface
+    {
+        if ($direction !== 'desc' && $direction !== 'asc') {
+            $direction = 'desc';
+        }
+        $metadata = $this->getMetadata();
+        $columnNameFound = false;
+        foreach ($metadata->getFields() as $field) {
+            if ($field['columnName'] === $ordre) {
+                $columnNameFound = true;
+                break;
+            }
+        }
+        if ($columnNameFound === false) {
+            $ordre = 'nom';
+        }
+
+        $requete = 'SELECT  afup_site_article.*, afup_site_rubrique.nom as nom_rubrique, afup_forum.titre as nom_forum
+        FROM afup_site_article 
+        INNER JOIN afup_site_rubrique on afup_site_article.id_site_rubrique = afup_site_rubrique.id 
+        LEFT JOIN afup_forum on afup_site_article.id_forum = afup_forum.id 
+        WHERE 1 = 1 ';
+        if ($filtre) {
+            $requete .= 'AND (afup_site_article.titre LIKE :filtre OR afup_site_article.contenu LIKE :filtre) ';
+        }
+
+        $requete .= 'ORDER BY ' . $ordre . ' ' . $direction;
+        $query = $this->getQuery($requete);
+        $query->setParams(['filtre' => '%' . $filtre . '%']);
+
+        return $query->query($this->getCollection(new HydratorArray()));
+    }
+
     /**
      * @inheritDoc
      */
@@ -305,11 +339,22 @@ class ArticleRepository extends Repository implements MetadataInitializer
                 'type' => 'datetime',
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'serialize' => [ 'format' => 'U'],
                 ],
             ])
             ->addField([
                 'columnName' => 'etat',
                 'fieldName' => 'state',
+                'type' => 'int',
+            ])
+            ->addField([
+                'columnName' => 'position',
+                'fieldName' => 'position',
+                'type' => 'int',
+            ])
+            ->addField([
+                'columnName' => 'id_personne_physique',
+                'fieldName' => 'authorId',
                 'type' => 'int',
             ])
         ;
