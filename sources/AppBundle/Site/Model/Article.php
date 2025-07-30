@@ -51,11 +51,23 @@ class Article implements NotifyPropertyInterface
     /**
      * @var int
      */
-    private $eventId;
+    private ?int $eventId = null;
 
     private ?\DateTime $publishedAt = null;
 
     private ?int $state = null;
+
+    private ?int $position = null;
+
+    private ?int $authorId = null;
+
+    public function __construct()
+    {
+        $this->position = 0;
+        $this->state = 0;
+        $this->contentType = 'markdown';
+        $this->publishedAt = new \DateTime();
+    }
 
     /**
      * @return int
@@ -338,5 +350,53 @@ class Article implements NotifyPropertyInterface
         $this->propertyChanged('state', $this->state, $state);
         $this->state = $state;
         return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    /**
+     * @param int $position
+     *
+     * @return $this
+     */
+    public function setPosition($position): self
+    {
+        $state = (int) $position;
+        $this->propertyChanged('position', $this->position, $position);
+        $this->position = $position;
+        return $this;
+    }
+
+
+    /**
+     * @return int|null
+     */
+    public function getAuthorId(): ?int
+    {
+        return $this->authorId;
+    }
+
+    /**
+     * @param $authorId
+     *
+     * @return $this
+     */
+    public function setAuthorId($authorId): self
+    {
+        $state = (int) $authorId;
+        $this->propertyChanged('authorId', $this->authorId, $authorId);
+        $this->authorId = $authorId;
+        return $this;
+    }
+
+    public function useMarkdown(): bool
+    {
+        return $this->getContentType() === 'markdown';
     }
 }
