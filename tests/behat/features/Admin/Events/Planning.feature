@@ -13,10 +13,8 @@ Feature: Administration - Évènements - Planning des sessions
     # modifier la programmation  la session
     When I follow "Modifier la session Jouons tous ensemble à un petit jeu"
     Then I should see "Modifier les horaires d'une session pour le forum"
-    And I select "10" from "debut[H]"
-    And I select "30" from "debut[i]"
-    And I select "11" from "fin[H]"
-    And I select "30" from "fin[i]"
+    When I change time of "debut" with "10:30"
+    When I change time of "fin" with "11:30"
     When I fill in "joindin" with ""
     And I press "Soumettre"
     Then I should see "Le planning de la session a été modifiée"

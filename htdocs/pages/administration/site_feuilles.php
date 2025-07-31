@@ -73,7 +73,7 @@ if ($action == 'lister') {
     $formulaire->addElement('static'  , 'note'                 , ''          , '<img src="../../templates/site/images/' . $feuille->image . '" />');
     $formulaire->addElement('text'	  , 'image_alt'            , 'Texte alternatif pour l\'image', ['size' => 60, 'maxlength' => 255]);
     $formulaire->addElement('hidden'  , 'image');
-    $formulaire->addElement('date'    , 'date'                 , 'Date'      , ['language' => 'fr', 'minYear' => 2001, 'maxYear' => date('Y')]);
+    $formulaire->addElement('date'    , 'date'                 , 'Date'      , ['language' => 'fr', 'minYear' => 2001, 'maxYear' => date('Y'), 'singleInput' => true]);
     $formulaire->addElement('select'  , 'position'             , 'Position'  , $feuille->positionable());
     $formulaire->addElement('select'  , 'etat'                 , 'Etat'      , [-1 => 'Hors ligne', 0 => 'En attente', 1 => 'En ligne']);
     $formulaire->addElement('textarea'  , 'patterns'                 , 'Patterns URL');
@@ -102,7 +102,7 @@ if ($action == 'lister') {
         $feuille->image_alt = $formulaire->exportValue('image_alt');
         $feuille->position = $formulaire->exportValue('position');
         $date = $formulaire->exportValue('date');
-        $feuille->date = mktime(0, 0, 0, (int) $date['M'], (int) $date['d'], (int) $date['Y']);
+        $feuille->date = (new \DateTime($date))->getTimestamp();
         $feuille->etat = $formulaire->exportValue('etat');
         $feuille->patterns = $formulaire->exportValue('patterns');
 
