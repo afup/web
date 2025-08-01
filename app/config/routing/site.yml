@@ -1,38 +1,38 @@
 become_member:
   path: /devenir-membre
-  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::becomeMember }
+  defaults: { _controller: AppBundle\Controller\Website\Membership\BecomeMemberAction }
   options:
     sitemap: true
 
 company_membership:
   path: /adherer/entreprise
-  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::company }
+  defaults: { _controller: AppBundle\Controller\Website\Membership\CompanyAction }
   options:
     sitemap: true
 
 member_membership:
   path: /adherer/particulier
-  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::member }
+  defaults: { _controller: AppBundle\Controller\Website\Membership\RegisterAction }
   options:
     sitemap: true
 
 company_membership_payment:
   path: /adherer/entreprise/paiement-{invoiceNumber}-{token}
-  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::payment }
+  defaults: { _controller: AppBundle\Controller\Website\Membership\PaymentAction }
   requirements:
     invoiceNumber: 'COTIS-[0-9]{4}-[0-9]+'
     token: '.+'
 
 company_membership_invoice:
   path: /adherer/entreprise/invoice-{invoiceNumber}-{token}
-  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::invoice }
+  defaults: { _controller: AppBundle\Controller\Website\Membership\InvoiceAction }
   requirements:
     invoiceNumber: 'COTIS-[0-9]{4}-[0-9]+'
     token: '.+'
 
 company_invitation:
   path: /adherer/invitation/{invitationId}-{token}
-  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::memberInvitation }
+  defaults: { _controller: AppBundle\Controller\Website\Membership\MemberInvitationAction }
   requirements:
     invitationId: '\d+'
     token: '.+'
@@ -59,7 +59,7 @@ newsletter_subscribe:
 
 membership_payment:
   path: /paybox-callback
-  defaults: { _controller: AppBundle\Controller\Website\MemberShipController::payboxCallback }
+  defaults: { _controller: AppBundle\Controller\Website\Membership\PayboxCallbackAction }
 
 membership_payment_redirect:
   path: /paybox-redirect/{type}
