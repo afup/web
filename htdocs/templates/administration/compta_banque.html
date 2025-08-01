@@ -2,9 +2,9 @@
     <h2>Journal de banque</h2>
 
     <div class="ui top attached tabular menu">
-        {foreach from=$listeComptes item=compte key=id}
-        <a class="{if $id == $compte_id }active{/if} item" href="index.php?id_periode={$smarty.get.id_periode|default:''}&amp;page=compta_banque&amp;compte={$id}&amp;action=lister">
-            {$compte}
+        {foreach from=$listeComptes item=compte}
+        <a class="{if $compte['id'] == $compte_id }active{/if} item" href="index.php?id_periode={$smarty.get.id_periode|default:''}&amp;page=compta_banque&amp;compte={$compte['id']}&amp;action=lister">
+            {$compte['nom_compte']}
         </a>
         {/foreach}
     </div>
