@@ -354,6 +354,35 @@ class Comptabilite
         }
     }
 
+    public function obtenirListeComptesActifs($filtre = '', ?string $where = '')
+    {
+        $requete = 'SELECT ';
+        $requete .= 'id, nom_compte ';
+        $requete .= 'FROM  ';
+        $requete .= 'compta_compte  ';
+        $requete .= 'WHERE archived_at IS NULL ';
+        if ($where) {
+            $requete .= 'AND id=' . $where . ' ';
+        }
+
+        $requete .= 'ORDER BY ';
+        $requete .= 'nom_compte ';
+
+        if ($where) {
+            return $this->_bdd->obtenirEnregistrement($requete);
+        } elseif ($filtre) {
+            return $this->_bdd->obtenirTous($requete);
+        } else {
+            $data = $this->_bdd->obtenirTous($requete);
+            $result[] = "";
+            foreach ($data as $row) {
+                $result[$row['id']] = $row['nom_compte'];
+            }
+
+            return $result;
+        }
+    }
+
     public function obtenirListCategories($filtre = '', ?string $where = '', $usedInAccountingJournal = false)
     {
         $requete = 'SELECT ';
