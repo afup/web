@@ -17,3 +17,23 @@ admin_site_rubriques_delete:
   defaults: {_controller: AppBundle\Controller\Admin\Site\DeleteRubriqueAction}
   requirements:
     id: '\d+'
+
+admin_site_articles_list:
+  path: /articles
+  defaults: {_controller: AppBundle\Controller\Admin\Site\Article\ListArticlesAction}
+
+admin_site_articles_add:
+  path: /articles/add
+  defaults: {_controller: AppBundle\Controller\Admin\Site\Article\AddArticleAction}
+
+admin_site_articles_edit:
+  path: /articles/edit/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Site\Article\EditArticleAction}
+  requirements:
+    id: '\d+'
+
+admin_site_articles_delete:
+  path: /articles/delete/{id}/{token}
+  defaults: {_controller: AppBundle\Controller\Admin\Site\Article\DeleteArticleAction}
+  requirements:
+    id: '\d+'
