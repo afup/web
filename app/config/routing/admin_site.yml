@@ -37,3 +37,23 @@ admin_site_articles_delete:
   defaults: {_controller: AppBundle\Controller\Admin\Site\Article\DeleteArticleAction}
   requirements:
     id: '\d+'
+
+admin_site_sheets_list:
+  path: /feuilles
+  defaults: {_controller: AppBundle\Controller\Admin\Site\Sheet\ListSheetsAction}
+
+admin_site_sheets_add:
+  path: /feuilles/add
+  defaults: {_controller: AppBundle\Controller\Admin\Site\Sheet\AddSheetAction}
+
+admin_site_sheets_edit:
+  path: /feuilles/edit/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Site\Sheet\EditSheetAction}
+  requirements:
+    id: '\d+'
+
+admin_site_sheets_delete:
+  path: /feuilles/delete/{id}/{token}
+  defaults: {_controller: AppBundle\Controller\Admin\Site\Sheet\DeleteSheetAction}
+  requirements:
+    id: '\d+'
