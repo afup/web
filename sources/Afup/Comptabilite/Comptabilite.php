@@ -329,7 +329,7 @@ class Comptabilite
     public function obtenirListComptes($filtre = '', ?string $where = '')
     {
         $requete = 'SELECT ';
-        $requete .= 'id, nom_compte ';
+        $requete .= 'id, nom_compte, archived_at ';
         $requete .= 'FROM  ';
         $requete .= 'compta_compte  ';
         if ($where) {
