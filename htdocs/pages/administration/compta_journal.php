@@ -108,7 +108,7 @@ if ($action == 'lister') {
     // facture associé à un évènement
     $formulaire->addElement('header'  , ''                         , 'Sélectionner un Journal');
     $formulaire->addElement('select'  , 'idoperation', 'Type d\'opération', $compta->obtenirListOperations());
-    $formulaire->addElement('select'  , 'idcompte'   , 'Compte', $compta->obtenirListComptes());
+    $formulaire->addElement('select'  , 'idcompte'   , 'Compte', $compta->obtenirListeComptesActifs());
     $formulaire->addElement('select'  , 'idevenement', 'Evenement', $compta->obtenirListEvenements());
 
     //detail facture
