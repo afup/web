@@ -24,8 +24,8 @@ if ($action == 'lister') {
     $formulaire = instancierFormulaire();
 
     if ($action === 'modifier') {
-        $champsRecup = $compta->obtenirListCategories('',$_GET['id']);
-        $champs['categorie']          = $champsRecup['categorie'];
+        $champsRecup = $compta->obtenirListComptes('',$_GET['id']);
+        $champs['nom_compte'] = $champsRecup['nom_compte'];
 
         $formulaire->setDefaults($champs);
 
