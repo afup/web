@@ -37,6 +37,11 @@ class AccountRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'name',
                 'type' => 'string',
             ])
+            ->addField([
+                'columnName' => 'archived_at',
+                'fieldName' => 'archivedAt',
+                'type' => 'datetime',
+            ])
         ;
 
         return $metadata;

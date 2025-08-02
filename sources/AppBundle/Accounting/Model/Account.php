@@ -16,6 +16,8 @@ class Account implements NotifyPropertyInterface
 
     private ?string $name = null;
 
+    private ?DateTime $archivedAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -37,6 +39,19 @@ class Account implements NotifyPropertyInterface
     {
         $this->propertyChanged('name', $this->name, $name);
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getArchivedAt(): ?DateTime
+    {
+        return $this->archivedAt;
+    }
+
+    public function setArchivedAt(?DateTime $archivedAt): self
+    {
+        $this->propertyChanged('archivedAt', $this->archivedAt, $archivedAt);
+        $this->archivedAt = $archivedAt;
 
         return $this;
     }
