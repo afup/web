@@ -5,7 +5,7 @@
 
     <div class="ui bottom attached segment">
         <div class="ui menu">
-            <a href="index.php?page=compta_conf_compte&amp;action=ajouter" class="item">
+            <a href="/admin/accounting/accounts/add" class="item">
                 <div data-tooltip="Ajouter un compte" data-position="bottom left">
                     <i class="icon plus square"></i>
                     Ajouter
@@ -25,7 +25,7 @@
                     <tr>
                         <td>{$ecriture.nom_compte}</td>
                         <td style="text-align: right">
-                            <a href="index.php?page=compta_conf_compte&amp;action=modifier&amp;id={$ecriture.id}"
+                            <a href="/admin/accounting/accounts/edit/{$ecriture.id}"
                                data-position="left center"
                                data-tooltip="Modifier la ligne {$ecriture.nom_compte}"
                                class="compact ui icon button"
