@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Subscriber;
 
-use Afup\Site\Corporate\Branche;
 use Afup\Site\Corporate\Feuille;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
@@ -17,6 +16,7 @@ use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Model\Article;
 use AppBundle\Site\Model\Repository\ArticleRepository;
+use AppBundle\Site\Model\Repository\SheetRepository;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
 use Presta\SitemapBundle\Service\UrlContainerInterface;
 use Presta\SitemapBundle\Sitemap\Url\GoogleVideo;
@@ -34,6 +34,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
         private readonly EventRepository $eventRepository,
         private readonly ArticleRepository $articleRepository,
         private readonly CompanyMemberRepository $companyMemberRepository,
+        private readonly SheetRepository $sheetRepository,
     ) {}
 
     public static function getSubscribedEvents(): array
@@ -194,9 +195,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
 
     private function fromFeuilleId(int $id, UrlContainerInterface $urls): void
     {
-        $branche = new Branche();
-
-        $leafs = $branche->feuillesEnfants($id);
+        $leafs = $this->sheetRepository->getActiveChildrenByParentId($id);
         foreach ($leafs as $leaf) {
             if (!$leaf['lien'] || !str_starts_with((string) $leaf['lien'], 'http')) {
                 continue;

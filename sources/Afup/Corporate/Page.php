@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Afup\Site\Corporate;
 
+use AppBundle\Site\Model\Repository\SheetRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 final readonly class Page
 {
     private _Site_Base_De_Donnees $bdd;
 
-    public function __construct()
+    public function __construct(private readonly SheetRepository $sheetRepository)
     {
         $this->bdd = new _Site_Base_De_Donnees();
     }
 
     public function header($url = null, UserInterface $user = null): string
     {
-        $branche = new Branche($this->bdd);
         $url = urldecode((string) $url);
         $str = '<ul>';
 
-        $feuillesEnfants = $branche->feuillesEnfants(Feuille::ID_FEUILLE_HEADER);
+        $feuillesEnfants = iterator_to_array($this->sheetRepository->getActiveChildrenByParentId(Feuille::ID_FEUILLE_HEADER));
 
         if ($user instanceof UserInterface) {
             $feuillesEnfants[] = [
@@ -72,9 +72,9 @@ final readonly class Page
             }
 
             if (false === $isCurrent) {
-                $enfants = $branche->feuillesEnfants($feuille['id']);
+                $enfants = $this->sheetRepository->getActiveChildrenByParentId($feuille['id']);
                 foreach ($enfants as $feuilleEnfant) {
-                    foreach ($branche->feuillesEnfants($feuilleEnfant['id']) as $feuillesEnfant2) {
+                    foreach ($this->sheetRepository->getActiveChildrenByParentId($feuilleEnfant['id']) as $feuillesEnfant2) {
                         if (str_contains($url, (string) $feuillesEnfant2['lien'])) {
                             $isCurrent = true;
                         }
@@ -99,13 +99,11 @@ final readonly class Page
      */
     public function footer(): array
     {
-        $branche = new Branche($this->bdd);
-
         $footerColumns = [];
-        foreach ($branche->feuillesEnfants(Feuille::ID_FEUILLE_FOOTER) as $feuilleColonne) {
+        foreach ($this->sheetRepository->getActiveChildrenByParentId(Feuille::ID_FEUILLE_FOOTER) as $feuilleColonne) {
             $footerColumns[] = [
-                'nom' => $branche->getNom($feuilleColonne['id']),
-                'items' => $branche->feuillesEnfants($feuilleColonne['id']),
+                'nom' => $feuilleColonne['nom'],
+                'items' => $this->sheetRepository->getActiveChildrenByParentId($feuilleColonne['id']),
             ];
         }
 
