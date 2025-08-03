@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\Global;
 
 use Afup\Site\Corporate\Articles;
-use Afup\Site\Corporate\Branche;
 use Afup\Site\Corporate\Feuille;
 use Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
 use Algolia\AlgoliaSearch\SearchClient;
 use AppBundle\Event\Model\Meetup;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
+use AppBundle\Site\Model\Repository\SheetRepository;
 use AppBundle\Twig\ViewRenderer;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
@@ -33,6 +33,7 @@ final class HomeAction extends AbstractController
         private readonly TalkRepository $talkRepository,
         #[Autowire('%home_algolia_enabled%')]
         private readonly bool $homeAlgoliaEnabled,
+        private readonly SheetRepository $sheetRepository,
     ) {}
 
     public function __invoke(): Response
@@ -40,8 +41,7 @@ final class HomeAction extends AbstractController
         $articles = new Articles();
         $derniers_articles = $articles->chargerDerniersAjouts(self::MAX_ARTICLES);
 
-        $branche = new Branche();
-        $enfants = $branche->feuillesEnfants(Feuille::ID_FEUILLE_COLONNE_DROITE);
+        $enfants = iterator_to_array($this->sheetRepository->getActiveChildrenByParentId(Feuille::ID_FEUILLE_COLONNE_DROITE));
 
         $premiereFeuille = array_shift($enfants);
         $deuxiemeFeuille = array_shift($enfants);

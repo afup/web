@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Global;
 
-use Afup\Site\Corporate\Branche;
 use Afup\Site\Corporate\Feuille;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Model\Repository\ArticleRepository;
+use AppBundle\Site\Model\Repository\SheetRepository;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,24 +21,23 @@ final class HtmlSitemapAction extends AbstractController
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly ArticleRepository $articleRepository,
         private readonly TalkRepository $talkRepository,
+        private readonly SheetRepository $sheetRepository,
     ) {}
 
     public function __invoke(): Response
     {
-        $branche = new Branche();
-
         return $this->view->render('site/sitemap.html.twig', [
-            'pages' => $this->buildLeafs($branche, Feuille::ID_FEUILLE_HEADER),
-            'association' => $this->buildLeafs($branche, Feuille::ID_FEUILLE_ANTENNES),
+            'pages' => $this->buildLeafs(Feuille::ID_FEUILLE_HEADER),
+            'association' => $this->buildLeafs(Feuille::ID_FEUILLE_ANTENNES),
             'members' => $this->members(),
             'news' => $this->news(),
             'talks' => $this->talks(),
         ]);
     }
 
-    private function buildLeafs(Branche $branche, int $id): array
+    private function buildLeafs(int $id): array
     {
-        $leafs = $branche->feuillesEnfants($id);
+        $leafs = $this->sheetRepository->getActiveChildrenByParentId($id);
 
         $pages = [];
         foreach ($leafs as $leaf) {

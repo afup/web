@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Twig;
 
 use Afup\Site\Corporate\Page;
+use AppBundle\Site\Model\Repository\SheetRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,7 @@ class ViewRenderer
         private readonly Security $security,
         private readonly RequestStack $requestStack,
         private readonly Environment $twig,
+        private readonly SheetRepository $sheetRepository,
     ) {}
 
 
@@ -33,7 +35,7 @@ class ViewRenderer
         $blocks = [];
         if ($this->requestStack->getCurrentRequest()) {
             $requestUri = $this->requestStack->getCurrentRequest()->getRequestUri();
-            $page = new Page();
+            $page = new Page($this->sheetRepository);
             $blocks = [
                 'header' => $page->header($requestUri, $this->security->getUser()),
                 'sidebar' => $page->getRightColumn(),

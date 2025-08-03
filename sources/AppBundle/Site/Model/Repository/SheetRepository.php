@@ -49,6 +49,13 @@ class SheetRepository extends Repository implements MetadataInitializer
         return $query->query($this->getCollection(new HydratorArray()));
     }
 
+    public function getActiveChildrenByParentId(int $parentId)
+    {
+        $sqlQuery = 'SELECT * FROM afup_site_feuille WHERE id_parent = :parentId and etat = 1';
+        $query = $this->getPreparedQuery($sqlQuery)->setParams(['parentId' => $parentId]);
+        return $query->query($this->getCollection(new HydratorArray()));
+    }
+
     /**
      * @inheritDoc
      */
