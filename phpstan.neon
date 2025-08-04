@@ -8,3 +8,6 @@ parameters:
     stubFiles:
             - tests/stubs/Ting/Repository/Repository.php.stub
             - tests/stubs/Ting/Repository/RepositoryFactory.php.stub
+
+rules:
+    - AppBundle\StaticAnalysis\Rule\NoDebugFunctionsRule
