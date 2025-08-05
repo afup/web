@@ -274,6 +274,7 @@ parameters:
                 membre_administrateur:
                     nom: 'Administrateurs du site'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/administrators'
                 logs:
                     nom: 'Logs'
                     niveau: 'ROLE_ADMIN'
