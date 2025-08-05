@@ -7,10 +7,10 @@ Feature: Administration - Trésorerie - Configuration
     Then the ".content h2" element should contain "Configuration"
     When I follow "Évènements"
     When I follow "Ajouter"
-    Then the ".content h2" element should contain "Ajouter une ligne configuration 'Evenement'"
-    When I fill in "evenement" with "Un super évènement"
-    And I press "soumettre"
-    Then the ".content .message" element should contain "L'écriture a été ajoutée"
+    Then the ".content h2" element should contain "Ajouter un évènement"
+    When I fill in "event[name]" with "Un super évènement"
+    And I press "Ajouter"
+    Then the ".content .message" element should contain "L'évènement a été ajouté"
     And I should see "Un super évènement"
 
   @reloadDbWithTestData
