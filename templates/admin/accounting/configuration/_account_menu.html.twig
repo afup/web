@@ -1,7 +1,7 @@
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 <div class="ui top attached tabular menu">
     <a class="{% if currentPath == path('admin_accounting_events_list') %}active{% endif %} item" href="{{ url('admin_accounting_events_list') }}">Évènements</a>
-    <a class=" item" href="/pages/administration/index.php?page=compta_conf_categorie">Catégories</a>
+    <a class="{% if currentPath == path('admin_accounting_categories_list') %}active{% endif %} item" href="{{ url('admin_accounting_categories_list') }}">Catégories</a>
     <a class="{% if currentPath == path('admin_accounting_operations_list') %}active{% endif %} item" href="{{ url('admin_accounting_operations_list') }}">Opérations</a>
     <a class="{% if currentPath == path('admin_accounting_payments_list') %}active{% endif %} item" href="{{ url('admin_accounting_payments_list') }}">Modes de réglements</a>
     <a class="{% if currentPath == path('admin_accounting_accounts_list') %}active{% endif %} item" href="{{ url('admin_accounting_accounts_list') }}">Comptes</a>

@@ -1,0 +1,52 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+
+    <h2>Configuration</h2>
+
+    {% include 'admin/accounting/configuration/_account_menu.html.twig' %}
+
+    <div class="ui bottom attached segment">
+        <div class="ui menu">
+            <a href="{{ url('admin_accounting_categories_add') }}" class="item">
+                <div data-tooltip="Ajouter une catégorie" data-position="bottom left">
+                    <i class="icon plus square"></i>
+                    Ajouter
+                </div>
+            </a>
+        </div>
+
+
+        <table class="ui table striped compact celled">
+            <thead>
+            <tr>
+                <th>Catégorie</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if categories|length > 0 %}
+                {% for category in categories %}
+                    <tr>
+                        <td>{{ category.name }}</td>
+                        <td style="text-align: right">
+                            <a href="{{ url('admin_accounting_categories_edit', {id: category.id}) }}"
+                               data-position="left center"
+                               data-tooltip="Modifier la ligne"
+                               class="compact ui icon button"
+                            >
+                                <i class="pencil alernate icon"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td><em>Aucune ecriture actuellement</em></td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

@@ -20,10 +20,10 @@ Feature: Administration - Trésorerie - Configuration
     Then the ".content h2" element should contain "Configuration"
     When I follow "Catégories"
     When I follow "Ajouter"
-    Then the ".content h2" element should contain "Ajouter une categorie"
-    When I fill in "categorie" with "Une super catégorie"
-    And I press "soumettre"
-    Then the ".content .message" element should contain "L'écriture a été ajoutée"
+    Then the ".content h2" element should contain "Ajouter une catégorie"
+    When I fill in "category[name]" with "Une super catégorie"
+    And I press "Ajouter"
+    Then the ".content .message" element should contain "La catégorie a été ajoutée"
     And I should see "Une super catégorie"
 
   @reloadDbWithTestData
