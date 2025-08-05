@@ -116,3 +116,7 @@ admin_logs:
     page: 1
   requirements:
     id: '\d+'
+
+admin_administrators:
+  path: /administrators
+  defaults: {_controller: AppBundle\Controller\Admin\AdministratorsListAction}
