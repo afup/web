@@ -40,16 +40,16 @@ Feature: Administration - Trésorerie - Configuration
     And I should see "Une super opération"
 
   @reloadDbWithTestData
-  Scenario: Création/liste des opérations
+  Scenario: Création/liste des types de règlements
     Given I am logged in as admin and on the Administration
     When I follow "Configuration"
     Then the ".content h2" element should contain "Configuration"
     When I follow "Modes de réglements"
     When I follow "Ajouter"
-    Then the ".content h2" element should contain "Ajouter un type de reglement"
-    When I fill in "reglement" with "Un super règlement"
-    And I press "soumettre"
-    Then the ".content .message" element should contain "L'écriture a été ajoutée"
+    Then the ".content h2" element should contain "Ajouter un type de règlement"
+    When I fill in "payment[name]" with "Un super règlement"
+    And I press "Ajouter"
+    Then the ".content .message" element should contain "Le type de règlement a été ajouté"
     And I should see "Un super règlement"
 
   @reloadDbWithTestData
