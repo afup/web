@@ -33,7 +33,7 @@ $smarty->assign('id_periode', $id_periode);
 $listPeriode = $compta->obtenirListPeriode();
 $smarty->assign('listPeriode', $listPeriode);
 
-$listeComptes = $compta->obtenirListeComptesActifs('');
+$listeComptes = $compta->obtenirListeComptesActifs();
 $smarty->assign('listeComptes', $listeComptes);
 $smarty->assign('compte_id', $compte);
 

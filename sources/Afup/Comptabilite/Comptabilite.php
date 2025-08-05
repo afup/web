@@ -354,33 +354,21 @@ class Comptabilite
         }
     }
 
-    public function obtenirListeComptesActifs($filtre = '', ?string $where = '')
+    /**
+     * @return array<int, array{'id': int, 'nom_compte': string}>
+     */
+    public function obtenirListeComptesActifs(): array
     {
-        $requete = 'SELECT ';
-        $requete .= 'id, nom_compte ';
-        $requete .= 'FROM  ';
-        $requete .= 'compta_compte  ';
-        $requete .= 'WHERE archived_at IS NULL ';
-        if ($where) {
-            $requete .= 'AND id=' . $where . ' ';
+        $requete = 'SELECT id, nom_compte FROM compta_compte ';
+        $requete .= 'WHERE archived_at IS NULL ORDER BY nom_compte ';
+
+        $data = $this->_bdd->obtenirTous($requete);
+        $result = [];
+        foreach ($data as $row) {
+            $result[$row['id']] = $row['nom_compte'];
         }
 
-        $requete .= 'ORDER BY ';
-        $requete .= 'nom_compte ';
-
-        if ($where) {
-            return $this->_bdd->obtenirEnregistrement($requete);
-        } elseif ($filtre) {
-            return $this->_bdd->obtenirTous($requete);
-        } else {
-            $data = $this->_bdd->obtenirTous($requete);
-            $result[] = "";
-            foreach ($data as $row) {
-                $result[$row['id']] = $row['nom_compte'];
-            }
-
-            return $result;
-        }
+        return $result;
     }
 
     public function obtenirListCategories($filtre = '', ?string $where = '', $usedInAccountingJournal = false)

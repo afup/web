@@ -17,14 +17,14 @@
     <div class="menu">
         {% if account.archivedAt %}
             <a href="{{ path('admin_accounting_accounts_restore', {id: account.id}) }}" class="item">
-                <div data-tooltip="Restaurer un compte l'affiche à nouveau dans le sélecteur des différentes pages" data-position="bottom left">
+                <div data-tooltip="Restaurer un compte l'affiche à nouveau dans le journal bancaire" data-position="bottom left">
                     <i class="icon archive"></i>
                     Restaurer ce compte
                 </div>
             </a>
         {% else %}
             <a href="{{ path('admin_accounting_accounts_archive', {id: account.id}) }}" class="item">
-                <div data-tooltip="Archiver un compte le masque dans le sélecteur des différentes pages" data-position="bottom left">
+                <div data-tooltip="Archiver un compte le masque dans le journal bancaire" data-position="bottom left">
                     <i class="icon archive"></i>
                     Archiver ce compte
                 </div>

@@ -19,7 +19,7 @@ Feature: Administration - Trésorerie - Journal
     # Ajout d'une dépense
     When I follow "Ajouter"
     And I select "1" from "idoperation"
-    And I select "5" from "idcompte"
+    And I select "1" from "idcompte"
     And I select "5" from "idevenement"
     And I select "1" from "date_saisie[d]"
     And I select "1" from "date_saisie[F]"
@@ -46,7 +46,7 @@ Feature: Administration - Trésorerie - Journal
     # Ajout d'une recette
     When I follow "Ajouter"
     And I select "2" from "idoperation"
-    And I select "5" from "idcompte"
+    And I select "1" from "idcompte"
     And I select "5" from "idevenement"
     And I select "2" from "date_saisie[d]"
     And I select "1" from "date_saisie[F]"
