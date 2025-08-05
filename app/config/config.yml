@@ -382,7 +382,13 @@ ting:
                 default:
                     connection: main
                     database: '%database_name%'
-
+        accounting:
+            namespace: AppBundle\Accounting\Model\Repository
+            directory: "@AppBundle/Accounting/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: "%database_name%"
         association:
             namespace : AppBundle\Association\Model\Repository
             directory : "@AppBundle/Association/Model/Repository"
