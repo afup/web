@@ -1,3 +1,7 @@
+admin_accounting_accounts_list:
+  path: /accounts/list
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ListAccountAction}
+
 admin_accounting_accounts_edit:
   path: /accounts/edit/{id}
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditAccountAction}
