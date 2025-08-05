@@ -37,3 +37,17 @@ admin_accounting_payments_edit:
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditPaymentAction}
   requirements:
     id: '\d+'
+
+admin_accounting_operations_list:
+  path: /operations/list
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ListOperationAction}
+
+admin_accounting_operations_add:
+  path: /operations/add
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\AddOperationAction}
+
+admin_accounting_operations_edit:
+  path: /operations/edit/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditOperationAction}
+  requirements:
+    id: '\d+'
