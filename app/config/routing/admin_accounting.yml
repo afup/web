@@ -79,3 +79,17 @@ admin_accounting_events_edit:
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditEventAction}
   requirements:
     id: '\d+'
+
+admin_accounting_rules_list:
+  path: /rules/list
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ListRuleAction}
+
+admin_accounting_rules_add:
+  path: /rules/add
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\AddRuleAction}
+
+admin_accounting_rules_edit:
+  path: /rules/edit/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditRuleAction}
+  requirements:
+    id: '\d+'
