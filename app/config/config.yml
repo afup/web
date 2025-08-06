@@ -200,9 +200,10 @@ parameters:
             niveau: 'ROLE_ADMIN'
             icon: "money bill alternate"
             elements:
-                compta_devis:
+                admin_cash_estimate_list:
                     nom: 'Devis'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/cash/estimate/list'
                 compta_facture:
                     nom: 'Factures'
                     niveau: 'ROLE_ADMIN'
@@ -371,6 +372,13 @@ ting:
         event:
             namespace : AppBundle\Event\Model\Repository
             directory : "@AppBundle/Event/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: '%database_name%'
+        cash:
+            namespace : AppBundle\Cash\Model\Repository
+            directory : "@AppBundle/Cash/Model/Repository"
             options:
                 default:
                     connection: main
