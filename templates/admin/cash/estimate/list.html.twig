@@ -1,0 +1,69 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Liste des devis</h2>
+
+    <div class="ui menu">
+        <a href="{{ path('admin_event_new') }}" class="item">
+            <div data-tooltip="Ajouter un devis" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+    </div>
+
+    <table class="ui table striped celled">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Clients</th>
+            <th>Ville</th>
+            <th>ref Client</th>
+            <th>Numéro devis</th>
+            <th>Prix</th>
+            <th>Facturé?</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for estimate in estimates %}
+            <tr>
+                <td>{{ estimate.id }}</td>
+                <td>{{ estimate.date_devis }}</td>
+                <td>{{ estimate.societe }}</td>
+                <td>{{ estimate.ville }}</td>
+                <td>{{ estimate.ref_clt1 }}</td>
+                <td>{{ estimate.numero_devis }}</td>
+                <td>{{ estimate.prix_total_devis|number_format(2, ',', ' ') }}</td>
+                <td>{% if estimate.date_facture == null %}<span class="ui red label">Non</span>{% else %}<span
+                            class="ui green label">Oui</span>{% endif %}</td>
+                <td class="right aligned single line">
+                    {% if estimate.date_facture == null %}
+                        <a href="/pages/administration/index.php?page=compta_devis&action=modifier&id={{ estimate.id }}"
+                           data-position="left center" data-tooltip="Modifier le devis {{ estimate.societe }}"
+                           class="compact ui icon button"><i class="pencil alernate icon"></i></a>
+                    {% else %}
+                        <a href="/pages/administration/index.php?page=compta_facture&action=modifier&id={{ estimate.id }}"
+                           data-position="left center" data-tooltip="Modifier le devis {{ estimate.societe }}"
+                           class="compact ui icon button"><i class="pencil alernate icon"></i></a>
+                    {% endif %}
+                    <a href="/pages/administration/index.php?page=compta_devis&action=telecharger_devis&ref={{ estimate.numero_devis }}"
+                       data-position="left center" data-tooltip="Télécharger le devis {{ estimate.societe }}"
+                       class="compact ui icon button"><i class="file pdf icon"></i></a>
+                    {% if estimate.date_facture == null %}
+                        <a href="/pages/administration/index.php?page=compta_devis&action=transfert&ref={{ estimate.numero_devis }}"
+                           data-position="left center"
+                           data-tooltip="Transférer la ligne {{ estimate.societe }} en facture"
+                           class="compact ui icon button"><i class="cart icon"></i></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}
+
+
