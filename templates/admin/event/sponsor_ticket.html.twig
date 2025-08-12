@@ -92,6 +92,17 @@
                     >
                         <i class="pencil alernate icon"></i>
                     </a>
+                    {% if token.usedInvitations == 0 %}
+                    <a id="supprimer_{{ token.id }}"
+                       href="{{ url('admin_event_sponsor_delete_token', {tokenId: token.id}) }}"
+                       data-position="left center"
+                       data-tooltip="Supprimer"
+                       class="compact ui red icon button confirmable"
+                       data-confirmable-label="Etes-vous sûr de vouloir supprimer le token ?"
+                    >
+                        <i class="trash icon"></i>
+                    </a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

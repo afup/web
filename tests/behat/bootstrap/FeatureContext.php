@@ -562,4 +562,33 @@ class FeatureContext implements Context
             ->find('css', 'input[name="' . $field . '"]')
             ?->setValue($value);
     }
+
+    /**
+     * @throws ExpectationException
+     */
+    #[Then('/^(?:|I )should see tooltip "(?P<value>(?:[^"]|\\")*)"$/')]
+    public function shouldSeeTooltip(string $tooltip): void
+    {
+        $link = $this->minkContext->getSession()->getPage()->find('css', sprintf('a[data-tooltip="%s"]', $tooltip));
+
+        if (null === $link) {
+            throw new ExpectationException(
+                sprintf('Tooltip "%s" was not found', $tooltip),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+    }
+
+    #[Then('/^(?:|I )should not see tooltip "(?P<value>(?:[^"]|\\")*)"$/')]
+    public function shouldNotSeeTooltip(string $tooltip): void
+    {
+        $link = $this->minkContext->getSession()->getPage()->find('css', sprintf('a[data-tooltip="%s"]', $tooltip));
+
+        if (null !== $link) {
+            throw new ExpectationException(
+                sprintf('Tooltip "%s" was found', $tooltip),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+    }
 }
