@@ -29,6 +29,10 @@ admin_event_sponsor_ticket:
   path: /sponsor
   defaults: {_controller: AppBundle\Controller\Admin\Event\SponsorTicketAction}
 
+admin_event_sponsor_delete_token:
+  path: /sponsor/delete-token/{tokenId}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\DeleteSponsorTicketAction}
+
 admin_event_sponsor_mail:
   path: /sponsor/mail
   defaults: {_controller: AppBundle\Controller\Admin\Event\ResendSponsorTokenAction}
