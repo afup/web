@@ -97,7 +97,7 @@ test-functional: data config htdocs/uploads tmp
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest mailcatcher
 	make clean-test-deprecated-log
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp ./bin/behat
+	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp ./bin/behat --colors
 	make var/logs/test.deprecations_grouped.log
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
 

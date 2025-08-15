@@ -12,6 +12,7 @@ use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Event\Invoice\InvoiceService;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
+use AppBundle\Event\Model\Repository\EventThemeRepository;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
@@ -46,6 +47,7 @@ class LegacyController extends AbstractController
         private readonly SpeakerRepository $speakerRepository,
         private readonly TalkRepository $talkRepository,
         private readonly array $backOfficePages,
+        private readonly EventThemeRepository $eventThemeRepository,
     ) {}
 
     public function void()

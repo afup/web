@@ -12,7 +12,7 @@ final readonly class SuperAperoAction
 {
     public function __construct(
         private ViewRenderer $view,
-        #[Autowire('%super_apero_csv_url%')]
+        #[Autowire(env: 'SUPER_APERO_CSV_URL')]
         private string $superAperoCsvUrl,
     ) {}
 

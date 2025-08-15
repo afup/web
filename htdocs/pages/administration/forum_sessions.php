@@ -28,6 +28,7 @@ $smarty->assign('action', $action);
 $eventRepository = $this->eventRepository;
 $speakerRepository = $this->speakerRepository;
 $talkRepository = $this->talkRepository;
+$eventThemeRepository = $this->eventThemeRepository;
 
 $forum = new Forum($bdd);
 $forum_appel = new AppelConferencier($bdd);
@@ -166,6 +167,16 @@ if ($action == 'lister') {
     $groupe[] = $formulaire->createElement('radio', 'skill', null, 'Senior', Talk::SKILL_SENIOR);
     $formulaire->addGroup($groupe, 'groupe_skill', "Niveau", '<br />', false);
 
+    $event = $eventRepository->get($_GET['id_forum']);
+    if ($event->getHasThemes()) {
+        $groupe = [];
+        $themes = $eventThemeRepository->getBy(['idForum' => $event->getId()]);
+        foreach ($themes as $theme) {
+            $groupe[] = $formulaire->createElement('radio', 'theme', null, $theme->getName(), $theme->getID());
+        }
+        $formulaire->addGroup($groupe, 'groupe_theme', "Thème", '<br />', false);
+    }
+
     $formulaire->addElement('checkbox'    , 'needs_mentoring'          , "Demande a bénéficier du programme d'accompagnement des jeunes speakers");
     $formulaire->addElement('checkbox', 'with_workshop', "Propose un atelier");
     $formulaire->addElement('textarea', 'workshop_abstract', 'Résumé de l\'atelier', ['cols' => 40, 'rows' => 15]);
@@ -197,7 +208,6 @@ if ($action == 'lister') {
     $formulaire->addElement('checkbox', 'has_allowed_to_sharing_with_local_offices', 'Accord pour le partage aux antennes');
 
     $formulaire->addElement('header', null, 'Conférencier(s)');
-    $event = $eventRepository->get($_GET['id_forum']);
     Assertion::notNull($event);
     $conferenciers = [null => ''];
     foreach ($speakerRepository->searchSpeakers($event) as $speaker) {
@@ -278,12 +288,13 @@ if ($action == 'lister') {
                                                 (int) $valeurs['skill'],
                                                 (int) $valeurs['needs_mentoring'],
                                                 $valeurs['use_markdown'],
-                                                $valeurs['video_has_fr_subtitles'],
-                                                $valeurs['video_has_en_subtitles'],
+                                                $valeurs['video_has_fr_subtitles'] ?? null,
+                                                $valeurs['video_has_en_subtitles'] ?? null,
                                                 $valeurs['date_publication']['Y'] . '-' . $valeurs['date_publication']['M'] . '-' . $valeurs['date_publication']['d'] . ' ' . $valeurs['date_publication']['H'] . ':' . $valeurs['date_publication']['i'] . ':' . $valeurs['date_publication']['s'],
                                                 $valeurs['tweets'],
                                                 $valeurs['transcript'],
                                                 $valeurs['verbatim'],
+                                                $valeurs['theme'] ?? null,
             );
             $forum_appel->delierSession($session_id);
         }

@@ -2,9 +2,30 @@
     {{ jsonld|json_encode|raw }}
 </script>
 
+{% macro theme_header(currentTheme, themes) %}
+    {% if themes is not null and themes[currentTheme] is defined %}
+        <div class="themes" id="theme-{{ currentTheme }}">
+            <ul>
+                <li class="title">Thèmes</li>
+                {% for theme in themes %}
+                <li>
+                    <a href="#theme-{{ theme.id }}" class="{% if currentTheme == theme.id %}current{% endif %}">{{ theme.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <p class="themes-description">{{ themes[currentTheme].description }}</p>
+    {% endif %}
+{% endmacro %}
+
 {% if talks|length %}
 <div class="sessions">
+    {% set last_theme = null %}
     {% for talk in talks %}
+        {% if themes is not null and talk.talk.theme != last_theme %}
+            {% set last_theme = talk.talk.theme %}
+            {{ _self.theme_header(last_theme, themes) }}
+        {% endif %}
         <div class="session boss geek">
             <a name="{{ talk.talk.id }}"></a>
             <h4>{{ talk.talk.title|raw }}</h4>

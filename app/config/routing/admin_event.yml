@@ -105,3 +105,22 @@ admin_event_restore:
 admin_event_votes:
   path: /votes
   defaults: {_controller: AppBundle\Controller\Admin\Event\VotesListeAction}
+
+admin_event_themes_add:
+  path: /themes/add
+  defaults:
+    _controller: AppBundle\Controller\Admin\Event\EventThemeAddEditAction
+    id: null
+
+admin_event_themes_edit:
+  path: /themes/edit/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\EventThemeAddEditAction}
+  requirements:
+    id: \d+
+
+admin_event_themes_list:
+  path: /themes/
+  requirements:
+    id: \d+
+  defaults:
+    _controller: AppBundle\Controller\Admin\Event\EventThemeAction
