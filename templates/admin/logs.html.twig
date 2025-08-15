@@ -1,0 +1,35 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Logs</h2>
+
+    <table class="ui table striped compact celled">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Texte</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if logs|length > 0 %}
+            {% for log in logs %}
+                <tr>
+                    <td>{{ log.date|date('d/m/Y H:i:s') }}</td>
+                    <td>{{ log.nom|escape }}</td>
+                    <td>{{ log.prenom|escape }}</td>
+                    <td>{{ log.texte|escape|nl2br }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="4"><em>Aucun log</em></td>
+            </tr>
+        {% endif %}
+
+        </tbody>
+    </table>
+
+    {% include 'admin/pagination.html.twig' %}
+{% endblock %}
