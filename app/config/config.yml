@@ -215,7 +215,8 @@ parameters:
                 compta_conf_evenement:
                     nom: 'Configuration'
                     niveau: 'ROLE_ADMIN'
-                    extra_pages:
+                    url: '/admin/accounting/events/list'
+                    extra_routes:
                         - compta_conf_categorie
                         - compta_conf_operation
                         - compta_conf_reglement
@@ -383,7 +384,13 @@ ting:
                 default:
                     connection: main
                     database: '%database_name%'
-
+        accounting:
+            namespace: AppBundle\Accounting\Model\Repository
+            directory: "@AppBundle/Accounting/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: "%database_name%"
         association:
             namespace : AppBundle\Association\Model\Repository
             directory : "@AppBundle/Association/Model/Repository"

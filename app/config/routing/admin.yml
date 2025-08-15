@@ -101,6 +101,10 @@ admin_site:
   resource: "admin_site.yml"
   prefix: /site
 
+admin_accounting:
+  resource: "admin_accounting.yml"
+  prefix: /accounting
+
 admin_github_user_routes:
   resource: "admin_github_user.yml"
   prefix: /event/github-user
