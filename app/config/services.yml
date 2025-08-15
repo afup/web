@@ -16,6 +16,7 @@ services:
 
     _instanceof:
         AppBundle\SocialNetwork\Transport:
+            autowire: true
             tags: [ 'app.social_network.transport' ]
 
         # @see \AppBundle\DependencyInjection\TingRepositoryPass
