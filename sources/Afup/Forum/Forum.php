@@ -89,10 +89,6 @@ class Forum
     {
         $aWhere = [];
         if (isset($annee)) {
-            $tdebut = mktime(0, 0, 0, 1, 1, (int) $annee);
-            $tfin = mktime(0, 0, 0, 1, 1, (int) ($annee + 1));
-            $aWhere[] = "p.debut >= " . $tdebut;
-            $aWhere[] = "p.fin < " . $tfin;
             $aWhere[] = "s.plannifie = 1";
         }
 
