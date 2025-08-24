@@ -26,6 +26,9 @@ class Transformer
         $isUpcoming = new \DateTime() < $datetime;
 
         $eventUrl = $this->getEventUrl($antenne, $meetup);
+
+        $parseDown = new \Parsedown();
+
         $item = [
             'meetup_id' => $meetup->getId(),
             'label' => $meetup->getTitle(),
@@ -38,7 +41,7 @@ class Transformer
                 'label' => $antenne->label,
                 'logo_url' => $antenne->logoUrl,
             ],
-            'description' => $meetup->getDescription(),
+            'description' => $parseDown->parse($meetup->getDescription()),
             'is_upcoming' => $isUpcoming,
             'custom_sort' => $isUpcoming ? PHP_INT_MAX - $meetup->getDate()->getTimestamp() : $meetup->getDate()->getTimestamp(),
         ];
