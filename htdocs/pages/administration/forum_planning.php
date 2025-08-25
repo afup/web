@@ -102,7 +102,7 @@ if ($action == 'lister') {
     if ($formulaire->validate()) {
         $valeurs = $formulaire->exportValues();
 
-        if ($id == 0) {
+        if ($id == 0 || 0 === strlen(trim((string) $id))) {
             $planning_id = $forum_appel->ajouterSessionDansPlanning($valeurs['id_forum'],
                 $valeurs['id_session'],
                 mktime((int) $valeurs['debut']['H'], (int) $valeurs['debut']['i'], 0, (int) $valeurs['debut']['M'], (int) $valeurs['debut']['d'], (int) $valeurs['debut']['Y']),
