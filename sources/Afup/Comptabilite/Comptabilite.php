@@ -329,7 +329,7 @@ class Comptabilite
     public function obtenirListComptes($filtre = '', ?string $where = '')
     {
         $requete = 'SELECT ';
-        $requete .= 'id, nom_compte ';
+        $requete .= 'id, nom_compte, archived_at ';
         $requete .= 'FROM  ';
         $requete .= 'compta_compte  ';
         if ($where) {
@@ -352,6 +352,23 @@ class Comptabilite
 
             return $result;
         }
+    }
+
+    /**
+     * @return array<int, array{'id': int, 'nom_compte': string}>
+     */
+    public function obtenirListeComptesActifs(): array
+    {
+        $requete = 'SELECT id, nom_compte FROM compta_compte ';
+        $requete .= 'WHERE archived_at IS NULL ORDER BY nom_compte ';
+
+        $data = $this->_bdd->obtenirTous($requete);
+        $result = [];
+        foreach ($data as $row) {
+            $result[$row['id']] = $row['nom_compte'];
+        }
+
+        return $result;
     }
 
     public function obtenirListCategories($filtre = '', ?string $where = '', $usedInAccountingJournal = false)
