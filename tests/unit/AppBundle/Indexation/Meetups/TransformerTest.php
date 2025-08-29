@@ -38,7 +38,7 @@ final class TransformerTest extends TestCase
                         'label' => 'Reims',
                         'logo_url' => '/images/offices/reims.svg',
                     ],
-                'description' => 'Nous vous invitons au Grand Comptoir à partir de 18h30 pour discuter de PHP autour d\'un verre.',
+                'description' => '<p>Nous vous invitons au Grand Comptoir à partir de 18h30 pour discuter de PHP autour d\'un verre.</p>',
                 'twitter' => 'afup_reims',
                 'custom_sort' => 9223372034300127607,
                 'is_upcoming' => true,
