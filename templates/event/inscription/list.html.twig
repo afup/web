@@ -1,7 +1,7 @@
 {% extends 'admin/base_with_header.html.twig' %}
 
 {% block content %}
-    <h2>Inscriptions {{ event.title~' '~event.dateStart|date('Y') }}</h2>
+    <h2>Inscriptions {{ event.title }}</h2>
 
     {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
 
@@ -44,10 +44,10 @@
             {% set montantTotal = 0 %}
 
             {% for ticketTypeId, ticketTypeDetails in ticketTypesDetailsCollection.ticketTypeDetailsCollectionDto %}
-                {% set inscrits = statistiques.types_inscriptions.inscrits[ticketTypeId]|default(0) %}
-                {% set confirmes = statistiques.types_inscriptions.confirmes[ticketTypeId]|default(0) %}
-                {% set payants = statistiques.types_inscriptions.payants[ticketTypeId]|default(0) %}
-                {% set montant = (statistiques.types_inscriptions.payants[ticketTypeId]|default(0)) * ticketTypeDetails.price %}
+                {% set inscrits = statistiques.ticketType.registered[ticketTypeId]|default(0) %}
+                {% set confirmes = statistiques.ticketType.confirmed[ticketTypeId]|default(0) %}
+                {% set payants = statistiques.ticketType.paying[ticketTypeId]|default(0) %}
+                {% set montant = (statistiques.ticketType.paying[ticketTypeId]|default(0)) * ticketTypeDetails.price %}
                 {% set inscritsTotal = inscritsTotal + inscrits %}
                 {% set confirmesTotal = confirmesTotal + confirmes %}
                 {% set payantsTotal = payantsTotal + payants %}
@@ -94,25 +94,25 @@
             <tbody>
             <tr>
                 <td>Jour 1</td>
-                <td class="right aligned">{{ statistiques.premier_jour.inscrits }}</td>
-                <td class="right aligned">{{ statistiques.premier_jour.confirmes }}</td>
+                <td class="right aligned">{{ statistiques.firstDay.registered }}</td>
+                <td class="right aligned">{{ statistiques.firstDay.confirmed }}</td>
                 <td class="right aligned">
-                    {% if statistiques.premier_jour.en_attente_de_reglement == '' %}
+                    {% if statistiques.firstDay.pending == '' %}
                         0
                     {% else %}
-                        {{ statistiques.premier_jour.en_attente_de_reglement }}
+                        {{ statistiques.firstDay.pending }}
                     {% endif %}
                 </td>
             </tr>
             <tr>
                 <td>Jour 2</td>
-                <td class="right aligned">{{ statistiques.second_jour.inscrits }}</td>
-                <td class="right aligned">{{ statistiques.second_jour.confirmes }}</td>
+                <td class="right aligned">{{ statistiques.secondDay.registered }}</td>
+                <td class="right aligned">{{ statistiques.secondDay.confirmed }}</td>
                 <td class="right aligned">
-                    {% if statistiques.second_jour.en_attente_de_reglement == '' %}
+                    {% if statistiques.secondDay.pending == '' %}
                         0
                     {% else %}
-                        {{ statistiques.second_jour.en_attente_de_reglement }}
+                        {{ statistiques.secondDay.pending }}
                     {% endif %}
                 </td>
             </tr>
@@ -168,7 +168,7 @@
                 <tbody>
                 {% for key, inscription in inscriptions %}
                     <tr class="{% if key is odd %}odd{% else %}even{% endif %}" {% if inscription.etat == 1 %} style="color:#999;font-style:italic"{% endif %}>
-                        <td nowrap="nowrap">{% if inscription.date > 0 %}{{ inscription.date|date("d/m/Y H:m:s") }}{% endif %}</td>
+                        <td nowrap="nowrap">{% if inscription.date > 0 %}{{ inscription.date|date("d/m/Y H:i:s") }}{% endif %}</td>
                         <td>
                             <strong>{{ inscription.prenom }} {{ inscription.nom }}</strong>
                             <a href="{{ path('admin_members_user_list', {'filter': inscription.nom~' '~inscription.email}) }}"
@@ -212,14 +212,14 @@
                             {% endif %}
                         </td>
                         <td>{% if inscription.type_reglement == 0 %}CB{% elseif inscription.type_reglement == 1 %}CHQ{% elseif inscription.type_reglement == 2 %}VIR{% endif %}</td>
-                        {% if inscription.type_inscription in ticketTypesDetailsCollection.ticketTypeForMemberOnly %}
+                        {% if inscription.type_inscription in ticketTypesDetailsCollection.getTicketTypeForMemberOnly() %}
                             {% if inscription.lastsubscription == null %}
                                 <td>
                                     <span class="ui blue label">
                                         Non trouvée
                                     </span>
                                 </td>
-                            {% elseif inscription.lastsubscription < now %}
+                            {% elseif inscription.lastsubscription < date() %}
                                 <td class="single line">
                                 <span class="ui red label">
                                     A expiré le {{ inscription.lastsubscription|date('d/m/Y') }}

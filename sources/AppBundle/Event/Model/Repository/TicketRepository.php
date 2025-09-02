@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\HydratorArrayCallable;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Model\TicketType;
 use AppBundle\Ting\DateTimeWithTimeZoneSerializer;
+use AppBundle\Ting\HydratorArrayCallable;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;

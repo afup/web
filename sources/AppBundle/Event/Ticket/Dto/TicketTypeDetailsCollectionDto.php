@@ -6,19 +6,28 @@ namespace AppBundle\Event\Ticket\Dto;
 
 final class TicketTypeDetailsCollectionDto
 {
-    /** @param array<TicketTypeDetailsDto> $ticketTypeDetailsCollectionDto */
+    /**
+     * @param array<TicketTypeDetailsDto> $ticketTypeDetailsCollectionDto
+     * @param array<int, int> $ticketTypeForMemberOnly
+     */
     public function __construct(
         private array $ticketTypeDetailsCollectionDto = [],
-        public array $ticketTypeForMemberOnly = [],
+        private array $ticketTypeForMemberOnly = [],
     ) {}
 
-    public function addTicketTypeDetails(int $id, TicketTypeDetailsDto $ticketTypeDetailsDto, bool $isForMemberOnly): void
+    public function addTicketTypeDetails(TicketTypeDetailsDto $ticketTypeDetailsDto, bool $isForMemberOnly): void
     {
+        $id = $ticketTypeDetailsDto->id;
         $this->ticketTypeDetailsCollectionDto[$id] = $ticketTypeDetailsDto;
 
         if ($isForMemberOnly) {
             $this->ticketTypeForMemberOnly[$id] = $id;
         }
+    }
+
+    public function getTicketTypeForMemberOnly(): array
+    {
+        return $this->ticketTypeForMemberOnly;
     }
 
     public function getTicketTypeDetailsCollectionDto(): array

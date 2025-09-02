@@ -24,7 +24,7 @@ final readonly class TicketTypeDetailsCollectionFactory
         foreach ($ticketEventTypes as $ticketEventType) {
             $id = $ticketEventType->getTicketTypeId();
 
-            $ticketTypeDetailsCollectionDto->addTicketTypeDetails($id,
+            $ticketTypeDetailsCollectionDto->addTicketTypeDetails(
                 new TicketTypeDetailsDto(
                     $id,
                     $ticketEventType->getTicketType()->getPrettyName(),
@@ -48,7 +48,6 @@ final readonly class TicketTypeDetailsCollectionFactory
 
         foreach ($AFUP_Tarifs_Forum_Lib as $id => $tarifLabel) {
             $ticketTypeDetailsCollectionDto->addTicketTypeDetails(
-                $id,
                 new TicketTypeDetailsDto(
                     $id,
                     $tarifLabel,

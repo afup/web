@@ -12,7 +12,6 @@ use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
 use AppBundle\Event\Ticket\TicketTypeDetailsCollectionFactory;
-use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,8 +30,8 @@ class ListAction extends AbstractController
         TicketTypeDetailsCollectionFactory $ticketTypeDetailsCollectionFactory,
     ): Response {
         $id = $request->query->get('id');
-        $direction = $request->query->get('direction');
-        $sort = $request->query->get('sort');
+        $direction = $request->query->get('direction', 'DESC');
+        $sort = $request->query->get('sort', 'date');
         $filter = $request->query->get('filter');
 
         $event = $eventActionHelper->getEventById($id);
@@ -43,25 +42,8 @@ class ListAction extends AbstractController
             'filter' => $filter,
             'direction' => $direction,
             'sort' => $sort,
-            'now' => new DateTime(),
             'inscriptions' => $ticketRepository->getTicketsForList($event, $filter, $sort, $direction),
-            'statistiques' => [
-                'premier_jour' => [
-                    'inscrits' => $stats->firstDay->registered,
-                    'confirmes' => $stats->firstDay->confirmed,
-                    'en_attente_de_reglement' => $stats->firstDay->pending,
-                ],
-                'second_jour' => [
-                    'inscrits' => $stats->secondDay->registered,
-                    'confirmes' => $stats->secondDay->confirmed,
-                    'en_attente_de_reglement' => $stats->secondDay->pending,
-                ],
-                'types_inscriptions' => [
-                    'confirmes' => $stats->ticketType->confirmed,
-                    'inscrits' => $stats->ticketType->registered,
-                    'payants' => $stats->ticketType->paying,
-                ],
-            ],
+            'statistiques' => $stats,
             'ticketTypesDetailsCollection' => $ticketTypeDetailsCollectionFactory->create($event),
             'event' => $event,
             'event_select_form' => $eventSelectFactory->create($event, $request)->createView(),
