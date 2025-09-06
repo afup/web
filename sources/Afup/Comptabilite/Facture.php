@@ -234,6 +234,10 @@ class Facture
 
     public function modifier_details(string $id, $ref, $designation, int $quantite, float $pu, int $tva = 0)
     {
+        if (!is_numeric($id)) {
+            throw new \RuntimeException('STOP ! L\'id de la ligne `afup_compta_facture_details` est invalide (' . $id . ').');
+        }
+
         $requete = 'UPDATE ';
         $requete .= 'afup_compta_facture_details ';
         $requete .= 'SET ';

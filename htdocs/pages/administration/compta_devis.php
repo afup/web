@@ -248,6 +248,9 @@ if ($action == 'lister') {
                                     $valeur['devise_facture'],
                                     );
             for ($i = 1;$i < 6;$i++) {
+                if (!is_numeric($valeur['id' . $i])) {
+                    continue;
+                }
                 $ok = $comptaFact->modifier_details(
                                     $valeur['id' . $i],
                                     $valeur['ref' . $i],
@@ -272,6 +275,6 @@ if ($action == 'lister') {
     }
 
 
-    $smarty->assign('devis_id', $_GET['id']);
+    $smarty->assign('devis_id', $_GET['id'] ?? null);
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 }
