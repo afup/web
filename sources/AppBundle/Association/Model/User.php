@@ -748,7 +748,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
 
     public function getDirectoryLevel()
     {
-        return $this->levelModules[1];
+        return $this->levelModules[1] ?? '0';
     }
 
     public function setDirectoryLevel($level): self
@@ -762,7 +762,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
 
     public function getWebsiteLevel()
     {
-        return $this->levelModules[2];
+        return $this->levelModules[2] ?? '0';
     }
 
     public function setWebsiteLevel($level): void
@@ -774,7 +774,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
 
     public function getEventLevel()
     {
-        return $this->levelModules[3];
+        return $this->levelModules[3] ?? '0';
     }
 
     public function setEventLevel($level): void
@@ -786,7 +786,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
 
     public function getOfficeLevel()
     {
-        return $this->levelModules[4];
+        return $this->levelModules[4] ?? '0';
     }
 
     public function setOfficeLevel($level): void
