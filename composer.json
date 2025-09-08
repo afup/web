@@ -44,6 +44,7 @@
     "symfony/asset": "7.3.*",
     "symfony/clock": "7.2.*",
     "symfony/console": "7.3.*",
+    "symfony/dotenv": "7.3.*",
     "symfony/expression-language": "7.3.*",
     "symfony/form": "7.3.*",
     "symfony/framework-bundle": "7.3.*",
@@ -99,7 +100,10 @@
     "symfony-web-dir": "htdocs",
     "symfony-bin-dir": "bin",
     "symfony-var-dir": "var",
-    "symfony-tests-dir": "tests"
+    "symfony-tests-dir": "tests",
+    "symfony": {
+      "require": "7.3.*"
+    }
   },
   "autoload": {
     "psr-4": {

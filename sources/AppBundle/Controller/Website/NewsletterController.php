@@ -19,7 +19,7 @@ class NewsletterController extends AbstractController
         private readonly ViewRenderer $view,
         #[Autowire('@app.mailchimp_api')]
         private readonly Mailchimp $mailchimp,
-        #[Autowire('%mailchimp_subscribers_list%')]
+        #[Autowire(env: 'MAILCHIMP_SUBSCRIBERS_LIST')]
         private readonly string $mailchimpSubscribersList,
     ) {}
 

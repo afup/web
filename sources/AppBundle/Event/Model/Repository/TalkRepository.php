@@ -225,33 +225,40 @@ class TalkRepository extends Repository implements MetadataInitializer
 
     /**
      * @param bool $applyPublicationdateFilters
+     * @param bool $orderByTheme
      *
      * @return array<TalkAggregate>
      * @throws QueryException
      */
-    public function getByEventWithSpeakers(Event $event, $applyPublicationdateFilters = true): array
+    public function getByEventWithSpeakers(Event $event, bool $applyPublicationdateFilters = true, bool $orderByTheme = false, ?int $filterByThemeId = null): array
     {
-        return $this->getByEventsWithSpeakers([$event], $applyPublicationdateFilters);
+        return $this->getByEventsWithSpeakers([$event], $applyPublicationdateFilters, $orderByTheme, $filterByThemeId);
     }
 
     /**
      * @param list<Event> $events
      * @param bool $applyPublicationdateFilters
+     * @param bool $orderByTheme
      *
      * @return array<TalkAggregate>
      * @throws QueryException
      */
-    public function getByEventsWithSpeakers(array $events, $applyPublicationdateFilters = true): array
+    public function getByEventsWithSpeakers(array $events, bool $applyPublicationdateFilters = true, bool $orderByTheme = false, ?int $filterByThemeId = null): array
     {
         $hydrator = new JoinHydrator();
         $hydrator->aggregateOn('talk', 'speaker', 'getId');
 
+
+        $params = [];
         $publicationdateFilters = '';
         if ($applyPublicationdateFilters) {
             $publicationdateFilters = 'AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)';
         }
-
-        $params = [];
+        $themeFilters = '';
+        if ($filterByThemeId) {
+            $themeFilters = 'AND afup_conference_theme.id = :filterByThemeId';
+            $params['filterByThemeId'] = $filterByThemeId;
+        }
 
         $inEventsKeys = [];
         $cpt = 0;
@@ -266,7 +273,7 @@ class TalkRepository extends Repository implements MetadataInitializer
 
         $query = $this->getPreparedQuery(
             sprintf('SELECT talk.id_forum, talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code,
-            talk.joindin,
+            talk.joindin, talk.theme,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe,
             planning.debut, planning.fin, room.id, room.nom
             FROM afup_sessions AS talk
@@ -274,8 +281,9 @@ class TalkRepository extends Repository implements MetadataInitializer
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
             LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
             LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
-            WHERE talk.id_forum IN(%s) AND plannifie = 1 %s
-            ORDER BY planning.debut ASC, room.id ASC, talk.date_publication DESC, talk.session_id ASC ', $inEvents, $publicationdateFilters),
+            LEFT JOIN afup_conference_theme ON afup_conference_theme.id = talk.theme
+            WHERE talk.id_forum IN(%s) AND plannifie = 1 %s %s
+            ORDER BY %s ', $inEvents, $publicationdateFilters, $themeFilters, $orderByTheme ? 'afup_conference_theme.priority ASC, afup_conference_theme.name ASC' : 'planning.debut ASC, room.id ASC, talk.date_publication DESC, talk.session_id ASC '),
         )->setParams($params);
 
         $result = $query->query($this->getCollection($hydrator));
@@ -358,6 +366,20 @@ class TalkRepository extends Repository implements MetadataInitializer
             ->getQuery($qb->getStatement())
             ->setParams($qb->getBindValues())
             ->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
+     * @return CollectionInterface<Talk>
+     */
+    public function getScheduledTalksByEvent(int $eventId): CollectionInterface
+    {
+        $query = $this->getPreparedQuery(
+            'SELECT * FROM afup_sessions 
+            WHERE id_forum = :eventId AND plannifie = 1 
+            ORDER BY titre ASC',
+        )->setParams(['eventId' => $eventId]);
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
     /**
@@ -513,7 +535,13 @@ class TalkRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'hasAllowedToSharingWithLocalOffices',
                 'type' => 'bool',
                 'serializer' => Boolean::class,
-            ]);
+            ])
+            ->addField([
+                'columnName' => 'theme',
+                'fieldName' => 'theme',
+                'type' => 'int',
+            ])
+        ;
 
         return $metadata;
     }

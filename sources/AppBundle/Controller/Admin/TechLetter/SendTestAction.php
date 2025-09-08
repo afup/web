@@ -20,7 +20,7 @@ final class SendTestAction extends AbstractController
         private readonly SendingRepository $sendingRepository,
         private readonly Mailer $mailer,
         private readonly TechLetterFactory $techLetterFactory,
-        #[Autowire('%techletter_test_email_address%')]
+        #[Autowire(env: 'TECHLETTER_TEST_EMAIL_ADDRESS')]
         private readonly string $techletterTestEmailAddress,
     ) {}
 
