@@ -1,0 +1,65 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+
+    <h2>Configuration</h2>
+
+    {% include 'admin/accounting/configuration/_account_menu.html.twig' %}
+
+    <div class="ui bottom attached segment">
+        <div class="ui menu">
+            <a href="{{ url('admin_accounting_rules_add') }}" class="item">
+                <div data-tooltip="Ajouter une règle" data-position="bottom left">
+                    <i class="icon plus square"></i>
+                    Ajouter
+                </div>
+            </a>
+        </div>
+
+
+        <table class="ui table striped compact celled">
+            <thead>
+            <tr>
+                <th>Règle</th>
+                <th>Condition</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if rules|length > 0 %}
+                {% for rule in rules %}
+                    <tr>
+                        <td>{{ rule.label }}</td>
+                        <td><code>{{ rule.condition }}</code></td>
+                        <td style="text-align: right">
+                            <a href="{{ url('admin_accounting_rules_edit', {id: rule.id}) }}"
+                               data-position="left center"
+                               data-tooltip="Modifier la règle {{ rule.label }}"
+                               class="compact ui icon button"
+                            >
+                                <i class="pencil alernate icon"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td><em>Aucune ecriture actuellement</em></td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <style>
+        code {
+            font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+            background: #EEE;
+            border: 1px solid #999;
+            line-height: 1;
+            word-wrap: break-word;
+            padding: .1rem .2rem;
+            border-radius: .2rem;
+            font-size: 10px;
+        }
+    </style>
+{% endblock %}
