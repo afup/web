@@ -1,0 +1,38 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+<h2>Modifier un compte</h2>
+
+{% if account.archivedAt %}
+    <div class="ui warning message">
+        <div class="header">
+            Ce compte est archivé depuis le {{ account.archivedAt|date("d/m/Y") }}
+        </div>
+
+        Les données sont encore là, mais il n'est plus affiché sur les autres pages du journal bancaire.
+    </div>
+{% endif %}
+
+<div class="ui menu">
+    <div class="menu">
+        {% if account.archivedAt %}
+            <a href="{{ path('admin_accounting_accounts_restore', {id: account.id}) }}" class="item">
+                <div data-tooltip="Restaurer un compte l'affiche à nouveau dans le journal bancaire" data-position="bottom left">
+                    <i class="icon archive"></i>
+                    Restaurer ce compte
+                </div>
+            </a>
+        {% else %}
+            <a href="{{ path('admin_accounting_accounts_archive', {id: account.id}) }}" class="item">
+                <div data-tooltip="Archiver un compte le masque dans le journal bancaire" data-position="bottom left">
+                    <i class="icon archive"></i>
+                    Archiver ce compte
+                </div>
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+{% include 'admin/accounting/configuration/account_form.html.twig' %}
+
+{% endblock %}

@@ -60,10 +60,20 @@ Feature: Administration - Trésorerie - Configuration
     When I follow "Comptes"
     When I follow "Ajouter"
     Then the ".content h2" element should contain "Ajouter un compte"
-    When I fill in "nom_compte" with "Un super compte"
-    And I press "soumettre"
-    Then the ".content .message" element should contain "L'écriture a été ajoutée"
+    When I fill in "account[name]" with "Un super compte"
+    And I press "Ajouter"
+    Then the ".content .message" element should contain "Le compte Un super compte a été créé"
     And I should see "Un super compte"
+
+  Scenario: Archivage d'un compte
+    Given I am logged in as admin and on the Administration
+    When I follow "Configuration"
+    Then the ".content h2" element should contain "Configuration"
+    When I follow "Comptes"
+    And I follow the button of tooltip "Modifier la ligne Un super compte"
+    Then the "account[name]" field should contain "Un super compte"
+    When I follow "Archiver ce compte"
+    Then I should see "Ce compte est archivé"
 
   @reloadDbWithTestData
   Scenario: Création/liste des règles

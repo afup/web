@@ -16,6 +16,7 @@ class ComptaCompte extends AbstractSeed
             [
                 'id' => 2,
                 'nom_compte' => 'Caisse',
+                'archived_at' => (new DateTime('last year'))->format('Y-m-d H:i:s'),
             ],
             [
                 'id' => 3,
@@ -24,6 +25,7 @@ class ComptaCompte extends AbstractSeed
             [
                 'id' => 4,
                 'nom_compte' => 'Paypal',
+                'archived_at' => (new DateTime('last year'))->format('Y-m-d H:i:s'),
             ],
         ];
 
