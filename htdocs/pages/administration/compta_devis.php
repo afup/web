@@ -191,6 +191,7 @@ if ($action == 'lister') {
         $date_devis = $valeur['date_devis']['Y'] . "-" . $valeur['date_devis']['F'] . "-" . $valeur['date_devis']['d'] ;
 
         if ($action === 'ajouter') {
+            $bdd->executer('START TRANSACTION');
             $ok = $comptaFact->ajouter(
                                     $date_devis,
                                     $valeur['societe'],
@@ -213,16 +214,21 @@ if ($action == 'lister') {
                   $valeur['devise_facture'],
                                     );
 
+            $id = $comptaFact->obtenirDernier();
             for ($i = 1;$i < 6;$i++) {
                 $ok = $comptaFact->ajouter_details(
-                                    $valeur['ref' . $i],
-                                    $valeur['designation' . $i],
-                                    (int) $valeur['quantite' . $i],
-                                    (float) $valeur['pu' . $i],
-                                    (int) $valeur['tva' . $i],
-                                    );
+                    $id,
+                    $valeur['ref' . $i],
+                    $valeur['designation' . $i],
+                    (int) $valeur['quantite' . $i],
+                    (float) $valeur['pu' . $i],
+                    (int) $valeur['tva' . $i],
+                );
             }
+            $bdd->executer('COMMIT');
+
         } else {
+            $bdd->executer('START TRANSACTION');
             $ok = $comptaFact->modifier(
                                     $_GET['id'],
                                     $date_devis,
@@ -257,6 +263,7 @@ if ($action == 'lister') {
                                     (int) $valeur['tva' . $i],
                                     );
             }
+            $bdd->executer('COMMIT');
         }
 
         if ($ok) {
@@ -272,6 +279,6 @@ if ($action == 'lister') {
     }
 
 
-    $smarty->assign('devis_id', $_GET['id']);
+    $smarty->assign('devis_id', $_GET['id'] ?? null);
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 }

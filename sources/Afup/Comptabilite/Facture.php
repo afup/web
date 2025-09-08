@@ -176,13 +176,13 @@ class Facture
         return $this->_bdd->executer($requete);
     }
 
-    public function ajouter_details($ref, $designation, int $quantite, float $pu, int $tva = 0)
+    public function ajouter_details($id, $ref, $designation, int $quantite, float $pu, int $tva = 0)
     {
         $requete = 'INSERT INTO ';
         $requete .= 'afup_compta_facture_details (';
         $requete .= 'idafup_compta_facture,ref,designation,quantite,pu,tva) ';
         $requete .= 'VALUES (';
-        $requete .= $this->obtenirDernier() . ',';
+        $requete .= $id . ',';
         $requete .= $this->_bdd->echapper($ref) . ',';
         $requete .= $this->_bdd->echapper($designation) . ',';
         $requete .= $this->_bdd->echapper($quantite) . ',';
@@ -234,6 +234,10 @@ class Facture
 
     public function modifier_details(string $id, $ref, $designation, int $quantite, float $pu, int $tva = 0)
     {
+        if (!is_numeric($id)) {
+            throw new \RuntimeException('STOP ! L\'id de la ligne `afup_compta_facture_details` est invalide (' . $id . ').');
+        }
+
         $requete = 'UPDATE ';
         $requete .= 'afup_compta_facture_details ';
         $requete .= 'SET ';

@@ -245,6 +245,9 @@ if ($action == 'lister') {
             );
 
             for ($i = 1;$i < 6;$i++) {
+                if (!is_numeric($valeur['id' . $i])) {
+                    continue;
+                }
                 $ok = $comptaFact->modifier_details(
                     $valeur['id' . $i],
                     $valeur['ref' . $i],
