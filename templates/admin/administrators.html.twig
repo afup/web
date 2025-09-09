@@ -1,0 +1,46 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Administrateurs du site</h2>
+
+    <table class="ui table striped compact celled">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Etat</th>
+            <th>Administration site</th>
+            <th>Module annuaire</th>
+            <th>Module site</th>
+            <th>Module forum</th>
+            <th>Module Antenne</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for administrator in administrators %}
+        <tr style="{% if administrator.status == 0 %}text-decoration:line-through;color:#999;font-style:italic{% endif %}">
+            <td>{{ administrator.lastName }}</td>
+            <td>{{ administrator.firstName }}</td>
+            <td>{% if administrator.status %}Actif{% else %}Inactif{% endif %}</td>
+            <td>{% if administrator.level == 2 %}Administrateur{% else %}---{% endif %}</td>
+            <td>{% if administrator.directoryLevel == 2 %}Gestionnaire{% else %}---{% endif %}</td>
+            <td>{% if administrator.websiteLevel == 2 %}Gestionnaire{% else %}---{% endif %}</td>
+            <td>{% if administrator.eventLevel == 2 %}Gestionnaire{% else %}---{% endif %}</td>
+            <td>{% if administrator.officeLevel == 2 %}Gestionnaire{% else %}---{% endif %}</td>
+            <td>
+                <a id="modifier_{{ administrator.id }}"
+                   href="/admin/members/users/edit?id={{ administrator.id }}"
+                   data-position="left center"
+                   data-tooltip="Modifier la fiche de {{ administrator.firstName }} {{ administrator.lastName }}"
+                   class="compact ui icon button"
+                >
+                    <i class="pencil alernate icon"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
