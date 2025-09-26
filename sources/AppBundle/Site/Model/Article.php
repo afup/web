@@ -157,14 +157,7 @@ class Article implements NotifyPropertyInterface
      */
     public function getLeadParagraph()
     {
-        $leadParagraph = $this->leadParagraph;
-
-        if ($this->isContentTypeMarkdown()) {
-            $parseDown = new \Parsedown();
-            $leadParagraph = $parseDown->parse($leadParagraph);
-        }
-
-        return $leadParagraph;
+        return $this->leadParagraph;
     }
 
     /**
@@ -185,14 +178,7 @@ class Article implements NotifyPropertyInterface
      */
     public function getContent()
     {
-        $content = $this->content;
-
-        if ($this->isContentTypeMarkdown()) {
-            $parseDown = new \Parsedown();
-            $content = $parseDown->parse($content);
-        }
-
-        return $content;
+        return $this->content;
     }
 
     /**

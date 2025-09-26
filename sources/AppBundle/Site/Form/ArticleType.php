@@ -73,13 +73,11 @@ class ArticleType extends AbstractType
                 'label' => 'Chapeau',
                 'required' => false,
                 'attr' => [
-                    'maxlength' => 255,
                     'cols' => 42,
                     'rows' => 10,
                     'class' => $textareaCssClass,
                 ],
                 'constraints' => [
-                    new Assert\Length(['max' => 255]),
                     new Assert\Type('string'),
                 ],
             ])
