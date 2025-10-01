@@ -14,7 +14,7 @@ class OperationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('name', TextType::class, [
-            'label' => 'Operation',
+            'label' => 'Opération',
             'required' => true,
             'constraints' => [
                 new Assert\NotBlank(),
