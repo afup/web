@@ -27,7 +27,7 @@ final class AddOperationAction extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->operationRepository->save($operation);
-            $this->log('Ajout du compte ' . $operation->getName());
+            $this->log('Ajout de l\'opération ' . $operation->getName());
             $this->addFlash('notice', 'L\'opération a été ajoutée');
             return $this->redirectToRoute('admin_accounting_operations_list');
         }
