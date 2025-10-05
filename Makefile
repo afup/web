@@ -3,7 +3,7 @@ default: help
 
 # Variables
 CURRENT_UID ?= $(shell id -u)
-DOCKER_UP_OPTIONS ?=
+DOCKER_UP_OPTIONS ?= --detach
 DOCKER_COMPOSE_BIN ?= docker compose
 
 # Colors
@@ -60,6 +60,10 @@ docker-down:
 ### Démarrer un bash dans le container PHP
 console:
 	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) exec -u localUser -it apachephp bash
+
+### Voir les logs docker compose
+logs:
+	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) logs -f --tail 150
 
 ##@ Quality
 
