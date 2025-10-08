@@ -17,12 +17,14 @@ final class IndexAction extends AbstractController
 
     public function __invoke(): Response
     {
-        $events = $this->eventRepository->getNextEvents();
+        $events = $this->eventRepository->getNextPublicizedEvents();
 
-        if ($events === null) {
+        if (count($events) === 0) {
             return $this->render('event/none.html.twig');
-        } elseif ($events->count() === 1) {
-            $event = $events->first();
+        }
+
+        if (count($events) === 1) {
+            $event = array_pop($events);
             return new RedirectResponse($this->generateUrl('event', ['eventSlug' => $event->getPath()]), Response::HTTP_TEMPORARY_REDIRECT);
         }
 
