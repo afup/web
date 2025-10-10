@@ -27,7 +27,7 @@ final readonly class MeetupClient
      */
     public function getEvents(): array
     {
-        $response = $this->httpClient->request('POST', '/gql', [
+        $response = $this->httpClient->request('POST', '/gql-ext', [
             'body' => json_encode([
                 'query' => $this->getEventsQuery(),
                 'variables' => [
@@ -40,7 +40,7 @@ final readonly class MeetupClient
         /** @var QueryGroupsResponse $groupResponse */
         $groupResponse = $this->mapperBuilder
             ->allowSuperfluousKeys()
-            ->supportDateFormats('Y-m-d\TH:iP')
+            ->supportDateFormats('Y-m-d\TH:i:sP')
             ->mapper()
             ->map(QueryGroupsResponse::class, Source::array($response->toArray()));
 
@@ -57,8 +57,8 @@ final readonly class MeetupClient
                 $meetup->setDate($edge->node->dateTime);
                 $meetup->setAntenneName($nameAntenne);
 
-                if ($edge->node->venue !== null) {
-                    $meetup->setLocation($edge->node->venue->name);
+                if (($edge->node->venues[0] ?? null) !== null) {
+                    $meetup->setLocation($edge->node->venues[0]->name);
                 }
 
                 $meetups[] = $meetup;
@@ -93,17 +93,17 @@ fragment EventFragment on Event {
     title
     description
     dateTime
-    venue { name }
+    venues { name }
 }
 
 fragment GroupFragment on Group {
-    upcomingEvents(input: {last: $quantityUpcoming}) {
+    upcomingEvents: events(first: $quantityUpcoming, filter: {status: ACTIVE}) {
         edges {
             node { ... EventFragment }
         }
     }
 
-    pastEvents(input: {first: $quantityPast}, sortOrder: DESC) {
+    pastEvents: events(first: $quantityPast, sort: DESC, filter: {status: PAST}) {
         edges {
             node { ... EventFragment }
         }
