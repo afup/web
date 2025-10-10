@@ -17,6 +17,13 @@ final class IndexAction extends AbstractController
 
     public function __invoke(): Response
     {
+        // ça y est, après https://github.com/afup/web/pull/1923, plus aucune honte, on commite des redirects comme cela.
+        // nos amis de Jolicode vont vouloir nous parler des avantages de redirection.io
+        // la page listant les événements ici n'est pas très jolie, il faut que cfp.afup.org redirige vers une page qui est gérée sur event et est bien plus sympa
+        // sauf que sur gandi la redirection peux prendre plus d'une demie jourée
+        // on fait donc un redirect moche pour le moment et pourra supprimer cela plus tard / quitte à rendre cela plus configurable
+        return new RedirectResponse("https://event.afup.org/afup-day-2026/afup-day-2026-appels-a-conferences/");
+
         $events = $this->eventRepository->getNextPublicizedEvents();
 
         if (count($events) === 0) {
