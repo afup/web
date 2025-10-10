@@ -8,11 +8,14 @@ use DateTime;
 
 final readonly class Node
 {
+    /**
+     * @param array<Venue> $venues
+     */
     public function __construct(
         public string $id,
         public string $title,
         public string $description,
         public DateTime $dateTime,
-        public ?Venue $venue,
+        public array $venues,
     ) {}
 }
