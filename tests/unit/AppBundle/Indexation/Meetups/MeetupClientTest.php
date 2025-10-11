@@ -60,7 +60,7 @@ final class MeetupClientTest extends TestCase
                                             'venues' => [
                                                 [
                                                     'name' => 'Lieu 1',
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -97,7 +97,7 @@ final class MeetupClientTest extends TestCase
                                             'venues' => [
                                                 [
                                                     'name' => 'Lieu 2',
-                                                ]
+                                                ],
                                             ],
                                         ],
                                     ],
