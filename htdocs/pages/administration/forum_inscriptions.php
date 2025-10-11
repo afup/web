@@ -23,7 +23,7 @@ if (!defined('PAGE_LOADED_USING_INDEX')) {
 
 checkForumRedirection();
 
-$action = verifierAction(['lister', 'ajouter', 'modifier', 'supprimer','envoyer_convocation']);
+$action = verifierAction(['ajouter', 'modifier', 'supprimer','envoyer_convocation']);
 $tris_valides = ['i.date', 'i.nom', 'f.societe', 'i.etat'];
 $sens_valides = [ 'desc','asc' ];
 $smarty->assign('action', $action);
@@ -72,68 +72,14 @@ $forum = new Forum($bdd);
 $forum_inscriptions = new Inscriptions($bdd);
 $forum_facturation = new Facturation($bdd);
 
-if ($action == 'lister') {
-    $list_champs = 'i.id, i.date, i.nom, i.prenom, i.email, f.societe, i.etat, i.coupon, i.type_inscription, f.type_reglement, i.presence_day1, i.presence_day2';
-    $list_ordre = 'date desc';
-    $list_sens = 'desc';
-    $list_associatif = false;
-    $list_filtre = false;
-
-    if (isset($_GET['tri']) && in_array($_GET['tri'], $tris_valides)
-        && isset($_GET['sens']) && in_array($_GET['sens'], $sens_valides)) {
-        $list_ordre = $_GET['tri'] . ' ' . $_GET['sens'];
-    }
-    if (isset($_GET['filtre'])) {
-        $list_filtre = $_GET['filtre'];
-    }
-
-    chargerForumId();
-
-    if (!isset($_GET['id_forum']) || intval($_GET['id_forum']) == 0) {
-        $_GET['id_forum'] = $forum->obtenirDernier();
-    }
-    $forumData = $forum->obtenir($_GET['id_forum']);
-    $smarty->assign('id_forum', $_GET['id_forum']);
-    $memberTickets = [];
-
-    $retour = updateGlobalsForTarif($eventRepository, $ticketEventTypeRepository, $ticketTypeAvailability, $_GET['id_forum'], $memberTickets);
-    $restantes = $retour['restantes'];
-
-    $smarty->assign('forum_tarifs_members', $memberTickets);
-    $smarty->assign('forum_tarifs_lib',$AFUP_Tarifs_Forum_Lib);
-    $smarty->assign('forum_tarifs_restantes', $restantes);
-    $smarty->assign('forum_tarifs',$AFUP_Tarifs_Forum);
-    $stats = $eventStatsRepository->getStats((int) $_GET['id_forum']);
-    $smarty->assign('statistiques', [
-        'premier_jour' => [
-            'inscrits' => $stats->firstDay->registered,
-            'confirmes' => $stats->firstDay->confirmed,
-            'en_attente_de_reglement' => $stats->firstDay->pending,
-        ],
-        'second_jour' => [
-            'inscrits' => $stats->secondDay->registered,
-            'confirmes' => $stats->secondDay->confirmed,
-            'en_attente_de_reglement' => $stats->secondDay->pending,
-        ],
-        'types_inscriptions' => [
-            'confirmes' => $stats->ticketType->confirmed,
-            'inscrits' => $stats->ticketType->registered,
-            'payants' => $stats->ticketType->paying,
-        ],
-    ]);
-
-    $smarty->assign('forums', $forum->obtenirListActive());
-    $smarty->assign('inscriptions', $forum_inscriptions->obtenirListe($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre));
-    $smarty->assign('finForum', (new \DateTime($forumData['date_fin']))->format('U'));
-    $smarty->assign('now', (new \DateTime())->format('U'));
-} elseif ($action == 'supprimer') {
+if ($action == 'supprimer') {
     /** @var Invoice|null $invoice */
     $invoice = $invoiceRepository->getByReference($_GET['id']);
     if ($forum_inscriptions->supprimerInscription($_GET['id']) && (null === $invoice || $invoiceService->deleteInvoice($invoice))) {
         Logs::log('Suppression de l\'inscription ' . $_GET['id']);
-        afficherMessage('L\'inscription a été supprimée', 'index.php?page=forum_inscriptions&action=lister');
+        afficherMessage('L\'inscription a été supprimée', '/admin/event/inscription');
     } else {
-        afficherMessage('Une erreur est survenue lors de la suppression de l\'inscription', 'index.php?page=forum_inscriptions&action=lister', true);
+        afficherMessage('Une erreur est survenue lors de la suppression de l\'inscription', '/admin/event/inscription', true);
     }
 } else {
     $pays = new Pays($bdd);
@@ -156,7 +102,7 @@ if ($action == 'lister') {
     } else {
         $champs = $forum_inscriptions->obtenir($_GET['id']);
         if ($champs == false) {
-            afficherMessage('L\'inscription n\'existe plus', 'index.php?page=forum_inscriptions&action=lister');
+            afficherMessage('L\'inscription n\'existe plus', '/admin/event/inscription');
             exit(0);
         }
         $champs2 = $forum_facturation->obtenir($champs['reference']);
@@ -409,7 +355,7 @@ if ($action == 'lister') {
             } else {
                 Logs::log('Modification de l\'inscription de ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('L\'inscription a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=forum_inscriptions&action=lister&id_forum=' . $valeurs['id_forum']);
+            afficherMessage('L\'inscription a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), '/admin/event/inscription?id=' . $valeurs['id_forum']);
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'inscription');
         }
