@@ -34,9 +34,9 @@ Feature: Administration - Trésorerie - Configuration
     When I follow "Opérations"
     When I follow "Ajouter"
     Then the ".content h2" element should contain "Ajouter une opération"
-    When I fill in "operation" with "Une super opération"
-    And I press "soumettre"
-    Then the ".content .message" element should contain "L'écriture a été ajoutée"
+    When I fill in "operation[name]" with "Une super opération"
+    And I press "Ajouter"
+    Then the ".content .message" element should contain "L'opération a été ajoutée"
     And I should see "Une super opération"
 
   @reloadDbWithTestData
