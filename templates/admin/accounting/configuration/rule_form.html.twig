@@ -1,0 +1,41 @@
+{% form_theme form 'form_theme_admin.html.twig' %}
+
+{{ form_start(form) }}
+
+<div class="ui segment">
+    <h2 class="ui header">Règle</h2>
+    <div class="ui clearing divider"></div>
+    <div>
+        <div class="ui form">
+            {{ form_row(form.label) }}
+            {{ form_row(form.condition) }}
+            {{ form_row(form.isCredit) }}
+            {{ form_row(form.paymentTypeId) }}
+            {{ form_row(form.vat) }}
+            {{ form_row(form.categoryId) }}
+            {{ form_row(form.eventId) }}
+            {{ form_row(form.attachmentRequired) }}
+        </div>
+    </div>
+</div>
+
+<div class="ui segment">
+    <div>
+        <div class="ui form">
+            <div class="inline fields ui grid">
+                <div class="three wide column">
+                </div>
+                <div class="three wide column">
+                    <input type="submit" value="{{ submitLabel }}" class="ui primary button">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui segment">
+    <p>
+        <span class="obligatoire">*</span> indique un champ obligatoire
+    </p>
+</div>
+
+{{ form_end(form) }}
