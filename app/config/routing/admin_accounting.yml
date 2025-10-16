@@ -23,3 +23,17 @@ admin_accounting_accounts_restore:
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\RestoreAccountAction}
   requirements:
     id: '\d+'
+
+admin_accounting_payments_list:
+  path: /payments/list
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ListPaymentAction}
+
+admin_accounting_payments_add:
+  path: /payments/add
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\AddPaymentAction}
+
+admin_accounting_payments_edit:
+  path: /payments/edit/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditPaymentAction}
+  requirements:
+    id: '\d+'
