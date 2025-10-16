@@ -1,0 +1,111 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    {% set token_delete=csrf_token('article_delete') %}
+
+    <h2>Liste des articles</h2>
+    <div class="ui menu">
+        <a href="{{ path('admin_site_articles_add') }}" class="item">
+            <div data-tooltip="Ajouter un article" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+    </div>
+
+    <div class="ui segment">
+        <form method="GET" name="filter">
+            <input type="hidden" name="sort"  value="{{ sort }}" />
+            <input type="hidden" name="direction" value="{{ direction }}" />
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Recherche</label>
+                        <input type="text" name="filter" value="{{ filter }}">
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="Filtrer" class="ui button" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <table class="ui table striped compact celled afup-tab-filterable">
+            <thead>
+            <tr>
+                <th>
+                    <a href="{{ url('admin_site_articles_list', {'sort': 'date', 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
+                        Date
+                    </a>
+                </th>
+                <th data-tf-filter-type="input">
+                    <a href="{{ path('admin_site_articles_list', {'sort': 'titre', 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
+                        Titre
+                    </a>
+                </th>
+                <th data-tf-filter-type="select">
+                    <a href="{{ path('admin_site_articles_list', {'sort': 'nom_rubrique' , 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
+                        Rubrique
+                    </a>
+                </th>
+                <th data-tf-filter-type="select">Thème</th>
+                <th data-tf-filter-type="select">Forum</th>
+                <th class="center aligned" data-tf-filter-type="select">
+                    <a href="{{ path('admin_site_articles_list', {'sort': 'etat' , 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
+                        Etat
+                    </a>
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            {% if articles|length > 0 %}
+                {% for article in articles %}
+                    <tbody>
+                    <tr>
+                        <td>{% if article.date != null %}{{ article.date|date('d-m-Y') }}{% endif %}</td>
+                        <td style="white-space: normal;">{{ article.titre }}</td>
+                        <td>{{ article.nom_rubrique }}</td>
+                        <td>{{ article.theme }}</td>
+                        <td>{{ article.nom_forum }}</td>
+                        <td class="center aligned">
+                            {% if article.etat == 1 %}
+                                <a class="ui orange label">En ligne</a>
+                            {% elseif article.etat == -1 %}
+                                <a class="ui grey label">Hors ligne</a>
+                            {% else %}
+                                <a class="ui violet label">En attente</a>
+                            {% endif %}
+                        </td>
+                        <td class="single line right aligned">
+                            <a id="modifier_{{ article.id }}"
+                               href="{{ path('admin_site_articles_edit', {'id': article.id }) }}"
+                               data-position="left center"
+                               data-tooltip="Modifier l'article {{ article.titre }}"
+                               class="compact ui icon button"
+                            >
+                                <i class="pencil alernate icon"></i>
+                            </a>
+
+                            <a id="supprimer_{{ article.id }}"
+                               href="{{path('admin_site_articles_delete', {'id': article.id, 'token': token_delete }) }}"
+                               data-position="left center"
+                               data-tooltip="Supprimer l'article {{ article.titre }}"
+                               class="compact ui red icon button confirmable"
+                               data-confirmable-label="Etes-vous sûr de vouloir supprimer l'article {{ article.titre }} ?"
+                            >
+                                <i class="trash icon"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+
+            {% else %}
+                <tr>
+                    <td colspan="7"><em>Aucun article</em></td>
+                </tr>
+            {% endif %}
+
+        </table>
+    </div>
+{% endblock %}
