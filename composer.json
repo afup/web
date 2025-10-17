@@ -121,6 +121,7 @@
       "Afup\\Site\\Tests\\": "tests/unit/Afup/",
       "Afup\\Tests\\Support\\": "tests/support/",
       "AppBundle\\Tests\\": "tests/unit/AppBundle/",
+      "AppBundle\\IntegrationTests\\": "tests/integration/AppBundle/",
       "PlanetePHP\\IntegrationTests\\": "tests/integration/PlanetePHP/"
     }
   },
