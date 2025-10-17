@@ -3,12 +3,14 @@
 {% block content %}
     <h2>Logs</h2>
 
+    {% include 'admin/pagination.html.twig' %}
+
     <table class="ui table striped compact celled">
         <thead>
         <tr>
             <th>Date</th>
-            <th>Nom</th>
-            <th>Prénom</th>
+            <th>Utilisateur</th>
+            <th>Route</th>
             <th>Texte</th>
         </tr>
         </thead>
@@ -17,8 +19,22 @@
             {% for log in logs %}
                 <tr>
                     <td>{{ log.date|date('d/m/Y H:i:s') }}</td>
-                    <td>{{ log.nom|escape }}</td>
-                    <td>{{ log.prenom|escape }}</td>
+                    <td>
+                        {% if log.idPersonnePhysique == 0 %}
+                            <div class="ui horizontal label">bot</div>
+                        {% else %}
+                            <a href="{{ path('admin_members_user_edit', {id: log.idPersonnePhysique}) }}">
+                                {{ log.prenom|escape }} {{ log.nom|escape }}
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if log.route %}
+                            {{ log.route|escape }}
+                        {% else %}
+                            <div class="ui horizontal label">inconnue</div>
+                        {% endif %}
+                    </td>
                     <td>{{ log.texte|escape|nl2br }}</td>
                 </tr>
             {% endfor %}
@@ -30,6 +46,4 @@
 
         </tbody>
     </table>
-
-    {% include 'admin/pagination.html.twig' %}
 {% endblock %}

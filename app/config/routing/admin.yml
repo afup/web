@@ -116,7 +116,7 @@ admin_healthcheck:
 admin_logs:
   path: /logs/{page}
   defaults:
-    _controller: AppBundle\Controller\Admin\LogsController
+    _controller: AppBundle\Controller\Admin\Audit\IndexAction
     page: 1
   requirements:
     id: '\d+'

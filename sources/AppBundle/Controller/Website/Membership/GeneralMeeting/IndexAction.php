@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\Membership\GeneralMeeting;
 
 use Afup\Site\Droits;
-use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Association\Model\GeneralMeetingVote;
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
 use AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\UserService;
+use AppBundle\AuditLog\Audit;
 use AppBundle\GeneralMeeting\Attendee;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\GeneralMeeting\ReportListBuilder;
@@ -26,8 +26,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 final class IndexAction extends AbstractController
 {
-    use DbLoggerTrait;
-
     public function __construct(
         private readonly ViewRenderer $view,
         private readonly UserService $userService,
@@ -36,6 +34,7 @@ final class IndexAction extends AbstractController
         private readonly GeneralMeetingVoteRepository $generalMeetingVoteRepository,
         private readonly ReportListBuilder $reportListBuilder,
         private readonly Droits $droits,
+        private readonly Audit $audit,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -124,7 +123,7 @@ final class IndexAction extends AbstractController
             }
 
             if ($ok) {
-                $this->log('Modification de la présence et du pouvoir de la personne physique');
+                $this->audit->log('Modification de la présence et du pouvoir de la personne physique');
                 $this->addFlash('success', 'La présence et le pouvoir ont été modifiés');
 
                 return $this->redirectToRoute('member_general_meeting');

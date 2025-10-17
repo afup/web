@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Configuration;
 
-use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Accounting\Form\PaymentType;
 use AppBundle\Accounting\Model\Repository\PaymentRepository;
+use AppBundle\AuditLog\Audit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class EditPaymentAction extends AbstractController
 {
-    use DbLoggerTrait;
-
     public function __construct(
         private readonly PaymentRepository $paymentRepository,
+        private readonly Audit $audit,
     ) {}
 
     public function __invoke(int $id,Request $request): Response
@@ -26,7 +25,7 @@ final class EditPaymentAction extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->paymentRepository->save($payment);
-            $this->log('Modification du type de règlement ' . $payment->getName());
+            $this->audit->log('Modification du type de règlement ' . $payment->getName());
             $this->addFlash('notice', 'Le type de règlement a été modifié');
             return $this->redirectToRoute('admin_accounting_payments_list');
         }

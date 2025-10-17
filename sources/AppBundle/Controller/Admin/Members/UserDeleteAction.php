@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members;
 
-use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\AuditLog\Audit;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,9 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserDeleteAction extends AbstractController
 {
-    use DbLoggerTrait;
-
-    public function __construct(private UserRepository $userRepository) {}
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly Audit $audit,
+    ) {}
 
     public function __invoke(Request $request): RedirectResponse
     {
@@ -27,7 +28,7 @@ class UserDeleteAction extends AbstractController
 
         try {
             $this->userRepository->remove($user);
-            $this->log('Suppression de la personne physique ' . $user->getId());
+            $this->audit->log('Suppression de la personne physique ' . $user->getId());
             $this->addFlash('notice', 'La personne physique a été supprimée');
         } catch (InvalidArgumentException $e) {
             $this->addFlash('error', $e->getMessage());

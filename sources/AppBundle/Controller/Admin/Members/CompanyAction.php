@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members;
 
-use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Association\Form\CompanyEditType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
@@ -12,17 +11,16 @@ use AppBundle\Association\Model\Repository\UserRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CompanyAction extends AbstractController
 {
-    use DbLoggerTrait;
-
     public function __construct(
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly UserRepository $userRepository,
     ) {}
 
-    public function __invoke(Request $request, ?int $id)
+    public function __invoke(Request $request, ?int $id): Response
     {
         $company = new CompanyMember();
         if ($id) {

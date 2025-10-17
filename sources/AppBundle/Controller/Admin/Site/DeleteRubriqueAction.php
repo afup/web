@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Site;
 
-use Afup\Site\Logger\DbLoggerTrait;
+use AppBundle\AuditLog\Audit;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,11 +13,10 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class DeleteRubriqueAction extends AbstractController
 {
-    use DbLoggerTrait;
-
     public function __construct(
-        private RubriqueRepository $rubriqueRepository,
-        private CsrfTokenManagerInterface $csrfTokenManager,
+        private readonly RubriqueRepository $rubriqueRepository,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private readonly Audit $audit,
     ) {}
 
     public function __invoke(int $id, string $token): RedirectResponse
@@ -29,7 +28,7 @@ class DeleteRubriqueAction extends AbstractController
         $rubrique = $this->rubriqueRepository->get($id);
         $name = $rubrique->getNom();
         $this->rubriqueRepository->delete($rubrique);
-        $this->log('Suppression de la Rubrique ' . $name);
+        $this->audit->log('Suppression de la Rubrique ' . $name);
         $this->addFlash('notice', 'La rubrique ' . $name . ' a été supprimée');
         return $this->redirectToRoute('admin_site_rubriques_list');
     }

@@ -5,4 +5,4 @@ Feature: Administration - Logs
     Given I am logged in as admin and on the Administration
     And I follow "Logs"
     Then I should see "Logs"
-    And I should see "Date Nom Prénom Texte"
+    And I should see "Date Utilisateur Route Texte"

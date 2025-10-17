@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Membership;
 
-use Afup\Site\Utils\Logs;
 use AppBundle\Association\Factory\UserFactory;
 use AppBundle\Association\Form\RegisterUserType;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\UserMembership\UserService;
+use AppBundle\AuditLog\Audit;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -29,6 +29,7 @@ final class RegisterAction extends AbstractController
         #[Autowire('@security.authenticator.form_login.legacy_secured_area')]
         private readonly FormLoginAuthenticator $formLoginAuthenticator,
         private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly Audit $audit,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -43,8 +44,7 @@ final class RegisterAction extends AbstractController
             $user->setPassword($hash);
             $this->userRepository->save($user);
 
-            Logs::initialiser($GLOBALS['AFUP_DB'], $user->getId());
-            Logs::log('Ajout de la personne physique ' . $user->getFirstName() . ' ' . $user->getLastName());
+            $this->audit->log('Ajout de la personne physique ' . $user->getFirstName() . ' ' . $user->getLastName());
 
             $this->userService->sendWelcomeEmail($user);
             $this->addFlash('notice', 'Merci pour votre inscription. Il ne reste plus qu\'à régler votre cotisation.');
