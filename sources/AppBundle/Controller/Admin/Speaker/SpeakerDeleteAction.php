@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Speaker;
 
-use Afup\Site\Logger\DbLoggerTrait;
+use AppBundle\AuditLog\Audit;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;
 use Exception;
@@ -14,9 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SpeakerDeleteAction extends AbstractController
 {
-    use DbLoggerTrait;
-
-    public function __construct(private SpeakerRepository $speakerRepository) {}
+    public function __construct(
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly Audit $audit,
+    ) {}
 
     public function __invoke(Request $request): RedirectResponse
     {
@@ -27,7 +28,7 @@ class SpeakerDeleteAction extends AbstractController
         }
         try {
             $this->speakerRepository->delete($speaker);
-            $this->log('Suppression du conférencier ' . $speaker->getId());
+            $this->audit->log('Suppression du conférencier ' . $speaker->getId());
             $this->addFlash('notice', 'Le conférencier a été supprimé');
         } catch (Exception) {
             $this->addFlash('error', 'Une erreur est survenue lors de la suppression du conférencier');

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Speaker;
 
-use Afup\Site\Logger\DbLoggerTrait;
+use AppBundle\AuditLog\Audit;
 use AppBundle\CFP\PhotoStorage;
 use AppBundle\Event\Form\SpeakerFormData;
 use AppBundle\Event\Form\SpeakerType;
@@ -19,12 +19,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SpeakerAddAction extends AbstractController
 {
-    use DbLoggerTrait;
-
     public function __construct(
-        private EventRepository $eventRepository,
-        private SpeakerRepository $speakerRepository,
-        private PhotoStorage $photoStorage,
+        private readonly EventRepository $eventRepository,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly PhotoStorage $photoStorage,
+        private readonly Audit $audit,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -59,7 +58,7 @@ class SpeakerAddAction extends AbstractController
                 $speaker->setPhoto($fileName);
                 $this->speakerRepository->save($speaker);
             }
-            $this->log('Ajout du conférencier de ' . $speaker->getFirstname() . ' ' . $speaker->getLastname());
+            $this->audit->log('Ajout du conférencier de ' . $speaker->getFirstname() . ' ' . $speaker->getLastname());
 
             $this->addFlash('notice', 'Le conférencier a été ajouté');
 

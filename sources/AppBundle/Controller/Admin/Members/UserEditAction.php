@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members;
 
-use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Association\Form\UserBadgeType;
 use AppBundle\Association\Form\UserEditType;
 use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\AuditLog\Audit;
 use AppBundle\Event\Model\Repository\UserBadgeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,12 +16,11 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserEditAction extends AbstractController
 {
-    use DbLoggerTrait;
-
     public function __construct(
-        private UserRepository $userRepository,
-        private UserBadgeRepository $userBadgeRepository,
-        private UserPasswordHasherInterface $passwordHasher,
+        private readonly UserRepository $userRepository,
+        private readonly UserBadgeRepository $userBadgeRepository,
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly Audit $audit,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -41,7 +40,7 @@ class UserEditAction extends AbstractController
             }
 
             $this->userRepository->edit($user);
-            $this->log('Modification de la personne physique ' . $user->getFirstName() . ' ' . $user->getLastName() . ' (' . $user->getId() . ')');
+            $this->audit->log('Modification de la personne physique ' . $user->getFirstName() . ' ' . $user->getLastName() . ' (' . $user->getId() . ')');
             // Redirection sur la liste filtrée
             $this->addFlash('notice', 'La personne physique a été modifiée');
 
