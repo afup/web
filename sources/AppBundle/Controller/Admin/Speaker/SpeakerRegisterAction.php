@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Speaker;
 
-use Afup\Site\Logger\DbLoggerTrait;
+use AppBundle\AuditLog\Audit;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Invoice\InvoiceService;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
@@ -21,15 +21,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SpeakerRegisterAction extends AbstractController
 {
-    use DbLoggerTrait;
-
     public function __construct(
-        private SpeakerRepository $speakerRepository,
-        private EventActionHelper $eventActionHelper,
-        private TalkRepository $talkRepository,
-        private TicketRepository $ticketRepository,
-        private InvoiceService $invoiceService,
-        private InvoiceRepository $invoiceRepository,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly EventActionHelper $eventActionHelper,
+        private readonly TalkRepository $talkRepository,
+        private readonly TicketRepository $ticketRepository,
+        private readonly InvoiceService $invoiceService,
+        private readonly InvoiceRepository $invoiceRepository,
+        private readonly Audit $audit,
     ) {}
 
     public function __invoke(Request $request): RedirectResponse
@@ -97,7 +96,7 @@ class SpeakerRegisterAction extends AbstractController
                         '',
                         Ticket::STATUS_GUEST,
                     );
-                    $this->log('Ajout inscription conférencier ' . $speaker->getId());
+                    $this->audit->log('Ajout inscription conférencier ' . $speaker->getId());
                     $nbSpeakers++;
                 } catch (Exception) {
                     $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout de la facturation');
