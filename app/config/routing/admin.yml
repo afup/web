@@ -121,6 +121,11 @@ admin_logs:
   requirements:
     id: '\d+'
 
+admin_audit:
+  path: /audit
+  defaults:
+    _controller: AppBundle\Controller\Admin\Audit\IndexAction
+
 admin_administrators:
   path: /administrators
   defaults: {_controller: AppBundle\Controller\Admin\AdministratorsListAction}

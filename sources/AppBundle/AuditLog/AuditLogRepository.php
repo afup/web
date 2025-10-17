@@ -14,22 +14,33 @@ final readonly class AuditLogRepository
 
     public function save(string $message, ?int $userId, ?string $route): void
     {
-        $query = $this->connection->createQueryBuilder()
+        $query = ($qb = $this->connection->createQueryBuilder())
             ->insert('afup_audit_log')
-            ->set('message', ':message')
+            ->setValue('message', ':message')
             ->setParameter('message', $message)
         ;
 
         if ($userId) {
-            $query->set('user_id', ':userId');
+            $query->setValue('user_id', ':userId');
             $query->setParameter('userId', $userId);
         }
 
         if ($route) {
-            $query->set('route', ':route');
+            $query->setValue('route', ':route');
             $query->setParameter('route', $route);
         }
 
         $query->executeStatement();
+    }
+
+    public function paginate(int $page)
+    {
+        $query = $this->connection->createQueryBuilder()
+            ->select('*')
+            ->from('afup_audit_log')
+            ->setMaxResults(10)
+            ->setFirstResult(($page - 1) * 10);
+
+        return $query->fetchAllAssociative();
     }
 }
