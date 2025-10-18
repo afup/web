@@ -65,14 +65,14 @@ class ContactDetailsType extends AbstractType
             ->add('phone', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Length(['max' => 20]),
+                    new Length(max: 20),
                 ],
             ])
             ->add('mobilephone', TextType::class, [
                 'label' => 'Portable',
                 'required' => false,
                 'constraints' => [
-                    new Length(['max' => 20]),
+                    new Length(max: 20),
                 ],
             ])
             ->add('nearest_office', ChoiceType::class, [
@@ -84,7 +84,7 @@ class ContactDetailsType extends AbstractType
                 ],
                 'constraints' => [
                     new NotBlank(),
-                    new Length(['max' => 30]),
+                    new Length(max: 30),
                 ],
             ])
             ->add('plainPassword', RepeatedType::class, [

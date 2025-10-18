@@ -63,9 +63,7 @@ class RegistrationsExportGenerator
         foreach ($tickets as $ticket) {
             $status = $ticket->getStatus();
             if (
-                $status == Ticket::STATUS_CANCELLED
-                ||  $status == Ticket::STATUS_ERROR
-                ||  $status == Ticket::STATUS_DECLINED
+                in_array($status, [Ticket::STATUS_CANCELLED, Ticket::STATUS_ERROR, Ticket::STATUS_DECLINED])
             ) {
                 // On n'exporte pas les billets inscriptions annulées
                 // ou en erreur de paiement / refusées

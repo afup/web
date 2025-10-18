@@ -60,8 +60,8 @@ class HotelReservationType extends AbstractType
                     'multiple' => true,
                     'choices' => $choices,
                     'constraints' => [
-                        new Choice(['choices' => array_values($choices), 'multiple' => true, 'min' => 1, 'strict' => true]),
-                        new Callback(['callback' => function ($values, ExecutionContextInterface $context): void {
+                        new Choice(choices: array_values($choices), multiple: true, min: 1, strict: true),
+                        new Callback(callback: function ($values, ExecutionContextInterface $context): void {
                             if (count($values) === 2
                                 && in_array(self::NIGHT_NONE, $values)
                                 && in_array(self::NIGHT_TRAVEL_SPONSOR, $values)
@@ -76,7 +76,7 @@ class HotelReservationType extends AbstractType
                                     ->addViolation()
                                 ;
                             }
-                        }]),
+                        }),
                     ],
                 ],
             )

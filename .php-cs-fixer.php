@@ -17,8 +17,8 @@ return (new PhpCsFixer\Config())
     ->registerCustomFixers(new PhpCsFixerCustomFixers\Fixers())
     ->setRiskyAllowed(true)
     ->setRules([
-        '@PER-CS2.0' => true,
-        '@PHP74Migration:risky' => true,
+        '@PER-CS2x0' => true,
+        '@PHP7x4Migration:risky' => true,
         'no_alias_functions' => true,
         'native_function_casing' => true,
         'phpdoc_no_access' => true,
@@ -26,7 +26,7 @@ return (new PhpCsFixer\Config())
         'no_unused_imports' => true,
         'method_argument_space' => false,
         'statement_indentation' => false,
-        MultilinePromotedPropertiesFixer::name() => [
+        'multiline_promoted_properties' => [
             'keep_blank_lines' => true,
             'minimum_number_of_parameters' => 2,
         ],

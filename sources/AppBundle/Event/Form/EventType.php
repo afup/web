@@ -25,7 +25,7 @@ class EventType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Titre de l\'événément',
-                'constraints' => [new Assert\NotBlank(['message' => 'Titre du forum manquant'])],
+                'constraints' => [new Assert\NotBlank(message: 'Titre du forum manquant')],
             ])
             ->add('path', TextType::class, [
                 'label' => 'Chemin du template',
@@ -38,13 +38,13 @@ class EventType extends AbstractType
             ])
             ->add('seats', NumberType::class, [
                 'label' => 'Nombre de places',
-                'constraints' => [new Assert\NotBlank(['message' => 'Nombre de places manquant'])],
+                'constraints' => [new Assert\NotBlank(message: 'Nombre de places manquant')],
             ])
             ->add('placeName', TextType::class, [
                 'label' => 'Nom du lieu',
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => 255],
+                    new Assert\Length(max: 255,
                 )],
             ])
             ->add('placeAddress', TextType::class, [
@@ -149,7 +149,7 @@ class EventType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'constraints' => [
-                    new Assert\File(['mimeTypes' => 'application/pdf']),
+                    new Assert\File(mimeTypes: 'application/pdf'),
                 ],
             ])
             ->add('sponsor_file_fr', FileType::class, [
@@ -157,7 +157,7 @@ class EventType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'constraints' => [
-                    new Assert\File(['mimeTypes' => 'application/pdf']),
+                    new Assert\File(mimeTypes: 'application/pdf'),
                 ],
             ])
             ->add('sponsor_file_en', FileType::class, [
@@ -165,7 +165,7 @@ class EventType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'constraints' => [
-                    new Assert\File(['mimeTypes' => 'application/pdf']),
+                    new Assert\File(mimeTypes: 'application/pdf'),
                 ],
             ])
         ;

@@ -46,13 +46,13 @@ $smarty->assign('listPeriode', $listPeriode);
 $periode_debut = $listPeriode[$id_periode - 1]['date_debut'];
 $periode_fin = $listPeriode[$id_periode - 1]['date_fin'];
 
-if ($action == 'lister' || $action == 'debit' || $action == 'credit' || $action == 'export') {
+if (in_array($action, ['lister', 'debit', 'credit', 'export'])) {
     $alsoDisplayClassifed = isset($_GET['also_display_classifed_entries']) && $_GET['also_display_classifed_entries'];
 
     $smarty->assign('also_display_classifed_entries', $alsoDisplayClassifed);
 }
 
-if ($action == 'lister' || $action == 'debit' || $action == 'credit') {
+if (in_array($action, ['lister', 'debit', 'credit'])) {
     $smarty->assign('categories', $compta->obtenirListCategoriesJournal());
     $smarty->assign('events', $compta->obtenirListEvenementsJournal());
     $smarty->assign('payment_methods', $compta->obtenirListReglementsJournal());

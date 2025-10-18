@@ -26,15 +26,15 @@ class SpeakersExpensesType extends AbstractType
                     'multiple' => true,
                     'data_class' => null,
                     'constraints' => [
-                        new Count(['max' => 4]),
+                        new Count(max: 4),
                         new All([
-                            new File([
-                                'maxSize' => '2M',
-                                'mimeTypes' => [
+                            new File(
+                                maxSize: '2M',
+                                mimeTypes: [
                                     'application/pdf',
                                     'application/x-pdf',
                                 ],
-                            ]),
+                            ),
                         ]),
                     ],
                     'attr' => [
