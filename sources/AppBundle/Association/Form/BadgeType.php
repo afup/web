@@ -30,15 +30,15 @@ class BadgeType extends AbstractType
                 [
                     'label' => 'Image',
                     'constraints' => [
-                        new Image([
-                            'minWidth' => 850,
-                            'maxWidth' => 850,
-                            'minHeight' => 850,
-                            'maxHeight' => 850,
-                            'mimeTypes' => [
+                        new Image(
+                            minWidth: 850,
+                            maxWidth: 850,
+                            minHeight: 850,
+                            maxHeight: 850,
+                            mimeTypes: [
                                 'image/png',
                             ],
-                        ]),
+                        ),
                     ],
                 ],
             )

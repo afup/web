@@ -124,7 +124,7 @@ class UserEditType extends AbstractType
                 'label' => 'Tél. fixe',
                 'required' => false,
                 'constraints' => [
-                    new Length(['max' => 20]),
+                    new Length(max: 20),
                 ],
                 'attr' => [
                     'size' => 20,
@@ -135,7 +135,7 @@ class UserEditType extends AbstractType
                 'label' => 'Tél. portable',
                 'required' => false,
                 'constraints' => [
-                    new Length(['max' => 20]),
+                    new Length(max: 20),
                 ],
                 'attr' => [
                     'size' => 20,
@@ -190,7 +190,7 @@ class UserEditType extends AbstractType
                 'label' => 'Login',
                 'constraints' => [
                     new NotBlank(),
-                    new Length(['max' => 30]),
+                    new Length(max: 30),
                 ],
                 'attr' => [
                     'size' => 30,
