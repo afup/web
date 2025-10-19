@@ -59,6 +59,7 @@ Feature: Administration - Évènements - Conférences
     And I should see "Jouons à un jeu"
     And I should see "Gallou Adrien"
 
+  @reloadDbWithTestData
   Scenario: Exporter les conférences
     Given I am logged in as admin and on the Administration
     And I follow "Conférences"
@@ -68,11 +69,12 @@ Feature: Administration - Évènements - Conférences
     And the response header "Content-disposition" should match '#^attachment; filename=talks_forum_([0-9]*)-([0-9]*).csv#'
     And the downloaded file should be the same as "admin_talks_export.csv"
 
+  @reloadDbWithTestData
   Scenario: Export joindIn
     Given I am logged in as admin and on the Administration
     And I follow "Conférences"
     Then the ".content h2" element should contain "Conférence"
     And I follow "Export joindIn"
     Then the response status code should be 200
-    And the response header "Content-disposition" should match '#^attachment; filename=joind_in_forum_php.csv#'
+    And the response header "Content-disposition" should match '#^attachment; filename=talks_forum_([0-9]*)-([0-9]*)_joind_in.csv#'
     And the downloaded file should be the same as "admin_talks_export_joind_in.csv"

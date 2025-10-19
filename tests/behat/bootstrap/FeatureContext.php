@@ -598,9 +598,8 @@ class FeatureContext implements Context
     #[Then('/^the downloaded file should be the same as "(?P<value>(?:[^"]|\\")*)"$/')]
     public function assertDownloadedFile(string $filename): void
     {
-
         if ($this->minkContext->getMinkParameter('files_path')) {
-            $fullPath = rtrim(realpath($this->minkContext->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$filename;
+            $fullPath = rtrim(realpath($this->minkContext->getMinkParameter('files_path')), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
             if (is_file($fullPath)) {
                 $filename = $fullPath;
             }
