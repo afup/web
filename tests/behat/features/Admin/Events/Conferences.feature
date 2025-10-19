@@ -66,6 +66,7 @@ Feature: Administration - Évènements - Conférences
     And I follow "Exporter les conférences"
     Then the response status code should be 200
     And the response header "Content-disposition" should match '#^attachment; filename=talks_forum_([0-9]*)-([0-9]*).csv#'
+    And the downloaded file should be the same as "admin_talks_export.csv"
 
   Scenario: Export joindIn
     Given I am logged in as admin and on the Administration
@@ -74,3 +75,4 @@ Feature: Administration - Évènements - Conférences
     And I follow "Export joindIn"
     Then the response status code should be 200
     And the response header "Content-disposition" should match '#^attachment; filename=joind_in_forum_php.csv#'
+    And the downloaded file should be the same as "admin_talks_export_joind_in.csv"

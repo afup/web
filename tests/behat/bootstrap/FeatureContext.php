@@ -591,4 +591,29 @@ class FeatureContext implements Context
             );
         }
     }
+
+    /**
+     * @throws ExpectationException
+     */
+    #[Then('/^the downloaded file should be the same as "(?P<value>(?:[^"]|\\")*)"$/')]
+    public function assertDownloadedFile(string $filename): void
+    {
+
+        if ($this->minkContext->getMinkParameter('files_path')) {
+            $fullPath = rtrim(realpath($this->minkContext->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$filename;
+            if (is_file($fullPath)) {
+                $filename = $fullPath;
+            }
+        }
+        $expected = file_get_contents($filename);
+        $value = $this->minkContext->getSession()->getPage()->getContent();
+
+        if ($expected !== $value) {
+            throw new ExpectationException(
+                sprintf('The downloaded file is not same as "%s"', $filename),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+
+    }
 }
