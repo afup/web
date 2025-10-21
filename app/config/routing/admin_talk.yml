@@ -1,7 +1,12 @@
+admin_talk_export_joind_in:
+  path: /export/joind-in/{eventId}/
+  defaults: {_controller: AppBundle\Controller\Admin\Talk\ExportJoindInAction}
+  requirements:
+    event_id: \d+
+
 admin_talk_export:
   path: /export
   defaults: {_controller: AppBundle\Controller\Admin\Talk\ExportAction}
-
 
 admin_talk_index:
   path: /update_indexation
