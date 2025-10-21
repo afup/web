@@ -44,6 +44,6 @@ final class DisplayAction extends AbstractController
 
     protected function isRubriqueAllowed(array $rubrique): bool
     {
-        return $rubrique['id'] == Rubrique::ID_RUBRIQUE_ASSOCIATION || $rubrique['id'] == Rubrique::ID_RUBRIQUE_ANTENNES || $rubrique['id'] == Rubrique::ID_RUBRIQUE_INFORMATIONS_PRATIQUES || $rubrique['id'] == Rubrique::ID_RUBRIQUE_NOS_ACTIONS;
+        return in_array($rubrique['id'], [Rubrique::ID_RUBRIQUE_ASSOCIATION, Rubrique::ID_RUBRIQUE_ANTENNES, Rubrique::ID_RUBRIQUE_INFORMATIONS_PRATIQUES, Rubrique::ID_RUBRIQUE_NOS_ACTIONS]);
     }
 }

@@ -207,7 +207,7 @@ class Forum
 
             /* On boucle sur chaque journée du programme. */
             foreach ($aProgramme as $journee => $aInfos) {
-                $journee_aff = date('d/m/Y', strtotime($journee));
+                $journee_aff = date('d/m/Y', strtotime((string) $journee));
                 $sTable .= <<<CODE_HTML
 <div class="ui segment">
 <h2 class="ui header">Jour {$j} : {$journee_aff}</h2>

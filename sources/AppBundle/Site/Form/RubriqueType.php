@@ -50,7 +50,7 @@ class RubriqueType extends AbstractType
                     'size' => 60,
                 ],
                 'constraints' => [
-                    new Assert\Length(['max' => 255]),
+                    new Assert\Length(max: 255),
                     new Assert\NotBlank(),
                     new Assert\Type('string'),
                 ],
@@ -65,7 +65,7 @@ class RubriqueType extends AbstractType
                     'class' => 'tinymce',
                 ],
                 'constraints' => [
-                    new Assert\Length(['max' => 255]),
+                    new Assert\Length(max: 255),
                     new Assert\Type('string'),
                 ],
             ])
@@ -88,10 +88,10 @@ class RubriqueType extends AbstractType
                 'required' => false,
                 'data_class' => null,
                 'constraints' => [
-                    new Assert\Image([
-                        'minHeight' => 37,
-                        'maxHeight' => 43,
-                    ]),
+                    new Assert\Image(
+                        minHeight: 37,
+                        maxHeight: 43,
+                    ),
                 ],
             ])
             ->add('raccourci', TextType::class, [
@@ -102,7 +102,7 @@ class RubriqueType extends AbstractType
                     'size' => 60,
                 ],
                 'constraints' => [
-                    new Assert\Length(['max' => 255]),
+                    new Assert\Length(max: 255),
                     new Assert\NotBlank(),
                     new Assert\Type('string'),
                 ],

@@ -87,9 +87,9 @@ class PurchaseType extends AbstractType
                 'required' => true,
                 'mapped' => false,
                 'constraints' => [
-                    new IsTrue([
-                        'message' => 'Vous devez valider les conditions.',
-                    ]),
+                    new IsTrue(
+                        message: 'Vous devez valider les conditions.',
+                    ),
                 ],
             ])
             ->add('newsletterAfup', CheckboxType::class, [

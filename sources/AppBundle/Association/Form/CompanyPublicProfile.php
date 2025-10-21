@@ -37,18 +37,18 @@ class CompanyPublicProfile extends AbstractType
         }
 
         $logoConstraints = [
-            new File([
-                'mimeTypes' => [
+            new File(
+                mimeTypes: [
                     'image/jpeg',
                     'image/png',
                 ],
-            ]),
-            new Image([
-                'maxHeight' => 1000,
-                'maxWidth' => 1000,
-                'minHeight' => 200,
-                'minWidth' => 200,
-            ]),
+            ),
+            new Image(
+                maxHeight: 1000,
+                maxWidth: 1000,
+                minHeight: 200,
+                minWidth: 200,
+            ),
         ];
 
         if ($options['logo_required']) {
@@ -63,7 +63,7 @@ class CompanyPublicProfile extends AbstractType
                     'label' => 'Page publique activée',
                     'required' => false,
                     'constraints' => [
-                        new Type(['type' => 'boolean']),
+                        new Type(type: 'boolean'),
                     ],
                 ],
             )
@@ -77,7 +77,7 @@ class CompanyPublicProfile extends AbstractType
                     'help' => sprintf("Maximum %s caractères", self::DESCRIPTION_MAX_LENGTH),
                     'constraints' => [
                         new NotNull(),
-                        new Length(['max' => self::DESCRIPTION_MAX_LENGTH]),
+                        new Length(max: self::DESCRIPTION_MAX_LENGTH),
                     ],
                 ],
             )
@@ -139,11 +139,11 @@ class CompanyPublicProfile extends AbstractType
                     'required' => false,
                     'label' => "Présence dans ces antennes AFUP",
                     'constraints' => [
-                        new Choice([
-                            'choices' => array_values($antennesInfos),
-                            'multiple' => true,
-                            'strict' => true,
-                        ]),
+                        new Choice(
+                            choices: array_values($antennesInfos),
+                            multiple: true,
+                            strict: true,
+                        ),
                     ],
                 ],
             )
@@ -155,7 +155,7 @@ class CompanyPublicProfile extends AbstractType
                     'help' => sprintf($this->getMembershipReasonHelp(), self::MEMBERSHIP_REASON_MAX_LENGTH),
                     'required' => false,
                     'constraints' => [
-                        new Length(['max' => self::MEMBERSHIP_REASON_MAX_LENGTH]),
+                        new Length(max: self::MEMBERSHIP_REASON_MAX_LENGTH),
                     ],
                 ])
             ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])

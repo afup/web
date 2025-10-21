@@ -83,14 +83,14 @@ class ReportsAction extends AbstractController
                 'required' => true,
                 'constraints' => [
                     new NotBlank(),
-                    new File([
-                        'maxSize' => '2M',
-                        'mimeTypes' => [
+                    new File(
+                        maxSize: '2M',
+                        mimeTypes: [
                             'application/pdf',
                             'application/x-pdf',
                         ],
-                        'mimeTypesMessage' => 'Uniquement des fichiers PDF.',
-                    ]),
+                        mimeTypesMessage: 'Uniquement des fichiers PDF.',
+                    ),
                 ],
             ])
             ->add('submit', SubmitType::class, [
