@@ -217,11 +217,12 @@ parameters:
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/accounting/events/list'
                     extra_routes:
-                        - compta_conf_categorie
-                        - compta_conf_operation
-                        - compta_conf_reglement
-                        - compta_conf_compte
-                        - compta_conf_regle
+                        - admin_accounting_events_list
+                        - admin_accounting_categories_list
+                        - admin_accounting_operations_list
+                        - admin_accounting_payments_list
+                        - admin_accounting_accounts_list
+                        - admin_accounting_rules_list
                 compta_recherche:
                     nom: 'Recherche comptable'
                     niveau: 'ROLE_ADMIN'
