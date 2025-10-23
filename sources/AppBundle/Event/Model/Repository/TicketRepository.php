@@ -214,6 +214,23 @@ class TicketRepository extends Repository implements MetadataInitializer
                 ->query($this->getCollection(new HydratorSingleObject()));
     }
 
+    public function searchAllPastEvents(string $search): CollectionInterface
+    {
+        $query = $this->getQuery('SELECT insc.*, forum.titre AS forum_titre
+  FROM afup_inscription_forum AS insc
+  LEFT JOIN afup_forum AS forum ON insc.id_forum = forum.id
+  WHERE
+    insc.reference LIKE :like
+    OR insc.informations_reglement LIKE :like
+    OR insc.commentaires LIKE :like
+    OR insc.nom LIKE :like
+    OR insc.prenom LIKE :like
+    OR insc.email LIKE :like');
+        $query->setParams(['like' => '%' . $search . '%']);
+
+        return $query->query($this->getCollection(new HydratorArray()));
+    }
+
     /**
      * @inheritDoc
      */

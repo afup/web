@@ -1,0 +1,289 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+
+    <h2>Recherche comptable</h2>
+
+    <div class="ui segment">
+        <form action="" method="get">
+
+            {{ form_start(form) }}
+
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        {{ form_row(form.query) }}<br/>
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="Rechercher" class="ui button" />
+                    </div>
+                </div>
+            </div>
+
+            {{ form_end(form) }}
+
+            <div class="ui message">
+                <p>Vous pouvez utiliser <code>?</code> ou <code>%</code> afin d'avoir plus de précision.</p>
+            </div>
+
+        </form>
+    </div>
+
+    {% if results is defined %}
+        {% if results is empty %}
+            <div class="ui segment">
+                <p>Aucun résultat</p>
+            </div>
+        {% else %}
+            {% if results.companyMembers.count > 0 %}
+                <div class="ui segment">
+                    <h2 class="ui header">Cotisations de personnes morales</h2>
+
+                    <table class="ui table striped very compact celled">
+                        <thead>
+                        <tr>
+                            <th>Dates</th>
+                            <th class="right aligned">Montant</th>
+                            <th>Nom Prénom &lt;email&gt;</th>
+                            <th>Informations</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in results.companyMembers %}
+                            {% dump(item) %}
+                        <tr>
+                            <td>{{ item.date_debut|date('d/m/Y') }} &gt; {{ item.date_fin|date('d/m/Y') }}</td>
+                            <td class="right aligned">{{ item.montant|number_format(2, '.', ' ') }}</td>
+                            <td>
+                                {{ item.nom }}
+                                {{ item.prenom }}
+                                {% if item.email %}&lt;{{ item.email }}&gt;{% endif %}
+                            </td>
+                            <td>
+                                {{ item.informations_reglement }}
+                                {% if item.commentaires and item.informations_reglement %}<br/>{% endif %}
+                                {{ item.commentaires }}
+                            </td>
+                            <td class="right aligned">
+                                <a href="/pages/administration/index.php?page=cotisations&amp;action=modifier&amp;type_personne={{ item.type_personne }}&amp;id_personne={{ item.id_personne }}&amp;id={{ item.id }}"
+                                   class="very compact ui icon button"
+                                >
+                                    Voir
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+
+            {% if results.members.count > 0 %}
+                <div class="ui segment">
+                    <h2 class="ui header">Cotisations de personnes physiques</h2>
+
+                    <table class="ui table striped compact celled">
+                        <thead>
+                        <tr>
+                            <th>Dates</th>
+                            <th class="right aligned">Montant</th>
+                            <th>Nom Prénom &lt;email&gt; @login</th>
+                            <th>Informations</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in results.members %}
+                        <tr>
+                            <td>{{ item.date_debut|date('d/m/Y')}} &gt; {{ item.date_fin|date('d/m/Y') }}</td>
+                            <td class="right aligned">{{ item.montant|number_format(2, '.', ' ') }}</td>
+                            <td>
+                                {{ item.nom }}
+                                {{ item.prenom }}
+                                {% if item.email %}&lt;{{ item.email }}&gt;{% endif %}
+                                @{{ item.login }}
+                            </td>
+                            <td>
+                                {{ item.informations_reglement }}
+                                {% if item.commentaires and item.informations_reglement %}<br/>{% endif %}
+                                {{ item.commentaires }}
+                            </td>
+                            <td class="single line right aligned">
+                                <a href="/pages/administration/index.php?page=cotisations&amp;action=modifier&amp;type_personne={{ item.type_personne }}&amp;id_personne={{ item.id_personne }}&amp;id={{ item.id }}"
+                                   class="very compact ui icon button"
+                                >
+                                    Voir
+                                </a>
+                                <a href="/pages/administration/index.php?page=cotisations&amp;type_personne={{ item.type_personne }}&amp;id_personne={{ item.id_personne }}"
+                                   data-position="left center"
+                                   data-tooltip="Voir toutes les cotisations"
+                                   class="very compact green ui icon button"
+                                >
+                                    <i class="money bill alternate icon"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+
+            {% if results.eventsRegistrations.count > 0 %}
+            <div class="ui segment">
+                <h2 class="ui header">Inscriptions Forum</h2>
+
+                <table class="ui table striped compact celled">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Référence</th>
+                        <th class="right aligned">Montant</th>
+                        <th>Nom Prénom &lt;email&gt;</th>
+                        <th>Forum</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for inscription in results.eventsRegistrations %}
+                    <tr>
+                        <td>{{ inscription.date|date('d/m/Y') }}</td>
+                        <td>{{ inscription.reference }}</td>
+                        <td class="right aligned">{{ inscription.montant|number_format(2, '.', ' ') }}</td>
+                        <td>
+                            {{ inscription.nom }}
+                            {{ inscription.prenom }}
+                            {% if inscription.email %}&lt;{{ inscription.email }}&gt;{% endif %}
+                        </td>
+                        <td>{{ inscription.forum_titre }}</td>
+                        <td class="right aligned">
+                            <a href="/pages/administration/index.php?page=forum_inscriptions&amp;action=modifier&amp;id={{ inscription.id }}"
+                               class="very compact ui icon button"
+                            >
+                                Voir
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            {% if results.eventsInvoices.count > 0 %}
+            <div class="ui segment">
+                <h2 class="ui header">Factures Forum</h2>
+
+                <table class="ui table striped compact celled">
+                    <thead>
+                    <tr>
+                        <th>Référence</th>
+                        <th class="right aligned">Montant</th>
+                        <th>Date règlement</th>
+                        <th>Société Nom Prénom &lt;email&gt;</th>
+                        <th>Autor.</th>
+                        <th>Trans.</th>
+                        <th>Forum</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for invoice in results.eventsInvoices %}
+                    <tr>
+                        <td>{{ invoice.reference }}</td>
+                        <td class="right aligned">{{ invoice.montant|number_format(2, '.', ' ') }}</td>
+                        <td>{{ invoice.date_reglement|date('d/m/Y') }}</td>
+                        <td>
+                            {% if invoice.societe %}{{ invoice.societe }} /{% endif %}
+                            {{ invoice.nom }}
+                            {{ invoice.prenom }}
+                            {% if invoice.email %}&lt;{{ invoice.email}}&gt;{% endif %}
+                        </td>
+                        <td>{{ invoice.autorisation }}</td>
+                        <td>{{ invoice.transaction }}</td>
+                        <td>{{ invoice.forum_titre }}</td>
+                        <td class="right aligned">
+                            <a href="/pages/administration/index.php?page=forum_facturation&amp;action=telecharger_facture&amp;ref={{ invoice.reference }}"
+                               class="compact ui icon button"
+                            >
+                                <i class="file pdf icon"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            {% if results.invoices.count > 0 %}
+            <div class="ui segment">
+                <h2 class="ui header">Devis / Factures</h2>
+
+                <table class="ui table striped compact celled">
+                    <thead>
+                    <tr>
+                        <th>Date devis</th>
+                        <th class="right aligned">Numéro devis</th>
+                        <th>Date facture</th>
+                        <th>Numéro facture</th>
+                        <th class="right aligned">Total</th>
+                        <th>Refs + Details</th>
+                        <th>Société</th>
+                        <th>Nom Prénom &lt;email&gt;</th>
+                        <th class="center aligned">État</th>
+                        <th class="right aligned">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for invoice in results.invoices %}
+                    <tr>
+                        <td>{{ invoice.date_devis }}</td>
+                        <td class="right aligned">{{ invoice.numero_devis }}</td>
+                        <td>{{ invoice.date_facture }}</td>
+                        <td>{{ invoice.numero_facture }}</td>
+                        <td class="right aligned">{{ invoice.total }}</td>
+                        <td>
+                            {{ invoice.refs }}
+                            <a href="#" onclick="$(this).parent().find('.js-details').toggle();return false;">[±]</a>
+                            <span class="js-details" style="display:none;"><br/>
+                                {{ invoice.details }}
+                            </span>
+                        </td>
+                        <td>{{ invoice.societe }}</td>
+                        <td>
+                            {{ invoice.nom }}
+                            {{ invoice.prenom }}
+                            {% if invoice.email %}&lt;{{ invoice.email }}&gt;{% endif %}
+                        </td>
+                        {% if invoice.etat_paiement == 2 %}
+                            <td class="center aligned" style="color:#999999">Annulée</td>
+                        {% elseif invoice.etat_paiement == 1 %}
+                            <td class="center aligned" style="background-color:#73f084">Payée</td>
+                        {% else %}
+                            <td class="center aligned" style="background-color:#FBD61A">En attente de paiement</td>
+                        {% endif %}
+                        <td class="single line right aligned">
+                            <a href="/pages/administration/index.php?page=compta_facture&amp;action=modifier&amp;id={{ invoice.id }}"
+                               class="compact ui icon button"
+                            >
+                                Voir
+                            </a>
+                            <a href="/pages/administration/index.php?page=compta_facture&amp;action=telecharger_facture&amp;ref={{ invoice.numero_facture }}"
+                               class="compact ui icon button"
+                            >
+                                <i class="file pdf icon"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

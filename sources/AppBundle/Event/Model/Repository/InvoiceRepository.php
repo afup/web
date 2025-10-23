@@ -11,6 +11,8 @@ use AppBundle\Ting\JoinHydrator;
 use Aura\SqlQuery\Mysql\Select;
 use CCMBenchmark\Ting\Driver\Exception;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
+use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -122,6 +124,49 @@ class InvoiceRepository extends Repository implements MetadataInitializer
             ])
             ->query($this->getCollection($hydrator))
         ;
+    }
+
+    public function searchAllPastEventsInvoices(string $search): CollectionInterface
+    {
+        $query = $this->getQuery('SELECT inv.*, forum.titre AS forum_titre
+  FROM afup_facturation_forum AS inv
+  LEFT JOIN afup_forum AS forum ON inv.id_forum = forum.id
+  WHERE
+    inv.reference LIKE :like
+    OR inv.informations_reglement LIKE :like
+    OR inv.email LIKE :like
+    OR inv.societe LIKE :like
+    OR inv.nom LIKE :like
+    OR inv.prenom LIKE :like
+    OR inv.autorisation LIKE :like
+    OR inv.transaction LIKE :like');
+        $query->setParams(['like' => '%' . $search . '%']);
+
+        return $query->query($this->getCollection(new HydratorArray()));
+    }
+
+    public function searchAllQuotesAndInvoices(string $search): CollectionInterface
+    {
+        $query = $this->getQuery("SELECT inv.*, SUM(det.pu * det.quantite) AS total,
+    GROUP_CONCAT(det.ref SEPARATOR ', ') AS refs,
+    GROUP_CONCAT(det.designation SEPARATOR ', ') AS details
+  FROM afup_compta_facture AS inv
+  LEFT JOIN afup_compta_facture_details AS det
+    ON det.idafup_compta_facture = inv.id AND det.quantite > 0
+  WHERE
+    inv.numero_devis LIKE :like
+    OR inv.numero_facture LIKE :like
+    OR inv.societe LIKE :like
+    OR inv.service LIKE :like
+    OR inv.email LIKE :like
+    OR inv.ref_clt1 LIKE :like
+    OR inv.ref_clt2 LIKE :like
+    OR inv.ref_clt3 LIKE :like
+    OR inv.observation LIKE :like
+  GROUP BY inv.id");
+        $query->setParams(['like' => '%' . $search . '%']);
+
+        return $query->query($this->getCollection(new HydratorArray()));
     }
 
     /**

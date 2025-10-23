@@ -225,6 +225,7 @@ parameters:
                 compta_recherche:
                     nom: 'Recherche comptable'
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/accounting/search'
         assemblee_generale:
             nom: 'Assemblée générale'
             niveau: 'ROLE_ADMIN'

@@ -190,6 +190,28 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
         return $queryBuilder;
     }
 
+    public function searchCompanyMemberSubscriptions(string $search)
+    {
+        $query = $this->getPreparedQuery(
+            'SELECT pers.nom, pers.prenom, pers.email, pers.raison_sociale, cotis.*
+  FROM afup_personnes_morales AS pers
+
+  LEFT JOIN afup_cotisations AS cotis
+    ON pers.id = cotis.id_personne
+  WHERE
+    cotis.type_personne = 1
+    AND (
+      cotis.informations_reglement LIKE :like
+      OR cotis.numero_facture LIKE :like
+      OR cotis.commentaires LIKE :like
+      OR pers.email LIKE :like
+      OR pers.nom LIKE :like
+      OR pers.prenom LIKE :like
+    )',
+        )->setParams(['like' => "%{$search}%"]);
+        return $query->query($this->getCollection(new HydratorArray()));
+    }
+
     /**
      * @inheritDoc
      */
