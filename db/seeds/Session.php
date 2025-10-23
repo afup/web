@@ -121,6 +121,18 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
                 'plannifie' => 0,
                 'genre' => 3,
             ],
+            [
+                'session_id' => 6,
+                'id_forum' => Event::ID_PASSED,
+                'date_soumission' => '2020-05-01',
+                'titre' => 'Révolutionons PHP',
+                'abstract' => 'Hey ! Viens changer PHP avec moi !',
+                'staff_notes' => null,
+                'journee' => 0,
+                'genre' => 1,
+                'skill' => 0,
+                'plannifie' => 1,
+            ],
         ];
 
         $table = $this->table('afup_sessions');
