@@ -65,3 +65,17 @@ admin_accounting_events_edit:
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditEventAction}
   requirements:
     id: '\d+'
+
+admin_accounting_categories_list:
+  path: /categories/list
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ListCategoryAction}
+
+admin_accounting_categories_add:
+  path: /categories/add
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\AddCategoryAction}
+
+admin_accounting_categories_edit:
+  path: /categories/edit/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditCategoryAction}
+  requirements:
+    id: '\d+'
