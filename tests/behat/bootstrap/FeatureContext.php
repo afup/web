@@ -604,8 +604,8 @@ class FeatureContext implements Context
                 $filename = $fullPath;
             }
         }
-        $expected = self::obscureDates(file_get_contents($filename));
-        $value = self::obscureDates($this->minkContext->getSession()->getPage()->getContent());
+        $expected = file_get_contents($filename);
+        $value = $this->minkContext->getSession()->getPage()->getContent();
 
         if ($expected !== $value) {
             throw new ExpectationException(
@@ -613,10 +613,6 @@ class FeatureContext implements Context
                 $this->minkContext->getSession()->getDriver(),
             );
         }
-    }
 
-    private static function obscureDates(string $text): string
-    {
-        return preg_replace('/\d{4}-\d{2}-\d{2}/', 'XXXX-XX-XX', $text);
     }
 }
