@@ -48,14 +48,23 @@ class Article implements NotifyPropertyInterface
      */
     private $theme;
 
-    /**
-     * @var int
-     */
-    private $eventId;
+    private ?int $eventId = null;
 
     private ?\DateTime $publishedAt = null;
 
     private ?int $state = null;
+
+    private ?int $position = null;
+
+    private ?int $authorId = null;
+
+    public function __construct()
+    {
+        $this->position = 0;
+        $this->state = 0;
+        $this->contentType = 'markdown';
+        $this->publishedAt = new \DateTime();
+    }
 
     /**
      * @return int
@@ -148,14 +157,7 @@ class Article implements NotifyPropertyInterface
      */
     public function getLeadParagraph()
     {
-        $leadParagraph = $this->leadParagraph;
-
-        if ($this->isContentTypeMarkdown()) {
-            $parseDown = new \Parsedown();
-            $leadParagraph = $parseDown->parse($leadParagraph);
-        }
-
-        return $leadParagraph;
+        return $this->leadParagraph;
     }
 
     /**
@@ -176,14 +178,7 @@ class Article implements NotifyPropertyInterface
      */
     public function getContent()
     {
-        $content = $this->content;
-
-        if ($this->isContentTypeMarkdown()) {
-            $parseDown = new \Parsedown();
-            $content = $parseDown->parse($content);
-        }
-
-        return $content;
+        return $this->content;
     }
 
     /**
@@ -338,5 +333,35 @@ class Article implements NotifyPropertyInterface
         $this->propertyChanged('state', $this->state, $state);
         $this->state = $state;
         return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): self
+    {
+        $this->propertyChanged('position', $this->position, $position);
+        $this->position = $position;
+        return $this;
+    }
+
+
+    public function getAuthorId(): ?int
+    {
+        return $this->authorId;
+    }
+
+    public function setAuthorId(?int $authorId): self
+    {
+        $this->propertyChanged('authorId', $this->authorId, $authorId);
+        $this->authorId = $authorId;
+        return $this;
+    }
+
+    public function usesMarkdown(): bool
+    {
+        return $this->getContentType() === 'markdown';
     }
 }
