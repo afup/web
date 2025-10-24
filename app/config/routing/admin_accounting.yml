@@ -93,3 +93,7 @@ admin_accounting_rules_edit:
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditRuleAction}
   requirements:
     id: '\d+'
+
+admin_accounting_search:
+  path: /search
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\SearchAction}
