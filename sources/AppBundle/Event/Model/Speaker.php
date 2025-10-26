@@ -18,6 +18,8 @@ class Speaker implements NotifyPropertyInterface
     public const NIGHT_BETWEEN = 'between';
     public const NIGHT_AFTER = 'after';
 
+    const LINKEDIN_URL_PREFIX = "https://www.linkedin.com/in/";
+
     /**
      * @var int
      */
@@ -84,6 +86,8 @@ class Speaker implements NotifyPropertyInterface
     private $twitter;
 
     private ?string $mastodon = null;
+
+    private ?string $linkedin = null;
 
     private ?string $bluesky = null;
 
@@ -387,6 +391,11 @@ class Speaker implements NotifyPropertyInterface
         return $this->mastodon;
     }
 
+    public function getLinkedin(): ?string
+    {
+        return $this->linkedin;
+    }
+
     public function getBluesky(): ?string
     {
         return $this->bluesky;
@@ -399,6 +408,38 @@ class Speaker implements NotifyPropertyInterface
         }
 
         return 'https://bsky.app/profile/' . $this->bluesky;
+    }
+
+    public function getUrlLinkedin(): ?string
+    {
+        $username = $this->getUsernameLinkedin();
+
+        if ($username === null) {
+            return null;
+        }
+
+        return self::LINKEDIN_URL_PREFIX . $username;
+    }
+
+    public function getUsernameLinkedin(): ?string
+    {
+        if (null === $this->linkedin) {
+            return null;
+        }
+
+        if (0 === strlen(trim($this->linkedin))) {
+            return null;
+        }
+
+        if (str_starts_with($this->linkedin, self::LINKEDIN_URL_PREFIX)) {
+            return rtrim(substr($this->linkedin, strlen(self::LINKEDIN_URL_PREFIX)), '/');
+        }
+
+        if (str_starts_with($this->linkedin, 'https://')) {
+            return null;
+        }
+
+        return rtrim($this->linkedin, '/');
     }
 
     public function getUsernameTwitter(): string
@@ -478,6 +519,13 @@ class Speaker implements NotifyPropertyInterface
     {
         $this->propertyChanged('mastodon', $this->mastodon, $mastodon);
         $this->mastodon = $mastodon;
+        return $this;
+    }
+
+    public function setLinkedin($linkedin): self
+    {
+        $this->propertyChanged('linkedin', $this->linkedin, $linkedin);
+        $this->linkedin = $linkedin;
         return $this;
     }
 

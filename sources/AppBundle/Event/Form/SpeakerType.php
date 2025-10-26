@@ -49,6 +49,7 @@ class SpeakerType extends AbstractType
             ->add('biography', TextareaType::class)
             ->add('twitter', TextType::class, ['required' => false])
             ->add('mastodon', UrlType::class, ['required' => false, 'help' => 'Exemple https://mastodon.online/@afup', 'default_protocol' => 'https'])
+            ->add('linkedin', UrlType::class, ['required' => false, 'help' => 'Exemple https://www.linkedin.com/in/votrepseudo', 'default_protocol' => 'https'])
             ->add('bluesky', TextType::class, ['required' => false, 'help' => 'Exemple acme.bsky.social'])
         ;
 
@@ -102,6 +103,7 @@ class SpeakerType extends AbstractType
                     $speaker->setBiography($previousSpeakerInfos->getBiography());
                     $speaker->setTwitter($previousSpeakerInfos->getTwitter());
                     $speaker->setMastodon($previousSpeakerInfos->getMastodon());
+                    $speaker->setLinkedin($previousSpeakerInfos->getLinkedin());
                     $speaker->setBluesky($previousSpeakerInfos->getBluesky());
                     $speaker->setPhoto($previousSpeakerInfos->getPhoto());
 

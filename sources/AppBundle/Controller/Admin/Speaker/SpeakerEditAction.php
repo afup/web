@@ -71,6 +71,7 @@ class SpeakerEditAction extends AbstractController
             $speaker->setTwitter($data->twitter);
             $speaker->setBluesky($data->bluesky);
             $speaker->setMastodon($data->mastodon);
+            $speaker->setLinkedin($data->linkedin);
             $speaker->setEmail($data->email);
             $speaker->setUser($data->githubUser !== null ? $data->githubUser->getId() : null);
             $speaker->setCompany($data->company);
