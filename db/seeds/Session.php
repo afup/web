@@ -182,7 +182,7 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
             6 => [
                 'debut' => (new \DateTime('2020-09-15 10:00:00'))->format('U'),
                 'fin' => (new \DateTime('2020-09-15 10:40:00'))->format('U'),
-            ]
+            ],
         ];
 
 
