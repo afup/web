@@ -18,7 +18,7 @@ class Speaker implements NotifyPropertyInterface
     public const NIGHT_BETWEEN = 'between';
     public const NIGHT_AFTER = 'after';
 
-    const LINKEDIN_URL_PREFIX = "https://www.linkedin.com/in/";
+    private const LINKEDIN_URL_PREFIX = "https://www.linkedin.com/in/";
 
     /**
      * @var int
