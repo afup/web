@@ -53,10 +53,7 @@ class SpeakerFormData
      */
     public $mastodon;
 
-    /**
-     * @var string
-     */
-    public $linkedin;
+    public ?string $linkedin = null;
 
     public ?string $bluesky = null;
 
