@@ -14,7 +14,6 @@ use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
-use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,10 +29,10 @@ final class PaymentAction extends AbstractController
         private readonly LoggerInterface $logger,
         private readonly Emails $emails,
         private readonly InvoiceRepository $invoiceRepository,
-        private readonly LegacyModelFactory $legacyModelFactory,
         private readonly TicketRepository $ticketRepository,
         private readonly PayboxFactory $payboxFactory,
         private readonly EventActionHelper $eventActionHelper,
+        private readonly Facturation $facturation,
     ) {}
 
     public function __invoke($eventSlug, Request $request): Response
@@ -80,8 +79,7 @@ final class PaymentAction extends AbstractController
 
             $invoiceRepository->save($invoice);
 
-            $forumFacturation = $this->legacyModelFactory->createObject(Facturation::class);
-            $forumFacturation->envoyerFacture($invoice->getReference());
+            $this->facturation->envoyerFacture($invoice->getReference());
 
             $ticketRepository = $this->ticketRepository;
             $tickets = $ticketRepository->getByInvoiceWithDetail($invoice);
@@ -104,8 +102,7 @@ final class PaymentAction extends AbstractController
             $params['bankAccount'] = $bankAccountFactory->createApplyableAt($invoice->getinvoiceDate());
 
             // For bankwire, companies need to retrieve the invoice
-            $forumFacturation = $this->legacyModelFactory->createObject(Facturation::class);
-            $forumFacturation->envoyerFacture($invoiceRef);
+            $this->facturation->envoyerFacture($invoiceRef);
         }
 
         return $this->render('event/ticket/payment.html.twig', $params);

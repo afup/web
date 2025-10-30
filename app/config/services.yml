@@ -120,9 +120,6 @@ services:
             $mailchimp: '@app.mailchimp_api'
             $listId: "%mailchimp_members_list%"
 
-    Afup\Site\Utils\Configuration:
-        autowire: true
-
     AppBundle\Email\Mailer\Adapter\MailerAdapter:
       class: AppBundle\Email\Mailer\Adapter\PhpMailerAdapter
       factory: [AppBundle\Email\Mailer\Adapter\PhpMailerAdapter, createFromConfiguration]
@@ -143,31 +140,29 @@ services:
         autowire: true
         arguments: ["%qr_code_salt%"]
 
+    Afup\Site\Utils\Configuration:
+        autowire: true
+
+    Afup\Site\Utils\LegacyConnectionFactory: ~
+    Afup\Site\Utils\Base_De_Donnees:
+        factory: '@Afup\Site\Utils\LegacyConnectionFactory'
+
     Afup\Site\Forum\AppelConferencier:
-        class: Afup\Site\Forum\AppelConferencier
-        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
-        arguments:
-          - 'Afup\Site\Forum\AppelConferencier'
+        autowire: true
 
     Afup\Site\Forum\Forum:
-        class: Afup\Site\Forum\Forum
-        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
-        arguments:
-          - 'Afup\Site\Forum\Forum'
+        autowire: true
 
     Afup\Site\Utils\Pays:
-        class: Afup\Site\Utils\Pays
-        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
-        arguments:
-          - 'Afup\Site\Utils\Pays'
+        autowire: true
 
     Afup\Site\Forum\Inscriptions:
-        class: Afup\Site\Forum\Inscriptions
-        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
-        arguments:
-          - 'Afup\Site\Forum\Inscriptions'
+        autowire: true
 
     Afup\Site\Association\CotisationsFactory:
+        autowire: true
+
+    Afup\Site\Forum\Facturation:
         autowire: true
 
     Afup\Site\Association\Cotisations:
