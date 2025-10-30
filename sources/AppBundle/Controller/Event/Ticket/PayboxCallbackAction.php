@@ -11,7 +11,6 @@ use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
-use AppBundle\LegacyModelFactory;
 use AppBundle\Payment\PayboxResponse;
 use AppBundle\Payment\PayboxResponseFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,9 +28,9 @@ final class PayboxCallbackAction extends AbstractController
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly Emails $emails,
         private readonly InvoiceRepository $invoiceRepository,
-        private readonly LegacyModelFactory $legacyModelFactory,
         private readonly TicketRepository $ticketRepository,
         private readonly EventActionHelper $eventActionHelper,
+        private readonly Facturation $facturation,
     ) {}
 
     public function __invoke(string $eventSlug, Request $request): Response
@@ -68,11 +67,7 @@ final class PayboxCallbackAction extends AbstractController
         $tickets = $this->ticketRepository->getByReference($invoice->getReference());
 
         if ($paymentStatus === Ticket::STATUS_PAID) {
-            /**
-             * @var Facturation $forumFacturation
-             */
-            $forumFacturation = $this->legacyModelFactory->createObject(Facturation::class);
-            $forumFacturation->envoyerFacture($invoice->getReference());
+            $this->facturation->envoyerFacture($invoice->getReference());
         }
 
         foreach ($tickets as $ticket) {
