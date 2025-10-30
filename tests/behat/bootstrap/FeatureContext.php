@@ -233,6 +233,19 @@ class FeatureContext implements Context
     }
 
     /**
+     * @Then /^the response should contain the html "(?P<text>(?:[^"]|\\")*)"$/
+     * @Then /^the response should contain the html$/
+     */
+    public function assertResponseHasHtml(PyStringNode|string $html): void
+    {
+        if ($html instanceof PyStringNode) {
+            $html = $html->getRaw();
+        }
+
+        $this->minkContext->assertResponseContains($html);
+    }
+
+    /**
      * @Then the current URL should match :arg1
      * @throws ExpectationException
      */
