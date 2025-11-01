@@ -15,7 +15,6 @@ use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Ticket\PurchaseTypeFactory;
-use AppBundle\LegacyModelFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,10 +24,10 @@ final class TicketAction extends AbstractController
     public function __construct(
         private readonly PurchaseTypeFactory $purchaseTypeFactory,
         private readonly InvoiceRepository $invoiceRepository,
-        private readonly LegacyModelFactory $legacyModelFactory,
         private readonly TicketRepository $ticketRepository,
         private readonly EventActionHelper $eventActionHelper,
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
+        private readonly Facturation $facturation,
     ) {}
 
     public function __invoke($eventSlug, Request $request): Response
@@ -86,10 +85,7 @@ final class TicketAction extends AbstractController
 
             $invoice->setTickets($tickets);
 
-            /**
-             * @todo: voir où le mettre ça
-             */
-            $reference = $this->legacyModelFactory->createObject(Facturation::class)->creerReference($event->getId(), $invoice->getLabel());
+            $reference = $this->facturation->creerReference($event->getId(), $invoice->getLabel());
             $invoice->setReference($reference);
             $invoiceRepository->saveWithTickets($invoice);
 

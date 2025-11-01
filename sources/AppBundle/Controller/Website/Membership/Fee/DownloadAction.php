@@ -6,12 +6,11 @@ namespace AppBundle\Controller\Website\Membership\Fee;
 
 use Afup\Site\Association\Cotisations;
 use Afup\Site\Droits;
-use Afup\Site\Utils\Logs;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
-use AppBundle\LegacyModelFactory;
+use AppBundle\AuditLog\Audit;
 use Assert\Assertion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -23,9 +22,9 @@ final class DownloadAction extends AbstractController
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly CompanyMemberRepository $companyMemberRepository,
-        private readonly LegacyModelFactory $legacyModelFactory,
         private readonly Cotisations $cotisations,
         private readonly Droits $droits,
+        private readonly Audit $audit,
     ) {}
 
     public function __invoke(Request $request): BinaryFileResponse
@@ -33,10 +32,8 @@ final class DownloadAction extends AbstractController
         $identifiant = $this->droits->obtenirIdentifiant();
         $id = $request->get('id');
 
-        $logs = $this->legacyModelFactory->createObject(Logs::class);
-
         if (false === $this->cotisations->isCurrentUserAllowedToReadInvoice($id)) {
-            $logs::log("L'utilisateur id: " . $identifiant . ' a tenté de voir la facture id:' . $id);
+            $this->audit->log("L'utilisateur id: " . $identifiant . ' a tenté de voir la facture id:' . $id);
             throw $this->createAccessDeniedException('Cette facture ne vous appartient pas, vous ne pouvez la visualiser.');
         }
 
