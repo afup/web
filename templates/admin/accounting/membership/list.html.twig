@@ -1,0 +1,104 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    {% set token_delete=csrf_token('admin_membership_delete') %}
+    {% if memberType.value == enum('AppBundle\\Controller\\Admin\\Membership\\MemberType').MemberPhysical.value %}
+    <h2>Cotisations de {{ member.firstName }} {{ member.lastName }}</h2>
+    {% else %}
+    <h2>Cotisations de {{ member.companyName }}</h2>
+    {% endif %}
+
+
+    <div class="ui menu">
+        <a href="{{ url('admin_membership_fee_add', {'memberType': memberType.value, 'memberId': memberId}) }}" class="item">
+            <div data-tooltip="Ajouter une cotisation" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+        {% if memberType.value == enum('AppBundle\\Controller\\Admin\\Membership\\MemberType').MemberPhysical.value  %}
+        <a href="{{ url('admin_members_user_edit', {id: memberId}) }}" class="item">
+            <i class="user icon"></i>
+            Voir la fiche de la personne physique
+        </a>
+        {% else %}
+        <a href="{{ url('admin_members_company_edit', {id: memberId}) }}" class="item" >
+            <i class="building icon"></i>
+            Voir la fiche de la personne morale
+        </a>
+        {% endif %}
+    </div>
+
+    <h3>Historique</h3>
+    <table class="ui table striped compact celled">
+        <thead>
+        <tr>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+            <th class="right aligned">Montant</th>
+            <th>Description</th>
+            <th class="right aligned">Actions</th>
+        </tr>
+        </thead>
+        {% if memberships|length > 0 %}
+            {% for membership in memberships %}
+            <tr>
+                <td>{{ membership.startDate|format_date('short') }}</td>
+                <td>{{ membership.endDate|format_date('short') }}</td>
+                <td class="right aligned">{{ membership.amount|number_format(2, '.', ' ') }} &euro;</td>
+                <td>
+                    {% if membership.paymentType.value == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').Cash.value %}
+                    en espèces
+                    {% elseif membership.paymentType.value == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').Check.value %}
+                    par chèque n° {{ membership.paymentDetails }}
+                    {% elseif membership.paymentType.value == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').BankTransfert.value %}
+                    par virement n° {{ membership.paymentDetails }}
+                    {% elseif membership.paymentType.value == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').OnlinePayment.value %}
+                    en ligne
+                    {% endif %}
+                </td>
+                <td class="right aligned">
+                    <a href="{{ url('admin_membership_fee_send_invoice', {'memberType': memberType.value, 'memberId': memberId, 'membershipFeeId': membership.id}) }}"
+                       data-position="left center"
+                       data-tooltip="Envoyer la facture par mail"
+                       class="compact ui icon button"
+                    >
+                        <i class="paper plane icon"></i>
+                    </a>
+
+
+                    <a href="{{ url('admin_membership_fee_download_invoice', {'memberType': memberType.value, 'memberId': memberId, 'membershipFeeId': membership.id}) }}"
+                       data-position="left center"
+                       data-tooltip="Télécharger la facture"
+                       class="compact ui icon button"
+                    >
+                        <i class="file pdf icon"></i>
+                    </a>
+
+                    <a href="{{ url('admin_membership_fee_edit', {'memberType': memberType.value, 'memberId': memberId, 'membershipFeeId': membership.id }) }}"
+                       data-position="left center"
+                       data-tooltip="Modifier la cotisation"
+                       class="compact ui icon button"
+                    >
+                        <i class="pencil alernate icon"></i>
+                    </a>
+
+                    <a href="{{ url('admin_membership_fee_delete', {'memberType': memberType.value, 'memberId': memberId, 'membershipFeeId': membership.id, 'token': token_delete }) }}"
+                       data-position="left center"
+                       data-tooltip="Supprimer la cotisation"
+                       class="compact ui red icon button"
+                       onclick="return confirm('Etes-vous sûr de vouloir supprimer cette cotisation ?');"
+                    >
+                        <i class="trash icon"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+        <tr>
+            <td><em>Aucune cotisation</em></td>
+        </tr>
+        {% endif %}
+    </table>
+
+{% endblock %}

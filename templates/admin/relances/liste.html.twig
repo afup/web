@@ -31,10 +31,10 @@
                     <a data-position="left center"
                        class="compact ui green icon button"
                        {% if log.apm is not null %}
-                           href="/pages/administration/index.php?page=cotisations&amp;type_personne=1&amp;id_personne={{ log.apm.id }}"
+                           href="{{ url('admin_membership_fee_list', {'memberType': constant('AFUP_PERSONNES_MORALES'), 'memberId': log.apm.id}) }}"
                            data-tooltip="Gérer les cotisations de {{ log.apm.companyName }}"
                         {% else %}
-                           href="/pages/administration/index.php?page=cotisations&amp;type_personne=0&amp;id_personne={{ log.app.id }}"
+                           href="{{ url('admin_membership_fee_list', {'memberType': constant('AFUP_PERSONNES_PHYSIQUES'), 'memberId': log.app.id}) }}"
                            data-tooltip="Gérer les cotisations de {{ log.app.firstname }} {{ log.app.lastname }}"
                         {% endif %}
                     >
