@@ -65,7 +65,7 @@
                                 {{ item.commentaires }}
                             </td>
                             <td class="right aligned">
-                                <a href="/pages/administration/index.php?page=cotisations&amp;action=modifier&amp;type_personne={{ item.type_personne }}&amp;id_personne={{ item.id_personne }}&amp;id={{ item.id }}"
+                                <a href="{{ url('admin_membership_fee_edit', {'memberType': item.type_personne, 'memberId': item.id_personne, 'membershipFeeId': item.id}) }}"
                                    class="very compact ui icon button"
                                 >
                                     Voir
@@ -109,12 +109,12 @@
                                 {{ item.commentaires }}
                             </td>
                             <td class="single line right aligned">
-                                <a href="/pages/administration/index.php?page=cotisations&amp;action=modifier&amp;type_personne={{ item.type_personne }}&amp;id_personne={{ item.id_personne }}&amp;id={{ item.id }}"
+                                <a href="{{ url('admin_membership_fee_edit', {'memberType': item.type_personne, 'memberId': item.id_personne, 'membershipFeeId': item.id}) }}"
                                    class="very compact ui icon button"
                                 >
                                     Voir
                                 </a>
-                                <a href="/pages/administration/index.php?page=cotisations&amp;type_personne={{ item.type_personne }}&amp;id_personne={{ item.id_personne }}"
+                                <a href="{{ url('admin_membership_fee_list', {'memberType': item.type_personne, 'memberId': item.id_personne}) }}"
                                    data-position="left center"
                                    data-tooltip="Voir toutes les cotisations"
                                    class="very compact green ui icon button"
