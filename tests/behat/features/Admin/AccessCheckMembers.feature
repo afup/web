@@ -10,7 +10,7 @@ Feature: Valider les accès depuis un compte membre
     When I go to "/admin/members/users/delete?id=5"
     Then the response status code should be 403
     # Cotisation
-    When I go to "/pages/administration/index.php?page=cotisations&type_personne=0&id_personne=5"
+    When I go to "/admin/accounting/membership-fee/list/0/5"
     Then I should see "Vous n'avez pas le droit d'accéder à cette page"
 
   @reloadDbWithTestData
@@ -20,8 +20,8 @@ Feature: Valider les accès depuis un compte membre
     When I go to "/admin/members/companies/edit/2"
     Then the response status code should be 403
     # Cotisation
-    When I go to "/pages/administration/index.php?page=cotisations&type_personne=1&id_personne=2"
+    When I go to "/admin/accounting/membership-fee/list/1/2"
     Then I should see "Vous n'avez pas le droit d'accéder à cette page"
     # Facture
-    When I go to "/pages/administration/index.php?page=cotisations&action=telecharger_facture&type_personne=1&id_personne=2&id=7"
+    When I go to "/admin/accounting/membership-fee/download/1/2/7"
     Then I should see "Vous n'avez pas le droit d'accéder à cette page"
