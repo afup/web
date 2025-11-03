@@ -61,6 +61,7 @@ security:
         - { path: ^/admin/event, roles: ROLE_ADMIN }
         - { path: ^/admin/members/general_meeting, roles: ROLE_ADMIN }
         - { path: ^/admin/members/general_meeting_vote, roles: ROLE_ADMIN }
+        - { path: ^/admin/accounting, roles: ROLE_ADMIN }
         - { path: ^/admin/site, roles: ROLE_ADMIN }
         - { path: ^/admin/planete, roles: ROLE_ADMIN }
         - { path: ^/admin/(members/reporting|association/relances|talk|slackmembers/check|healthcheck), roles: ROLE_ADMIN}
