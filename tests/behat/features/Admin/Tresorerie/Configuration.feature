@@ -1,5 +1,18 @@
 Feature: Administration - Trésorerie - Configuration
 
+  Scenario: Un membre ne peut pas accéder aux page de trésorie
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/accounting/events/list"
+    Then the response status code should be 403
+    And I am on "/admin/accounting/categories/list"
+    Then the response status code should be 403
+    And I am on "/admin/accounting/accounts/list"
+    Then the response status code should be 403
+    And I am on "/admin/accounting/payments/list"
+    Then the response status code should be 403
+    And I am on "/admin/accounting/rules/list"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   Scenario: Création/liste des évènements
     Given I am logged in as admin and on the Administration
