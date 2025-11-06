@@ -25,24 +25,17 @@ class Planning implements NotifyPropertyInterface
     #[Assert\GreaterThan(0)]
     private ?int $eventId = null;
 
-    /**
-     * @var bool
-     */
-    private $isKeynote = false;
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(0)]
+    private ?int $roomId = null;
 
-    /**
-     * @return int
-     */
+    private bool $isKeynote = false;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return $this
-     */
     public function setId($id): self
     {
         $id = (int) $id;
@@ -51,31 +44,19 @@ class Planning implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getTalkId(): ?int
     {
         return $this->talkId;
     }
 
-    /**
-     * @param int $talkId
-     *
-     * @return $this
-     */
-    public function setTalkId($talkId): self
+    public function setTalkId(int $talkId): self
     {
-        $talkId = (int) $talkId;
         $this->propertyChanged('talkId', $this->talkId, $talkId);
         $this->talkId = $talkId;
 
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getStart(): ?\DateTime
     {
         return $this->start;
@@ -88,9 +69,6 @@ class Planning implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getEnd(): ?\DateTime
     {
         return $this->end;
@@ -103,45 +81,42 @@ class Planning implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getEventId(): ?int
     {
         return $this->eventId;
     }
 
-    /**
-     * @param int $eventId
-     *
-     * @return $this
-     */
-    public function setEventId($eventId): self
+    public function setEventId(int $eventId): self
     {
-        $eventId = (int) $eventId;
         $this->propertyChanged('eventId', $this->eventId, $eventId);
         $this->eventId = $eventId;
 
         return $this;
     }
 
-    /**
-     * @param bool $isKeynote
-
-     * @return $this
-     */
-    public function setIsKeynote($isKeynote): self
+    public function setIsKeynote(bool $isKeynote): self
     {
         $this->propertyChanged('isKeynote', $this->isKeynote, $isKeynote);
         $this->isKeynote = $isKeynote;
 
         return $this;
     }
-    /**
-     * @return bool
-     */
-    public function getIsKeynote()
+
+    public function getIsKeynote(): bool
     {
         return $this->isKeynote;
+    }
+
+    public function setRoomId(?int $roomId): self
+    {
+        $this->propertyChanged('roomId', $this->roomId, $roomId);
+        $this->roomId = $roomId;
+
+        return $this;
+    }
+
+    public function getRoomId(): ?int
+    {
+        return $this->roomId;
     }
 }
