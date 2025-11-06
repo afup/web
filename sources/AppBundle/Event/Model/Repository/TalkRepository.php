@@ -272,7 +272,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             sprintf('SELECT talk.id_forum, talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code,
             talk.joindin,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe,
-            planning.debut, planning.fin, room.id, room.nom
+            planning.id, planning.debut, planning.fin, room.id, room.nom
             FROM afup_sessions AS talk
             LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
