@@ -18,8 +18,8 @@ class CompanyAction extends AbstractController
     use DbLoggerTrait;
 
     public function __construct(
-        private CompanyMemberRepository $companyMemberRepository,
-        private UserRepository $userRepository,
+        private readonly CompanyMemberRepository $companyMemberRepository,
+        private readonly UserRepository $userRepository,
     ) {}
 
     public function __invoke(Request $request, ?int $id)
@@ -47,7 +47,7 @@ class CompanyAction extends AbstractController
 
         return $this->render('admin/members/company/' . ($id ? 'edit' : 'add') . '.html.twig', [
             'form' => $form->createView(),
-            'users' => $this->userRepository->search('lastname', 'asc', null, $company->getId()),
+            'users' => $this->userRepository->search('lastname', 'asc', null, $company->getId(), onlyActive: false),
             'company' => $company,
         ]);
     }
