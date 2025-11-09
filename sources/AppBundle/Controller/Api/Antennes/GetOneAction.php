@@ -29,6 +29,9 @@ final readonly class GetOneAction
         return new JsonResponse([
             'code' => $antenne->code,
             'label' => $antenne->label,
+            'logo' => [
+                'simple' => 'https://afup.org' . $antenne->logoUrl,
+            ],
             'links' => [
                 'meetup' => $this->createLink('https://www.meetup.com/fr-FR/', $antenne->meetup->urlName),
                 'linkedin' => $this->createLink('https://www.linkedin.com/company/', $antenne->socials->linkedin),
