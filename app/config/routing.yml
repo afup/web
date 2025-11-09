@@ -49,6 +49,10 @@ planete_php_api:
     resource: "routing/planete_php_api.yml"
     prefix: /planete-php-api
 
+api:
+    resource: "routing/api.yml"
+    prefix: /api
+
 badge_image:
     path: /profile/badge/{id}
     defaults: { _controller: AppBundle\Controller\Website\Badge\ImageAction }
