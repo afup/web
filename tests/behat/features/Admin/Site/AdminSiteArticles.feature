@@ -82,3 +82,33 @@ Feature: Administration - Partie Site
     And I press "Ajouter"
     When I should see "Liste des articles"
     Then the ".content table" element should contain "Le titre qui envoi 🚀"
+
+  @reloadDbWithTestData
+  Scenario: Ajout d'un article en markdown
+    Given I am logged in as admin and on the Administration
+    And I follow "Articles"
+    Then I should see "Liste des articles"
+    And I should see "Actualités"
+
+    # Ajouter l'article
+    When I follow "Ajouter"
+    Then I should see "Ajouter un article"
+    And I fill in "titre" with "Le titre markdown"
+    And I fill in "chapeau" with "Le *chapeau* markdown"
+    And I fill in "contenu" with "Un peu de **contenu** avec de la *mise* en page et un [lien](https://afup.org)."
+    And I fill in "raccourci" with "url-article-markdown"
+    And I select "Actualités" from "id_site_rubrique"
+    And I select "9" from "position"
+    And I press "Ajouter"
+
+    # Article dans la liste
+    When I should see "Liste des articles"
+    Then the ".content table" element should contain "Le titre markdown"
+    And I follow "Articles"
+
+    # Vérification du markdown inchangé dans le formulaire
+    Then I follow "modifier_18"
+    And I should see "Modifier un article"
+    And the "titre" field should contain "Le titre markdown"
+    And the "chapeau" field should contain "Le *chapeau* markdown"
+    And the "contenu" field should contain "Un peu de **contenu** avec de la *mise* en page et un [lien](https://afup.org)."
