@@ -31,7 +31,7 @@ help:
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
-.PHONY: install docker-up docker-stop docker-down test hooks vendors db-seed db-migrations reset-db init console phpstan
+.PHONY: install docker-up docker-stop docker-down test hooks vendors db-seed db-migrations reset-db init console phpstan assets
 
 ##@ Setup
 
@@ -120,7 +120,6 @@ phpstan:
 ##@ Frontend
 
 ### Compiler les assets pour la production
-.PHONY: assets
 assets:
 	./node_modules/.bin/webpack -p
 
