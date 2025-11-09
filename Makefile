@@ -6,6 +6,11 @@ CURRENT_UID ?= $(shell id -u)
 DOCKER_UP_OPTIONS ?= --detach
 DOCKER_COMPOSE_BIN ?= docker compose
 
+# Exécutables
+DOCKER_COMP = CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN)
+PHP_CONT    = $(DOCKER_COMP) exec apachephp
+PHP         = $(PHP_CONT) php
+
 # Colors
 COLOR_RESET = \033[0m
 COLOR_TARGET = \033[32m
@@ -47,75 +52,75 @@ init: htdocs/uploads
 
 ### Démarrer les containers
 docker-up: .env var/logs/.docker-build data compose.override.yml
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) up $(DOCKER_UP_OPTIONS)
+	$(DOCKER_COMP) up $(DOCKER_UP_OPTIONS)
 
 ### Stopper les containers
 docker-stop:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop
+	$(DOCKER_COMP) stop
 
 ### Supprimer les containers
 docker-down:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) down
+	$(DOCKER_COMP) down
 
 ### Démarrer un bash dans le container PHP
 console:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) exec -u localUser -it apachephp bash
+	$(DOCKER_COMP) exec -u localUser -it apachephp bash
 
 ### Voir les logs docker compose
 logs:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) logs -f --tail 150
+	$(DOCKER_COMP) logs -f --tail 150
 
 ##@ Quality
 
-### (Dans Docker) Tests unitaires
+### Tests unitaires
 test:
-	./bin/phpunit --testsuite unit
-	./bin/php-cs-fixer fix --dry-run -vv
+	$(PHP_CONT) ./bin/phpunit --testsuite unit
+	$(PHP_CONT) ./bin/php-cs-fixer fix --dry-run -vv
 
-### (Dans Docker) Tests d'intégration
+### Tests d'intégration
 test-integration:
-	./bin/phpunit --testsuite integration
+	$(PHP_CONT) ./bin/phpunit --testsuite integration
 
-### (Dans Docker) Tests fonctionnels
+### Tests fonctionnels
 behat:
-	./bin/behat
+	$(PHP_CONT) ./bin/behat
 
-### (Dans Docker) PHP CS Fixer (dry run)
+### PHP CS Fixer (dry run)
 cs-lint:
-	./bin/php-cs-fixer fix --dry-run -vv
+	$(PHP_CONT) ./bin/php-cs-fixer fix --dry-run -vv
 
-### (Dans Docker) PHP CS Fixer (fix)
+### PHP CS Fixer (fix)
 cs-fix:
-	./bin/php-cs-fixer fix -vv
+	$(PHP_CONT) ./bin/php-cs-fixer fix -vv
 
-### (Dans Docker) Rector (dry run)
+### Rector (dry run)
 rector: var/cache/dev/AppKernelDevDebugContainer.xml
-	./bin/rector --dry-run
+	$(PHP_CONT) ./bin/rector --dry-run
 
-### (Dans Docker) Rector (fix)
+### Rector (fix)
 rector-fix: var/cache/dev/AppKernelDevDebugContainer.xml
-	./bin/rector
+	$(PHP_CONT) ./bin/rector
 
 ### Tests fonctionnels
 test-functional: data config htdocs/uploads tmp
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest mailcatcher
+	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
+	$(DOCKER_COMP) up -d dbtest apachephptest mailcatcher
 	make clean-test-deprecated-log
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp ./bin/behat
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp ./bin/behat
 	make var/logs/test.deprecations_grouped.log
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest mailcatcher
+	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
 
 ### Tests d'intégration avec start/stop des images docker
 test-integration-ci:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) up -d dbtest apachephptest
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp make vendor
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp ./bin/phpunit --testsuite integration
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) stop dbtest apachephptest
+	$(DOCKER_COMP) stop dbtest apachephptest
+	$(DOCKER_COMP) up -d dbtest apachephptest
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp make vendor
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp ./bin/phpunit --testsuite integration
+	$(DOCKER_COMP) stop dbtest apachephptest
 
-### (Dans Docker) Analyse PHPStan
+### Analyse PHPStan
 phpstan:
-	./bin/phpstan --memory-limit=-1
+	$(PHP_CONT) ./bin/phpstan --memory-limit=-1
 
 ##@ Frontend
 
@@ -166,12 +171,12 @@ node_modules:
 
 init-db:
 	make reset-db
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm -u localUser apachephp make db-migrations
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --rm -u localUser apachephp make db-seed
+	$(DOCKER_COMP) run --rm -u localUser apachephp make db-migrations
+	$(DOCKER_COMP) run --rm -u localUser apachephp make db-seed
 
 config:
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp make vendors
-	CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN) run --no-deps --rm -u localUser apachephp make assets
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp make vendors
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp make assets
 
 data:
 	mkdir data
