@@ -51,7 +51,6 @@
                         </thead>
                         <tbody>
                         {% for item in results.companyMembers %}
-                            {% dump(item) %}
                         <tr>
                             <td>{{ item.date_debut|date('d/m/Y') }} &gt; {{ item.date_fin|date('d/m/Y') }}</td>
                             <td class="right aligned">{{ item.montant|number_format(2, '.', ' ') }}</td>
