@@ -280,14 +280,20 @@ parameters:
                     nom: 'Administrateurs du site'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/administrators'
+                    extra_routes:
+                        - admin_administrators
                 logs:
                     nom: 'Logs'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/logs'
+                    extra_routes:
+                        - admin_logs
                 healthcheck:
                     nom: 'Healthcheck'
                     niveau: 'ROLE_ADMIN'
                     url: '/admin/healthcheck'
+                    extra_routes:
+                        - admin_healthcheck
         connexion:
             nom: 'Connexion'
             masquee: true
