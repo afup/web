@@ -39,7 +39,7 @@ class EventRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @return CollectionInterface|Event|null
+     * @return CollectionInterface<Event>|null
      */
     public function getNextEvents()
     {

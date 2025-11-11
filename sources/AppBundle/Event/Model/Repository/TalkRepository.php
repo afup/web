@@ -30,15 +30,19 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
  */
 class TalkRepository extends Repository implements MetadataInitializer
 {
-    public function getNumberOfTalksByEvent(Event $event, \DateTime $since = null)
+    public function getNumberOfTalksByEvent(Event|int $event, \DateTime $since = null)
     {
         return $this->getNumberOfTalksByEventAndLanguage($event, null, $since);
     }
 
-    public function getNumberOfTalksByEventAndLanguage(Event $event, $languageCode = null, \DateTime $since = null)
+    public function getNumberOfTalksByEventAndLanguage(Event|int $event, $languageCode = null, \DateTime $since = null)
     {
+        if ($event instanceof Event) {
+            $event = $event->getId();
+        }
+
         $sql = 'SELECT COUNT(session_id) AS talks FROM afup_sessions WHERE id_forum = :event';
-        $params = ['event' => $event->getId()];
+        $params = ['event' => $event];
         if ($since instanceof \DateTime) {
             $sql .= ' AND date_soumission >= :since ';
             $params['since'] = $since->format('Y-m-d');
