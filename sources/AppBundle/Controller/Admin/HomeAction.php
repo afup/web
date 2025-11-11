@@ -7,11 +7,13 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\StatisticsComputer;
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use Assert\Assertion;
+use Psr\Clock\ClockInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,6 +26,7 @@ class HomeAction extends AbstractController
         private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
         private readonly GeneralMeetingRepository $generalMeetingRepository,
         private readonly StatisticsComputer $statisticsComputer,
+        private readonly ClockInterface $clock,
     ) {}
 
     public function __invoke(): Response
@@ -31,6 +34,14 @@ class HomeAction extends AbstractController
         $nextevents = $this->eventRepository->getNextEvents();
         $cards = [];
         if ($this->isGranted('ROLE_FORUM') && $nextevents) {
+            $cfp = [
+                'title' => 'CFP',
+                'subtitle' => 'Talks et speakers',
+                'url' => '/pages/administration/index.php?page=forum_sessions',
+                'statistics' => [],
+            ];
+
+            /** @var Event $event */
             foreach ($nextevents as $event) {
                 $stats = $this->eventStatsRepository->getStats((int) $event->getId());
                 $info = [];
@@ -54,6 +65,25 @@ class HomeAction extends AbstractController
                 $info['url'] = '/pages/administration/index.php?page=forum_inscriptions&id_forum=' . $event->getId();
 
                 $cards[] = $info;
+
+                // Les stats du CFP sont affichés pendant un certain temps après la date de fin de l'appel
+                $dateEndCallForPapers = $event->getDateEndCallForPapers();
+                if ($dateEndCallForPapers && $dateEndCallForPapers < $this->clock->now()->add(new \DateInterval('P3M'))) {
+                    $cfp['statistics'][$event->getTitle()] = [
+                        [
+                            'icon' => 'microphone',
+                            'value' => $stats->cfp->talks,
+                        ],
+                        [
+                            'icon' => 'user',
+                            'value' => $stats->cfp->speakers,
+                        ],
+                    ];
+                }
+            }
+
+            if (count($cfp['statistics']) > 0) {
+                $cards[] = $cfp;
             }
         }
 

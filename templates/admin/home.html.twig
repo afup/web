@@ -53,7 +53,15 @@
                                 {% for label, statistic in card.statistics %}
                                     <div class="statistic">
                                         <div class="value">
-                                            {{ statistic }}
+                                            {% if statistic is iterable %}
+                                                <div class="ui horizontal labels">
+                                                {% for entry in statistic %}
+                                                    <div class="ui label"><i class="{{ entry.icon }} icon"></i> {{ entry.value }}</div>
+                                                {% endfor %}
+                                                </div>
+                                            {% else %}
+                                                {{ statistic }}
+                                            {% endif %}
                                         </div>
                                         <div class="label">
                                             {{ label }}

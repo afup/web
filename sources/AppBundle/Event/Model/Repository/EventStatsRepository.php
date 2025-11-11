@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model\Repository;
 
+use AppBundle\Event\Model\EventStats\CFPStats;
 use AppBundle\Event\Model\EventStats\TicketTypeStats;
 use AppBundle\Event\Model\EventStats;
 use AppBundle\Event\Model\EventStats\DailyStats;
@@ -18,7 +19,11 @@ class EventStatsRepository
     private const DAY_TWO = 'two';
     private const DAYS = [self::DAY_ONE, self::DAY_TWO];
 
-    public function __construct(private readonly Connection $connection) {}
+    public function __construct(
+        private readonly Connection $connection,
+        private readonly TalkRepository $talkRepository,
+        private readonly TalkToSpeakersRepository $talkToSpeakersRepository,
+    ) {}
 
     public function getStats(int $eventId, Datetime $from = null): EventStats
     {
@@ -26,6 +31,7 @@ class EventStatsRepository
             $this->getStatsForDay($eventId, self::DAY_ONE, $from),
             $this->getStatsForDay($eventId, self::DAY_TWO, $from),
             $this->getStatsForTicketTypes($eventId, $from),
+            $this->getCFPStats($eventId),
         );
     }
 
@@ -112,5 +118,13 @@ class EventStatsRepository
             ->fetchOne();
 
         return new DailyStats($registered, $confirmed, $pending);
+    }
+
+    public function getCFPStats(int $eventId): CFPStats
+    {
+        return new CFPStats(
+            $this->talkRepository->getNumberOfTalksByEvent($eventId)['talks'],
+            $this->talkToSpeakersRepository->getNumberOfSpeakers($eventId),
+        );
     }
 }
