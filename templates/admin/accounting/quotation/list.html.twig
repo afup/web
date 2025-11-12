@@ -1,0 +1,121 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+
+    <h2>Liste des devis</h2>
+    <div class="ui menu">
+        <a href="/pages/administration/index.php?page=compta_devis&amp;action=ajouter" class="item">
+            <div data-tooltip="Ajouter un devis" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+    </div>
+
+    <div class="ui green segment">
+        <form method="GET" name="forum">
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Année comptable</label>
+                        <select name="periodId" onchange="this.form.submit(); return false;">
+                            {% for period in periods %}
+                            <option value="{{ period.id }}"{% if periodId == period.id %} selected{% endif %}>{{ period.startDate|format_date('short') }} - {{ period.endDate|format_date('short') }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="ui bottom attached segment">
+        {% if lines.count > 0 %}
+            <table class="ui table striped compact celled afup-tab-filterable">
+                <thead>
+                <tr>
+                    <th data-tf-filter-type="input">
+                        <a href="{{ url('admin_accounting_quotations_list', {'periodId': periodId, 'sort': 'date', 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
+                            Date
+                        </a>
+                    </th>
+                    <th data-tf-filter-type="input">
+                        <a href="{{ url('admin_accounting_quotations_list', {'periodId': periodId, 'sort': 'client', 'direction' : ((direction == 'asc' and sort == 'client') ? 'desc': 'asc')}) }}">
+                            Clients
+                        </a>
+                    </th>
+                    <th data-tf-filter-type="input">Ville</th>
+                    <th data-tf-filter-type="input">Ref client</th>
+                    <th data-tf-filter-type="input">Numero devis</th>
+                    <th data-tf-filter-type="input"class="right aligned">Prix</th>
+                    <th data-tf-filter-type="select" class="center aligned">Facturé ?</th>
+                    <th>&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for line in lines %}
+                    <tr class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
+                        <!-- td width="20px"><input type="checkbox" value=""/></td -->
+                        <td nowrap="nowrap">{{ line.quotationDate|format_date('short') }}</td>
+                        <td>{{ line.company }}</td>
+                        <td  width="250">{{ line.city }}</td>
+                        <td>{{ line.refClt1 }}</td>
+                        <td>{{ line.quotationNumber }}</td>
+                        <td class="right aligned">{{ line.price|number_format(2, ',', ' ') }}</td>
+                        <td class="center aligned">
+                            {% if line.invoiceNumber == '' %}
+                            <span class="ui red label">non</span>
+                            {% else %}
+                            <span class="ui green label">oui</span>
+                            {% endif %}
+                        </td>
+                        <td class="right aligned single line">
+                        {% if line.invoiceNumber == '' %}
+                            <a href="/pages/administration/index.php?page=compta_devis&amp;action=modifier&amp;id={{ line.id }}"
+                               data-position="left center"
+                               data-tooltip="Modifier le devis {{ line.company }}"
+                               class="compact ui icon button"
+                            >
+                                <i class="pencil alernate icon"></i>
+                            </a>
+                        {% else %}
+                            <a href="/pages/administration/index.php?page=compta_facture&amp;action=modifier&amp;id={{ line.id }}"
+                               data-position="left center"
+                               data-tooltip="Modifier la facture {{ line.company }}"
+                               class="compact ui icon button"
+                            >
+                                <i class="pencil alernate icon"></i>
+                            </a>
+                        {% endif %}
+                            <a href="/pages/administration/index.php?page=compta_devis&amp;action=telecharger_devis&amp;ref={{ line.quotationNumber }}"
+                               data-position="left center"
+                               data-tooltip="Télécharger le devis {{ line.company }}"
+                               class="compact ui icon button"
+                            >
+                                <i class="file pdf icon"></i>
+                            </a>
+                        {% if line.invoiceNumber == '' %}
+                            <a href="/pages/administration/index.php?page=compta_devis&amp;action=transfert&amp;ref={{ line.quotationNumber }}"
+                               data-position="left center"
+                               data-tooltip="Transférer la ligne {{ line.company }} en facture"
+                               class="compact ui icon button"
+                            >
+                                <i class="cart icon"></i>
+                            </a>
+                        {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="ui placeholder segment">
+                <div class="ui icon header">
+                    <i class="meh outline icon"></i>
+                    Aucun devis
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

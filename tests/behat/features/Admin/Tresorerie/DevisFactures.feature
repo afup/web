@@ -5,7 +5,7 @@ Feature: Administration - Trésorerie - Devis/Facture
   Scenario: Créer/Modifier un devis, une facture
     Given I am logged in as admin and on the Administration
     When I follow "Devis"
-    Then the ".content h2" element should contain "Liste devis"
+    Then the ".content h2" element should contain "Liste des devis"
     And I follow "Ajouter"
     # Création du devis
     When I fill in "societe" with "ESN dev en folie"
@@ -136,8 +136,8 @@ Feature: Administration - Trésorerie - Devis/Facture
   @vat
   Scenario: Test du PDF de facture avant 2024
     Given I am logged in as admin and on the Administration
-    When I go to "/pages/administration/index.php?page=compta_devis&id_periode=14"
-    Then the ".content h2" element should contain "Liste devis"
+    When I go to "/admin/accounting/quotations/list?periodId=14"
+    Then the ".content h2" element should contain "Liste des devis"
     When I follow the button of tooltip "Télécharger le devis Krampouz"
     Then the response header "Content-disposition" should equal 'attachment; filename="Devis - Krampouz - 2023-06-10.pdf"'
     Given I parse the pdf downloaded content
@@ -158,8 +158,8 @@ Feature: Administration - Trésorerie - Devis/Facture
   @vat
   Scenario: Test du PDF de facture après 2024
     Given I am logged in as admin and on the Administration
-    When I go to "/pages/administration/index.php?page=compta_devis&id_periode=15"
-    Then the ".content h2" element should contain "Liste devis"
+    When I go to "/admin/accounting/quotations/list?periodId=15"
+    Then the ".content h2" element should contain "Liste des devis"
     When I follow the button of tooltip "Télécharger le devis Krampouz"
     Then the response header "Content-disposition" should equal 'attachment; filename="Devis - Krampouz - 2024-01-03.pdf"'
     Given I parse the pdf downloaded content
