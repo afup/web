@@ -1,0 +1,28 @@
+<script>
+    $(() => {
+        function addFormToCollection(e) {
+          const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+          const item = document.createElement('div');
+
+          item.innerHTML = collectionHolder
+            .dataset
+            .prototype
+            .replace(
+              /__name__/g,
+              collectionHolder.dataset.index
+            ).replace(
+              /__reference__/g,
+              parseInt(collectionHolder.dataset.index) + 1
+            );
+
+          collectionHolder.appendChild(item);
+
+          collectionHolder.dataset.index++;
+        }
+
+        document
+          .querySelector('a.add_item_link')
+          .addEventListener("click", addFormToCollection)
+    });
+</script>
