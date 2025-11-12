@@ -1,0 +1,19 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Modifier un devis</h2>
+
+    <div class="ui menu">
+        <a href="/pages/administration/index.php?page=compta_devis&amp;action=ajouter&from={$devis_id}" class="item">
+            Dupliquer le devis
+        </a>
+    </div>
+
+    {% include 'admin/accounting/quotation/form.html.twig' %}
+
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+{% include 'admin/accounting/quotation/_javascript.html.twig' %}
+{% endblock %}

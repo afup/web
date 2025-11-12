@@ -19,24 +19,26 @@ class Invoicing implements NotifyPropertyInterface
     private ?string $quotationNumber = null;
     private ?DateTime $invoiceDate = null;
     private ?string $invoiceNumber = null;
-    private ?string $company = null;
-    private ?string $service = null;
-    private ?string $address = null;
-    private ?string $zipcode = null;
-    private ?string $city = null;
-    private ?string $countryId = null;
-    private ?string $email = null;
+    private string $company = '';
+    private string $service = '';
+    private string $address = '';
+    private string $zipcode = '';
+    private string $city = '';
+    private string $countryId = '';
+    private string $email = '';
     private ?string $tvaIntra = null;
-    private ?string $observation = null;
-    private ?string $refClt1 = null;
-    private ?string $refClt2 = null;
-    private ?string $refClt3 = null;
-    private ?string $lastname = null;
-    private ?string $firstname = null;
-    private ?string $phone = null;
+    private string $observation = '';
+    private string $refClt1 = '';
+    private string $refClt2 = '';
+    private string $refClt3 = '';
+    private string $lastname = '';
+    private string $firstname = '';
+    private string $phone = '';
     private int $paymentStatus = 0;
     private ?DateTime $paymentDate = null;
     private ?InvoicingCurrency $currency = null;
+    /** @var InvoicingDetail[] */
+    private array $details = [];
 
     private ?float $price = null;
 
@@ -104,12 +106,12 @@ class Invoicing implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getCompany(): ?string
+    public function getCompany(): string
     {
         return $this->company;
     }
 
-    public function setCompany(?string $company): self
+    public function setCompany(string $company): self
     {
         $this->propertyChanged('company', $this->company, $company);
         $this->company = $company;
@@ -117,12 +119,12 @@ class Invoicing implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getService(): ?string
+    public function getService(): string
     {
         return $this->service;
     }
 
-    public function setService(?string $service): self
+    public function setService(string $service): self
     {
         $this->propertyChanged('service', $this->service, $service);
         $this->service = $service;
@@ -130,12 +132,12 @@ class Invoicing implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getAddress(): ?string
+    public function getAddress(): string
     {
         return $this->address;
     }
 
-    public function setAddress(?string $address): self
+    public function setAddress(string $address): self
     {
         $this->propertyChanged('address', $this->address, $address);
         $this->address = $address;
@@ -143,12 +145,12 @@ class Invoicing implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getZipcode(): ?string
+    public function getZipcode(): string
     {
         return $this->zipcode;
     }
 
-    public function setZipcode(?string $zipcode): self
+    public function setZipcode(string $zipcode): self
     {
         $this->propertyChanged('zipcode', $this->zipcode, $zipcode);
         $this->zipcode = $zipcode;
@@ -156,12 +158,12 @@ class Invoicing implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getCity(): ?string
+    public function getCity(): string
     {
         return $this->city;
     }
 
-    public function setCity(?string $city): self
+    public function setCity(string $city): self
     {
         $this->propertyChanged('city', $this->city, $city);
         $this->city = $city;
@@ -182,12 +184,12 @@ class Invoicing implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    public function setEmail(?string $email): self
+    public function setEmail(string $email): self
     {
         $this->propertyChanged('email', $this->email, $email);
         $this->email = $email;
@@ -208,12 +210,12 @@ class Invoicing implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getObservation(): ?string
+    public function getObservation(): string
     {
         return $this->observation;
     }
 
-    public function setObservation(?string $observation): self
+    public function setObservation(string $observation): self
     {
         $this->propertyChanged('observation', $this->observation, $observation);
         $this->observation = $observation;
@@ -221,12 +223,12 @@ class Invoicing implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getRefClt1(): ?string
+    public function getRefClt1(): string
     {
         return $this->refClt1;
     }
 
-    public function setRefClt1(?string $refClt1): self
+    public function setRefClt1(string $refClt1): self
     {
         $this->propertyChanged('refClt1', $this->refClt1, $refClt1);
         $this->refClt1 = $refClt1;
@@ -234,12 +236,12 @@ class Invoicing implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getRefClt2(): ?string
+    public function getRefClt2(): string
     {
         return $this->refClt2;
     }
 
-    public function setRefClt2(?string $refClt2): self
+    public function setRefClt2(string $refClt2): self
     {
         $this->propertyChanged('refClt2', $this->refClt2, $refClt2);
         $this->refClt2 = $refClt2;
@@ -247,12 +249,12 @@ class Invoicing implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getRefClt3(): ?string
+    public function getRefClt3(): string
     {
         return $this->refClt3;
     }
 
-    public function setRefClt3(?string $refClt3): self
+    public function setRefClt3(string $refClt3): self
     {
         $this->propertyChanged('refClt3', $this->refClt3, $refClt3);
         $this->refClt3 = $refClt3;
@@ -260,12 +262,12 @@ class Invoicing implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getLastname(): ?string
+    public function getLastname(): string
     {
         return $this->lastname;
     }
 
-    public function setLastname(?string $lastname): self
+    public function setLastname(string $lastname): self
     {
         $this->propertyChanged('lastname', $this->lastname, $lastname);
         $this->lastname = $lastname;
@@ -273,12 +275,12 @@ class Invoicing implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getFirstname(): ?string
+    public function getFirstname(): string
     {
         return $this->firstname;
     }
 
-    public function setFirstname(?string $firstname): self
+    public function setFirstname(string $firstname): self
     {
         $this->propertyChanged('firstname', $this->firstname, $firstname);
         $this->firstname = $firstname;
@@ -286,12 +288,12 @@ class Invoicing implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getPhone(): ?string
+    public function getPhone(): string
     {
         return $this->phone;
     }
 
-    public function setPhone(?string $phone): self
+    public function setPhone(string $phone): self
     {
         $this->propertyChanged('phone', $this->phone, $phone);
         $this->phone = $phone;
@@ -358,4 +360,21 @@ class Invoicing implements NotifyPropertyInterface
 
         return urlencode(Utils::cryptFromText($this->getId()));
     }
+
+    /** @return InvoicingDetail[] */
+    public function getDetails(): array
+    {
+        return $this->details;
+    }
+
+    /**
+     * @param array<InvoicingDetail> $details
+     */
+    public function setDetails(array $details): self
+    {
+        $this->details = $details;
+
+        return $this;
+    }
+
 }

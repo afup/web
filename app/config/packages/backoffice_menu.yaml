@@ -218,6 +218,8 @@ parameters:
                     niveau: 'ROLE_ADMIN'
                     extra_routes:
                         - admin_accounting_quotations_list
+                        - admin_accounting_quotations_add
+                        - admin_accounting_quotations_edit
                 compta_facture:
                     nom: 'Factures'
                     url: '/admin/accounting/invoices/list'

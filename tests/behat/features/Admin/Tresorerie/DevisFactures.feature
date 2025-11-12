@@ -2,18 +2,21 @@ Feature: Administration - Trésorerie - Devis/Facture
 
   @reloadDbWithTestData
   @clearEmails
+  @javascript
   Scenario: Créer/Modifier un devis, une facture
     Given I am logged in as admin and on the Administration
+    When I open menu "Trésorerie"
     When I follow "Devis"
     Then the ".content h2" element should contain "Liste des devis"
     And I follow "Ajouter"
     Then I should see "Ajouter un devis"
     # Création du devis incomplet
-    When I fill in "societe" with "ESN Corp"
-    And I fill in "adresse" with "3 rue du chemin"
-    And I fill in "email" with "martine@ens-corp.biz"
-    When I press "Ajouter"
-    Then I should see "L'écriture a été ajoutée"
+    When I fill in "quotation[company]" with "ESN Corp"
+    And I fill in "quotation[address]" with "3 rue du chemin"
+    And I fill in "quotation[city]" with "Dijon"
+    And I fill in "quotation[zipcode]" with "21000"
+    And I fill in "quotation[email]" with "martine@ens-corp.biz"
+    When I press "Ajouter" and wait until I see "L'écriture a été ajoutée"
     And I should see "ESN Corp"
     And I should see "0,00"
     And I should see tooltip "Modifier le devis ESN Corp"
@@ -22,29 +25,31 @@ Feature: Administration - Trésorerie - Devis/Facture
     # Création du devis complet
     When I follow "Ajouter"
     Then I should see "Ajouter un devis"
-    When I fill in "societe" with "ESN dev en folie"
-    And I fill in "service" with "Développement"
-    And I fill in "adresse" with "1 rue du chemin"
-    And I fill in "code_postal" with "75000"
-    And I fill in "ville" with "Paris"
-    And I fill in "nom" with "Moreau"
-    And I fill in "prenom" with "Martine"
-    And I fill in "tel" with "0101010101"
-    And I fill in "email" with "martine@ens-en-folie.biz"
-    And I fill in "tva_intra" with "FR7612345"
-    And I fill in "ref_clt1" with "CLIENT-AFGD5S"
-    And I fill in "ref_clt2" with "AFGD5S"
-    And I fill in "ref_clt3" with "000AFGD5S"
-    And I fill in "observation" with "Ce devis ne comprend pas les selfies avec l'équipe"
-    And I fill in "ref1" with "COACH-001"
-    And I fill in "designation1" with "Coaching d'équipe pour l'accompagnement sans douleur à Symfony"
-    And I fill in "quantite1" with "12"
-    And I fill in "pu1" with "660"
-    And I fill in "ref2" with "ARCHI-007"
-    And I fill in "designation2" with "Architecture en KKK"
-    And I fill in "quantite2" with "1"
-    And I fill in "pu2" with "12000"
-    When I press "Ajouter"
+    When I fill in "quotation[company]" with "ESN dev en folie"
+    And I fill in "quotation[service]" with "Développement"
+    And I fill in "quotation[address]" with "1 rue du chemin"
+    And I fill in "quotation[zipcode]" with "75000"
+    And I fill in "quotation[city]" with "Paris"
+    And I fill in "quotation[lastname]" with "Moreau"
+    And I fill in "quotation[firstname]" with "Martine"
+    And I fill in "quotation[phone]" with "0101010101"
+    And I fill in "quotation[email]" with "martine@ens-en-folie.biz"
+    And I fill in "quotation[tvaIntra]" with "FR7612345"
+    And I fill in "quotation[refClt1]" with "CLIENT-AFGD5S"
+    And I fill in "quotation[refClt2]" with "AFGD5S"
+    And I fill in "quotation[refClt3]" with "000AFGD5S"
+    And I fill in "quotation[observation]" with "Ce devis ne comprend pas les selfies avec l'équipe"
+    Then I click on link with class "add_item_link"
+    And I fill in "quotation[details][0][reference]" with "COACH-001"
+    And I fill in "quotation[details][0][designation]" with "Coaching d'équipe pour l'accompagnement sans douleur à Symfony"
+    And I fill in "quotation[details][0][quantity]" with "12"
+    And I fill in "quotation[details][0][unitPrice]" with "660"
+    Then I click on link with class "add_item_link"
+    And I fill in "quotation[details][1][reference]" with "ARCHI-007"
+    And I fill in "quotation[details][1][designation]" with "Architecture en KKK"
+    And I fill in "quotation[details][1][quantity]" with "1"
+    And I fill in "quotation[details][1][unitPrice]" with "12000"
+    When I press "Ajouter" and wait until I see "L'écriture a été ajoutée"
     Then I should see "L'écriture a été ajoutée"
     And I should see "ESN dev en folie"
     And I should see "Paris"
@@ -56,20 +61,25 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I should see tooltip "Transférer la ligne ESN dev en folie en facture"
     # Modification du devis
     When I follow the button of tooltip "Modifier le devis ESN dev en folie"
-    And I fill in "ville" with "Paris Cedex 1"
-    When I press "Modifier"
+    And I fill in "quotation[city]" with "Paris Cedex 1"
+    When I press "Modifier" and wait until I see "L'écriture a été modifiée"
     Then I should see "L'écriture a été modifiée"
     And I should see "ESN dev en folie"
     And I should see "Paris Cedex 1"
     And I should see "CLIENT-AFGD5S"
     And I should see "19 920,00"
-    # Téléchargement du devis
-    And I follow the button of tooltip "Télécharger le devis ESN dev en folie"
-    Then the response header "Content-disposition" should match '#attachment; filename="Devis - ESN dev en folie - (.*).pdf"#'
-    When I parse the pdf downloaded content
-    Then The page "1" of the PDF should contain "ESN dev en folie"
+    # Suppression d'une ligne dans un devis
+    When I follow the button of tooltip "Modifier le devis ESN dev en folie"
+    Then I click on link with id "remove_row_0"
+    When I press "Modifier" and wait until I see "L'écriture a été modifiée"
+    Then I should see "L'écriture a été modifiée"
+    And I should see "ESN dev en folie"
+    And I should see "Paris Cedex 1"
+    And I should see "CLIENT-AFGD5S"
+    And I should see "12 000,00"
     # Transformation du devis en facture
     When I go to "/admin/"
+    When I open menu "Trésorerie"
     And I follow "Devis"
     Then I follow the button of tooltip "Transférer la ligne ESN dev en folie en facture"
     And I should see "Le devis a été transformé en facture"
@@ -82,9 +92,8 @@ Feature: Administration - Trésorerie - Devis/Facture
     Then I follow the button of tooltip "Modifier la ligne ESN dev en folie"
     And I should see "Modifier une facture"
     Then I fill in "ville" with "Paris Cedex 7"
-    When I select "1" from "etat_paiement"
-    And I press "Modifier"
-    Then I should see "L'écriture a été modifiée"
+    Then I select "1" from "etat_paiement"
+    When I press "Modifier" and wait until I see "L'écriture a été modifiée"
     And I should see "Paris Cedex 7"
     And I should see "Payé"
     # Envoi de la facture par email
@@ -97,6 +106,16 @@ Feature: Administration - Trésorerie - Devis/Facture
     Then I follow the button of tooltip "Récupérer le lien de paiement en ligne"
     Then I should see "Paiement en ligne de la facture"
     Then I should see "Télécharger la facture en PDF"
+
+  # On n'utilise pas @reloadDbWithTestData pour conserver les données
+  Scenario: Téléchargement d'un devis et d'une facture
+    Given I am logged in as admin and on the Administration
+    When I follow "Devis"
+    # Téléchargement du devis
+    And I follow the button of tooltip "Télécharger le devis ESN dev en folie"
+    Then the response header "Content-disposition" should match '#attachment; filename="Devis - ESN dev en folie - (.*).pdf"#'
+    When I parse the pdf downloaded content
+    Then The page "1" of the PDF should contain "ESN dev en folie"
     # Téléchargement de la facture
     When I go to "/admin/"
     And I follow "Factures"
