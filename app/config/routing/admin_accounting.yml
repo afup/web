@@ -14,6 +14,14 @@ admin_accounting_quotations_list:
   path: /quotations/list
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\Quotation\ListQuotationAction}
 
+admin_accounting_quotations_add:
+  path: /quotations/add
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Quotation\AddQuotationAction}
+
+admin_accounting_quotations_edit:
+  path: /quotations/edit
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Quotation\EditQuotationAction}
+
 admin_accounting_quotations_download:
   path: /quotations/download
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\Quotation\DownloadQuotationAction}

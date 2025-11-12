@@ -22,6 +22,7 @@ class FeatureContext implements Context
     use FormContext;
     use PdfContext;
     use TimeContext;
+    use WaitContext;
 
     private MinkContext $minkContext;
 
@@ -210,5 +211,39 @@ class FeatureContext implements Context
                 $this->minkContext->getSession()->getDriver(),
             );
         }
+    }
+
+    #[Then('/^(?:|I )click on link with (class|id) "(?P<text>(?:[^"]|\\")*)"$/')]
+    public function clickOnLink(string $type, string $text): void
+    {
+        $selector = match ($type) {
+            'class' => 'a.' . $text,
+            'id' => 'a#' . $text,
+        };
+        $node = $this->minkContext->getSession()->getPage()->find('css', $selector);
+
+        if (null === $node) {
+            throw new ExpectationException(
+                sprintf('link with %s "%s" was not found', $type, $selector),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+
+        $node->click();
+    }
+
+    #[Then('/^(?:|I )open menu "(?P<text>(?:[^"]|\\")*)"$/')]
+    public function openMenu(string $text): void
+    {
+        $node = $this->minkContext->getSession()->getPage()->find('css', 'div.header.title:contains("' . $text . '")');
+
+        if (null === $node) {
+            throw new ExpectationException(
+                sprintf('menu "%s" was not found', $text),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+
+        $node->click();
     }
 }

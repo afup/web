@@ -174,15 +174,8 @@ if ($action == 'lister') {
 
 
 
-    $formulaire->addElement('header'  , '', 'Contenu');
-    $formulaire->addElement('text'    , 'ref'    , 'Référence'        , ['size' => 50, 'maxlength' => 100]);
-    $formulaire->addElement('textarea', 'designation'  , 'Désignation', ['cols' => 42, 'rows' => 5]);
-    $formulaire->addElement('text'    , 'quantite'    , 'Quantite'        , ['size' => 50, 'maxlength' => 100]);
-    $formulaire->addElement('text'    , 'pu'    , 'Prix Unitaire'        , ['size' => 50, 'maxlength' => 100]);
-
-
-
-    for ($i = 1;$i < 6;$i++) {
+    $nbRow = max(count($champsRecup), 5);
+    for ($i = 1;$i <= $nbRow;$i++) {
         $formulaire->addElement('header'  , '', 'Contenu');
         $formulaire->addElement('static'  , 'note'     , ''  , 'Ligne ' . $i . '<br /><br />');
         $formulaire->addElement('hidden'    , 'id' . $i    , 'id');
@@ -193,6 +186,7 @@ if ($action == 'lister') {
         $formulaire->addElement('text'    , 'quantite' . $i    , 'Quantite'        , ['size' => 50, 'maxlength' => 100]);
         $formulaire->addElement('text'    , 'pu' . $i    , 'Prix Unitaire HT'        , ['size' => 50, 'maxlength' => 100]);
     }
+
 
 
 

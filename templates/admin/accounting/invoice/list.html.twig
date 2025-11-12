@@ -11,7 +11,7 @@
         <p>Il faut obligatoirement passer par la saisie d'un devis.</p>
     </div>
 
-    {% include 'admin/accounting/invoicing-period.form.html.twig' with {form: formPeriod, url: path('admin_accounting_quotations_list')} %}
+    {% include 'admin/accounting/invoicing-period.form.html.twig' with {form: formPeriod, url: path('admin_accounting_invoices_list')} %}
 
     {% if lines.count > 0 %}
         <table class="ui table striped compact celled afup-tab-filterable">
