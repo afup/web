@@ -31,7 +31,7 @@ class ArticleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $users = [];
-        foreach ($this->userRepository->getAll() as $user) {
+        foreach ($this->userRepository->search() as $user) {
             $users[$user->getFirstName() . ' ' . $user->getLastName()] = $user->getId();
         }
         $positions = [];
