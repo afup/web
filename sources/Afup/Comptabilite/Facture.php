@@ -218,13 +218,16 @@ class Facture
         $requete .= 'ref_clt2=' . $this->_bdd->echapper($ref_clt2) . ',';
         $requete .= 'ref_clt3=' . $this->_bdd->echapper($ref_clt3) . ', ';
         $requete .= 'etat_paiement=' . $this->_bdd->echapper($etat_paiement) . ', ';
-        $requete .= 'date_paiement=' . $this->_bdd->echapper($date_paiement) . ', ';
         $requete .= 'numero_devis=' . $this->_bdd->echapper($numero_devis) . ', ';
         $requete .= 'devise_facture=' . $this->_bdd->echapper($devise) . ' ';
 
         if ($numero_facture) {
             $requete .= ', ';
             $requete .= 'numero_facture=' . $this->_bdd->echapper($numero_facture) . ' ';
+        }
+        if ($date_paiement) {
+            $requete .= ', ';
+            $requete .= 'date_paiement=' . $this->_bdd->echapper($date_paiement) . ' ';
         }
         $requete .= 'WHERE ';
         $requete .= 'id=' . $this->_bdd->echapper($id) . ' ';

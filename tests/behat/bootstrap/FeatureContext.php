@@ -628,4 +628,15 @@ class FeatureContext implements Context
         }
 
     }
+
+    #[When('/^(?:|I )change time of "(?P<field>(?:[^"]|\\")*)" with "(?P<value>(?:[^"]|\\")*)"$/')]
+    #[When('/^(?:|I )change "(?P<field>(?:[^"]|\\")*)" with time "(?P<value>(?:[^"]|\\")*)"$/')]
+    public function changeTimeOnDate(string $field, string $value): void
+    {
+        $input = $this->minkContext->getSession()->getPage()
+            ->find('css', 'input[name="' . $field . '"]');
+        if ($input) {
+            $input->setValue(preg_replace('/T([0-9:]+)/', $value, $input->getValue()));
+        }
+    }
 }

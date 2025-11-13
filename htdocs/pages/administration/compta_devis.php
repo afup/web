@@ -106,12 +106,16 @@ if ($action == 'lister') {
         $formulaire->addElement('date'    , 'date_devis'     , 'Date devis', ['language' => 'fr',
             'format'   => 'd F Y',
             'minYear' => date('Y') - 3,
-            'maxYear' => date('Y')]);
+            'maxYear' => date('Y'),
+            'singleInput' => true,
+        ]);
     } else {
         $formulaire->addElement('date'    , 'date_devis'     , 'Date devis', ['language' => 'fr',
             'format'   => 'd F Y',
             'minYear' => date('Y'),
-            'maxYear' => date('Y')]);
+            'maxYear' => date('Y'),
+            'singleInput' => true,
+        ]);
     }
     $formulaire->addElement('header'  , ''                       , 'Facturation');
     $formulaire->addElement('static'  , 'note'                   , ''               , 'Ces informations concernent la personne ou la société qui sera facturée<br /><br />');
@@ -188,12 +192,10 @@ if ($action == 'lister') {
     if ($formulaire->validate()) {
         $valeur = $formulaire->exportValues();
 
-        $date_devis = $valeur['date_devis']['Y'] . "-" . $valeur['date_devis']['F'] . "-" . $valeur['date_devis']['d'] ;
-
         if ($action === 'ajouter') {
             $bdd->executer('START TRANSACTION');
             $ok = $comptaFact->ajouter(
-                                    $date_devis,
+                                    $valeur['date_devis'],
                                     $valeur['societe'],
                                     $valeur['service'],
                                     $valeur['adresse'],
@@ -211,7 +213,7 @@ if ($action == 'lister') {
                                     $valeur['ref_clt3'],
                   0,
                   null,
-                  $valeur['devise_facture'],
+                  $valeur['devise_facture'] ?? 'EUR', // or make form field required
                                     );
 
             $id = $comptaFact->obtenirDernier();
@@ -231,7 +233,7 @@ if ($action == 'lister') {
             $bdd->executer('START TRANSACTION');
             $ok = $comptaFact->modifier(
                                     $_GET['id'],
-                                    $date_devis,
+                                    $valeur['date_devis'],
                                     $valeur['societe'],
                                     $valeur['service'],
                                     $valeur['adresse'],
