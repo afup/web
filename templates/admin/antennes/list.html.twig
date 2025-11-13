@@ -1,0 +1,169 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Antennes</h2>
+
+    <div class="ui message">
+        <div class="header">
+            Liste en lecture seule
+        </div>
+
+        <p>Les modifications sont à faire dans le code (il faut demander au pole outils).</p>
+    </div>
+
+    <div class="ui segment">
+        {% if antennes|length > 0 %}
+            <table class="ui table striped compact celled">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Status</th>
+                    <th>
+                        <div class="ui small basic icon buttons">
+                            <span class="ui button"
+                                  data-position="top center"
+                                  data-tooltip="Meetup"
+                            >
+                                <i class="meetup icon grey"></i>
+                            </span>
+                            <span class="ui button"
+                                  data-position="top center"
+                                  data-tooltip="LinkedIn"
+                            >
+                                <i class="linkedin icon grey"></i>
+                            </span>
+                            <span class="ui button"
+                                  data-position="top center"
+                                  data-tooltip="Bluesky"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="15" height="15" class="icon grey">
+                                    <path fill="currentColor" d="M111.8 62.2C170.2 105.9 233 194.7 256 242.4c23-47.6 85.8-136.4 144.2-180.2c42.1-31.6 110.3-56 110.3 21.8c0 15.5-8.9 130.5-14.1 149.2C478.2 298 412 314.6 353.1 304.5c102.9 17.5 129.1 75.5 72.5 133.5c-107.4 110.2-154.3-27.6-166.3-62.9l0 0c-1.7-4.9-2.6-7.8-3.3-7.8s-1.6 3-3.3 7.8l0 0c-12 35.3-59 173.1-166.3 62.9c-56.5-58-30.4-116 72.5-133.5C100 314.6 33.8 298 15.7 233.1C10.4 214.4 1.5 99.4 1.5 83.9c0-77.8 68.2-53.4 110.3-21.8z"></path>
+                                </svg>
+                            </span>
+                            <span class="ui button"
+                                  data-position="top center"
+                                  data-tooltip="Blog"
+                            >
+                                <i class="rss icon grey"></i>
+                            </span>
+                            <span class="ui button"
+                                  data-position="top center"
+                                  data-tooltip="YouTube"
+                            >
+                                <i class="youtube icon grey"></i>
+                            </span>
+                            <span class="ui button"
+                                  data-position="top center"
+                                  data-tooltip="Twitter"
+                            >
+                                <i class="twitter icon grey"></i>
+                            </span>
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for antenne in antennes %}
+                    <tr data-qa="antenne-{{ antenne.code }}">
+                        <td class="{{ antenne.hideOnOfficesPage ? 'disabled' : 'actif' }}">
+                            <span class="ui image spaced"><img src="{{ antenne.logoUrl }}" width="30" height="30" /></span>
+                            {{ antenne.label }}
+                        </td>
+                        <td style="text-align: center">
+                            {% if antenne.hideOnOfficesPage %}
+                                <div class="ui label red">Inactive</div>
+                            {% else %}
+                                <div class="ui label green">Active</div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="ui small basic icon buttons">
+                                {% if antenne.meetup %}
+                                    <a href="https://meetup.com/fr-FR/{{ antenne.meetup.urlName }}"
+                                       class="ui button"
+                                       data-position="top center"
+                                       data-tooltip="Meetup"
+                                    >
+                                        <i class="meetup icon grey"></i>
+                                    </a>
+                                {% else %}
+                                    <a class="ui button disabled"><i class="icon"></i></a>
+                                {% endif %}
+
+                                {% if antenne.socials.linkedin %}
+                                    <a href="https://www.linkedin.com/company/{{ antenne.socials.linkedin }}/"
+                                       class="ui button"
+                                       data-position="top center"
+                                       data-tooltip="LinkedIn"
+                                    >
+                                        <i class="linkedin icon grey"></i>
+                                    </a>
+                                {% else %}
+                                    <a class="ui button disabled"><i class="icon"></i></a>
+                                {% endif %}
+
+                                {% if antenne.socials.bluesky %}
+                                    <a href="https://bsky.app/profile/{{ antenne.socials.bluesky }}"
+                                       class="ui button"
+                                       data-position="top center"
+                                       data-tooltip="Bluesky"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="15" height="15" class="icon grey">
+                                            <path fill="currentColor" d="M111.8 62.2C170.2 105.9 233 194.7 256 242.4c23-47.6 85.8-136.4 144.2-180.2c42.1-31.6 110.3-56 110.3 21.8c0 15.5-8.9 130.5-14.1 149.2C478.2 298 412 314.6 353.1 304.5c102.9 17.5 129.1 75.5 72.5 133.5c-107.4 110.2-154.3-27.6-166.3-62.9l0 0c-1.7-4.9-2.6-7.8-3.3-7.8s-1.6 3-3.3 7.8l0 0c-12 35.3-59 173.1-166.3 62.9c-56.5-58-30.4-116 72.5-133.5C100 314.6 33.8 298 15.7 233.1C10.4 214.4 1.5 99.4 1.5 83.9c0-77.8 68.2-53.4 110.3-21.8z"></path>
+                                        </svg>
+                                    </a>
+                                {% else %}
+                                    <a class="ui button disabled"><i class="icon"></i></a>
+                                {% endif %}
+
+                                {% if antenne.socials.blog %}
+                                    <a href="{{ antenne.socials.blog }}"
+                                       class="ui button"
+                                       data-position="top center"
+                                       data-tooltip="Blog"
+                                    >
+                                        <i class="rss icon grey"></i>
+                                    </a>
+                                {% else %}
+                                    <a class="ui button disabled"><i class="icon"></i></a>
+                                {% endif %}
+
+                                {% if antenne.socials.youtube %}
+                                    <a href="{{ antenne.socials.youtube }}"
+                                       class="ui button"
+                                       data-position="top center"
+                                       data-tooltip="YouTube"
+                                    >
+                                        <i class="youtube icon grey"></i>
+                                    </a>
+                                {% else %}
+                                    <a class="ui button disabled"><i class="icon"></i></a>
+                                {% endif %}
+
+                                {% if antenne.socials.twitter %}
+                                    <a href="https://twitter.com/{{ antenne.socials.twitter }}"
+                                       class="ui button"
+                                       data-position="top center"
+                                       data-tooltip="Twitter"
+                                    >
+                                        <i class="twitter icon grey"></i>
+                                    </a>
+                                {% else %}
+                                    <a class="ui button disabled"><i class="icon"></i></a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="ui placeholder segment">
+                <div class="ui icon header">
+                    <i class="meh outline icon"></i>
+                    Aucune antenne
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
