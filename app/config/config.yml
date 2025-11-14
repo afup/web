@@ -194,6 +194,9 @@ parameters:
                 forum_planning:
                     nom: 'Planning'
                     niveau: 'ROLE_FORUM'
+                    url: '/admin/event/sessions'
+                    extra_routes:
+                      - admin_event_sessions
                 admin_github_user_list:
                     nom: 'Github Users'
                     url: '/admin/event/github-user'

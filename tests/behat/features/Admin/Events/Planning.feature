@@ -7,8 +7,7 @@ Feature: Administration - Évènements - Planning des sessions
     Then the ".content h2" element should contain "Planning"
     And I should see "3 SESSION(S)"
     And I should see "Jouons tous ensemble à un petit jeu Geoffrey Bachelet"
-    And I should see "Geoffrey Bachelet - AFUP(@ubermuda)"
-    And I should see "(JOIND.IN=24041)"
+    And I should see "Geoffrey Bachelet - AFUP"
 
     # modifier la programmation  la session
     When I follow "Modifier la session Jouons tous ensemble à un petit jeu"

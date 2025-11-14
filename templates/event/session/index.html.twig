@@ -1,0 +1,68 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Planning</h2>
+    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
+
+    <div class="ui segment">
+        <div class="ui mini horizontal statistic">
+            <div class="value">
+                {{ sessions|length }}
+            </div>
+            <div class="label">
+                session(s)
+            </div>
+        </div>
+    </div>
+
+    {{ agenda|raw }}
+
+    <table class="ui table striped compact celled">
+        <thead>
+        <tr>
+            <th align="left">Titre</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        {% for session in sessions %}
+        <tr class="{{ loop.index % 2 == 0 ? "odd" : "even" }}">
+        <td style="white-space : normal;">
+            <a href="#ag_sess_{{ session.talk.id }}">
+                {{ session.talk.title }}
+            </a>
+            <br />
+
+            {% for speaker in session.speakers %}
+                <a href="/admin/speaker/edit?id={{ speaker.id }}" title="Modifier la fiche de {{ speaker.givenName }}">
+                    {{ speaker.givenName }} - {{ speaker.company }}
+                </a>
+            {% endfor %}
+            <br />
+
+            {% if session.planning %}
+                {{ session.planning.start|date("d/m/Y H:i") }} - {{ session.planning.end|date("H:i") }} / {{ session.room.name }}
+            {% else %}
+                <em>non planifié</em>
+            {% endif %}
+        </td>
+        <td style="text-align: right" nowrap="nowrap">
+            {% set template_path="/templates/administration/images/famfamfam/" %}
+            <a href="/pages/administration/index.php?page=forum_planning&amp;action=modifier&amp;id={{ session.planning.id is defined ? session.planning.id }}&amp;id_session={{ session.talk.id }}"
+               title="Modifier la session {{ session.talk.title }}">
+                <img src="{{ template_path }}application_form_edit.png" alt="Modifier" />
+            </a>
+            <a href="/pages/administration/index.php?page=forum_planning&amp;action=supprimer&amp;id={{ session.planning.id is defined ? session.planning.id }}"
+               title="Supprimer la session {{ session.talk.title }}"
+               onclick="return confirm('Etes-vous sûr de vouloir supprimer la session {{ session.talk.title }} ?');">
+                <img src="{{ template_path }}delete.png" alt="Supprimer" />
+            </a>
+        </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td><em>Aucune session</em></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
