@@ -9,9 +9,7 @@ use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\EventCompareSelectType;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
-use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
-use AppBundle\LegacyModelFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,11 +18,10 @@ class StatsAction extends AbstractController
 {
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,
-        private readonly LegacyModelFactory $legacyModelFactory,
-        private readonly TicketRepository $ticketRepository,
         private readonly TicketTypeRepository $ticketTypeRepository,
         private readonly EventStatsRepository $eventStatsRepository,
         private readonly EventRepository $eventRepository,
+        private readonly Inscriptions $inscriptions,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -43,8 +40,7 @@ class StatsAction extends AbstractController
             'events' => $this->eventRepository->getAll(),
         ]);
 
-        $legacyInscriptions = $this->legacyModelFactory->createObject(Inscriptions::class);
-        $stats = $legacyInscriptions->obtenirSuivi($event->getId(), $comparedEvent->getId());
+        $stats = $this->inscriptions->obtenirSuivi($event->getId(), $comparedEvent->getId());
         $ticketTypes = [];
 
         $chart = [

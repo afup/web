@@ -14,7 +14,6 @@ use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
-use AppBundle\LegacyModelFactory;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -30,11 +29,11 @@ class PendingBankwiresAction extends AbstractController implements AdminActionWi
         private readonly EventActionHelper $eventActionHelper,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly TicketRepository $ticketRepository,
-        private readonly LegacyModelFactory $legacyModelFactory,
         private readonly Emails $emails,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly EventSelectFactory $eventSelectFactory,
+        private readonly Facturation $facturation,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -74,8 +73,7 @@ class PendingBankwiresAction extends AbstractController implements AdminActionWi
         $this->invoiceRepository->save($invoice);
         $tickets = $this->ticketRepository->getByReference($invoice->getReference());
 
-        $forumFacturation = $this->legacyModelFactory->createObject(Facturation::class);
-        $forumFacturation->envoyerFacture($invoice->getReference());
+        $this->facturation->envoyerFacture($invoice->getReference());
         $this->addFlash('notice', sprintf('La facture %s a été marquée comme payée', $invoice->getReference()));
 
         foreach ($tickets as $ticket) {
