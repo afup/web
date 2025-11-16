@@ -216,11 +216,6 @@ class Speaker implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getGivenName(): string
-    {
-        return $this->firstname . ' ' . $this->lastname;
-    }
-
     /**
      * @return string
      */

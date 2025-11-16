@@ -33,8 +33,8 @@
             <br />
 
             {% for speaker in session.speakers %}
-                <a href="/admin/speaker/edit?id={{ speaker.id }}" title="Modifier la fiche de {{ speaker.givenName }}">
-                    {{ speaker.givenName }} - {{ speaker.company }}
+                <a href="/admin/speaker/edit?id={{ speaker.id }}" title="Modifier la fiche de {{ speaker.label }}">
+                    {{ speaker.label }} - {{ speaker.company }}
                 </a>
             {% endfor %}
             <br />
