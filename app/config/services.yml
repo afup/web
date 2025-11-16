@@ -168,6 +168,9 @@ services:
     Afup\Site\Association\Cotisations:
         factory: ['@Afup\Site\Association\CotisationsFactory', 'create']
 
+    Afup\Site\Comptabilite\Facture:
+      autowire: true
+
     Afup\Site\Droits:
         autowire: true
 
