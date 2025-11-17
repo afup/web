@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Accounting\Model\Repository;
 
 use CCMBenchmark\Ting\Serializer\DateTime;
-use AppBundle\Accounting\InvoicingCurrencyEnum;
+use AppBundle\Accounting\InvoicingCurrency;
 use AppBundle\Accounting\Model\Invoicing;
 use Aura\SqlQuery\Mysql\Select;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -24,10 +24,7 @@ class InvoicingRepository extends Repository implements MetadataInitializer
     public function getQuotationsByPeriodId(?int $periodId = null, string $sort = 'date', string $direction = 'desc'): CollectionInterface
     {
         $filter = 'acf.date_devis';
-        if ($sort == 'date') {
-            $filter = 'acf.date_devis';
-        }
-        if ($sort == 'client') {
+        if ($sort === 'client') {
             $filter = 'acf.societe';
         }
 
@@ -198,7 +195,7 @@ class InvoicingRepository extends Repository implements MetadataInitializer
                 'type' => 'enum',
                 'serializer' => BackedEnum::class,
                 'serializer_options' => [
-                    'unserialize' => ['enum' => InvoicingCurrencyEnum::class],
+                    'unserialize' => ['enum' => InvoicingCurrency::class],
                 ],
             ])
         ;

@@ -17,10 +17,10 @@ use DateTime;
  */
 class InvoicingPeriodRepository extends Repository implements MetadataInitializer
 {
-    public function getCurrentPeriodId(?int $periodId = null): int
+    public function getCurrentPeriod(?int $periodId = null): InvoicingPeriod
     {
         if ($periodId !== null) {
-            return $periodId;
+            return $this->get($periodId);
         }
 
         $startDate = new DateTime(date("Y") . "-01-01");
@@ -41,7 +41,7 @@ class InvoicingPeriodRepository extends Repository implements MetadataInitialize
             ]);
         }
 
-        return $period->getId();
+        return $period;
     }
 
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])

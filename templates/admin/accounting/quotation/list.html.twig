@@ -12,22 +12,7 @@
         </a>
     </div>
 
-    <div class="ui green segment">
-        <form method="GET" name="forum">
-            <div class="ui form">
-                <div class="inline fields">
-                    <div class="field">
-                        <label>Année comptable</label>
-                        <select name="periodId" onchange="this.form.submit(); return false;">
-                            {% for period in periods %}
-                            <option value="{{ period.id }}"{% if periodId == period.id %} selected{% endif %}>{{ period.startDate|format_date('short') }} - {{ period.endDate|format_date('short') }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+    {% include 'admin/accounting/invoicing-period.form.html.twig' with {form: formPeriod, url: path('admin_accounting_quotations_list')} %}
 
     <div class="ui bottom attached segment">
         {% if lines.count > 0 %}
@@ -55,7 +40,6 @@
                 <tbody>
                 {% for line in lines %}
                     <tr class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
-                        <!-- td width="20px"><input type="checkbox" value=""/></td -->
                         <td nowrap="nowrap">{{ line.quotationDate|format_date('short') }}</td>
                         <td>{{ line.company }}</td>
                         <td  width="250">{{ line.city }}</td>
@@ -117,5 +101,4 @@
             </div>
         {% endif %}
     </div>
-
 {% endblock %}

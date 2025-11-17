@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Accounting\Model;
 
-use AppBundle\Accounting\InvoicingCurrencyEnum;
+use AppBundle\Accounting\InvoicingCurrency;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use DateTime;
@@ -18,7 +18,6 @@ class Invoicing implements NotifyPropertyInterface
     private ?string $quotationNumber = null;
     private ?DateTime $invoiceDate = null;
     private ?string $invoiceNumber = null;
-
     private ?string $company = null;
     private ?string $service = null;
     private ?string $address = null;
@@ -36,7 +35,7 @@ class Invoicing implements NotifyPropertyInterface
     private ?string $phone = null;
     private int $paymentStatus = 0;
     private ?DateTime $paymentDate = null;
-    private InvoicingCurrencyEnum $currency = InvoicingCurrencyEnum::EURO;
+    private ?InvoicingCurrency $currency = null;
 
     private ?float $price = null;
 
@@ -325,12 +324,12 @@ class Invoicing implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getCurrency(): InvoicingCurrencyEnum
+    public function getCurrency(): ?InvoicingCurrency
     {
         return $this->currency;
     }
 
-    public function setCurrency(InvoicingCurrencyEnum $currency): self
+    public function setCurrency(InvoicingCurrency $currency): self
     {
         $this->propertyChanged('currency', $this->currency, $currency);
         $this->currency = $currency;
