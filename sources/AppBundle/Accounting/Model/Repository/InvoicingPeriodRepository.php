@@ -30,7 +30,7 @@ class InvoicingPeriodRepository extends Repository implements MetadataInitialize
             'endDate' => $endDate->format('Y-m-d'),
         ]);
 
-        if ($period === null) {
+        if (!$period instanceof InvoicingPeriod) {
             $period = new InvoicingPeriod();
             $period->setStartDate($startDate);
             $period->setEndDate($endDate);
