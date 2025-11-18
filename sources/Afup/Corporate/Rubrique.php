@@ -65,25 +65,25 @@ class Rubrique
         $html_pagination = $this->pagination_html();
 
         return
-        '<h1>' . $this->titre() . '</h1>' .
-        $this->corps() .
-        $html_pagination .
-        $this->rubriques_dans_la_rubrique() .
-        $this->articles_dans_la_rubrique() .
-        $html_pagination .
-        '<div class="breadcrumbs">' . $this->fil_d_ariane() . '</div>';
+        '<h1>' . $this->titre() . '</h1>'
+        . $this->corps()
+        . $html_pagination
+        . $this->rubriques_dans_la_rubrique()
+        . $this->articles_dans_la_rubrique()
+        . $html_pagination
+        . '<div class="breadcrumbs">' . $this->fil_d_ariane() . '</div>';
     }
 
     public function rubrique(): string
     {
-        return '<ul id="Header">' .
-        '<li id="HeaderImg">' .
-        $this->image_sous_navigation() .
-        '</li>' .
-        '<li id="HeaderTitle">' .
-        $this->titre() .
-        '</li>' .
-        '</ul>';
+        return '<ul id="Header">'
+        . '<li id="HeaderImg">'
+        . $this->image_sous_navigation()
+        . '</li>'
+        . '<li id="HeaderTitle">'
+        . $this->titre()
+        . '</li>'
+        . '</ul>';
     }
 
     public function image_sous_navigation(): string
@@ -310,11 +310,11 @@ class Rubrique
         $articles = "";
 
         foreach ($autres_articles as $article) {
-            $articles .= '<a class="article article-teaser" href="' . $article->route() . '">' .
-                '<time datetime="' . date("Y-m-d", $article->date) . '">' . $article->date() . '</time>' .
-                '<h2>' . $article->titre . '</h2>' .
-                '<p>' . $article->teaser() . '</p>' .
-                '</a>';
+            $articles .= '<a class="article article-teaser" href="' . $article->route() . '">'
+                . '<time datetime="' . date("Y-m-d", $article->date) . '">' . $article->date() . '</time>'
+                . '<h2>' . $article->titre . '</h2>'
+                . '<p>' . $article->teaser() . '</p>'
+                . '</a>';
         }
 
         return $articles;

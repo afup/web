@@ -29,8 +29,7 @@ class PurchaseTypeFactory
 
         if (
             $this->securityChecker->isGranted('ROLE_USER', $user)
-            &&
-            $user->hasRole('ROLE_MEMBER_EXPIRED') === false
+            && $user->hasRole('ROLE_MEMBER_EXPIRED') === false
         ) {
             if ($user->getCompanyId() > 0) {
                 $memberType = TicketType::MEMBER_CORPORATE;

@@ -34,8 +34,7 @@ class RssFeedController extends AbstractController
                 'email'         => 'bonjour@afup.org',
                 'author'        => 'AFUP',
                 'date'          => date(DATE_RSS),
-                'lastBuildDate' =>
-                    $derniersArticles[0]['maj'] ?? date(DATE_RSS, time()),
+                'lastBuildDate' => $derniersArticles[0]['maj'] ?? date(DATE_RSS, time()),
             ],
             'billets' => $derniersArticles,
         ];

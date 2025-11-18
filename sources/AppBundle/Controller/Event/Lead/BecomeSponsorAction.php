@@ -60,8 +60,8 @@ final class BecomeSponsorAction extends AbstractController
     {
         $subject = sprintf('%s - Nouvelle demande de dossier de sponsoring', $event->getTitle());
 
-        $content =
-            sprintf(
+        $content
+            = sprintf(
                 "Une nouvelle demande de dosssier de sponsoring vient d'être effectuée sur le site. Voici les informations saisies :
 
                 - Société: %s

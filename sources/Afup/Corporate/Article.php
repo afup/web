@@ -84,12 +84,12 @@ class Article
     public function afficher(): string
     {
         return '
-            <article>' .
-        '<time datetime=' . date("Y-m-d", $this->date) . '>' . $this->date() . '</time>' .
-        '<h1>' . $this->titre() . '</h1>' .
-        $this->corps() .
-        '<div class="breadcrumbs">' . $this->fil_d_ariane() . '</div>' .
-        '</article>';
+            <article>'
+        . '<time datetime=' . date("Y-m-d", $this->date) . '>' . $this->date() . '</time>'
+        . '<h1>' . $this->titre() . '</h1>'
+        . $this->corps()
+        . '<div class="breadcrumbs">' . $this->fil_d_ariane() . '</div>'
+        . '</article>';
     }
 
     public function titre()
@@ -201,8 +201,8 @@ class Article
     {
         $requete = 'SELECT *
                     FROM afup_site_article
-                    WHERE id_site_rubrique = ' . $this->bdd->echapper($this->id_site_rubrique) .
-            ' ORDER BY date DESC LIMIT 1';
+                    WHERE id_site_rubrique = ' . $this->bdd->echapper($this->id_site_rubrique)
+            . ' ORDER BY date DESC LIMIT 1';
         $data = $this->bdd->obtenirEnregistrement($requete);
         if ($data) {
             $this->remplir($data);

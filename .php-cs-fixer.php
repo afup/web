@@ -17,7 +17,7 @@ return (new PhpCsFixer\Config())
     ->registerCustomFixers(new PhpCsFixerCustomFixers\Fixers())
     ->setRiskyAllowed(true)
     ->setRules([
-        '@PER-CS2x0' => true,
+        '@PER-CS3x0' => true,
         '@PHP7x4Migration:risky' => true,
         'no_alias_functions' => true,
         'native_function_casing' => true,

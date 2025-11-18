@@ -42,8 +42,7 @@ final class SponsorTicketAction extends AbstractController
                 $sponsorTicket = $this->sponsorTicketRepository->getOneBy(['token' => $token]);
                 if (
                     $this->actionThrottling->isActionBlocked('sponsor_token', $request->getClientIp())
-                    ||
-                    $sponsorTicket === null
+                    || $sponsorTicket === null
                 ) {
                     // Si l'IP a fait trop de tentatives, on affiche le meme message que si le token n'existe pas
                     // L'ip est bloquée pendant un temps mais il ne faut pas en informer celui qui tente - pour éviter

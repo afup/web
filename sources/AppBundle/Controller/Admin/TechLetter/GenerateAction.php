@@ -46,9 +46,9 @@ final class GenerateAction extends AbstractController
         }
 
         if (
-            $request->getMethod() === Request::METHOD_POST &&
-            ($this->isCsrfTokenValid('sendToMailchimp', $request->request->get('_csrf_token')) ||
-                $this->isCsrfTokenValid('sendToMailchimpAndSchedule', $request->request->get('_csrf_token')))
+            $request->getMethod() === Request::METHOD_POST
+            && ($this->isCsrfTokenValid('sendToMailchimp', $request->request->get('_csrf_token'))
+                || $this->isCsrfTokenValid('sendToMailchimpAndSchedule', $request->request->get('_csrf_token')))
         ) {
             // Ne pas planifier l'envoi dans le passé
             $limitDatetime = new \DateTime('+5 min');

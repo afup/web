@@ -101,22 +101,22 @@ class Forum
         }
 
         $sWhere = "WHERE " . implode(" AND ", $aWhere);
-        $requete = "SELECT " .
-            " ( SELECT CONCAT(c.nom,' ', c.prenom , ' - ', c.societe )  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = s.session_id order by c.conferencier_id asc limit 1) as conf1 ,
-                      ( SELECT CONCAT(c.nom,' ', c.prenom, ' - ', c.societe)  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = s.session_id order by c.conferencier_id asc limit 1,1) as conf2 , " .
+        $requete = "SELECT "
+            . " ( SELECT CONCAT(c.nom,' ', c.prenom , ' - ', c.societe )  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = s.session_id order by c.conferencier_id asc limit 1) as conf1 ,
+                      ( SELECT CONCAT(c.nom,' ', c.prenom, ' - ', c.societe)  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = s.session_id order by c.conferencier_id asc limit 1,1) as conf2 , "
 
-            "    s.session_id, s.titre, s.journee, " .
-            "    FROM_UNIXTIME(p.debut, '%d-%m-%Y') AS 'jour', " .
-            "    FROM_UNIXTIME(p.debut, '%H:%i') AS 'debut', " .
-            "    FROM_UNIXTIME(p.fin, '%H:%i') AS 'fin', " .
-            "    p.id_salle, " .
-            "    p.keynote, " .
-            "    l.nom " .
-            "FROM   afup_sessions       s " .
-            "  JOIN afup_forum_planning p ON s.session_id = p.id_session " .
-            "  JOIN afup_forum_salle    l ON p.id_salle   = l.id " .
-            $sWhere . " " .
-            "ORDER BY p.debut ASC, p.id_salle ASC";
+            . "    s.session_id, s.titre, s.journee, "
+            . "    FROM_UNIXTIME(p.debut, '%d-%m-%Y') AS 'jour', "
+            . "    FROM_UNIXTIME(p.debut, '%H:%i') AS 'debut', "
+            . "    FROM_UNIXTIME(p.fin, '%H:%i') AS 'fin', "
+            . "    p.id_salle, "
+            . "    p.keynote, "
+            . "    l.nom "
+            . "FROM   afup_sessions       s "
+            . "  JOIN afup_forum_planning p ON s.session_id = p.id_session "
+            . "  JOIN afup_forum_salle    l ON p.id_salle   = l.id "
+            . $sWhere . " "
+            . "ORDER BY p.debut ASC, p.id_salle ASC";
         return $this->_bdd->obtenirTous($requete);
     }
 
@@ -261,9 +261,9 @@ CODE_HTML;
                             for ($c = 0; $c < $nbConf; $c++):
                                     //var_dump($aAgenda[$c]);
                                     if (
-                                        $aAgenda[$c]['debut'] == $sHeure . ":" . $m &&
-                                        $aAgenda[$c]['id_salle'] == $idSalle &&
-                                        $aAgenda[$c]['jour'] == $journee
+                                        $aAgenda[$c]['debut'] == $sHeure . ":" . $m
+                                        && $aAgenda[$c]['id_salle'] == $idSalle
+                                        && $aAgenda[$c]['jour'] == $journee
                                     ):
                                         /* Si on toruve une scéance, on ne mettra pas de cellule vide. */
                                         $bSeance = true;

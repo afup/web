@@ -33,11 +33,10 @@ final class TransformerTest extends TestCase
                 'year' => '2050',
                 'datetime' => '2050-12-14 17:30:00',
                 'day_month' => '14 Dec',
-                'office' =>
-                    [
-                        'label' => 'Reims',
-                        'logo_url' => '/images/offices/reims.svg',
-                    ],
+                'office' => [
+                    'label' => 'Reims',
+                    'logo_url' => '/images/offices/reims.svg',
+                ],
                 'description' => '<p>Nous vous invitons au Grand Comptoir à partir de 18h30 pour discuter de PHP autour d\'un verre.</p>',
                 'twitter' => 'afup_reims',
                 'custom_sort' => 9223372034300127607,
