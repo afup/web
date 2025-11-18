@@ -13,8 +13,7 @@ require_once __DIR__ . '/../../../sources/Afup/Bootstrap/Http.php';
 
 if (
     !isset($_GET['ref'])
-    ||
-    !preg_match('`ins-([0-9]+)`', (string) $_GET['ref'], $matches) && !preg_match('`elephpant-([0-9]+)`', (string) $_GET['ref'], $matches)
+    || !preg_match('`ins-([0-9]+)`', (string) $_GET['ref'], $matches) && !preg_match('`elephpant-([0-9]+)`', (string) $_GET['ref'], $matches)
 ) {
     die('Missing ref');
 }

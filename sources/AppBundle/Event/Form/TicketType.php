@@ -131,8 +131,7 @@ class TicketType extends AbstractType
 
                     if (
                         ($type->getTicketType()->getIsRestrictedToMembers() === true && $options['member_type'] === self::MEMBER_NOT)
-                        ||
-                        $attr['data-stock'] <= 0
+                        || $attr['data-stock'] <= 0
                     ) {
                         $attr['disabled'] = 'disabled';
                     }

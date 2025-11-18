@@ -464,8 +464,8 @@ if ($action == 'lister') {
 
         // Avoid multiple upload
         if (
-            !isset($_FILES['file']['error']) ||
-            is_array($_FILES['file']['error'])
+            !isset($_FILES['file']['error'])
+            || is_array($_FILES['file']['error'])
         ) {
             throw new RuntimeException('Invalid parameters. You can\'t upload multiple files.');
         }

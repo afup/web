@@ -348,13 +348,13 @@ class Facture
         $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(10);
         $pdf->setx(120);
-        $pdf->MultiCell(130, 5, $coordonnees['societe'] . "\n" .
-            $coordonnees['service'] . "\n" .
-            $coordonnees['adresse'] . "\n" .
-            $coordonnees['code_postal'] . " " .
-            $coordonnees['ville'] . "\n" .
-            $pays->obtenirNom($coordonnees['id_pays']) .
-            ($coordonnees['tva_intra'] ? ("\n" . 'N° TVA Intracommunautaire : ' . $coordonnees['tva_intra']) : null),
+        $pdf->MultiCell(130, 5, $coordonnees['societe'] . "\n"
+            . $coordonnees['service'] . "\n"
+            . $coordonnees['adresse'] . "\n"
+            . $coordonnees['code_postal'] . " "
+            . $coordonnees['ville'] . "\n"
+            . $pays->obtenirNom($coordonnees['id_pays'])
+            . ($coordonnees['tva_intra'] ? ("\n" . 'N° TVA Intracommunautaire : ' . $coordonnees['tva_intra']) : null),
         );
 
         $pdf->Ln(10);
@@ -542,13 +542,13 @@ class Facture
         $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(10);
         $pdf->setx(120);
-        $pdf->MultiCell(130, 5, $coordonnees['societe'] . "\n" .
-            $coordonnees['service'] . "\n" .
-            $coordonnees['adresse'] . "\n" .
-            $coordonnees['code_postal'] . "\n" .
-            $coordonnees['ville'] . "\n" .
-            $pays->obtenirNom($coordonnees['id_pays']) .
-            ($coordonnees['tva_intra'] ? ("\n" . 'N° TVA Intracommunautaire : ' . $coordonnees['tva_intra']) : null));
+        $pdf->MultiCell(130, 5, $coordonnees['societe'] . "\n"
+            . $coordonnees['service'] . "\n"
+            . $coordonnees['adresse'] . "\n"
+            . $coordonnees['code_postal'] . "\n"
+            . $coordonnees['ville'] . "\n"
+            . $pays->obtenirNom($coordonnees['id_pays'])
+            . ($coordonnees['tva_intra'] ? ("\n" . 'N° TVA Intracommunautaire : ' . $coordonnees['tva_intra']) : null));
 
         $pdf->Ln(10);
         $pdf->SetFont('Arial', 'BU', 10);
