@@ -21,7 +21,7 @@ class RssFeedController extends AbstractController
             /** @var Article $article */
             $derniersArticles[] = [
                 'titre'   => $article->getTitle(),
-                'contenu' => $article->getContent(),
+                'contenu' => $article->getFormatedContent(),
                 'url'     => $article->getSlug(),
                 'maj'     => $article->getPublishedAt()->format(DATE_RSS),
             ];
