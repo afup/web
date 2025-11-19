@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace AppBundle\Site\Form;
 
 use Afup\Site\Corporate\Article;
-use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Site\Model\Repository\RubriqueRepository;
+use AppBundle\Event\Entity\Event;
+use AppBundle\Site\Entity\Rubric;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToTimestampTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,31 +21,17 @@ class ArticleType extends AbstractType
 {
     public const POSITIONS_RUBRIQUES = 9;
 
-    public function __construct(
-        private readonly RubriqueRepository $rubriqueRepository,
-        private readonly EventRepository $eventRepository,
-    ) {}
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $positions = [];
         for ($i = self::POSITIONS_RUBRIQUES ; $i >= -(self::POSITIONS_RUBRIQUES); $i--) {
             $positions[$i] = $i;
         }
-        $rubriques = [];
-        foreach ($this->rubriqueRepository->getAll() as $rubrique) {
-            $rubriques[$rubrique->getNom()] = $rubrique->getId();
-        }
 
-        $events = [];
-        foreach ($this->eventRepository->getAll() as $event) {
-            $events[$event->getTitle()] = $event->getId();
-        }
-
-        /** @var \AppBundle\Site\Model\Article|null $article */
+        /** @var \AppBundle\Site\Model\Article|\AppBundle\Site\Entity\Article|null $article */
         $article = $builder->getData();
         $textareaCssClass = 'simplemde';
-        if ($article !== null && $article->usesMarkdown() === false) {
+        if ($article !== null && $article->isContentTypeMarkdown() === false) {
             $textareaCssClass = 'tinymce';
         }
 
@@ -77,7 +63,7 @@ class ArticleType extends AbstractType
             ])
             ->add('content', TextareaType::class, [
                 'label' => 'Contenu',
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'cols' => 42,
                     'rows' => 20,
@@ -102,16 +88,11 @@ class ArticleType extends AbstractType
                     new Assert\Regex('/(\s)/', 'Ne doit pas contenir d\'espaces', null, false),
                 ],
             ])
-            ->add('contentType', HiddenType::class, [
-                'required' => true,
-            ])
-            ->add('rubricId', ChoiceType::class, [
-                'placeholder' => '',
+            ->add('rubric', EntityType::class, [
                 'label' => 'Rubrique',
-                'choices' => $rubriques,
-                'constraints' => [
-                    new Assert\Type("integer"),
-                ],
+                'class' => Rubric::class,
+                'choice_label' => 'name',
+                'required' => true,
             ])
             ->add('publishedAt', DateTimeType::class, [
                 'required' => false,
@@ -158,13 +139,11 @@ class ArticleType extends AbstractType
                     new Assert\Type("integer"),
                 ],
             ])
-            ->add('eventId', ChoiceType::class, [
-                'label' => 'Evênement',
+            ->add('event', EntityType::class, [
+                'label' => 'Événement',
                 'required' => false,
-                'choices' => $events,
-                'constraints' => [
-                    new Assert\Type("integer"),
-                ],
+                'class' => Event::class,
+                'choice_label' => 'title',
             ])
         ;
         $builder->get('publishedAt')->addModelTransformer(new DateTimeToTimestampTransformer());

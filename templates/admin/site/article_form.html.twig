@@ -5,7 +5,7 @@
 {% block content %}
     <h2>{{ formTitle }}</h2>
 
-    {% if article.slug != '-' %}
+    {% if article.id %}
     <div class="ui menu">
         <div class="ui simple dropdown item" tabindex="0">
             <i class="icon linkify"></i>
@@ -28,7 +28,6 @@
                     {{ form_row(form.title) }}
                     {{ form_row(form.leadParagraph) }}
                     {{ form_row(form.content) }}
-                    {{ form_row(form.contentType) }}
                 </div>
             </div>
         </div>
@@ -39,12 +38,12 @@
             <div>
                 <div class="ui form">
                     {{ form_row(form.path) }}
-                    {{ form_row(form.rubricId) }}
+                    {{ form_row(form.rubric) }}
                     {{ form_row(form.publishedAt) }}
                     {{ form_row(form.position) }}
                     {{ form_row(form.state) }}
                     {{ form_row(form.theme) }}
-                    {{ form_row(form.eventId) }}
+                    {{ form_row(form.event) }}
                 </div>
             </div>
         </div>
