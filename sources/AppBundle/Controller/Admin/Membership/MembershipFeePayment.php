@@ -8,7 +8,7 @@ enum MembershipFeePayment: int
 {
     case Cash = 0;
     case Check = 1;
-    case BankTransfer = 2;
+    case BankTransfert = 2;
     case OnlinePayment = 3;
     case Other = 4;
 
@@ -17,7 +17,7 @@ enum MembershipFeePayment: int
         return match ($this) {
             self::Cash => 'Espèces',
             self::Check => 'Chèques',
-            self::BankTransfer => 'Virement',
+            self::BankTransfert => 'Virement',
             self::OnlinePayment => 'En ligne',
             self::Other => 'Autre',
         };
