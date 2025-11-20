@@ -31,7 +31,6 @@ Feature: Administration - Partie Site
     And I fill in "article[content]" with "Le contenu de l'article"
     And I fill in "article[path]" with "url-article"
     And I select "Actualités" from "article[rubricId]"
-    And I select "Personne Paul" from "article[authorId]"
     And I select "9" from "article[position]"
     And I select "En ligne" from "article[state]"
     And I select "Associatif" from "article[theme]"

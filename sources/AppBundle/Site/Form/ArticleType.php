@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AppBundle\Site\Form;
 
 use Afup\Site\Corporate\Article;
-use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
 use Symfony\Component\Form\AbstractType;
@@ -24,16 +23,11 @@ class ArticleType extends AbstractType
 
     public function __construct(
         private readonly RubriqueRepository $rubriqueRepository,
-        private readonly UserRepository $userRepository,
         private readonly EventRepository $eventRepository,
     ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $users = [];
-        foreach ($this->userRepository->getAll() as $user) {
-            $users[$user->getFirstName() . ' ' . $user->getLastName()] = $user->getId();
-        }
         $positions = [];
         for ($i = self::POSITIONS_RUBRIQUES ; $i >= -(self::POSITIONS_RUBRIQUES); $i--) {
             $positions[$i] = $i;
@@ -115,14 +109,6 @@ class ArticleType extends AbstractType
                 'placeholder' => '',
                 'label' => 'Rubrique',
                 'choices' => $rubriques,
-                'constraints' => [
-                    new Assert\Type("integer"),
-                ],
-            ])
-            ->add('authorId', ChoiceType::class, [
-                'required' => false,
-                'label' => 'Auteur',
-                'choices' => $users,
                 'constraints' => [
                     new Assert\Type("integer"),
                 ],

@@ -27,9 +27,7 @@ final class EditArticleAction extends AbstractController
             $this->articleRepository->save($article);
             $this->audit->log('Modification de l\'article ' . $article->getTitle());
             $this->addFlash('notice', 'L\'article ' . $article->getTitle() . ' a été modifié');
-            return $this->redirectToRoute('admin_site_articles_list', [
-                'filter' => $article->getTitle(),
-            ]);
+            return $this->redirectToRoute('admin_site_articles_list');
         }
 
         return $this->render('admin/site/article_form.html.twig', [
