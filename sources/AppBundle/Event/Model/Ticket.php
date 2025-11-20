@@ -107,10 +107,7 @@ class Ticket implements NotifyPropertyInterface
     public const DAY_ONE = 'one';
     public const DAY_TWO = 'two';
 
-    /**
-     * @var int
-     */
-    private $id;
+    private ?int $id = null;
 
     private ?\DateTime $date = null;
 
@@ -255,18 +252,12 @@ class Ticket implements NotifyPropertyInterface
      */
     protected $qrCode;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;

@@ -93,10 +93,7 @@ class Speaker implements NotifyPropertyInterface
 
     private ?GithubUser $githubUser = null;
 
-    /**
-     * @var string|null
-     */
-    private $photo;
+    private ?string $photo = null;
 
     /**
      * Wrapper for SpeakerType to allow picture upload
@@ -558,18 +555,12 @@ class Speaker implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getPhoto()
+    public function getPhoto(): ?string
     {
         return $this->photo;
     }
 
-    /**
-     * @param string $photo
-     */
-    public function setPhoto($photo): self
+    public function setPhoto(?string $photo): self
     {
         if ($this->photo === null || $photo !== null) {
             $this->propertyChanged('photo', $this->photo, $photo);
