@@ -29,7 +29,7 @@ final class IndexAction extends AbstractController
 
         return $this->view->render('site/member/techletter.html.twig', [
             'subscribed' => $this->techletterSubscriptionsRepository->hasUserSubscribed($this->getUser()),
-            'feeUpToDate' => ($this->getUser() !== null && $this->getUser()->getLastSubscription() > new \DateTime()),
+            'feeUpToDate' => $this->getUser()->getLastSubscription() > new \DateTime(),
             'token' => $this->csrfTokenManager->getToken('techletter_subscription'),
             'techletter_history' => $this->sendingRepository->getAllPastSent(),
         ]);
