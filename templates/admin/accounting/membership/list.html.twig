@@ -47,13 +47,13 @@
                 <td>{{ membership.endDate|format_date('short') }}</td>
                 <td class="right aligned">{{ membership.amount|number_format(2, '.', ' ') }} &euro;</td>
                 <td>
-                    {% if membership.paymentType.value == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').Cash.value %}
+                    {% if membership.paymentType == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').Cash %}
                     en espèces
-                    {% elseif membership.paymentType.value == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').Check.value %}
+                    {% elseif membership.paymentType == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').Check %}
                     par chèque n° {{ membership.paymentDetails }}
-                    {% elseif membership.paymentType.value == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').BankTransfert.value %}
+                    {% elseif membership.paymentType == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').BankTransfert %}
                     par virement n° {{ membership.paymentDetails }}
-                    {% elseif membership.paymentType.value == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').OnlinePayment.value %}
+                    {% elseif membership.paymentType == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').OnlinePayment %}
                     en ligne
                     {% endif %}
                 </td>

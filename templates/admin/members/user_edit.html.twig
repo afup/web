@@ -7,7 +7,7 @@
 
     <div class="ui menu">
         {% if user.companyId %}
-            <a href="{{ url('admin_membership_fee_list', {'memberType': constant('AFUP_PERSONNES_MORALES'), 'memberId': company.companyId}) }}"
+            <a href="{{ url('admin_membership_fee_list', {'memberType': constant('AFUP_PERSONNES_MORALES'), 'memberId': user.companyId}) }}"
                class="item">
                 <i class="money bill icon"></i>
                 Voir les cotisations
