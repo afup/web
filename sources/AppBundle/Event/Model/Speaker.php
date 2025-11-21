@@ -20,10 +20,7 @@ class Speaker implements NotifyPropertyInterface
 
     private const LINKEDIN_URL_PREFIX = "https://www.linkedin.com/in/";
 
-    /**
-     * @var int
-     */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @var int
@@ -141,18 +138,12 @@ class Speaker implements NotifyPropertyInterface
     private bool $travelRefundNeeded = true;
     private bool $travelRefundSponsored = false;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;

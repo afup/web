@@ -20,11 +20,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
  */
 class TicketSpecialPriceRepository extends Repository implements MetadataInitializer
 {
-    /**
-     * @param string $token
-     * @return TicketSpecialPrice
-     */
-    public function findUnusedToken(Event $event, $token)
+    public function findUnusedToken(Event $event, ?string $token): ?TicketSpecialPrice
     {
         $query = $this
             ->getPreparedQuery(
