@@ -52,7 +52,7 @@ class SheetType extends AbstractType
                     'size' => 60,
                 ],
                 'constraints' => [
-                    new Assert\Length(['max' => 255]),
+                    new Assert\Length(max: 255),
                     new Assert\NotBlank(),
                     new Assert\Type('string'),
                 ],
@@ -65,7 +65,7 @@ class SheetType extends AbstractType
                     'size' => 60,
                 ],
                 'constraints' => [
-                    new Assert\Length(['max' => 255]),
+                    new Assert\Length(max: 255),
                     new Assert\NotBlank(),
                     new Assert\Type('string'),
                 ],
@@ -78,7 +78,7 @@ class SheetType extends AbstractType
                     'size' => 60,
                 ],
                 'constraints' => [
-                    new Assert\Length(['max' => 255]),
+                    new Assert\Length(max: 255),
                     new Assert\Type('string'),
                 ],
             ])
@@ -87,9 +87,7 @@ class SheetType extends AbstractType
                 'required' => false,
                 'data_class' => null,
                 'constraints' => [
-                    new Assert\Image([
-                        'mimeTypes' => ['jpg','jpeg','gif','png'],
-                    ]),
+                    new Assert\Image(mimeTypes: ['image/jpg','image/jpeg','image/gif','image/png']),
                 ],
             ])
             ->add('imageAlt', TextType::class, [
@@ -100,7 +98,7 @@ class SheetType extends AbstractType
                     'size' => 60,
                 ],
                 'constraints' => [
-                    new Assert\Length(['max' => 255]),
+                    new Assert\Length(max: 255),
                     new Assert\Type('string'),
                 ],
             ])
