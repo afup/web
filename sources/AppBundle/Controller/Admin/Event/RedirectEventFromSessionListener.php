@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -12,8 +13,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 #[AsEventListener]
 final readonly class RedirectEventFromSessionListener
 {
+    public const SESSION_KEY = 'event_selector_current_id';
+
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
+        #[Autowire('%app.controllers_with_event_selector%')]
+        private array $controllersWithEventSelector,
     ) {}
 
     public function __invoke(ControllerEvent $event): void
@@ -26,7 +31,11 @@ final readonly class RedirectEventFromSessionListener
             $controller = $controller[0];
         }
 
-        if (!$controller instanceof AdminActionWithEventSelector) {
+        /**
+         * Les controllers concernés sont calculés en amont par le container.
+         * @see \AppBundle\DependencyInjection\ControllersWithEventSelectorPass
+         */
+        if (!is_object($controller) || !array_key_exists($controller::class, $this->controllersWithEventSelector)) {
             return;
         }
 
@@ -38,13 +47,13 @@ final readonly class RedirectEventFromSessionListener
         if (
             $request->isMethod('GET')
             && !$request->query->has('id')
-            && $request->getSession()->has(AdminActionWithEventSelector::SESSION_KEY)
+            && $request->getSession()->has(self::SESSION_KEY)
         ) {
             $url = $this->urlGenerator->generate(
                 $request->attributes->get('_route'),
                 array_merge(
                     $request->attributes->get('_route_params'),
-                    ['id' => $request->getSession()->get(AdminActionWithEventSelector::SESSION_KEY)],
+                    ['id' => $request->getSession()->get(self::SESSION_KEY)],
                 ),
             );
 

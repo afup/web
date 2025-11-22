@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-class PendingBankwiresAction extends AbstractController implements AdminActionWithEventSelector
+class PendingBankwiresAction extends AbstractController
 {
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,

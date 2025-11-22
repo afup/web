@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class DeleteSponsorTicketAction extends AbstractController implements AdminActionWithEventSelector
+class DeleteSponsorTicketAction extends AbstractController
 {
     public function __construct(
         private readonly SponsorTicketRepository $sponsorTicketRepository,

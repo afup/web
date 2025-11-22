@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use AppBundle\DependencyInjection\ControllersWithEventSelectorPass;
 use AppBundle\DependencyInjection\TingRepositoryPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -35,5 +36,6 @@ class AppKernel extends Kernel
     protected function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new TingRepositoryPass());
+        $container->addCompilerPass(new ControllersWithEventSelectorPass());
     }
 }

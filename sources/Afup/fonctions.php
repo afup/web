@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use AppBundle\Association\Form\HTML_QuickForm;
-use AppBundle\Controller\Admin\Event\AdminActionWithEventSelector;
+use AppBundle\Controller\Admin\Event\RedirectEventFromSessionListener;
 
 /**
  * Affiche un message puis redirige le visiteur vers une URL spécifiée
@@ -113,12 +113,12 @@ function obtenirTitre($pages, $page)
 
 function chargerForumId(): void
 {
-    $_GET['id_forum'] ??= $_SESSION['_sf2_attributes'][AdminActionWithEventSelector::SESSION_KEY] ?? 0;
+    $_GET['id_forum'] ??= $_SESSION['_sf2_attributes'][RedirectEventFromSessionListener::SESSION_KEY] ?? 0;
 }
 
 function checkForumRedirection(): void
 {
-    $idFromSession = $_SESSION['_sf2_attributes'][AdminActionWithEventSelector::SESSION_KEY] ?? null;
+    $idFromSession = $_SESSION['_sf2_attributes'][RedirectEventFromSessionListener::SESSION_KEY] ?? null;
 
     if (
         $_SERVER['REQUEST_METHOD'] === 'GET'

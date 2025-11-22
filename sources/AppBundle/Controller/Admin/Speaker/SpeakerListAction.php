@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Speaker;
 
-use AppBundle\Controller\Admin\Event\AdminActionWithEventSelector;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\Support\EventSelectFactory;
 use AppBundle\Event\Model\Event;
@@ -17,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class SpeakerListAction implements AdminActionWithEventSelector
+class SpeakerListAction
 {
     public const VALID_SORTS = ['name', 'company'];
     public const VALID_DIRECTIONS = ['asc', 'desc'];
