@@ -54,7 +54,7 @@ class Cotisations
      * @param string $champs Champs à renvoyer
      * @param string $ordre Tri des enregistrements
      * @param bool $associatif Renvoyer un tableau associatif ?
-     * @return array
+     * @return array|false
      */
     public function obtenirListe($type_personne, $id_personne, string $champs = '*', string $ordre = 'date_fin DESC', bool $associatif = false)
     {

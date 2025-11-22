@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\Membership\GeneralMeeting;
 
 use Afup\Site\Droits;
-use AppBundle\Association\Model\GeneralMeetingQuestion;
 use AppBundle\Association\Model\GeneralMeetingVote;
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
 use AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository;
@@ -33,7 +32,6 @@ final class VoteAction extends AbstractController
             throw $this->createNotFoundException('Vote manquant');
         }
 
-        /** @var GeneralMeetingQuestion $question */
         $question = $this->generalMeetingQuestionRepository->get($questionId);
 
         if (null === $question) {
