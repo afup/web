@@ -87,7 +87,7 @@ class HomeAction extends AbstractController
             }
         }
 
-        if ($this->isGranted(('ROLE_ADMIN'))) {
+        if ($this->isGranted('ROLE_ADMIN')) {
             $cards[] = [
                 'title' => 'Abonnements à la veille',
                 'statistics' => ['Abonnements' => $this->techletterSubscriptionsRepository->countAllSubscriptionsWithUser()],
@@ -97,7 +97,7 @@ class HomeAction extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         Assertion::isInstanceOf($user, User::class);
-        if ($this->isGranted(('ROLE_ADMIN'))) {
+        if ($this->isGranted('ROLE_ADMIN')) {
             $statistics = $this->statisticsComputer->computeStatistics();
             $cards[] = [
                 'title' => 'Membres',
