@@ -628,4 +628,23 @@ class FeatureContext implements Context
         }
 
     }
+
+    /**
+     * @throws ExpectationException
+     * exemples:
+     * I should see a red label "oui"
+     * I should see a label "ok"
+     */
+    #[Then('/^(?:|I )should see a (?P<color>(?:[\w])* )?label "(?P<value>(?:[^"]|\\")*)"$/')]
+    public function shouldSee(string $color, string $text): void
+    {
+        $label = $this->minkContext->getSession()->getPage()->find('css', sprintf('.ui.label%s', $color != '' ? ('.' . $color) : ''));
+
+        if (null === $label) {
+            throw new ExpectationException(
+                sprintf('label "%s" was not found', $text),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+    }
 }
