@@ -100,6 +100,7 @@ class PlanningRepository extends Repository implements MetadataInitializer
                 'serializer' => DateTimeWithTimeZoneSerializer::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ],
             ])
             ->addField([
@@ -109,6 +110,7 @@ class PlanningRepository extends Repository implements MetadataInitializer
                 'serializer' => DateTimeWithTimeZoneSerializer::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'serialize' => ['serializeUseFormat' => true, 'format' => 'U'],
                 ],
             ])
             ->addField([
@@ -116,6 +118,11 @@ class PlanningRepository extends Repository implements MetadataInitializer
                 'fieldName' => 'isKeynote',
                 'type' => 'bool',
                 'serializer' => Boolean::class,
+            ])
+            ->addField([
+                'columnName' => 'id_salle',
+                'fieldName' => 'roomId',
+                'type' => 'int',
             ])
         ;
 

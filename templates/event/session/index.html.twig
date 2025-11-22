@@ -40,22 +40,27 @@
             <br />
 
             {% if session.planning %}
-                {{ session.planning.start|date("d/m/Y H:i") }} - {{ session.planning.end|date("H:i") }} / {{ session.room.name }}
+                <em>{{ session.planning.start|date("d/m/Y") }}</em> /
+                {{ session.planning.start|date("H:i") }} - {{ session.planning.end|date("H:i") }} / {{ session.room ? session.room.name }}
             {% else %}
                 <em>non planifié</em>
             {% endif %}
         </td>
         <td style="text-align: right" nowrap="nowrap">
             {% set template_path="/templates/administration/images/famfamfam/" %}
-            <a href="/pages/administration/index.php?page=forum_planning&amp;action=modifier&amp;id={{ session.planning.id is defined ? session.planning.id }}&amp;id_session={{ session.talk.id }}"
+            <a href="{{ path("admin_event_sessions_edit", {talkId: session.talk.id, sessionId: session.planning ? session.planning.id }) }}"
                title="Modifier la session {{ session.talk.title }}">
                 <img src="{{ template_path }}application_form_edit.png" alt="Modifier" />
             </a>
-            <a href="/pages/administration/index.php?page=forum_planning&amp;action=supprimer&amp;id={{ session.planning.id is defined ? session.planning.id }}"
+            {% if session.planning %}
+            <a href="{{ path("admin_event_sessions_delete", {id: session.planning.id }) }}"
                title="Supprimer la session {{ session.talk.title }}"
                onclick="return confirm('Etes-vous sûr de vouloir supprimer la session {{ session.talk.title }} ?');">
                 <img src="{{ template_path }}delete.png" alt="Supprimer" />
             </a>
+            {% else %}
+                <img src="{{ template_path }}delete.png" alt="Supprimer" />
+            {% endif %}
         </td>
         </tr>
         {% else %}

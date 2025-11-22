@@ -113,3 +113,19 @@ admin_event_votes:
 admin_event_sessions:
   path: /sessions
   defaults: { _controller: AppBundle\Controller\Admin\Event\Session\IndexAction }
+
+admin_event_sessions_edit:
+  path: /sessions/{talkId}/{sessionId}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Event\Session\EditAction
+    sessionId: ~
+  requirements:
+    talkId: \d+
+
+admin_event_sessions_delete:
+  path: /sessions/delete/{id}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Event\Session\DeleteAction
+    id: ~
+  requirements:
+    id: \d+

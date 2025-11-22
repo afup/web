@@ -197,6 +197,7 @@ parameters:
                     url: '/admin/event/sessions'
                     extra_routes:
                       - admin_event_sessions
+                      - admin_event_sessions_edit
                 admin_github_user_list:
                     nom: 'Github Users'
                     url: '/admin/event/github-user'
