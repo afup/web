@@ -211,6 +211,7 @@ parameters:
             elements:
                 compta_devis:
                     nom: 'Devis'
+                    url: '/admin/accounting/quotations/list'
                     niveau: 'ROLE_ADMIN'
                 compta_facture:
                     nom: 'Factures'

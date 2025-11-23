@@ -94,6 +94,10 @@ admin_accounting_rules_edit:
   requirements:
     id: '\d+'
 
+admin_accounting_quotations_list:
+  path: /quotations/list
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Quotation\ListQuotationAction}
+
 admin_accounting_search:
   path: /search
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\SearchAction}
