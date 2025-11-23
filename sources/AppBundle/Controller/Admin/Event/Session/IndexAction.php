@@ -23,13 +23,12 @@ final class IndexAction extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $id = $request->query->get('id');
-        $event = $this->eventActionHelper->getEventById($id);
+        $event = $this->eventActionHelper->getEventById($request->query->get('id'));
         $year = $event->getDateStart()?->format('Y');
 
         return $this->render('event/session/index.html.twig', [
             'event' => $event,
-            'agenda' => $this->forum->genAgenda($year, true, false, $id),
+            'agenda' => $this->forum->genAgenda($year, true, false, $event->getId()),
             'sessions' => $this->talkRepository->getByEventWithSpeakers($event, false),
             'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
         ]);
