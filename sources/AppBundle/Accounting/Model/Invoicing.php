@@ -329,7 +329,7 @@ class Invoicing implements NotifyPropertyInterface
         return $this->currency;
     }
 
-    public function setCurrency(InvoicingCurrency $currency): self
+    public function setCurrency(?InvoicingCurrency $currency): self
     {
         $this->propertyChanged('currency', $this->currency, $currency);
         $this->currency = $currency;
