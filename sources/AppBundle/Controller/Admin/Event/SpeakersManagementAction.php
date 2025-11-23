@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class SpeakersManagementAction extends AbstractController implements AdminActionWithEventSelector
+class SpeakersManagementAction extends AbstractController
 {
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,

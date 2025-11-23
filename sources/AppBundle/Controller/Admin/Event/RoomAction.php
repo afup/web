@@ -17,7 +17,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class RoomAction extends AbstractController implements AdminActionWithEventSelector
+class RoomAction extends AbstractController
 {
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,

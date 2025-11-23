@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Form\Support;
 
-use AppBundle\Controller\Admin\Event\AdminActionWithEventSelector;
+use AppBundle\Controller\Admin\Event\RedirectEventFromSessionListener;
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
@@ -22,10 +22,10 @@ final readonly class EventSelectFactory
     public function create(Event $event, Request $request): FormInterface
     {
         // L'id dans l'url est prioritaire sur celui de la session
-        $selectedEventId = $request->query->get('id') ?? $request->getSession()->get(AdminActionWithEventSelector::SESSION_KEY);
+        $selectedEventId = $request->query->get('id') ?? $request->getSession()->get(RedirectEventFromSessionListener::SESSION_KEY);
 
         if ($request->query->has('id')) {
-            $request->getSession()->set(AdminActionWithEventSelector::SESSION_KEY, $selectedEventId);
+            $request->getSession()->set(RedirectEventFromSessionListener::SESSION_KEY, $selectedEventId);
         }
 
         $selectedEvent = null;
