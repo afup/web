@@ -636,7 +636,7 @@ class FeatureContext implements Context
      * I should see a label "ok"
      */
     #[Then('/^(?:|I )should see a (?P<color>(?:[\w])* )?label "(?P<value>(?:[^"]|\\")*)"$/')]
-    public function shouldSee(string $color, string $text): void
+    public function shouldSeeLabel(string $color, string $text): void
     {
         $label = $this->minkContext->getSession()->getPage()->find('css', sprintf('.ui.label%s', $color != '' ? ('.' . $color) : ''));
 
