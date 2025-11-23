@@ -213,6 +213,8 @@ parameters:
                     nom: 'Devis'
                     url: '/admin/accounting/quotations/list'
                     niveau: 'ROLE_ADMIN'
+                    extra_routes:
+                        - admin_accounting_quotations_list
                 compta_facture:
                     nom: 'Factures'
                     niveau: 'ROLE_ADMIN'
