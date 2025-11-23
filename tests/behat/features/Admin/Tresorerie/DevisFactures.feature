@@ -105,6 +105,19 @@ Feature: Administration - Trésorerie - Devis/Facture
 
   @reloadDbWithTestData
   @clearEmails
+  Scenario: Vérification de la devise par défaut (Euro)
+    # Téléchargement du devis
+    Given I am logged in as admin and on the Administration
+    When I go to "/admin/accounting/quotations/list?periodId=15"
+    Then the ".content h2" element should contain "Liste des devis"
+    And I should see "My company Ltd"
+    And I follow the button of tooltip "Télécharger le devis My company Ltd"
+    Then the response header "Content-disposition" should match '#attachment; filename="Devis - My company Ltd - (.*).pdf"#'
+    When I parse the pdf downloaded content
+    Then The page "1" of the PDF should contain "0,00 €"
+
+  @reloadDbWithTestData
+  @clearEmails
   @vat
   Scenario: Test du PDF de facture avant 2024
     Given I am logged in as admin and on the Administration
