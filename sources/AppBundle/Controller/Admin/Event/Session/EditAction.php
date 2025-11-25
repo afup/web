@@ -40,6 +40,7 @@ class EditAction extends AbstractController
         if (!$event) {
             throw $this->createNotFoundException('Event not found');
         }
+        $roomChoices = $this->roomChoices($event);
 
         if ($request->get('sessionId')) {
             $planning = $this->planningRepository->get($request->get('sessionId'));
@@ -47,11 +48,22 @@ class EditAction extends AbstractController
             $planning = new Planning();
             $planning->setTalkId($talk->getId());
             $planning->setEventId($event->getId());
-            $planning->setStart($event->getDateStart());
-            $planning->setEnd($event->getDateStart());
+            $planning->setStart(clone $event->getDateStart());
+            $planning->setEnd(clone $event->getDateStart());
         }
 
-        $form = $this->getForm($planning, $event);
+
+        $form = $this->getForm($planning, $roomChoices);
+
+        if ($request->get('mode') === 'add') {
+            $planning->getStart()?->setTime(9, 0);
+            $planning->getEnd()?->setTime(9, 40);
+            $planning->setRoomId($roomChoices[array_key_first($roomChoices)]);
+
+            $this->planningRepository->save($planning);
+
+            return $this->redirectToRoute('admin_event_sessions');
+        }
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -79,16 +91,8 @@ class EditAction extends AbstractController
         ]);
     }
 
-    private function getForm(Planning $data, Event $event): FormInterface
+    private function getForm(Planning $data, array $roomChoices): FormInterface
     {
-        $roomChoices = [];
-
-        $rooms = $this->roomRepository->getByEvent($event);
-        /** @var Room $room */
-        foreach ($rooms as $room) {
-            $roomChoices[$room->getName()] = $room->getId();
-        }
-
         return $this->createFormBuilder($data)
             ->add('start', DateTimeType::class, [
                 'label' => 'Début',
@@ -106,5 +110,18 @@ class EditAction extends AbstractController
             ])
             ->getForm();
 
+    }
+
+    private function roomChoices(Event $event): array
+    {
+        $roomChoices = [];
+
+        $rooms = $this->roomRepository->getByEvent($event);
+        /** @var Room $room */
+        foreach ($rooms as $room) {
+            $roomChoices[$room->getName()] = $room->getId();
+        }
+
+        return $roomChoices;
     }
 }

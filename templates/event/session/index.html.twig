@@ -1,5 +1,65 @@
 {% extends 'admin/base_with_header.html.twig' %}
 
+{% block javascript %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@event-calendar/build@4.7.1/dist/event-calendar.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@event-calendar/build@4.7.1/dist/event-calendar.min.js"></script>
+
+    <script>
+        window.onload = () => {
+
+            EventCalendar.create(document.getElementById('ec'), {
+                view: 'resourceTimeGridDay',
+                slotDuration: '00:05',
+                slotMinTime: '09:00',
+                slotMaxTime: '19:00',
+                allDaySlot: false,
+                datesAboveResources: true,
+                headerToolbar: {start: 'title', center: 'prev,next', end: ''},
+                eventDrop: updateEvent,
+                eventResize: updateEvent,
+                date: '{{ calendar.date }}',
+                events: {{ calendar.events|json_encode|raw }},
+                resources: {{ calendar.resources|json_encode|raw }}
+            });
+        }
+
+        const $el = $('#status');
+        $el.hide();
+
+        async function updateEvent(info) {
+
+            const url = `/admin/event/sessions/${info.event.id}.json`;
+            const response = await fetch(url, {
+              method: "POST",
+              body: JSON.stringify({
+                start: info.event.start,
+                end: info.event.end,
+                roomId: info.event.resourceIds[0],
+              }),
+            });
+
+            if (!response.ok) {
+                notify('Erreur lors de la mise à jour du planing', 'error');
+            } else {
+                notify('Mise à jour du planing OK', 'success');
+            }
+        }
+
+        function notify(text, level) {
+            const color = (level === 'success' ? 'teal' : 'red');
+
+            $el.html(`<div class="ui ${color} label">${text}</div>`);
+            $el.show();
+
+            setTimeout(() => {
+                $el.hide();
+            }, 4000);
+        }
+
+    </script>
+{% endblock %}
+
 {% block content %}
     <h2>Planning</h2>
     {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
@@ -15,59 +75,70 @@
         </div>
     </div>
 
-    {{ agenda|raw }}
+    <div class="ui two column stackable grid">
+        <div class="ui column twelve wide">
+            <div id="ec"></div>
+        </div>
 
-    <table class="ui table striped compact celled">
-        <thead>
-        <tr>
-            <th align="left">Titre</th>
-            <th>&nbsp;</th>
-        </tr>
-        </thead>
-        {% for session in sessions %}
-        <tr class="{{ loop.index % 2 == 0 ? "odd" : "even" }}">
-        <td style="white-space : normal;">
-            <a href="#ag_sess_{{ session.talk.id }}">
-                {{ session.talk.title }}
-            </a>
-            <br />
+        <div class="column four wide">
+            <div id="status" style="position: fixed; bottom: 20px; right: 100px; z-index: 9999"></div>
+            <table class="ui table striped compact celled ">
+                <thead>
+                <tr>
+                    <th align="left">Titre</th>
+                    <th>&nbsp;</th>
+                </tr>
+                </thead>
+                {% for session in sessions %}
+                    <tr class="{{ loop.index % 2 == 0 ? "odd" : "even" }}">
+                        <td style="white-space : normal;">
+                            <a href="#ag_sess_{{ session.talk.id }}">
+                                {{ session.talk.title }}
+                            </a>
+                            <br/>
 
-            {% for speaker in session.speakers %}
-                <a href="/admin/speaker/edit?id={{ speaker.id }}" title="Modifier la fiche de {{ speaker.label }}">
-                    {{ speaker.label }} - {{ speaker.company }}
-                </a>
-            {% endfor %}
-            <br />
+                            {% for speaker in session.speakers %}
+                                <a href="{{ path("admin_speaker_edit", {id: speaker.id }) }}"
+                                   title="Modifier la fiche de {{ speaker.label }}">
+                                    {{ speaker.label }} - {{ speaker.company }}
+                                </a>
+                            {% endfor %}
+                            <br/>
 
-            {% if session.planning %}
-                <em>{{ session.planning.start|date("d/m/Y") }}</em> /
-                {{ session.planning.start|date("H:i") }} - {{ session.planning.end|date("H:i") }} / {{ session.room ? session.room.name }}
-            {% else %}
-                <em>non planifié</em>
-            {% endif %}
-        </td>
-        <td style="text-align: right" nowrap="nowrap">
-            {% set template_path="/templates/administration/images/famfamfam/" %}
-            <a href="{{ path("admin_event_sessions_edit", {talkId: session.talk.id, sessionId: session.planning ? session.planning.id }) }}"
-               title="Modifier la session {{ session.talk.title }}">
-                <img src="{{ template_path }}application_form_edit.png" alt="Modifier" />
-            </a>
-            {% if session.planning %}
-            <a href="{{ path("admin_event_sessions_delete", {id: session.planning.id }) }}"
-               title="Supprimer la session {{ session.talk.title }}"
-               onclick="return confirm('Etes-vous sûr de vouloir supprimer la session {{ session.talk.title }} ?');">
-                <img src="{{ template_path }}delete.png" alt="Supprimer" />
-            </a>
-            {% else %}
-                <img src="{{ template_path }}delete.png" alt="Supprimer" />
-            {% endif %}
-        </td>
-        </tr>
-        {% else %}
-        <tr>
-            <td><em>Aucune session</em></td>
-        </tr>
-        {% endfor %}
-    </table>
+                            {% if session.planning %}
+                                <em>{{ session.planning.start|date("d/m/Y") }}</em> /
+                                {{ session.planning.start|date("H:i") }} - {{ session.planning.end|date("H:i") }} / {{ session.room ? session.room.name }}
+                            {% else %}
+                                <span class="ui yellow label">non planifié</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: right" nowrap="nowrap">
+                            {% set template_path="/templates/administration/images/famfamfam/" %}
+                            <a href="{{ path("admin_event_sessions_edit", {talkId: session.talk.id, sessionId: session.planning ? session.planning.id }) }}"
+                               title="Modifier la session {{ session.talk.title }}">
+                                <img src="{{ template_path }}application_form_edit.png" alt="Modifier"/>
+                            </a>
+                            {% if session.planning %}
+                                <a href="{{ path("admin_event_sessions_delete", {id: session.planning.id }) }}"
+                                   title="Supprimer la session {{ session.talk.title }}"
+                                   onclick="return confirm('Etes-vous sûr de vouloir supprimer la session {{ session.talk.title }} ?');">
+                                    <img src="{{ template_path }}delete.png" alt="Supprimer"/>
+                                </a>
+                            {% else %}
+                                <a href="{{ path("admin_event_sessions_edit", { talkId: session.talk.id, mode: 'add' }) }}"
+                                   title="Ajouter la session à 09H00-09H40 dans la première salle">
+                                    <img src="{{ template_path }}add.png" alt="Ajouter"/>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td><em>Aucune session</em></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
 
 {% endblock %}
