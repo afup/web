@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Api\Antennes;
 
 use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Event\Model\Repository\MeetupRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -12,6 +13,7 @@ final readonly class GetOneAction
 {
     public function __construct(
         private AntennesCollection $antennesCollection,
+        private MeetupRepository $meetupRepository,
     ) {}
 
     public function __invoke(string $code): JsonResponse
@@ -26,7 +28,7 @@ final readonly class GetOneAction
             throw new NotFoundHttpException();
         }
 
-        return new JsonResponse([
+        $response = [
             'code' => $antenne->code,
             'label' => $antenne->label,
             'logo' => [
@@ -37,7 +39,19 @@ final readonly class GetOneAction
                 'linkedin' => $this->createLink('https://www.linkedin.com/company/', $antenne->socials->linkedin),
                 'bluesky' => $this->createLink('https://bsky.app/profile/', $antenne->socials->bluesky),
             ],
-        ]);
+        ];
+
+        $nextMeetup = $this->meetupRepository->findNextForAntenne($antenne);
+        if ($nextMeetup) {
+            $response['next_meetup'] = [
+                'title' => $nextMeetup->getTitle(),
+                'date' => $nextMeetup->getDate()->format('Y-m-d'),
+                'location' => $nextMeetup->getLocation(),
+                'description' => $nextMeetup->getDescription(),
+            ];
+        }
+
+        return new JsonResponse($response);
     }
 
     private function createLink(string $prefix, ?string $suffix): ?string

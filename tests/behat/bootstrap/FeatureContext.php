@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 use Afup\Tests\Support\DatabaseManager;
 use AppBundle\Event\Model\Event;
+use AppBundle\Listener\DetectClockMockingListener;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Hook\BeforeScenario;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
+use Behat\Step\Given;
 use Behat\Step\Then;
 use Behat\Step\When;
+use PHPUnit\Framework\Assert;
 use Smalot\PdfParser\Parser;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\JsonPath\JsonCrawler;
 
 class FeatureContext implements Context
 {
@@ -64,6 +69,12 @@ class FeatureContext implements Context
     {
         $filesystem = new Filesystem();
         $filesystem->remove(Event::getSponsorFileDir());
+    }
+
+    #[BeforeScenario]
+    public function clearTestClock(): void
+    {
+        $this->minkContext->getSession()->getDriver()->setRequestHeader(DetectClockMockingListener::HEADER, '');
     }
 
     /**
@@ -224,12 +235,36 @@ class FeatureContext implements Context
         $this->minkContext->assertSession()->responseHeaderMatches($headerName, $regExpExpectedValue);
     }
 
+    #[Then('/^the response should be in json$/')]
+    public function assertResponseShouldBeInJson(): void
+    {
+        $this->assertResponseHeaderEquals('Content-Type', 'application/json');
+        Assert::assertJson($this->minkContext->getSession()->getPage()->getContent());
+    }
+
     /**
      * @Then /^the json response has the key "(?P<key>[^"]*)" with value "(?P<value>(?:[^"]|\\")*)"$/
      */
     public function assertResponseHasJsonKeyAndValue(string $key, string $value): void
     {
-        $this->minkContext->assertResponseContains(sprintf('"%s":"%s"', $key, $value));
+        $crawler = new JsonCrawler($this->minkContext->getSession()->getPage()->getContent());
+
+        $foundValue = $crawler->find($key);
+
+        Assert::assertCount(1, $foundValue);
+        Assert::assertSame($value, $foundValue[0]);
+    }
+
+    /**
+     * @Then /^the json response has no key "(?P<key>[^"]*)"$/
+     */
+    public function assertResponseHasNoJsonKey(string $key): void
+    {
+        $crawler = new JsonCrawler($this->minkContext->getSession()->getPage()->getContent());
+
+        $foundValue = $crawler->find($key);
+
+        Assert::assertEmpty($foundValue);
     }
 
     /**
@@ -646,5 +681,14 @@ class FeatureContext implements Context
                 $this->minkContext->getSession()->getDriver(),
             );
         }
+    }
+
+    #[Given('/^the current date is "(?P<date>[^"]*)"$/')]
+    public function theCurrentDateIs(string $date): void
+    {
+        $this->minkContext->getSession()->getDriver()->setRequestHeader(
+            DetectClockMockingListener::HEADER,
+            $date,
+        );
     }
 }
