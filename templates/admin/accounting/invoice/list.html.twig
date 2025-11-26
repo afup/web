@@ -1,0 +1,100 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+
+    <h2>Liste des factures</h2>
+
+    <div class="ui message">
+        <div class="header">
+            Il n'est pas possible de créer directement une facture
+        </div>
+        <p>Il faut obligatoirement passer par la saisie d'un devis.</p>
+    </div>
+
+    {% include 'admin/accounting/invoicing-period.form.html.twig' with {form: formPeriod, url: path('admin_accounting_quotations_list')} %}
+
+    {% if lines.count > 0 %}
+        <table class="ui table striped compact celled afup-tab-filterable">
+            <thead>
+            <tr>
+                <th>Année</th>
+                <th data-tf-filter-type="input">
+                    <a href="{{ url('admin_accounting_invoices_list', {'periodId': periodId, 'sort': 'date', 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
+                        Date
+                    </a>
+                </th>
+                <th data-tf-filter-type="input">
+                    <a href="{{ url('admin_accounting_invoices_list', {'periodId': periodId, 'sort': 'client', 'direction' : ((direction == 'asc' and sort == 'client') ? 'desc': 'asc')}) }}">
+                        Clients
+                    </a>
+                </th>
+                <th>Ville</th>
+                <th class="right aligned">Numero facture</th>
+                <th>Référence client</th>
+                <th data-tf-filter-type="select" class="center aligned">Etat paiement</th>
+                <th class="right aligned">Prix</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for line in lines %}
+                <tr class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
+                    <td nowrap="nowrap">{{ line.quotationDate|date('Y') }}</td>
+                    <td nowrap="nowrap">{{ line.quotationDate|format_date('short') }}</td>
+                    <td>{{ line.company }}</td>
+                    <td>{{ line.city }}</td>
+                    <td class="right aligned">{{ line.invoiceNumber }}</td>
+                    <td>{{ line.refClt1 }}</td>
+                    <td class="center aligned">
+                        {% if line.paymentStatus == 2 %}
+                            <span class="ui label">Annulé</span>
+                        {% elseif line.paymentStatus == 1 %}
+                            <span class="ui green label">Payé</span>
+                        {% else %}
+                            <span class="ui yellow label">En attente</span>
+                        {% endif %}
+                    </td>
+                    <td class="right aligned">{{ line.price|number_format(2, ',', ' ') }}</td>
+                    <td class="right aligned single line">
+                        <a href="/pages/administration/index.php?page=compta_facture&amp;action=modifier&amp;id={{ line.id }}"
+                           data-position="left center"
+                           data-tooltip="Modifier la ligne {{ line.company }}"
+                           class="compact ui icon button"
+                        >
+                            <i class="pencil alernate icon"></i>
+                        </a>
+                        <a href="/pages/administration/index.php?page=compta_facture&amp;action=telecharger_facture&amp;ref={{ line.invoiceNumber }}"
+                           data-position="left center"
+                           data-tooltip="Télécharger la facture {{ line.invoiceNumber }}"
+                           class="compact ui icon button"
+                        >
+                            <i class="file pdf icon"></i>
+                        </a>
+                        <a href="/pages/administration/index.php?page=compta_facture&amp;action=envoyer_facture&amp;ref={{ line.invoiceNumber }}"
+                           data-position="left center"
+                           data-tooltip="Envoyer la facture {{ line.invoiceNumber }} par mail"
+                           class="compact ui icon button"
+                        >
+                            <i class="paper plane icon"></i>
+                        </a>
+                        <a href="/pages/paiement/index.php?&amp;ref={{ line.paymentUrlRef }}"
+                           data-position="left center"
+                           data-tooltip="Récupérer le lien de paiement en ligne"
+                           class="compact ui icon button"
+                        >
+                            <i class="shopping cart icon"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucune écriture actuellement
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -73,6 +73,8 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I follow "Devis"
     Then I follow the button of tooltip "Transférer la ligne ESN dev en folie en facture"
     And I should see "Le devis a été transformé en facture"
+    And I should see "Liste des factures"
+    And I should see "Il n'est pas possible de créer directement une facture"
     And I should see "ESN dev en folie"
     And I should see "Paris Cedex 1"
     And I should see a yellow label "En attente"
