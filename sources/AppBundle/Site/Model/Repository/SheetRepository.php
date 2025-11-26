@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Site\Model\Repository;
 
 use AppBundle\Site\Model\Sheet;
+use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Exception;
 use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -49,11 +50,32 @@ class SheetRepository extends Repository implements MetadataInitializer
         return $query->query($this->getCollection(new HydratorArray()));
     }
 
-    public function getActiveChildrenByParentId(int $parentId)
+    public function getActiveChildrenByParentId(int $parentId): CollectionInterface
     {
-        $sqlQuery = 'SELECT * FROM afup_site_feuille WHERE id_parent = :parentId and etat = 1';
-        $query = $this->getPreparedQuery($sqlQuery)->setParams(['parentId' => $parentId]);
+        $queryBuilder = $this->getActiveChildrenByParentIdBuilder();
+
+        $query = $this->getPreparedQuery($queryBuilder->getStatement())->setParams(['parentId' => $parentId]);
         return $query->query($this->getCollection(new HydratorArray()));
+    }
+
+    public function getActiveChildrenByParentIdOrderedByPostion(int $parentId): CollectionInterface
+    {
+        $queryBuilder = $this->getActiveChildrenByParentIdBuilder();
+        $queryBuilder->orderBy(['position', 'asc']);
+
+        $query = $this->getPreparedQuery($queryBuilder->getStatement())->setParams(['parentId' => $parentId]);
+        return $query->query($this->getCollection(new HydratorArray()));
+    }
+
+    private function getActiveChildrenByParentIdBuilder(): SelectInterface
+    {
+        /**
+         * @var SelectInterface $queryBuilder
+         */
+        $queryBuilder = $this->getQueryBuilder(self::QUERY_SELECT);
+        $queryBuilder->cols(['*'])->from('afup_site_feuille')->where('id_parent = :parentId')->where('etat = 1');
+
+        return $queryBuilder;
     }
 
     /**
