@@ -54,13 +54,12 @@ final class CompanyPublicProfileAction extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            /** @var UploadedFile $uploadedFile */
-            $uploadedFile = $data['logo'];
+            $uploadedFile = $data['logo'] ?? null;
 
-            if (null !== $uploadedFile) {
+            if ($uploadedFile instanceof UploadedFile) {
                 $filename = $companyMember->getId() . '.' . $uploadedFile->getClientOriginalExtension();
 
-                $data['logo']->move(
+                $uploadedFile->move(
                     $this->prepareUploadedFilesDir(),
                     $filename,
                 );

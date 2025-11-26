@@ -24,10 +24,9 @@ class SpeakersManagementAction extends AbstractController
     public function __invoke(Request $request): Response
     {
         $id = $request->query->get('id');
-
         $event = $this->eventActionHelper->getEventById($id);
+        $speakers = $this->speakerRepository->getScheduledSpeakersByEvent($event, true);
 
-        $speakers = $event === null ? null : $this->speakerRepository->getScheduledSpeakersByEvent($event, true);
         if (null !== $speakers) {
             $speakers = iterator_to_array($speakers->getIterator());
             foreach ($speakers as $k => $speaker) {

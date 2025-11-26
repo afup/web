@@ -57,12 +57,12 @@ class SpeakerListAction
         $events = $this->eventRepository->getAll();
 
         return new Response($this->twig->render('admin/speaker/list.html.twig', [
-            'eventId' => $event === null ? null : $event->getId(),
+            'eventId' => $event->getId(),
             'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
             'events' => $events,
             'speakers' => $speakers,
             'talks' => $talks,
-            'nbSpeakers' => $event === null ? 0 : $this->speakerRepository->countByEvent($event),
+            'nbSpeakers' => $this->speakerRepository->countByEvent($event),
             'sort' => $sort,
             'direction' => $direction,
             'filter' => $filter,
