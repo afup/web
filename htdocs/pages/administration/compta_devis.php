@@ -36,7 +36,7 @@ if ($action == 'lister') {
     $smarty->assign('listPeriode', $compta->obtenirListPeriode());
 } elseif ($action == 'transfert') {
     $comptaFact->transfertDevis($_GET['ref']);
-    afficherMessage('Le devis a été transformé en facture', 'index.php?page=compta_facture&action=lister');
+    afficherMessage('Le devis a été transformé en facture', '/admin/accounting/invoices/list');
 } elseif ($action == 'telecharger_devis') {
     $comptaFact->genererDevis($_GET['ref']);
 } elseif ($action == 'ajouter' || $action == 'modifier') {

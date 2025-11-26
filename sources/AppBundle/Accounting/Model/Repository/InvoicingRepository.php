@@ -52,6 +52,37 @@ class InvoicingRepository extends Repository implements MetadataInitializer
                     ->query($this->getCollection($hydrator));
     }
 
+    public function getInvoicesByPeriodId(?int $periodId = null, string $sort = 'date', string $direction = 'desc'): CollectionInterface
+    {
+        $filter = 'acf.date_facture';
+        if ($sort === 'client') {
+            $filter = 'acf.societe';
+        }
+
+        /** @var Select $builder */
+        $builder = $this->getQueryBuilder(self::QUERY_SELECT);
+        $builder->cols(['*', 'sum(acfd.quantite * acfd.pu) as price'])
+                ->from('afup_compta_facture acf')
+                ->leftJoin('afup_compta_facture_details acfd', 'acfd.idafup_compta_facture = acf.id')
+                ->where('acf.numero_facture != ""');
+
+        if ($periodId !== null && $periodId !== 0) {
+            $builder->where('acf.date_facture >= (select date_debut from compta_periode where id = :periodId)')
+                    ->where('acf.date_facture <= (select date_fin from compta_periode where id = :periodId)')
+                    ->bindValues(['periodId' => $periodId]);
+        }
+        $builder->groupBy(['acf.id', 'date_devis', 'numero_devis', 'date_facture', 'numero_facture', 'societe', 'adresse', 'code_postal', 'ville', 'id_pays', 'email', 'observation', 'ref_clt1', 'ref_clt2', 'ref_clt3', 'nom', 'prenom', 'tel', 'etat_paiement', 'date_paiement', 'devise_facture'])
+                ->orderBy(["$filter $direction"]);
+
+        $hydrator = new HydratorSingleObject();
+        $hydrator->mapAliasTo('price', 'acf', 'setPrice');
+
+
+        return $this->getQuery($builder->getStatement())
+                    ->setParams($builder->getBindValues())
+                    ->query($this->getCollection($hydrator));
+    }
+
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])
     {
         $metadata = new Metadata($serializerFactory);
