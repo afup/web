@@ -77,10 +77,7 @@ class Speaker implements NotifyPropertyInterface
     #[Assert\NotBlank]
     private $biography;
 
-    /**
-     * @var string
-     */
-    private $twitter;
+    private ?string $twitter = null;
 
     private ?string $mastodon = null;
 
@@ -460,16 +457,16 @@ class Speaker implements NotifyPropertyInterface
         return trim($username);
     }
 
-    public function getUrlMastodon(): string
+    public function getUrlMastodon(): ?string
     {
         if ($this->getUsernameMastodon() === '' || $this->getUsernameMastodon() === '0') {
-            return '';
+            return null;
         }
 
         $mastodon = $this->getMastodon();
 
         if ($mastodon === null) {
-            return '';
+            return null;
         }
 
         if (preg_match('#https?://@(.+)@(.+)#', $mastodon, $matches)) {

@@ -12,14 +12,14 @@ use AppBundle\Event\Model\TicketEventType;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
 use Symfony\Component\Asset\Packages;
 
-class JsonLd
+final readonly class JsonLd
 {
     public function __construct(
-        private readonly TalkRepository $talkRepository,
-        private readonly TicketEventTypeRepository $ticketEventTypeRepository,
-        private readonly TicketTypeAvailability $ticketTypeAvailability,
-        private readonly Packages $packages,
-        private readonly PhotoStorage $photoStorage,
+        private TalkRepository $talkRepository,
+        private TicketEventTypeRepository $ticketEventTypeRepository,
+        private TicketTypeAvailability $ticketTypeAvailability,
+        private Packages $packages,
+        private PhotoStorage $photoStorage,
     ) {}
 
     public function getDataForEvent(Event $event): array
@@ -30,13 +30,28 @@ class JsonLd
         foreach ($talkAggregates as $talkAggregate) {
             $performers = [];
             foreach ($talkAggregate->speakers as $speaker) {
-                $url = $this->photoStorage->getUrl($speaker);
-                $performers[] = [
+                $imageUrl = $this->photoStorage->getUrl($speaker);
+
+                $socialUrls = [
+                    $speaker->getUrlLinkedin(),
+                    $speaker->getUrlBluesky(),
+                    $speaker->getUrlMastodon(),
+                ];
+                $socialUrls = array_filter($socialUrls);
+                $mainSocialUrl = array_shift($socialUrls);
+
+                $person = [
                     '@type' => 'Person',
                     'name' => $speaker->getLabel(),
-                    'image' => $url ? $this->packages->getUrl($url) : '',
-                    'url' => $speaker->getTwitter() !== null ? 'https://twitter.com/' . $speaker->getTwitter() : null,
+                    'image' => $imageUrl ? $this->packages->getUrl($imageUrl) : '',
+                    'url' => $mainSocialUrl ?? null,
                 ];
+
+                if (count($socialUrls) > 0) {
+                    $person['sameAs'] = array_values($socialUrls);
+                }
+
+                $performers[] = $person;
             }
 
             $subEvent = [
