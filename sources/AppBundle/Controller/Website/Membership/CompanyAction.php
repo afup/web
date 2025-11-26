@@ -47,7 +47,7 @@ final class CompanyAction extends AbstractController
             $this->companyMemberRepository->save($member);
 
             foreach ($member->getInvitations() as $index => $invitation) {
-                if ($invitation->getEmail() === null) {
+                if ($invitation->getEmail() === '') {
                     continue;
                 }
                 $invitation

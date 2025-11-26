@@ -66,7 +66,7 @@ class SponsorTicketAction extends AbstractController
             'tokens' => $tokens,
             'event' => $event,
             'title' => 'Gestion des inscriptions sponsors',
-            'form' => $form === null ? null : $form->createView(),
+            'form' => $form->createView(),
             'edit' => $edit,
             'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
         ]);

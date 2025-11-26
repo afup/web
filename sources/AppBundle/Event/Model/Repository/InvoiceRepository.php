@@ -61,11 +61,7 @@ class InvoiceRepository extends Repository implements MetadataInitializer
         }
     }
 
-    /**
-     * @param $reference
-     * @return Invoice
-     */
-    public function getByReference($reference)
+    public function getByReference(mixed $reference): ?Invoice
     {
         return $this->getOneBy(['reference' => $reference]);
     }

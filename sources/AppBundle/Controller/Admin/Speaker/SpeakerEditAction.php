@@ -9,11 +9,9 @@ use AppBundle\AuditLog\Audit;
 use AppBundle\CFP\PhotoStorage;
 use AppBundle\Event\Form\SpeakerFormDataFactory;
 use AppBundle\Event\Form\SpeakerType;
-use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use Assert\Assertion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,10 +32,8 @@ class SpeakerEditAction extends AbstractController
 
     public function __invoke(Request $request)
     {
-        /** @var Speaker $speaker */
         $speaker = $this->speakerRepository->get($request->query->get('id'));
         Assertion::notNull($speaker);
-        /** @var Event $event */
         $event = $this->eventRepository->get($speaker->getEventId());
         Assertion::notNull($event);
         $data = $this->speakerFormDataFactory->fromSpeaker($speaker);

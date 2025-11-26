@@ -58,7 +58,6 @@ class EditAction extends AbstractController
             ]);
         }
         $talkId = (int) $request->attributes->get('talkId');
-        /** @var Talk $talk */
         $talk = $this->talkRepository->getOneBy(['id' => $talkId, 'forumId' => $event->getId()]);
         if ($talk === null) {
             throw $this->createNotFoundException(sprintf('Talk %d not found', $talkId));

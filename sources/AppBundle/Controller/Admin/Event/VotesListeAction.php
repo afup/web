@@ -23,8 +23,7 @@ final class VotesListeAction extends AbstractController
     {
         $eventId = $request->query->get('id');
         $event = $this->eventActionHelper->getEventById($eventId);
-
-        $votes = $event === null ? [] : $this->voteRepository->getVotesByEvent($event->getId());
+        $votes = $this->voteRepository->getVotesByEvent($event->getId());
 
         return $this->render('admin/vote/liste.html.twig', [
             'votes' => $votes,
