@@ -15,7 +15,7 @@ class SecondaryMenuController extends AbstractController
 {
     public function __construct(
         private readonly RequestStack $requestStack,
-        private readonly SheetRepository $sheetRepository
+        private readonly SheetRepository $sheetRepository,
     ) {}
 
     public function display(Request $request): Response

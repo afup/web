@@ -9,12 +9,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 final readonly class Page
 {
-    private _Site_Base_De_Donnees $bdd;
-
-    public function __construct(private readonly SheetRepository $sheetRepository)
-    {
-        $this->bdd = new _Site_Base_De_Donnees();
-    }
+    public function __construct(
+        private SheetRepository $sheetRepository,
+        private Branche $branch,
+    ) {}
 
     public function header($url = null, UserInterface $user = null): string
     {
@@ -110,10 +108,9 @@ final readonly class Page
         return $footerColumns;
     }
 
-    public function getRightColumn(): Branche
+    public function getRightColumn(): string
     {
-        $branche = new Branche($this->bdd);
-        $branche->navigation_avec_image(true);
-        return $branche;
+        $this->branch->navigation_avec_image(true);
+        return $this->branch->naviguer(1, 2, "externe");
     }
 }
