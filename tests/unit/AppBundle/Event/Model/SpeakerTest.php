@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 final class SpeakerTest extends TestCase
 {
     #[DataProvider('mastodonDataProvider')]
-    public function testMastodon(string $mastodon, string $expectedUsername, string $expectedUrl): void
+    public function testMastodon(string $mastodon, string $expectedUsername, ?string $expectedUrl): void
     {
         $speaker = new Speaker();
         $speaker->setMastodon($mastodon);
@@ -23,7 +23,7 @@ final class SpeakerTest extends TestCase
     public static function mastodonDataProvider(): array
     {
         return [
-            ['', '', ''],
+            ['', '', null],
             ['https://phpc.social/@username', 'username', 'https://phpc.social/@username'],
             ['https://mastodon.social/@username', 'username', 'https://mastodon.social/@username'],
             ['https://@username@mastodon.social', 'username', 'https://mastodon.social/@username'],
