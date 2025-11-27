@@ -11,6 +11,7 @@ use AppBundle\Event\Model\Repository\VoteRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
 use AppBundle\Notifier\SlackNotifier;
+use AppBundle\Security\Authentication;
 use CCMBenchmark\Ting\Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,6 +27,7 @@ final class NewAction extends VoteController
         private readonly EventActionHelper $eventActionHelper,
         private readonly TalkRepository $talkRepository,
         private readonly VoteRepository $voteRepository,
+        private readonly Authentication $authentication,
     ) {}
 
     public function __invoke(Request $request, string $eventSlug, int $talkId): JsonResponse
@@ -36,8 +38,9 @@ final class NewAction extends VoteController
         }
 
         $vote = new Vote();
-        if ($this->getUser() instanceof GithubUser) {
-            $vote->setUser($this->getUser()->getId());
+        $user = $this->authentication->getGithubUserOrNull();
+        if ($user instanceof GithubUser) {
+            $vote->setUser($user->getId());
         }
 
         $form = $this->createVoteForm($eventSlug, $talkId, $vote);

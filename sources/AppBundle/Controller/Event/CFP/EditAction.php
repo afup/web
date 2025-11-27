@@ -17,6 +17,7 @@ use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\TalkInvitation;
 use AppBundle\Event\Talk\InvitationFormHandler;
 use AppBundle\Event\Talk\TalkFormHandler;
+use AppBundle\Security\Authentication;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -40,12 +41,13 @@ class EditAction extends AbstractController
         private readonly VoteRepository $voteRepository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly SidebarRenderer $sidebarRenderer,
+        private readonly Authentication $authentication,
     ) {}
 
     public function __invoke(Request $request)
     {
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
-        $githubUser = $this->eventActionHelper->getGithubUser();
+        $githubUser = $this->authentication->getGithubUser();
         if ($event->getDateEndCallForPapers() < new DateTime()) {
             return $this->render('event/cfp/closed.html.twig', ['event' => $event]);
         }

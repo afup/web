@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
-use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\StatisticsComputer;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
-use Assert\Assertion;
+use AppBundle\Security\Authentication;
 use Psr\Clock\ClockInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +26,7 @@ class HomeAction extends AbstractController
         private readonly GeneralMeetingRepository $generalMeetingRepository,
         private readonly StatisticsComputer $statisticsComputer,
         private readonly ClockInterface $clock,
+        private readonly Authentication $authentication,
     ) {}
 
     public function __invoke(): Response
@@ -93,11 +93,7 @@ class HomeAction extends AbstractController
                 'statistics' => ['Abonnements' => $this->techletterSubscriptionsRepository->countAllSubscriptionsWithUser()],
                 'url' => $this->generateUrl('admin_techletter_members'),
             ];
-        }
-        /** @var User $user */
-        $user = $this->getUser();
-        Assertion::isInstanceOf($user, User::class);
-        if ($this->isGranted(('ROLE_ADMIN'))) {
+
             $statistics = $this->statisticsComputer->computeStatistics();
             $cards[] = [
                 'title' => 'Membres',
@@ -130,7 +126,7 @@ class HomeAction extends AbstractController
         }
 
         return $this->render('admin/home.html.twig', [
-            'user_label' => $user->getLabel(),
+            'user_label' => $this->authentication->getAfupUser()->getLabel(),
             'cards' => $cards,
         ]);
     }

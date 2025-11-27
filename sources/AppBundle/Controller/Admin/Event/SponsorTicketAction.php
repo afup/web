@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event;
 
-use AppBundle\Association\Model\User;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\SponsorTokenType;
 use AppBundle\Event\Form\Support\EventSelectFactory;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Ticket\SponsorTokenMail;
+use AppBundle\Security\Authentication;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +23,7 @@ class SponsorTicketAction extends AbstractController
         private readonly SponsorTicketRepository $sponsorTicketRepository,
         private readonly SponsorTokenMail $sponsorTokenMail,
         private readonly EventSelectFactory $eventSelectFactory,
+        private readonly Authentication $authentication,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -36,17 +37,13 @@ class SponsorTicketAction extends AbstractController
             $newToken = $this->sponsorTicketRepository->get($request->query->get('ticket'));
             $newToken->setEditedOn(new DateTime());
         } else {
-            $user = $this->getUser();
-            if (!$user instanceof User) {
-                throw $this->createAccessDeniedException();
-            }
             $newToken = new SponsorTicket();
             $newToken
                 ->setToken(base64_encode(random_bytes(30)))
                 ->setIdForum($event->getId())
                 ->setCreatedOn(new DateTime())
                 ->setEditedOn(new DateTime())
-                ->setCreatorId($user->getId());
+                ->setCreatorId($this->authentication->getAfupUser()->getId());
         }
         $form = $this->createForm(SponsorTokenType::class, $newToken);
         $form->handleRequest($request);

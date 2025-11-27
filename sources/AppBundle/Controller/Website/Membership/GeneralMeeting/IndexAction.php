@@ -8,12 +8,12 @@ use Afup\Site\Droits;
 use AppBundle\Association\Model\GeneralMeetingVote;
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
 use AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository;
-use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\AuditLog\Audit;
 use AppBundle\GeneralMeeting\Attendee;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\GeneralMeeting\ReportListBuilder;
+use AppBundle\Security\Authentication;
 use AppBundle\Twig\ViewRenderer;
 use Assert\Assertion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,14 +35,13 @@ final class IndexAction extends AbstractController
         private readonly ReportListBuilder $reportListBuilder,
         private readonly Droits $droits,
         private readonly Audit $audit,
+        private readonly Authentication $authentication,
     ) {}
 
     public function __invoke(Request $request): Response
     {
         $userService = $this->userService;
-        /** @var User $user */
-        $user = $this->getUser();
-        Assertion::isInstanceOf($user, User::class);
+        $user = $this->authentication->getAfupUser();
         $title = 'Présence prochaine AG';
         $generalMeetingRepository = $this->generalMeetingRepository;
         $latestDate = $generalMeetingRepository->getLatestAttendanceDate();
