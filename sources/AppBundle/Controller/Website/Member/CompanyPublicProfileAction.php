@@ -6,7 +6,7 @@ namespace AppBundle\Controller\Website\Member;
 
 use AppBundle\Association\Form\CompanyPublicProfile;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
-use AppBundle\Association\Model\User;
+use AppBundle\Security\Authentication;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -19,14 +19,12 @@ final class CompanyPublicProfileAction extends AbstractController
         private readonly CompanyMemberRepository $companyMemberRepository,
         #[Autowire('%app.members_logo_dir%')]
         private readonly string $storageDir,
+        private readonly Authentication $authentication,
     ) {}
 
     public function __invoke(Request $request): Response
     {
-        $companyMember = null;
-        if ($this->getUser() instanceof User) {
-            $companyMember = $this->companyMemberRepository->get($this->getUser()->getCompanyId());
-        }
+        $companyMember = $this->companyMemberRepository->get($this->authentication->getAfupUser()->getCompanyId());
 
         if ($companyMember === null) {
             throw $this->createNotFoundException("Company member not found");

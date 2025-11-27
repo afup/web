@@ -7,7 +7,7 @@ namespace AppBundle\Controller\Website\Member;
 use AppBundle\Association\Form\AdminCompanyMemberType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
-use AppBundle\Association\Model\User;
+use AppBundle\Security\Authentication;
 use AppBundle\Twig\ViewRenderer;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,15 +19,12 @@ final class CompanyAction extends AbstractController
     public function __construct(
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly ViewRenderer $view,
+        private readonly Authentication $authentication,
     ) {}
 
     public function __invoke(Request $request): Response
     {
-        $user = $this->getUser();
-        if (!$user instanceof User) {
-            throw $this->createAccessDeniedException();
-        }
-        $company = $this->companyMemberRepository->get($user->getCompanyId());
+        $company = $this->companyMemberRepository->get($this->authentication->getAfupUser()->getCompanyId());
         if ($company === null) {
             throw $this->createNotFoundException('Company not found');
         }

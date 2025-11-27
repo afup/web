@@ -14,8 +14,8 @@ use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Model\CollectionFilter;
+use AppBundle\Security\Authentication;
 use AppBundle\Twig\ViewRenderer;
-use Assert\Assertion;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,6 +38,7 @@ final class MembersAction extends AbstractController
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly InvitationMail $invitationMail,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly Authentication $authentication,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -46,10 +47,7 @@ final class MembersAction extends AbstractController
         if ($id && $this->isGranted('ROLE_SUPER_ADMIN')) {
             $companyId = $id;
         } else {
-            /** @var User $user */
-            $user = $this->getUser();
-            Assertion::isInstanceOf($user, User::class);
-            $companyId = $user->getCompanyId();
+            $companyId = $this->authentication->getAfupUser()->getCompanyId();
         }
 
         $company = $this->companyMemberRepository->get($companyId);
@@ -183,13 +181,10 @@ final class MembersAction extends AbstractController
     private function disproveUser(string $emailToDisapprove, CollectionInterface $users): void
     {
         $user = $this->collectionFilter->findOne($users, 'getEmail', $emailToDisapprove);
-        /** @var User $connectedUser */
-        $connectedUser = $this->getUser();
-        Assertion::notNull($connectedUser);
 
         if ($user === null) {
             $this->addFlash('error', 'Une erreur est survenue lors de la suppression des droits de gestion de ce membre');
-        } elseif ($user->getId() === $connectedUser->getId()) {
+        } elseif ($user->getId() === $this->authentication->getAfupUser()->getId()) {
             $this->addFlash('error', 'Vous ne pouvez pas enlever vos droits de gestion');
         } else {
             $this->userCompany->unsetManager($user);
@@ -203,13 +198,10 @@ final class MembersAction extends AbstractController
     private function removeUser(string $emailToRemove, CollectionInterface $users): void
     {
         $user = $this->collectionFilter->findOne($users, 'getEmail', $emailToRemove);
-        /** @var User $connectedUser */
-        $connectedUser = $this->getUser();
-        Assertion::notNull($connectedUser);
 
         if ($user === null) {
             $this->addFlash('error', 'Une erreur est survenue lors de la suppression de ce compte');
-        } elseif ($user->getId() === $connectedUser->getId()) {
+        } elseif ($user->getId() === $this->authentication->getAfupUser()->getId()) {
             $this->addFlash('error', 'Vous ne pouvez pas supprimer votre propre compte');
         } else {
             $this->userCompany->disableUser($user);
