@@ -371,11 +371,11 @@ class CompanyMember implements NotifyPropertyInterface
     }
 
     /**
-     * @param CompanyMemberInvitation[] $invitations
+     * @param array<CompanyMemberInvitation|null> $invitations
      */
     public function setInvitations(array $invitations): self
     {
-        $this->invitations = $invitations;
+        $this->invitations = array_filter($invitations, static fn($invitation): bool => $invitation instanceof CompanyMemberInvitation);
 
         return $this;
     }
