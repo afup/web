@@ -5,17 +5,13 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Event;
 
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\EventRepository;
-use Assert\Assertion;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final readonly class EventActionHelper
 {
     public function __construct(
         private EventRepository $eventRepository,
-        private TokenStorageInterface $tokenStorage,
     ) {}
 
     /**
@@ -52,16 +48,5 @@ final readonly class EventActionHelper
         }
 
         return $event;
-    }
-
-    public function getGithubUser(): GithubUser
-    {
-        $token = $this->tokenStorage->getToken();
-        Assertion::notNull($token);
-
-        $user = $token->getUser();
-        Assertion::isInstanceOf($user, GithubUser::class);
-
-        return $user;
     }
 }

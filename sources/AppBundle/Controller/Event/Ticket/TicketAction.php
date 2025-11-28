@@ -15,6 +15,7 @@ use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Ticket\PurchaseTypeFactory;
+use AppBundle\Security\Authentication;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +29,7 @@ final class TicketAction extends AbstractController
         private readonly EventActionHelper $eventActionHelper,
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
         private readonly Facturation $facturation,
+        private readonly Authentication $authentication,
     ) {}
 
     public function __invoke($eventSlug, Request $request): Response
@@ -40,14 +42,11 @@ final class TicketAction extends AbstractController
 
         $purchaseFactory = $this->purchaseTypeFactory;
 
-        $purchaseForm = $purchaseFactory->getPurchaseForUser($event, $this->getUser(), $request->query->get('token', null));
+        $user = $this->authentication->getAfupUserOrNull();
+
+        $purchaseForm = $purchaseFactory->getPurchaseForUser($event, $user, $request->query->get('token', null));
 
         $purchaseForm->handleRequest($request);
-
-        /**
-         * @var User|null $user
-         */
-        $user = $this->getUser();
 
         if ($purchaseForm->isSubmitted() && $purchaseForm->isValid()) {
             $invoiceRepository = $this->invoiceRepository;

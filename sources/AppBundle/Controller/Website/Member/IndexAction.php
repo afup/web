@@ -6,10 +6,10 @@ namespace AppBundle\Controller\Website\Member;
 
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
-use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\Security\Authentication;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,12 +25,12 @@ final class IndexAction extends AbstractController
         private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
         private readonly BadgesComputer $badgesComputer,
         private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
+        private readonly Authentication $authentication,
     ) {}
 
     public function __invoke(): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
+        $user = $this->authentication->getAfupUser();
         $generalMeetingFactory = $this->generalMeetingRepository;
         $userService = $this->userService;
         $cotisation = $userService->getLastSubscription($user);

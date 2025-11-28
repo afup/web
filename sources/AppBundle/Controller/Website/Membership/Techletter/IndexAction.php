@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\Membership\Techletter;
 
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
-use AppBundle\Association\Model\User;
+use AppBundle\Security\Authentication;
 use AppBundle\TechLetter\Model\Repository\SendingRepository;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,17 +19,14 @@ final class IndexAction extends AbstractController
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
         private readonly SendingRepository $sendingRepository,
+        private readonly Authentication $authentication,
     ) {}
 
     public function __invoke(): Response
     {
-        if (!$this->getUser() instanceof User) {
-            throw $this->createNotFoundException();
-        }
-
         return $this->view->render('site/member/techletter.html.twig', [
-            'subscribed' => $this->techletterSubscriptionsRepository->hasUserSubscribed($this->getUser()),
-            'feeUpToDate' => $this->getUser()->getLastSubscription() > new \DateTime(),
+            'subscribed' => $this->techletterSubscriptionsRepository->hasUserSubscribed($this->authentication->getAfupUser()),
+            'feeUpToDate' => $this->authentication->getAfupUser()->getLastSubscription() > new \DateTime(),
             'token' => $this->csrfTokenManager->getToken('techletter_subscription'),
             'techletter_history' => $this->sendingRepository->getAllPastSent(),
         ]);
