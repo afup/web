@@ -112,6 +112,9 @@ class EditAction extends AbstractController
 
     }
 
+    /**
+     * @return array<string, int>
+     */
     private function roomChoices(Event $event): array
     {
         $roomChoices = [];

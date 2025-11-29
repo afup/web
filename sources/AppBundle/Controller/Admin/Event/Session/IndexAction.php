@@ -10,6 +10,10 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\RoomRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Room;
+use AppBundle\Event\Model\Session\CalendarEvent;
+use AppBundle\Event\Model\Session\CalendarResource;
+use AppBundle\Event\Model\TalkAggregate;
+use DateTimeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,6 +44,9 @@ final class IndexAction extends AbstractController
         ]);
     }
 
+    /**
+     * @return array<CalendarResource>
+     */
     private function calendarResources(Event $event): array
     {
         $rooms = $this->roomRepository->getByEvent($event);
@@ -49,30 +56,34 @@ final class IndexAction extends AbstractController
         $resources = [];
         /** @var Room $room */
         foreach ($rooms as $i => $room) {
-            $resources[] = [
-                'id' => $room->getId(),
-                'title' => $room->getName(),
-                'eventBackgroundColor' => $colors[$i % $m],
-            ];
+            $resources[] = new CalendarResource(
+                $room->getId(),
+                $room->getName(),
+                $colors[$i % $m],
+            );
         }
 
         return $resources;
     }
 
+    /**
+     * @param array<TalkAggregate> $sessions
+     * @return array<CalendarEvent>
+     */
     private function calendarEvents(array $sessions): array
     {
         $events = [];
         foreach ($sessions as $session) {
-            if (!$session->planning || !$session->room) {
+            if (!$session->planning || !$session->room || !$session->planning->getStart() || !$session->planning->getEnd()) {
                 continue;
             }
-            $events[] = [
-                'id' => $session->planning->getId(),
-                'title' => $session->talk->getTitle(),
-                'start' => $session->planning->getStart()?->format(\DateTime::ATOM),
-                'end' => $session->planning->getEnd()?->format(\DateTime::ATOM),
-                'resourceId' => $session->room->getId(),
-            ];
+            $events[] = new CalendarEvent(
+                $session->planning->getId(),
+                $session->talk->getTitle(),
+                $session->planning->getStart()->format(DateTimeInterface::ATOM),
+                $session->planning->getEnd()->format(DateTimeInterface::ATOM),
+                $session->room->getId(),
+            );
         }
 
         return $events;
