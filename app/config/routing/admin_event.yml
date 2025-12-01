@@ -122,6 +122,13 @@ admin_event_sessions_edit:
   requirements:
     talkId: \d+
 
+admin_event_sessions_calendar_ajax:
+  path: /sessions/{id}.json
+  defaults:
+    _controller: AppBundle\Controller\Admin\Event\Session\CalendarAjaxAction
+  requirements:
+    id: \d+
+
 admin_event_sessions_delete:
   path: /sessions/delete/{id}
   defaults:
