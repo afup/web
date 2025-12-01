@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model\Session;
 
-class CalendarResource
+final readonly class CalendarResource
 {
     public function __construct(
         public int $id,
