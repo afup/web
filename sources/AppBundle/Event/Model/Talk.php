@@ -370,11 +370,13 @@ class Talk implements NotifyPropertyInterface
 
     public function getBlogPostUrl(): ?string
     {
-        if (0 === strlen(trim($this->blogPostUrl))) {
+        $blogPostUrl = (string) $this->blogPostUrl;
+
+        if (0 === strlen(trim($blogPostUrl))) {
             return null;
         }
 
-        return $this->blogPostUrl;
+        return $blogPostUrl;
     }
 
     public function setBlogPostUrl(?string $blogPostUrl): self
