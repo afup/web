@@ -8,6 +8,7 @@ use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
+use AppBundle\Security\Authentication;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,6 +18,7 @@ final class IndexAction extends VoteController
         private readonly RequestStack $requestStack,
         private readonly EventActionHelper $eventActionHelper,
         private readonly TalkRepository $talkRepository,
+        private readonly Authentication $authentication,
     ) {}
 
     /**
@@ -31,9 +33,9 @@ final class IndexAction extends VoteController
 
         // Get a random list of unrated talks
         if ($all === false) {
-            $talks = $this->talkRepository->getNewTalksToRate($event, $this->getUser(), crc32($this->requestStack->getSession()->getId()), $page);
+            $talks = $this->talkRepository->getNewTalksToRate($event, $this->authentication->getGithubUser(), crc32($this->requestStack->getSession()->getId()), $page);
         } else {
-            $talks = $this->talkRepository->getAllTalksAndRatingsForUser($event, $this->getUser(), crc32($this->requestStack->getSession()->getId()), $page);
+            $talks = $this->talkRepository->getAllTalksAndRatingsForUser($event, $this->authentication->getGithubUser(), crc32($this->requestStack->getSession()->getId()), $page);
         }
 
         $vote = new Vote();

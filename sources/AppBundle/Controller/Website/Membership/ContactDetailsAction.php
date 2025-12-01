@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Membership;
 
-use Afup\Site\Droits;
 use AppBundle\Association\Form\ContactDetailsType;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\AuditLog\Audit;
+use AppBundle\Security\Authentication;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,13 +20,13 @@ final class ContactDetailsAction extends AbstractController
         private readonly ViewRenderer $view,
         private readonly UserRepository $userRepository,
         private readonly UserPasswordHasherInterface $passwordHasher,
-        private readonly Droits $droits,
+        private readonly Authentication $authentication,
         private readonly Audit $audit,
     ) {}
 
     public function __invoke(Request $request): Response
     {
-        $user = $this->userRepository->get($this->droits->obtenirIdentifiant());
+        $user = $this->authentication->getAfupUser();
 
         $userForm = $this->createForm(ContactDetailsType::class, $user);
         $userForm->handleRequest($request);

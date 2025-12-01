@@ -23,7 +23,7 @@ class PurchaseTypeFactory
         private readonly SpeakerRepository $speakerRepository,
     ) {}
 
-    public function getPurchaseForUser(Event $event, User $user = null, $specialPriceToken = null)
+    public function getPurchaseForUser(Event $event, ?User $user = null, $specialPriceToken = null)
     {
         $memberType = TicketType::MEMBER_NOT;
 

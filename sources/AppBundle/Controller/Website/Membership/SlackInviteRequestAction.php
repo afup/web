@@ -7,6 +7,7 @@ namespace AppBundle\Controller\Website\Membership;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\AuditLog\Audit;
+use AppBundle\Security\Authentication;
 use AppBundle\Slack\LegacyClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,14 +18,13 @@ final class SlackInviteRequestAction extends AbstractController
         private readonly UserRepository $userRepository,
         private readonly LegacyClient $legacyClient,
         private readonly Audit $audit,
+        private readonly Authentication $authentication,
     ) {}
 
     public function __invoke(): RedirectResponse
     {
-        $user = $this->getUser();
-        if (!$user instanceof User) {
-            throw $this->createAccessDeniedException("Vous n'êtes pas connecté");
-        }
+        $user = $this->authentication->getAfupUser();
+
         if (!$user->canRequestSlackInvite()) {
             throw $this->createAccessDeniedException("Vous n'êtes pas autorité à demander une invitation");
         }

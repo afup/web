@@ -11,3 +11,4 @@ parameters:
 
 rules:
     - AppBundle\StaticAnalysis\Rule\NoDebugFunctionsRule
+    - AppBundle\StaticAnalysis\Rule\NoGetUserMethodRule
