@@ -27,7 +27,7 @@ class SpeakersManagementAction extends AbstractController
         $event = $this->eventActionHelper->getEventById($id);
         $speakers = $this->speakerRepository->getScheduledSpeakersByEvent($event, true);
 
-        if (null !== $speakers) {
+        if ($speakers->count() > 0) {
             $speakers = iterator_to_array($speakers->getIterator());
             foreach ($speakers as $k => $speaker) {
                 $files = $this->speakersExpensesStorage->getFiles($speaker['speaker']);

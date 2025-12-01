@@ -57,7 +57,7 @@ class PendingBankwiresAction extends AbstractController
         }
 
         return $this->render('admin/event/bankwires.html.twig', [
-            'pendingBankwires' => $event === null ? [] : $this->invoiceRepository->getPendingBankwires($event),
+            'pendingBankwires' => $this->invoiceRepository->getPendingBankwires($event),
             'event' => $event,
             'title' => 'Virements en attente',
             'token' => $this->csrfTokenManager->getToken('admin_event_bankwires'),

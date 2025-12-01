@@ -11,8 +11,6 @@ use Afup\Site\Corporate\_Site_Base_De_Donnees;
  */
 class Logs
 {
-    private int $_nombre_logs_par_page = 10;
-
     public function __construct(
         private readonly _Site_Base_De_Donnees $_bdd,
         private readonly int $_id_utilisateur,

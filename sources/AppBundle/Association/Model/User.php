@@ -108,10 +108,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
      */
     private $city;
 
-    /**
-     * @var string
-     */
-    private $country = 'FR';
+    private string $country = 'FR';
 
     /**
      * @var string
@@ -135,17 +132,11 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
      */
     private $hash;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $lastSubscription;
+    private ?\DateTimeImmutable $lastSubscription = null;
 
     private ?CompanyMember $company = null;
 
-    /**
-     * @var string
-     */
-    private $nearestOffice;
+    private ?string $nearestOffice = null;
 
     /**
      * @var int
@@ -193,10 +184,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getNearestOffice()
+    public function getNearestOffice(): ?string
     {
         return $this->nearestOffice;
     }
@@ -452,18 +440,12 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getCountry()
+    public function getCountry(): string
     {
         return $this->country;
     }
 
-    /**
-     * @param string $country
-     */
-    public function setCountry($country): self
+    public function setCountry(string $country): self
     {
         $this->propertyChanged('country', $this->country, $country);
         $this->country = $country;
@@ -544,10 +526,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this->firstName . ' ' . $this->lastName;
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getLastSubscription()
+    public function getLastSubscription(): ?\DateTimeImmutable
     {
         return $this->lastSubscription;
     }
@@ -573,13 +552,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
             $now = new \DateTime();
         }
 
-        $lastSubscription = $this->getLastSubscription();
-
-        if (null === $lastSubscription) {
-            return null;
-        }
-
-        return $this->getLastSubscription()->diff($now)->days;
+        return $this->lastSubscription?->diff($now)->days;
     }
 
     /**

@@ -53,10 +53,10 @@ class SpecialPriceAction extends AbstractController
         }
 
         return $this->render('admin/event/special_price.html.twig', [
-            'special_prices' => $event === null ? [] : $this->ticketSpecialPriceRepository->getByEvent($event),
+            'special_prices' => $this->ticketSpecialPriceRepository->getByEvent($event),
             'event' => $event,
             'title' => 'Gestion des prix custom',
-            'form' => $form === null ? null : $form->createView(),
+            'form' => $form->createView(),
             'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
         ]);
     }

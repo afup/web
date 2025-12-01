@@ -75,7 +75,5 @@ class ScrappingMeetupEventsCommand extends Command
         } catch (\Exception $e) {
             throw new \Exception('Problème lors du scraping ou de la sauvegarde des évènements Meetup', $e->getCode(), $e);
         }
-
-        return Command::FAILURE;
     }
 }

@@ -71,8 +71,8 @@ class RoomAction extends AbstractController
         return $this->render('admin/event/rooms.html.twig', [
             'event' => $event,
             'rooms' => $rooms,
-            'addForm' => $addForm === null ? null : $addForm->createView(),
-            'editForms' => $editForms === null ? null : array_map(static fn(Form $form): FormView => $form->createView(), $editForms),
+            'addForm' => $addForm->createView(),
+            'editForms' => array_map(static fn(Form $form): FormView => $form->createView(), $editForms),
             'title' => 'Gestion des salles',
             'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
         ]);
