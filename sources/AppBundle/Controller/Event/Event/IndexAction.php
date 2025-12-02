@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class IndexAction extends AbstractController
 {
-    public function __construct(
-        private readonly EventRepository $eventRepository,
-    ) {}
+//    public function __construct(
+//        private readonly EventRepository $eventRepository,
+//    ) {}
 
     public function __invoke(): Response
     {
@@ -24,17 +24,17 @@ final class IndexAction extends AbstractController
         // on fait donc un redirect moche pour le moment et pourra supprimer cela plus tard / quitte à rendre cela plus configurable
         return new RedirectResponse("https://event.afup.org/afup-day-2026/afup-day-2026-appels-a-conferences/");
 
-        $events = $this->eventRepository->getNextPublicizedEvents();
-
-        if (count($events) === 0) {
-            return $this->render('event/none.html.twig');
-        }
-
-        if (count($events) === 1) {
-            $event = array_pop($events);
-            return new RedirectResponse($this->generateUrl('event', ['eventSlug' => $event->getPath()]), Response::HTTP_TEMPORARY_REDIRECT);
-        }
-
-        return $this->render('event/switch.html.twig', ['events' => $events]);
+//        $events = $this->eventRepository->getNextPublicizedEvents();
+//
+//        if (count($events) === 0) {
+//            return $this->render('event/none.html.twig');
+//        }
+//
+//        if (count($events) === 1) {
+//            $event = array_pop($events);
+//            return new RedirectResponse($this->generateUrl('event', ['eventSlug' => $event->getPath()]), Response::HTTP_TEMPORARY_REDIRECT);
+//        }
+//
+//        return $this->render('event/switch.html.twig', ['events' => $events]);
     }
 }

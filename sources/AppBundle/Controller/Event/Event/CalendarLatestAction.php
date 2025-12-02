@@ -22,6 +22,6 @@ final class CalendarLatestAction extends AbstractController
         // on ne peux pas le faire de façon automatique, c'est le Forum et je commite depuis la bagagerie,
         // on fait un hotfix moche mais fonctionnel et verra plus tard comment on gère la correspondance
         return new RedirectResponse("https://event.afup.org/forum-php-2025/planning/");
-        return new RedirectResponse($this->generateUrl('event_calendar', ['eventSlug' => $event->getPath()]));
+//        return new RedirectResponse($this->generateUrl('event_calendar', ['eventSlug' => $event->getPath()]));
     }
 }

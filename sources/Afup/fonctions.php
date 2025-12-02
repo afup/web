@@ -65,14 +65,13 @@ function genererFormulaire(HTML_QuickForm &$formulaire)
  *
  * L'action par défaut est la première des actions disponibles.
  *
- * @param   array  $actions_disponibles    Actions disponibles
+ * @param   array<string>  $actions_disponibles    Actions disponibles
  * @return  string
  */
-function verifierAction($actions_disponibles)
+function verifierAction(array $actions_disponibles)
 {
-    if (!is_array($actions_disponibles) || count($actions_disponibles) == 0) {
+    if (count($actions_disponibles) == 0) {
         trigger_error("Les actions disponibles doivent être passées sous forme d'un tableau d'au moins un élément", E_USER_ERROR);
-        return false;
     }
 
     if (!empty($_GET['action']) && in_array($_GET['action'], $actions_disponibles)) {

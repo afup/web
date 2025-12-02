@@ -124,7 +124,7 @@ final readonly class PhotoStorage
         // Transformation en 90x120 JPG pour simplifier
         $url = Utils::get_gravatar($speaker->getEmail(), 90);
         $img = @imagecreatefromjpeg($url);
-        if (!is_resource($img)) {
+        if ($img === false) {
             $img = imagecreatefrompng($url);
         }
         if (imagejpeg($img, $tmpImagePath, 90)) {
