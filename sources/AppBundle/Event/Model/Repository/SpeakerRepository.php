@@ -42,7 +42,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
      * @param bool $returnTalksThatWillBePublished
      * @return CollectionInterface
      */
-    public function getScheduledSpeakersByEvent(Event $event, $returnTalksThatWillBePublished = false)
+    public function getScheduledSpeakersByEvent(Event $event, $returnTalksThatWillBePublished = false): CollectionInterface
     {
         $hydrator = new JoinHydrator();
         $hydrator->aggregateOn('speaker', 'talk', 'getId');

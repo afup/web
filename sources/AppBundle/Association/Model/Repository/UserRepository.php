@@ -56,7 +56,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ])
             ->query($this->getCollection($this->getHydratorForUser()));
 
-        if (!$result || $result->count() === 0) {
+        if ($result->count() === 0) {
             throw new UserNotFoundException(sprintf('Could not find the user with login "%s"', $username));
         }
 
@@ -248,7 +248,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         if (0 !== $user->getCompanyId() && !$this->companyExists($user->getCompanyId())) {
             throw new InvalidArgumentException('La personne morale n\'existe pas.');
         }
-        if (null !== $user->getCountry() && !$this->countryExists($user->getCountry())) {
+        if (!$this->countryExists($user->getCountry())) {
             throw new InvalidArgumentException('Le pays n\'existe pas.');
         }
         try {
@@ -279,7 +279,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         if (0 !== $user->getCompanyId() && !$this->companyExists($user->getCompanyId())) {
             throw new InvalidArgumentException('La personne morale n\'existe pas.');
         }
-        if (null !== $user->getCountry() && !$this->countryExists($user->getCountry())) {
+        if (!$this->countryExists($user->getCountry())) {
             throw new InvalidArgumentException('Le pays n\'existe pas.');
         }
         $this->save($user);

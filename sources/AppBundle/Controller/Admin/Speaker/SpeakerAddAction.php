@@ -8,7 +8,6 @@ use AppBundle\AuditLog\Audit;
 use AppBundle\CFP\PhotoStorage;
 use AppBundle\Event\Form\SpeakerFormData;
 use AppBundle\Event\Form\SpeakerType;
-use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;
@@ -28,7 +27,6 @@ class SpeakerAddAction extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        /** @var Event $event */
         $event = $this->eventRepository->get($request->query->get('eventId'));
         Assertion::notNull($event);
         $data = new SpeakerFormData();
