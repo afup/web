@@ -71,7 +71,7 @@
                                 <i class="pencil alernate icon"></i>
                             </a>
                         {% endif %}
-                            <a href="/pages/administration/index.php?page=compta_devis&amp;action=telecharger_devis&amp;ref={{ line.quotationNumber }}"
+                            <a href="{{ url('admin_accounting_quotations_download', {'ref': line.quotationNumber}) }}"
                                data-position="left center"
                                data-tooltip="Télécharger le devis {{ line.company }}"
                                class="compact ui icon button"
@@ -79,7 +79,7 @@
                                 <i class="file pdf icon"></i>
                             </a>
                         {% if line.invoiceNumber == '' %}
-                            <a href="/pages/administration/index.php?page=compta_devis&amp;action=transfert&amp;ref={{ line.quotationNumber }}"
+                            <a href="{{ url('admin_accounting_quotations_convert', {'ref': line.quotationNumber}) }}"
                                data-position="left center"
                                data-tooltip="Transférer la ligne {{ line.company }} en facture"
                                class="compact ui icon button"
