@@ -333,7 +333,7 @@ class Facture
 
         $bankAccountFactory = new BankAccountFactory();
         // Construction du PDF
-        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateDevis), $isSubjectedToVat);
+        $pdf = new PDF_Facture($bankAccountFactory->createApplyableAt($dateDevis), $isSubjectedToVat);
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
@@ -527,7 +527,7 @@ class Facture
         $isSubjectedToVat = Vat::isSubjectedToVat($dateFacture);
 
         // Construction du PDF
-        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
+        $pdf = new PDF_Facture($bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
