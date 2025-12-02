@@ -120,7 +120,7 @@ class Facturation
 
         $bankAccountFactory = new BankAccountFactory();
         // Construction du PDF
-        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture));
+        $pdf = new PDF_Facture($bankAccountFactory->createApplyableAt($dateFacture));
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
@@ -222,7 +222,7 @@ class Facturation
 
         $bankAccountFactory = new BankAccountFactory();
         // Construction du PDF
-        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
+        $pdf = new PDF_Facture($bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);

@@ -340,7 +340,7 @@ class Cotisations
         $bankAccountFactory = new BankAccountFactory();
         $isSubjectedToVat = Vat::isSubjectedToVat($dateCotisation);
         // Construction du PDF
-        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateCotisation), $isSubjectedToVat);
+        $pdf = new PDF_Facture($bankAccountFactory->createApplyableAt($dateCotisation), $isSubjectedToVat);
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
