@@ -49,7 +49,7 @@
                     </a>
                 </th>
                 <th data-tf-filter-type="select">Thème</th>
-                <th data-tf-filter-type="select">Forum</th>
+                <th data-tf-filter-type="select">Event</th>
                 <th class="center aligned" data-tf-filter-type="select">
                     <a href="{{ path('admin_site_articles_list', {'sort': 'etat' , 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
                         Etat
@@ -65,7 +65,7 @@
                         <td>{% if article.date != null %}{{ article.date|date('d-m-Y') }}{% endif %}</td>
                         <td style="white-space: normal;">{{ article.titre }}</td>
                         <td>{{ article.nom_rubrique }}</td>
-                        <td>{{ article.theme }}</td>
+                        <td>{{ themes[article.theme] ?? '' }}</td>
                         <td>{{ article.nom_forum }}</td>
                         <td class="center aligned">
                             {% if article.etat == 1 %}
