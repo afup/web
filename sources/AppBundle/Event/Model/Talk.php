@@ -344,7 +344,13 @@ class Talk implements NotifyPropertyInterface
 
     public function getOpenfeedbackPath(): ?string
     {
-        return $this->openfeedbackPath;
+        $openfeedbackPath = (string) $this->openfeedbackPath;
+
+        if (0 === strlen(trim($openfeedbackPath))) {
+            return null;
+        }
+
+        return $openfeedbackPath;
     }
 
     public function setOpenfeedbackPath(?string $openfeedbackPath): self
