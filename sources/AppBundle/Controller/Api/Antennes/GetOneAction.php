@@ -45,7 +45,7 @@ final readonly class GetOneAction
         if ($nextMeetup) {
             $response['next_meetup'] = [
                 'title' => $nextMeetup->getTitle(),
-                'date' => $nextMeetup->getDate()->format('Y-m-d'),
+                'date' => $nextMeetup->getDate()->format('Y-m-d H:i:s'),
                 'location' => $nextMeetup->getLocation(),
                 'description' => $nextMeetup->getDescription(),
                 'url' => 'https://www.meetup.com/fr-FR/' . $antenne->meetup->urlName . '/events/' . $nextMeetup->getId(),
