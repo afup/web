@@ -29,14 +29,14 @@ final readonly class ArticlesController
 
         foreach ($articles as $article) {
             $data[] = [
-                'title' => $article->getTitle(),
+                'title' => $article->title,
                 'url' => $this->getArticleUrl($article),
-                'date' => $article->getUpdate(),
-                'author' => $article->getAuthor(),
-                'content' => $article->getContent(),
+                'date' => $article->update,
+                'author' => $article->author,
+                'content' => $article->content,
                 'feed' => [
-                    'name' => $article->getFeedName(),
-                    'url' => $article->getFeedUrl(),
+                    'name' => $article->feedName,
+                    'url' => $article->feedUrl,
                 ],
             ];
         }
@@ -55,14 +55,14 @@ final readonly class ArticlesController
 
     private function getArticleUrl(DisplayableFeedArticle $article): string
     {
-        $url = $article->getUrl();
+        $url = $article->url;
 
         if ($url === null) {
             return '';
         }
 
         if (!str_starts_with($url, 'http')) {
-            $feedUrl = rtrim((string) $article->getFeedUrl(), '/');
+            $feedUrl = rtrim((string) $article->feedUrl, '/');
             $articleUrl = ltrim($url, '/');
 
             return implode('/', [$feedUrl, $articleUrl]);
