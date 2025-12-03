@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c9ad05b6f6b1c2d935497605dd02a54f",
+    "content-hash": "3832db59024b9f70728e8ecf51fdfab3",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -13668,6 +13668,79 @@
                 }
             ],
             "time": "2025-08-06T20:13:54+00:00"
+        },
+        {
+            "name": "symfony/json-path",
+            "version": "v7.3.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/json-path.git",
+                "reference": "e659ffda34d0c3443314da007c0eda58a3763fe4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/json-path/zipball/e659ffda34d0c3443314da007c0eda58a3763fe4",
+                "reference": "e659ffda34d0c3443314da007c0eda58a3763fe4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2",
+                "symfony/polyfill-ctype": "^1.8",
+                "symfony/polyfill-mbstring": "~1.0"
+            },
+            "conflict": {
+                "symfony/json-streamer": ">=7.4"
+            },
+            "require-dev": {
+                "symfony/json-streamer": "7.3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\JsonPath\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexandre Daubois",
+                    "email": "alex.daubois@gmail.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Eases JSON navigation using the JSONPath syntax as described in RFC 9535",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/json-path/tree/v7.3.5"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2025-09-27T15:48:31+00:00"
         },
         {
             "name": "symfony/polyfill-php84",
