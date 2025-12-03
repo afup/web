@@ -16,6 +16,7 @@ Feature: Antennes API routes
     And the json response has the key "$.next_meetup.date" with value "2025-11-08"
     And the json response has the key "$.next_meetup.location" with value "123 rue de la fleur"
     And the json response has the key "$.next_meetup.description" with value "Lorem ipsum dolor si amet"
+    And the json response has the key "$.next_meetup.url" with value "https://www.meetup.com/fr-FR/afup-lyon-php/events/1"
 
   @reloadDbWithTestData
   Scenario: Date after next meetup
