@@ -48,6 +48,7 @@ final readonly class GetOneAction
                 'date' => $nextMeetup->getDate()->format('Y-m-d'),
                 'location' => $nextMeetup->getLocation(),
                 'description' => $nextMeetup->getDescription(),
+                'url' => 'https://www.meetup.com/fr-FR/' . $antenne->meetup->urlName . '/events/' . $nextMeetup->getId(),
             ];
         }
 
