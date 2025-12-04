@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Accounting\Model;
 
+use Afup\Site\Utils\Utils;
 use AppBundle\Accounting\InvoicingCurrency;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
@@ -347,5 +348,14 @@ class Invoicing implements NotifyPropertyInterface
         $this->price = $price;
 
         return $this;
+    }
+
+    public function getPaymentUrlRef(): string
+    {
+        if (empty($this->getInvoiceNumber())) {
+            return '';
+        }
+
+        return urlencode(Utils::cryptFromText($this->getId()));
     }
 }

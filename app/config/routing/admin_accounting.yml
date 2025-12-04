@@ -106,6 +106,10 @@ admin_accounting_quotations_convert:
   path: /quotations/convert
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\Quotation\ConvertQuotationAction}
 
+admin_accounting_invoices_list:
+  path: /invoices/list
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Invoice\ListInvoiceAction}
+
 admin_accounting_search:
   path: /search
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\SearchAction}

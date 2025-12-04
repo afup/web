@@ -28,6 +28,7 @@ class InvoicingPeriodType extends AbstractType
             'required' => false,
             'choices' => $periods,
             'property_path' => 'id',
+            'placeholder' => false,
             'attr' => [ 'onchange' => 'this.form.submit(); return false;'],
         ]);
     }
