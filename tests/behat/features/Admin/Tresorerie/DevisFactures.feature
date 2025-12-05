@@ -123,7 +123,7 @@ Feature: Administration - Trésorerie - Devis/Facture
   @vat
   Scenario: Test du PDF de facture avant 2024
     Given I am logged in as admin and on the Administration
-    When I go to "/pages/administration/index.php?page=compta_facture&id_periode=14"
+    When I go to "/admin/accounting/invoices/list?periodId=14"
     Then the ".content h2" element should contain "Factures"
     And I should see "Il n'est pas possible de créer directement une facture"
     When I follow the button of tooltip "Télécharger la facture 2023-01"
@@ -145,7 +145,7 @@ Feature: Administration - Trésorerie - Devis/Facture
   @vat
   Scenario: Test du PDF de facture après 2024
     Given I am logged in as admin and on the Administration
-    When I go to "/pages/administration/index.php?page=compta_facture&id_periode=15"
+    When I go to "/admin/accounting/invoices/list?periodId=15"
     Then the ".content h2" element should contain "Factures"
     And I should see "Il n'est pas possible de créer directement une facture"
     When I follow the button of tooltip "Télécharger la facture 2024-02"
@@ -167,7 +167,7 @@ Feature: Administration - Trésorerie - Devis/Facture
 
   @reloadDbWithTestData
   @vat
-  Scenario: Test du PDF de facture avant 2024
+  Scenario: Test du PDF de devis avant 2024
     Given I am logged in as admin and on the Administration
     When I go to "/admin/accounting/quotations/list?periodId=14"
     Then the ".content h2" element should contain "Liste des devis"
@@ -189,7 +189,7 @@ Feature: Administration - Trésorerie - Devis/Facture
 
   @reloadDbWithTestData
   @vat
-  Scenario: Test du PDF de facture après 2024
+  Scenario: Test du PDF de devis après 2024
     Given I am logged in as admin and on the Administration
     When I go to "/admin/accounting/quotations/list?periodId=15"
     Then the ".content h2" element should contain "Liste des devis"

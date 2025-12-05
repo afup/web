@@ -110,6 +110,14 @@ admin_accounting_invoices_list:
   path: /invoices/list
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\Invoice\ListInvoiceAction}
 
+admin_accounting_invoices_download:
+  path: /invoices/download
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Invoice\DownloadInvoiceAction}
+
+admin_accounting_invoices_send_email:
+  path: /invoices/send
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Invoice\SendInvoiceEmailAction}
+
 admin_accounting_search:
   path: /search
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\SearchAction}
