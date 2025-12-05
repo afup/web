@@ -63,14 +63,14 @@
                         >
                             <i class="pencil alernate icon"></i>
                         </a>
-                        <a href="/pages/administration/index.php?page=compta_facture&amp;action=telecharger_facture&amp;ref={{ line.invoiceNumber }}"
+                        <a href="{{ url('admin_accounting_invoices_download', {'ref': line.invoiceNumber}) }}"
                            data-position="left center"
                            data-tooltip="Télécharger la facture {{ line.invoiceNumber }}"
                            class="compact ui icon button"
                         >
                             <i class="file pdf icon"></i>
                         </a>
-                        <a href="/pages/administration/index.php?page=compta_facture&amp;action=envoyer_facture&amp;ref={{ line.invoiceNumber }}"
+                        <a href="{{ url('admin_accounting_invoices_send_email', {'ref': line.invoiceNumber}) }}"
                            data-position="left center"
                            data-tooltip="Envoyer la facture {{ line.invoiceNumber }} par mail"
                            class="compact ui icon button"

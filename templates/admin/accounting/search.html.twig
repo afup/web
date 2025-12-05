@@ -269,7 +269,7 @@
                             >
                                 Voir
                             </a>
-                            <a href="/pages/administration/index.php?page=compta_facture&amp;action=telecharger_facture&amp;ref={{ invoice.numero_facture }}"
+                            <a href="{{ url('admin_accounting_invoices_download', {'ref': invoice.numero_facture }) }}"
                                class="compact ui icon button"
                             >
                                 <i class="file pdf icon"></i>
