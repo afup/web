@@ -11,7 +11,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToTimestampTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -42,10 +41,10 @@ class ArticleType extends AbstractType
             $events[$event->getTitle()] = $event->getId();
         }
 
-        /** @var \AppBundle\Site\Model\Article|null $article */
+        /** @var \AppBundle\Site\Entity\Article|null $article */
         $article = $builder->getData();
         $textareaCssClass = 'simplemde';
-        if ($article !== null && $article->usesMarkdown() === false) {
+        if ($article !== null && $article->isContentTypeMarkdown() === false) {
             $textareaCssClass = 'tinymce';
         }
 
@@ -101,9 +100,6 @@ class ArticleType extends AbstractType
                     new Assert\Type('string'),
                     new Assert\Regex('/(\s)/', 'Ne doit pas contenir d\'espaces', null, false),
                 ],
-            ])
-            ->add('contentType', HiddenType::class, [
-                'required' => true,
             ])
             ->add('rubricId', ChoiceType::class, [
                 'placeholder' => '',
