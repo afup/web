@@ -26,6 +26,7 @@ node_modules
 
 /htdocs/assets
 /htdocs/templates/site/css/styles.css
+/htdocs/templates/site/images/
 js_dist
 # uploads
 /htdocs/uploads
