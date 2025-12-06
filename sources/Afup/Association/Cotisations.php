@@ -233,7 +233,7 @@ class Cotisations
         $corps = "Bonjour, \n\n";
         $corps .= "Une cotisation annuelle AFUP a été réglée.\n\n";
         $corps .= "Personne : " . $infos['nom'] . " " . $infos['prenom'] . " (" . $infos['email'] . ")\n";
-        $corps .= "URL : " . Site::WEB_PATH . "pages/administration/index.php?page=cotisations&type_personne=" . $infos['type'] . "&id_personne=" . $infos['id'] . "\n";
+        $corps .= "URL : " . Site::WEB_PATH . "admin/accounting/membership-fee/list/" . $infos['type'] . "/" . $infos['id'] . "\n";
         $corps .= "Commande : " . $cmd . "\n";
         $corps .= "Total : " . $total . "\n";
         $corps .= "Autorisation : " . $autorisation . "\n";
