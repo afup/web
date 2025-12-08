@@ -683,6 +683,24 @@ class FeatureContext implements Context
         }
     }
 
+    /**
+     * @throws ExpectationException
+     * exemples:
+     * I should see an image with source "image.png"
+     */
+    #[Then('/^(?:|I )should see an image with source "(?P<source>(?:[^"]|\\")*)"$/')]
+    public function shouldSeeImage(string $source): void
+    {
+        $image = $this->minkContext->getSession()->getPage()->find('css', sprintf('img[src="%s"]', $source));
+
+        if (null === $image) {
+            throw new ExpectationException(
+                sprintf('image with source "%s" was not found', $source),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+    }
+
     #[Given('/^the current date is "(?P<date>[^"]*)"$/')]
     public function theCurrentDateIs(string $date): void
     {
