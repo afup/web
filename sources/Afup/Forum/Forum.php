@@ -146,7 +146,7 @@ class Forum
      *
      * @param  String $infoSeance
      * @param  Boolean $for_bo
-     * @param  string $linkFormat if $for_bo = false, this format will be used (if not null) to construct the link.
+     * @param  ?string $linkFormat if $for_bo = false, this format will be used (if not null) to construct the link.
      *                  i.e : "/sessions.php#%1" . %1 is the session id
      * @return String
      */
