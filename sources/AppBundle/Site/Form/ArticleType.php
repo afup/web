@@ -11,7 +11,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToTimestampTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -45,7 +44,7 @@ class ArticleType extends AbstractType
         /** @var \AppBundle\Site\Model\Article|null $article */
         $article = $builder->getData();
         $textareaCssClass = 'simplemde';
-        if ($article !== null && $article->usesMarkdown() === false) {
+        if ($article !== null && $article->isContentTypeMarkdown() === false) {
             $textareaCssClass = 'tinymce';
         }
 
@@ -77,7 +76,7 @@ class ArticleType extends AbstractType
             ])
             ->add('content', TextareaType::class, [
                 'label' => 'Contenu',
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'cols' => 42,
                     'rows' => 20,
@@ -102,11 +101,8 @@ class ArticleType extends AbstractType
                     new Assert\Regex('/(\s)/', 'Ne doit pas contenir d\'espaces', null, false),
                 ],
             ])
-            ->add('contentType', HiddenType::class, [
-                'required' => true,
-            ])
             ->add('rubricId', ChoiceType::class, [
-                'placeholder' => '',
+                'required' => true,
                 'label' => 'Rubrique',
                 'choices' => $rubriques,
                 'constraints' => [
@@ -159,7 +155,7 @@ class ArticleType extends AbstractType
                 ],
             ])
             ->add('eventId', ChoiceType::class, [
-                'label' => 'Evênement',
+                'label' => 'Événement',
                 'required' => false,
                 'choices' => $events,
                 'constraints' => [
