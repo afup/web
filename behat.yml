@@ -6,7 +6,7 @@ default:
       paths:
         - '%paths.base%/tests/behat'
       contexts:
-        - FeatureContext
+        - Afup\Tests\Behat\Bootstrap\FeatureContext
         - Behat\MinkExtension\Context\MinkContext
   extensions:
     Behat\MinkExtension:
