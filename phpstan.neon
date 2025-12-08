@@ -2,12 +2,16 @@ includes:
     - vendor/cuyz/valinor/qa/PHPStan/valinor-phpstan-configuration.php
 
 parameters:
-    level: 3
+    level: 4
     paths:
         - sources
     stubFiles:
             - tests/stubs/Ting/Repository/Repository.php.stub
             - tests/stubs/Ting/Repository/RepositoryFactory.php.stub
+    ignoreErrors:
+        -
+            identifier: property.onlyWritten
+            path: sources/AppBundle/Controller/LegacyController.php
 
 rules:
     - AppBundle\StaticAnalysis\Rule\NoDebugFunctionsRule
