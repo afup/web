@@ -6,8 +6,8 @@ namespace AppBundle\Controller\Admin\Site\Article;
 
 use AppBundle\AuditLog\Audit;
 use AppBundle\Site\Form\ArticleType;
-use AppBundle\Site\Model\Article;
-use AppBundle\Site\Model\Repository\ArticleRepository;
+use AppBundle\Site\Entity\Article;
+use AppBundle\Site\Entity\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,8 +28,8 @@ final class AddArticleAction extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->articleRepository->save($article);
-            $this->audit->log('Ajout de l\'article ' . $article->getTitle());
-            $this->addFlash('notice', 'L\'article ' . $article->getTitle() . ' a été ajouté');
+            $this->audit->log('Ajout de l\'article ' . $article->title);
+            $this->addFlash('notice', 'L\'article ' . $article->title . ' a été ajouté');
             return $this->redirectToRoute('admin_site_articles_list');
         }
 
