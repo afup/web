@@ -57,29 +57,6 @@ class AppelConferencier
         return $this->_bdd->obtenirTous($requete);
     }
 
-    public function obtenirPlanningDeSession($id_session = 0)
-    {
-        $requete = ' SELECT ';
-        $requete .= '  se.*, ';
-        $requete .= '  sa.nom as nom_salle, ';
-        $requete .= '  pl.id, ';
-        $requete .= '  pl.debut, ';
-        $requete .= '  pl.fin, ';
-        $requete .= '  pl.keynote, ';
-        $requete .= '  pl.id_salle ';
-        $requete .= ' FROM ';
-        $requete .= '  afup_sessions se ';
-        $requete .= ' LEFT JOIN ';
-        $requete .= '  afup_forum_planning pl ';
-        $requete .= ' ON se.session_id = pl.id_session';
-        $requete .= ' LEFT JOIN ';
-        $requete .= '  afup_forum_salle sa ';
-        $requete .= ' ON sa.id = pl.id_salle';
-        $requete .= ' WHERE se.session_id = ' . $this->_bdd->echapper($id_session);
-
-        return $this->_bdd->obtenirEnregistrement($requete);
-    }
-
     public function obtenirSession($id = 0, string $champs = '*', $complement = true)
     {
         $this->_bdd->executer("SET NAMES utf8mb4");
@@ -114,72 +91,6 @@ class AppelConferencier
         }
 
         return $session;
-    }
-
-    public function obtenirListeSalles($id_forum = null,
-                                $associatif = false)
-    {
-        $requete = ' SELECT ';
-        $requete .= '  id, nom ';
-        $requete .= ' FROM afup_forum_salle sa ';
-        $requete .= ' WHERE sa.id_forum = ' . $this->_bdd->echapper($id_forum);
-
-        if ($associatif) {
-            return $this->_bdd->obtenirAssociatif($requete);
-        } else {
-            return $this->_bdd->obtenirTous($requete);
-        }
-    }
-
-    public function supprimerSessionDuPlanning($id)
-    {
-        $requete = ' DELETE FROM afup_forum_planning ';
-        $requete .= ' WHERE id = ' . $this->_bdd->echapper($id);
-
-        return $this->_bdd->executer($requete);
-    }
-
-    public function modifierSessionDuPlanning($id,
-                                       $id_forum,
-                                       $id_session,
-                                       $debut,
-                                       $fin,
-                                       $id_salle, $keynote = 0)
-    {
-        $requete = 'UPDATE afup_forum_planning SET ';
-        $requete .= ' id_forum = ' . $this->_bdd->echapper($id_forum) . ', ';
-        $requete .= ' id_session = ' . $this->_bdd->echapper($id_session) . ', ';
-        $requete .= ' debut = ' . $this->_bdd->echapper($debut) . ', ';
-        $requete .= ' fin = ' . $this->_bdd->echapper($fin) . ', ';
-        $requete .= ' keynote = ' . $this->_bdd->echapper($keynote) . ', ';
-        $requete .= ' id_salle = ' . $this->_bdd->echapper($id_salle) . ' ';
-        $requete .= ' WHERE id = ' . (int) $id;
-        return $this->_bdd->executer($requete);
-    }
-
-    public function ajouterSessionDansPlanning($id_forum,
-                                        $id_session,
-                                        $debut,
-                                        $fin,
-                                        $id_salle)
-    {
-        $donnees = [
-            $this->_bdd->echapper($id_forum),
-            $this->_bdd->echapper($id_session),
-            $this->_bdd->echapper($debut),
-            $this->_bdd->echapper($fin),
-            $this->_bdd->echapper($id_salle),
-        ];
-
-        $requete = ' INSERT INTO afup_forum_planning';
-        $requete .= '  (id_forum, id_session, debut, fin, id_salle)';
-        $requete .= ' VALUES ';
-        $requete .= '  (' . implode(',', $donnees) . ')';
-
-        if ($this->_bdd->executer($requete) === false) {
-            return false;
-        }
-        return $this->_bdd->obtenirUn('SELECT LAST_INSERT_ID()');
     }
 
     /**
@@ -360,30 +271,6 @@ class AppelConferencier
         }
     }
 
-    public function ajouterConferencier($id_forum, $civilite, $nom, $prenom, $email, $societe, $biographie, $twitter)
-    {
-        $donnees = [
-            $this->_bdd->echapper($id_forum),
-            $this->_bdd->echapper($civilite),
-            $this->_bdd->echapper($nom),
-            $this->_bdd->echapper($prenom),
-            $this->_bdd->echapper($email),
-            $this->_bdd->echapper($societe),
-            $this->_bdd->echapper($biographie),
-            $this->_bdd->echapper($twitter),
-        ];
-
-        $requete = ' INSERT INTO afup_conferenciers';
-        $requete .= '  (id_forum, civilite, nom, prenom, email, societe, biographie, twitter)';
-        $requete .= ' VALUES ';
-        $requete .= '  (' . implode(',', $donnees) . ')';
-
-        if ($this->_bdd->executer($requete) === false) {
-            return false;
-        }
-        return $this->_bdd->obtenirUn('select LAST_INSERT_ID()');
-    }
-
     public function modifierSession(
         $id,
         $id_forum,
@@ -468,19 +355,6 @@ class AppelConferencier
             $requete .= 'verbatim = ' . $this->_bdd->echapper($verbatim) . ', ';
         }
         $requete .= ' plannifie = ' . $this->_bdd->echapper($plannifie) . ' ';
-        $requete .= ' WHERE session_id = ' . (int) $id;
-
-        return $this->_bdd->executer($requete);
-    }
-
-    public function modifierJoindinSession($id, $joindin)
-    {
-        $value = 'NULL';
-        if ($joindin) {
-            $value = $this->_bdd->echapper($joindin);
-        }
-        $requete = 'UPDATE afup_sessions SET ';
-        $requete .= ' joindin = ' . $value;
         $requete .= ' WHERE session_id = ' . (int) $id;
 
         return $this->_bdd->executer($requete);
