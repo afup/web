@@ -21,14 +21,24 @@ Feature: Administration - Planète PHP - Flux
     Then the ".content h2" element should contain "Ajouter un flux"
     When I fill in "feed_form[name]" with "Site web les-tilleuls.coop"
     And I fill in "feed_form[url]" with "https://les-tilleuls.coop"
-    And I fill in "feed_form[feed]" with "http://statictestresources/feed.xml"
+    And I fill in "feed_form[feed]" with "https://fake.afup/working-feed.xml"
+    And I press "Ajouter"
+    Then the ".content .message" element should contain "Le flux a été ajouté"
+    # Ajout d'un flux avec feed invalide
+    When I follow "Ajouter"
+    Then the ".content h2" element should contain "Ajouter un flux"
+    When I fill in "feed_form[name]" with "Mon super site"
+    And I fill in "feed_form[url]" with "https://fake.afup"
+    And I fill in "feed_form[feed]" with "https://fake.afup/invalid-feed.xml"
     And I press "Ajouter"
     Then the ".content .message" element should contain "Le flux a été ajouté"
     # Liste des flux
     And I should see "les-tilleuls.coop https://les-tilleuls.coop Actif Oui non testé"
+    And I should see "Mon super site https://fake.afup Actif Oui non testé"
     # Test de validité
     When I follow "Test validité"
     And I should see "les-tilleuls.coop https://les-tilleuls.coop Actif Oui validé"
+    And I should see "Mon super site https://fake.afup Actif Oui erreur"
     # Modification + désactivation d'un flux
     When I follow the button of tooltip "Modifier la fiche de Site web les-tilleuls.coop"
     Then the ".content h2" element should contain "Modifier un flux"

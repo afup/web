@@ -32,6 +32,15 @@ services:
         class: AppBundle\Offices\NullOfficeFinder
         arguments: ['@geocoder']
 
+    Afup\Tests\Support\PlanetePHP\FeedHttpClientFactory: ~
+    planetephp.http_client:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: '@Afup\Tests\Support\PlanetePHP\FeedHttpClientFactory'
+
+    PlanetePHP\SymfonyFeedClient:
+        arguments:
+            $httpClient: '@planetephp.http_client'
+
 ewz_recaptcha:
     enabled: false
 
