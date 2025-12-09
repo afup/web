@@ -152,7 +152,8 @@
     "symfony/debug-bundle": "7.3.*",
     "symfony/json-path": "7.3.*",
     "symfony/web-profiler-bundle": "7.3.*",
-    "symplify/vendor-patches": "^11.4"
+    "symplify/vendor-patches": "^11.4",
+    "tomasvotruba/type-coverage": "^2.1"
   },
   "repositories": [
     {

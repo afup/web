@@ -12,6 +12,12 @@ parameters:
         -
             identifier: property.onlyWritten
             path: sources/AppBundle/Controller/LegacyController.php
+    type_coverage:
+      return: 71
+      param: 71
+      property: 45
+      # since PHP 8.3
+      # constant: 30
 
 rules:
     - AppBundle\StaticAnalysis\Rule\NoDebugFunctionsRule
