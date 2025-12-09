@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Planete;
 
-use Exception;
 use PlanetePHP\Feed;
 use PlanetePHP\FeedRepository;
-use SimpleXMLElement;
+use PlanetePHP\FeedTester;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class FeedListAction
+final readonly class FeedListAction
 {
     public function __construct(
-        private readonly FeedRepository $feedRepository,
-        private readonly Environment $twig,
+        private FeedRepository $feedRepository,
+        private Environment $twig,
+        private FeedTester $feedTester,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -44,18 +44,11 @@ class FeedListAction
      */
     private function testFeeds(array $feeds): array
     {
-        // on n'affiche rien du tout
-        ini_set('display_errors', '0');
-        set_time_limit(240);
         $results = [];
-        foreach ($feeds as $f) {
-            if ($f->getStatus()) {
-                try {
-                    new SimpleXmlElement(file_get_contents($f->getFeed()));
-                    $results[$f->getId()] = true;
-                } catch (Exception) {
-                    $results[$f->getId()] = false;
-                }
+
+        foreach ($feeds as $feed) {
+            if ($feed->getStatus()) {
+                $results[$feed->getId()] = $this->feedTester->test($feed);
             }
         }
 

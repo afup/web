@@ -31,6 +31,8 @@ services:
               db_password: '%database_password%'
               lock_mode: !php/const Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler::LOCK_NONE
 
+    Laminas\Feed\Reader\Http\ClientInterface: '@PlanetePHP\SymfonyFeedClient'
+
     AppBundle\:
         resource: '../../sources/AppBundle/'
         autowire: true
