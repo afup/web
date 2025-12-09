@@ -46,7 +46,16 @@ class HomeAction extends AbstractController
                 $stats = $this->eventStatsRepository->getStats((int) $event->getId());
                 $info = [];
                 if ($event->lastsOneDay()) {
-                    $info['statistics']['entrées'] = $stats->firstDay->registered;
+                    $ticketsLabel = 'entrées';
+                    $tickets = $stats->firstDay->registered;
+                    if ($event->getSeats()) {
+                        $percentage = floor(($tickets * 100) / $event->getSeats());
+                        $tickets = $tickets . ' / ' . $event->getSeats();
+
+                        $ticketsLabel = "entrées ($percentage%)";
+                    }
+
+                    $info['statistics'][$ticketsLabel] = $tickets;
                 } else {
                     $info['statistics']['entrées (premier jour)'] = $stats->firstDay->registered;
                     $info['statistics']['entrées (deuxième jour)'] = $stats->secondDay->registered;
