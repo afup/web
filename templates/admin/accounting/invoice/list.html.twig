@@ -77,7 +77,7 @@
                         >
                             <i class="paper plane icon"></i>
                         </a>
-                        <a href="/pages/paiement/index.php?&amp;ref={{ line.paymentUrlRef }}"
+                        <a href="{{ url('public_payment_invoice', {ref: line.paymentUrlRef}) }}"
                            data-position="left center"
                            data-tooltip="Récupérer le lien de paiement en ligne"
                            class="compact ui icon button"

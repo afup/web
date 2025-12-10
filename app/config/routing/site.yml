@@ -69,6 +69,24 @@ membership_payment_redirect:
   requirements:
     type: success|error|canceled|refused
 
+public_payment_invoice:
+  path: /paiement/facture/
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Invoice\PublicPaymentAction
+
+public_download_invoice:
+  path: /paiement/facture/download/
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Invoice\PublicDownloadAction
+
+public_payment_redirect:
+  path: /paiement/{type}/
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Invoice\PublicPaymentRedirectAction
+    type: success
+  requirements:
+    type: success|error|canceled|refused
+
 techletter:
   path: /techletter
   defaults: { _controller: AppBundle\Controller\Website\Techletter\IndexAction }
