@@ -83,7 +83,7 @@ class GithubUserRepository extends Repository implements MetadataInitializer, Us
         $sql = "
             SELECT u.*
             FROM afup_user_github u
-            ORDER BY u.login ASC
+            ORDER BY u.login COLLATE utf8mb4_unicode_ci ASC
         ";
 
         $query = $this->getQuery($sql);

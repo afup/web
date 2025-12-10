@@ -19,7 +19,7 @@ Feature: Administration - Partie GitHub Users
     And I should see "Github Users"
     And I should see "<username>"
     And I should see "<name>"
-    Then I should see 3 "table tbody tr" elements
+    Then I should see 4 "table tbody tr" elements
     # on vérifie que si on ajoute deux fois le même user, l'ajout est bloqué
     When I follow "Ajouter"
     Then I should see "Ajouter un utilisateur GitHub"
