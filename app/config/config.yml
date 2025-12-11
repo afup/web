@@ -440,6 +440,13 @@ ting:
                 default:
                     connection: main
                     database: '%database_name%'
+        membershipfee:
+            namespace: AppBundle\MembershipFee\Model\Repository
+            directory: "@AppBundle/MembershipFee/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: "%database_name%"
         throttling:
             namespace : AppBundle\Security\ActionThrottling
             directory : "@AppBundle/Security/ActionThrottling"

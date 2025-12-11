@@ -7,7 +7,7 @@
 
     <div class="ui menu">
         {% if user.companyId %}
-            <a href="/pages/administration/index.php?page=cotisations&amp;type_personne={{ constant('AFUP_PERSONNES_MORALES') }}&amp;id_personne={{ user.companyId }}"
+            <a href="{{ url('admin_membership_fee_list', {'memberType': constant('AFUP_PERSONNES_MORALES'), 'memberId': user.companyId}) }}"
                class="item">
                 <i class="money bill icon"></i>
                 Voir les cotisations
@@ -19,7 +19,7 @@
                 </div>
             </a>
         {% else %}
-            <a href="/pages/administration/index.php?page=cotisations&amp;type_personne={{ constant('AFUP_PERSONNES_PHYSIQUES') }}&amp;id_personne={{ user.id }}"
+            <a href="{{ url('admin_membership_fee_list', {'memberType': constant('AFUP_PERSONNES_PHYSIQUES'), 'memberId': user.id}) }}"
                class="item">
                 <i class="money bill icon"></i>
                 Voir les cotisations
