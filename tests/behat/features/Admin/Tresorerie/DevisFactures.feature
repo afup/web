@@ -95,7 +95,6 @@ Feature: Administration - Trésorerie - Devis/Facture
     Then the ".content .message" element should contain "La facture a été envoyée"
     # Lien de paiement
     Then I follow the button of tooltip "Récupérer le lien de paiement en ligne"
-    And print last response
     Then I should see "Paiement en ligne de la facture"
     Then I should see "Télécharger la facture en PDF"
     # Téléchargement de la facture

@@ -15,7 +15,7 @@ class PublicPaymentRedirectAction extends AbstractController
 {
     public function __construct(private readonly Facture $facture) {}
 
-    public function __invoke(Request $request, $type = 'success'): RedirectResponse
+    public function __invoke(Request $request, string $type = 'success'): RedirectResponse
     {
         $invoiceRef = $request->query->get('cmd', '');
         if (!$invoiceRef) {
