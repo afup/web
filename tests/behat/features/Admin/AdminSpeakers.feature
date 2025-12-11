@@ -14,7 +14,7 @@ Feature: Administration - Partie Speakers
     # ajout d'un speaker
     When I follow "Ajouter"
     Then I should see "Ajouter un conférencier pour le forum"
-    Then The "speaker[github_user]" field should only contain the follow values '["","agallou (Adrien Gallou)","ubermuda (Geoffrey Bachelet)"]'
+    Then The "speaker[github_user]" field should only contain the follow values '["","agallou (Adrien Gallou)","ubermuda (Geoffrey Bachelet)","UnLoginGithub (John Doe)"]'
     When I fill in "speaker[firstname]" with "Damien"
     When I fill in "speaker[lastname]" with "Segui"
     When I fill in "speaker[email]" with "damien@gmail.com"
