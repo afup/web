@@ -383,9 +383,4 @@ class Article implements NotifyPropertyInterface
         $this->authorId = $authorId;
         return $this;
     }
-
-    public function usesMarkdown(): bool
-    {
-        return $this->getContentType() === 'markdown';
-    }
 }
