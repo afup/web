@@ -203,13 +203,18 @@ class MessageFactory
         $attachment = new Attachment();
         $attachment
             ->setTitle('Total des inscriptions')
-            ->setTitleLink('https://afup.org/pages/administration/index.php?page=forum_inscriptions')
+            ->setTitleLink('https://afup.org/pages/administration/index.php?page=forum_inscriptions&id_forum=' . $event->getId())
         ;
 
-
         if ($event->lastsOneDay()) {
+            $tickets = $eventStats->firstDay->confirmed + $eventStats->firstDay->pending;
+            if ($event->getSeats()) {
+                $percentage = floor(($tickets * 100) / $event->getSeats());
+                $tickets = $tickets . ' / ' . $event->getSeats() . " ($percentage%)";
+            }
+
             $attachment->addField((new Field())->setShort(true)->setTitle('Journée unique')
-                ->setValue($eventStats->firstDay->confirmed + $eventStats->firstDay->pending));
+                ->setValue($tickets));
         } else {
             $attachment
                 ->addField((new Field())->setShort(true)->setTitle('Premier jour')
