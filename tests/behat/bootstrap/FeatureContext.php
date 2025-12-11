@@ -10,6 +10,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Hook\BeforeScenario;
+use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Step\Given;
@@ -74,6 +75,10 @@ class FeatureContext implements Context
     #[BeforeScenario]
     public function clearTestClock(): void
     {
+        if ($this->minkContext->getSession()->getDriver() instanceof PantherDriver) {
+            // setRequestHeader is not supported by PantherDriver
+            return;
+        }
         $this->minkContext->getSession()->getDriver()->setRequestHeader(DetectClockMockingListener::HEADER, '');
     }
 
@@ -708,5 +713,24 @@ class FeatureContext implements Context
             DetectClockMockingListener::HEADER,
             $date,
         );
+    }
+
+    #[Then('/^(?:|I )click on link with css class "(?P<text>(?:[^"]|\\")*)"$/')]
+    public function clickOnLink(string $text): void
+    {
+        $this->minkContext->getSession()->executeScript('document.querySelector("a.' . $text . '").click();');
+    }
+
+    #[Then('/^(?:|I )open menu "(?P<text>(?:[^"]|\\")*)"$/')]
+    public function openMenu(string $text)
+    {
+        $this->minkContext->getSession()->getPage()->find('css', 'div.header.title:contains("' . $text . '")')->click();
+    }
+
+    #[Then('/^wait (?P<value>(?:[0-9])*)(ms|s)$/')]
+    public function wait(string $text, string $unit)
+    {
+        $value = intval($text) * (strtolower($unit) === 'ms' ? 1000 : 1);
+        \usleep($value);
     }
 }
