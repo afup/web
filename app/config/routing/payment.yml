@@ -1,0 +1,17 @@
+payment_invoice:
+  path: /facture/
+  defaults:
+    _controller: AppBundle\Controller\Website\Payment\InvoiceAction
+
+payment_invoice_redirect:
+  path: /facture/{type}/
+  defaults:
+    _controller: AppBundle\Controller\Website\Payment\InvoiceRedirectAction
+    type: success
+  requirements:
+    type: success|error|canceled|refused
+
+payment_invoice_download:
+  path: /facture/download/
+  defaults:
+    _controller: AppBundle\Controller\Website\Payment\InvoiceDownloadAction

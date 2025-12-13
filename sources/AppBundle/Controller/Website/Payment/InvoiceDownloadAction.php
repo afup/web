@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Admin\Accounting\Invoice;
+namespace AppBundle\Controller\Website\Payment;
 
 use Afup\Site\Comptabilite\Facture;
 use Afup\Site\Utils\Utils;
@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PublicDownloadAction extends AbstractController
+class InvoiceDownloadAction extends AbstractController
 {
     public function __construct(private readonly Facture $facture) {}
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Admin\Accounting\Invoice;
+namespace AppBundle\Controller\Website\Payment;
 
 use Afup\Site\Comptabilite\Facture;
 use Afup\Site\Utils\Utils;
@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class PublicPaymentRedirectAction extends AbstractController
+class InvoiceRedirectAction extends AbstractController
 {
     public function __construct(private readonly Facture $facture) {}
 
@@ -35,6 +35,6 @@ class PublicPaymentRedirectAction extends AbstractController
             $this->addFlash('error', "Il y a eu une erreur lors de l'enregistrement de paiement.");
         }
 
-        return $this->redirectToRoute('public_payment_invoice', ['ref' => $cryptRef]);
+        return $this->redirectToRoute('payment_invoice', ['ref' => $cryptRef]);
     }
 }

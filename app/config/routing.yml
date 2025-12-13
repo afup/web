@@ -18,7 +18,7 @@ association:
     prefix: /association
 
 payment:
-    resource: "routing/public_payment.yml"
+    resource: "routing/payment.yml"
     prefix: /paiement
 
 talks:

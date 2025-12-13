@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Admin\Accounting\Invoice;
+namespace AppBundle\Controller\Website\Payment;
 
 use Afup\Site\Comptabilite\Facture;
 use Afup\Site\Utils\Utils;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class PublicPaymentAction extends AbstractController
+class InvoiceAction extends AbstractController
 {
     public function __construct(
         private readonly ViewRenderer $view,
@@ -39,7 +39,7 @@ class PublicPaymentAction extends AbstractController
             $paybox = $this->buildPaybox($invoice);
         }
 
-        return $this->view->render('admin/accounting/invoice/public_payment.html.twig', [
+        return $this->view->render('site/payment/invoice.html.twig', [
             'invoice_number' => $invoice['numero_facture'],
             'ref' => $ref,
             'paybox' => $paybox,
@@ -60,10 +60,10 @@ class PublicPaymentAction extends AbstractController
             ->setTotal($amount * 100)
             ->setCmd($invoice['numero_facture'])
             ->setPorteur($invoice['email'])
-            ->setUrlRetourEffectue($this->generateUrl('public_payment_redirect', ['type' => 'success'], UrlGeneratorInterface::ABSOLUTE_URL))
-            ->setUrlRetourAnnule($this->generateUrl('public_payment_redirect', ['type' => 'canceled'], UrlGeneratorInterface::ABSOLUTE_URL))
-            ->setUrlRetourRefuse($this->generateUrl('public_payment_redirect', ['type' => 'refused'], UrlGeneratorInterface::ABSOLUTE_URL))
-            ->setUrlRetourErreur($this->generateUrl('public_payment_redirect', ['type' => 'error'], UrlGeneratorInterface::ABSOLUTE_URL))
+            ->setUrlRetourEffectue($this->generateUrl('payment_invoice_redirect', ['type' => 'success'], UrlGeneratorInterface::ABSOLUTE_URL))
+            ->setUrlRetourAnnule($this->generateUrl('payment_invoice_redirect', ['type' => 'canceled'], UrlGeneratorInterface::ABSOLUTE_URL))
+            ->setUrlRetourRefuse($this->generateUrl('payment_invoice_redirect', ['type' => 'refused'], UrlGeneratorInterface::ABSOLUTE_URL))
+            ->setUrlRetourErreur($this->generateUrl('payment_invoice_redirect', ['type' => 'error'], UrlGeneratorInterface::ABSOLUTE_URL))
         ;
 
         $payboxBilling = new PayboxBilling($invoice['prenom'], $invoice['nom'], $invoice['adresse'], $invoice['code_postal'], $invoice['ville'], $invoice['id_pays']);
