@@ -17,6 +17,10 @@ association:
     resource: "routing/site.yml"
     prefix: /association
 
+payment:
+    resource: "routing/payment.yml"
+    prefix: /paiement
+
 talks:
     resource: "routing/talks.yml"
     prefix: /talks

@@ -1,0 +1,24 @@
+{% extends 'admin/association/membership/_base.html.twig' %}
+{% block page_content %}
+    <article>
+        <h1>Paiement en ligne de la facture #{{ invoice_number }}</h1>
+
+        {% if paybox %}
+            <h2>Paiement</h2>
+            {{ paybox|raw }}
+        {% endif %}
+
+        <p class="note">
+            Si vous avez la moindre question, n'hésitez pas à contacter
+            <a href="mailto:tresorier@afup.org">la trésorerie</a>.
+        </p>
+
+        <h2>Facture en PDF</h2>
+        <p>
+            <a href="{{ url('payment_invoice_download', {ref: ref}) }}">
+                Télécharger la facture en PDF
+            </a>
+        </p>
+
+    </article>
+{% endblock %}
