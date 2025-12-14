@@ -6,6 +6,7 @@ namespace AppBundle\Tests\Compta\Importer;
 
 use AppBundle\Compta\Importer\AutoQualifier;
 use AppBundle\Compta\Importer\Operation;
+use AppBundle\Compta\Importer\OperationType;
 use AppBundle\Model\ComptaCategorie;
 use AppBundle\Model\ComptaEvenement;
 use AppBundle\Model\ComptaModeReglement;
@@ -16,7 +17,7 @@ final class AutoQualifierTest extends TestCase
 {
     public function testDefaultOperation(): void
     {
-        $operation = new Operation('2022-02-22', 'DESCRIPTION', '123', Operation::CREDIT, '1234');
+        $operation = new Operation('2022-02-22', 'DESCRIPTION', 123, OperationType::Credit, '1234');
         $qualifier = new AutoQualifier([]);
         $actual = $qualifier->qualify($operation);
 
@@ -46,7 +47,7 @@ final class AutoQualifierTest extends TestCase
     #[DataProvider('idModeReglementData')]
     public function testIdModeReglement($description, $idModeReglement): void
     {
-        $operation = new Operation('2022-02-22', $description, '123', Operation::CREDIT, '1234');
+        $operation = new Operation('2022-02-22', $description, 123, OperationType::Credit, '1234');
         $qualifier = new AutoQualifier([]);
         $actual = $qualifier->qualify($operation);
 
@@ -57,31 +58,31 @@ final class AutoQualifierTest extends TestCase
     public static function qualifierData(): array
     {
         return [
-            'sprd.net' => ['VIR SEPA sprd.net AG blablabla', Operation::CREDIT,
+            'sprd.net' => ['VIR SEPA sprd.net AG blablabla', OperationType::Credit,
                 ComptaModeReglement::VIREMENT, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::GOODIES, 1, 100, 'montant_ht_soumis_tva_0'],
-            'COM AFUP' => ['*CB COM AFUP blablabla', Operation::DEBIT,
+            'COM AFUP' => ['*CB COM AFUP blablabla', OperationType::Debit,
                 ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::FRAIS_DE_COMPTE, AutoQualifier::DEFAULT_ATTACHMENT, 94.79, 'montant_ht_soumis_tva_5_5'],
-            'COTIS ASSOCIATIS' => ['* COTIS ASSOCIATIS ESSENTIEL blablabla', Operation::DEBIT,
+            'COTIS ASSOCIATIS' => ['* COTIS ASSOCIATIS ESSENTIEL blablabla', OperationType::Debit,
                 ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::FRAIS_DE_COMPTE, AutoQualifier::DEFAULT_ATTACHMENT, 90.91, 'montant_ht_soumis_tva_10'],
-            'URSSAF' => ['PRLV URSSAF blablabla', Operation::DEBIT,
+            'URSSAF' => ['PRLV URSSAF blablabla', OperationType::Debit,
                 ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::CHARGES_SOCIALES, AutoQualifier::DEFAULT_ATTACHMENT, 83.33, 'montant_ht_soumis_tva_20'],
-            'DGFIP' => ['PRLV B2B DGFIP', Operation::DEBIT,
+            'DGFIP' => ['PRLV B2B DGFIP', OperationType::Debit,
                 ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::PRELEVEMENT_SOURCE, AutoQualifier::DEFAULT_ATTACHMENT, null, null],
-            'RETRAITE' => ['PRLV A3M - RETRAITE - MALAKOFF HUMANIS blablabla', Operation::DEBIT,
+            'RETRAITE' => ['PRLV A3M - RETRAITE - MALAKOFF HUMANIS blablabla', OperationType::Debit,
                 ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::CHARGES_SOCIALES, AutoQualifier::DEFAULT_ATTACHMENT, null, null],
-            'Online.net' => ['PRLV Online SAS - blablabla', Operation::DEBIT,
+            'Online.net' => ['PRLV Online SAS - blablabla', OperationType::Debit,
                 ComptaModeReglement::PRELEVEMENT, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::OUTILS, 1, null, null],
-            'meetup.org' => ['CB MEETUP ORG blablabla', Operation::DEBIT,
+            'meetup.org' => ['CB MEETUP ORG blablabla', OperationType::Debit,
                 ComptaModeReglement::CB, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::MEETUP, 1, null, null],
             'POINT TRANSACTION' => ['PRLV POINT TRANSACTION SYSTEM - blablabla',
-                Operation::DEBIT, ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::FRAIS_DE_COMPTE, 1, null, null],
-            'Mailchimp' => ['CB MAILCHIMP FACT blablabla', Operation::DEBIT,
+                OperationType::Debit, ComptaModeReglement::PRELEVEMENT, ComptaEvenement::GESTION, ComptaCategorie::FRAIS_DE_COMPTE, 1, null, null],
+            'Mailchimp' => ['CB MAILCHIMP FACT blablabla', OperationType::Debit,
                 ComptaModeReglement::CB, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::MAILCHIMP, 1, null, null],
-            'AWS' => ['CB AWS EMEA FACT blablabla', Operation::DEBIT,
+            'AWS' => ['CB AWS EMEA FACT blablabla', OperationType::Debit,
                 ComptaModeReglement::CB, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::OUTILS, 1, null, null],
-            'gandi.net' => ['CB GANDI FACT blablabla', Operation::DEBIT,
+            'gandi.net' => ['CB GANDI FACT blablabla', OperationType::Debit,
                 ComptaModeReglement::CB, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::GANDI, 1, null, null],
-            'Twilio' => ['CB Twilio blablabla', Operation::DEBIT,
+            'Twilio' => ['CB Twilio blablabla', OperationType::Debit,
                 ComptaModeReglement::CB, ComptaEvenement::ASSOCIATION_AFUP, ComptaCategorie::OUTILS, 1, null, null],
         ];
     }
@@ -89,7 +90,7 @@ final class AutoQualifierTest extends TestCase
     #[DataProvider('qualifierData')]
     public function testQualifier(
         string $operationDescription,
-        string $operationType,
+        OperationType $operationType,
         int $expectedIdModeReglement,
         int $expectedEvenement,
         int $expectedCategorie,
@@ -97,7 +98,7 @@ final class AutoQualifierTest extends TestCase
         ?float $expectedHT,
         ?string $expectedHTKey,
     ): void {
-        $operation = new Operation('2022-02-22', $operationDescription, '100', $operationType, '1234');
+        $operation = new Operation('2022-02-22', $operationDescription, 100, $operationType, '1234');
         $qualifier = new AutoQualifier($this->fakeBD());
         $actual = $qualifier->qualify($operation);
 

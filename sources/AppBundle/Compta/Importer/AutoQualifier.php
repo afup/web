@@ -20,10 +20,10 @@ class AutoQualifier
     {
         $operationQualified = [];
 
-        $operationQualified['date_ecriture'] = $operation->getDateEcriture();
-        $operationQualified['description'] = $operation->getDescription();
+        $operationQualified['date_ecriture'] = $operation->dateEcriture;
+        $operationQualified['description'] = $operation->description;
         $operationQualified['idoperation'] = $operation->isCredit() ? 2 : 1;
-        $operationQualified['montant'] = $operation->getMontant();
+        $operationQualified['montant'] = $operation->montant;
 
         $operationQualified['categorie'] = self::DEFAULT_CATEGORIE;
         $operationQualified['evenement'] = self::DEFAULT_EVENEMENT;
