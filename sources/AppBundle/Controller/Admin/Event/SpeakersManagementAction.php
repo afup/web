@@ -4,27 +4,22 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event;
 
-use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Event\Form\Support\EventSelectFactory;
+use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\SpeakerInfos\SpeakersExpensesStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class SpeakersManagementAction extends AbstractController
 {
     public function __construct(
-        private readonly EventActionHelper $eventActionHelper,
         private readonly SpeakerRepository $speakerRepository,
         private readonly SpeakersExpensesStorage $speakersExpensesStorage,
-        private readonly EventSelectFactory $eventSelectFactory,
     ) {}
 
-    public function __invoke(Request $request): Response
+    public function __invoke(AdminEventSelection $eventSelection): Response
     {
-        $id = $request->query->get('id');
-        $event = $this->eventActionHelper->getEventById($id);
+        $event = $eventSelection->event;
         $speakers = $this->speakerRepository->getScheduledSpeakersByEvent($event, true);
 
         if ($speakers->count() > 0) {
@@ -38,7 +33,7 @@ class SpeakersManagementAction extends AbstractController
         return $this->render('admin/event/speakers_management.html.twig', [
             'event' => $event,
             'speakers' => $speakers,
-            'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
+            'event_select_form' => $eventSelection->selectForm(),
         ]);
     }
 }

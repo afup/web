@@ -22,7 +22,7 @@ class SendLastCallSponsorTokenAction extends AbstractController
 
     public function __invoke(Request $request): RedirectResponse
     {
-        $event = $this->eventActionHelper->getEventById($request->query->get('id'), false);
+        $event = $this->eventActionHelper->getFromRequest('id', false)->event;
         /** @var SponsorTicket[] $tokens */
         $tokens = $this->sponsorTicketRepository->getByEvent($event);
         $mailSent = 0;

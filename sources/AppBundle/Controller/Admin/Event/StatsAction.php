@@ -26,7 +26,7 @@ class StatsAction extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $event = $this->eventActionHelper->getEventById($request->query->get('event_id'));
+        $event = $this->eventActionHelper->getFromRequest('event_id')->event;
         if ($comparedEventId = $request->query->get('compared_event_id')) {
             $comparedEvent = $this->eventActionHelper->getEventById($comparedEventId, false);
         } else {

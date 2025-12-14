@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Speaker;
 
 use AppBundle\AuditLog\Audit;
-use AppBundle\Controller\Event\EventActionHelper;
+use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Invoice\InvoiceService;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
@@ -23,7 +23,6 @@ class SpeakerRegisterAction extends AbstractController
 {
     public function __construct(
         private readonly SpeakerRepository $speakerRepository,
-        private readonly EventActionHelper $eventActionHelper,
         private readonly TalkRepository $talkRepository,
         private readonly TicketRepository $ticketRepository,
         private readonly InvoiceService $invoiceService,
@@ -31,9 +30,9 @@ class SpeakerRegisterAction extends AbstractController
         private readonly Audit $audit,
     ) {}
 
-    public function __invoke(Request $request): RedirectResponse
+    public function __invoke(Request $request, AdminEventSelection $eventSelection): RedirectResponse
     {
-        $event = $this->eventActionHelper->getEventById($request->query->get('id'));
+        $event = $eventSelection->event;
         $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event);
         $nbSpeakers = 0;
 
