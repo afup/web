@@ -27,7 +27,11 @@ class CreditMutuel implements Importer
         if (!is_array($firstLine)) {
             return false;
         }
-        return count($firstLine) === 6 && $firstLine[1] === 'Date de valeur';
+
+        return count($firstLine) >= 6
+            && $firstLine[0] === 'Date'
+            && $firstLine[1] === 'Date de valeur'
+            && $firstLine[5] === 'Solde';
     }
 
     public function extract(): \Generator
@@ -39,7 +43,7 @@ class CreditMutuel implements Importer
                 continue;
             }
 
-            if (!$data || count($data) !== 6) {
+            if (!$data || count($data) < 6) {
                 continue;
             }
 
@@ -54,10 +58,10 @@ class CreditMutuel implements Importer
 
             if ('' === $data[3]) {
                 $montant = abs((float) str_replace(',', '.', $data[2]));
-                $type = Operation::DEBIT;
+                $type = OperationType::Debit;
             } else {
                 $montant = abs((float) str_replace(',', '.', $data[3]));
-                $type = Operation::CREDIT;
+                $type = OperationType::Credit;
             }
 
             // on doit fournir un numéro d'opération unique, ce qui permet lorsqu'on réimporte un fichier

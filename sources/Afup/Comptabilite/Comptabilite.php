@@ -715,7 +715,7 @@ SQL;
         $qualifier = new AutoQualifier($this->obtenirListRegles(true));
 
         foreach ($importer->extract() as $operation) {
-            $numero_operation = $operation->getNumeroOperation();
+            $numero_operation = $operation->numeroOperation;
             // On vérife si l'enregistrement existe déjà
             $enregistrement = $this->obtenirParNumeroOperation($numero_operation);
 
