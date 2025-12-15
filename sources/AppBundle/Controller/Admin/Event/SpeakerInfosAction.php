@@ -19,7 +19,7 @@ class SpeakerInfosAction
 
     public function __invoke(Request $request)
     {
-        $event = $this->eventActionHelper->getEventById($request->query->get('id'), false);
+        $event = $this->eventActionHelper->getFromRequest('id', false)->event;
         $speaker = $this->speakerRepository->get($request->get('speaker_id'));
 
         return $this->speakerPage->handleRequest($request, $event, $speaker);

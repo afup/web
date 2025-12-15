@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event\Session;
 
-use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Event\Form\Support\EventSelectFactory;
+use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\RoomRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
@@ -21,21 +20,19 @@ use Symfony\Component\HttpFoundation\Response;
 final class IndexAction extends AbstractController
 {
     public function __construct(
-        private readonly EventActionHelper $eventActionHelper,
-        private readonly EventSelectFactory $eventSelectFactory,
         private readonly TalkRepository $talkRepository,
         private readonly RoomRepository $roomRepository,
     ) {}
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, AdminEventSelection $eventSelection): Response
     {
-        $event = $this->eventActionHelper->getEventById($request->query->get('id'));
+        $event = $eventSelection->event;
         $sessions = $this->talkRepository->getByEventWithSpeakers($event, false);
 
         return $this->render('event/session/index.html.twig', [
             'event' => $event,
             'sessions' => $sessions,
-            'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
+            'event_select_form' => $eventSelection->selectForm(),
             'calendar' => [
                 'date' => $event->getDateStart()?->format('Y-m-d'),
                 'events' => $this->calendarEvents($sessions),

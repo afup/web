@@ -20,7 +20,7 @@ class BadgesGenerateAction
 
     public function __invoke(Request $request): BinaryFileResponse
     {
-        $event = $this->eventActionHelper->getEventById($request->query->get('id'), false);
+        $event = $this->eventActionHelper->getFromRequest('id', false)->event;
         $file = new SplFileObject(sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('badges_', true), 'w+');
         $this->registrationsExportGenerator->export($event, $file);
         $response = new BinaryFileResponse($file, BinaryFileResponse::HTTP_OK, [

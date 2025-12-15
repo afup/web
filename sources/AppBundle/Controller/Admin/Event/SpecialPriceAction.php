@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event;
 
-use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Event\Form\Support\EventSelectFactory;
+use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Form\TicketSpecialPriceType;
 use AppBundle\Event\Model\Repository\TicketSpecialPriceRepository;
 use AppBundle\Event\Model\TicketSpecialPrice;
@@ -18,17 +17,13 @@ use Symfony\Component\HttpFoundation\Response;
 class SpecialPriceAction extends AbstractController
 {
     public function __construct(
-        private readonly EventActionHelper $eventActionHelper,
         private readonly TicketSpecialPriceRepository $ticketSpecialPriceRepository,
-        private readonly EventSelectFactory $eventSelectFactory,
         private readonly Authentication $authentication,
     ) {}
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, AdminEventSelection $eventSelection): Response
     {
-        $id = $request->query->get('id');
-
-        $event = $this->eventActionHelper->getEventById($id);
+        $event = $eventSelection->event;
 
         $specialPrice = new TicketSpecialPrice();
         $specialPrice
@@ -57,7 +52,7 @@ class SpecialPriceAction extends AbstractController
             'event' => $event,
             'title' => 'Gestion des prix custom',
             'form' => $form->createView(),
-            'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
+            'event_select_form' => $eventSelection->selectForm(),
         ]);
     }
 }

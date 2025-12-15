@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Association\Form\TicketEventType;
-use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Event\Form\Support\EventSelectFactory;
+use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\TicketEventType as ModelTicketEventType;
@@ -20,17 +19,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class PricesAddAction extends AbstractController
 {
     public function __construct(
-        private readonly EventActionHelper $eventActionHelper,
         private readonly TicketTypeRepository $ticketTypeRepository,
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
         private readonly ValidatorInterface $validator,
-        private readonly EventSelectFactory $eventSelectFactory,
     ) {}
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, AdminEventSelection $eventSelection): Response
     {
         $id = $request->query->getInt('event');
-        $event = $this->eventActionHelper->getEventById($id);
+        $event = $eventSelection->event;
 
         $ticketEventType = new ModelTicketEventType();
         $ticketEventType->setEventId($event->getId());
@@ -74,7 +71,7 @@ class PricesAddAction extends AbstractController
             'event' => $event,
             'title' => 'Tarifications - Ajouter',
             'button_text' => 'Ajouter',
-            'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
+            'event_select_form' => $eventSelection->selectForm(),
         ]);
     }
 }

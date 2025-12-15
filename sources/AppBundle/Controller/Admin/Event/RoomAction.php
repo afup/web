@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event;
 
+use AppBundle\Event\AdminEventSelection;
 use Symfony\Component\Form\FormView;
-use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\RoomType;
-use AppBundle\Event\Form\Support\EventSelectFactory;
 use AppBundle\Event\Model\Repository\RoomRepository;
 use AppBundle\Event\Model\Room;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -16,21 +15,18 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class RoomAction extends AbstractController
 {
     public function __construct(
-        private readonly EventActionHelper $eventActionHelper,
         private readonly FormFactoryInterface $formFactory,
         private readonly RoomRepository $roomRepository,
-        private readonly EventSelectFactory $eventSelectFactory,
     ) {}
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, AdminEventSelection $eventSelection): Response
     {
-        $id = $request->query->get('id');
-
-        $event = $this->eventActionHelper->getEventById($id);
+        $event = $eventSelection->event;
         $rooms = $this->roomRepository->getByEvent($event);
         $editForms = $this->getFormsForRooms($rooms);
 
@@ -74,7 +70,7 @@ class RoomAction extends AbstractController
             'addForm' => $addForm->createView(),
             'editForms' => array_map(static fn(Form $form): FormView => $form->createView(), $editForms),
             'title' => 'Gestion des salles',
-            'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
+            'event_select_form' => $eventSelection->selectForm(),
         ]);
     }
 
