@@ -1,0 +1,27 @@
+{% use 'form_div_layout.html.twig' %}
+
+{%- block form_label -%}
+    {{ parent() }}
+{%- endblock form_label -%}
+
+{%- block form_row -%}
+    <div class="field">
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+    </div>
+{%- endblock form_row -%}
+
+{%- block checkbox_row -%}
+    <div class="field">
+        <div class="ui checkbox">
+            <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+            {{ form_label(form) }}
+        </div>
+    </div>
+{%- endblock checkbox_row -%}
+
+
+{%- block button_attributes -%}
+{{  parent() }} class="ui button"
+{%- endblock button_attributes -%}

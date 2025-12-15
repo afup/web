@@ -67,7 +67,7 @@ if ($action == 'lister') {
 
     $smarty->assign('forums', $forum->obtenirListe());
 
-    $listeSessions = $forum_appel->obtenirListeSessions($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre,$list_type, $needsMentoring, $planned);
+    $listeSessions = [];
     $moi = $droits->obtenirIdentifiant();
     $votant = in_array($_SESSION['afup_login'] ?? '', []);
     $maxVotant = count([]);
@@ -300,7 +300,7 @@ if ($action == 'lister') {
             } else {
                 Logs::log('Modification de la session de ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('La session a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=forum_sessions&action=lister&id_forum=' . $valeurs['id_forum']);
+            afficherMessage('La session a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), '/admin/talk/?id=' . $valeurs['id_forum']);
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de la session');
         }

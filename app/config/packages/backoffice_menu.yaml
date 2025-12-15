@@ -160,6 +160,9 @@ parameters:
                 forum_sessions:
                     nom: 'Conférences'
                     niveau: 'ROLE_FORUM'
+                    url: '/admin/talk/'
+                    extra_routes:
+                        - admin_talk_list
                 forum_vote_github:
                     nom: 'Votes visiteurs'
                     niveau: 'ROLE_FORUM'
