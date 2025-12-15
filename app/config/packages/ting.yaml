@@ -1,0 +1,61 @@
+ting:
+    connections:
+        main:
+            namespace: CCMBenchmark\Ting\Driver\Mysqli
+            charset: utf8mb4
+            master:
+                host:     "%database_host%"
+                port:     "%database_port%"
+                user:     "%database_user%"
+                password: "%database_password%"
+
+    repositories:
+        event:
+            namespace : AppBundle\Event\Model\Repository
+            directory : "@AppBundle/Event/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: '%database_name%'
+        site:
+            namespace : AppBundle\Site\Model\Repository
+            directory : "@AppBundle/Site/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: '%database_name%'
+        accounting:
+            namespace: AppBundle\Accounting\Model\Repository
+            directory: "@AppBundle/Accounting/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: "%database_name%"
+        association:
+            namespace : AppBundle\Association\Model\Repository
+            directory : "@AppBundle/Association/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: '%database_name%'
+        membershipfee:
+            namespace: AppBundle\MembershipFee\Model\Repository
+            directory: "@AppBundle/MembershipFee/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: "%database_name%"
+        throttling:
+            namespace : AppBundle\Security\ActionThrottling
+            directory : "@AppBundle/Security/ActionThrottling"
+            options:
+                default:
+                    connection: main
+                    database: '%database_name%'
+        techletter:
+            namespace: AppBundle\TechLetter\Model\Repository
+            directory: "@AppBundle/TechLetter/Model/Repository"
+            options:
+                default:
+                    connection: main
+                    database: "%database_name%"
