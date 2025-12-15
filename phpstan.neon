@@ -18,7 +18,11 @@ parameters:
       property: 45
       # since PHP 8.3
       # constant: 30
+    doctrine:
+        ormRepositoryClass: AppBundle\Doctrine\EntityRepository
 
 rules:
     - AppBundle\StaticAnalysis\Rule\NoDebugFunctionsRule
     - AppBundle\StaticAnalysis\Rule\NoGetUserMethodRule
+    - AppBundle\StaticAnalysis\Rule\DoctrineRepositoryRule
+    - AppBundle\StaticAnalysis\Rule\DoctrineDisableDQLRule

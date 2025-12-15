@@ -1,0 +1,57 @@
+doctrine:
+  dbal:
+    dbname: '%env(DATABASE_NAME)%'
+    host: '%env(DATABASE_HOST)%'
+    port: '%env(DATABASE_PORT)%'
+    user: '%env(DATABASE_USER)%'
+    password: '%env(DATABASE_PASSWORD)%'
+    server_version: '5.7'
+
+    profiling_collect_backtrace: '%kernel.debug%'
+    use_savepoints: true
+  orm:
+    auto_generate_proxy_classes: true
+    enable_lazy_ghost_objects: true
+    report_fields_where_declared: true
+    validate_xml_mapping: true
+    naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+    auto_mapping: true
+    controller_resolver:
+      auto_mapping: false
+    mappings:
+      Accounting:
+        type: attribute
+        is_bundle: false
+        dir: '%kernel.project_dir%/../sources/AppBundle/Accounting/Entity'
+        prefix: 'AppBundle\Accounting\Entity'
+        alias: Accounting
+
+when@test:
+  doctrine:
+    dbal:
+      dbname: 'web'
+      host: 'dbtest'
+      port: '3306'
+      user: 'root'
+      password: 'root'
+      server_version: '5.7'
+
+when@prod:
+  doctrine:
+    orm:
+      auto_generate_proxy_classes: false
+      proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
+      query_cache_driver:
+        type: pool
+        pool: doctrine.system_cache_pool
+      result_cache_driver:
+        type: pool
+        pool: doctrine.result_cache_pool
+
+  framework:
+    cache:
+      pools:
+        doctrine.result_cache_pool:
+          adapter: cache.app
+        doctrine.system_cache_pool:
+          adapter: cache.system
