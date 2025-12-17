@@ -1,0 +1,35 @@
+framework:
+    #esi:             ~
+    translator:
+        fallbacks: ["%locale%"]
+        enabled: true
+        default_path: "%kernel.project_dir%/../translations"
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.project_dir%/config/routing.yml"
+        strict_requirements: ~
+        utf8: true
+    form:            ~
+    csrf_protection: ~
+    validation:
+        email_validation_mode: html5
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    session:
+        storage_factory_id: session.storage.factory.native
+        # https://symfony.com/doc/4.x/session/database.html#store-sessions-in-a-relational-database-mariadb-mysql-postgresql
+        handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        # 24 heures
+        gc_maxlifetime: 86400
+        cookie_secure: auto
+        cookie_samesite: lax
+    fragments:       ~
+    http_method_override: true
+    assets: ~
+    handle_all_throwables: true
+    php_errors:
+        log: true
+    exceptions:
+        Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
+            log_level: debug
+            status_code: 404
