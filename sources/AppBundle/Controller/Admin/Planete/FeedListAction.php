@@ -6,6 +6,7 @@ namespace AppBundle\Controller\Admin\Planete;
 
 use PlanetePHP\Feed;
 use PlanetePHP\FeedRepository;
+use PlanetePHP\FeedStatus;
 use PlanetePHP\FeedTester;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,8 +48,8 @@ final readonly class FeedListAction
         $results = [];
 
         foreach ($feeds as $feed) {
-            if ($feed->getStatus()) {
-                $results[$feed->getId()] = $this->feedTester->test($feed);
+            if ($feed->status === FeedStatus::Active) {
+                $results[$feed->id] = $this->feedTester->test($feed);
             }
         }
 

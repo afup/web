@@ -9,6 +9,7 @@ use PlanetePHP\DisplayableFeedArticle;
 use PlanetePHP\FeedArticleRepository;
 use PlanetePHP\FeedCrawler;
 use PlanetePHP\FeedRepository;
+use PlanetePHP\FeedStatus;
 use PlanetePHP\SymfonyFeedClient;
 use Psr\Log\NullLogger;
 use Symfony\Component\Clock\MockClock;
@@ -23,13 +24,13 @@ final class FeedCrawlerTest extends IntegrationTestCase
         $feedRepository = self::getContainer()->get(FeedRepository::class);
 
         // L'auto-incrément démarre à 148 dans le script de création de la bdd
-        $feedRepository->insert('fake rss', 'https://rss.fake', 'https://rss.fake', 1);
-        $feedRepository->insert('fake atom', 'https://atom.fake', 'https://atom.fake', 1);
-        $feedRepository->insert('fake invalid', 'https://invalid.fake', 'https://invalid.fake', 1);
-        $feedRepository->insert('fake html', 'https://html.fake', 'https://html.fake', 1);
-        $feedRepository->insert('fake error 500', 'https://error500.fake', 'https://error500.fake', 1);
-        $feedRepository->insert('fake error 404', 'https://error404.fake', 'https://error404.fake', 1);
-        $feedRepository->insert('fake empty', 'https://empty.fake', 'https://empty.fake', 1);
+        $feedRepository->insert('fake rss', 'https://rss.fake', 'https://rss.fake', FeedStatus::Active);
+        $feedRepository->insert('fake atom', 'https://atom.fake', 'https://atom.fake', FeedStatus::Active);
+        $feedRepository->insert('fake invalid', 'https://invalid.fake', 'https://invalid.fake', FeedStatus::Active);
+        $feedRepository->insert('fake html', 'https://html.fake', 'https://html.fake', FeedStatus::Active);
+        $feedRepository->insert('fake error 500', 'https://error500.fake', 'https://error500.fake', FeedStatus::Active);
+        $feedRepository->insert('fake error 404', 'https://error404.fake', 'https://error404.fake', FeedStatus::Active);
+        $feedRepository->insert('fake empty', 'https://empty.fake', 'https://empty.fake', FeedStatus::Active);
 
         $client = new MockHttpClient(function (string $method, string $url): MockResponse {
             if ($url === 'https://atom.fake/') {

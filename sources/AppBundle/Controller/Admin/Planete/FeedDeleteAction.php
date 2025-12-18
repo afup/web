@@ -19,7 +19,7 @@ class FeedDeleteAction extends AbstractController
 
     public function __invoke(Request $request): RedirectResponse
     {
-        $id = $request->query->get('id');
+        $id = $request->query->getInt('id');
         if ($this->feedRepository->delete($id)) {
             $this->audit->log('Suppression du flux ' . $id);
             $this->addFlash('notice', 'Le flux a été supprimé');

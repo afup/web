@@ -24,11 +24,11 @@ class FeedEditAction extends AbstractController
         $id = $request->query->getInt('id');
         $feed = $this->feedRepository->get($id);
         $data = new FeedFormData();
-        $data->name = $feed->getName();
-        $data->feed = $feed->getFeed();
-        $data->url = $feed->getUrl();
-        $data->userId = $feed->getUserId();
-        $data->status = $feed->getStatus();
+        $data->name = $feed->name;
+        $data->feed = $feed->feed;
+        $data->url = $feed->url;
+        $data->userId = $feed->userId;
+        $data->status = $feed->status;
         $form = $this->createForm(FeedFormType::class, $data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
