@@ -47,10 +47,9 @@ final class IndexAction extends AbstractController
         } else {
             $endSubscription = $this->cotisations->finProchaineCotisation($cotisation);
             $message = sprintf(
-                'Votre dernière cotisation -- %s %s -- est valable jusqu\'au %s. <br />
+                'Votre dernière cotisation -- %s € -- est valable jusqu\'au %s. <br />
         Si vous renouvelez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s.',
                 number_format((float) $cotisation['montant'], 2, ',', ' '),
-                EURO,
                 date("d/m/Y", (int) $cotisation['date_fin']),
                 $endSubscription->format('d/m/Y'),
             );

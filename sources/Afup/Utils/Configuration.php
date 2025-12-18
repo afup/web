@@ -6,8 +6,6 @@ namespace Afup\Site\Utils;
 
 use Symfony\Component\Yaml\Yaml;
 
-define('EURO', '€');
-
 /**
  * Classe de gestion de la configuration
  */
