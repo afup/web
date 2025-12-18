@@ -333,9 +333,6 @@ class Cotisations
         $requete = 'SELECT * FROM ' . $table . ' WHERE id=' . $cotisation['id_personne'];
         $personne = $this->_bdd->obtenirEnregistrement($requete);
 
-
-        $configuration = $GLOBALS['AFUP_CONF'];
-
         $dateCotisation = \DateTimeImmutable::createFromFormat('U', $cotisation['date_debut']);
         $bankAccountFactory = new BankAccountFactory();
         $isSubjectedToVat = Vat::isSubjectedToVat($dateCotisation);

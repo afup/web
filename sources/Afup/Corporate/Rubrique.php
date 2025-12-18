@@ -6,7 +6,6 @@ namespace Afup\Site\Corporate;
 
 use Afup\Site\Pagination;
 use Afup\Site\Utils\Base_De_Donnees;
-use Afup\Site\Utils\Configuration;
 
 class Rubrique
 {
@@ -33,20 +32,13 @@ class Rubrique
      */
     protected $bdd;
 
-    /**
-     * @var Configuration
-     */
-    protected $conf;
     protected $page_courante;
 
     public function __construct(
         public $id = 0,
         $bdd = false,
-        $conf = false,
     ) {
         $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
-
-        $this->conf = $conf ?: $GLOBALS['AFUP_CONF'];
 
         if (isset($_GET['page_courante'])) {
             $this->page_courante = (int) $_GET['page_courante'];
@@ -273,7 +265,7 @@ class Rubrique
         if ($this->id_parent > 0) {
             $id_parent = $this->id_parent;
             while ($id_parent > 0) {
-                $parent = new self($id_parent, $this->bdd, $this->conf);
+                $parent = new self($id_parent, $this->bdd);
                 $parent->charger();
                 $fil = '/ <a href="' . $parent->route() . '">' . $parent->nom . '</a> ' . $fil;
                 $id_parent = $parent->id_parent;
