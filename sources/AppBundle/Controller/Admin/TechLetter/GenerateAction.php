@@ -19,7 +19,7 @@ final class GenerateAction extends AbstractController
         #[Autowire('@app.mailchimp_techletter_api')]
         private readonly Mailchimp $mailchimp,
         private readonly TechLetterFactory $techLetterFactory,
-        #[Autowire('%mailchimp_techletter_list%')]
+        #[Autowire('%env(MAILCHIMP_TECHLETTER_LIST)%')]
         private readonly string $mailchimpTechletterList,
     ) {}
 
