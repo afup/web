@@ -108,8 +108,7 @@
       "PlanetePHP\\": "sources/PlanetePHP/"
     },
     "classmap": [
-      "app/AppKernel.php",
-      "app/AppCache.php"
+      "app/AppKernel.php"
     ],
     "files": [
       "sources/Afup/Bootstrap/_Common.php",
