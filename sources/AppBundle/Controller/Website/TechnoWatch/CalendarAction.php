@@ -13,9 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 final class CalendarAction extends AbstractController
 {
     public function __construct(
-        #[Autowire('%techno_watch_calendar_key%')]
+        #[Autowire('%env(TECHNO_WATCH_CALENDAR_KEY)%')]
         private readonly string $technoWatchCalendarKey,
-        #[Autowire('%techno_watch_calendar_url%')]
+        #[Autowire('%env(TECHNO_WATCH_CALENDAR_URL)%')]
         private readonly string $technoWatchCalendarUrl,
     ) {}
 
