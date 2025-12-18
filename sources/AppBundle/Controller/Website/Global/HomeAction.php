@@ -30,7 +30,7 @@ final class HomeAction extends AbstractController
         private readonly CacheItemPoolInterface $cache,
         private readonly SearchClient $client,
         private readonly TalkRepository $talkRepository,
-        #[Autowire('%home_algolia_enabled%')]
+        #[Autowire('%env(HOME_ALGOLIA_ENABLED)%')]
         private readonly bool $homeAlgoliaEnabled,
         private readonly ArticleRepository $articleRepository,
         private readonly SheetRepository $sheetRepository,

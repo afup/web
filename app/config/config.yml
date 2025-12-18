@@ -1,4 +1,3 @@
 imports:
-    - { resource: config.php }
     - { resource: services.yml }
     - { resource: packages/*.yaml }

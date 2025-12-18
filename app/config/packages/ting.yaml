@@ -4,10 +4,10 @@ ting:
             namespace: CCMBenchmark\Ting\Driver\Mysqli
             charset: utf8mb4
             master:
-                host:     "%database_host%"
-                port:     "%database_port%"
-                user:     "%database_user%"
-                password: "%database_password%"
+                host:     "%env(DATABASE_HOST)%"
+                port:     "%env(int:DATABASE_PORT)%"
+                user:     "%env(DATABASE_USER)%"
+                password: "%env(DATABASE_PASSWORD)%"
 
     repositories:
         event:
@@ -16,46 +16,46 @@ ting:
             options:
                 default:
                     connection: main
-                    database: '%database_name%'
+                    database: '%env(DATABASE_NAME)%'
         site:
             namespace : AppBundle\Site\Model\Repository
             directory : "@AppBundle/Site/Model/Repository"
             options:
                 default:
                     connection: main
-                    database: '%database_name%'
+                    database: '%env(DATABASE_NAME)%'
         accounting:
             namespace: AppBundle\Accounting\Model\Repository
             directory: "@AppBundle/Accounting/Model/Repository"
             options:
                 default:
                     connection: main
-                    database: "%database_name%"
+                    database: "%env(DATABASE_NAME)%"
         association:
             namespace : AppBundle\Association\Model\Repository
             directory : "@AppBundle/Association/Model/Repository"
             options:
                 default:
                     connection: main
-                    database: '%database_name%'
+                    database: '%env(DATABASE_NAME)%'
         membershipfee:
             namespace: AppBundle\MembershipFee\Model\Repository
             directory: "@AppBundle/MembershipFee/Model/Repository"
             options:
                 default:
                     connection: main
-                    database: "%database_name%"
+                    database: "%env(DATABASE_NAME)%"
         throttling:
             namespace : AppBundle\Security\ActionThrottling
             directory : "@AppBundle/Security/ActionThrottling"
             options:
                 default:
                     connection: main
-                    database: '%database_name%'
+                    database: '%env(DATABASE_NAME)%'
         techletter:
             namespace: AppBundle\TechLetter\Model\Repository
             directory: "@AppBundle/TechLetter/Model/Repository"
             options:
                 default:
                     connection: main
-                    database: "%database_name%"
+                    database: "%env(DATABASE_NAME)%"

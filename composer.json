@@ -47,6 +47,7 @@
     "symfony/asset": "7.3.*",
     "symfony/clock": "7.3.*",
     "symfony/console": "7.3.*",
+    "symfony/dotenv": "7.4.*",
     "symfony/expression-language": "7.3.*",
     "symfony/form": "7.3.*",
     "symfony/framework-bundle": "7.3.*",
