@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use AppBundle\AppKernel;
 use Composer\Autoload\ClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 

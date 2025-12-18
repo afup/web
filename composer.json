@@ -107,9 +107,6 @@
       "AppBundle\\": "sources/AppBundle/",
       "PlanetePHP\\": "sources/PlanetePHP/"
     },
-    "classmap": [
-      "app/AppKernel.php"
-    ],
     "files": [
       "sources/Afup/Bootstrap/_Common.php",
       "sources/Afup/Bootstrap/commonStart.php"

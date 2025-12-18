@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Afup\Site\Utils;
 
+use AppBundle\AppKernel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class SymfonyKernel
 {
-    protected \AppKernel $kernel;
+    protected AppKernel $kernel;
     protected ?Request $request;
     protected ?Response $response = null;
 
@@ -28,7 +29,7 @@ class SymfonyKernel
             $env = 'test';
         }
 
-        $this->kernel = new \AppKernel($env, $debug);
+        $this->kernel = new AppKernel($env, $debug);
         $this->kernel->boot();
         if (!$request instanceof Request) {
             $request = Request::createFromGlobals();
