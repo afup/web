@@ -2,7 +2,7 @@
 
 {% block content %}
     {% set token_delete=csrf_token('admin_membership_delete') %}
-    {% if memberType.value == enum('AppBundle\\Controller\\Admin\\Membership\\MemberType').MemberPhysical.value %}
+    {% if memberType == enum('AppBundle\\Association\\MemberType').MemberPhysical %}
     <h2>Cotisations de {{ member.firstName }} {{ member.lastName }}</h2>
     {% else %}
     <h2>Cotisations de {{ member.companyName }}</h2>
@@ -16,7 +16,7 @@
                 Ajouter
             </div>
         </a>
-        {% if memberType.value == enum('AppBundle\\Controller\\Admin\\Membership\\MemberType').MemberPhysical.value  %}
+        {% if memberType == enum('AppBundle\\Association\\MemberType').MemberPhysical  %}
         <a href="{{ url('admin_members_user_edit', {id: memberId}) }}" class="item">
             <i class="user icon"></i>
             Voir la fiche de la personne physique

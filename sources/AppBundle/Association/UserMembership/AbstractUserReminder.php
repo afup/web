@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Association\UserMembership;
 
 use AppBundle\Association\MembershipReminderInterface;
+use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
-use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\SubscriptionReminderLog;
 use AppBundle\Association\NotifiableInterface;
 use AppBundle\Email\Mailer\Attachment;
@@ -35,7 +35,7 @@ abstract class AbstractUserReminder implements MembershipReminderInterface
             ->setUserId($user->getId())
             ->setReminderDate(new \DateTime())
             ->setReminderKey($this->getKey())
-            ->setUserType(UserRepository::USER_TYPE_PHYSICAL)
+            ->setUserType(MemberType::MemberPhysical->value)
         ;
 
         $message = new Message(

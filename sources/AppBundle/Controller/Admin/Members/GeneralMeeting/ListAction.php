@@ -30,7 +30,7 @@ class ListAction
         Assertion::inArray($sort, self::VALID_SORTS);
         Assertion::inArray($direction, self::VALID_DIRECTIONS);
         $dates = $this->generalMeetingRepository->getAllDates();
-        $convocations = count($this->userRepository->getActiveMembers(UserRepository::USER_TYPE_ALL));
+        $convocations = count($this->userRepository->getActiveMembers());
         $nbAttendeesAndPowers = $nbAttendees = $quorum = $validAttendeeIds = null;
         if (null !== $latestDate) {
             $nbAttendeesAndPowers = $this->generalMeetingRepository->countAttendeesAndPowers($latestDate);

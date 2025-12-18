@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\MembershipFee\Model;
 
+use AppBundle\Association\MemberType;
 use AppBundle\Controller\Admin\Membership\MembershipFeePayment;
-use AppBundle\Controller\Admin\Membership\MemberType;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use DateTime;

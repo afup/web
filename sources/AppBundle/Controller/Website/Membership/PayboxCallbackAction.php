@@ -6,6 +6,7 @@ namespace AppBundle\Controller\Website\Membership;
 
 use Afup\Site\Association\Cotisations;
 use AppBundle\Association\Event\NewMemberEvent;
+use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\AuditLog\Audit;
@@ -47,7 +48,7 @@ final readonly class PayboxCallbackAction
             $account = $this->cotisations->getAccountFromCmd($payboxResponse->getCmd());
             $lastCotisation = $this->cotisations->obtenirDerniere($account['type'], $account['id']);
 
-            if ($lastCotisation === false && $account['type'] == UserRepository::USER_TYPE_PHYSICAL) {
+            if ($lastCotisation === false && $account['type'] == MemberType::MemberPhysical->value) {
                 $user = $this->userRepository->get($account['id']);
                 $this->eventDispatcher->dispatch(new NewMemberEvent($user));
             }

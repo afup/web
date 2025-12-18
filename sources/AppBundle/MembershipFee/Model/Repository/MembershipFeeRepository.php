@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\MembershipFee\Model\Repository;
 
+use AppBundle\Association\MemberType;
 use AppBundle\Controller\Admin\Membership\MembershipFeePayment;
-use AppBundle\Controller\Admin\Membership\MemberType;
 use AppBundle\MembershipFee\Model\MembershipFee;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Repository\Metadata;

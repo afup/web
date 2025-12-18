@@ -86,7 +86,7 @@ class MailchimpMembersAutoListSynchronizer
     {
         $subscribdedEmails =  [];
 
-        foreach ($this->userRepository->getActiveMembers(UserRepository::USER_TYPE_ALL) as $user) {
+        foreach ($this->userRepository->getActiveMembers() as $user) {
             $subscribdedEmails[] = $user->getEmail();
         }
 

@@ -6,7 +6,7 @@ namespace AppBundle\Controller\Event\Ticket;
 
 use Afup\Site\Forum\Facturation;
 use Afup\Site\Utils\Vat;
-use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\User;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Model\Invoice;
@@ -66,10 +66,10 @@ final class TicketAction extends AbstractController
 
             if ($user instanceof User) {
                 $memberId = $user->getId();
-                $memberType = UserRepository::USER_TYPE_PHYSICAL;
+                $memberType = MemberType::MemberPhysical->value;
                 if ($user->isMemberForCompany()) {
                     $memberId = $user->getCompanyId();
-                    $memberType = UserRepository::USER_TYPE_COMPANY;
+                    $memberType = MemberType::MemberCompany->value;
                 }
             }
 
@@ -94,7 +94,7 @@ final class TicketAction extends AbstractController
         $totalOfSoldTicketsByMember = 0;
         if ($user !== null) {
             $totalOfSoldTicketsByMember = $this->ticketRepository->getTotalOfSoldTicketsByMember(
-                $user->isMemberForCompany() ? UserRepository::USER_TYPE_COMPANY : UserRepository::USER_TYPE_PHYSICAL,
+                $user->isMemberForCompany() ? MemberType::MemberCompany->value : MemberType::MemberPhysical->value,
                 $user->isMemberForCompany() ? $user->getCompanyId() : $user->getId(),
                 $event->getId(),
             );
