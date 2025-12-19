@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Admin\Membership;
+namespace AppBundle\Association;
 
 enum MemberType: int
 {

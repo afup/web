@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Validator\Constraints;
 
+use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
-use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
@@ -76,7 +76,7 @@ class CorporateMemberValidator extends ConstraintValidator
         }
 
         $ticketsSoldToThisCompany = $this->ticketRepository->getTotalOfSoldTicketsByMember(
-            UserRepository::USER_TYPE_COMPANY,
+            MemberType::MemberCompany->value,
             $company->getId(),
             $eventId,
         );

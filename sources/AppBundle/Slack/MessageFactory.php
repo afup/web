@@ -147,7 +147,7 @@ class MessageFactory
     {
         $latestDate = $generalMeetingRepository->getLatestAttendanceDate();
         Assertion::notNull($latestDate);
-        $nombrePersonnesAJourDeCotisation = count($userRepository->getActiveMembers(UserRepository::USER_TYPE_ALL));
+        $nombrePersonnesAJourDeCotisation = count($userRepository->getActiveMembers());
 
         $message = new Message();
         $message

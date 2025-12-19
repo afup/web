@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Accounting\MembershipFee;
 
 use Afup\Site\Association\Cotisations;
-use AppBundle\Controller\Admin\Membership\MemberType;
+use AppBundle\Association\MemberType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Association\MemberType;
 use Phinx\Seed\AbstractSeed;
 
 class SubscriptionReminder extends AbstractSeed
@@ -12,7 +12,7 @@ class SubscriptionReminder extends AbstractSeed
         $data = [
             [
                 'user_id' => Users::ID_USER_PERSONNE_MORALE,
-                'user_type' => UserRepository::USER_TYPE_COMPANY,
+                'user_type' => MemberType::MemberCompany->value,
                 'email' => 'raoul.dupont@mycorp.fr',
                 'reminder_date' => '2022-01-01',
                 'reminder_key' => '15DaysAfter',
@@ -20,7 +20,7 @@ class SubscriptionReminder extends AbstractSeed
             ],
             [
                 'user_id' => Users::ID_USER_PERSONNE_MORALE,
-                'user_type' => UserRepository::USER_TYPE_COMPANY,
+                'user_type' => MemberType::MemberCompany->value,
                 'email' => 'raoul.dupont@mycorp.fr',
                 'reminder_date' => '2022-02-01',
                 'reminder_key' => '15DaysAfter',
@@ -28,7 +28,7 @@ class SubscriptionReminder extends AbstractSeed
             ],
             [
                 'user_id' => Users::ID_USER_PERSONNE_PHYSIQUE,
-                'user_type' => UserRepository::USER_TYPE_PHYSICAL,
+                'user_type' => MemberType::MemberPhysical->value,
                 'email' => 'paul.personne@mycorp.fr',
                 'reminder_date' => '2022-03-01',
                 'reminder_key' => '15DaysAfter',
@@ -36,7 +36,7 @@ class SubscriptionReminder extends AbstractSeed
             ],
             [
                 'user_id' => Users::ID_USER_PERSONNE_PHYSIQUE,
-                'user_type' => UserRepository::USER_TYPE_PHYSICAL,
+                'user_type' => MemberType::MemberPhysical->value,
                 'email' => 'paul.personne@mycorp.fr',
                 'reminder_date' => '2022-04-01',
                 'reminder_key' => '15DaysAfter',

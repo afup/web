@@ -28,7 +28,7 @@ final readonly class Runner
         /**
          * @var User[] $users
          */
-        $users = $this->userRepository->getActiveMembers(UserRepository::USER_TYPE_ALL);
+        $users = $this->userRepository->getActiveMembers();
         foreach ($users as $user) {
             // Add to members list
             try {
@@ -53,7 +53,7 @@ final readonly class Runner
         /**
          * @var User[] $users
          */
-        $users = $this->userRepository->getUsersByEndOfMembership($dateUnsubscribe, UserRepository::USER_TYPE_ALL);
+        $users = $this->userRepository->getUsersByEndOfMembership($dateUnsubscribe);
         foreach ($users as $user) {
             // Delete from members list
             try {
@@ -64,7 +64,7 @@ final readonly class Runner
         }
         // Then - add new members
         $dateNextYear = new \DateTimeImmutable('+1 year - 1 day');
-        $users = $this->userRepository->getUsersByEndOfMembership($dateNextYear, UserRepository::USER_TYPE_ALL);
+        $users = $this->userRepository->getUsersByEndOfMembership($dateNextYear);
         foreach ($users as $user) {
             // Add to the members list
             try {

@@ -7,6 +7,7 @@ namespace AppBundle\Command;
 use AppBundle\Association;
 use AppBundle\Association\CompanyMembership\CompanyReminderFactory;
 use AppBundle\Association\MembershipReminderInterface;
+use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\UserMembership\Reminder15DaysAfterEnd;
@@ -84,7 +85,7 @@ class SubscriptionReminderCommand extends Command
         $output->writeln('<info>Reminders des souscriptions</info>');
         foreach ($reminders as $name => $details) {
             $reminder = $factory->getReminder($details['physical']);
-            $users = $this->userRepository->getUsersByEndOfMembership($details['date'], UserRepository::USER_TYPE_PHYSICAL);
+            $users = $this->userRepository->getUsersByEndOfMembership($details['date'], MemberType::MemberPhysical);
 
             $output->writeln(sprintf('%s (%s)', $name, $details['date']->format('d/m/Y')));
             $output->writeln(sprintf('<info>%s membres</info>', $users->count()));
@@ -92,7 +93,7 @@ class SubscriptionReminderCommand extends Command
 
 
             $reminder = $companyFactory->getReminder($details['company']);
-            $users = $this->userRepository->getUsersByEndOfMembership($details['date'], UserRepository::USER_TYPE_COMPANY);
+            $users = $this->userRepository->getUsersByEndOfMembership($details['date'], MemberType::MemberCompany);
             $output->writeln(sprintf('<info>%s entreprises</info>', $users->count()));
             $this->handleReminders($output, $reminder, $users, $dryRun);
         }

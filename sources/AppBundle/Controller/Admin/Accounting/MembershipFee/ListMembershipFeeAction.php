@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\MembershipFee;
 
+use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
-use AppBundle\Controller\Admin\Membership\MemberType;
 use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

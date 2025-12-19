@@ -11,6 +11,7 @@ use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\PDF_Facture;
 use Afup\Site\Utils\Utils;
 use Afup\Site\Utils\Vat;
+use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
@@ -296,7 +297,7 @@ class Cotisations
         $arr = explode('-', $cmd, 5);
         // Depuis une facture : $cmd=FCOTIS-2023-202
         if (3 === count($arr)) {
-            return ['type' => UserRepository::USER_TYPE_COMPANY, 'id' => (int) $arr[2]];
+            return ['type' => MemberType::MemberCompany->value, 'id' => (int) $arr[2]];
         }
 
         // Depuis une cotisation : $cmd=C2023-211120232237-0-5-PAUL-431
