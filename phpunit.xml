@@ -21,6 +21,6 @@
     </testsuites>
 
     <php>
-        <env name="KERNEL_CLASS" value="\AppKernel"/>
+        <env name="KERNEL_CLASS" value="\AppBundle\AppKernel"/>
     </php>
 </phpunit>

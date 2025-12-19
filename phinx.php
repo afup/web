@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use AppBundle\AppKernel;
+
 require 'vendor/autoload.php';
 
 $environments = [
