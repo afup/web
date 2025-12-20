@@ -19,7 +19,10 @@ use AppBundle\Event\Model\Ticket;
 
 class Facturation
 {
-    public function __construct(private readonly Base_De_Donnees $_bdd) {}
+    public function __construct(
+        private readonly Base_De_Donnees $_bdd,
+        private readonly Pays $pays,
+    ) {}
 
     /**
      * Renvoit les informations concernant une inscription
@@ -109,8 +112,6 @@ class Facturation
         WHERE reference=' . $this->_bdd->echapper($reference);
         $inscriptions = $this->_bdd->obtenirTous($requete);
 
-        $pays = new Pays($this->_bdd);
-
         $dateFacture = isset($facture['date_facture']) && !empty($facture['date_facture'])
             ? new \DateTimeImmutable('@' . $facture['date_facture'])
             : new \DateTimeImmutable();
@@ -136,7 +137,7 @@ class Facturation
         $pdf->Cell(130, 5, 'Objet : Devis n°' . $reference);
         $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(10);
-        $pdf->MultiCell(130, 5, $facture['societe'] . "\n" . $facture['adresse'] . "\n" . $facture['code_postal'] . "\n" . $facture['ville'] . "\n" . $pays->obtenirNom($facture['id_pays']));
+        $pdf->MultiCell(130, 5, $facture['societe'] . "\n" . $facture['adresse'] . "\n" . $facture['code_postal'] . "\n" . $facture['ville'] . "\n" . $this->pays->obtenirNom($facture['id_pays']));
 
         $pdf->Ln(15);
 
@@ -204,8 +205,6 @@ class Facturation
         WHERE reference=' . $this->_bdd->echapper($reference);
         $inscriptions = $this->_bdd->obtenirTous($requete);
 
-        $pays = new Pays($this->_bdd);
-
         // Construction du PDF
 
         $dateFacture = isset($facture['date_facture']) && !empty($facture['date_facture'])
@@ -236,7 +235,7 @@ class Facturation
         $pdf->Cell(130, 5, 'Objet : Facture n°' . $reference);
         $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(10);
-        $pdf->MultiCell(130, 5, $facture['societe'] . "\n" . $facture['adresse'] . "\n" . $facture['code_postal'] . "\n" . $facture['ville'] . "\n" . $pays->obtenirNom($facture['id_pays']));
+        $pdf->MultiCell(130, 5, $facture['societe'] . "\n" . $facture['adresse'] . "\n" . $facture['code_postal'] . "\n" . $facture['ville'] . "\n" . $this->pays->obtenirNom($facture['id_pays']));
 
         $pdf->Ln(15);
 

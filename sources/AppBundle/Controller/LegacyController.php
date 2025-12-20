@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller;
 
 use Afup\Site\Utils\Logs;
+use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\Utils;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -47,6 +48,7 @@ class LegacyController extends AbstractController
         private readonly Mailer $mailer,
         private readonly SpeakerRepository $speakerRepository,
         private readonly TalkRepository $talkRepository,
+        private readonly Pays $pays,
         private readonly array $backOfficePages,
     ) {}
 
