@@ -335,11 +335,11 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     }
 
     /**
-     * @param int $countryId Country's identifier
+     * @param string $countryId Country's identifier
      *
      * @return bool TRUE if the country exists, FALSE otherwise
      */
-    private function countryExists($countryId): bool
+    private function countryExists(string $countryId): bool
     {
         return 0 < $this->getQuery('SELECT 1 FROM afup_pays WHERE id = :id')
                 ->setParams(['id' => $countryId])

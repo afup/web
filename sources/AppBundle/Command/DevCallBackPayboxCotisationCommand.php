@@ -45,7 +45,7 @@ EOF;
 
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
         curl_exec($curl);
 
         $output->writeln("Appel au callback de paiement de cotisation effectué");
