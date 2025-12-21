@@ -16,7 +16,7 @@ final readonly class ArticlesController
     public function __invoke(Request $request): Response
     {
         $perPage = 20;
-        $page = (int) $request->query->get("page", 1);
+        $page = $request->query->getInt("page", 1);
 
         if ($page < 1) {
             $page = 1;

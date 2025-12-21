@@ -33,7 +33,7 @@ class PayboxFactory
         $now = new \DateTime();
 
         $paybox
-            ->setTotal($montant * 100) // Total de la commande, en centimes d'euros
+            ->setTotal((int) $montant * 100) // Total de la commande, en centimes d'euros
             ->setCmd($facture) // Référence de la commande
             ->setPorteur($email) // Email du client final (Le porteur de la carte)
             ->setUrlRetourEffectue($this->router->generate('membership_payment_redirect', ['type' => 'success'], RouterInterface::ABSOLUTE_URL))
