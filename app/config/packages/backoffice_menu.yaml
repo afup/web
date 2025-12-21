@@ -221,7 +221,10 @@ parameters:
                     niveau: 'ROLE_ADMIN'
                 compta_banque:
                     nom: 'Compte banques'
+                    url: '/admin/accounting/bank-accounts/list'
                     niveau: 'ROLE_ADMIN'
+                    extra_routes:
+                        - admin_accounting_bank_accounts_list
                 compta_conf_evenement:
                     nom: 'Configuration'
                     niveau: 'ROLE_ADMIN'

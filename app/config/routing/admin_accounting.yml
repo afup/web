@@ -125,3 +125,7 @@ admin_accounting_search:
 admin_accounting_membership_fee:
   resource: "admin_accounting_membership_fee.yml"
   prefix: /membership-fee
+
+admin_accounting_bank_accounts:
+  resource: "admin_accounting_bank_accounts.yml"
+  prefix: /bank-accounts
