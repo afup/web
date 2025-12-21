@@ -7,7 +7,6 @@ use Afup\Site\Forum\Facturation;
 use Afup\Site\Forum\Forum;
 use Afup\Site\Forum\Inscriptions;
 use Afup\Site\Utils\Logs;
-use Afup\Site\Utils\Pays;
 use AppBundle\Controller\LegacyController;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\EventRepository;
@@ -70,7 +69,7 @@ function updateGlobalsForTarif(
 
 $forum = new Forum($bdd);
 $forum_inscriptions = new Inscriptions($bdd);
-$forum_facturation = new Facturation($bdd);
+$forum_facturation = new Facturation($bdd, $this->pays);
 
 if ($action == 'lister') {
     $list_champs = 'i.id, i.date, i.nom, i.prenom, i.email, f.societe, i.etat, i.coupon, i.type_inscription, f.type_reglement, i.presence_day1, i.presence_day2';
@@ -136,7 +135,6 @@ if ($action == 'lister') {
         afficherMessage('Une erreur est survenue lors de la suppression de l\'inscription', 'index.php?page=forum_inscriptions&action=lister', true);
     }
 } else {
-    $pays = new Pays($bdd);
 
     $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
@@ -260,7 +258,7 @@ if ($action == 'lister') {
     $formulaire->addElement('textarea', 'adresse_facturation'    , 'Adresse'        , ['cols' => 42, 'rows'      => 10]);
     $formulaire->addElement('text'    , 'code_postal_facturation', 'Code postal'    , ['size' =>  6, 'maxlength' => 10]);
     $formulaire->addElement('text'    , 'ville_facturation'      , 'Ville'          , ['size' => 30, 'maxlength' => 50]);
-    $formulaire->addElement('select'  , 'id_pays_facturation'    , 'Pays'           , $pays->obtenirPays());
+    $formulaire->addElement('select'  , 'id_pays_facturation'    , 'Pays'           , $this->pays->obtenirPays());
     $formulaire->addElement('text'    , 'email_facturation'      , 'Email (facture)', ['size' => 30, 'maxlength' => 100]);
     $formulaire->addElement('text'    , 'coupon'                 , 'Coupon'         , ['size' => 30, 'maxlength' => 200]);
 

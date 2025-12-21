@@ -6,7 +6,6 @@ declare(strict_types=1);
 use Afup\Site\Forum\AppelConferencier;
 use Afup\Site\Forum\Forum;
 use Afup\Site\Utils\Logs;
-use Afup\Site\Utils\Pays;
 use AppBundle\Controller\LegacyController;
 use AppBundle\Event\Model\Talk;
 use Assert\Assertion;
@@ -108,7 +107,6 @@ if ($action == 'lister') {
         afficherMessage('Une erreur est survenue lors de la suppression de la session', 'index.php?page=forum_sessions&action=lister&type=' . $list_type, true);
     }
 } else {
-    $pays = new Pays($bdd);
 
     $talk = null;
 

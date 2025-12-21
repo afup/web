@@ -6,7 +6,6 @@ declare(strict_types=1);
 use Afup\Site\Comptabilite\Comptabilite;
 use Afup\Site\Comptabilite\Facture;
 use Afup\Site\Utils\Logs;
-use Afup\Site\Utils\Pays;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
@@ -25,7 +24,7 @@ $smarty->assign('action', $action);
 
 
 $compta = new Comptabilite($bdd);
-$comptaFact = new Facture($bdd);
+$comptaFact = new Facture($bdd, $this->pays);
 
 if ($action == 'lister') {
     $id_periode = isset($_GET['id_periode']) && $_GET['id_periode'] ? $_GET['id_periode'] : "";
@@ -40,7 +39,6 @@ if ($action == 'lister') {
 } elseif ($action == 'telecharger_devis') {
     $comptaFact->genererDevis($_GET['ref']);
 } elseif ($action == 'ajouter' || $action == 'modifier') {
-    $pays = new Pays($bdd);
 
     $formulaire = instancierFormulaire();
 
@@ -120,7 +118,7 @@ if ($action == 'lister') {
     $formulaire->addElement('textarea', 'adresse'    , 'Adresse'        , ['cols' => 42, 'rows'      => 10]);
     $formulaire->addElement('text'    , 'code_postal', 'Code postal'    , ['size' =>  6, 'maxlength' => 10]);
     $formulaire->addElement('text'    , 'ville'      , 'Ville'          , ['size' => 30, 'maxlength' => 50]);
-    $formulaire->addElement('select'  , 'id_pays'    , 'Pays'           , $pays->obtenirPays());
+    $formulaire->addElement('select'  , 'id_pays'    , 'Pays'           , $this->pays->obtenirPays());
 
     $formulaire->addElement('header', null          , 'Contact');
     $formulaire->addElement('text'    , 'nom'        , 'Nom'            , ['size' => 30, 'maxlength' => 40]);

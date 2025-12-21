@@ -16,7 +16,10 @@ use AppBundle\Email\Mailer\Message;
 
 class Facture
 {
-    public function __construct(private readonly Base_De_Donnees $_bdd) {}
+    public function __construct(
+        private readonly Base_De_Donnees $_bdd,
+        private readonly Pays $pays,
+    ) {}
 
 
     /* Journal des opération
@@ -321,8 +324,6 @@ class Facture
         $requete = 'SELECT * FROM afup_compta_facture_details WHERE idafup_compta_facture=' . $this->_bdd->echapper($coordonnees['id']);
         $details = $this->_bdd->obtenirTous($requete);
 
-        $pays = new Pays($this->_bdd);
-
         $dateDevis = isset($coordonnees['date_devis']) && !empty($coordonnees['date_devis'])
             ? \DateTimeImmutable::createFromFormat('Y-m-d', (string) $coordonnees['date_devis'])
             : new \DateTimeImmutable();
@@ -351,7 +352,7 @@ class Facture
             . $coordonnees['adresse'] . "\n"
             . $coordonnees['code_postal'] . " "
             . $coordonnees['ville'] . "\n"
-            . $pays->obtenirNom($coordonnees['id_pays'])
+            . $this->pays->obtenirNom($coordonnees['id_pays'])
             . ($coordonnees['tva_intra'] ? ("\n" . 'N° TVA Intracommunautaire : ' . $coordonnees['tva_intra']) : null),
         );
 
@@ -511,8 +512,6 @@ class Facture
         $requete = 'SELECT * FROM afup_compta_facture_details WHERE idafup_compta_facture=' . $this->_bdd->echapper($coordonnees['id']);
         $details = $this->_bdd->obtenirTous($requete);
 
-        $pays = new Pays($this->_bdd);
-
         $dateFacture = isset($coordonnees['date_facture']) && !empty($coordonnees['date_facture'])
             ? \DateTimeImmutable::createFromFormat('Y-m-d', (string) $coordonnees['date_facture'])
             : new \DateTimeImmutable();
@@ -542,7 +541,7 @@ class Facture
             . $coordonnees['adresse'] . "\n"
             . $coordonnees['code_postal'] . "\n"
             . $coordonnees['ville'] . "\n"
-            . $pays->obtenirNom($coordonnees['id_pays'])
+            . $this->pays->obtenirNom($coordonnees['id_pays'])
             . ($coordonnees['tva_intra'] ? ("\n" . 'N° TVA Intracommunautaire : ' . $coordonnees['tva_intra']) : null));
 
         $pdf->Ln(10);

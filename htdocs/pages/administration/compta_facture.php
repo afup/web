@@ -6,7 +6,6 @@ declare(strict_types=1);
 use Afup\Site\Comptabilite\Comptabilite;
 use Afup\Site\Comptabilite\Facture;
 use Afup\Site\Utils\Logs;
-use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\Utils;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
@@ -28,7 +27,7 @@ $action = verifierAction([
 $smarty->assign('action', $action);
 
 $compta = new Comptabilite($bdd);
-$comptaFact = new Facture($bdd);
+$comptaFact = new Facture($bdd, $this->pays);
 
 if ($action == 'lister') {
     $periodes = $compta->obtenirListPeriode();
@@ -57,7 +56,6 @@ if ($action == 'lister') {
         afficherMessage("La facture n'a pas pu être envoyée", 'index.php?page=compta_facture&action=lister', true);
     }
 } elseif ($action == 'ajouter' || $action == 'modifier') {
-    $pays = new Pays($bdd);
 
     $formulaire = instancierFormulaire();
 
@@ -133,7 +131,7 @@ if ($action == 'lister') {
     $formulaire->addElement('textarea', 'adresse'    , 'Adresse'        , ['cols' => 42, 'rows'      => 10]);
     $formulaire->addElement('text'    , 'code_postal', 'Code postal'    , ['size' =>  6, 'maxlength' => 10]);
     $formulaire->addElement('text'    , 'ville'      , 'Ville'          , ['size' => 30, 'maxlength' => 50]);
-    $formulaire->addElement('select'  , 'id_pays'    , 'Pays'           , $pays->obtenirPays());
+    $formulaire->addElement('select'  , 'id_pays'    , 'Pays'           , $this->pays->obtenirPays());
 
     $formulaire->addElement('header', null          , 'Contact');
     $formulaire->addElement('text'    , 'nom'        , 'Nom'            , ['size' => 30, 'maxlength' => 40]);
