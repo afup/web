@@ -1,98 +1,14 @@
-admin_accounting_accounts_list:
-  path: /accounts/list
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ListAccountAction}
+admin_accounting_configuration:
+  resource: "admin_accounting/configuration.yml"
+  prefix: /configuration
 
-admin_accounting_accounts_edit:
-  path: /accounts/edit/{id}
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditAccountAction}
-  requirements:
-    id: '\d+'
+admin_accounting_membership_fee:
+  resource: "admin_accounting/membership_fee.yml"
+  prefix: /membership-fee
 
-admin_accounting_accounts_add:
-  path: /accounts/add
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\AddAccountAction}
-
-admin_accounting_accounts_archive:
-  path: /accounts/archive/{id}
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ArchiveAccountAction}
-  requirements:
-    id: '\d+'
-
-admin_accounting_accounts_restore:
-  path: /accounts/restore/{id}
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\RestoreAccountAction}
-  requirements:
-    id: '\d+'
-
-admin_accounting_payments_list:
-  path: /payments/list
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ListPaymentAction}
-
-admin_accounting_payments_add:
-  path: /payments/add
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\AddPaymentAction}
-
-admin_accounting_payments_edit:
-  path: /payments/edit/{id}
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditPaymentAction}
-  requirements:
-    id: '\d+'
-
-admin_accounting_operations_list:
-  path: /operations/list
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ListOperationAction}
-
-admin_accounting_operations_add:
-  path: /operations/add
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\AddOperationAction}
-
-admin_accounting_operations_edit:
-  path: /operations/edit/{id}
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditOperationAction}
-  requirements:
-    id: '\d+'
-
-admin_accounting_events_list:
-  path: /events/list
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ListEventAction}
-
-admin_accounting_events_add:
-  path: /events/add
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\AddEventAction}
-
-admin_accounting_events_edit:
-  path: /events/edit/{id}
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditEventAction}
-  requirements:
-    id: '\d+'
-
-admin_accounting_categories_list:
-  path: /categories/list
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ListCategoryAction}
-
-admin_accounting_categories_add:
-  path: /categories/add
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\AddCategoryAction}
-
-admin_accounting_categories_edit:
-  path: /categories/edit/{id}
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditCategoryAction}
-  requirements:
-    id: '\d+'
-
-admin_accounting_rules_list:
-  path: /rules/list
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ListRuleAction}
-
-admin_accounting_rules_add:
-  path: /rules/add
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\AddRuleAction}
-
-admin_accounting_rules_edit:
-  path: /rules/edit/{id}
-  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditRuleAction}
-  requirements:
-    id: '\d+'
+admin_accounting_bank_accounts:
+  resource: "admin_accounting_bank_accounts.yml"
+  prefix: /bank-accounts
 
 admin_accounting_quotations_list:
   path: /quotations/list
@@ -122,10 +38,4 @@ admin_accounting_search:
   path: /search
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\SearchAction}
 
-admin_accounting_membership_fee:
-  resource: "admin_accounting_membership_fee.yml"
-  prefix: /membership-fee
 
-admin_accounting_bank_accounts:
-  resource: "admin_accounting_bank_accounts.yml"
-  prefix: /bank-accounts

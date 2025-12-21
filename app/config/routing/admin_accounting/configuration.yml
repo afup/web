@@ -1,0 +1,23 @@
+admin_accounting_events:
+  resource: "configuration/events.yml"
+  prefix: /events
+
+admin_accounting_categories:
+  resource: "configuration/categories.yml"
+  prefix: /categories
+
+admin_accounting_operations:
+  resource: "configuration/operations.yml"
+  prefix: /operations
+
+admin_accounting_payments:
+  resource: "configuration/payments.yml"
+  prefix: /payments
+
+admin_accounting_accounts:
+  resource: "configuration/accounts.yml"
+  prefix: /accounts
+
+admin_accounting_rules:
+  resource: "configuration/rules.yml"
+  prefix: /rules

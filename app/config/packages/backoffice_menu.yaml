@@ -228,7 +228,7 @@ parameters:
                 compta_conf_evenement:
                     nom: 'Configuration'
                     niveau: 'ROLE_ADMIN'
-                    url: '/admin/accounting/events/list'
+                    url: '/admin/accounting/configuration/events/list'
                     extra_routes:
                         - admin_accounting_events_list
                         - admin_accounting_categories_list

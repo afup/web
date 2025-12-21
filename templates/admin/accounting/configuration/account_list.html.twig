@@ -8,7 +8,7 @@
 
     <div class="ui bottom attached segment">
         <div class="ui menu">
-            <a href="/admin/accounting/accounts/add" class="item">
+            <a href="{{ url('admin_accounting_accounts_add') }}" class="item">
                 <div data-tooltip="Ajouter un compte" data-position="bottom left">
                     <i class="icon plus square"></i>
                     Ajouter
@@ -29,7 +29,7 @@
                 <tr>
                     <td>{{ account.name }}</td>
                     <td style="text-align: right">
-                        <a href="/admin/accounting/accounts/edit/{{ account.id }}"
+                        <a href="{{ url('admin_accounting_accounts_edit', {id: account.id}) }}"
                            data-position="left center"
                            data-tooltip="Modifier la ligne {{ account.name }}"
                            class="compact ui icon button"
