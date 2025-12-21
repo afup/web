@@ -62,7 +62,7 @@ class LegacyController extends AbstractController
         /**
          * All global variables (as defined in commonStart and others) should be declared here
          */
-        global $smarty, $bdd, $conf, $droits, $AFUP_Tarifs_Forum_Lib, $AFUP_Tarifs_Forum, $debug, $translator, $services;
+        global $smarty, $bdd, $droits, $AFUP_Tarifs_Forum_Lib, $AFUP_Tarifs_Forum, $debug, $translator, $services;
         $droits = Utils::fabriqueDroits($this->tokenStorage, $this->authorizationChecker);
         $pages = $this->backOfficePages;
         /** @var Session $session */

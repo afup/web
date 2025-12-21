@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Email\Mailer\Adapter;
 
-use Afup\Site\Utils\Configuration;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\Message;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -20,14 +19,14 @@ class PhpMailerAdapter implements MailerAdapter
         private readonly ?string $port,
     ) {}
 
-    public static function createFromConfiguration(Configuration $configuration): self
+    public static function createFromEnv(): self
     {
         return new self(
-            $configuration->obtenir('smtp_host'),
-            (string) $configuration->obtenir('smtp_tls'),
-            $configuration->obtenir('smtp_username'),
-            $configuration->obtenir('smtp_password'),
-            (string) $configuration->obtenir('smtp_port'),
+            getenv('SMTP_HOST'),
+            (string) getenv('SMTP_TLS'),
+            getenv('SMTP_USERNAME'),
+            getenv('SMTP_PASSWORD'),
+            (string) getenv('SMTP_PORT'),
         );
     }
 

@@ -21,7 +21,6 @@ declare(strict_types=1);
 
 // racine de l'application (pas du document root !)
 use Afup\Site\Corporate\_Site_Base_De_Donnees;
-use Afup\Site\Utils\Configuration;
 
 $root = dirname(__DIR__, 3);
 
@@ -48,12 +47,6 @@ set_include_path($root . '/dependencies' . PATH_SEPARATOR . $root . '/sources');
 
 // préparation de la requête / session
 require_once __DIR__ . '/../fonctions.php';
-
-// chargement de la configuration
-$conf = new Configuration();
-
-// mets la configuration dans une 'clé de registre' accessible à tout moment
-$GLOBALS['AFUP_CONF'] = $conf;
 
 // initialisation de la couche d'abstraction de la base de données
 $bdd = new _Site_Base_De_Donnees();

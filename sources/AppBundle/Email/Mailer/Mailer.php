@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Email\Mailer;
 
-use Afup\Site\Utils\Configuration;
 use AppBundle\Email\Mailer\Adapter\MailerAdapter;
 use Psr\Log\LoggerInterface;
 use Twig\Environment;
@@ -23,10 +22,9 @@ class Mailer
         private readonly LoggerInterface $logger,
         private readonly Environment $twig,
         private readonly MailerAdapter $adapter,
-        Configuration $configuration,
     ) {
-        $this->forcedRecipient = $configuration->obtenir('mailer_force_recipients');
-        $defaultBccs = $configuration->obtenir('mailer_bcc');
+        $this->forcedRecipient = getenv('MAILER_FORCE_RECIPIENTS');
+        $defaultBccs = getenv('MAILER_BCC');
         $this->defaultBccs = is_array($defaultBccs) ? $defaultBccs : [$defaultBccs];
     }
 

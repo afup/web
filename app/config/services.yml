@@ -124,8 +124,7 @@ services:
 
     AppBundle\Email\Mailer\Adapter\MailerAdapter:
       class: AppBundle\Email\Mailer\Adapter\PhpMailerAdapter
-      factory: [AppBundle\Email\Mailer\Adapter\PhpMailerAdapter, createFromConfiguration]
-      arguments: ['@Afup\Site\Utils\Configuration']
+      factory: [AppBundle\Email\Mailer\Adapter\PhpMailerAdapter, createFromEnv]
 
     AppBundle\Mailchimp\EventEventSubscriber:
         arguments:
@@ -141,9 +140,6 @@ services:
     AppBundle\Event\Ticket\QrCodeGenerator:
         autowire: true
         arguments: ["%qr_code_salt%"]
-
-    Afup\Site\Utils\Configuration:
-        autowire: true
 
     Afup\Site\Utils\LegacyConnectionFactory: ~
     Afup\Site\Utils\Base_De_Donnees:
