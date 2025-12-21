@@ -32,7 +32,7 @@
         </div>
 
         <div class="ui menu">
-            <a href="index.php?id_periode={$smarty.get.id_periode|default:''}&amp;page=compta_banque&amp;compte={$compte_id}&amp;action=exporter" class="item">
+            <a href="/admin/accounting/bank-accounts/export?periodId={$smarty.get.id_periode|default:''}&amp;accountId={$compte_id}" class="item">
                 <i class="icon file excel"></i>
                 Export XLSX
             </a>
