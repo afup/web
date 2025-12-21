@@ -27,7 +27,7 @@ final class EditAccountAction extends AbstractController
             $this->accountRepository->save($account);
             $this->audit->log('Modification du compte ' . $account->getName());
             $this->addFlash('notice', 'Le compte ' . $account->getName() . ' a été modifié');
-            return $this->redirect('/pages/administration/index.php?page=compta_conf_compte&action=lister&filtre=' . $account->getName());
+            return $this->redirectToRoute('admin_accounting_accounts_list');
         }
 
         return $this->render('admin/accounting/configuration/account_edit.html.twig', [
