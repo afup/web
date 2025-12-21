@@ -92,6 +92,23 @@ class Compta extends AbstractSeed
                 'date_regl' => null,
                 'idevenement' => 0,
             ],
+            [
+                'id'    => '5',
+                'idoperation' => 1,
+                'idcategorie' => 34,
+                'nom_frs' => 'Un autre fournisseur',
+                'tva_intra' => 'FR9912345',
+                'montant' => 100,
+                'idmode_regl' => 2,
+                'date_regl' => date('Y-11-03'),
+                'date_ecriture' => date('Y-11-04'),
+                'description' => 'Une dépense moins utile',
+                'idevenement' => 5,
+                'idcompte' => 1,
+                'idclef' => 2,
+                'numero' => '',
+                'obs_regl' => '',
+            ],
         ];
 
         $table = $this->table('compta');

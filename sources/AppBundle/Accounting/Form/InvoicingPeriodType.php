@@ -20,7 +20,7 @@ class InvoicingPeriodType extends AbstractType
         $periods = [];
         /** @var InvoicingPeriod $period */
         foreach ($this->invoicingPeriodRepository->getAll() as $period) {
-            $periods["{$period->getStartdate()->format('d/m/Y')} - {$period->getEndDate()->format('d/m/Y')}"] = $period->getId();
+            $periods["{$period->getStartDate()->format('d/m/Y')} - {$period->getEndDate()->format('d/m/Y')}"] = $period->getId();
         }
 
         $builder->add('periodId', ChoiceType::class, [

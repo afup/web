@@ -31,12 +31,12 @@ class InvoicingPeriod implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getStartdate(): ?DateTime
+    public function getStartDate(): ?DateTime
     {
         return $this->startDate;
     }
 
-    public function setStartdate(?DateTime $startDate): self
+    public function setStartDate(?DateTime $startDate): self
     {
         $this->startDate = $startDate;
         $this->propertyChanged('startdate', $this->startDate, $startDate);
