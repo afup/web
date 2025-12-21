@@ -1,4 +1,0 @@
-admin_accounting_bank_accounts_list:
-  path: /list
-  defaults:
-    _controller: AppBundle\Controller\Admin\Accounting\BankAccounts\ListStatementAction
