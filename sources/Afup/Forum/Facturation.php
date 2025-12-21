@@ -109,9 +109,6 @@ class Facturation
         WHERE reference=' . $this->_bdd->echapper($reference);
         $inscriptions = $this->_bdd->obtenirTous($requete);
 
-
-        $configuration = $GLOBALS['AFUP_CONF'];
-
         $pays = new Pays($this->_bdd);
 
         $dateFacture = isset($facture['date_facture']) && !empty($facture['date_facture'])
@@ -206,8 +203,6 @@ class Facturation
         LEFT JOIN afup_forum_tarif aft ON aft.id = aif.type_inscription
         WHERE reference=' . $this->_bdd->echapper($reference);
         $inscriptions = $this->_bdd->obtenirTous($requete);
-
-        $configuration = $GLOBALS['AFUP_CONF'];
 
         $pays = new Pays($this->_bdd);
 

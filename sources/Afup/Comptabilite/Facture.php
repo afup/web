@@ -321,8 +321,6 @@ class Facture
         $requete = 'SELECT * FROM afup_compta_facture_details WHERE idafup_compta_facture=' . $this->_bdd->echapper($coordonnees['id']);
         $details = $this->_bdd->obtenirTous($requete);
 
-        $configuration = $GLOBALS['AFUP_CONF'];
-
         $pays = new Pays($this->_bdd);
 
         $dateDevis = isset($coordonnees['date_devis']) && !empty($coordonnees['date_devis'])
@@ -512,9 +510,6 @@ class Facture
 
         $requete = 'SELECT * FROM afup_compta_facture_details WHERE idafup_compta_facture=' . $this->_bdd->echapper($coordonnees['id']);
         $details = $this->_bdd->obtenirTous($requete);
-
-
-        $configuration = $GLOBALS['AFUP_CONF'];
 
         $pays = new Pays($this->_bdd);
 

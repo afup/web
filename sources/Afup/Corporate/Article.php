@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Afup\Site\Corporate;
 
 use Afup\Site\Utils\Base_De_Donnees;
-use Afup\Site\Utils\Configuration;
 
 class Article
 {
@@ -63,10 +62,6 @@ class Article
     protected $rubrique;
 
     /**
-     * @var Configuration
-     */
-    protected $conf;
-    /**
      * @var Base_De_Donnees
      */
     protected $bdd;
@@ -74,11 +69,8 @@ class Article
     public function __construct(
         public $id = 0,
         $bdd = false,
-        $conf = false,
     ) {
         $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
-
-        $this->conf = $conf ?: $GLOBALS['AFUP_CONF'];
     }
 
     public function afficher(): string
@@ -280,7 +272,7 @@ class Article
 
     public function route(): string
     {
-        $rubrique = new Rubrique($this->id_site_rubrique, $this->bdd, $this->conf);
+        $rubrique = new Rubrique($this->id_site_rubrique, $this->bdd);
         $rubrique->charger();
         if (empty($rubrique->raccourci)) {
             $rubrique->raccourci = 'rubrique';
@@ -294,7 +286,7 @@ class Article
         $fil = '';
 
         if ($this->id_site_rubrique > 0) {
-            $rubrique = new Rubrique($this->id_site_rubrique, $this->bdd, $this->conf);
+            $rubrique = new Rubrique($this->id_site_rubrique, $this->bdd);
             $rubrique->charger();
             $fil = $rubrique->fil_d_ariane() . $fil;
         }
