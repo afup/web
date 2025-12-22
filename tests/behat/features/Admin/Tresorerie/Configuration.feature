@@ -2,15 +2,15 @@ Feature: Administration - Trésorerie - Configuration
 
   Scenario: Un membre ne peut pas accéder aux page de trésorie
     Given I am logged-in with the user "paul" and the password "paul"
-    And I am on "/admin/accounting/events/list"
+    And I am on "/admin/accounting/configuration/events/list"
     Then the response status code should be 403
-    And I am on "/admin/accounting/categories/list"
+    And I am on "/admin/accounting/configuration/categories/list"
     Then the response status code should be 403
-    And I am on "/admin/accounting/accounts/list"
+    And I am on "/admin/accounting/configuration/accounts/list"
     Then the response status code should be 403
-    And I am on "/admin/accounting/payments/list"
+    And I am on "/admin/accounting/configuration/payments/list"
     Then the response status code should be 403
-    And I am on "/admin/accounting/rules/list"
+    And I am on "/admin/accounting/configuration/rules/list"
     Then the response status code should be 403
 
   @reloadDbWithTestData

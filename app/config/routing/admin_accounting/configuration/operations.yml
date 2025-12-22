@@ -1,0 +1,13 @@
+admin_accounting_operations_list:
+  path: /list
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ListOperationAction}
+
+admin_accounting_operations_add:
+  path: /add
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\AddOperationAction}
+
+admin_accounting_operations_edit:
+  path: /edit/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditOperationAction}
+  requirements:
+    id: '\d+'
