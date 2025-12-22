@@ -12,6 +12,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Hook\BeforeScenario;
 use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Exception\ExpectationException;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Step\Given;
 use Behat\Step\Then;
@@ -718,6 +719,9 @@ class FeatureContext implements Context
     #[Then('/^(?:|I )click on link with (class|id) "(?P<text>(?:[^"]|\\")*)"$/')]
     public function clickOnLink(string $type, string $text): void
     {
+        if (!$this->minkContext->getSession()->getDriver() instanceof PantherDriver) {
+            throw new UnsupportedDriverActionException('javascript is not supported by driver %s', $this->minkContext->getSession()->getDriver());
+        }
         $selector = match ($type) {
             'class' => 'a.' . $text,
             'id' => 'a#' . $text,
@@ -743,7 +747,10 @@ class FeatureContext implements Context
     #[Then('/^wait (?P<value>(?:[0-9])*)(ms|s)$/')]
     public function wait(string $text, string $unit): void
     {
+        echo time();
         $value = intval($text) * (strtolower($unit) === 'ms' ? 1 : 1000);
+        dump($value);
         \usleep($value);
+        echo time();
     }
 }

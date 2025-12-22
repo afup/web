@@ -17,7 +17,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I fill in "quotation[zipcode]" with "21000"
     And I fill in "quotation[email]" with "martine@ens-corp.biz"
     When I press "Ajouter"
-    And wait 2s
+#    And wait 2s
     Then I should see "L'écriture a été ajoutée"
     And I should see "ESN Corp"
     And I should see "0,00"
@@ -52,7 +52,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I fill in "quotation[details][1][quantity]" with "1"
     And I fill in "quotation[details][1][unitPrice]" with "12000"
     When I press "Ajouter"
-    And wait 2s
+#    And wait 2s
     Then I should see "L'écriture a été ajoutée"
     And I should see "ESN dev en folie"
     And I should see "Paris"
@@ -66,7 +66,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     When I follow the button of tooltip "Modifier le devis ESN dev en folie"
     And I fill in "quotation[city]" with "Paris Cedex 1"
     When I press "Modifier"
-    And wait 3s
+#    And wait 3s
     Then I should see "L'écriture a été modifiée"
     And I should see "ESN dev en folie"
     And I should see "Paris Cedex 1"
