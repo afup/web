@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Configuration;
 
-use AppBundle\Accounting\Model\Repository\RuleRepository;
+use AppBundle\Accounting\Entity\Repository\RuleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
