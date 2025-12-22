@@ -9,7 +9,6 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Hook\BeforeScenario;
-use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Step\Then;
@@ -23,6 +22,7 @@ class FeatureContext implements Context
     use FormContext;
     use PdfContext;
     use TimeContext;
+    use WaitContext;
 
     private MinkContext $minkContext;
 
@@ -207,15 +207,6 @@ class FeatureContext implements Context
         }
     }
 
-    #[Given('/^the current date is "(?P<date>[^"]*)"$/')]
-    public function theCurrentDateIs(string $date): void
-    {
-        $this->minkContext->getSession()->getDriver()->setRequestHeader(
-            DetectClockMockingListener::HEADER,
-            $date,
-        );
-    }
-
     #[Then('/^(?:|I )click on link with (class|id) "(?P<text>(?:[^"]|\\")*)"$/')]
     public function clickOnLink(string $type, string $text): void
     {
@@ -227,7 +218,7 @@ class FeatureContext implements Context
 
         if (null === $node) {
             throw new ExpectationException(
-                sprintf('miw with %S "%s" was not found', $type, $selector),
+                sprintf('link with %S "%s" was not found', $type, $selector),
                 $this->minkContext->getSession()->getDriver(),
             );
         }
@@ -239,12 +230,5 @@ class FeatureContext implements Context
     public function openMenu(string $text): void
     {
         $this->minkContext->getSession()->getPage()->find('css', 'div.header.title:contains("' . $text . '")')->click();
-    }
-
-    #[Then('/^wait (?P<value>(?:[0-9])*)(ms|s)$/')]
-    public function wait(string $text, string $unit): void
-    {
-        $value = intval($text) * (strtolower($unit) === 'ms' ? 1 : 1000);
-        \usleep($value);
     }
 }

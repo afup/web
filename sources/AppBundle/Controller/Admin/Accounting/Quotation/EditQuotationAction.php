@@ -42,8 +42,7 @@ class EditQuotationAction extends AbstractController
                         $existingIds[] = $detail->getId();
                     }
                     $detail->setInvoicingId($quotation->getId());
-                    $this->unitOfWork->pushSave($detail);
-//                    $this->invoicingDetailRepository->save($detail);
+                    $this->invoicingDetailRepository->save($detail);
                 }
 
                 $idsToRemove = array_diff($idsToRemove, $existingIds);

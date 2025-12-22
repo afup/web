@@ -49,7 +49,6 @@ class InvoicingRepository extends Repository implements MetadataInitializer
         /** @var Invoicing $entity */
         $entity = $collection->first();
         $entity->setDetails(array_values($entity->getDetails()));
-        ;
 
         return $entity;
     }

@@ -367,7 +367,10 @@ class Invoicing implements NotifyPropertyInterface
         return $this->details;
     }
 
-    public function setDetails(array $details)
+    /**
+     * @param array<InvoicingDetail> $details
+     */
+    public function setDetails(array $details): self
     {
         $this->details = $details;
 

@@ -16,9 +16,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I fill in "quotation[city]" with "Dijon"
     And I fill in "quotation[zipcode]" with "21000"
     And I fill in "quotation[email]" with "martine@ens-corp.biz"
-    When I press "Ajouter"
-    And wait 2s
-    Then I should see "L'écriture a été ajoutée"
+    When I press "Ajouter" and wait until I see "L'écriture a été ajoutée"
     And I should see "ESN Corp"
     And I should see "0,00"
     And I should see tooltip "Modifier le devis ESN Corp"
@@ -51,8 +49,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I fill in "quotation[details][1][designation]" with "Architecture en KKK"
     And I fill in "quotation[details][1][quantity]" with "1"
     And I fill in "quotation[details][1][unitPrice]" with "12000"
-    When I press "Ajouter"
-    And wait 2s
+    When I press "Ajouter" and wait until I see "L'écriture a été ajoutée"
     Then I should see "L'écriture a été ajoutée"
     And I should see "ESN dev en folie"
     And I should see "Paris"
@@ -65,8 +62,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     # Modification du devis
     When I follow the button of tooltip "Modifier le devis ESN dev en folie"
     And I fill in "quotation[city]" with "Paris Cedex 1"
-    When I press "Modifier"
-    And wait 3s
+    When I press "Modifier" and wait until I see "L'écriture a été modifiée"
     Then I should see "L'écriture a été modifiée"
     And I should see "ESN dev en folie"
     And I should see "Paris Cedex 1"
@@ -75,8 +71,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     # Suppression d'une ligne dans un devis
     When I follow the button of tooltip "Modifier le devis ESN dev en folie"
     Then I click on link with id "remove_row_0"
-    When I press "Modifier"
-    And wait 2s
+    When I press "Modifier" and wait until I see "L'écriture a été modifiée"
     Then I should see "L'écriture a été modifiée"
     And I should see "ESN dev en folie"
     And I should see "Paris Cedex 1"
@@ -97,9 +92,8 @@ Feature: Administration - Trésorerie - Devis/Facture
     Then I follow the button of tooltip "Modifier la ligne ESN dev en folie"
     And I should see "Modifier une facture"
     Then I fill in "ville" with "Paris Cedex 7"
-    When I select "1" from "etat_paiement"
-    And I press "Modifier"
-    Then I should see "L'écriture a été modifiée"
+    Then I select "1" from "etat_paiement"
+    When I press "Modifier" and wait until I see "L'écriture a été modifiée"
     And I should see "Paris Cedex 7"
     And I should see "Payé"
     # Envoi de la facture par email
