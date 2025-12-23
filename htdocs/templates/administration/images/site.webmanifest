@@ -1,6 +1,6 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "AFUP administration",
+  "short_name": "AFUP Admin",
   "icons": [
     {
       "src": "/templates/administration/images/web-app-manifest-192x192.png",
