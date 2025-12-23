@@ -10,7 +10,9 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Hook\BeforeScenario;
+use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Exception\ExpectationException;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Step\Given;
 use Behat\Step\Then;
@@ -74,6 +76,10 @@ class FeatureContext implements Context
     #[BeforeScenario]
     public function clearTestClock(): void
     {
+        if ($this->minkContext->getSession()->getDriver() instanceof PantherDriver) {
+            // setRequestHeader is not supported by PantherDriver
+            return;
+        }
         $this->minkContext->getSession()->getDriver()->setRequestHeader(DetectClockMockingListener::HEADER, '');
     }
 
@@ -708,5 +714,43 @@ class FeatureContext implements Context
             DetectClockMockingListener::HEADER,
             $date,
         );
+    }
+
+    #[Then('/^(?:|I )click on link with (class|id) "(?P<text>(?:[^"]|\\")*)"$/')]
+    public function clickOnLink(string $type, string $text): void
+    {
+        if (!$this->minkContext->getSession()->getDriver() instanceof PantherDriver) {
+            throw new UnsupportedDriverActionException('javascript is not supported by driver %s', $this->minkContext->getSession()->getDriver());
+        }
+        $selector = match ($type) {
+            'class' => 'a.' . $text,
+            'id' => 'a#' . $text,
+        };
+        $node = $this->minkContext->getSession()->getPage()->find('css', $selector);
+
+        if (null === $node) {
+            throw new ExpectationException(
+                sprintf('miw with %S "%s" was not found', $type, $selector),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+
+        $this->minkContext->getSession()->executeScript('document.querySelector("' . $selector . '").click();');
+    }
+
+    #[Then('/^(?:|I )open menu "(?P<text>(?:[^"]|\\")*)"$/')]
+    public function openMenu(string $text): void
+    {
+        $this->minkContext->getSession()->getPage()->find('css', 'div.header.title:contains("' . $text . '")')->click();
+    }
+
+    #[Then('/^wait (?P<value>(?:[0-9])*)(ms|s)$/')]
+    public function wait(string $text, string $unit): void
+    {
+        echo time();
+        $value = intval($text) * (strtolower($unit) === 'ms' ? 1 : 1000);
+        dump($value);
+        \usleep($value);
+        echo time();
     }
 }
