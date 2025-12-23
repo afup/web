@@ -60,6 +60,17 @@ Feature: Administration - Évènements - Conférences
     And I should see "Adrien Gallou"
 
   @reloadDbWithTestData
+  Scenario: Suppression d'une conférence
+    Given I am logged in as admin and on the Administration
+    And I follow "Conférences"
+    Then the ".content h2" element should contain "Conférence"
+    And I should see "3 CONFÉRENCE(S)"
+    When I follow the button of tooltip "Supprimer la conférence Jouons tous ensemble à un petit jeu"
+    Then I should see "La session a été supprimée"
+    And I should not see "Jouons tous ensemble à un petit jeu"
+    And I should see "2 CONFÉRENCE(S)"
+
+  @reloadDbWithTestData
   Scenario: Exporter les conférences
     Given I am logged in as admin and on the Administration
     And I follow "Conférences"

@@ -103,9 +103,9 @@ if ($action == 'lister') {
 } elseif ($action == 'supprimer') {
     if ($forum_appel->supprimerSession($_GET['id'])) {
         Logs::log('Suppression de la session ' . $_GET['id']);
-        afficherMessage('La session a été supprimée', 'index.php?page=forum_sessions&action=lister&type=' . $list_type);
+        afficherMessage('La session a été supprimée', '/admin/talk/');
     } else {
-        afficherMessage('Une erreur est survenue lors de la suppression de la session', 'index.php?page=forum_sessions&action=lister&type=' . $list_type, true);
+        afficherMessage('Une erreur est survenue lors de la suppression de la session', '/admin/talk/', true);
     }
 } else {
     $pays = new Pays($bdd);

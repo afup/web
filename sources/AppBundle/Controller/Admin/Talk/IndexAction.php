@@ -68,7 +68,7 @@ final class IndexAction extends AbstractController
         ]);
     }
 
-    public function filterForm(array $data): FormInterface
+    private function filterForm(array $data): FormInterface
     {
         return $this->formFactory->createNamedBuilder('', FormType::class, $data, [
             'csrf_protection' => false,
