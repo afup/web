@@ -204,7 +204,7 @@ RewriteRule ^(.*)$  "/?"  [L,R=302]
 RewriteRule ^lille.*$ /association/antennes? [R=302]
 
 ## Moved to Symfony
-RewriteRule ^forumphp2016/(forum_planning|conferenciers|sessions).php.*$ /app.php [END]
+RewriteRule ^forumphp2016/(forum_planning|conferenciers|sessions).php.*$ /index.php [END]
 
 RewriteRule ^phptourluxembourg2015.*$ https://event.afup.org/archives/? [R=302]
 RewriteRule ^phptourlyon2014.*$ https://event.afup.org/archives/? [R=302]
@@ -226,8 +226,8 @@ RewriteRule ^phptourclermont2016/forum_planning.php$ https://event.afup.org/foru
 RewriteRule ^phptourclermont2016.*$ https://event.afup.org/archives/  [L,R=301]
 
 ## Moved to Symfony
-RewriteRule ^rendezvous.*$ /app.php [END]
-RewriteRule ^forumphp(2005|2006|2007|2008|2009).*$ /app.php [END]
+RewriteRule ^rendezvous.*$ /index.php [END]
+RewriteRule ^forumphp(2005|2006|2007|2008|2009).*$ /index.php [END]
 
 # Redirection en cas d'acces direct aux pages Planete PHP
 RewriteCond %{REQUEST_URI} ^/?pages/planete
