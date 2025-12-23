@@ -1,0 +1,5 @@
+framework:
+    router:
+        strict_requirements: true
+    profiler: { only_exceptions: false }
+    ide: '%env(default::resolve:SYMFONY_IDE)%'
