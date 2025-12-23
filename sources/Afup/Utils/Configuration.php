@@ -23,7 +23,6 @@ class Configuration
         $parameters = [
             'database_host', 'database_name', 'database_user', 'database_password', 'database_port',
             'smtp_host', 'smtp_port', 'smtp_tls', 'smtp_username', 'smtp_password',
-            'mailer_force_recipients', 'mailer_bcc',
         ];
 
         foreach ($parameters as $param) {

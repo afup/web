@@ -24,8 +24,6 @@ parameters:
     smtp_username: ""
     smtp_password: ""
     smtp_port: 1025
-    mailer_force_recipients: []
-    mailer_bcc: []
 
 services:
     AppBundle\Offices\OfficeFinder:
