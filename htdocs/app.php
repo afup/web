@@ -6,8 +6,8 @@ use AppBundle\AppKernel;
 use Composer\Autoload\ClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
-$isDevEnv = isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'dev';
-$isTestEnv = isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] == 'test';
+$isDevEnv = isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] == 'dev';
+$isTestEnv = isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] == 'test';
 
 if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv || $isTestEnv) {
     if (!$isDevEnv && !$isTestEnv

@@ -20,12 +20,12 @@ class SymfonyKernel
         $env = 'prod';
         $debug = false;
 
-        if (isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] === 'dev') {
+        if (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'dev') {
             $debug = true;
             $env = 'dev';
         }
 
-        if (isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] === 'test') {
+        if (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'test') {
             $env = 'test';
         }
 

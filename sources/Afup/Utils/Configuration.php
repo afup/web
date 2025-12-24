@@ -44,8 +44,8 @@ class Configuration
         $parameters = [];
         $basePath = __DIR__ . '/../../../app/config';
 
-        if (isset($_ENV['SYMFONY_ENV'])) {
-            $file = $basePath . '/config_' . $_ENV['SYMFONY_ENV'] . '.yml';
+        if (isset($_ENV['APP_ENV'])) {
+            $file = $basePath . '/config_' . $_ENV['APP_ENV'] . '.yml';
             if (is_file($file)) {
                 $values = Yaml::parseFile($file);
                 if (isset($values['parameters'])) {

@@ -106,7 +106,7 @@ test-functional: data config htdocs/uploads tmp
 	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
 	$(DOCKER_COMP) up -d dbtest apachephptest mailcatcher
 	make clean-test-deprecated-log
-	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp ./bin/behat
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/behat
 	make var/logs/test.deprecations_grouped.log
 	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
 
@@ -114,8 +114,8 @@ test-functional: data config htdocs/uploads tmp
 test-integration-ci:
 	$(DOCKER_COMP) stop dbtest apachephptest
 	$(DOCKER_COMP) up -d dbtest apachephptest
-	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp make vendor
-	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp ./bin/phpunit --testsuite integration
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest make vendor
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/phpunit --testsuite integration
 	$(DOCKER_COMP) stop dbtest apachephptest
 
 ### Analyse PHPStan
