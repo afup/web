@@ -385,7 +385,7 @@ final class AntennesCollection
                 null,
                 'https://toulouse.afup.org',
                 'afup_toulouse',
-                null,
+                'https://www.linkedin.com/company/afup-toulouse/',
                 null,
             ),
             new Map(
