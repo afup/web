@@ -117,6 +117,7 @@
       "Afup\\Site\\Tests\\": "tests/unit/Afup/",
       "Afup\\Tests\\Support\\": "tests/support/",
       "Afup\\Tests\\Stubs\\PHPStan\\": "tests/stubs/phpstan/",
+      "Afup\\Tests\\Behat\\Bootstrap\\": "tests/behat/bootstrap/",
       "AppBundle\\Tests\\": "tests/unit/AppBundle/",
       "AppBundle\\IntegrationTests\\": "tests/integration/AppBundle/",
       "PlanetePHP\\IntegrationTests\\": "tests/integration/PlanetePHP/"
