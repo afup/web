@@ -42,3 +42,11 @@ admin_accounting_journal_update_info:
   methods: [POST]
   requirements:
     id: \d+
+
+admin_accounting_journal_upload:
+  path: /upload/{id}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\UploadAttachmentAction
+  methods: [POST]
+  requirements:
+    id: \d+
