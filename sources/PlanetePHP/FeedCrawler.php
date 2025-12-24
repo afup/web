@@ -8,8 +8,8 @@ use Laminas\Feed\Exception\ExceptionInterface;
 use Laminas\Feed\Reader\Reader;
 use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpClient\Exception\ClientException;
-use Symfony\Component\HttpClient\Exception\ServerException;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 
 final readonly class FeedCrawler
 {
@@ -32,22 +32,22 @@ final readonly class FeedCrawler
         $failedFeedsIds = [];
 
         foreach ($feeds as $feed) {
-            $this->logger->info(sprintf('[planete][%s] Start fetching', $feed->getName()));
+            $this->logger->info(sprintf('[planete][%s] Start fetching', $feed->name));
 
             try {
-                $items = Reader::import($feed->getFeed());
-            } catch (ExceptionInterface|ClientException|ServerException $e) {
-                $this->logger->error(sprintf('[planete][%s] Error: %s', $feed->getName(), $e->getMessage()));
+                $items = Reader::import($feed->feed);
+            } catch (ExceptionInterface|ClientExceptionInterface|ServerExceptionInterface $e) {
+                $this->logger->error(sprintf('[planete][%s] Error: %s', $feed->name, $e->getMessage()));
 
                 // Si une erreur survient, on passe au flux suivant
-                $failedFeedsIds[] = $feed->getId();
+                $failedFeedsIds[] = $feed->id;
                 continue;
             }
 
-            $this->logger->info(sprintf('[planete][%s] Items: %d', $feed->getName(), count($items)));
+            $this->logger->info(sprintf('[planete][%s] Items: %d', $feed->name, count($items)));
 
             foreach ($items as $item) {
-                $this->logger->info(sprintf('[planete][%s] Item: %s', $feed->getName(), $item->getTitle()));
+                $this->logger->info(sprintf('[planete][%s] Item: %s', $feed->name, $item->getTitle()));
 
                 $date = $item->getDateCreated();
 
@@ -64,7 +64,7 @@ final readonly class FeedCrawler
 
                 $article = new FeedArticle(
                     null,
-                    $feed->getId(),
+                    $feed->id,
                     $item->getId(),
                     $item->getTitle(),
                     $item->getLink(),

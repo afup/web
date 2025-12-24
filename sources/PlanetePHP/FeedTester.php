@@ -16,7 +16,7 @@ final readonly class FeedTester
     public function test(Feed $feed): bool
     {
         try {
-            $xml = $this->feedClient->get($feed->getFeed());
+            $xml = $this->feedClient->get($feed->feed);
 
             new SimpleXmlElement($xml->getBody());
 

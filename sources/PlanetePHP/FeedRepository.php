@@ -18,7 +18,7 @@ class FeedRepository
     {
         $query = $this->connection->prepare('SELECT id, nom, url, feed, etat, id_personne_physique
             FROM afup_planete_flux f WHERE f.etat = :status ORDER BY f.nom');
-        $query->bindValue('status', Feed::STATUS_ACTIVE);
+        $query->bindValue('status', FeedStatus::Active->value);
 
         return $this->hydrateAll($query->executeQuery()->fetchAllAssociative());
     }
@@ -59,20 +59,20 @@ class FeedRepository
         return $this->hydrate($query->executeQuery()->fetchAssociative());
     }
 
-    public function insert($name, $url, $feed, $status, $userId = 0)
+    public function insert(string $name, string $url, string $feed, FeedStatus $status, ?int $userId = 0)
     {
         $statement = $this->connection->prepare('INSERT INTO afup_planete_flux (nom, url, feed, etat, id_personne_physique) VALUES (:name, :url, :feed, :status, :userId)');
 
         $statement->bindValue('name', $name);
         $statement->bindValue('url', $url);
         $statement->bindValue('feed', $feed);
-        $statement->bindValue('status', $status);
+        $statement->bindValue('status', $status->value);
         $statement->bindValue('userId', (int) $userId);
 
         return $statement->executeStatement();
     }
 
-    public function update($id, $name, $url, $feed, $status, $userId = 0)
+    public function update(int $id, string $name, string $url, string $feed, FeedStatus $status, ?int $userId = 0)
     {
         $statement = $this->connection->prepare('UPDATE afup_planete_flux
             SET nom = :name, url = :url, feed = :feed, etat = :status, id_personne_physique = :userId
@@ -81,29 +81,16 @@ class FeedRepository
         $statement->bindValue('name', $name);
         $statement->bindValue('url', $url);
         $statement->bindValue('feed', $feed);
-        $statement->bindValue('status', $status);
+        $statement->bindValue('status', $status->value);
         $statement->bindValue('userId', (int) $userId);
         $statement->bindValue('id', $id);
 
         return $statement->executeStatement();
     }
 
-    public function delete($id)
+    public function delete(int $id): bool
     {
-        return $this->connection->delete('afup_planete_flux', ['id' => $id]);
-    }
-
-    public function getListByLatest()
-    {
-        return $this->connection->executeQuery(<<<SQL
-            SELECT MAX(b.id) id, f.nom, f.url, MAX(b.maj) updatedAt
-            FROM afup_planete_billet b
-            INNER JOIN afup_planete_flux f ON b.afup_planete_flux_id = f.id 
-            WHERE b.etat = 1 AND f.etat = 1 
-            GROUP BY f.id
-            ORDER BY updatedAt DESC 
-SQL
-        )->fetchAllAssociative();
+        return $this->connection->delete('afup_planete_flux', ['id' => $id]) === 1;
     }
 
     private function hydrateAll(array $rows): array
@@ -118,7 +105,7 @@ SQL
             $row['nom'],
             $row['url'],
             $row['feed'],
-            $row['etat'],
+            FeedStatus::from($row['etat']),
             $row['id_personne_physique'],
         );
     }

@@ -70,7 +70,7 @@
                     <a href="{{ feed.url }}">{{ feed.url }}</a>
                 </td>
                 <td class="center aligned">
-                    {% if feed.status == 1 %}
+                    {% if feed.status == enum('PlanetePHP\\FeedStatus').Active %}
                         <div class="ui label green">Actif</div>
                     {% else %}
                         <div class="ui label red">Inactif</div>
@@ -80,7 +80,7 @@
                     {% if feed.userId is not null %}Oui{% endif %}
                 </td>
                 <td class="center aligned">
-                    {% if feed.status == 1 %}
+                    {% if feed.status == enum('PlanetePHP\\FeedStatus').Active %}
                         {% if testFeeds and feed.id in feedResults|keys %}
                             {% set color = feedResults[feed.id] ? 'green' : 'red' %}
                             {% set text = feedResults[feed.id] ? 'validé' : 'erreur' %}
