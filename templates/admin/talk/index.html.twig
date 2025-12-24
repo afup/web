@@ -1,0 +1,255 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+
+{% block content %}
+    <h2>Conférences</h2>
+    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
+
+    <div class="ui menu">
+        <a href="/pages/administration/index.php?page=forum_sessions&amp;action=ajouter&amp;id_forum={{ event.id }}" class="item">
+            <div data-tooltip="Ajouter une conférence"
+                 data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+        <a href="{{ path('admin_talk_export', {id: event.id}) }}" class="item">
+            <div data-tooltip="Exporter les inscriptions pour les badges"
+                 data-position="bottom left">
+                <i class="icon file"></i>
+                Exporter les conférences
+            </div>
+        </a>
+        <a href="{{ path('admin_talk_export_joind_in', {eventId: event.id}) }}" class="item">
+            <div data-tooltip="Télécharger un fichier CSV des conférences pour joind.in"
+                 data-position="bottom left">
+                <i class="icon file"></i>
+                Export joindIn
+            </div>
+        </a>
+        <a href="{{ path('admin_talk_indexation') }}" class="item">
+            <div data-tooltip="Met à jour algolia, permet d'avoir la liste des talks publique à jour"
+                 data-position="bottom left">
+                <i class="icon algolia"></i>
+                Indexer toutes les conférences
+            </div>
+        </a>
+    </div>
+
+    <div class="ui segment">
+        {% form_theme filter_form 'form_theme_admin_filter.html.twig' %}
+
+        {{ form_start(filter_form) }}
+        <div class="ui form">
+            <div class="inline fields">
+                {{ form_row(filter_form.q, {label: 'Titre'}) }}
+                {{ form_row(filter_form.needs_mentoring, {label: 'Afficher seulement les conférences dont le speaker a demandé un accompagnement'}) }}
+                {{ form_row(filter_form.planned, {label: 'Afficher seulement les conférences plannifiées'}) }}
+                {{ form_row(filter_form.submit, {label: 'Filtrer'}) }}
+            </div>
+        </div>
+        {{ form_end(filter_form) }}
+
+        <div class="ui mini horizontal statistic">
+            <div class="value">
+                {{ sessions|length }}
+            </div>
+            <div class="label">
+                conférence(s)
+            </div>
+        </div>
+
+
+        {% if sessions|length %}
+            {% set sort_direction = filter.sort_direction == 'asc' ? 'desc' : 'asc'%}
+            <table class="ui table striped compact celled">
+                <thead>
+                <tr>
+                    <th>
+                        <a href="{{ url('admin_talk_list', filter|merge({sort_key: 'talk.date_soumission', sort_direction: sort_direction})) }}">
+                            Soumission
+                        </a>
+                    </th>
+                    <th>
+                        <a href="{{ url('admin_talk_list', filter|merge({sort_key: 'talk.titre', sort_direction: sort_direction})) }}">
+                            Titre
+                        </a>
+                    </th>
+                    <th>Speaker(s)</th>
+                    <th class="right aligned" data-position="bottom center" data-tooltip="Moyenne notes visiteurs (sur 5)">Moy. notes</th>
+                    <th class="right aligned" data-position="bottom center" data-tooltip="Nombre notes visiteurs">Nb. notes</th>
+                    <th>
+                        <div class="ui small basic icon buttons">
+                            <span class="ui button" data-position="left center"
+                                  data-tooltip="Indicateur de demande d'accompagnement de la part du speaker">
+                                <i class="universal access icon grey"></i>
+                            </span>
+                            <span class="ui button" data-position="left center"
+                                  data-tooltip="Indicateur de présence de l'ID joindIn">
+                                <i class="comment icon grey"></i>
+                            </span>
+                            <span class="ui button" data-position="left center"
+                                  data-tooltip="Indicateur de présence de vidéo">
+                                <i class="youtube icon grey"></i>
+                            </span>
+                            <span class="ui button" data-position="left center"
+                                  data-tooltip="Indicateur de présence de slides">
+                                <i class="slideshare icon grey"></i>
+                            </span>
+                            <span class="ui button" data-position="left center"
+                                  data-tooltip="Indicateur de présence de transcript en article de blog">
+                                <i class="newspaper icon grey"></i>
+                            </span>
+                            <span class="ui button" data-position="left center"
+                                  data-tooltip="Indicateur de présence d'interview">
+                                <i class="rss icon grey"></i>
+                            </span>
+                        </div>
+                    </th>
+                    <th>&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for aggregate in sessions %}
+                    {% set edit_url = "/pages/administration/index.php?page=forum_sessions&action=modifier&id="~aggregate.talk.id %}
+                    <tr>
+                        <td class="single line">{{ aggregate.talk.submittedOn|date('d/m/Y') }}</td>
+                        <td>{{ aggregate.talk.title }}</td>
+                        <td>
+                            <div class="ui list">
+                                {% for speaker in aggregate.speakers %}
+                                <div class="item">
+                                    <i class="microphone icon"></i>
+                                    <div class="content">
+                                        <a href="{{ url('admin_speaker_edit', {id: speaker.id}) }}">
+                                            {{ speaker.label }}
+                                        </a>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td class="right aligned">
+                            {{ aggregate.vote ? aggregate.vote.note|number_format(1, ',') : "n/a" }}
+                        </td>
+                        <td class="right aligned">
+                            {{ aggregate.vote ? aggregate.vote.total : 0 }}
+                        </td>
+                        <td>
+                            <div class="ui small basic icon buttons">
+
+                                {% if aggregate.talk.needsMentoring %}
+                                    <a class="ui button"
+                                       href="{{ edit_url }}"
+                                       data-position="top center"
+                                       data-tooltip="Le speaker a demandé un accompagnement"
+                                    >
+                                        <i class="icon universal access"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="ui button disabled">
+                                        <i class="icon"></i>
+                                    </span>
+                                {% endif %}
+
+                                {% if aggregate.talk.joindinUrl %}
+                                    <a class="ui button"
+                                       href="{{ aggregate.talk.joindinUrl }}"
+                                       target="_blank"
+                                       data-position="top center"
+                                       data-tooltip="L'id joindIn est renseigné">
+                                        <i class="icon comment"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="ui button disabled">
+                                        <i class="icon"></i>
+                                    </span>
+                                {% endif %}
+
+                                {% if aggregate.talk.youtubeUrl %}
+                                    <a class="ui button" target="_blank"
+                                       href="{{ aggregate.talk.youtubeUrl }}"
+                                       data-position="top center"
+                                       data-tooltip="La conférence a une vidéo">
+                                        <i class="icon youtube"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="ui button disabled">
+                                        <i class="icon"></i>
+                                    </span>
+                                {% endif %}
+
+                                {% if aggregate.talk.slidesUrl %}
+                                    <a class="ui button" target="_blank"
+                                       href="{{ aggregate.talk.slidesUrl }}"
+                                       data-position="top center"
+                                       data-tooltip="La conférence a des slides">
+                                        <i class="icon slideshare"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="ui button disabled">
+                                        <i class="icon"></i>
+                                    </span>
+                                {% endif %}
+
+                                {% if aggregate.talk.interviewUrl %}
+                                    <a class="ui button" target="_blank"
+                                       href="{{ aggregate.talk.interviewUrl }}"
+                                       data-position="top center"
+                                       data-tooltip="La conférence a une interview">
+                                        <i class="icon newspaper"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="ui button disabled">
+                                        <i class="icon"></i>
+                                    </span>
+                                {% endif %}
+
+                                {% if aggregate.talk.blogPostUrl %}
+                                    <a class="ui button" target="_blank"
+                                       href="{{ aggregate.talk.blogPostUrl }}"
+                                       data-position="top center"
+                                       data-tooltip="La conférence a un transcript">
+                                        <i class="icon rss"></i>
+                                    </a>
+                                {% else %}
+                                    <span class="ui button disabled">
+                                        <i class="icon"></i>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="single line right aligned">
+                            <a href="{{ edit_url }}"
+                               data-position="left center"
+                               data-tooltip="Modifier la conférence {{ aggregate.talk.title }}"
+                               class="compact ui icon button"
+                            >
+                                <i class="pencil alernate icon"></i>
+                            </a>
+                            <a href="/pages/administration/index.php?page=forum_sessions&amp;action=supprimer&amp;id={{ aggregate.talk.id }}"
+                               data-position="left center"
+                               data-tooltip="Supprimer la conférence {{ aggregate.talk.title }}"
+                               class="compact ui red icon button confirmable"
+                               data-confirmable-label="Etes-vous sûr de vouloir supprimer la session {{ aggregate.talk.title }} ?"
+                            >
+                                <i class="trash icon"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="ui placeholder segment">
+                <div class="ui icon header">
+                    <i class="meh outline icon"></i>
+                    Aucune conférence
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+{% endblock %}

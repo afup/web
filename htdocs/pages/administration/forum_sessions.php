@@ -66,7 +66,7 @@ if ($action == 'lister') {
 
     $smarty->assign('forums', $forum->obtenirListe());
 
-    $listeSessions = $forum_appel->obtenirListeSessions($_GET['id_forum'], $list_champs, $list_ordre, $list_associatif, $list_filtre,$list_type, $needsMentoring, $planned);
+    $listeSessions = [];
     $moi = $droits->obtenirIdentifiant();
     $votant = in_array($_SESSION['afup_login'] ?? '', []);
     $maxVotant = count([]);
@@ -102,9 +102,9 @@ if ($action == 'lister') {
 } elseif ($action == 'supprimer') {
     if ($forum_appel->supprimerSession($_GET['id'])) {
         Logs::log('Suppression de la session ' . $_GET['id']);
-        afficherMessage('La session a été supprimée', 'index.php?page=forum_sessions&action=lister&type=' . $list_type);
+        afficherMessage('La session a été supprimée', '/admin/talk/');
     } else {
-        afficherMessage('Une erreur est survenue lors de la suppression de la session', 'index.php?page=forum_sessions&action=lister&type=' . $list_type, true);
+        afficherMessage('Une erreur est survenue lors de la suppression de la session', '/admin/talk/', true);
     }
 } else {
 
@@ -298,7 +298,7 @@ if ($action == 'lister') {
             } else {
                 Logs::log('Modification de la session de ' . $formulaire->exportValue('titre') . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('La session a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=forum_sessions&action=lister&id_forum=' . $valeurs['id_forum']);
+            afficherMessage('La session a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), '/admin/talk/?id=' . $valeurs['id_forum']);
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de la session');
         }

@@ -12,7 +12,7 @@ Feature: Administration - Évènements - Conférences
     And the "table" element should contain "Moy. notes"
     And the "table" element should contain "Nb. notes"
     And the "table" element should contain "Soumission"
-    When I fill in "filtre" with "Jouons"
+    When I fill in "q" with "Jouons"
     And I press "Filtrer"
     Then I should see "1 CONFÉRENCE(S)"
 
@@ -34,9 +34,9 @@ Feature: Administration - Évènements - Conférences
     And I press "Soumettre"
     Then I should see "La session a été ajoutée"
     And I should see "4 CONFÉRENCE(S)"
-    And I should see "2022-01-01"
+    And I should see "01/01/2022"
     And I should see "Une autre conference"
-    And I should see "Gallou Adrien"
+    And I should see "Adrien Gallou"
 
   @reloadDbWithTestData
   Scenario: Modification d'une conférence
@@ -55,9 +55,20 @@ Feature: Administration - Évènements - Conférences
     And I press "Soumettre"
     Then I should see "La session a été modifiée"
     And I should see "3 CONFÉRENCE(S)"
-    And I should see "2022-12-31"
+    And I should see "31/12/2022"
     And I should see "Jouons à un jeu"
-    And I should see "Gallou Adrien"
+    And I should see "Adrien Gallou"
+
+  @reloadDbWithTestData
+  Scenario: Suppression d'une conférence
+    Given I am logged in as admin and on the Administration
+    And I follow "Conférences"
+    Then the ".content h2" element should contain "Conférence"
+    And I should see "3 CONFÉRENCE(S)"
+    When I follow the button of tooltip "Supprimer la conférence Jouons tous ensemble à un petit jeu"
+    Then I should see "La session a été supprimée"
+    And I should not see "Jouons tous ensemble à un petit jeu"
+    And I should see "2 CONFÉRENCE(S)"
 
   @reloadDbWithTestData
   Scenario: Exporter les conférences
