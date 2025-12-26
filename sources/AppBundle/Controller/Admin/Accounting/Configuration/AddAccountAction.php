@@ -28,7 +28,7 @@ final class AddAccountAction extends AbstractController
             $this->accountRepository->save($account);
             $this->audit->log('Ajout du compte ' . $account->getName());
             $this->addFlash('notice', 'Le compte ' . $account->getName() . ' a été créé');
-            return $this->redirect('/pages/administration/index.php?page=compta_conf_compte&action=lister&filtre=' . $account->getName());
+            return $this->redirectToRoute('admin_accounting_accounts_list');
         }
 
         return $this->render('admin/accounting/configuration/account_add.html.twig', [

@@ -20,7 +20,7 @@ final class ArchiveAccountAction extends AbstractController
         if (!$account instanceof Account) {
             $this->addFlash('error', 'Compte non trouvé');
 
-            return $this->redirect('/pages/administration/index.php?page=compta_conf_compte&action=lister');
+            return $this->redirectToRoute('admin_accounting_accounts_list');
         }
 
         $account->setArchivedAt(new \DateTime());
