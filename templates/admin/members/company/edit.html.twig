@@ -6,7 +6,7 @@
     <h2>Modifier une personne morale</h2>
 
     <div class="ui menu">
-        <a href="{{ url('admin_membership_fee_list', {'memberType': constant('AFUP_PERSONNES_MORALES'), 'memberId': company.id}) }}"
+        <a href="{{ url('admin_membership_fee_list', {'memberType': enum('AppBundle\\Association\\MemberType').MemberCompany.value, 'memberId': company.id}) }}"
            class="item">
             <i class="money bill icon"></i>
             Voir les cotisations

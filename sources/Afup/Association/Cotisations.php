@@ -50,21 +50,20 @@ class Cotisations
     /**
      * Renvoit la liste des cotisations concernant une personne
      *
-     * @param int $type_personne Type de la personne (morale ou physique)
      * @param int $id_personne Identifiant de la personne
      * @param string $champs Champs à renvoyer
      * @param string $ordre Tri des enregistrements
      * @param bool $associatif Renvoyer un tableau associatif ?
      * @return array|false
      */
-    public function obtenirListe($type_personne, $id_personne, string $champs = '*', string $ordre = 'date_fin DESC', bool $associatif = false)
+    public function obtenirListe(MemberType $type_personne, $id_personne, string $champs = '*', string $ordre = 'date_fin DESC', bool $associatif = false)
     {
         $requete = 'SELECT';
         $requete .= '  ' . $champs . ' ';
         $requete .= 'FROM';
         $requete .= '  afup_cotisations ';
         $requete .= 'WHERE';
-        $requete .= '  type_personne=' . $type_personne;
+        $requete .= '  type_personne=' . $type_personne->value;
         $requete .= '  AND id_personne=' . $id_personne . ' ';
         $requete .= 'ORDER BY ' . $ordre;
         if ($associatif) {
@@ -112,7 +111,6 @@ class Cotisations
     /**
      * Ajoute une cotisation
      *
-     * @param int $type_personne Type de la personne (morale ou physique)
      * @param int $id_personne Identifiant de la personne
      * @param float $montant Adresse de la personne
      * @param int $type_reglement Type de règlement (espèces, chèque, virement)
@@ -124,14 +122,14 @@ class Cotisations
      * @param string $referenceClient Reference client à mentionner sur la facture
      * @return bool     Succès de l'ajout
      */
-    public function ajouter($type_personne, $id_personne, $montant, $type_reglement,
+    public function ajouter(MemberType $type_personne, $id_personne, $montant, $type_reglement,
                      $informations_reglement, $date_debut, $date_fin, $commentaires, $referenceClient = null): bool
     {
         $requete = 'INSERT INTO ';
         $requete .= '  afup_cotisations (type_personne, id_personne, montant, type_reglement , informations_reglement,';
         $requete .= '                    date_debut, date_fin, numero_facture, token, commentaires, reference_client) ';
         $requete .= 'VALUES (';
-        $requete .= $type_personne . ',';
+        $requete .= $type_personne->value . ',';
         $requete .= $id_personne . ',';
         $requete .= $montant . ',';
         $requete .= $this->_bdd->echapper($type_reglement) . ',';
@@ -214,7 +212,7 @@ class Cotisations
             'email' => 'N.C.',
         ];
 
-        if ($type_personne == AFUP_PERSONNES_MORALES) {
+        if ($type_personne == MemberType::MemberCompany->value) {
             if ($company = $this->companyMemberRepository?->get($id_personne)) {
                 $infos['nom'] = $company->getLastName();
                 $infos['prenom'] = $company->getFirstName();
@@ -268,7 +266,7 @@ class Cotisations
             [$ref, $date, $type_personne, $id_personne, $reste] = explode('-', (string) $cmd, 5);
             $date_debut = mktime(0, 0, 0, (int) substr($date, 2, 2), (int) substr($date, 0, 2), (int) substr($date, 4, 4));
 
-            $cotisation = $this->obtenirDerniere($type_personne, $id_personne);
+            $cotisation = $this->obtenirDerniere(MemberType::from((int) $type_personne), $id_personne);
             $date_fin_precedente = $cotisation === false ? 0 : $cotisation['date_fin'];
 
             if ($date_fin_precedente > 0) {
@@ -276,7 +274,8 @@ class Cotisations
             }
 
             $date_fin = $this->finProchaineCotisation($cotisation)->format('U');
-            $result = $this->ajouter($type_personne,
+            $result = $this->ajouter(
+                MemberType::from((int) $type_personne),
                 $id_personne,
                 $total,
                 AFUP_COTISATIONS_REGLEMENT_ENLIGNE,
@@ -330,7 +329,7 @@ class Cotisations
         $requete = 'SELECT * FROM afup_cotisations WHERE id=' . $id_cotisation;
         $cotisation = $this->_bdd->obtenirEnregistrement($requete);
 
-        $table = $cotisation['type_personne'] == AFUP_PERSONNES_MORALES ? 'afup_personnes_morales' : 'afup_personnes_physiques';
+        $table = $cotisation['type_personne'] == MemberType::MemberCompany->value ? 'afup_personnes_morales' : 'afup_personnes_physiques';
         $requete = 'SELECT * FROM ' . $table . ' WHERE id=' . $cotisation['id_personne'];
         $personne = $this->_bdd->obtenirEnregistrement($requete);
 
@@ -353,7 +352,7 @@ class Cotisations
         $pdf->Cell(130, 5, 'Objet : Facture n°' . $cotisation['numero_facture']);
         $pdf->SetFont('Arial', '', 10);
 
-        if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
+        if ($cotisation['type_personne'] == MemberType::MemberCompany->value) {
             $nom = $personne['raison_sociale'];
             $patternPrefix = $personne['raison_sociale'];
         } else {
@@ -394,7 +393,7 @@ class Cotisations
         } else {
             // On stocke le montant de la cotisation TTC, pour les personnes physiques c'est le même, par contre pour les personnes morales
             // ce n'est pas le même, afin d'éviter d'appliquer deux fois la TVA, on applique ce hotfix
-            if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
+            if ($cotisation['type_personne'] == MemberType::MemberCompany->value) {
                 $cotisation['montant'] = Vat::getRoundedWithoutVatPriceFromPriceWithVat($cotisation['montant'], Utils::MEMBERSHIP_FEE_VAT_RATE);
             }
 
@@ -408,7 +407,7 @@ class Cotisations
             $pdf->Cell(25, 5, 'Taux TVA', 1, 0, 'R', 1);
             $pdf->Cell(25, 5, 'Prix TTC', 1, 0, 'R', 1);
 
-            if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
+            if ($cotisation['type_personne'] == MemberType::MemberCompany->value) {
                 [$totalHt, $total] = $this->buildDetailsPersonneMorale($pdf, $cotisation['montant'], $cotisation['date_fin']);
             } else {
                 [$totalHt, $total] = $this->buildDetailsPersonnePhysique($pdf, $cotisation['montant'], $cotisation['date_fin']);
@@ -503,7 +502,7 @@ class Cotisations
     {
         $personne = $this->obtenir($id_cotisation, 'type_personne, id_personne');
 
-        if ($personne['type_personne'] == AFUP_PERSONNES_MORALES) {
+        if ($personne['type_personne'] == MemberType::MemberCompany->value) {
             $company = $this->companyMemberRepository ? $this->companyMemberRepository->get($personne['id_personne']) : null;
             Assertion::notNull($company);
             $contactPhysique = [
@@ -532,7 +531,7 @@ class Cotisations
 
         $cheminFacture = AFUP_CHEMIN_RACINE . 'cache/fact' . $id_cotisation . '.pdf';
         $numeroFacture = $this->genererFacture($id_cotisation, $cheminFacture);
-        $cotisation = $this->obtenirDerniere($personne['type_personne'], $personne['id_personne']);
+        $cotisation = $this->obtenirDerniere(MemberType::from((int) $personne['type_personne']), $personne['id_personne']);
         $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', (int) $cotisation['date_debut']) . '.pdf';
 
         $message = new Message('Facture AFUP', null, new MailUser(
@@ -553,18 +552,17 @@ class Cotisations
 
     /**
      * Retourne la dernière cotisation d'une personne morale
-     * @param int|string $type_personne
      * @param int $id_personne Identifiant de la personne
      * @return array|false
      */
-    public function obtenirDerniere($type_personne, $id_personne)
+    public function obtenirDerniere(MemberType $type_personne, $id_personne)
     {
         $requete = 'SELECT';
         $requete .= '  * ';
         $requete .= 'FROM';
         $requete .= '  afup_cotisations ';
         $requete .= 'WHERE';
-        $requete .= '  type_personne=' . $type_personne . ' ';
+        $requete .= '  type_personne=' . $type_personne->value . ' ';
         $requete .= '  AND id_personne=' . $id_personne . ' ';
         $requete .= 'ORDER BY';
         $requete .= '  date_fin DESC ';
@@ -688,7 +686,7 @@ class Cotisations
          * si type_personne = 1, alors personne morale: id_personne doit être égale à compagnyId de l'utilisateur connecté
          * qui doit aussi avoir le droit "ROLE_COMPAGNY_MANAGER"
          */
-        if ($result['type_personne'] == AFUP_PERSONNES_MORALES) {
+        if ($result['type_personne'] == MemberType::MemberCompany->value) {
             return $this->_droits->verifierDroitManagerPersonneMorale($result['id_personne']);
         }
 

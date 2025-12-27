@@ -6,6 +6,7 @@ namespace AppBundle\Controller\Website\Membership\Fee;
 
 use Afup\Site\Association\Cotisations;
 use Afup\Site\Droits;
+use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -41,7 +42,7 @@ final class DownloadAction extends AbstractController
         $numeroFacture = $this->cotisations->genererFacture($id, $tempfile);
         $cotisation = $this->cotisations->obtenir($id);
 
-        if ($cotisation['type_personne'] == AFUP_PERSONNES_MORALES) {
+        if ($cotisation['type_personne'] == MemberType::MemberCompany->value) {
             $company = $this->companyMemberRepository->get($cotisation['id_personne']);
             Assertion::isInstanceOf($company, CompanyMember::class);
             $patternPrefix = $company->getCompanyName();

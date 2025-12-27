@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Model\Repository;
 
+use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\CompanyMember;
 use Assert\Assertion;
 use Aura\SqlQuery\Common\SelectInterface;
@@ -121,7 +122,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
     public function remove(CompanyMember $companyMember): void
     {
         $nbCotisations = (int) $this->getQuery('SELECT COUNT(*) nb FROM afup_cotisations WHERE type_personne = :memberType AND id_personne = :id')
-            ->setParams(['memberType' => AFUP_PERSONNES_MORALES, 'id' => $companyMember->getId()])
+            ->setParams(['memberType' => MemberType::MemberCompany->value, 'id' => $companyMember->getId()])
             ->query()->first()[0]->nb;
         if (0 < $nbCotisations) {
             throw new InvalidArgumentException('Impossible de supprimer une personne morale qui a des cotisations');
