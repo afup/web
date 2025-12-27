@@ -21,7 +21,7 @@ final readonly class UpdateMailchimpMembersCommand
         #[Autowire('@app.mailchimp_api')]
         private Mailchimp $mailchimp,
         private UserRepository $userRepository,
-        #[Autowire('%mailchimp_members_list%')]
+        #[Autowire('%env(MAILCHIMP_MEMBERS_LIST)%')]
         private string $mailchimpMembersList,
     ) {}
 
