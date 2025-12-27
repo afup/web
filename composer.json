@@ -143,6 +143,7 @@
     "phpstan/phpstan": "^2.1",
     "phpstan/phpstan-beberlei-assert": "^2.0",
     "phpstan/phpstan-symfony": "^2.0",
+    "phpstan/phpstan-webmozart-assert": "^2.0",
     "phpunit/phpunit": "11.*",
     "rector/rector": "^2.0",
     "smalot/pdfparser": "^0.19.0",
@@ -150,7 +151,8 @@
     "symfony/json-path": "7.3.*",
     "symfony/web-profiler-bundle": "7.3.*",
     "symplify/vendor-patches": "^11.4",
-    "tomasvotruba/type-coverage": "^2.1"
+    "tomasvotruba/type-coverage": "^2.1",
+    "webmozart/assert": "^2.0"
   },
   "repositories": [
     {
