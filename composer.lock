@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dbad1ec36363f82f35f42cc1af36f546",
+    "content-hash": "7175fc353c2cfcab0594fdcd92aa8606",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -11364,6 +11364,57 @@
             "time": "2025-09-07T06:55:50+00:00"
         },
         {
+            "name": "phpstan/phpstan-webmozart-assert",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan-webmozart-assert.git",
+                "reference": "0c641817d2a8f05c7157f92d91986e74d3c8ab0c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan-webmozart-assert/zipball/0c641817d2a8f05c7157f92d91986e74d3c8ab0c",
+                "reference": "0c641817d2a8f05c7157f92d91986e74d3c8ab0c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0",
+                "phpstan/phpstan": "^2.0"
+            },
+            "require-dev": {
+                "nikic/php-parser": "^5.1",
+                "php-parallel-lint/php-parallel-lint": "^1.2",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpunit/phpunit": "^9.6",
+                "webmozart/assert": "^1.11.0"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "extension.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan webmozart/assert extension",
+            "support": {
+                "issues": "https://github.com/phpstan/phpstan-webmozart-assert/issues",
+                "source": "https://github.com/phpstan/phpstan-webmozart-assert/tree/2.0.0"
+            },
+            "time": "2024-10-14T03:45:26+00:00"
+        },
+        {
             "name": "phpunit/php-code-coverage",
             "version": "11.0.11",
             "source": {
@@ -14224,6 +14275,68 @@
                 }
             ],
             "time": "2025-12-05T16:38:02+00:00"
+        },
+        {
+            "name": "webmozart/assert",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webmozarts/assert.git",
+                "reference": "1b34b004e35a164bc5bb6ebd33c844b2d8069a54"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/1b34b004e35a164bc5bb6ebd33c844b2d8069a54",
+                "reference": "1b34b004e35a164bc5bb6ebd33c844b2d8069a54",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-date": "*",
+                "ext-filter": "*",
+                "php": "^8.2"
+            },
+            "suggest": {
+                "ext-intl": "",
+                "ext-simplexml": "",
+                "ext-spl": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-feature/2-0": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Webmozart\\Assert\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@gmail.com"
+                },
+                {
+                    "name": "Woody Gilk",
+                    "email": "woody.gilk@gmail.com"
+                }
+            ],
+            "description": "Assertions to validate method input/output with nice error messages.",
+            "keywords": [
+                "assert",
+                "check",
+                "validate"
+            ],
+            "support": {
+                "issues": "https://github.com/webmozarts/assert/issues",
+                "source": "https://github.com/webmozarts/assert/tree/2.0.0"
+            },
+            "time": "2025-12-16T21:36:00+00:00"
         }
     ],
     "aliases": [],

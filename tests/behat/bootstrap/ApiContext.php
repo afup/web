@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Afup\Tests\Behat\Bootstrap;
 
 use Behat\Step\Then;
-use PHPUnit\Framework\Assert;
 use Symfony\Component\JsonPath\JsonCrawler;
+use Webmozart\Assert\Assert;
 
 trait ApiContext
 {
@@ -14,7 +14,10 @@ trait ApiContext
     public function assertResponseShouldBeInJson(): void
     {
         $this->assertResponseHeaderEquals('Content-Type', 'application/json');
-        Assert::assertJson($this->minkContext->getSession()->getPage()->getContent());
+
+        $decoded = json_decode($this->minkContext->getSession()->getPage()->getContent(), true);
+
+        Assert::isArray($decoded);
     }
 
     #[Then('/^the json response has the key "(?P<key>[^"]*)" with value "(?P<value>(?:[^"]|\\")*)"$/')]
@@ -24,8 +27,8 @@ trait ApiContext
 
         $foundValue = $crawler->find($key);
 
-        Assert::assertCount(1, $foundValue);
-        Assert::assertSame($value, $foundValue[0]);
+        Assert::count($foundValue, 1);
+        Assert::same($foundValue[0], $value);
     }
 
     #[Then('/^the json response has no key "(?P<key>[^"]*)"$/')]
@@ -35,6 +38,6 @@ trait ApiContext
 
         $foundValue = $crawler->find($key);
 
-        Assert::assertEmpty($foundValue);
+        Assert::isEmpty($foundValue);
     }
 }
