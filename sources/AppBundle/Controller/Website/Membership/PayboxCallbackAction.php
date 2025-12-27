@@ -46,7 +46,7 @@ final readonly class PayboxCallbackAction
 
         if ($etat == AFUP_COTISATIONS_PAIEMENT_REGLE) {
             $account = $this->cotisations->getAccountFromCmd($payboxResponse->getCmd());
-            $lastCotisation = $this->cotisations->obtenirDerniere($account['type'], $account['id']);
+            $lastCotisation = $this->cotisations->obtenirDerniere(MemberType::from($account['type']), $account['id']);
 
             if ($lastCotisation === false && $account['type'] == MemberType::MemberPhysical->value) {
                 $user = $this->userRepository->get($account['id']);

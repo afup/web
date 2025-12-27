@@ -72,7 +72,7 @@
                         </td>
                         <td class="{% if not isActive %}disabled{% endif %}" style="text-align: center">{{ activeMembers[company.id]|default(0) }}</td>
                         <td style="text-align: right">
-                            <a href="{{ url('admin_membership_fee_list', {'memberType': constant('AFUP_PERSONNES_MORALES'), 'memberId': company.id}) }}"
+                            <a href="{{ url('admin_membership_fee_list', {'memberType': enum('AppBundle\\Association\\MemberType').MemberCompany.value, 'memberId': company.id}) }}"
                                data-position="left center"
                                data-tooltip="Gérer les cotisations de {{ company.companyName }}"
                                class="compact ui green icon button">
