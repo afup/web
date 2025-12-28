@@ -79,7 +79,7 @@ class MessageFactory
         $attachment = new Attachment();
         $attachment
             ->setTitle('Nouvelle proposition sur le CFP - ' . $event->getTitle())
-            ->setTitleLink('https://afup.org/pages/administration/index.php?' . http_build_query(['page' => 'forum_sessions', 'id_forum' => $event->getId()]))
+            ->setTitleLink('https://afup.org/admin/talk/?' . http_build_query(['id' => $event->getId()]))
             ->setFallback(sprintf(
                     'Nouvelle proposition intitulée "%s". Type %s - Public %s',
                     $talk->getTitle(),
@@ -263,7 +263,7 @@ class MessageFactory
         $attachment = new Attachment();
         $attachment
             ->setTitle(sprintf('Total des réponses au CFP du %s', $event->getTitle()))
-            ->setTitleLink('https://afup.org/pages/administration/index.php?page=forum_sessions')
+            ->setTitleLink('https://afup.org/admin/talk/')
         ;
 
         foreach ($this->prepareCfpStatsFields($talkRepository, $talkToSpeakersRepository, $event) as $field) {

@@ -37,7 +37,7 @@ class HomeAction extends AbstractController
             $cfp = [
                 'title' => 'CFP',
                 'subtitle' => 'Talks et speakers',
-                'url' => '/pages/administration/index.php?page=forum_sessions',
+                'url' => '/admin/talk/',
                 'statistics' => [],
             ];
 

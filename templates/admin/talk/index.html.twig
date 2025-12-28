@@ -6,7 +6,7 @@
     {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
 
     <div class="ui menu">
-        <a href="/pages/administration/index.php?page=forum_sessions&amp;action=ajouter&amp;id_forum={{ event.id }}" class="item">
+        <a href="{{ path("admin_talk_add") }}" class="item">
             <div data-tooltip="Ajouter une conférence"
                  data-position="bottom left">
                 <i class="icon plus square"></i>
@@ -112,7 +112,7 @@
                 <tbody>
 
                 {% for aggregate in sessions %}
-                    {% set edit_url = "/pages/administration/index.php?page=forum_sessions&action=modifier&id="~aggregate.talk.id %}
+                    {% set edit_url = url('admin_talk_edit', {id: aggregate.talk.id}) %}
                     <tr>
                         <td class="single line">{{ aggregate.talk.submittedOn|date('d/m/Y') }}</td>
                         <td>{{ aggregate.talk.title }}</td>
@@ -228,11 +228,11 @@
                             >
                                 <i class="pencil alernate icon"></i>
                             </a>
-                            <a href="/pages/administration/index.php?page=forum_sessions&amp;action=supprimer&amp;id={{ aggregate.talk.id }}"
+                            <a href="{{ url('admin_talk_delete', {id: aggregate.talk.id}) }}"
                                data-position="left center"
                                data-tooltip="Supprimer la conférence {{ aggregate.talk.title }}"
                                class="compact ui red icon button confirmable"
-                               data-confirmable-label="Etes-vous sûr de vouloir supprimer la session {{ aggregate.talk.title }} ?"
+                               data-confirmable-label="Êtes-vous sûr de vouloir supprimer la session {{ aggregate.talk.title }} ?"
                             >
                                 <i class="trash icon"></i>
                             </a>

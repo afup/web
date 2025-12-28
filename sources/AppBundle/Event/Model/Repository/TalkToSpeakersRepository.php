@@ -50,7 +50,7 @@ class TalkToSpeakersRepository extends Repository implements MetadataInitializer
     {
         $this->startTransaction();
         try {
-            $delete = $this->getPreparedQuery('DELETE FROM afup_conferenciers_sessions WHERE talk_id = :talk');
+            $delete = $this->getPreparedQuery('DELETE FROM afup_conferenciers_sessions WHERE session_id = :talk');
             $delete->setParams(['talk' => $talk->getId()])->execute();
 
             $insert = $this->getPreparedQuery('INSERT INTO afup_conferenciers_sessions (conferencier_id, session_id) VALUES (:speaker, :talk)');

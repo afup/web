@@ -460,6 +460,14 @@ SQL;
                 ],
             ])
             ->addField([
+                'columnName' => 'date_publication',
+                'fieldName' => 'publishedOn',
+                'type' => 'datetime',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => false],
+                ],
+            ])
+            ->addField([
                 'columnName' => 'titre',
                 'fieldName' => 'title',
                 'type' => 'string',

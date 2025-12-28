@@ -1,0 +1,45 @@
+<div class="ui form">
+    {{ form_start(form) }}
+    <div class="ui segment">
+        <h3 class="ui header">Présentation</h3>
+        {{ form_row(form.title) }}
+        {{ form_row(form.abstract, {attr: {class: 'tinymce'}}) }}
+        {{ form_row(form.staffNotes) }}
+        {{ form_row(form.type) }}
+        {{ form_row(form.skill) }}
+        {{ form_row(form.withWorkshop) }}
+        {{ form_row(form.workshopAbstract) }}
+        {{ form_row(form.needsMentoring) }}
+        {{ form_row(form.codeOfConduct) }}
+        {{ form_row(form.hasAllowedToSharingWithLocalOffices) }}
+    </div>
+    <div class="ui segment">
+        <h3 class="ui header">Conférencier(s)</h3>
+        {{ form_row(form.speakers) }}
+    </div>
+    <div class="ui segment">
+        <h3 class="ui header">Informations complémentaires</h3>
+        {{ form_row(form.submittedOn) }}
+        {{ form_row(form.publishedOn) }}
+        {{ form_row(form.joindinId) }}
+        {{ form_row(form.youtubeId) }}
+        {{ form_row(form.slidesUrl) }}
+        {{ form_row(form.openfeedbackPath) }}
+        {{ form_row(form.blogPostUrl) }}
+        {{ form_row(form.interviewUrl) }}
+        {{ form_row(form.languageCode) }}
+        {{ form_row(form.tweets) }}
+    </div>
+    <div class="ui segment">
+        <div class="inline fields ui grid">
+            <div class="three wide column"></div>
+            <div class="field nine wide column">
+                {{ form_row(form.save, {attr: {class: "ui primary button"}, label: "Soumettre"}) }}
+            </div>
+        </div>
+    </div>
+    <div class="ui segment">
+        <p><span class="obligatoire">*</span> indique un champ obligatoire</p>
+    </div>
+    {{ form_end(form) }}
+</div>
