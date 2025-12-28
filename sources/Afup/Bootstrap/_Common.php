@@ -30,10 +30,6 @@ require_once $root . '/vendor/autoload.php';
 // définitions des constantes
 if (!defined('AFUP_CHEMIN_RACINE')) {
     define('AFUP_CHEMIN_RACINE', $root . '/htdocs/');
-
-    // Voir la classe Afup\Site\Association\Personnes_Morales
-    define('AFUP_PERSONNES_PHYSIQUES', 0);
-    define('AFUP_COTISATION_PERSONNE_PHYSIQUE', 30);
 }
 date_default_timezone_set('Europe/Paris');
 

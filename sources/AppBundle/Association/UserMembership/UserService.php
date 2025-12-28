@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Association\UserMembership;
 
 use Afup\Site\Association\Cotisations;
+use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Email\Mailer\Mailer;
@@ -91,10 +92,10 @@ BODY
     {
         if ($user->getCompanyId()) {
             $id = $user->getCompanyId();
-            $personType = AFUP_PERSONNES_MORALES;
+            $personType = MemberType::MemberCompany;
         } else {
             $id = $user->getId();
-            $personType = AFUP_PERSONNES_PHYSIQUES;
+            $personType = MemberType::MemberPhysical;
         }
 
         return $this->cotisations->obtenirDerniere($personType, $id);

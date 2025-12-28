@@ -113,7 +113,7 @@
                         <td style="text-align: right">
                             {% if not user.companyId %}
                                 <a id="cotisations_{{ user.id }}"
-                                   href="{{ url('admin_membership_fee_list', {'memberType': constant('AFUP_PERSONNES_PHYSIQUES'), 'memberId': user.id}) }}"
+                                   href="{{ url('admin_membership_fee_list', {'memberType': enum('AppBundle\\Association\\MemberType').MemberPhysical.value, 'memberId': user.id}) }}"
                                    data-position="left center"
                                    data-tooltip="Gérer les cotisations de {{ user.firstname }} {{ user.lastname }}"
                                    class="compact ui green icon button"
@@ -130,7 +130,7 @@
                                     <i class="building icon"></i>
                                 </a>
                                 <a id="cotisations_{{ user.id }}"
-                                   href="{{ url('admin_membership_fee_list', {'memberType': constant('AFUP_PERSONNES_MORALES'), 'memberId': user.companyId}) }}"
+                                   href="{{ url('admin_membership_fee_list', {'memberType': enum('AppBundle\\Association\\MemberType').MemberCompany.value, 'memberId': user.companyId}) }}"
                                    data-position="left center"
                                    data-tooltip="Gérer les cotisations de la personne morale"
                                    class="compact ui green icon button"

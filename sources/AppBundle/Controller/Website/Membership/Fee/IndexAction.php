@@ -9,6 +9,7 @@ use Afup\Site\Droits;
 use Afup\Site\Utils\Utils;
 use Afup\Site\Utils\Vat;
 use AppBundle\Association\MembershipFeeReferenceGenerator;
+use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\UserMembership\UserService;
@@ -55,8 +56,8 @@ final class IndexAction extends AbstractController
             );
         }
 
-        $cotisations_physique = $this->cotisations->obtenirListe(0, $user->getId());
-        $cotisations_morale = $this->cotisations->obtenirListe(1, $user->getCompanyId());
+        $cotisations_physique = $this->cotisations->obtenirListe(MemberType::MemberPhysical, $user->getId());
+        $cotisations_morale = $this->cotisations->obtenirListe(MemberType::MemberCompany, $user->getCompanyId());
 
         if (is_array($cotisations_morale) && is_array($cotisations_physique)) {
             $liste_cotisations = array_merge($cotisations_physique, $cotisations_morale);
@@ -74,7 +75,7 @@ final class IndexAction extends AbstractController
 
         if ($user->getCompanyId() > 0) {
             $id_personne = $user->getCompanyId();
-            $type_personne = AFUP_PERSONNES_MORALES;
+            $type_personne = MemberType::MemberCompany;
             $prefixe = 'Personne morale';
 
             if (!$company = $this->companyMemberRepository->findById($id_personne)) {
@@ -86,7 +87,7 @@ final class IndexAction extends AbstractController
             }
         } else {
             $id_personne = $identifiant;
-            $type_personne = AFUP_PERSONNES_PHYSIQUES;
+            $type_personne = MemberType::MemberPhysical;
             $prefixe = 'Personne physique';
             $montant = AFUP_COTISATION_PERSONNE_PHYSIQUE;
         }
