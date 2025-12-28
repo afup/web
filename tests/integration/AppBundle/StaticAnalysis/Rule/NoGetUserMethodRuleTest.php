@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Tests\StaticAnalysis\Rule;
+namespace AppBundle\IntegrationTests\StaticAnalysis\Rule;
 
 use AppBundle\StaticAnalysis\Rule\NoGetUserMethodRule;
 use PHPStan\Rules\Rule;
