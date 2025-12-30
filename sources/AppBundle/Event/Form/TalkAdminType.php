@@ -23,11 +23,12 @@ class TalkAdminType extends TalkType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        parent::buildForm($builder, $options);
+
         $allSpeakers = $this->speakerRepository->searchSpeakers($options['event']);
         $speakers = $this->speakerRepository->getSpeakersByTalk($builder->getData());
         $speakers = iterator_to_array($speakers->getIterator());
 
-        parent::buildForm($builder, $options);
         $builder->remove('hasAllowedToSharingWithLocalOffices');
         $builder
             ->add('hasAllowedToSharingWithLocalOffices', CheckboxType::class, [
@@ -92,6 +93,10 @@ class TalkAdminType extends TalkType
                 'choice_label' => fn(Speaker $speaker) => $speaker->getLabel(),
                 'choice_value' => fn(?Speaker $speaker) => $speaker?->getId(),
                 'choice_name' => 'id',
+            ])
+            ->add('verbatim', TextareaType::class, [
+                'label' => 'Verbatim',
+                'required' => false,
             ])
             ->add('save', SubmitType::class)
         ;

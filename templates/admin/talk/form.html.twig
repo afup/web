@@ -3,7 +3,7 @@
     <div class="ui segment">
         <h3 class="ui header">Présentation</h3>
         {{ form_row(form.title) }}
-        {{ form_row(form.abstract, {attr: {class: 'tinymce'}}) }}
+        {{ form_row(form.abstract, {attr: {class: 'simplemde'}}) }}
         {{ form_row(form.staffNotes) }}
         {{ form_row(form.type) }}
         {{ form_row(form.skill) }}
@@ -29,6 +29,7 @@
         {{ form_row(form.interviewUrl) }}
         {{ form_row(form.languageCode) }}
         {{ form_row(form.tweets) }}
+        {{ form_row(form.verbatim, {attr: {class: 'simplemde'}}) }}
     </div>
     <div class="ui segment">
         <div class="inline fields ui grid">

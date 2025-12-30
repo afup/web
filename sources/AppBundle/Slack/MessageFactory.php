@@ -22,7 +22,10 @@ class MessageFactory
     /**
      * MessageFactory constructor.
      */
-    public function __construct(private readonly TranslatorInterface $translator) {}
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly UrlGeneratorInterface $urlGenerator,
+    ) {}
 
     public function createMessageForVote(Vote $vote): Message
     {
@@ -76,10 +79,12 @@ class MessageFactory
      */
     public function createMessageForTalk(Talk $talk, Event $event): Message
     {
+        $link = $this->urlGenerator->generate('admin_talk_list', ['id' => $event->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+
         $attachment = new Attachment();
         $attachment
             ->setTitle('Nouvelle proposition sur le CFP - ' . $event->getTitle())
-            ->setTitleLink('https://afup.org/admin/talk/?' . http_build_query(['id' => $event->getId()]))
+            ->setTitleLink($link)
             ->setFallback(sprintf(
                     'Nouvelle proposition intitulée "%s". Type %s - Public %s',
                     $talk->getTitle(),
@@ -260,10 +265,12 @@ class MessageFactory
             }
         }
 
+        $link = $this->urlGenerator->generate(name: 'admin_talk_list', referenceType: UrlGeneratorInterface::ABSOLUTE_URL);
+
         $attachment = new Attachment();
         $attachment
             ->setTitle(sprintf('Total des réponses au CFP du %s', $event->getTitle()))
-            ->setTitleLink('https://afup.org/admin/talk/')
+            ->setTitleLink($link)
         ;
 
         foreach ($this->prepareCfpStatsFields($talkRepository, $talkToSpeakersRepository, $event) as $field) {

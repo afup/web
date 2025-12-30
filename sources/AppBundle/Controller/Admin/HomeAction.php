@@ -15,6 +15,7 @@ use AppBundle\Security\Authentication;
 use Psr\Clock\ClockInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class HomeAction extends AbstractController
 {
@@ -27,6 +28,7 @@ class HomeAction extends AbstractController
         private readonly StatisticsComputer $statisticsComputer,
         private readonly ClockInterface $clock,
         private readonly Authentication $authentication,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {}
 
     public function __invoke(): Response
@@ -37,7 +39,7 @@ class HomeAction extends AbstractController
             $cfp = [
                 'title' => 'CFP',
                 'subtitle' => 'Talks et speakers',
-                'url' => '/admin/talk/',
+                'url' => $this->urlGenerator->generate('admin_talk_list'),
                 'statistics' => [],
             ];
 
