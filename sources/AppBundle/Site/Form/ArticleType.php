@@ -76,14 +76,16 @@ class ArticleType extends AbstractType
             ])
             ->add('content', TextareaType::class, [
                 'label' => 'Contenu',
-                'required' => true,
+                // Désactive la validation HTML5, nécessaire à cause du wysiwyg qui masque l'input
+                // tout en le mettant à required, ce qui bloque la soumission du formulaire.
+                'required' => false,
                 'attr' => [
                     'cols' => 42,
                     'rows' => 20,
                     'class' => $textareaCssClass,
                 ],
                 'constraints' => [
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank(message: 'Ce champ est obligatoire'),
                     new Assert\Type('string'),
                 ],
             ])
