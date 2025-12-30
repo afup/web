@@ -24,7 +24,6 @@ $action = verifierAction([
     'ventiler',
     'modifier_colonne',
     'export',
-    'download_attachment',
     'upload_attachment',
 ]);
 
@@ -538,42 +537,6 @@ if ($action == 'lister') {
     } catch (Exception $e) {
         header('HTTP/1.1 400 Bad Request');
         echo $e->getMessage();
-    }
-    exit;
-}
-
-/**
- * Download a line attachment
- */ elseif ($action === 'download_attachment') {
-    try {
-        // Bad request?
-        if (!isset($_GET['id']) || !($line = $compta->obtenir((int) $_GET['id']))) {
-            throw new Exception("Please verify parameters", 400);
-        }
-
-        // Test line existence
-        if (!$line['id']) {
-            throw new Exception("Not found", 404);
-        }
-
-        // Test file existence
-        $filename = AFUP_CHEMIN_RACINE . 'uploads' . DIRECTORY_SEPARATOR . $line['attachment_filename'];
-        if (!$line['attachment_filename'] || !is_file($filename)) {
-            throw new RuntimeException('File not found.');
-        }
-
-        // Download it
-        $finfo = new finfo(FILEINFO_MIME_TYPE);
-        $mime  = $finfo->file($filename);
-
-        header('Content-Type: ' . $mime);
-        header("Content-Transfer-Encoding: Binary");
-        header("Content-disposition: attachment; filename=\"" . basename($filename) . "\"");
-        readfile($filename);
-        exit;
-    } catch (Exception $e) {
-        header('HTTP/1.1 400 Bad Request');
-        header('X-Info: ' . $e->getMessage());
     }
     exit;
 } elseif ($action == 'importer') {
