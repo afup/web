@@ -164,6 +164,12 @@ services:
     Afup\Site\Association\CotisationsFactory:
         autowire: true
 
+    Afup\Site\Corporate\Branche:
+        autowire: true
+
+    Afup\Site\Corporate\Page:
+        autowire: true
+
     Afup\Site\Forum\Facturation:
         autowire: true
 
