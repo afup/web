@@ -3,7 +3,7 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         photo_storage: '@AppBundle\CFP\PhotoStorage'
-        global_menu_event_label: '%afup_global_menu_event_label%'
+        global_menu_event_label: '%env(AFUP_GLOBAL_MENU_EVENT_LABEL)%'
     form_themes: ['form_theme.html.twig']
     exception_controller: null
     default_path: "%kernel.project_dir%/../templates"

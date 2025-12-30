@@ -16,9 +16,9 @@ final class ListAction extends AbstractController
 {
     public function __construct(
         private readonly ViewRenderer $view,
-        #[Autowire('%algolia_app_id%')]
+        #[Autowire('%env(ALGOLIA_APP_ID)%')]
         private readonly string $algoliaAppId,
-        #[Autowire('%algolia_frontend_api_key%')]
+        #[Autowire('%env(ALGOLIA_FRONTEND_API_KEY)%')]
         private readonly string $algoliaFrontendApikey,
     ) {}
 

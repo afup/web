@@ -1,4 +1,3 @@
--include .env
 default: help
 
 # Variables
@@ -51,7 +50,7 @@ init: htdocs/uploads
 ##@ Docker
 
 ### Démarrer les containers
-docker-up: .env var/logs/.docker-build data compose.override.yml
+docker-up: .env.local var/logs/.docker-build data compose.override.yml
 	$(DOCKER_COMP) up $(DOCKER_UP_OPTIONS)
 
 ### Stopper les containers
@@ -154,8 +153,8 @@ var/logs/.docker-build: compose.yml compose.override.yml $(shell find docker -ty
 	CURRENT_UID=$(CURRENT_UID) ENABLE_XDEBUG=$(ENABLE_XDEBUG) $(DOCKER_COMPOSE_BIN) build
 	touch var/logs/.docker-build
 
-.env:
-	cp .env.dist .env
+.env.local:
+	cp .env.dist .env.local
 
 compose.override.yml:
 	cp compose.override.yml-dist compose.override.yml
