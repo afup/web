@@ -31,16 +31,6 @@ if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'afup.dev') {
     $debug = true;
 }
 
-define('AFUP_FORUM_ETAT_CREE', 0);
-define('AFUP_FORUM_ETAT_ANNULE', 1);
-define('AFUP_FORUM_ETAT_ERREUR', 2);
-define('AFUP_FORUM_ETAT_REFUSE', 3);
-define('AFUP_FORUM_ETAT_REGLE', 4);
-define('AFUP_FORUM_ETAT_INVITE', 5);
-define('AFUP_FORUM_ETAT_ATTENTE_REGLEMENT', 6);
-define('AFUP_FORUM_ETAT_CONFIRME', 7);
-define('AFUP_FORUM_ETAT_A_POSTERIORI', 8);
-
 define('AFUP_FORUM_FACTURE_A_ENVOYER', 0);
 define('AFUP_FORUM_FACTURE_ENVOYEE', 1);
 define('AFUP_FORUM_FACTURE_RECUE', 2);

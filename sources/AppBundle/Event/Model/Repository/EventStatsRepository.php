@@ -8,6 +8,7 @@ use AppBundle\Event\Model\EventStats\CFPStats;
 use AppBundle\Event\Model\EventStats\TicketTypeStats;
 use AppBundle\Event\Model\EventStats;
 use AppBundle\Event\Model\EventStats\DailyStats;
+use AppBundle\Event\Model\Ticket;
 use Assert\Assertion;
 use Datetime;
 use Doctrine\DBAL\ArrayParameterType;
@@ -52,7 +53,7 @@ class EventStatsRepository
 
         $queryBuilder = clone $baseQueryBuilder;
         $statement = $queryBuilder->andWhere('etat IN(:states)')
-            ->setParameter('states', [AFUP_FORUM_ETAT_REGLE, AFUP_FORUM_ETAT_ATTENTE_REGLEMENT, AFUP_FORUM_ETAT_INVITE], ArrayParameterType::INTEGER)
+            ->setParameter('states', [Ticket::STATUS_PAID, Ticket::STATUS_WAITING, Ticket::STATUS_GUEST], ArrayParameterType::INTEGER)
             ->executeQuery();
 
         $confirmed = [];
@@ -62,7 +63,7 @@ class EventStatsRepository
 
         $queryBuilder = clone $baseQueryBuilder;
         $statement = $queryBuilder->andWhere('etat IN(:states)')
-            ->setParameter('states', [AFUP_FORUM_ETAT_REGLE, AFUP_FORUM_ETAT_ATTENTE_REGLEMENT], ArrayParameterType::INTEGER)
+            ->setParameter('states', [Ticket::STATUS_PAID, Ticket::STATUS_WAITING], ArrayParameterType::INTEGER)
             ->executeQuery();
 
         $paying = [];
@@ -72,7 +73,7 @@ class EventStatsRepository
 
         $queryBuilder = clone $baseQueryBuilder;
         $statement = $queryBuilder->andWhere('etat NOT IN(:states)')
-            ->setParameter('states', [AFUP_FORUM_ETAT_ANNULE, AFUP_FORUM_ETAT_ERREUR, AFUP_FORUM_ETAT_REFUSE], ArrayParameterType::INTEGER)
+            ->setParameter('states', [Ticket::STATUS_CANCELLED, Ticket::STATUS_ERROR, Ticket::STATUS_DECLINED], ArrayParameterType::INTEGER)
             ->executeQuery();
 
         $registered = [];
@@ -101,19 +102,19 @@ class EventStatsRepository
 
         $queryBuilder = clone $baseQueryBuilder;
         $registered = $queryBuilder->andWhere('etat NOT IN(:states)')
-            ->setParameter('states', [AFUP_FORUM_ETAT_ANNULE, AFUP_FORUM_ETAT_ERREUR, AFUP_FORUM_ETAT_REFUSE], ArrayParameterType::INTEGER)
+            ->setParameter('states', [Ticket::STATUS_CANCELLED, Ticket::STATUS_ERROR, Ticket::STATUS_DECLINED], ArrayParameterType::INTEGER)
             ->executeQuery()
             ->fetchOne();
 
         $queryBuilder = clone $baseQueryBuilder;
         $confirmed = $queryBuilder->andWhere('etat IN(:states)')
-            ->setParameter('states', [AFUP_FORUM_ETAT_REGLE, AFUP_FORUM_ETAT_INVITE, AFUP_FORUM_ETAT_CONFIRME], ArrayParameterType::INTEGER)
+            ->setParameter('states', [Ticket::STATUS_PAID, Ticket::STATUS_GUEST, Ticket::STATUS_CONFIRMED], ArrayParameterType::INTEGER)
             ->executeQuery()
             ->fetchOne();
 
         $queryBuilder = clone $baseQueryBuilder;
         $pending = $queryBuilder->andWhere('etat = :state')
-            ->setParameter('state', AFUP_FORUM_ETAT_ATTENTE_REGLEMENT)
+            ->setParameter('state', Ticket::STATUS_WAITING)
             ->executeQuery()
             ->fetchOne();
 

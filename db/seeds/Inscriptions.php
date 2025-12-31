@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use AppBundle\Event\Model\Ticket;
 use Phinx\Seed\AbstractSeed;
 
 class Inscriptions extends AbstractSeed
@@ -23,7 +24,7 @@ class Inscriptions extends AbstractSeed
                 'newsletter_afup' => '1',
                 'newsletter_nexen' => '0',
                 'id_forum' => Event::ID_FORUM,
-                'etat' => AFUP_FORUM_ETAT_REGLE,
+                'etat' => Ticket::STATUS_PAID,
             ],
             [
                 'reference' => 'REF-TEST-002',
@@ -38,7 +39,7 @@ class Inscriptions extends AbstractSeed
                 'newsletter_afup' => '1',
                 'newsletter_nexen' => '0',
                 'id_forum' => Event::ID_FORUM,
-                'etat' => AFUP_FORUM_ETAT_REGLE,
+                'etat' => Ticket::STATUS_PAID,
             ],
             [
                 'reference' => 'REF-TEST-003',
@@ -53,7 +54,7 @@ class Inscriptions extends AbstractSeed
                 'newsletter_afup' => '1',
                 'newsletter_nexen' => '0',
                 'id_forum' => Event::ID_FORUM,
-                'etat' => AFUP_FORUM_ETAT_REGLE,
+                'etat' => Ticket::STATUS_PAID,
             ],
         ];
 
@@ -81,7 +82,7 @@ class Inscriptions extends AbstractSeed
                 'id_pays' => 'FR',
                 'autorisation' => 'otzbfksgve',
                 'transaction' => 'taedsken',
-                'etat' => AFUP_FORUM_ETAT_REGLE,
+                'etat' => Ticket::STATUS_PAID,
                 'facturation' => 0,
                 'id_forum' => Event::ID_FORUM,
                 'date_facture' => time(),
@@ -100,7 +101,7 @@ class Inscriptions extends AbstractSeed
                 'id_pays' => 'FR',
                 'autorisation' => 'otzbfksgvz',
                 'transaction' => 'taedskem',
-                'etat' => AFUP_FORUM_ETAT_REGLE,
+                'etat' => Ticket::STATUS_PAID,
                 'facturation' => 1,
                 'id_forum' => Event::ID_FORUM,
                 'date_facture' => (new \DateTime("2023-06-25"))->getTimestamp(),
@@ -119,7 +120,7 @@ class Inscriptions extends AbstractSeed
                 'id_pays' => 'FR',
                 'autorisation' => 'ozzbfksgvz',
                 'transaction' => 'yaedskem',
-                'etat' => AFUP_FORUM_ETAT_REGLE,
+                'etat' => Ticket::STATUS_PAID,
                 'facturation' => 1,
                 'id_forum' => Event::ID_FORUM,
                 'date_facture' => (new \DateTime("2024-01-02"))->getTimestamp(),
