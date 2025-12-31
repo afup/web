@@ -84,14 +84,14 @@ class Facturation
     public function estFacture($reference)
     {
         $facture = $this->obtenir($reference, 'etat, facturation');
-        if ($facture['facturation'] == AFUP_FORUM_FACTURE_A_ENVOYER) {
+        if ($facture['facturation'] == Ticket::INVOICE_TODO) {
             $requete = 'UPDATE afup_inscription_forum ';
-            $requete .= 'SET facturation=' . AFUP_FORUM_FACTURE_ENVOYEE . ' ';
+            $requete .= 'SET facturation=' . Ticket::INVOICE_SENT . ' ';
             $requete .= 'WHERE reference=' . $this->_bdd->echapper($reference);
             $this->_bdd->executer($requete);
 
             $requete = 'UPDATE afup_facturation_forum ';
-            $requete .= 'SET facturation=' . AFUP_FORUM_FACTURE_ENVOYEE . ', date_facture= ' . time() . ' ';
+            $requete .= 'SET facturation=' . Ticket::INVOICE_SENT . ', date_facture= ' . time() . ' ';
             $requete .= 'WHERE reference=' . $this->_bdd->echapper($reference);
             return $this->_bdd->executer($requete);
         }

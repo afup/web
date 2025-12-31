@@ -231,9 +231,10 @@ if ($action == 'lister') {
     ];
     $formulaire->addElement('select', 'etat'        , 'Etat'        , $state);
 
-    $facturation = [AFUP_FORUM_FACTURE_A_ENVOYER => 'Facture à envoyer',
-        AFUP_FORUM_FACTURE_ENVOYEE                    => 'Facture envoyée',
-        AFUP_FORUM_FACTURE_RECUE                      => 'Facture reçue',
+    $facturation = [
+        Ticket::INVOICE_TODO        => 'Facture à envoyer',
+        Ticket::INVOICE_SENT        => 'Facture envoyée',
+        Ticket::INVOICE_RECEIVED    => 'Facture reçue',
     ];
     $formulaire->addElement('select', 'facturation' , 'Facturation'  , $facturation);
 
