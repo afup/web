@@ -48,9 +48,9 @@ class Ticket implements NotifyPropertyInterface
     public const STATUS_CONFIRMED = 7;
     public const STATUS_PAID_AFTER = 8;
 
-    public const INVOICE_TODO = AFUP_FORUM_FACTURE_A_ENVOYER;
-    public const INVOICE_SENT = AFUP_FORUM_FACTURE_ENVOYEE;
-    public const INVOICE_RECEIVED = AFUP_FORUM_FACTURE_RECUE; // Je ne comprends pas ce que veut dire ce statut ici @todo check & delete
+    public const INVOICE_TODO = 0;
+    public const INVOICE_SENT = 1;
+    public const INVOICE_RECEIVED = 2;
 
     public const TYPE_DAY_1 = AFUP_FORUM_PREMIERE_JOURNEE;
     public const TYPE_DAY_2 = AFUP_FORUM_DEUXIEME_JOURNEE;
