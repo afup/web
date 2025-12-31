@@ -963,13 +963,4 @@ SQL;
 
         return $this->_bdd->executer($requete);
     }
-
-    public static function getTvaZoneLabel($tvaZoneCode, $defaultValue = null)
-    {
-        if (!isset(self::TVA_ZONES[$tvaZoneCode])) {
-            return $defaultValue;
-        }
-
-        return self::TVA_ZONES[$tvaZoneCode];
-    }
 }

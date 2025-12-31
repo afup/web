@@ -18,7 +18,6 @@ $action = verifierAction([
     'ajouter',
     'modifier',
     'modifier_colonne',
-    'export',
     'upload_attachment',
 ]);
 
@@ -39,7 +38,7 @@ $smarty->assign('listPeriode', $listPeriode);
 $periode_debut = $listPeriode[$id_periode - 1]['date_debut'];
 $periode_fin = $listPeriode[$id_periode - 1]['date_fin'];
 
-if (in_array($action, ['lister', 'debit', 'credit', 'export'])) {
+if (in_array($action, ['lister', 'debit', 'credit'])) {
     $alsoDisplayClassifed = isset($_GET['also_display_classifed_entries']) && $_GET['also_display_classifed_entries'];
 
     $smarty->assign('also_display_classifed_entries', $alsoDisplayClassifed);
@@ -251,96 +250,6 @@ if ($action == 'lister') {
 
 
     $smarty->assign('formulaire', genererFormulaire($formulaire));
-} elseif ($action === 'export') {
-    /*
-     * This action allows the admin to export the full period in a CSV file.
-     * This is really useful when you need to filter by columns using Excel.
-     */
-    $journal = $compta->obtenirJournal('', $periode_debut, $periode_fin, !$alsoDisplayClassifed);
-
-    // Pointer to output
-    $fp = fopen('php://output', 'w');
-
-    // CSV
-    $csvDelimiter = ';';
-    $csvEnclosure = '"';
-    $csvFilename  = sprintf(
-        'AFUP_%s_journal_from-%s_to-%s.csv',
-        date('Y-M-d'),
-        $periode_debut,
-        $periode_fin,
-    );
-
-    // headers
-    header('Content-Type: text/csv');
-    header("Content-Transfer-Encoding: Binary");
-    header("Content-disposition: attachment; filename=\"$csvFilename\"");
-
-    // First line
-    $columns = [
-        'Date',
-        'Compte',
-        'Événement',
-        'Catégorie',
-        'Description',
-        'Débit',
-        'Crédit',
-        'Règlement',
-        'Commentaire',
-        'Justificatif',
-        'Nom justificatif',
-        'Montant HT',
-        'TVA',
-        'Montant HT non soumis à TVA',
-        'Montant HT soumis à TVA 5,5',
-        'TVA 5,5',
-        'Montant HT soumis à TVA 10',
-        'TVA 10',
-        'Montant HT soumis à TVA 20',
-        'TVA 20',
-        "Zone de TVA",
-    ];
-    fputcsv($fp, $columns, $csvDelimiter, $csvEnclosure);
-
-    // Set the current local and get variables to use in number_format
-    $l = setlocale(LC_ALL, 'fr_FR.utf8');
-    $locale = localeconv();
-
-    foreach ($journal as $line) {
-        $total = number_format((float) $line['montant'], 2, $locale['decimal_point'], $locale['thousands_sep']);
-        fputcsv(
-            $fp,
-            [
-                $line['date_ecriture'],
-                $line['nom_compte'],
-                $line['evenement'],
-                $line['categorie'],
-                $line['description'],
-                $line['idoperation'] == 1 ? "-$total" : '',
-                $line['idoperation'] != 1 ? $total : '',
-                $line['reglement'],
-                $line['comment'],
-                $line['attachment_required'] ? 'Oui' : 'Non',
-                $line['attachment_filename'],
-                $line['montant_ht'],
-                $line['montant_tva'],
-                $line['montant_ht_0'],
-                $line['montant_ht_5_5'],
-                $line['montant_tva_5_5'],
-                $line['montant_ht_10'],
-                $line['montant_tva_10'],
-                $line['montant_ht_20'],
-                $line['montant_tva_20'],
-                Comptabilite::getTvaZoneLabel($line['tva_zone'], 'Non définie'),
-            ],
-            $csvDelimiter,
-            $csvEnclosure,
-        );
-    }
-
-    fclose($fp);
-
-    exit;
 }
 
 /*
