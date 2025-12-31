@@ -218,15 +218,16 @@ if ($action == 'lister') {
     $formulaire->addElement('text'  , 'autorisation', 'Autorisation', ['size' => 50, 'maxlength' => 100]);
     $formulaire->addElement('text'  , 'transaction' , 'Transaction' , ['size' => 50, 'maxlength' => 100]);
 
-    $state = [AFUP_FORUM_ETAT_CREE          => 'Inscription créée',
-        AFUP_FORUM_ETAT_ANNULE            => 'Inscription annulée',
-        AFUP_FORUM_ETAT_ERREUR            => 'Paiement CB erreur',
-        AFUP_FORUM_ETAT_REFUSE            => 'Paiement CB refusé',
-        AFUP_FORUM_ETAT_REGLE             => 'Inscription réglée',
-        AFUP_FORUM_ETAT_INVITE            => 'Invitation',
-        AFUP_FORUM_ETAT_ATTENTE_REGLEMENT => 'Attente règlement',
-        AFUP_FORUM_ETAT_CONFIRME          => 'Inscription confirmée',
-        AFUP_FORUM_ETAT_A_POSTERIORI      => 'Inscription à posteriori',
+    $state = [
+        Ticket::STATUS_CREATED      => 'Inscription créée',
+        Ticket::STATUS_CANCELLED    => 'Inscription annulée',
+        Ticket::STATUS_ERROR        => 'Paiement CB erreur',
+        Ticket::STATUS_DECLINED     => 'Paiement CB refusé',
+        Ticket::STATUS_PAID         => 'Inscription réglée',
+        Ticket::STATUS_GUEST        => 'Invitation',
+        Ticket::STATUS_WAITING      => 'Attente règlement',
+        Ticket::STATUS_CONFIRMED    => 'Inscription confirmée',
+        Ticket::STATUS_PAID_AFTER   => 'Inscription à posteriori',
     ];
     $formulaire->addElement('select', 'etat'        , 'Etat'        , $state);
 

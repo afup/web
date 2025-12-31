@@ -60,7 +60,7 @@ class Facturation
         $requete .= '  ' . $champs . ' ';
         $requete .= 'FROM';
         $requete .= '  afup_facturation_forum ';
-        $requete .= 'WHERE etat IN ( ' . AFUP_FORUM_ETAT_REGLE . ', ' . AFUP_FORUM_ETAT_ATTENTE_REGLEMENT . ', ' . AFUP_FORUM_ETAT_CONFIRME . ') ';
+        $requete .= 'WHERE etat IN ( ' . Ticket::STATUS_PAID . ', ' . Ticket::STATUS_WAITING . ', ' . Ticket::STATUS_CONFIRMED . ') ';
         $requete .= '  AND id_forum =' . $id_forum . ' ';
         if ($filtre) {
             $requete .= '  AND (societe LIKE \'%' . $filtre . '%\' OR reference LIKE \'%' . $filtre . '%\' ) ';
