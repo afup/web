@@ -157,12 +157,14 @@ parameters:
                 forum_facturation:
                     nom: "Factures d'évènement"
                     niveau: 'ROLE_ADMIN'
-                forum_sessions:
+                talks:
                     nom: 'Conférences'
                     niveau: 'ROLE_FORUM'
                     url: '/admin/talk/'
                     extra_routes:
                         - admin_talk_list
+                        - admin_talk_add
+                        - admin_talk_edit
                 forum_vote_github:
                     nom: 'Votes visiteurs'
                     niveau: 'ROLE_FORUM'

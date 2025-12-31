@@ -2,6 +2,22 @@ admin_talk_list:
   path: /
   defaults: {_controller: AppBundle\Controller\Admin\Talk\IndexAction}
 
+admin_talk_add:
+  path: /add
+  defaults: {_controller: AppBundle\Controller\Admin\Talk\AddAction}
+
+admin_talk_edit:
+  path: /edit/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Talk\EditAction}
+  requirements:
+    id: \d+
+
+admin_talk_delete:
+  path: /delete/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Talk\DeleteAction}
+  requirements:
+    id: \d+
+
 admin_talk_export_joind_in:
   path: /export/joind-in/{eventId}/
   defaults: {_controller: AppBundle\Controller\Admin\Talk\ExportJoindInAction}

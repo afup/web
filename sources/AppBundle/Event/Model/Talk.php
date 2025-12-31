@@ -36,7 +36,8 @@ class Talk implements NotifyPropertyInterface
     #[Assert\GreaterThan(0)]
     private ?int $forumId = null;
 
-    private ?\DateTime $submittedOn = null;
+    private \DateTime $submittedOn;
+    private ?\DateTime $publishedOn = null;
 
     #[Assert\NotBlank]
     private string $title = '';
@@ -96,6 +97,12 @@ class Talk implements NotifyPropertyInterface
      */
     private array $votes = [];
 
+    public function __construct()
+    {
+        $this->submittedOn = new \DateTime();
+        $this->languageCode = self::LANGUAGE_CODE_FR;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -129,6 +136,18 @@ class Talk implements NotifyPropertyInterface
     {
         $this->propertyChanged('submittedOn', $this->submittedOn, $submittedOn);
         $this->submittedOn = $submittedOn;
+        return $this;
+    }
+
+    public function getPublishedOn(): ?\DateTime
+    {
+        return $this->publishedOn;
+    }
+
+    public function setPublishedOn(?\DateTime $publishedOn): self
+    {
+        $this->propertyChanged('publishedOn', $this->publishedOn, $publishedOn);
+        $this->publishedOn = $publishedOn;
         return $this;
     }
 
@@ -355,6 +374,7 @@ class Talk implements NotifyPropertyInterface
 
     public function setOpenfeedbackPath(?string $openfeedbackPath): self
     {
+        $this->propertyChanged('openfeedbackPath', $this->openfeedbackPath, $openfeedbackPath);
         $this->openfeedbackPath = $openfeedbackPath;
 
         return $this;
@@ -544,6 +564,7 @@ class Talk implements NotifyPropertyInterface
 
     public function setTweets(?string $tweets): self
     {
+        $this->propertyChanged('tweets', $this->tweets, $tweets);
         $this->tweets = $tweets;
 
         return $this;

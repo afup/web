@@ -79,7 +79,7 @@
                                 <div class="item">
                                     <i class="book icon"></i>
                                     <div class="content">
-                                        <a href="/pages/administration/index.php?page=forum_sessions&action=modifier&id={{ talk.id }}&id_forum={{ eventId }}">
+                                        <a href="{{ url('admin_talk_edit', {id: talk.id}) }}">
                                             {{ talk.title }}
                                         </a>
                                     </div>
