@@ -34,7 +34,7 @@ Feature: Event pages - Ticketing
     And I submit the form with name "PAYBOX"
     When I fill in "NUMERO_CARTE" with "1111222233334444"
     And I select "12" from "MOIS_VALIDITE"
-    And I select "25" from "AN_VALIDITE"
+    And I select "26" from "AN_VALIDITE"
     And I fill in "CVVX" with "123"
     And I press "Valider"
     Then I should see "PAIEMENT ACCEPTÉ"

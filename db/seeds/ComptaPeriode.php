@@ -99,6 +99,12 @@ class ComptaPeriode extends AbstractSeed
                 'date_fin' => '2024-12-31',
                 'verouiller' => 0,
             ],
+            [
+                'id' => 16,
+                'date_debut' => '2025-01-01',
+                'date_fin' => '2025-12-31',
+                'verouiller' => 0,
+            ],
         ];
 
         $table = $this->table('compta_periode');
