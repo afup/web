@@ -20,7 +20,6 @@ $action = verifierAction([
     'credit',
     'ajouter',
     'modifier',
-    'supprimer',
     'importer',
     'ventiler',
     'modifier_colonne',
@@ -577,13 +576,6 @@ if ($action == 'lister') {
         header('X-Info: ' . $e->getMessage());
     }
     exit;
-} elseif ($action == 'supprimer') {
-    if ($compta->supprimerEcriture($_GET['id'])) {
-        Logs::log('Suppression de l\'écriture ' . $_GET['id']);
-        afficherMessage('L\'écriture a été supprimée', 'index.php?page=compta_journal&action=lister');
-    } else {
-        afficherMessage('Une erreur est survenue lors de la suppression de l\'écriture', 'index.php?page=compta_journal&action=lister', true);
-    }
 } elseif ($action == 'importer') {
     $formulaire = instancierFormulaire();
     $formulaire->addElement('header', null          , 'Import CSV');
