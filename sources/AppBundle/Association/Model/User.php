@@ -639,7 +639,9 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         }
 
         // On enlève le rôle ROLE_MEMBER_EXPIRED vu qu'il est défini en fonction de la cotisation dans les defaultRoles
-        $userRoles = array_diff($this->roles, ['ROLE_MEMBER_EXPIRED']);
+        // on fait de même avec tous les autres rôles définis en fonction des champs levelModules car ils peuvent se retrouver
+        // en base dans le tableau de rôle, et on ne veux pas que si on modifie le levelModules pour l'enlever, il reste via le roles
+        $userRoles = array_diff($this->roles, ['ROLE_MEMBER_EXPIRED', 'ROLE_SUPER_ADMIN', 'ROLE_APERO', 'ROLE_ANNUAIRE', 'ROLE_SITE', 'ROLE_FORUM', 'ROLE_ANTENNE']);
 
         return array_unique(array_merge($userRoles, $defaultRoles));
     }
