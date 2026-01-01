@@ -1,0 +1,6 @@
+admin_accounting_journal_download:
+  path: /download/{id}
+  requirements:
+    id: '\d+'
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\DownloadAttachmentAction

@@ -10,6 +10,10 @@ admin_accounting_bank_accounts:
   resource: "admin_accounting_bank_accounts.yml"
   prefix: /bank-accounts
 
+admin_accounting_journal:
+  resource: "admin_accounting/journal.yml"
+  prefix: /journal
+
 admin_accounting_quotations_list:
   path: /quotations/list
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\Quotation\ListQuotationAction}

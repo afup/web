@@ -90,3 +90,21 @@ Feature: Administration - Trésorerie - Journal
     When I follow "Journal"
     And I follow "Télécharger les justificatifs groupés par mois"
     Then the response header "Content-disposition" should match '#filename="afup_justificatifs-(.*).zip"#'
+
+  @reloadDbWithTestData
+  Scenario: Compte journal Télécharger un justificatif
+    Given I am logged in as admin and on the Administration
+    When I follow "Journal"
+    And I follow "Afficher aussi les entrées pointées"
+    Then I should see "Une recette qui rapporte"
+    When I follow "Télécharger le justificatif"
+    Then the response header "Content-Disposition" should match '#^attachment; filename="test_file1.pdf"#'
+
+  @reloadDbWithTestData
+  Scenario: Compte journal afficher les entrées déjà pointées
+    Given I am logged in as admin and on the Administration
+    When I follow "Journal"
+    And I follow "Afficher aussi les entrées pointées"
+    Then I should see "Une recette qui rapporte"
+    And I should see "Une dépense très utile"
+    And I should see "Une dépense moins utile"
