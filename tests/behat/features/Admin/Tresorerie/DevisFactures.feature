@@ -88,7 +88,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I should see "Paris Cedex 7"
     And I should see "Payé"
     # Envoi de la facture par email
-    Then I follow the button of tooltip "Envoyer la facture 2025-3 par mail"
+    Then I follow the button of tooltip "Envoyer la facture 2026-3 par mail"
     And I should only receive the following emails:
       | from               | to                         | subject      |
       | <bonjour@afup.org> | <martine@ens-en-folie.biz> | Facture AFUP |
@@ -100,7 +100,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     # Téléchargement de la facture
     When I go to "/admin/"
     And I follow "Factures"
-    And I follow the button of tooltip "Télécharger la facture 2025-3"
+    And I follow the button of tooltip "Télécharger la facture 2026-3"
     Then the response header "Content-disposition" should match '#attachment; filename="Facture - ESN dev en folie - (.*).pdf"#'
     When I parse the pdf downloaded content
     Then The page "1" of the PDF should contain "N° TVA Intracommunautaire : FR7612345"
@@ -110,7 +110,7 @@ Feature: Administration - Trésorerie - Devis/Facture
   Scenario: Vérification de la devise par défaut (Euro)
     # Téléchargement du devis
     Given I am logged in as admin and on the Administration
-    When I go to "/admin/accounting/quotations/list?periodId=15"
+    When I go to "/admin/accounting/quotations/list?periodId=16"
     Then the ".content h2" element should contain "Liste des devis"
     And I should see "My company Ltd"
     And I follow the button of tooltip "Télécharger le devis My company Ltd"
@@ -145,20 +145,20 @@ Feature: Administration - Trésorerie - Devis/Facture
   @vat
   Scenario: Test du PDF de facture après 2024
     Given I am logged in as admin and on the Administration
-    When I go to "/admin/accounting/invoices/list?periodId=15"
+    When I go to "/admin/accounting/invoices/list?periodId=16"
     Then the ".content h2" element should contain "Factures"
     And I should see "Il n'est pas possible de créer directement une facture"
-    When I follow the button of tooltip "Télécharger la facture 2024-02"
-    Then the response header "Content-disposition" should equal 'attachment; filename="Facture - Krampouz - 2024-01-04.pdf"'
+    When I follow the button of tooltip "Télécharger la facture 2025-02"
+    Then the response header "Content-disposition" should equal 'attachment; filename="Facture - Krampouz - 2025-01-04.pdf"'
     Given I parse the pdf downloaded content
-    Then The page "1" of the PDF should contain "Le 04/01/2024"
+    Then The page "1" of the PDF should contain "Le 04/01/2025"
     Then The page "1" of the PDF should contain "Krampouz"
     Then The page "1" of the PDF should contain "3, rue du port"
-    Then The page "1" of the PDF should contain "Facture n° 2024-02"
-    Then The page "1" of the PDF should contain "Repère(s) :  Forum PHP 2024"
+    Then The page "1" of the PDF should contain "Facture n° 2025-02"
+    Then The page "1" of the PDF should contain "Repère(s) :  Forum PHP 2025"
     Then The page "1" of the PDF should contain "Comme convenu, nous vous prions de trouver votre facture"
     Then The page "1" of the PDF should contain "Type Description Quantite TVA Prix HT Total TTC"
-    Then The page "1" of the PDF should contain "forum_php_2024 Forum  PHP  2024  -  Sponsoring"
+    Then The page "1" of the PDF should contain "forum_php_2025 Forum  PHP  2025  -  Sponsoring"
     Then The page "1" of the PDF should contain "Bronze 1.00 20.00% 1 000,00 € 1 200,00 €"
     Then The page "1" of the PDF should contain "TOTAL HT 1 000,00 €"
     Then The page "1" of the PDF should contain "Total TVA 20.00% 200,00 €"
@@ -191,19 +191,19 @@ Feature: Administration - Trésorerie - Devis/Facture
   @vat
   Scenario: Test du PDF de devis après 2024
     Given I am logged in as admin and on the Administration
-    When I go to "/admin/accounting/quotations/list?periodId=15"
+    When I go to "/admin/accounting/quotations/list?periodId=16"
     Then the ".content h2" element should contain "Liste des devis"
     When I follow the button of tooltip "Télécharger le devis Krampouz"
-    Then the response header "Content-disposition" should equal 'attachment; filename="Devis - Krampouz - 2024-01-03.pdf"'
+    Then the response header "Content-disposition" should equal 'attachment; filename="Devis - Krampouz - 2025-01-03.pdf"'
     Given I parse the pdf downloaded content
-    Then The page "1" of the PDF should contain "Le 03/01/2024"
+    Then The page "1" of the PDF should contain "Le 03/01/2025"
     Then The page "1" of the PDF should contain "Krampouz"
     Then The page "1" of the PDF should contain "3, rue du port"
-    Then The page "1" of the PDF should contain "Devis n° 2024-02"
-    Then The page "1" of the PDF should contain "Repère(s) :  Forum PHP 2024"
+    Then The page "1" of the PDF should contain "Devis n° 2025-02"
+    Then The page "1" of the PDF should contain "Repère(s) :  Forum PHP 2025"
     Then The page "1" of the PDF should contain "Comme convenu, nous vous prions de trouver votre devis"
     Then The page "1" of the PDF should contain "Type Description Quantite TVA Prix HT Total TTC"
-    Then The page "1" of the PDF should contain "forum_php_2024 Forum  PHP  2024  -  Sponsoring"
+    Then The page "1" of the PDF should contain "forum_php_2025 Forum  PHP  2025  -  Sponsoring"
     Then The page "1" of the PDF should contain "Bronze 1.00 20.00% 1 000,00 € 1 200,00 €"
     Then The page "1" of the PDF should contain "TOTAL HT 1 000,00 €"
     Then The page "1" of the PDF should contain "Total TVA 20.00% 200,00 €"
