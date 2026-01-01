@@ -90,3 +90,10 @@ Feature: Administration - Trésorerie - Journal
     When I follow "Journal"
     And I follow "Télécharger les justificatifs groupés par mois"
     Then the response header "Content-disposition" should match '#filename="afup_justificatifs-(.*).zip"#'
+
+  @reloadDbWithTestData
+  Scenario: Compte journal Suppression d'une transaction
+    Given I am logged in as admin and on the Administration
+    When I am on "/pages/administration/index.php?page=compta_journal&id_periode=15"
+    And I follow the button of tooltip "Supprimer la fiche de PRLV SEPA ONLINE SAS SCW SCALEWAY "
+    Then I should see "L'écriture a été supprimée"
