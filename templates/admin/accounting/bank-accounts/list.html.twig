@@ -14,7 +14,7 @@
     {% include 'admin/accounting/invoicing-period.form.html.twig' with {form: formPeriod, url: path('admin_accounting_accounts_list')} %}
 
     <div class="ui menu">
-        <a href="/pages/administration/index.php?id_periode={{ periodId }}&amp;page=compta_banque&amp;compte={{ accountId }}&amp;action=exporter" class="item">
+        <a href="{{ url('admin_accounting_bankaccounts_export', {periodId, accountId}) }}" class="item">
             <i class="icon file excel"></i>
             Export XLSX
         </a>
