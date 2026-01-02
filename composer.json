@@ -11,6 +11,7 @@
     "ext-libxml": "*",
     "ext-openssl": "*",
     "ext-pdo": "*",
+    "ext-zip": "*",
     "algolia/algoliasearch-client-php": "^3.4",
     "beberlei/assert": "^2.9",
     "captioning/captioning": "^2.6",

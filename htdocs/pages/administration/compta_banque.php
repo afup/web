@@ -198,13 +198,12 @@ if ($action == 'lister') {
             throw new RuntimeException("Impossible to open the Zip archive.");
         } else {
             for ($month = 1; $month <= 12; $month++) {
-                $searchDir = sprintf('%d%02d', $year, $month);
-                $zipDir = sprintf('%d%02d', $year, $month);
+                $directory = sprintf('%d%02d', $year, $month);
                 $options = [
-                    'add_path' => 'afup_justificatifs-' . $year . '/' . $zipDir . '/',
+                    'add_path' => 'afup_justificatifs-' . $year . '/' . $directory . '/',
                     'remove_all_path' => true,
                 ];
-                $zip->addGlob(AFUP_CHEMIN_RACINE . '/uploads/' . $searchDir . '/*.*', 0, $options);
+                $zip->addGlob(AFUP_CHEMIN_RACINE . '/uploads/' . $directory . '/*.*', 0, $options);
             }
             $zip->close();
 
