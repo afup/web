@@ -29,7 +29,7 @@ class ProposeAction extends AbstractController
     public function __invoke(Request $request): Response
     {
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
-        if (new DateTime() > $event->getDateEndCallForPapers()) {
+        if ($event->getDateEndCallForPapers() < new DateTime()) {
             return $this->render('event/cfp/closed.html.twig', [
                 'event' => $event,
             ]);
@@ -48,7 +48,11 @@ class ProposeAction extends AbstractController
         $form = $this->createForm(TalkType::class, $talk, [
             TalkType::IS_AFUP_DAY => $event->isAfupDay(),
         ]);
-        $form->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
+        if ($event->isCfpOpen()) {
+            $form->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
+        } else {
+            $form->add('save', SubmitType::class, ['label' => 'CFP fermé', 'attr' => ['disabled' => 'disabled']]);
+        }
 
         if ($this->talkFormHandler->handle($request, $event, $form, $speaker)) {
             $this->addFlash('success', $this->translator->trans('Proposition enregistrée !'));

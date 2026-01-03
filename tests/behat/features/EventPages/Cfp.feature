@@ -99,13 +99,12 @@ Feature: Event pages - CFP
     When I follow "Connect as userGithub1"
     Then I should see "Mon espace conférencier"
     Then I should see "Mes propositions"
-    When I should not see "Nouvelle proposition"
-    Then I should not see "Proposer une conférence"
-    When I should not see "Mon profil conférencier"
+    Then I should not see "Nouvelle proposition"
+    Then I should not see "Mon profil conférencier"
     Then I should not see "Modifier"
-    When I am on "/event/passed/cfp/speaker"
+    Given I am on "/event/passed/cfp/speaker"
     Then I should see "Le CFP est terminé"
-    When I am on "/event/passed/cfp/propose"
+    Given I am on "/event/passed/cfp/propose"
     Then I should see "Le CFP est terminé"
 
   Scenario: On vote pour une conférence
