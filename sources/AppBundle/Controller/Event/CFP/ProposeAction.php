@@ -9,6 +9,7 @@ use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\TalkType;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Talk\TalkFormHandler;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +29,7 @@ class ProposeAction extends AbstractController
     public function __invoke(Request $request): Response
     {
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
-        if (!$event->isCfpOpen()) {
+        if (new DateTime() > $event->getDateEndCallForPapers()) {
             return $this->render('event/cfp/closed.html.twig', [
                 'event' => $event,
             ]);
