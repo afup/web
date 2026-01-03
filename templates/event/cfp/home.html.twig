@@ -5,7 +5,9 @@
         <h2>CFP: {{ event.title }}</h2>
         <h3>{{ 'Mon espace conférencier'|trans }}</h3>
         <div class="mlm">
+            {% if event.cfpOpen %}
             <p class="right mrm"><a href="{{ url('cfp_speaker', {eventSlug: event.path}) }}">Modifier</a></p>
+            {% endif %}
             {% if speaker.id == 0 %}
                 <p>{{ 'Vous n\'avez pas encore rempli votre profil conférencier.'|trans }}</p>
             {% else %}

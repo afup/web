@@ -7,7 +7,6 @@ namespace AppBundle\Controller\Event\CFP;
 use AppBundle\CFP\SpeakerFactory;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use DateTime;
 use Twig\Environment;
 
 class SidebarRenderer
@@ -18,12 +17,9 @@ class SidebarRenderer
         private readonly Environment $twig,
     ) {}
 
-    /**
-     * @return string
-     */
-    public function render(Event $event)
+    public function render(Event $event): string
     {
-        if ($event->getDateEndCallForPapers() < new DateTime()) {
+        if (!$event->isCfpOpen()) {
             return '';
         }
 
