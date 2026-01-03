@@ -21,7 +21,6 @@ $action = verifierAction([
     'ajouter',
     'modifier',
     'importer',
-    'ventiler',
     'modifier_colonne',
     'export',
     'upload_attachment',
@@ -573,45 +572,4 @@ if ($action == 'lister') {
         }
     }
     $smarty->assign('formulaire', genererFormulaire($formulaire));
-} elseif ($action == 'ventiler') {
-    $idCompta = (int) $_GET['id'];
-    $ligneCompta = $compta->obtenir($idCompta);
-    $montantTotal = 0;
-
-    foreach (explode(';', (string) $_GET['montant']) as $montant) {
-        $montant = (float) $montant;
-        $compta->ajouter($ligneCompta['idoperation'],
-            $ligneCompta['idcompte'],
-            26, // A déterminer
-            $ligneCompta['date_ecriture'],
-            $ligneCompta['nom_frs'],
-            $ligneCompta['tva_intra'],
-            $montant,
-            $ligneCompta['description'],
-            $ligneCompta['numero'],
-            $ligneCompta['idmode_regl'],
-            $ligneCompta['date_regl'],
-            $ligneCompta['obs_regl'],
-            8, // A déterminer
-            $ligneCompta['numero_operation'],
-        );
-        $montantTotal += $montant;
-    }
-
-    $compta->modifier($ligneCompta['id'],
-                      $ligneCompta['idoperation'],
-                      $ligneCompta['idcompte'],
-                      $ligneCompta['idcategorie'],
-                      $ligneCompta['date_ecriture'],
-                      $ligneCompta['nom_frs'],
-                      $ligneCompta['tva_intra'],
-                      $ligneCompta['montant'] - $montantTotal,
-                      $ligneCompta['description'],
-                      $ligneCompta['numero'],
-                      $ligneCompta['idmode_regl'],
-                      $ligneCompta['date_regl'],
-                      $ligneCompta['obs_regl'],
-                      $ligneCompta['idevenement'],
-                      $ligneCompta['numero_operation']);
-    afficherMessage('L\'écriture a été ventilée', 'index.php?page=compta_journal#journal-ligne-' . $compta->lastId);
 }

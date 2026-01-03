@@ -244,7 +244,7 @@ class Transaction implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getPaymentDate(): DateTime
+    public function getPaymentDate(): ?DateTime
     {
         return $this->paymentDate;
     }

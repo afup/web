@@ -9,7 +9,7 @@
                 if (ventilation >= montant) {
                     alert('Vous ne pouvez pas saisir une valeur égale ou supérieur à la valeur initiale !')
                 } else {
-                    window.location='index.php?page=compta_journal&action=ventiler&id=' + idLigne + '&montant=' + ventilation;
+                    window.location='/admin/accounting/journal/allocate/' + idLigne + '?amount=' + ventilation;
                 }
             }
         }
