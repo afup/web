@@ -13,8 +13,8 @@ class Inscriptions extends AbstractSeed
         $data = [
             [
                 'reference' => 'REF-TEST-001',
-                'type_inscription' => AFUP_FORUM_2_JOURNEES,
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][AFUP_FORUM_2_JOURNEES],
+                'type_inscription' => Ticket::TYPE_2_DAYS,
+                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS],
                 'civilite' => 'Mme',
                 'nom' => 'Michu',
                 'prenom' => 'Bernadette',
@@ -28,8 +28,8 @@ class Inscriptions extends AbstractSeed
             ],
             [
                 'reference' => 'REF-TEST-002',
-                'type_inscription' => AFUP_FORUM_2_JOURNEES,
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][AFUP_FORUM_2_JOURNEES],
+                'type_inscription' => Ticket::TYPE_2_DAYS,
+                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS],
                 'civilite' => 'Mme',
                 'nom' => 'Jean',
                 'prenom' => 'Maurice',
@@ -43,8 +43,8 @@ class Inscriptions extends AbstractSeed
             ],
             [
                 'reference' => 'REF-TEST-003',
-                'type_inscription' => AFUP_FORUM_2_JOURNEES,
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][AFUP_FORUM_2_JOURNEES],
+                'type_inscription' => Ticket::TYPE_2_DAYS,
+                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS],
                 'civilite' => 'Mme',
                 'nom' => 'Kirk',
                 'prenom' => 'James Tiberius',
@@ -70,7 +70,7 @@ class Inscriptions extends AbstractSeed
         $data = [
             [
                 'reference' => 'REF-TEST-001',
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][AFUP_FORUM_2_JOURNEES],
+                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS],
                 'date_reglement' => time(),
                 'type_reglement' => AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE,
                 'email' => 'bernadette@yahoo.fr',
@@ -89,7 +89,7 @@ class Inscriptions extends AbstractSeed
             ],
             [
                 'reference' => 'REF-TEST-002',
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][AFUP_FORUM_2_JOURNEES],
+                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS],
                 'date_reglement' => (new \DateTime("2023-06-25"))->getTimestamp(),
                 'type_reglement' => AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE,
                 'email' => 'jean@yahoo.fr',
@@ -108,7 +108,7 @@ class Inscriptions extends AbstractSeed
             ],
             [
                 'reference' => 'REF-TEST-003',
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][AFUP_FORUM_2_JOURNEES],
+                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS],
                 'date_reglement' => (new \DateTime("2024-01-02"))->getTimestamp(),
                 'type_reglement' => AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE,
                 'email' => 'james@starfleet.fr',

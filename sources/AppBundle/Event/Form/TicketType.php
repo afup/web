@@ -96,7 +96,7 @@ class TicketType extends AbstractType
                 $ticketSpecialPrice = $this->ticketSpecialPriceRepository->findUnusedToken($event, $options['special_price_token']);
 
                 if (null !== $ticketSpecialPrice) {
-                    $ticketType = $this->ticketTypeRepository->get(AFUP_FORUM_SPECIAL_PRICE);
+                    $ticketType = $this->ticketTypeRepository->get(Ticket::TYPE_SPECIAL_PRICE);
 
                     $eToken = new TicketEventType();
                     $eToken->setDateStart($ticketSpecialPrice->getDateStart());
@@ -104,7 +104,7 @@ class TicketType extends AbstractType
                     $eToken->setPrice($ticketSpecialPrice->getPrice());
                     $eToken->setTicketType($ticketType);
                     $eToken->setEventId($ticketSpecialPrice->getEventId());
-                    $eToken->setTicketTypeId(AFUP_FORUM_SPECIAL_PRICE);
+                    $eToken->setTicketTypeId(Ticket::TYPE_SPECIAL_PRICE);
                     $filteredEventTickets = [];
                     $filteredEventTickets[] = $eToken;
                 }
