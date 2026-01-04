@@ -1,0 +1,6 @@
+admin_accounting_journal_delete:
+  path: /delete/{id}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\DeleteAction
+  requirements:
+    id: \d+
