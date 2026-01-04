@@ -124,7 +124,7 @@ class BadgesComputer
         }
 
         $seniorityInfos = $this->seniorityComputer->computeAndReturnInfos($user);
-        $maxBadgesSeniority = 10;
+        $maxBadgesSeniority = 17;
 
         for ($i = min($seniorityInfos['years'], $maxBadgesSeniority); $i > 0; $i--) {
             $badgesCodes[] = [
