@@ -80,18 +80,14 @@ Feature: Event pages - CFP
     Then I should see "Oauth login test"
     When I follow "Connect as userGithub1"
     Then I should see "Mon espace conférencier"
-    When I follow "Mon profil conférencier"
-    # Création du profile
-    Then The "speaker[civility]" field should only contain the follow values '["M", "Mme"]'
-    When I fill in "speaker[firstname]" with "Mon prénom"
-    And I fill in "speaker[lastname]" with "Mon prénom"
-    And I fill in "speaker[email]" with "monemail@provider.fr"
-    And I fill in "speaker[biography]" with "Ma biographie"
-    And I attach the file "avatar1.png" to "speaker[photoFile]"
-    And I press "Sauvegarder"
-    # Nouvelle proposition
-    When I follow "Nouvelle proposition"
-    Then I should see "Le CFP n'est pas encore ouvert."
+    Then I should see "Mes propositions"
+    Then I should not see "Nouvelle proposition"
+    Then I should not see "Mon profil conférencier"
+    Then I should not see "Modifier"
+    Given I am on "/event/passed/cfp/speaker"
+    Then I should see "Le CFP est fermé"
+    Given I am on "/event/passed/cfp/propose"
+    Then I should see "Le CFP est fermé"
 
   Scenario: Le CFP est terminé
     Given I am on "/event/passed/cfp"
@@ -103,9 +99,9 @@ Feature: Event pages - CFP
     Then I should not see "Mon profil conférencier"
     Then I should not see "Modifier"
     Given I am on "/event/passed/cfp/speaker"
-    Then I should see "Le CFP est terminé"
+    Then I should see "Le CFP est fermé"
     Given I am on "/event/passed/cfp/propose"
-    Then I should see "Le CFP est terminé"
+    Then I should see "Le CFP est fermé"
 
   Scenario: On vote pour une conférence
     Given I am on "/event/afup-day-lyon/vote"

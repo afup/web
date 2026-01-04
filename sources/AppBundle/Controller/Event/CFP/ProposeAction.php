@@ -9,7 +9,6 @@ use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\TalkType;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Talk\TalkFormHandler;
-use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +28,7 @@ class ProposeAction extends AbstractController
     public function __invoke(Request $request): Response
     {
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
-        if ($event->getDateEndCallForPapers() < new DateTime()) {
+        if (!$event->isCfpOpen()) {
             return $this->render('event/cfp/closed.html.twig', [
                 'event' => $event,
             ]);
@@ -48,11 +47,7 @@ class ProposeAction extends AbstractController
         $form = $this->createForm(TalkType::class, $talk, [
             TalkType::IS_AFUP_DAY => $event->isAfupDay(),
         ]);
-        if ($event->isCfpOpen()) {
-            $form->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
-        } else {
-            $form->add('save', SubmitType::class, ['label' => 'CFP fermé', 'attr' => ['disabled' => 'disabled']]);
-        }
+        $form->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
 
         if ($this->talkFormHandler->handle($request, $event, $form, $speaker)) {
             $this->addFlash('success', $this->translator->trans('Proposition enregistrée !'));
