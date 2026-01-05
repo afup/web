@@ -7,6 +7,7 @@ namespace Afup\Site\Tests\Association;
 use Afup\Site\Association\Cotisations;
 use Afup\Site\Utils\Base_De_Donnees;
 use AppBundle\Association\MemberType;
+use AppBundle\MembershipFee\Model\MembershipFee;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -41,7 +42,10 @@ final class CotisationsTest extends TestCase
 
         $cotisations = new Cotisations($bdd);
 
-        $actual = $cotisations->finProchaineCotisation(['date_fin' => $dateFin->format('U')]);
+        $membershipFee = new MembershipFee();
+        $membershipFee->setEndDate(new \DateTime('@' . $dateFin->format('U')));
+
+        $actual = $cotisations->getNextSubscriptionExpiration($membershipFee);
 
         self::assertEquals($expected->format('Y-m-d'), $actual->format('Y-m-d'));
     }
