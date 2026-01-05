@@ -97,3 +97,21 @@ Feature: Administration - Trésorerie - Journal
     When I am on "/pages/administration/index.php?page=compta_journal&id_periode=15"
     And I follow the button of tooltip "Supprimer la fiche de PRLV SEPA ONLINE SAS SCW SCALEWAY "
     Then I should see "L'écriture a été supprimée"
+
+  @reloadDbWithTestData
+  Scenario: Compte journal Télécharger un justificatif
+    Given I am logged in as admin and on the Administration
+    When I follow "Journal"
+    And I follow "Afficher aussi les entrées pointées"
+    Then I should see "Une recette qui rapporte"
+    When I follow "Télécharger le justificatif"
+    Then the response header "Content-Disposition" should match '#^attachment; filename="test_file1.pdf"#'
+
+  @reloadDbWithTestData
+  Scenario: Compte journal afficher les entrées déjà pointées
+    Given I am logged in as admin and on the Administration
+    When I follow "Journal"
+    And I follow "Afficher aussi les entrées pointées"
+    Then I should see "Une recette qui rapporte"
+    And I should see "Une dépense très utile"
+    And I should see "Une dépense moins utile"
