@@ -23,6 +23,9 @@ services:
         CCMBenchmark\Ting\Repository\Repository:
             tags: [ 'app.vendor.ting_repository' ]
 
+        AppBundle\Accounting\Invoices\Generator\InvoiceGeneration:
+            tags: [ 'app.invoice_generation_handler' ]
+
     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
         public:    false
         arguments:
@@ -167,17 +170,18 @@ services:
     Afup\Site\Forum\Inscriptions:
         autowire: true
 
-    Afup\Site\Association\CotisationsFactory:
-        autowire: true
+    AppBundle\Accounting\Invoices\Generator\MemberInvoiceGenerator: ~
+    AppBundle\Accounting\Invoices\Generator\CompanyMemberInvoiceGenerator: ~
+
+    AppBundle\Accounting\Invoices\InvoiceGenerator:
+        arguments:
+            $handlers: !tagged_iterator app.invoice_generation_handler
 
     Afup\Site\Corporate\Page:
         autowire: true
 
     Afup\Site\Forum\Facturation:
         autowire: true
-
-    Afup\Site\Association\Cotisations:
-        factory: ['@Afup\Site\Association\CotisationsFactory', 'create']
 
     Afup\Site\Comptabilite\Facture:
       autowire: true

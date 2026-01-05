@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Command;
 
-use Afup\Site\Association\Cotisations;
+use AppBundle\MembershipFee\MembershipFeeService;
+use AppBundle\MembershipFee\OnlinePaymentHandler;
 use AppBundle\Association\MemberType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
@@ -30,7 +31,8 @@ class PayboxCallbackSimulatorCommand extends Command
     public function __construct(
         private readonly InvoiceRepository $invoiceRepository,
         private readonly EventRepository $eventRepository,
-        private readonly Cotisations $cotisations,
+        private readonly MembershipFeeService $membershipFeeService,
+        private readonly OnlinePaymentHandler $onlinePaymentHandler,
         private readonly UrlGeneratorInterface $urlGenerator,
     ) {
         parent::__construct();
@@ -104,8 +106,8 @@ class PayboxCallbackSimulatorCommand extends Command
 
     private function callCotisation(string $cmd, string $status): string
     {
-        $account = $this->cotisations->getAccountFromCmd($cmd);
-        $cotisation = $this->cotisations->obtenirDerniere(MemberType::from($account['type']), $account['id']);
+        $account = $this->onlinePaymentHandler->getAccountFromCmd($cmd);
+        $cotisation = $this->membershipFeeService->getLatestByUserTypeAndId(MemberType::from($account['type']), $account['id']);
         if (!$cotisation) {
             throw new \RuntimeException(
                 sprintf('Cotisation non trouvée avec ce CMD: %s', $cmd),
@@ -113,7 +115,7 @@ class PayboxCallbackSimulatorCommand extends Command
         }
         $url = $this->urlGenerator->generate('membership_payment');
 
-        return $this->buildUrl($url, (float) $cotisation['montant'], $cmd, $status);
+        return $this->buildUrl($url, $cotisation->getAmount(), $cmd, $status);
     }
 
     private function callInvoice(string $cmd, string $status): string

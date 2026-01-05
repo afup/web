@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\UserMembership;
 
-use Afup\Site\Association\Cotisations;
+use AppBundle\MembershipFee\MembershipFeeService;
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
@@ -12,6 +12,7 @@ use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
+use AppBundle\MembershipFee\Model\MembershipFee;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -23,7 +24,7 @@ class UserService
         private readonly UserRepository $userRepository,
         private readonly Mailer $mailer,
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly Cotisations $cotisations,
+        private readonly MembershipFeeService $membershipFeeService,
         private readonly UserPasswordHasherInterface $passwordHasher,
     ) {}
 
@@ -85,10 +86,7 @@ BODY
         return $this->mailer->send($message);
     }
 
-    /**
-     * @return array
-     */
-    public function getLastSubscription(User $user)
+    public function getLastSubscription(User $user): ?MembershipFee
     {
         if ($user->getCompanyId()) {
             $id = $user->getCompanyId();
@@ -98,6 +96,6 @@ BODY
             $personType = MemberType::MemberPhysical;
         }
 
-        return $this->cotisations->obtenirDerniere($personType, $id);
+        return $this->membershipFeeService->getLatestByUserTypeAndId($personType, $id);
     }
 }

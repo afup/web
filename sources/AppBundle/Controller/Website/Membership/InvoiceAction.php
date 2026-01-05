@@ -4,24 +4,29 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Membership;
 
-use Afup\Site\Association\Cotisations;
+use AppBundle\MembershipFee\MembershipFeeService;
+use AppBundle\MembershipFee\MembershipFeeInvoicePdfGenerator;
+use AppBundle\MembershipFee\Model\MembershipFee;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 final class InvoiceAction extends AbstractController
 {
-    public function __construct(private readonly Cotisations $cotisations) {}
+    public function __construct(
+        private readonly MembershipFeeService $membershipFeeService,
+        private readonly MembershipFeeInvoicePdfGenerator $pdfGenerator,
+    ) {}
 
     public function __invoke(string $invoiceNumber, ?string $token): Response
     {
-        $invoice = $this->cotisations->getByInvoice($invoiceNumber, $token);
+        $invoice = $this->membershipFeeService->getByInvoice($invoiceNumber, $token);
 
-        if (!$invoice) {
+        if (!$invoice instanceof MembershipFee) {
             throw $this->createNotFoundException(sprintf('Could not find the invoice "%s" with token "%s"', $invoiceNumber, $token));
         }
 
         ob_start();
-        $this->cotisations->genererFacture($invoice['id']);
+        $this->pdfGenerator->genererFacture($invoice->getId());
         $pdf = ob_get_clean();
 
         $response = new Response($pdf);
