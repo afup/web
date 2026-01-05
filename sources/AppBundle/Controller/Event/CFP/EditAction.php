@@ -22,7 +22,9 @@ use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -44,11 +46,11 @@ class EditAction extends AbstractController
         private readonly Authentication $authentication,
     ) {}
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse|Response
     {
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
         $githubUser = $this->authentication->getGithubUser();
-        if ($event->getDateEndCallForPapers() < new DateTime()) {
+        if (!$event->isCfpOpen()) {
             return $this->render('event/cfp/closed.html.twig', ['event' => $event]);
         }
         $speaker = $this->speakerFactory->getSpeaker($event);

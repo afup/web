@@ -28,13 +28,10 @@ final class SuggestionAction extends AbstractController
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
 
-        if ($event->getDateEndCallForPapers() < new \DateTime()) {
-            return $this->render(
-                'event/speaker-suggestion/closed.html.twig',
-                [
-                    'event' => $event,
-                ],
-            );
+        if (!$event->isCfpOpen()) {
+            return $this->render('event/cfp/closed.html.twig', [
+                'event' => $event,
+            ]);
         }
 
         $form = $this->createForm(SpeakerSuggestionType::class);
