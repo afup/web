@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\News;
 
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Site\Model\Article;
 use AppBundle\Site\Model\Repository\ArticleRepository;
@@ -44,7 +45,7 @@ final class DisplayAction extends AbstractController
         ]);
     }
 
-    private function getRelatedEvent(Article $article)
+    private function getRelatedEvent(Article $article): ?Event
     {
         if (null === ($eventId = $article->getEventId())) {
             return null;

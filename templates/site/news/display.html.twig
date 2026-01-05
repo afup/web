@@ -51,8 +51,8 @@
                     <hr />
 
                     <p>
-                        {% if article.themeLabel %}
-                        Thème : <a href="{{ path('news_list', { news_filters : { theme : [article.theme]} }) }}">{{ article.themeLabel }}</a> /
+                        {% if article.theme %}
+                        Thème : <a href="{{ path('news_list', { news_filters : { theme : [article.themeEnum.value]} }) }}">{{ article.themeEnum.label }}</a> /
                         {% endif %}
                         {% if related_event %}
                         Cycle de conférences : <a href="{{ path('news_list', { news_filters : { event : [related_event.id]} }) }}">{{ related_event.title }}</a> /

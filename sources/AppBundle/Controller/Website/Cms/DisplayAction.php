@@ -4,33 +4,35 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Cms;
 
-use Afup\Site\Corporate\Article;
-use Afup\Site\Corporate\Rubrique;
+use AppBundle\Site\Model\Article;
+use AppBundle\Site\Model\Repository\ArticleRepository;
+use AppBundle\Site\Model\Repository\RubriqueRepository;
+use AppBundle\Site\Model\Rubrique;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 final class DisplayAction extends AbstractController
 {
-    public function __construct(private readonly ViewRenderer $view) {}
+    public function __construct(
+        private readonly ViewRenderer $view,
+        private readonly ArticleRepository $articleRepository,
+        private readonly RubriqueRepository $rubriqueRepository,
+    ) {}
 
     public function __invoke(string $code): Response
     {
-        $articleRepository = new Article(null, $GLOBALS['AFUP_DB']);
-        $articleRepository->chargerDepuisRaccourci($code);
-        $article = $articleRepository->exportable();
+        $article = $this->articleRepository->findBySlug($code);
 
-        if (null === $article['id']) {
+        if (!$article instanceof Article) {
             throw $this->createNotFoundException();
         }
 
-        if (false === $this->isGranted('ROLE_ADMIN') && $article['etat'] !== '1') {
+        if (false === $this->isGranted('ROLE_ADMIN') && $article->getState() !== 1) {
             throw $this->createAccessDeniedException();
         }
 
-        $rubriqueRepository = new Rubrique($article['id_site_rubrique'], $GLOBALS['AFUP_DB']);
-        $rubriqueRepository->charger();
-        $rubrique = $rubriqueRepository->exportable();
+        $rubrique = $this->rubriqueRepository->get($article->getRubricId());
 
         if (!$this->isRubriqueAllowed($rubrique)) {
             throw $this->createNotFoundException();
@@ -42,8 +44,8 @@ final class DisplayAction extends AbstractController
         ]);
     }
 
-    protected function isRubriqueAllowed(array $rubrique): bool
+    protected function isRubriqueAllowed(Rubrique $rubrique): bool
     {
-        return in_array($rubrique['id'], [Rubrique::ID_RUBRIQUE_ASSOCIATION, Rubrique::ID_RUBRIQUE_ANTENNES, Rubrique::ID_RUBRIQUE_INFORMATIONS_PRATIQUES, Rubrique::ID_RUBRIQUE_NOS_ACTIONS]);
+        return in_array($rubrique->getId(), [Rubrique::ID_RUBRIQUE_ASSOCIATION, Rubrique::ID_RUBRIQUE_ANTENNES, Rubrique::ID_RUBRIQUE_INFORMATIONS_PRATIQUES, Rubrique::ID_RUBRIQUE_NOS_ACTIONS]);
     }
 }

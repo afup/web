@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Site\Model;
 
+use AppBundle\Site\Enum\ArticleContentType;
+use AppBundle\Site\Enum\ArticleTheme;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 
@@ -38,15 +40,9 @@ class Article implements NotifyPropertyInterface
      */
     private $content;
 
-    /***
-     * @var string
-     */
-    private $contentType;
+    private string $contentType;
 
-    /**
-     * @var int
-     */
-    private $theme;
+    private ?int $theme = null;
 
     private ?int $eventId = null;
 
@@ -62,7 +58,7 @@ class Article implements NotifyPropertyInterface
     {
         $this->position = 0;
         $this->state = 0;
-        $this->contentType = 'markdown';
+        $this->contentType = ArticleContentType::Markdown->value;
         $this->publishedAt = new \DateTime();
     }
 
@@ -226,12 +222,7 @@ class Article implements NotifyPropertyInterface
         return $this->contentType;
     }
 
-    /**
-     * @param string $contentType
-     *
-     * @return $this
-     */
-    public function setContentType($contentType): self
+    public function setContentType(string $contentType): self
     {
         $this->propertyChanged('contentType', $this->contentType, $contentType);
         $this->contentType = $contentType;
@@ -241,7 +232,7 @@ class Article implements NotifyPropertyInterface
 
     public function isContentTypeMarkdown(): bool
     {
-        return $this->contentType == \Afup\Site\Corporate\Article::TYPE_CONTENU_MARKDOWN;
+        return $this->contentType === ArticleContentType::Markdown->value;
     }
 
     /**
@@ -263,37 +254,26 @@ class Article implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getTheme()
+    public function getTheme(): ?int
     {
         return $this->theme;
     }
 
-    /**
-     * @param int $theme
-     *
-     * @return $this
-     */
-    public function setTheme($theme): self
+    public function getThemeEnum(): ?ArticleTheme
+    {
+        if ($this->theme === null) {
+            return null;
+        }
+
+        return ArticleTheme::from($this->theme);
+    }
+
+    public function setTheme(?int $theme): self
     {
         $this->propertyChanged('theme', $this->theme, $theme);
         $this->theme = $theme;
 
         return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getThemeLabel()
-    {
-        if (null === ($theme = $this->getTheme())) {
-            return null;
-        }
-
-        return \Afup\Site\Corporate\Article::getThemeLabel($this->getTheme());
     }
 
     /**

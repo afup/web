@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Afup\Site\Corporate\Article;
+use AppBundle\Site\Enum\ArticleContentType;
 use AppBundle\Site\Model\Rubrique;
 use Cocur\Slugify\Slugify;
 use Faker\Factory;
@@ -31,7 +31,7 @@ EOF;
                 'date' => 1542150000,
                 'id_forum' => Event::ID_FORUM,
                 'etat' => 1,
-                'type_contenu' => Article::TYPE_CONTENU_HTML,
+                'type_contenu' => ArticleContentType::Html->value,
             ],
         ];
 
@@ -50,7 +50,7 @@ EOF;
                 'id_site_rubrique' => Rubrique::ID_RUBRIQUE_ACTUALITES,
                 'date' => $faker->unixTime(new DateTime('2017-12-31T23:59:59')),
                 'etat' => 1,
-                'type_contenu' => Article::TYPE_CONTENU_HTML,
+                'type_contenu' => ArticleContentType::Html->value,
             ];
         }
 
@@ -87,7 +87,7 @@ MARKDOWN;
             'date' => 1761859722,
             'id_forum' => Event::ID_FORUM,
             'etat' => 1,
-            'type_contenu' => Article::TYPE_CONTENU_MARKDOWN,
+            'type_contenu' => ArticleContentType::Markdown->value,
         ];
     }
 
@@ -118,7 +118,7 @@ HTML;
             'date' => 1761858722,
             'id_forum' => Event::ID_FORUM,
             'etat' => 1,
-            'type_contenu' => Article::TYPE_CONTENU_HTML,
+            'type_contenu' => ArticleContentType::Html->value,
         ];
     }
 }
