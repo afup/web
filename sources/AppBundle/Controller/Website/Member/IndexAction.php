@@ -9,6 +9,7 @@ use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\MembershipFee\Model\MembershipFee;
 use AppBundle\Security\Authentication;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,8 +37,8 @@ final class IndexAction extends AbstractController
         $cotisation = $userService->getLastSubscription($user);
 
         $dateFinCotisation = null;
-        if ($cotisation) {
-            $dateFinCotisation = new \DateTimeImmutable('@' . $cotisation['date_fin']);
+        if ($cotisation instanceof MembershipFee) {
+            $dateFinCotisation = $cotisation->getEndDate();
         }
 
         $daysBeforeMembershipExpiration = $user->getDaysBeforeMembershipExpiration();

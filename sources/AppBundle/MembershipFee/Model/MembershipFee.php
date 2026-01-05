@@ -29,6 +29,8 @@ class MembershipFee implements NotifyPropertyInterface
     private ?int $nbReminders = null;
     private ?DateTime $lastReminderDate = null;
 
+    private bool $downloadInvoice = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -195,5 +197,15 @@ class MembershipFee implements NotifyPropertyInterface
         $this->propertyChanged('lastReminderDate', $this->lastReminderDate, $lastReminderDate);
         $this->lastReminderDate = $lastReminderDate;
         return $this;
+    }
+
+    public function canDownloadInvoice(): bool
+    {
+        return $this->downloadInvoice;
+    }
+
+    public function setDownloadInvoice(bool $hasPermission): bool
+    {
+        return $this->downloadInvoice = $hasPermission;
     }
 }

@@ -7,17 +7,17 @@
             Votre inscription a bien été enregistrée ! Il ne vous reste plus qu'à régler votre cotisation.
         </p>
         <p>
-            Montant de la cotisation: {{ invoice.montant }} Euros
+            Montant de la cotisation: {{ invoice.amount|number_format(2, '.', ' ') }} Euros
         </p>
         <h2>Facture disponible</h2>
 
         <p>
-            <a href="{{ url('company_membership_invoice', {invoiceNumber: invoice.numero_facture, token: invoice.token}) }}" class="button">Télécharger la facture</a>
+            <a href="{{ url('company_membership_invoice', {invoiceNumber: invoice.invoiceNumber, token: invoice.token}) }}" class="button">Télécharger la facture</a>
         </p>
         <h2>Régler votre cotisation par Carte Bleue</h2>
         {{ paybox|raw }}
         <h2>Régler votre cotisation par chèque</h2>
-        <p>Libellez le chèque à cet ordre: {{ afup.raison_sociale }}. Indiquez au dos le numéro de facture: {{ invoice.numero_facture }}</p>
+        <p>Libellez le chèque à cet ordre: {{ afup.raison_sociale }}. Indiquez au dos le numéro de facture: {{ invoice.invoiceNumber }}</p>
         <address>
             {{ afup.raison_sociale }}<br />
             {{ afup.adresse }}<br />
@@ -25,7 +25,7 @@
         </address>
         <h2>Régler votre cotisation par virement bancaire</h2>
         <p>
-            Lors d'un règlement par virement bancaire, indiquez ce libellé: {{ invoice.numero_facture }}.
+            Lors d'un règlement par virement bancaire, indiquez ce libellé: {{ invoice.invoiceNumber }}.
         </p>
         <table>
             <tr>
