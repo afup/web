@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Site\Model\Repository;
 
-use Afup\Site\Corporate\Rubrique;
 use AppBundle\Site\Model\Article;
+use AppBundle\Site\Model\Rubrique;
+use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
@@ -271,6 +272,30 @@ class ArticleRepository extends Repository implements MetadataInitializer
         $query->setParams(['filtre' => '%' . $filtre . '%']);
 
         return $query->query($this->getCollection(new HydratorArray()));
+    }
+
+    /**
+     * @return CollectionInterface<Article>
+     */
+    public function findListForHome(): CollectionInterface
+    {
+        /** @var SelectInterface $builder */
+        $builder = $this->getQueryBuilder(self::QUERY_SELECT);
+        $builder->cols(['*'])
+            ->from('afup_site_article')
+            ->innerJoin('afup_site_rubrique', 'ON afup_site_article.id_site_rubrique = afup_site_rubrique.id')
+            ->where('afup_site_article.etat = 1')
+            ->where('afup_site_article.date <= UNIX_TIMESTAMP(NOW())')
+            ->where('id_parent <> 52') // On n'affiche pas les articles des forums
+            ->where('afup_site_rubrique.id <> ' . Rubrique::ID_RUBRIQUE_ASSOCIATION)
+            ->where('afup_site_rubrique.id <> ' . Rubrique::ID_RUBRIQUE_ANTENNES)
+            ->where('afup_site_rubrique.id <> ' . Rubrique::ID_RUBRIQUE_NOS_ACTIONS)
+            ->orderBy(['afup_site_article.date DESC'])
+            ->offset(0)
+            ->limit(5)
+        ;
+
+        return $this->getQuery($builder->getStatement())->query($this->getCollection(new HydratorSingleObject()));
     }
 
     /**

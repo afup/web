@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Global;
 
-use Afup\Site\Corporate\Articles;
 use Afup\Site\Corporate\Branche;
 use Afup\Site\Corporate\Feuille;
 use Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
@@ -12,6 +11,7 @@ use Algolia\AlgoliaSearch\SearchClient;
 use AppBundle\Event\Model\Meetup;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
+use AppBundle\Site\Model\Repository\ArticleRepository;
 use AppBundle\Twig\ViewRenderer;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class HomeAction extends AbstractController
 {
-    public const MAX_ARTICLES = 5;
     public const MAX_MEETUPS = 10;
 
     public function __construct(
@@ -33,12 +32,12 @@ final class HomeAction extends AbstractController
         private readonly TalkRepository $talkRepository,
         #[Autowire('%home_algolia_enabled%')]
         private readonly bool $homeAlgoliaEnabled,
+        private readonly ArticleRepository $articleRepository,
     ) {}
 
     public function __invoke(): Response
     {
-        $articles = new Articles();
-        $derniers_articles = $articles->chargerDerniersAjouts(self::MAX_ARTICLES);
+        $derniers_articles = $this->articleRepository->findListForHome();
 
         $branche = new Branche();
         $enfants = $branche->feuillesEnfants(Feuille::ID_FEUILLE_COLONNE_DROITE);
