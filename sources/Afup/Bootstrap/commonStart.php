@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use AppBundle\Event\Model\Ticket;
 use CCMBenchmark\Ting\Services;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
@@ -30,39 +31,6 @@ $debug = false;
 if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'afup.dev') {
     $debug = true;
 }
-
-define('AFUP_FORUM_PREMIERE_JOURNEE', 0);
-define('AFUP_FORUM_DEUXIEME_JOURNEE', 1);
-define('AFUP_FORUM_2_JOURNEES', 2);
-define('AFUP_FORUM_2_JOURNEES_AFUP', 3);
-define('AFUP_FORUM_2_JOURNEES_ETUDIANT', 4);
-define('AFUP_FORUM_2_JOURNEES_PREVENTE', 5);
-define('AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE', 6);
-define('AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE', 7);
-define('AFUP_FORUM_2_JOURNEES_COUPON', 8);
-define('AFUP_FORUM_ORGANISATION', 9);
-define('AFUP_FORUM_SPONSOR', 10);
-define('AFUP_FORUM_PRESSE', 11);
-define('AFUP_FORUM_CONFERENCIER', 12);
-define('AFUP_FORUM_INVITATION', 13);
-define('AFUP_FORUM_PROJET', 14);
-define('AFUP_FORUM_2_JOURNEES_SPONSOR', 15);
-define('AFUP_FORUM_PROF', 16);
-define('AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE', 17);
-define('AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE', 18);
-define('AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION', 19);
-define('AFUP_FORUM_PREMIERE_JOURNEE_AFUP', 20);
-define('AFUP_FORUM_DEUXIEME_JOURNEE_AFUP', 21);
-define('AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT', 22);
-define('AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT', 23);
-define('AFUP_FORUM_EARLY_BIRD', 100);
-define('AFUP_FORUM_EARLY_BIRD_AFUP', 101);
-define('AFUP_FORUM_LATE_BIRD', 102);
-define('AFUP_FORUM_LATE_BIRD_AFUP', 103);
-define('AFUP_FORUM_LATE_BIRD_PREMIERE_JOURNEE', 105);
-define('AFUP_FORUM_LATE_BIRD_DEUXIEME_JOURNEE', 106);
-define('AFUP_FORUM_CFP_SUBMITTER', 107);
-define('AFUP_FORUM_SPECIAL_PRICE', 108);
 
 define('AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE', 0);
 define('AFUP_FORUM_REGLEMENT_CHEQUE', 1);
@@ -104,62 +72,61 @@ define('AFUP_TRANSPORT_MODE_AVION_BUSINESS', 100);
 define('AFUP_TRANSPORT_MODE_COMMUN', 110);
 
 $AFUP_Tarifs_Forum = [
-    AFUP_FORUM_INVITATION => 0,
-    AFUP_FORUM_ORGANISATION => 0,
-    AFUP_FORUM_SPONSOR => 0,
-    AFUP_FORUM_PRESSE => 0,
-    AFUP_FORUM_CONFERENCIER => 0,
-    AFUP_FORUM_PROJET => 0,
-    AFUP_FORUM_PROF => 0,
-    AFUP_FORUM_PREMIERE_JOURNEE => 150,
-    AFUP_FORUM_DEUXIEME_JOURNEE => 150,
-    AFUP_FORUM_2_JOURNEES => 250,
-    AFUP_FORUM_2_JOURNEES_AFUP => 150,
-    AFUP_FORUM_PREMIERE_JOURNEE_AFUP => 100,
-    AFUP_FORUM_DEUXIEME_JOURNEE_AFUP => 100,
-    AFUP_FORUM_2_JOURNEES_ETUDIANT => 150,
-    AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT => 100,
-    AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT => 100,
-    AFUP_FORUM_2_JOURNEES_PREVENTE => 150,
-    AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE => 150,
-    AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION => 150,
-    AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE => 100,
-    AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE => 100,
-    AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE => 150,
-    AFUP_FORUM_2_JOURNEES_COUPON => 200,
-    AFUP_FORUM_2_JOURNEES_SPONSOR => 200,
-    AFUP_FORUM_SPECIAL_PRICE => 0,
-
+    Ticket::TYPE_INVITATION => 0,
+    Ticket::TYPE_ORGANIZATION => 0,
+    Ticket::TYPE_SPONSOR => 0,
+    Ticket::TYPE_PRESS => 0,
+    Ticket::TYPE_SPEAKER => 0,
+    Ticket::TYPE_PROJECT => 0,
+    Ticket::TYPE_TEACHER => 0,
+    Ticket::TYPE_DAY_1 => 150,
+    Ticket::TYPE_DAY_2 => 150,
+    Ticket::TYPE_2_DAYS => 250,
+    Ticket::TYPE_2_DAYS_AFUP => 150,
+    Ticket::TYPE_DAY_1_AFUP => 100,
+    Ticket::TYPE_DAY_2_AFUP => 100,
+    Ticket::TYPE_2_DAYS_STUDENT => 150,
+    Ticket::TYPE_DAY_1_STUDENT => 100,
+    Ticket::TYPE_DAY_2_STUDENT => 100,
+    Ticket::TYPE_2_DAYS_EARLY => 150,
+    Ticket::TYPE_2_DAYS_AFUP_EARLY => 150,
+    Ticket::TYPE_EARLY_PLUS_MEMBERSHIP => 150,
+    Ticket::TYPE_DAY_1_STUDENT_EARLY => 100,
+    Ticket::TYPE_DAY_2_STUDENT_EARLY => 100,
+    Ticket::TYPE_2_DAYS_STUDENT_EARLY => 150,
+    Ticket::TYPE_2_DAYS_VOUCHER => 200,
+    Ticket::TYPE_2_DAYS_SPONSOR => 200,
+    Ticket::TYPE_SPECIAL_PRICE => 0,
 ];
 
 $GLOBALS['AFUP_Tarifs_Forum'] = $AFUP_Tarifs_Forum;
 
 $AFUP_Tarifs_Forum_Lib = [
-    AFUP_FORUM_INVITATION => 'Invitation',
-    AFUP_FORUM_ORGANISATION => 'Organisation',
-    AFUP_FORUM_PROJET => 'Projet PHP',
-    AFUP_FORUM_SPONSOR => 'Sponsor',
-    AFUP_FORUM_PRESSE => 'Presse',
-    AFUP_FORUM_PROF => 'Enseignement supérieur',
-    AFUP_FORUM_CONFERENCIER => 'Conferencier',
-    AFUP_FORUM_PREMIERE_JOURNEE => 'Jour 1 ',
-    AFUP_FORUM_DEUXIEME_JOURNEE => 'Jour 2',
-    AFUP_FORUM_2_JOURNEES => '2 Jours',
-    AFUP_FORUM_2_JOURNEES_AFUP => '2 Jours AFUP',
-    AFUP_FORUM_PREMIERE_JOURNEE_AFUP => 'Jour 1 AFUP',
-    AFUP_FORUM_DEUXIEME_JOURNEE_AFUP => 'Jour 2 AFUP',
-    AFUP_FORUM_2_JOURNEES_ETUDIANT => '2 Jours Etudiant',
-    AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT => 'Jour 1 Etudiant',
-    AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT => 'Jour 2 Etudiant',
-    AFUP_FORUM_2_JOURNEES_PREVENTE => '2 Jours prévente',
-    AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE => '2 Jours AFUP prévente',
-    AFUP_FORUM_2_JOURNEES_PREVENTE_ADHESION => '2 Jours prévente + adhésion',
-    AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE => '2 Jours Etudiant prévente',
-    AFUP_FORUM_2_JOURNEES_COUPON => '2 Jours avec coupon de réduction',
-    AFUP_FORUM_2_JOURNEES_SPONSOR => '2 Jours par Sponsor',
-    AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE => '',
-    AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE => '',
-    AFUP_FORUM_SPECIAL_PRICE => 'Tarif Spécial',
+    Ticket::TYPE_INVITATION => 'Invitation',
+    Ticket::TYPE_ORGANIZATION => 'Organisation',
+    Ticket::TYPE_PROJECT => 'Projet PHP',
+    Ticket::TYPE_SPONSOR => 'Sponsor',
+    Ticket::TYPE_PRESS => 'Presse',
+    Ticket::TYPE_TEACHER => 'Enseignement supérieur',
+    Ticket::TYPE_SPEAKER => 'Conferencier',
+    Ticket::TYPE_DAY_1 => 'Jour 1 ',
+    Ticket::TYPE_DAY_2 => 'Jour 2',
+    Ticket::TYPE_2_DAYS => '2 Jours',
+    Ticket::TYPE_2_DAYS_AFUP => '2 Jours AFUP',
+    Ticket::TYPE_DAY_1_AFUP => 'Jour 1 AFUP',
+    Ticket::TYPE_DAY_2_AFUP => 'Jour 2 AFUP',
+    Ticket::TYPE_2_DAYS_STUDENT => '2 Jours Etudiant',
+    Ticket::TYPE_DAY_1_STUDENT => 'Jour 1 Etudiant',
+    Ticket::TYPE_DAY_2_STUDENT => 'Jour 2 Etudiant',
+    Ticket::TYPE_2_DAYS_EARLY => '2 Jours prévente',
+    Ticket::TYPE_2_DAYS_AFUP_EARLY => '2 Jours AFUP prévente',
+    Ticket::TYPE_EARLY_PLUS_MEMBERSHIP => '2 Jours prévente + adhésion',
+    Ticket::TYPE_2_DAYS_STUDENT_EARLY => '2 Jours Etudiant prévente',
+    Ticket::TYPE_2_DAYS_VOUCHER => '2 Jours avec coupon de réduction',
+    Ticket::TYPE_2_DAYS_SPONSOR => '2 Jours par Sponsor',
+    Ticket::TYPE_DAY_1_STUDENT_EARLY => '',
+    Ticket::TYPE_DAY_2_STUDENT_EARLY => '',
+    Ticket::TYPE_SPECIAL_PRICE => 'Tarif Spécial',
 ];
 
 $GLOBALS['AFUP_Tarifs_Forum_Lib'] = $AFUP_Tarifs_Forum_Lib;
