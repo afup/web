@@ -167,7 +167,7 @@
                             >
                                 <i class="paper plane icon"></i>
                             </a>
-                            <a href="{{ path('member_index', {hash: user.hash}) }}"
+                            <a href="{{ path('member_index', {_switch_user: user.username}) }}"
                                data-position="left center"
                                data-tooltip="Se connecter en tant que {{ user.firstname }} {{ user.lastname }}"
                                class="compact ui icon button"

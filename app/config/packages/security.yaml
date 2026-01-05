@@ -37,6 +37,7 @@ security:
                 default_target_path: /member/
                 enable_csrf: true
             context: share_context
+            switch_user: true
 
         github_secured_area:
             pattern: ^(/event/.*/(vote|cfp|speaker-infos)|/connect/github/check|/event/speaker-infos)
