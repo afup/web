@@ -1,0 +1,32 @@
+{% if app.user and is_granted('IS_IMPERSONATOR') and app.token.originalToken is defined %}
+    <div id="afup-impersonation-helper">
+        <div class="impersonation-icon">
+            <i class="fa fa-user-secret fa-fw"></i>
+        </div>
+
+        <div class="impersonation-details">
+            <div class="impersonation-title">Usurpation active</div>
+
+            <div class="impersonation-details-body">
+                <div class="impersonation-detail">
+                    <div class="impersonation-detail-title">Compte d'origine</div>
+                    <p>{{ app.token.originalToken.user.userIdentifier }}</p>
+                </div>
+
+                <div class="impersonation-detail">
+                    <div class="impersonation-detail-title">Connecté en tant que</div>
+                    <p>{{ app.user.userIdentifier }}</p>
+                </div>
+
+                <div class="impersonation-links">
+                    <div>
+                        <a href="{{ path('admin_logout') }}">Déconnexion</a>
+                    </div>
+                    <div>
+                        <a href="{{ path('member_index', { _switch_user: '_exit' }) }}">Retourner au compte d'origine</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
