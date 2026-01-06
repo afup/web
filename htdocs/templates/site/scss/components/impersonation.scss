@@ -1,0 +1,84 @@
+#afup-impersonation-helper {
+  position: fixed;
+  left: 10px;
+  top: 10px;
+  z-index: 9999;
+
+  .impersonation-icon {
+    padding: 5px 3px 5px 4px;
+
+    background: #fff;
+    color: #000;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+
+    font-size: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+  }
+
+  .impersonation-details {
+    z-index: 9999;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 195px;
+
+    background: #404040;
+    color: #f5f5f5;
+    border-radius: 5px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+
+    .impersonation-title {
+      padding: 10px 0 5px 10px;
+
+      background: #262626;
+      color: #e5e5e5;
+      border-radius: 5px 5px 0 0;
+      text-transform: uppercase;
+
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    .impersonation-details-body {
+      padding: 10px;
+
+      .impersonation-detail {
+        margin-bottom: 20px;
+
+        .impersonation-detail-title {
+          font-weight: 600;
+          color: #a3a3a3;
+        }
+
+        p {
+          margin: 0;
+        }
+      }
+
+      .impersonation-links a {
+        color: #99cdd8;
+      }
+    }
+  }
+
+  &:hover .impersonation-details {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
