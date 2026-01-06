@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Site\Form;
 
-use Afup\Site\Corporate\Article;
 use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Site\Enum\ArticleTheme;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToTimestampTransformer;
@@ -151,7 +151,7 @@ class ArticleType extends AbstractType
             ->add('theme', ChoiceType::class, [
                 'label' => 'Thème',
                 'required' => false,
-                'choices' => array_flip(Article::getThemesLabels()),
+                'choices' => ArticleTheme::asChoicesMap(),
                 'constraints' => [
                     new Assert\Type("integer"),
                 ],

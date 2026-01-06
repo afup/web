@@ -65,7 +65,7 @@
                         <td>{% if article.date != null %}{{ article.date|date('d-m-Y') }}{% endif %}</td>
                         <td style="white-space: normal;">{{ article.titre }}</td>
                         <td>{{ article.nom_rubrique }}</td>
-                        <td>{{ themes[article.theme] ?? '' }}</td>
+                        <td>{{ article.theme ? enum('AppBundle\\Site\\Enum\\ArticleTheme').from(article.theme).label : '' }}</td>
                         <td>{{ article.nom_forum }}</td>
                         <td class="center aligned">
                             {% if article.etat == 1 %}

@@ -232,13 +232,28 @@ class ArticleRepository extends Repository implements MetadataInitializer
          WHERE id_site_rubrique = :rubricId AND CONCAT(id, "-", raccourci) = :slug',
             )
             ->setParams(['rubricId' => Rubrique::ID_RUBRIQUE_ACTUALITES, 'slug' => $slug]);
-        $events = $query->query($this->getCollection(new HydratorSingleObject()));
+        $articles = $query->query($this->getCollection(new HydratorSingleObject()));
 
-        if ($events->count() === 0) {
+        if ($articles->count() === 0) {
             return null;
         }
 
-        return $events->first();
+        return $articles->first();
+    }
+
+    public function findBySlug(string $slug): ?Article
+    {
+        $query = $this
+            ->getPreparedQuery('SELECT * FROM afup_site_article WHERE CONCAT(id, "-", raccourci) = :slug')
+            ->setParams(['slug' => $slug]);
+
+        $articles = $query->query($this->getCollection(new HydratorSingleObject()));
+
+        if ($articles->count() === 0) {
+            return null;
+        }
+
+        return $articles->first();
     }
 
     public function getAllArticlesWithCategoryAndTheme(string $ordre = 'titre', string $direction = 'desc', string $filtre = '%'): CollectionInterface
