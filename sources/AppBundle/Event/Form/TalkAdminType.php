@@ -98,6 +98,10 @@ class TalkAdminType extends TalkType
                 'label' => 'Verbatim',
                 'required' => false,
             ])
+            ->add('scheduled', CheckboxType::class, [
+                'label' => 'Est-ce que cette conférence va être planifiée ?',
+                'required' => false,
+            ])
             ->add('save', SubmitType::class)
         ;
     }
