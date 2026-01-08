@@ -89,7 +89,7 @@ Feature: Administration - Trésorerie - Journal
     Given I am logged in as admin and on the Administration
     When I follow "Journal"
     And I follow "Télécharger les justificatifs groupés par mois"
-    Then the response header "Content-disposition" should match '#filename="afup_justificatifs-(.*).zip"#'
+    Then the response header "Content-Disposition" should match '#filename="afup_justificatifs-(.*).zip"#'
 
   @reloadDbWithTestData
   Scenario: Compte journal Suppression d'une transaction
