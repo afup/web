@@ -17,8 +17,8 @@ Feature: Administration - Trésorerie - Journal import
     # On importe le fichier sur le crédit mutuel
     When I follow "Importer un fichier CSV"
     Then I should see "Import CSV"
-    When I select "CMUT" from "banque"
-    And I attach the file "test_credit_mutuel.csv" to "fichiercsv"
+    When I select "CMUT" from "transactions_import[bankAccount]"
+    And I attach the file "test_credit_mutuel.csv" to "transactions_import[file]"
     And I press "Soumettre"
     Then I should see "Le fichier a été importé"
     # On vérifie que l'import s'est bien passé

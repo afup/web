@@ -720,7 +720,6 @@ SQL;
             $enregistrement = $this->obtenirParNumeroOperation($numero_operation);
 
             $operationQualified = $qualifier->qualify($operation);
-
             if (!is_array($enregistrement)) {
                 $this->ajouter(
                     $operationQualified['idoperation'],
@@ -736,7 +735,7 @@ SQL;
                     $operationQualified['date_ecriture'],
                     '',
                     $operationQualified['evenement'],
-                    $operationQualified['numero_operation'],
+                    $operationQualified['numero_operation'] ?? null,
                     $operationQualified['attachmentRequired'],
                     $operationQualified['montant_ht_soumis_tva_0'],
                     $operationQualified['montant_ht_soumis_tva_5_5'],

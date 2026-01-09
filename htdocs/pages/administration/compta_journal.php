@@ -5,9 +5,6 @@ declare(strict_types=1);
 // Impossible to access the file itself
 use Afup\Site\Comptabilite\Comptabilite;
 use Afup\Site\Utils\Logs;
-use AppBundle\Compta\Importer\CreditMutuel;
-use AppBundle\Compta\Importer\CreditMutuelLivret;
-use AppBundle\Compta\Importer\Factory;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
@@ -20,7 +17,6 @@ $action = verifierAction([
     'credit',
     'ajouter',
     'modifier',
-    'importer',
     'modifier_colonne',
     'export',
     'upload_attachment',
@@ -538,38 +534,4 @@ if ($action == 'lister') {
         echo $e->getMessage();
     }
     exit;
-} elseif ($action == 'importer') {
-    $formulaire = instancierFormulaire();
-    $formulaire->addElement('header', null          , 'Import CSV');
-    $formulaire->addElement('file', 'fichiercsv', 'Fichier banque');
-    $formulaire->addElement('select', 'banque', 'Banque', [
-        CreditMutuel::CODE => 'Crédit Mutuel - Compte Courant',
-        CreditMutuelLivret::CODE => 'Crédit Mutuel - Livret',
-    ]);
-
-    $formulaire->addElement('header', 'boutons'  , '');
-    $formulaire->addElement('submit', 'soumettre', 'Soumettre');
-
-    if ($formulaire->validate()) {
-        $valeurs = $formulaire->exportValues();
-        $file = & $formulaire->getElement('fichiercsv');
-        $tmpDir = __DIR__ . '/../../../tmp';
-        if ($file->isUploadedFile()) {
-            $file->moveUploadedFile($tmpDir, 'banque.csv');
-            $importerFactory = new Factory();
-            $importer = $importerFactory->create(
-                $tmpDir . '/banque.csv',
-                $valeurs['banque'],
-            );
-            $importer->initialize($tmpDir . '/banque.csv');
-            if ($compta->extraireComptaDepuisCSVBanque($importer)) {
-                Logs::log('Chargement fichier banque');
-                afficherMessage('Le fichier a été importé', 'index.php?page=compta_journal&action=lister');
-            } else {
-                afficherMessage("Le fichier n'a pas été importé. Le format est-il valide ?", 'index.php?page=compta_journal&action=lister', true);
-            }
-            unlink($tmpDir . '/banque.csv');
-        }
-    }
-    $smarty->assign('formulaire', genererFormulaire($formulaire));
 }
