@@ -6,10 +6,6 @@ admin_accounting_membership_fee:
   resource: "admin_accounting/membership_fee.yml"
   prefix: /membership-fee
 
-admin_accounting_bank_accounts:
-  resource: "admin_accounting_bank_accounts.yml"
-  prefix: /bank-accounts
-
 admin_accounting_journal:
   resource: "admin_accounting/journal.yml"
   prefix: /journal
