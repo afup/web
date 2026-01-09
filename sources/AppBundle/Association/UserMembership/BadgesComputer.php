@@ -12,6 +12,8 @@ use AppBundle\Event\Model\Repository\UserBadgeRepository;
 
 class BadgesComputer
 {
+    private const MAX_BADGES_SENIORITY = 17;
+
     public function __construct(
         private readonly SeniorityComputer $seniorityComputer,
         private readonly EventRepository $eventRepository,
@@ -65,11 +67,10 @@ class BadgesComputer
     private function prepareCompanyBadgesInfos(CompanyMember $companyMember): array
     {
         $seniorityInfos = $this->seniorityComputer->computeCompanyAndReturnInfos($companyMember);
-        $maxBadgesSeniority = 10;
 
         $badgesCodes = [];
 
-        for ($i = min($seniorityInfos['years'], $maxBadgesSeniority); $i > 0; $i--) {
+        for ($i = min($seniorityInfos['years'], self::MAX_BADGES_SENIORITY); $i > 0; $i--) {
             $badgesCodes[] = [
                 'date' => ($seniorityInfos['first_year'] + $i) . '-01-01',
                 'code' => $i . 'ans',
@@ -124,9 +125,8 @@ class BadgesComputer
         }
 
         $seniorityInfos = $this->seniorityComputer->computeAndReturnInfos($user);
-        $maxBadgesSeniority = 17;
 
-        for ($i = min($seniorityInfos['years'], $maxBadgesSeniority); $i > 0; $i--) {
+        for ($i = min($seniorityInfos['years'], self::MAX_BADGES_SENIORITY); $i > 0; $i--) {
             $badgesCodes[] = [
                 'date' => ($seniorityInfos['first_year'] + $i) . '-01-01',
                 'code' => $i . 'ans',
