@@ -107,11 +107,10 @@ class Ticket implements NotifyPropertyInterface
     public const TYPE_AFUP_DAY_2021_LIVE_3 = 127;
     public const TYPE_AFUP_DAY_2021_LIVE_4 = 128;
 
-    public const PAYMENT_CREDIT_CARD = AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE;
-    public const PAYMENT_CHEQUE = AFUP_FORUM_REGLEMENT_CHEQUE;
-    public const PAYMENT_BANKWIRE = AFUP_FORUM_REGLEMENT_VIREMENT;
-    public const PAYMENT_NONE = AFUP_FORUM_REGLEMENT_AUCUN;
-    public const PAYMENT_AFTER = AFUP_FORUM_REGLEMENT_A_POSTERIORI; // @todo check & delete je comprends pas
+    public const PAYMENT_CREDIT_CARD = 0;
+    public const PAYMENT_CHEQUE = 1;
+    public const PAYMENT_BANKWIRE = 2;
+    public const PAYMENT_NONE = 3;
 
     public const DAY_ONE = 'one';
     public const DAY_TWO = 'two';

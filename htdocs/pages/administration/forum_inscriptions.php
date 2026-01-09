@@ -240,10 +240,10 @@ if ($action == 'lister') {
 
     $formulaire->addElement('header'  , ''                       , 'Règlement');
     $groupe = [];
-    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Carte bancaire', AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE);
-    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Chèque'        , AFUP_FORUM_REGLEMENT_CHEQUE);
-    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Virement'      , AFUP_FORUM_REGLEMENT_VIREMENT);
-    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Aucun'         , AFUP_FORUM_REGLEMENT_AUCUN);
+    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Carte bancaire', Ticket::PAYMENT_CREDIT_CARD);
+    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Chèque'        , Ticket::PAYMENT_CHEQUE);
+    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Virement'      , Ticket::PAYMENT_BANKWIRE);
+    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Aucun'         , Ticket::PAYMENT_NONE);
     $formulaire->addGroup($groupe, 'groupe_type_reglement', 'Règlement', '&nbsp;', false);
     $formulaire->addElement('textarea'   , 'informations_reglement', 'Informations règlement', ['cols' => 42, 'rows' => 4]);
 
