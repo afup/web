@@ -113,8 +113,8 @@
       "PlanetePHP\\": "sources/PlanetePHP/"
     },
     "files": [
-      "sources/Afup/Bootstrap/_Common.php",
-      "sources/Afup/Bootstrap/commonStart.php"
+      "sources/Afup/Bootstrap/constants.php",
+      "sources/Afup/fonctions.php"
     ]
   },
   "autoload-dev": {
