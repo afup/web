@@ -65,7 +65,7 @@ class BadgesComputer
     private function prepareCompanyBadgesInfos(CompanyMember $companyMember): array
     {
         $seniorityInfos = $this->seniorityComputer->computeCompanyAndReturnInfos($companyMember);
-        $maxBadgesSeniority = 10;
+        $maxBadgesSeniority = 17;
 
         $badgesCodes = [];
 
