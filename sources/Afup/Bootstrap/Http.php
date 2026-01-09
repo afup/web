@@ -72,7 +72,7 @@ $smarty->registerPlugin("modifier","stripslashes", "stripslashes");
 $smarty->registerPlugin("modifier","floatval", "floatval");
 
 $smarty->assign('url_base',          'https://' . $_SERVER['HTTP_HOST'] . '/');
-$smarty->assign('chemin_template',   $serveur . Site::WEB_PATH . 'templates/' . $sous_site . '/');
-$smarty->assign('chemin_javascript', $serveur . Site::WEB_PATH . 'javascript/');
+$smarty->assign('chemin_template',   $serveur . '/templates/' . $sous_site . '/');
+$smarty->assign('chemin_javascript', $serveur . '/javascript/');
 
 require_once(__DIR__ . '/commonStart.php');

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Afup\Site\Association;
 
-use Afup\Site\Corporate\Site;
 use Afup\Site\Droits;
 use Afup\Site\Utils\Base_De_Donnees;
 use Afup\Site\Utils\Mailing;
@@ -232,7 +231,7 @@ class Cotisations
         $corps = "Bonjour, \n\n";
         $corps .= "Une cotisation annuelle AFUP a été réglée.\n\n";
         $corps .= "Personne : " . $infos['nom'] . " " . $infos['prenom'] . " (" . $infos['email'] . ")\n";
-        $corps .= "URL : " . Site::WEB_PATH . "admin/accounting/membership-fee/list/" . $infos['type'] . "/" . $infos['id'] . "\n";
+        $corps .= "URL : /admin/accounting/membership-fee/list/" . $infos['type'] . "/" . $infos['id'] . "\n";
         $corps .= "Commande : " . $cmd . "\n";
         $corps .= "Total : " . $total . "\n";
         $corps .= "Autorisation : " . $autorisation . "\n";
