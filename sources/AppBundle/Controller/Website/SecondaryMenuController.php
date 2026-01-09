@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website;
 
-use Afup\Site\Corporate\Branche;
+use AppBundle\Site\Model\Repository\SheetRepository;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -12,12 +13,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SecondaryMenuController extends AbstractController
 {
-    public function __construct(private readonly RequestStack $requestStack) {}
+    public function __construct(
+        private readonly RequestStack $requestStack,
+        private readonly SheetRepository $sheetRepository,
+    ) {}
 
     public function display(Request $request): Response
     {
-        $branche = new Branche();
-        $menu = $branche->feuillesEnfants($request->get('feuille_id'));
+        $menu = $this->sheetRepository->getActiveChildrenByParentId($request->get('feuille_id'));
 
         return $this->render(
             'site/secondary_menu.html.twig',
@@ -30,7 +33,7 @@ class SecondaryMenuController extends AbstractController
     /**
      * @return mixed[]
      */
-    protected function prepareMenu(Request $masterRequest, array $menu): array
+    protected function prepareMenu(Request $masterRequest, CollectionInterface $menu): array
     {
         $preparedMenu = [];
 

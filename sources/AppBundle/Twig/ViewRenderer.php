@@ -16,6 +16,7 @@ class ViewRenderer
         private readonly Security $security,
         private readonly RequestStack $requestStack,
         private readonly Environment $twig,
+        private readonly Page $page,
     ) {}
 
 
@@ -33,11 +34,10 @@ class ViewRenderer
         $blocks = [];
         if ($this->requestStack->getCurrentRequest()) {
             $requestUri = $this->requestStack->getCurrentRequest()->getRequestUri();
-            $page = new Page();
             $blocks = [
-                'header' => $page->header($requestUri, $this->security->getUser()),
-                'sidebar' => $page->getRightColumn(),
-                'footer' => $page->footer(),
+                'header' => $this->page->header($requestUri, $this->security->getUser()),
+                // 'sidebar' => $this->page->getRightColumn(), // Voir https://github.com/afup/web/issues/2085
+                'footer' => $this->page->footer(),
             ];
         }
 
