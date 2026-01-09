@@ -24,7 +24,7 @@ use Afup\Site\Utils\Logs;
 
 $startMicrotime = microtime(true);
 
-require_once __DIR__ . '/_Common.php';
 require_once __DIR__ . '/../../../vendor/autoload.php';
+require_once __DIR__ . '/_Common.php';
 
 Logs::initialiser($bdd, 0);

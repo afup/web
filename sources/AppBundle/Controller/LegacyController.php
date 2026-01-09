@@ -59,6 +59,9 @@ class LegacyController extends AbstractController
 
     public function backOffice()
     {
+        require_once __DIR__ . '/../../Afup/Bootstrap/_Common.php';
+        require_once __DIR__ . '/../../Afup/Bootstrap/commonStart.php';
+
         /**
          * All global variables (as defined in commonStart and others) should be declared here
          */
