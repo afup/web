@@ -41,7 +41,6 @@ if (getenv('APP_ENV') === 'prod') {
     ini_set('error_reporting', (string) E_ALL);
     ini_set('display_errors', '1');
 }
-ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . __DIR__ . '/../../../dependencies/PEAR/');
 
 header('Content-type: text/html; charset=UTF-8');
 

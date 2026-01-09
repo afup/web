@@ -33,15 +33,6 @@ if (!defined('AFUP_CHEMIN_RACINE')) {
 }
 date_default_timezone_set('Europe/Paris');
 
-/**
- * Ajout des répertoires contenant les différentes classes et script à inclure
- * dans l'include path pour éviter de les inclure avec chemin absolu
- * et pouvoir bénéficier prochainement du mécanisme d'autoloading de classe
- *
- * @author Olivier Hoareau <olivier@phppro.fr>
- */
-set_include_path($root . '/dependencies' . PATH_SEPARATOR . $root . '/sources');
-
 // préparation de la requête / session
 require_once __DIR__ . '/../fonctions.php';
 
