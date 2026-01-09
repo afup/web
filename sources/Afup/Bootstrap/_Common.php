@@ -19,22 +19,8 @@ declare(strict_types=1);
  * @group    Bootstraps
  */
 
-// racine de l'application (pas du document root !)
 use Afup\Site\Corporate\_Site_Base_De_Donnees;
 use Afup\Site\Utils\Configuration;
-
-$root = dirname(__DIR__, 3);
-
-require_once $root . '/vendor/autoload.php';
-
-// définitions des constantes
-if (!defined('AFUP_CHEMIN_RACINE')) {
-    define('AFUP_CHEMIN_RACINE', $root . '/htdocs/');
-}
-date_default_timezone_set('Europe/Paris');
-
-// préparation de la requête / session
-require_once __DIR__ . '/../fonctions.php';
 
 // chargement de la configuration
 $conf = new Configuration();
