@@ -81,18 +81,6 @@ function verifierAction(array $actions_disponibles)
     }
 }
 
-/*
- * Remplace une caractère accentué par sa version non accentuée
- *
- * @param   string  $texte  Texte à traiter
- * @return  string          Texte traité
- */
-function supprimerAccents($texte): ?string
-{
-    $texte = htmlentities((string) $texte);
-    return preg_replace('/&([a-z])[a-z]+;/i',"$1", $texte);
-}
-
 function obtenirTitre($pages, $page)
 {
     foreach ($pages as $_page => $_page_details) {

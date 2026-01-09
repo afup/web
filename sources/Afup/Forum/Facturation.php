@@ -16,6 +16,7 @@ use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
 use AppBundle\Event\Model\Ticket;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class Facturation
 {
@@ -76,7 +77,9 @@ class Facturation
 
     public function creerReference($id_forum, $label): string
     {
-        $label = preg_replace('/[^A-Z0-9_\-\:\.;]/', '', strtoupper((string) supprimerAccents($label)));
+        $slugger = new AsciiSlugger();
+
+        $label = preg_replace('/[^A-Z0-9_\-\:\.;]/', '', strtoupper($slugger->slug($label)->toString()));
 
         return 'F' . date('Y') . sprintf('%02d', $id_forum) . '-' . date('dm') . '-' . substr((string) $label, 0, 5) . '-' . substr(md5(date('r') . $label), -5);
     }
