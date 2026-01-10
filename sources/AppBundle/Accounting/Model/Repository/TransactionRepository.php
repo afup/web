@@ -6,7 +6,9 @@ namespace AppBundle\Accounting\Model\Repository;
 
 use AppBundle\Accounting\Model\Transaction;
 use AppBundle\Accounting\Model\InvoicingPeriod;
+use AppBundle\Compta\Importer\AutoQualifier;
 use CCMBenchmark\Ting\Repository\HydratorArray;
+use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -18,6 +20,18 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
  */
 class TransactionRepository extends Repository implements MetadataInitializer
 {
+    public function getNextTransaction(int $transactionId): ?Transaction
+    {
+        $query = $this->getQuery('SELECT * FROM compta WHERE (idcategorie = :undeterminedCategoryId OR idevenement = :undeterminedEventId) AND id > :transactionId  ORDER BY id ASC LIMIT 1');
+        $query->setParams(['transactionId' => $transactionId, 'undeterminedCategoryId' => AutoQualifier::DEFAULT_CATEGORIE, 'undeterminedEventId' => AutoQualifier::DEFAULT_EVENEMENT]);
+        $collection = $query->query($this->getCollection(new HydratorSingleObject()));
+        if ($collection->count() > 0) {
+            return $collection->first();
+        }
+
+        return null;
+    }
+
     public function getEntriesPerInvoicingPeriod(InvoicingPeriod $period, bool $onlyUnclasifedEntries, int $operationType = 0)
     {
 

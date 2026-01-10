@@ -27,15 +27,21 @@ class Transaction implements NotifyPropertyInterface
     private bool $attachmentRequired = false;
     private ?string $attachmentFilename = null;
     private string $number = '';
-    private ?int $paymentTypeId = null;
+    private ?int $paymentTypeId = 0;
     private ?DateTime $paymentDate = null;
-    private string $paymentComment = '';
+    private ?string $paymentComment = '';
     private ?int $eventId = null;
     private ?int $accountId = 1;
     private ?float $amountTva20 = null;
     private ?float $amountTva10 = null;
     private ?float $amountTva5_5 = null;
     private ?float $amountTva0 = null;
+
+    public function __construct()
+    {
+        $this->accountingDate = new DateTime();
+        $this->paymentDate = new DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -257,12 +263,12 @@ class Transaction implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getPaymentComment(): string
+    public function getPaymentComment(): ?string
     {
         return $this->paymentComment;
     }
 
-    public function setPaymentComment(string $paymentComment): self
+    public function setPaymentComment(?string $paymentComment): self
     {
         $this->propertyChanged('paymentComment', $this->paymentComment, $paymentComment);
         $this->paymentComment = $paymentComment;
@@ -329,7 +335,7 @@ class Transaction implements NotifyPropertyInterface
 
     public function setAmountTva55(?float $amountTva5_5): self
     {
-        $this->propertyChanged('amountTva55', $this->amountTva5_5, $amountTva5_5);
+        $this->propertyChanged('amountTva5_5', $this->amountTva5_5, $amountTva5_5);
         $this->amountTva5_5 = $amountTva5_5;
 
         return $this;
