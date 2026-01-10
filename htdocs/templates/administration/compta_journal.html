@@ -3,7 +3,7 @@
     <h2>Journal</h2>
 
     <div class="ui menu">
-        <a href="index.php?page=compta_journal&amp;action=ajouter" class="item">
+        <a href="/admin/accounting/journal/add" class="item">
             <div data-tooltip="Ajouter une écriture" data-position="bottom left">
                 <i class="icon plus square"></i>
                 Ajouter
@@ -181,7 +181,7 @@
                         <i class="comment {if $ecriture.comment}{else}outline{/if} icon"></i>
                 </a>
 
-                <a href="index.php?page=compta_journal&amp;action=modifier&amp;id={$ecriture.idtmp}"
+                <a href="/admin/accounting/journal/edit/{$ecriture.idtmp}"
                    data-position="left center"
                    data-tooltip="Modifier la ligne {$ecriture.description}"
                    class="compact ui icon button"

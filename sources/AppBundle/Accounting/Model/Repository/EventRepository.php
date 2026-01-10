@@ -20,9 +20,14 @@ class EventRepository extends Repository implements MetadataInitializer
     /**
      * @return CollectionInterface<Event>
      */
-    public function getAllSortedByName(): CollectionInterface
+    public function getAllSortedByName($usedInAccountingJournal = false): CollectionInterface
     {
-        $query = $this->getQuery('SELECT * FROM compta_evenement ORDER BY evenement asc');
+        $sql = 'SELECT * FROM compta_evenement ';
+        if ($usedInAccountingJournal) {
+            $sql .= 'WHERE hide_in_accounting_journal_at IS NULL ';
+        }
+        $sql .= 'ORDER BY evenement asc';
+        $query = $this->getQuery($sql);
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
