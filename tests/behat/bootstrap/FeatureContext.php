@@ -160,7 +160,7 @@ class FeatureContext implements Context
         $expected = file_get_contents($filename);
         $value = $this->minkContext->getSession()->getPage()->getContent();
 
-        if ($expected !== $value) {
+        if (trim($expected) !== trim($value)) {
             throw new ExpectationException(
                 sprintf('The downloaded file is not same as "%s"', $filename),
                 $this->minkContext->getSession()->getDriver(),

@@ -55,7 +55,7 @@
     </div>
 
     <div class="ui menu">
-        <a href="index.php?page=compta_journal&amp;action=export&id_periode={$smarty.get.id_periode|default:''}&also_display_classifed_entries={$also_display_classifed_entries}" class="item">
+        <a href="/admin/accounting/journal/export?periodId={$smarty.get.id_periode|default:''}&with_reconciled={$also_display_classifed_entries}" class="item">
             <i class="icon file"></i>
             Exporter la période en CSV
         </a>
