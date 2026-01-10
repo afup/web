@@ -12,6 +12,7 @@ use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\AuditLog\Audit;
+use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
 use Assert\Assertion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -23,6 +24,7 @@ final class DownloadAction extends AbstractController
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly CompanyMemberRepository $companyMemberRepository,
+        private readonly MembershipFeeRepository $membershipFeeRepository,
         private readonly Cotisations $cotisations,
         private readonly Droits $droits,
         private readonly Audit $audit,
@@ -40,19 +42,19 @@ final class DownloadAction extends AbstractController
 
         $tempfile = tempnam(sys_get_temp_dir(), 'membership_fee_download');
         $numeroFacture = $this->cotisations->genererFacture($id, $tempfile);
-        $cotisation = $this->cotisations->obtenir($id);
+        $membershipFee = $this->membershipFeeRepository->get($id);
 
-        if ($cotisation['type_personne'] == MemberType::MemberCompany->value) {
-            $company = $this->companyMemberRepository->get($cotisation['id_personne']);
+        if ($membershipFee->getUserType() == MemberType::MemberCompany) {
+            $company = $this->companyMemberRepository->get($membershipFee->getUserId());
             Assertion::isInstanceOf($company, CompanyMember::class);
             $patternPrefix = $company->getCompanyName();
         } else {
-            $user = $this->userRepository->get($cotisation['id_personne']);
+            $user = $this->userRepository->get($membershipFee->getUserId());
             Assertion::isInstanceOf($user, User::class);
             $patternPrefix = $user->getLastName();
         }
 
-        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', (int) $cotisation['date_debut']) . '.pdf';
+        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . $membershipFee->getStartDate()->format('dmY') . '.pdf';
 
         $response = new BinaryFileResponse($tempfile, Response::HTTP_OK, [], false);
         $response->deleteFileAfterSend(true);

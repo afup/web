@@ -8,6 +8,8 @@ use AppBundle\Association\MemberType;
 use AppBundle\Controller\Admin\Membership\MembershipFeePayment;
 use AppBundle\MembershipFee\Model\MembershipFee;
 use Aura\SqlQuery\Common\SelectInterface;
+use CCMBenchmark\Ting\Repository\Collection;
+use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -15,6 +17,9 @@ use CCMBenchmark\Ting\Serializer\BackedEnum;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 use DateTime;
 
+/**
+ * @extends Repository<MembershipFee>
+ */
 class MembershipFeeRepository extends Repository implements MetadataInitializer
 {
     public function getMembershipStartingDate(MemberType $memberType, int $idMember): DateTime
@@ -51,6 +56,55 @@ class MembershipFeeRepository extends Repository implements MetadataInitializer
 
 
         return 'COTIS-' . date('Y') . '-' . (is_null($result?->number) ? 1 : $result->number);
+    }
+
+    public function updatePayment(int $id, int $paymentType, string $paymentInfos): bool
+    {
+        $sql = 'UPDATE';
+        $sql .= '  afup_cotisations ';
+        $sql .= 'SET';
+        $sql .= '  type_reglement= :paymentType,';
+        $sql .= '  informations_reglement=:paymentInfos';
+        $sql .= ' WHERE';
+        $sql .= '  id=' . $id;
+
+        return $this->getQuery($sql)->setParams(['paymentType' => $paymentType, 'paymentInfos' => $paymentInfos, 'id' => $id])->execute();
+    }
+
+    public function getLastestByUserTypeAndId(MemberType $type_personne, int $id_personne): ?MembershipFee
+    {
+        $sql = 'SELECT';
+        $sql .= '  * ';
+        $sql .= 'FROM';
+        $sql .= '  afup_cotisations ';
+        $sql .= 'WHERE';
+        $sql .= '  type_personne=:userType ';
+        $sql .= '  AND id_personne=:userId ';
+        $sql .= 'ORDER BY';
+        $sql .= '  date_fin DESC ';
+        $sql .= 'LIMIT 0, 1 ';
+
+        $collection = $this->getQuery($sql)->setParams(['userType' => $type_personne->value, 'userId' => $id_personne])->query($this->getCollection(new HydratorSingleObject()));
+        if ($collection->count() === 0) {
+            return null;
+        }
+        return $collection->first();
+    }
+
+    /**
+     * @return Collection<MembershipFee>
+     */
+    public function getListByUserTypeAndId(MemberType $memberType, int $memberId): Collection
+    {
+        $sql = 'SELECT * ';
+        $sql .= 'FROM';
+        $sql .= '  afup_cotisations ';
+        $sql .= 'WHERE';
+        $sql .= '  type_personne=:userType ';
+        $sql .= '  AND id_personne=:userId ';
+        $sql .= 'ORDER BY date_fin DESC';
+
+        return $this->getQuery($sql)->setParams(['userType' => $memberType->value, 'userId' => $memberId])->query($this->getCollection(new HydratorSingleObject()));
     }
 
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])
