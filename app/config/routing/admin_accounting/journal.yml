@@ -16,3 +16,10 @@ admin_accounting_journal_download_attachments:
   path: /download-attachments
   defaults:
     _controller: AppBundle\Controller\Admin\Accounting\Journal\DownloadAttachmentsAction
+
+admin_accounting_journal_allocate:
+  path: /allocate/{id}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\AllocateAction
+  requirements:
+    id: \d+
