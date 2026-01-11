@@ -34,6 +34,15 @@ class AccountRepository extends Repository implements MetadataInitializer
         return $this->getQuery($builder->getStatement())->query($this->getCollection(new HydratorSingleObject()));
     }
 
+    /**
+     * @return Collection<Account>
+     */
+    public function getAllSortedByName(): CollectionInterface
+    {
+        $query = $this->getQuery('SELECT * FROM compta_compte ORDER BY nom_compte asc');
+        return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])
     {
         $metadata = new Metadata($serializerFactory);
