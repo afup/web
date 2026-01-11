@@ -23,3 +23,8 @@ admin_accounting_journal_allocate:
     _controller: AppBundle\Controller\Admin\Accounting\Journal\AllocateAction
   requirements:
     id: \d+
+
+admin_accounting_journal_import:
+  path: /import
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\ImportAction
