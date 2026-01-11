@@ -12,7 +12,7 @@ use AppBundle\Event\Model\Repository\UserBadgeRepository;
 
 class BadgesComputer
 {
-    private const MAX_BADGES_SENIORITY = 17;
+    private const MAX_BADGES_SENIORITY = 29;
 
     public function __construct(
         private readonly SeniorityComputer $seniorityComputer,
