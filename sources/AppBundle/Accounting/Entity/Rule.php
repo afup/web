@@ -27,8 +27,9 @@ class Rule
     #[ORM\Column(nullable: true)]
     public ?string $vat = null;
 
-    #[ORM\Column(nullable: true)]
-    public ?int $categoryId = null;
+    #[ORM\OneToOne()]
+    #[ORM\JoinColumn(nullable: true)]
+    public ?Category $category = null;
 
     #[ORM\Column(nullable: true)]
     public ?int $eventId = null;

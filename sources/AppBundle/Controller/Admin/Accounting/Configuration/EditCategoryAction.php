@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Configuration;
 
+use AppBundle\Accounting\Entity\Repository\CategoryRepository;
 use AppBundle\Accounting\Form\CategoryType;
-use AppBundle\Accounting\Model\Repository\CategoryRepository;
 use AppBundle\AuditLog\Audit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,12 +20,12 @@ final class EditCategoryAction extends AbstractController
 
     public function __invoke(int $id,Request $request): Response
     {
-        $category = $this->categoryRepository->get($id);
+        $category = $this->categoryRepository->find($id);
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->categoryRepository->save($category);
-            $this->audit->log('Modification de la catégorie ' . $category->getName());
+            $this->audit->log('Modification de la catégorie ' . $category->name);
             $this->addFlash('notice', 'La catégorie a été modifiée');
             return $this->redirectToRoute('admin_accounting_categories_list');
         }
