@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Afup\Site\Utils;
 
-use AppBundle\Site\Model\Repository\CountryRepository;
+use AppBundle\Site\Entity\Repository\CountryRepository;
 
 /**
  * Classe de gestion des pays
@@ -20,11 +20,11 @@ class Pays
      *
      * @return array<string, string>
      */
-    public function obtenirPays()
+    public function obtenirPays(): array
     {
         $result = [];
-        foreach ($this->countryRepository->getAllCountries() as $country) {
-            $result[$country->getId()] = $country->getName();
+        foreach ($this->countryRepository->getAllSortedByName() as $country) {
+            $result[$country->id] = $country->name;
         }
 
         return $result;
@@ -35,6 +35,6 @@ class Pays
      */
     public function obtenirNom(string $id): string
     {
-        return $this->countryRepository->getOneBy(['id' => $id])->getName();
+        return $this->countryRepository->find($id)->name;
     }
 }
