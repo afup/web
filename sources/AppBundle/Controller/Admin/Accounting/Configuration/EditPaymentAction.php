@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Accounting\Configuration;
 
 use AppBundle\Accounting\Form\PaymentType;
-use AppBundle\Accounting\Model\Repository\PaymentRepository;
+use AppBundle\Accounting\Entity\Repository\PaymentRepository;
 use AppBundle\AuditLog\Audit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,12 +20,12 @@ final class EditPaymentAction extends AbstractController
 
     public function __invoke(int $id,Request $request): Response
     {
-        $payment = $this->paymentRepository->get($id);
+        $payment = $this->paymentRepository->find($id);
         $form = $this->createForm(PaymentType::class, $payment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->paymentRepository->save($payment);
-            $this->audit->log('Modification du type de règlement ' . $payment->getName());
+            $this->audit->log('Modification du type de règlement ' . $payment->name);
             $this->addFlash('notice', 'Le type de règlement a été modifié');
             return $this->redirectToRoute('admin_accounting_payments_list');
         }

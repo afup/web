@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Accounting\Configuration;
 
 use AppBundle\Accounting\Form\PaymentType;
-use AppBundle\Accounting\Model\Payment;
-use AppBundle\Accounting\Model\Repository\PaymentRepository;
+use AppBundle\Accounting\Entity\Payment;
+use AppBundle\Accounting\Entity\Repository\PaymentRepository;
 use AppBundle\AuditLog\Audit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +26,7 @@ final class AddPaymentAction extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->paymentRepository->save($payment);
-            $this->audit->log('Ajout du type de règlement ' . $payment->getName());
+            $this->audit->log('Ajout du type de règlement ' . $payment->name);
             $this->addFlash('notice', 'Le type de règlement a été ajouté');
             return $this->redirectToRoute('admin_accounting_payments_list');
         }
