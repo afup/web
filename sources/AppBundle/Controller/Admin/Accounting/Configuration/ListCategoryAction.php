@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Configuration;
 
-use AppBundle\Accounting\Model\Repository\CategoryRepository;
+use AppBundle\Accounting\Entity\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class ListCategoryAction
+final readonly class ListCategoryAction
 {
     public function __construct(
-        private readonly CategoryRepository $categoryRepository,
-        private readonly Environment $twig,
+        private CategoryRepository $categoryRepository,
+        private Environment $twig,
     ) {}
 
     public function __invoke(Request $request): Response

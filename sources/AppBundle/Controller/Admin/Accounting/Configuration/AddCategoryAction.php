@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Configuration;
 
+use AppBundle\Accounting\Entity\Category;
+use AppBundle\Accounting\Entity\Repository\CategoryRepository;
 use AppBundle\Accounting\Form\CategoryType;
-use AppBundle\Accounting\Model\Category;
-use AppBundle\Accounting\Model\Repository\CategoryRepository;
 use AppBundle\AuditLog\Audit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +26,7 @@ final class AddCategoryAction extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->categoryRepository->save($category);
-            $this->audit->log('Ajout de la catégorie ' . $category->getName());
+            $this->audit->log('Ajout de la catégorie ' . $category->name);
             $this->addFlash('notice', 'La catégorie a été ajoutée');
             return $this->redirectToRoute('admin_accounting_categories_list');
         }

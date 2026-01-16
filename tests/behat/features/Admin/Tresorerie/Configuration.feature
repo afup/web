@@ -104,7 +104,7 @@ Feature: Administration - Trésorerie - Configuration
     # TVA à 5.5%
     When I fill in "rule[vat]" with "5_5"
     # À determiner
-    When I fill in "rule[categoryId]" with "26"
+    When I fill in "rule[category]" with "26"
     # Association AFUP
     When I fill in "rule[eventId]" with "27"
     # Justification obligatoire
@@ -119,6 +119,6 @@ Feature: Administration - Trésorerie - Configuration
     And The "rule[isCredit]" field should have the following selected value "1"
     And The "rule[paymentTypeId]" field should have the following selected value "2"
     And The "rule[vat]" field should have the following selected value "5_5"
-    And The "rule[categoryId]" field should have the following selected value "26"
+    And The "rule[category]" field should have the following selected value "26"
     And The "rule[eventId]" field should have the following selected value "27"
     And The "rule[attachmentRequired]" field should have the following selected value "1"
