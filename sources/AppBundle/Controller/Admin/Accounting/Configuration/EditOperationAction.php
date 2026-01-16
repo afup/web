@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Accounting\Configuration;
 
 use AppBundle\Accounting\Form\OperationType;
-use AppBundle\Accounting\Model\Repository\OperationRepository;
+use AppBundle\Accounting\Entity\Repository\OperationRepository;
 use AppBundle\AuditLog\Audit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,12 +20,12 @@ final class EditOperationAction extends AbstractController
 
     public function __invoke(int $id,Request $request): Response
     {
-        $operation = $this->operationRepository->get($id);
+        $operation = $this->operationRepository->find($id);
         $form = $this->createForm(OperationType::class, $operation);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->operationRepository->save($operation);
-            $this->audit->log('Modification de l\'opération ' . $operation->getName());
+            $this->audit->log('Modification de l\'opération ' . $operation->name);
             $this->addFlash('notice', 'L\'opération a été modifiée');
             return $this->redirectToRoute('admin_accounting_operations_list');
         }
