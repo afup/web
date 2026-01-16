@@ -33,3 +33,12 @@ admin_accounting_journal_export:
   path: /export
   defaults:
     _controller: AppBundle\Controller\Admin\Accounting\Journal\ExportAction
+
+
+admin_accounting_journal_update_info:
+  path: /update-info/{id}/{modification}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\UpdateInfoAction
+  methods: [POST]
+  requirements:
+    id: \d+

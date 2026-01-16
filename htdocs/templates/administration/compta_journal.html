@@ -96,7 +96,7 @@
             <td>
             {if $ecriture.evenement=='A déterminer'}
                 <div class="ui form">
-                    <select class=" js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=evenement&amp;id={$ecriture.idtmp}" style="min-width:130px">
+                    <select class=" js-select-change" data-post-url="/admin/accounting/journal/update-info/{$ecriture.idtmp}/event" style="min-width:130px">
                         {foreach from=$events item=event_name key=event_id}
                         <option value="{$event_id}" {if $event_name == "A déterminer"}selected="selected"{/if}>{$event_name}</option>
                         {/foreach}
@@ -109,7 +109,7 @@
              <td>
                 {if $ecriture.categorie=='A déterminer'}
                  <div class="ui form">
-                    <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=categorie&amp;id={$ecriture.idtmp}" style="min-width:130px">
+                    <select class="js-select-change" data-post-url="/admin/accounting/journal/update-info/{$ecriture.idtmp}/category" style="min-width:130px">
                         {foreach from=$categories item=cat_name key=cat_id}
                         <option value="{$cat_id}" {if $cat_name == "A déterminer"}selected="selected"{/if}>{$cat_name}</option>
                         {/foreach}
@@ -133,7 +133,7 @@
             <td>
             {if $ecriture.reglement=='A déterminer'}
                 <div class="ui form">
-                    <select class="js-select-change" data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=reglement&amp;id={$ecriture.idtmp}" style="min-width:130px">
+                    <select class="js-select-change" data-post-url="/admin/accounting/journal/update-info/{$ecriture.idtmp}/paymentType" style="min-width:130px">
                         {foreach from=$payment_methods item=method_name key=method_id}
                         <option value="{$method_id}" {if $method_name == "A déterminer"}selected="selected"{/if}>{$method_name}</option>
                         {/foreach}
@@ -146,7 +146,7 @@
             <td align="center">
                 <input
                     type="checkbox" class="js-attachment-change"
-                    data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=attachment_required&amp;id={$ecriture.idtmp}"
+                    data-post-url="/admin/accounting/journal/update-info/{$ecriture.idtmp}/requiredAttachment"
                     value="1"
                     {if $ecriture.attachment_required}checked{/if}
                 />
@@ -176,7 +176,7 @@
                    style="cursor:pointer;"
                    data-position="left center"
                    data-tooltip='Editer le commentaire{if $ecriture.comment} ("{$ecriture.comment}"){/if}'
-                   data-post-url="index.php?page=compta_journal&amp;action=modifier_colonne&amp;column=comment&amp;id={$ecriture.idtmp}"
+                   data-post-url="/admin/accounting/journal/update-info/{$ecriture.idtmp}/comment"
                    data-comment="{$ecriture.comment}">
                         <i class="comment {if $ecriture.comment}{else}outline{/if} icon"></i>
                 </a>
