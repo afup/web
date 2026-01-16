@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Accounting\Configuration;
 
 use AppBundle\Accounting\Form\AccountType;
-use AppBundle\Accounting\Model\Account;
-use AppBundle\Accounting\Model\Repository\AccountRepository;
+use AppBundle\Accounting\Entity\Account;
+use AppBundle\Accounting\Entity\Repository\AccountRepository;
 use AppBundle\AuditLog\Audit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,8 +26,8 @@ final class AddAccountAction extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->accountRepository->save($account);
-            $this->audit->log('Ajout du compte ' . $account->getName());
-            $this->addFlash('notice', 'Le compte ' . $account->getName() . ' a été créé');
+            $this->audit->log('Ajout du compte ' . $account->name);
+            $this->addFlash('notice', 'Le compte ' . $account->name . ' a été créé');
             return $this->redirectToRoute('admin_accounting_accounts_list');
         }
 
