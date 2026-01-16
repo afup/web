@@ -24,7 +24,11 @@ doctrine:
         is_bundle: false
         dir: '%kernel.project_dir%/../sources/AppBundle/Accounting/Entity'
         prefix: 'AppBundle\Accounting\Entity'
-        alias: Accounting
+      Site:
+        type: attribute
+        is_bundle: false
+        dir: '%kernel.project_dir%/../sources/AppBundle/Site/Entity'
+        prefix: 'AppBundle\Site\Entity'
 
 when@test:
   doctrine:
