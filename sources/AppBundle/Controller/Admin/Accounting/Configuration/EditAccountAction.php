@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Accounting\Configuration;
 
 use AppBundle\Accounting\Form\AccountType;
-use AppBundle\Accounting\Model\Repository\AccountRepository;
+use AppBundle\Accounting\Entity\Repository\AccountRepository;
 use AppBundle\AuditLog\Audit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,13 +20,13 @@ final class EditAccountAction extends AbstractController
 
     public function __invoke(int $id,Request $request): Response
     {
-        $account = $this->accountRepository->get($id);
+        $account = $this->accountRepository->find($id);
         $form = $this->createForm(AccountType::class, $account);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->accountRepository->save($account);
-            $this->audit->log('Modification du compte ' . $account->getName());
-            $this->addFlash('notice', 'Le compte ' . $account->getName() . ' a été modifié');
+            $this->audit->log('Modification du compte ' . $account->name);
+            $this->addFlash('notice', 'Le compte ' . $account->name . ' a été modifié');
             return $this->redirectToRoute('admin_accounting_accounts_list');
         }
 
