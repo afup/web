@@ -31,8 +31,9 @@ class Rule
     #[ORM\JoinColumn(nullable: true)]
     public ?Category $category = null;
 
-    #[ORM\Column(nullable: true)]
-    public ?int $eventId = null;
+    #[ORM\OneToOne()]
+    #[ORM\JoinColumn(nullable: true)]
+    public ?Event $event = null;
 
     #[ORM\Column(name: 'mode_regl_id', nullable: true)]
     public ?int $paymentTypeId = null;

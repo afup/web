@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Configuration;
 
-use AppBundle\Accounting\Model\Repository\EventRepository;
+use AppBundle\Accounting\Entity\Repository\EventRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;

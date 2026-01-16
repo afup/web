@@ -106,7 +106,7 @@ Feature: Administration - Trésorerie - Configuration
     # À determiner
     When I fill in "rule[category]" with "26"
     # Association AFUP
-    When I fill in "rule[eventId]" with "27"
+    When I fill in "rule[event]" with "27"
     # Justification obligatoire
     When I fill in "rule[attachmentRequired]" with "1"
     And I press "Ajouter"
@@ -120,5 +120,5 @@ Feature: Administration - Trésorerie - Configuration
     And The "rule[paymentTypeId]" field should have the following selected value "2"
     And The "rule[vat]" field should have the following selected value "5_5"
     And The "rule[category]" field should have the following selected value "26"
-    And The "rule[eventId]" field should have the following selected value "27"
+    And The "rule[event]" field should have the following selected value "27"
     And The "rule[attachmentRequired]" field should have the following selected value "1"
