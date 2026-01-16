@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Accounting\Configuration;
 
 use AppBundle\Accounting\Form\OperationType;
-use AppBundle\Accounting\Model\Operation;
-use AppBundle\Accounting\Model\Repository\OperationRepository;
+use AppBundle\Accounting\Entity\Operation;
+use AppBundle\Accounting\Entity\Repository\OperationRepository;
 use AppBundle\AuditLog\Audit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +26,7 @@ final class AddOperationAction extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->operationRepository->save($operation);
-            $this->audit->log('Ajout de l\'opération ' . $operation->getName());
+            $this->audit->log('Ajout de l\'opération ' . $operation->name);
             $this->addFlash('notice', 'L\'opération a été ajoutée');
             return $this->redirectToRoute('admin_accounting_operations_list');
         }
