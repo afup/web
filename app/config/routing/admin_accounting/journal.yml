@@ -28,3 +28,8 @@ admin_accounting_journal_import:
   path: /import
   defaults:
     _controller: AppBundle\Controller\Admin\Accounting\Journal\ImportAction
+
+admin_accounting_journal_export:
+  path: /export
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\ExportAction

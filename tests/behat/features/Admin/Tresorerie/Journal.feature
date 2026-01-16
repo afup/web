@@ -82,7 +82,8 @@ Feature: Administration - Trésorerie - Journal
 
     # Export Excel
     When I follow "Exporter la période en CSV"
-    Then the response header "Content-disposition" should match '#^attachment; filename="AFUP_(.*)_journal_from(.*).csv"#'
+    Then the response header "content-disposition" should match '#^attachment; filename=AFUP_(.*)_journal_from(.*).csv#'
+    And the downloaded file should strictly be the same as "admin_journal_export.csv"
 
   @reloadDbWithTestData
   Scenario: Compte journal Télécharger les justificatifs groupés par mois
@@ -115,3 +116,8 @@ Feature: Administration - Trésorerie - Journal
     Then I should see "Une recette qui rapporte"
     And I should see "Une dépense très utile"
     And I should see "Une dépense moins utile"
+
+    # Export Excel
+    When I follow "Exporter la période en CSV"
+    Then the response header "content-disposition" should match '#^attachment; filename=AFUP_(.*)_journal_from(.*).csv#'
+    And the downloaded file should strictly be the same as "admin_journal_export_reconciled.csv"

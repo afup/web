@@ -1,0 +1,5 @@
+Date;Compte;Événement;Catégorie;Description;Débit;Crédit;Règlement;Commentaire;Justificatif;"Nom justificatif";"Montant HT";TVA;"Montant HT non soumis à TVA";"Montant HT soumis à TVA 5,5";"TVA 5,5";"Montant HT soumis à TVA 10";"TVA 10";"Montant HT soumis à TVA 20";"TVA 20";"Zone de TVA"
+2026-10-17;"Compte courant";AG;Assurances;"Une recette qui rapporte";;1 000,00;"Carte Bleue";;Non;202610/test_file1.pdf;0.00;0.000;;;;;;;;"Non définie"
+2026-10-18;"Compte courant";AG;Assurances;"Une dépense très utile";-500,00;;"Carte Bleue";;Non;;0.00;0.000;;;;;;;;"Non définie"
+2026-11-04;"Compte courant";AG;Assurances;"Une dépense moins utile";-100,00;;"Carte Bleue";;Non;;0.00;0.000;;;;;;;;"Non définie"
+2026-12-14;"Compte courant";AG;Assurances;"Description dépense";-12 003,00;;"Carte Bleue";;Non;;44294.57;3717.431;12003.00;11377.25;625.749;10911.82;1091.18;10002.50;2000.50;France

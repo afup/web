@@ -148,8 +148,8 @@ class FeatureContext implements Context
         }
     }
 
-    #[Then('/^the downloaded file should be the same as "(?P<value>(?:[^"]|\\")*)"$/')]
-    public function assertDownloadedFile(string $filename): void
+    #[Then('/^the downloaded file should (?P<mode>(strictly) )?be the same as "(?P<filename>(?:[^"]|\\")*)"$/')]
+    public function assertDownloadedFile(string $mode, string $filename): void
     {
         if ($this->minkContext->getMinkParameter('files_path')) {
             $fullPath = rtrim(realpath($this->minkContext->getMinkParameter('files_path')), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
@@ -158,7 +158,11 @@ class FeatureContext implements Context
             }
         }
         $expected = file_get_contents($filename);
-        $value = $this->minkContext->getSession()->getPage()->getContent();
+        if ('strictly' === trim($mode)) {
+            $value = $this->minkContext->getSession()->getDriver()->getContent();
+        } else {
+            $value = $this->minkContext->getSession()->getPage()->getContent(); // uses trim()
+        }
 
         if ($expected !== $value) {
             throw new ExpectationException(
