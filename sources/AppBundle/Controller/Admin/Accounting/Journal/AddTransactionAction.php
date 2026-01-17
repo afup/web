@@ -28,10 +28,8 @@ class AddTransactionAction extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->transactionRepository->save($transaction);
             $this->audit->log("Ajout d'une écriture");
-            $_SESSION['flash']['message'] = "l'écriture a été ajoutée";
-            $_SESSION['flash']['error'] = false;
-            $this->addFlash('notice', "l'écriture a été ajoutée");
-            return $this->redirect('/pages/administration/index.php?page=compta_journal&action=lister#L' . $transaction->getId());
+            $this->addFlash('notice', "L'écriture a été ajoutée");
+            return $this->redirect('/admin/accounting/journal/list#L' . $transaction->getId());
         }
 
         return $this->render('admin/accounting/journal/add.html.twig', [

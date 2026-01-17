@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Compta\Importer;
 
+use AppBundle\Accounting\OperationType;
+
 final readonly class Operation
 {
     public function __construct(

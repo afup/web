@@ -105,7 +105,7 @@ Feature: Administration - Trésorerie - Journal
   @reloadDbWithTestData
   Scenario: Compte journal Suppression d'une transaction
     Given I am logged in as admin and on the Administration
-    When I am on "/pages/administration/index.php?page=compta_journal&id_periode=15"
+    When I am on "/admin/accounting/journal/list?periodId=15"
     And I follow the button of tooltip "Supprimer la fiche de PRLV SEPA ONLINE SAS SCW SCALEWAY "
     Then I should see "L'écriture a été supprimée"
 

@@ -22,17 +22,13 @@ class DeleteAction extends AbstractController
     {
         $accounting = $this->transactionRepository->get($id);
         if (!$accounting instanceof Transaction) {
-            $_SESSION['flash'] = "Une erreur est survenue lors de la suppression de l'écriture";
-            $_SESSION['erreur'] = true;
             $this->addFlash('error', "Une erreur est survenue lors de la suppression de l'écriture");
-            return $this->redirect('/pages/administration/index.php?page=compta_journal');
+            return $this->redirectToRoute('admin_accounting_journal_list');
         }
 
         $this->transactionRepository->delete($accounting);
         $this->audit->log("Suppression de l'écriture {$id}");
-        $_SESSION['flash'] = "L'écriture a été supprimée";
-        $_SESSION['erreur'] = false;
         $this->addFlash('notice', "L'écriture a été supprimée");
-        return $this->redirect('/pages/administration/index.php?page=compta_journal');
+        return $this->redirectToRoute('admin_accounting_journal_list');
     }
 }
