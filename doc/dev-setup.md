@@ -272,4 +272,3 @@ Ensuite, il faut configurer l'identifier et ce mot de passe dans le fichier `.en
 BLUESKY_API_IDENTIFIER=example.bsky.social
 BLUESKY_API_APP_PASSWORD=my-app-passwod
 ```
-?total=25000&cmd=F202601-1701-KESTE-6eada&autorisation=XXXXXX&transaction=90205967&status=00000

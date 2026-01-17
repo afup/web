@@ -46,7 +46,7 @@ class PayboxCallbackSimulatorCommand extends Command
 
         $question = new ChoiceQuestion('Quel type de paiement souhaitez-vous simuler ?', [
             'Cotisation',
-            'Évènement',
+            'Inscription',
         ], 'Cotisation');
         $payementType = $helper->ask($input, $output, $question);
 
@@ -127,7 +127,7 @@ class PayboxCallbackSimulatorCommand extends Command
         $event = $this->eventRepository->get($invoice->getForumId());
         if (!$event instanceof Event) {
             throw new \RuntimeException(
-                sprintf('Évènement non trouvé avec ce CMD: "%s"', $cmd),
+                sprintf('Inscription non trouvé avec ce CMD: "%s"', $cmd),
             );
         }
 
