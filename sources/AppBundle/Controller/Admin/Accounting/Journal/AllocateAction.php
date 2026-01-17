@@ -50,9 +50,7 @@ class AllocateAction extends AbstractController
         $transaction->setAmount($transaction->getAmount() - $totalAmount);
         $this->transactionRepository->save($transaction);
 
-        $_SESSION['flash'] = "L'écriture a été ventilée";
-        $_SESSION['erreur'] = false;
         $this->addFlash('notice', "L'écriture a été ventilée");
-        return $this->redirect('/pages/administration/index.php?page=compta_journal#journal-ligne-' . $lastId);
+        return $this->redirect('/admin/accounting/journal/list#journal-ligne-' . $lastId);
     }
 }
