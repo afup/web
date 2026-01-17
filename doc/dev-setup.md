@@ -208,14 +208,14 @@ Ensuite pour le paiement, il faut utiliser ces informations [de carte](https://w
 
 #### Callbacks de paiement
 
-Après le paiement, paybox effectue un retour sur le serveur et c'est suite à ce retour que l'on effectue des actions
-comme l'ajout de la cotisation.
+Afin de simuler un appel Paybox, il y a une commande disponible (en environnement de `dev` uniquement).
 
-Afin d'en simplifier l'appel, il existe une commande dédiée qui s'appelle comme cela, où l'argument en exemple
-correspond à l'URL de la page de retour sur le site après paiement.
+Cette commande utilise une série de questions pour guider son utilisation.
+Il faut cependant récupérer le cmd qui est indiqué dans la fenêtre de Paybox.
+Ce paramètre est de la forme : `C2026-170120261126-0-1-ADMIN-84B` ou `F202601-1701-JDOE-11f8d`
 
 ```
-bin/console dev:callback-paybox-cotisation "https://localhost:9206/association/paybox-redirect?total=3000&cmd=C2020-150120201239-0-770-GALLO-E4F&autorisation=XXXXXX&transaction=588033888&status=00000"
+bin/console dev:paybox-callback-simulator
 ```
 
 ### GitHub
@@ -272,3 +272,4 @@ Ensuite, il faut configurer l'identifier et ce mot de passe dans le fichier `.en
 BLUESKY_API_IDENTIFIER=example.bsky.social
 BLUESKY_API_APP_PASSWORD=my-app-passwod
 ```
+?total=25000&cmd=F202601-1701-KESTE-6eada&autorisation=XXXXXX&transaction=90205967&status=00000
