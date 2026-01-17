@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace AppBundle\Accounting\Form;
 
 use AppBundle\Accounting\Entity\Category;
-use AppBundle\Accounting\Model\Repository\EventRepository;
+use AppBundle\Accounting\Entity\Event;
+use AppBundle\Accounting\Entity\Repository\CategoryRepository;
+use AppBundle\Accounting\Entity\Repository\EventRepository;
 use AppBundle\Model\ComptaModeReglement;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -17,17 +19,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class RuleType extends AbstractType
 {
     public function __construct(
+        private readonly CategoryRepository $categoryRepository,
         private readonly EventRepository $eventRepository,
     ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $events = [];
-        $events[''] = null;
-        foreach ($this->eventRepository->getAllSortedByName() as $event) {
-            $events[$event->getName()] = $event->getId();
-        }
-
         $builder->add('label', TextType::class, [
             'label' => 'Nom de la régle',
             'required' => true,
@@ -65,11 +62,14 @@ class RuleType extends AbstractType
         ])->add('category', EntityType::class, [
             'label' => 'Catégorie',
             'class' => Category::class,
+            'choices' => $this->categoryRepository->getAllSortedByName(),
             'choice_label' => 'name',
             'required' => false,
-        ])->add('eventId', ChoiceType::class, [
+        ])->add('event', EntityType::class, [
             'label' => 'Évènement',
-            'choices' => $events,
+            'class' => Event::class,
+            'choices' => $this->eventRepository->getAllSortedByName(),
+            'choice_label' => 'name',
             'required' => false,
         ])->add('attachmentRequired', ChoiceType::class, [
             'label' => ' Justificatif obligatoire ? ',

@@ -13,6 +13,7 @@ use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Type\Type;
+use Symfony\Component\Form\AbstractType;
 
 /**
  * @implements Rule<MethodCall>
@@ -28,11 +29,13 @@ final readonly class DoctrineRepositoryRule implements Rule
     ];
 
     private ClassReflection $repositoryClassReflection;
+    private ClassReflection $formClassReflection;
 
     public function __construct(
         private ReflectionProvider $reflectionProvider,
     ) {
         $this->repositoryClassReflection = $this->reflectionProvider->getClass(EntityRepository::class);
+        $this->formClassReflection = $this->reflectionProvider->getClass(AbstractType::class);
     }
 
     public function getNodeType(): string
@@ -57,6 +60,8 @@ final readonly class DoctrineRepositoryRule implements Rule
 
             // Si l'appel est fait depuis l'intérieur d'un repository, c'est autorisé
             || $this->isRepositoryClass($scope->getClassReflection())
+            // Si l'appel est fait depuis l'intérieur d'un formulaire, c'est autorisé
+            || $this->isFormClass($scope->getClassReflection())
         ) {
             return [];
         }
@@ -100,6 +105,28 @@ final readonly class DoctrineRepositoryRule implements Rule
 
         return $target->getName() === $this->repositoryClassReflection->getName()
             || $target->isSubclassOfClass($this->repositoryClassReflection);
+    }
+
+    private function isFormClass(ClassReflection|Type $target): bool
+    {
+        if ($target instanceof Type) {
+            $classes = $target->getObjectClassNames();
+
+            foreach ($classes as $class) {
+                $classReflection = $this->reflectionProvider->getClass($class);
+
+                if ($classReflection->getName() === $this->formClassReflection->getName()
+                    || $classReflection->isSubclassOfClass($this->formClassReflection)
+                ) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        return $target->getName() === $this->formClassReflection->getName()
+            || $target->isSubclassOfClass($this->formClassReflection);
     }
 
     private function isMethodOverridden(Type $type, string $methodName): bool

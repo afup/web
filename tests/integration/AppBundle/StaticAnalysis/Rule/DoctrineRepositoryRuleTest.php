@@ -36,5 +36,6 @@ final class DoctrineRepositoryRuleTest extends RuleTestCase
         $this->analyse([__DIR__ . '/../../../../stubs/phpstan/Doctrine/SubClassRepository.php'], []);
         $this->analyse([__DIR__ . '/../../../../stubs/phpstan/Doctrine/NotRepository.php'], []);
         $this->analyse([__DIR__ . '/../../../../stubs/phpstan/Doctrine/SubNotRepository.php'], []);
+        $this->analyse([__DIR__ . '/../../../../stubs/phpstan/Doctrine/FormType.php'], []);
     }
 }
