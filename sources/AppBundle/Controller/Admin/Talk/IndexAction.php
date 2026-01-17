@@ -44,7 +44,7 @@ final class IndexAction extends AbstractController
 
         $sessions = $this->talkRepository->getByEventWithSpeakersAndVotes(
             event: $event,
-            search: $data['q'] ?? '',
+            search: $data['filter'] ?? '',
             orderBy: $data['sort_key'] . ' ' . $data['sort_direction'],
             planned: $data['planned'] ?? false,
             needMentoring: $data['needs_mentoring'] ?? false,
@@ -65,7 +65,7 @@ final class IndexAction extends AbstractController
             'csrf_protection' => false,
         ])
             ->setMethod('GET')
-            ->add('q', TextType::class, ['required' => false])
+            ->add('filter', TextType::class, ['required' => false])
             ->add('needs_mentoring', CheckboxType::class, ['required' => false])
             ->add('planned', CheckboxType::class, ['required' => false])
             ->add('id', HiddenType::class, ['required' => false])

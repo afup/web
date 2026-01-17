@@ -42,7 +42,7 @@
         {{ form_start(filter_form) }}
         <div class="ui form">
             <div class="inline fields">
-                {{ form_row(filter_form.q, {label: 'Titre'}) }}
+                {{ form_row(filter_form.filter, {label: 'Titre'}) }}
                 {{ form_row(filter_form.needs_mentoring, {label: 'Afficher seulement les conférences dont le speaker a demandé un accompagnement'}) }}
                 {{ form_row(filter_form.planned, {label: 'Afficher seulement les conférences plannifiées'}) }}
                 {{ form_row(filter_form.submit, {label: 'Filtrer'}) }}

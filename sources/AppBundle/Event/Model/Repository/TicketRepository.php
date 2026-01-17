@@ -7,6 +7,7 @@ namespace AppBundle\Event\Model\Repository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Model\TicketAggregate;
 use AppBundle\Event\Model\TicketType;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;
@@ -179,6 +180,67 @@ class TicketRepository extends Repository implements MetadataInitializer
             ->setParams(['id_forum' => $event->getId()])
             ->query($this->getCollection(new HydratorSingleObject()))
         ;
+    }
+
+    /**
+     * @return array<TicketAggregate>
+     */
+    public function getByEventWithAll(Event $event, ?string $search, ?string $sortKey, ?string $sortDirection): array
+    {
+        $sql = 'SELECT ticket.*, aff.*, aft.*,
+        CASE WHEN ticket.id_member IS NOT NULL
+        THEN (SELECT MAX(ac.date_fin) AS last_subscription
+              FROM afup_cotisations ac
+              WHERE ac.type_personne = ticket.member_type AND ac.id_personne = ticket.id_member)
+        ELSE (SELECT MAX(ac.date_fin) AS last_subscription
+              FROM afup_personnes_physiques app
+              LEFT JOIN afup_personnes_morales apm ON apm.id = app.id_personne_morale
+              LEFT JOIN afup_cotisations ac ON ac.type_personne = IF(apm.id IS NULL, 0, 1) AND ac.id_personne = IFNULL(apm.id, app.id)
+              WHERE app.email = ticket.email
+              GROUP BY app.id)
+        END AS last_subscription
+        FROM afup_inscription_forum AS ticket
+        LEFT JOIN afup_facturation_forum aff ON ticket.reference = aff.reference 
+        LEFT JOIN afup_forum_tarif_event afte ON afte.id_tarif = ticket.type_inscription AND afte.id_event = ticket.id_forum
+        LEFT JOIN afup_forum_tarif aft ON aft.id = afte.id_tarif
+        WHERE %s
+        ORDER BY %s';
+
+        $andWhere = 'ticket.id_forum = :id_forum';
+        $params = ['id_forum' => $event->getId()];
+
+        if ($search) {
+            $andWhere = 'AND LOWER(CONCAT(ticket.nom, ticket.prenom)) LIKE :q
+            OR LOWER(CONCAT(ticket.prenom, ticket.nom)) LIKE :q
+            OR LOWER(aff.societe) LIKE :q';
+            $params['q'] = '%' . strtolower($search) . '%';
+        }
+
+        $column = match ($sortKey) {
+            'label' => 'ticket.nom',
+            'company' => 'aff.societe',
+            'ticketType' => 'aft.id',
+            'ticketStatus' => 'ticket.etat',
+            default => 'ticket.date',
+        };
+        $orderBy = $column . ' ' . $sortDirection;
+
+        $result = $this->getPreparedQuery(sprintf($sql, $andWhere, $orderBy))
+            ->setParams($params)
+            ->query();
+
+        $aggregates = [];
+
+        foreach ($result as $row) {
+            $aggregates[] = new TicketAggregate(
+                $row['ticket'],
+                $row['aft'],
+                $row['aff'],
+                $row[0]->last_subscription ? new \DateTimeImmutable('@' . $row[0]->last_subscription) : null,
+            );
+        }
+
+        return $aggregates;
     }
 
     /**

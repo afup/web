@@ -128,6 +128,9 @@ parameters:
                 forum_inscriptions:
                     nom: 'Inscriptions'
                     niveau: 'ROLE_FORUM'
+                    url: '/admin/event/tickets'
+                    extra_routes:
+                        - admin_event_ticket_list
                 forum_pending_bankwires:
                     nom: 'Virements en attente'
                     niveau: 'ROLE_ADMIN'
