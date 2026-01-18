@@ -16,7 +16,7 @@ Feature: Administration - Évènements - Inscriptions
     And I press "Soumettre"
     Then I should see "L'inscription a été ajoutée"
     And I should see "Inscriptions"
-    And I should see "Prénom participant Nom participant"
+    And I should see "Nom participant Prénom participant"
 
 # Bug sur cet export à reprendre une fois celui-ci corrigé
 #  Scenario: Export CSV: Inscription

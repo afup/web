@@ -12,7 +12,7 @@ Feature: Administration - Évènements - Conférences
     And the "table" element should contain "Moy. notes"
     And the "table" element should contain "Nb. notes"
     And the "table" element should contain "Soumission"
-    When I fill in "q" with "Jouons"
+    When I fill in "filter" with "Jouons"
     And I press "Filtrer"
     Then I should see "1 CONFÉRENCE(S)"
 
