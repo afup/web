@@ -210,9 +210,9 @@ class TicketRepository extends Repository implements MetadataInitializer
         $params = ['id_forum' => $event->getId()];
 
         if ($search) {
-            $andWhere = 'AND LOWER(CONCAT(ticket.nom, ticket.prenom)) LIKE :q
+            $andWhere .= ' AND (LOWER(CONCAT(ticket.nom, ticket.prenom)) LIKE :q
             OR LOWER(CONCAT(ticket.prenom, ticket.nom)) LIKE :q
-            OR LOWER(aff.societe) LIKE :q';
+            OR LOWER(aff.societe) LIKE :q)';
             $params['q'] = '%' . strtolower($search) . '%';
         }
 

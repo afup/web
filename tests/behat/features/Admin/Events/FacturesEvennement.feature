@@ -25,12 +25,12 @@ Feature: Administration - Évènements - Factures d'évènement
     Then The page "1" of the PDF should contain "2 Jours Maurice Jean 250 €"
     Then The page "1" of the PDF should not contain "Total HT"
     Then The page "1" of the PDF should not contain "Total TVA"
-    Then The page "1" of the PDF should contain "TOTAL 250 €"
+    Then The page "1" of the PDF should contain "TOTAL 275 €"
     Then The page "1" of the PDF should not contain "Total TTC"
-    Then The page "1" of the PDF should contain "Payé par CB le 25/06/2023"
+    Then The page "1" of the PDF should contain "Payé par chèque le 25/06/2023"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
     Then The page "1" of the PDF should not contain "TOTAL TTC 250 €"
-    Then the checksum of the response content should be "7ee7e977465db7d540cbd4b4d1e31061"
+    Then the checksum of the response content should be "c0469956c7972c51a16f9a03604bfd13"
 
   @reloadDbWithTestData
   @vat
