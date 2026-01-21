@@ -25,6 +25,7 @@ Feature: Administration - Évènements - Factures d'évènement
     Then The page "1" of the PDF should contain "2 Jours Maurice Jean 250 €"
     Then The page "1" of the PDF should not contain "Total HT"
     Then The page "1" of the PDF should not contain "Total TVA"
+    Then The page "1" of the PDF should contain "FRAIS Paiement par chèque 25 €"
     Then The page "1" of the PDF should contain "TOTAL 275 €"
     Then The page "1" of the PDF should not contain "Total TTC"
     Then The page "1" of the PDF should contain "Payé par chèque le 25/06/2023"

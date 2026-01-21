@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model;
 
-class TicketOffer
+final readonly class TicketOffer
 {
     public function __construct(
         public int $id,

@@ -15,6 +15,9 @@ readonly class TicketOffers
         private TicketTypeAvailability $ticketTypeAvailability,
     ) {}
 
+    /**
+     * @return array<TicketOffer>
+     */
     public function getAllOffersForEvent(Event $event): array
     {
         global $AFUP_Tarifs_Forum, $AFUP_Tarifs_Forum_Lib;
