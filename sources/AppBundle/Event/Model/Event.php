@@ -27,6 +27,8 @@ class Event implements NotifyPropertyInterface
 
     private ?DateTime $dateEnd = null;
 
+    private ?string $year = null;
+
     /**
      * @var DateTime
      */
@@ -184,6 +186,18 @@ class Event implements NotifyPropertyInterface
     {
         $this->propertyChanged('dateEnd', $this->dateEnd, $dateEnd);
         $this->dateEnd = $dateEnd;
+        return $this;
+    }
+
+    public function getYear(): ?string
+    {
+        return $this->year;
+    }
+
+    public function setYear(?string $year): self
+    {
+        $this->propertyChanged('year', $this->year, $year);
+        $this->year = $year;
         return $this;
     }
 

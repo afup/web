@@ -15,6 +15,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -168,6 +170,13 @@ class EventType extends AbstractType
                     new Assert\File(mimeTypes: 'application/pdf'),
                 ],
             ])
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
+                /** @var Event $event */
+                $event = $event->getData();
+                if ($event->getDateStart() !== null) {
+                    $event->setYear($event->getDateStart()->format('Y'));
+                }
+            })
         ;
     }
 
