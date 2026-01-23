@@ -324,6 +324,11 @@ SQL;
                 ],
             ])
             ->addField([
+                'columnName' => 'annee',
+                'fieldName' => 'year',
+                'type' => 'string',
+            ])
+            ->addField([
                 'columnName' => 'date_fin_appel_projet',
                 'fieldName' => 'dateEndCallForProjects',
                 'type' => 'datetime',
