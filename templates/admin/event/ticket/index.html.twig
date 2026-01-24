@@ -65,13 +65,15 @@
                         </a>
                     </td>
                     <td>
-                        {{ a.invoice.company }}
-                        <a href="{{ path("admin_members_company_list", {filter: a.invoice.company}) }}"
-                           data-position="right center"
-                           data-tooltip="Rechercher dans les personnes morales"
-                           class="compact ui icon mini button">
-                            <i class="search icon"></i>
-                        </a>
+                        {% if a.invoice.company %}
+                            {{ a.invoice.company }}
+                            <a href="{{ path("admin_members_company_list", {filter: a.invoice.company}) }}"
+                               data-position="right center"
+                               data-tooltip="Rechercher dans les personnes morales"
+                               class="compact ui icon mini button">
+                                <i class="search icon"></i>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>{{ a.ticketType.prettyName }}</td>
                     <td>
