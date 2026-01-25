@@ -7,6 +7,8 @@ services:
       MYSQL_USER: afup
       MYSQL_PASSWORD: afup
       MYSQL_DATABASE: web
+    ports:
+      - "3606:3306"
     volumes:
       - ./data/mysql:/var/lib/mysql
 
