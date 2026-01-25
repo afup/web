@@ -6,13 +6,16 @@ namespace AppBundle\Event\Ticket;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
+use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\TicketOffer;
+use AppBundle\Event\Model\TicketType;
 
 readonly class TicketOffers
 {
     public function __construct(
         private TicketEventTypeRepository $ticketEventTypeRepository,
         private TicketTypeAvailability $ticketTypeAvailability,
+        private TicketTypeRepository $ticketTypeRepository,
     ) {}
 
     /**
@@ -20,28 +23,30 @@ readonly class TicketOffers
      */
     public function getAllOffersForEvent(Event $event): array
     {
-        global $AFUP_Tarifs_Forum, $AFUP_Tarifs_Forum_Lib;
-
-        $ticketTypes = $this->ticketEventTypeRepository->getTicketsByEvent($event, false);
-
         $offers = [];
-        foreach ($AFUP_Tarifs_Forum as $ticketType => $ticketPrice) {
-            $offers[$ticketType] = new TicketOffer(
-                (int) $ticketType,
-                $AFUP_Tarifs_Forum_Lib[$ticketType],
-                $ticketPrice,
+
+        /** @var TicketType[] $ticketTypes */
+        $ticketTypes = $this->ticketTypeRepository->getAll();
+        foreach ($ticketTypes as $ticketType) {
+            $ticketTypeId = $ticketType->getId();
+            $offers[$ticketTypeId] = new TicketOffer(
+                $ticketTypeId,
+                $ticketType->getPrettyName(),
+                $ticketType->getDefaultPrice(),
                 $event->getSeats(),
-                $event,
             );
         }
 
-        foreach ($ticketTypes as $ticketType) {
-            $offers[$ticketType->getTicketTypeId()] = new TicketOffer(
-                $ticketType->getTicketTypeId(),
-                $ticketType->getTicketType()->getPrettyName(),
-                $ticketType->getPrice(),
-                $this->ticketTypeAvailability->getStock($ticketType, $event),
+        $ticketTypes = $this->ticketEventTypeRepository->getTicketsByEvent($event, false);
+        foreach ($ticketTypes as $ticketEventType) {
+            $ticketTypeId = $ticketEventType->getTicketTypeId();
+            $offers[$ticketTypeId] = new TicketOffer(
+                $ticketTypeId,
+                $ticketEventType->getTicketType()->getPrettyName(),
+                $ticketEventType->getPrice(),
+                $this->ticketTypeAvailability->getStock($ticketEventType, $event),
                 $event,
+                $ticketEventType,
             );
         }
 

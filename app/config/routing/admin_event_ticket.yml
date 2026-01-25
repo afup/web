@@ -1,0 +1,19 @@
+admin_event_ticket_list:
+  path: /tickets
+  defaults: { _controller: AppBundle\Controller\Admin\Event\Ticket\IndexAction }
+
+admin_event_ticket_edit:
+  path: /tickets/{id}
+  requirements:
+    id: \d+
+  defaults: { _controller: AppBundle\Controller\Admin\Event\Ticket\EditAction }
+
+admin_event_ticket_add:
+  path: /tickets/add
+  defaults: { _controller: AppBundle\Controller\Admin\Event\Ticket\AddAction }
+
+admin_event_ticket_delete:
+  path: /tickets/delete/{id}
+  requirements:
+    id: \d+
+  defaults: { _controller: AppBundle\Controller\Admin\Event\Ticket\DeleteAction }

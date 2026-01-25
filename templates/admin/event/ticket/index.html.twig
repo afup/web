@@ -5,7 +5,7 @@
     {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
 
     <div class="ui menu">
-        <a href="/pages/administration/index.php?page=forum_inscriptions&amp;action=ajouter&amp;id_forum={{ event.id }}" class="item">
+        <a href="{{ path('admin_event_ticket_add', {eventId: event.id}) }}" class="item">
             <div data-tooltip="Ajouter une inscription" data-position="bottom left">
                 <i class="icon plus square"></i>
                 Ajouter
@@ -126,7 +126,7 @@
                         {% endif %}
                     </td>
                     <td nowrap="nowrap">
-                        <a href="/pages/administration/index.php?page=forum_inscriptions&amp;action=modifier&amp;id={{ a.ticket.id }}"
+                        <a href="{{ path('admin_event_ticket_edit', {id: a.ticket.id}) }}"
                            data-position="left center"
                            data-tooltip="Modifier la fiche de {{ a.ticket.label }}"
                            class="compact ui icon button"
@@ -134,7 +134,7 @@
                             <i class="pencil alernate icon"></i>
                         </a>
 
-                        <a href="/pages/administration/index.php?page=forum_inscriptions&amp;action=supprimer&amp;id={{ a.ticket.id }}"
+                        <a href="{{ path('admin_event_ticket_delete', {id: a.ticket.id}) }}"
                            data-position="left center"
                            data-tooltip="Supprimer la fiche de {{ a.ticket.label }}"
                            class="compact ui red icon button confirmable"
