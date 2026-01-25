@@ -1,0 +1,89 @@
+
+{% form_theme form 'form_theme_admin.html.twig' %}
+    {{ form_start(form) }}
+<div class="ui form">
+    <div class="ui segment">
+        <h2 class="ui header">Informations</h2>
+        {{ form_row(form.ticket.ticketTypeId) }}
+        {{ form_row(form.ticket.civility) }}
+        {{ form_row(form.ticket.lastname) }}
+        {{ form_row(form.ticket.firstname) }}
+        {{ form_row(form.ticket.email) }}
+        {{ form_row(form.ticket.phoneNumber) }}
+    </div>
+
+    <div class="ui segment">
+        <h2 class="ui header">Réservé à l'administration</h2>
+        <p>
+            La référence est utilisée comme numéro de facture. Elle peut être commune à plusieurs inscriptions.
+        </p>
+        {% if invoice is defined %}
+        <p>
+            <a href="/pages/administration/index.php?page=forum_facturation&id_forum={{ event.id }}&filtre={{ invoice.reference }}">Rechercher la facture</a>
+        </p>
+        {% endif %}
+        {{ form_row(form.invoice.reference) }}
+        {{ form_row(form.invoice.authorization) }}
+        {{ form_row(form.invoice.transaction) }}
+        {{ form_row(form.ticket.status) }}
+        {{ form_row(form.ticket.invoiceStatus) }}
+    </div>
+
+    <div class="ui segment">
+        <h2 class="ui header">Règlement</h2>
+        {{ form_row(form.invoice.paymentType) }}
+        {{ form_row(form.invoice.paymentInfos) }}
+        {{ form_row(form.invoice.paymentDate) }}
+    </div>
+
+    <div class="ui segment">
+        <h2 class="ui header">Facturation</h2>
+        <p>
+            Ces informations concernent la personne ou la société qui sera facturée
+        </p>
+        {{ form_row(form.invoice.company) }}
+        {{ form_row(form.invoice.lastname) }}
+        {{ form_row(form.invoice.firstname) }}
+        {{ form_row(form.invoice.address) }}
+        {{ form_row(form.invoice.zipcode) }}
+        {{ form_row(form.invoice.city) }}
+        {{ form_row(form.invoice.email) }}
+    </div>
+
+    <div class="ui segment">
+        <h2 class="ui header">Divers</h2>
+        {{ form_row(form.ticket.comments) }}
+        {{ form_row(form.ticket.companyCitation) }}
+        {{ form_row(form.ticket.newsletter) }}
+        {{ form_row(form.ticket.optin) }}
+    </div>
+
+    <div class="ui segment">
+        <h2 class="ui header">Transports</h2>
+        {% if form.ticket.transportMode %}
+            {{ form_row(form.ticket.transportMode) }}
+            {{ form_row(form.ticket.transportDistance) }}
+        {% else %}
+            <p>
+                Les informations sur le transport ne sont pas demandées pour cet évènement.
+            </p>
+        {% endif %}
+    </div>
+
+    <div class="ui segment">
+        <div class="inline fields ui grid">
+            <label class="three wide column">
+            </label>
+            <div class="seven wide column">
+                <input name="soumettre" value="Soumettre" type="submit" class="ui primary button">
+            </div>
+        </div>
+    </div>
+
+    <div class="ui segment">
+        <p><span class="obligatoire">*</span> indique un champ obligatoire</p>
+    </div>
+
+    {{ form_rest(form) }}
+</div>
+{{ form_end(form) }}

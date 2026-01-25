@@ -157,7 +157,7 @@
                         </td>
                         <td>{{ inscription.forum_titre }}</td>
                         <td class="right aligned">
-                            <a href="/pages/administration/index.php?page=forum_inscriptions&amp;action=modifier&amp;id={{ inscription.id }}"
+                            <a href="{{ path('admin_event_ticket_edit', {id: inscription.id}) }}"
                                class="very compact ui icon button"
                             >
                                 Voir
