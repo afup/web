@@ -33,6 +33,10 @@
                 var initDropzone = function(container) {
                     $('.js-dropzone', container).each(function () {
                         var elmt = $(this);
+                        // Skip if already initialized
+                        if (elmt.hasClass('dz-clickable')) {
+                            return;
+                        }
                         elmt.dropzone({
                             url: elmt.attr('href'),
                             previewTemplate: $('.js-dz-preview-template').html(),

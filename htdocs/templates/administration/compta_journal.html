@@ -163,7 +163,7 @@
                      data-position="left center"
                      data-tooltip="Cliquez ou déposez un fichier dans la zone pour ajouter un justificatif"
                 >
-                    <form action="index.php?page=compta_journal&amp;action=upload_attachment&amp;id={$ecriture.idtmp}"
+                    <form action="/admin/accounting/journal/upload/{$ecriture.idtmp}"
                           class="js-dropzone{if !$ecriture.attachment_required}--lazy{/if} dz-journal-form ui center aligned tertiary blue segment"
                           style="display:none;cursor: pointer"
                       >
