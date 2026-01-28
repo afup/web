@@ -17,7 +17,6 @@
         <table class="ui table striped compact celled afup-tab-filterable">
             <thead>
             <tr>
-                <th>Année</th>
                 <th data-tf-filter-type="input">
                     <a href="{{ url('admin_accounting_invoices_list', {'periodId': periodId, 'sort': 'date', 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
                         Date
@@ -39,7 +38,6 @@
             <tbody>
             {% for line in lines %}
                 <tr class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
-                    <td nowrap="nowrap">{{ line.quotationDate|date('Y') }}</td>
                     <td nowrap="nowrap">{{ line.quotationDate|format_date('short') }}</td>
                     <td>{{ line.company }}</td>
                     <td>{{ line.city }}</td>
