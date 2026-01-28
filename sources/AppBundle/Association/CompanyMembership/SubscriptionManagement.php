@@ -8,6 +8,7 @@ use Afup\Site\Association\Cotisations;
 use Afup\Site\Utils\Utils;
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\CompanyMember;
+use AppBundle\MembershipFee\Model\MembershipFee;
 
 final readonly class SubscriptionManagement
 {
@@ -15,7 +16,7 @@ final readonly class SubscriptionManagement
 
     public function createInvoiceForInscription(CompanyMember $company, $numberOfMembers): array
     {
-        $endSubscription = $this->cotisations->finProchaineCotisation(false);
+        $endSubscription = $this->cotisations->getNextSubscriptionExpiration(null);
 
         // Create the invoice
         $this->cotisations->ajouter(
@@ -28,12 +29,12 @@ final readonly class SubscriptionManagement
             $endSubscription->format('U'),
             '',
         );
-        $subscriptionArray = $this->cotisations->obtenirDerniere(MemberType::MemberCompany, $company->getId());
+        $subscription = $this->cotisations->getLastestByUserTypeAndId(MemberType::MemberCompany, $company->getId());
 
-        if ($subscriptionArray === false) {
+        if (!$subscription instanceof MembershipFee) {
             throw new \RuntimeException('An error occured');
         }
 
-        return ['invoice' => $subscriptionArray['numero_facture'], 'token' => $subscriptionArray['token']];
+        return ['invoice' => $subscription->getInvoiceNumber(), 'token' => $subscription->getToken()];
     }
 }

@@ -7,6 +7,7 @@ namespace AppBundle\Controller\Website\Membership;
 use Afup\Site\Association\Cotisations;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
+use AppBundle\MembershipFee\Model\MembershipFee;
 use AppBundle\Payment\PayboxBilling;
 use AppBundle\Payment\PayboxFactory;
 use AppBundle\Twig\ViewRenderer;
@@ -25,7 +26,10 @@ final class PaymentAction extends AbstractController
     public function __invoke(string $invoiceNumber, ?string $token): Response
     {
         $invoice = $this->cotisations->getByInvoice($invoiceNumber, $token);
-        $company = $this->companyMemberRepository->get($invoice['id_personne']);
+        $company = null;
+        if ($invoice instanceof MembershipFee) {
+            $company = $this->companyMemberRepository->get($invoice->getUserId());
+        }
 
         if (!$invoice || $company === null) {
             throw $this->createNotFoundException(sprintf('Could not find the invoice "%s" with token "%s"', $invoiceNumber, $token));
@@ -35,7 +39,7 @@ final class PaymentAction extends AbstractController
 
         $paybox = $this->payboxFactory->createPayboxForSubscription(
             'F' . $invoiceNumber,
-            (float) $invoice['montant'],
+            (float) $invoice->getAmount(),
             $company->getEmail(),
             $payboxBilling,
         );
@@ -45,7 +49,7 @@ final class PaymentAction extends AbstractController
         return $this->view->render('site/company_membership/payment.html.twig', [
             'paybox' => $paybox,
             'invoice' => $invoice,
-            'bankAccount' => $bankAccountFactory->createApplyableAt(new \DateTimeImmutable('@' . $invoice['date_debut'])),
+            'bankAccount' => $bankAccountFactory->createApplyableAt(new \DateTimeImmutable('@' . $invoice->getStartDate()->getTimestamp())),
             'afup' => [
                 'raison_sociale' => AFUP_RAISON_SOCIALE,
                 'adresse' => AFUP_ADRESSE,
