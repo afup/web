@@ -1,3 +1,3 @@
 Date;Compte;Événement;Catégorie;Description;Débit;Crédit;Règlement;Commentaire;Justificatif;"Nom justificatif";"Montant HT";TVA;"Montant HT non soumis à TVA";"Montant HT soumis à TVA 5,5";"TVA 5,5";"Montant HT soumis à TVA 10";"TVA 10";"Montant HT soumis à TVA 20";"TVA 20";"Zone de TVA"
-2026-01-01;"Compte courant";AG;"A déterminer";"Description dépense 001";-12 001,00;;;;Non;;0.00;0.000;;;;;;;;"Non définie"
-2026-01-02;"Compte courant";AG;"A déterminer";"Description recette 001";;12 002,00;;;Non;;0.00;0.000;;;;;;;;"Non définie"
+2026-01-01;"Compte courant";AG;"A déterminer";"Description dépense 001";-12 001,00;;;"Commentaire dépense 001";Non;;0.00;0.000;;;;;;;;"Non définie"
+2026-01-02;"Compte courant";AG;"A déterminer";"Description recette 001";;12 002,00;;"Commentaire recette 001";Non;;0.00;0.000;;;;;;;;"Non définie"

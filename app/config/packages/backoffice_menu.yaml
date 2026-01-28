@@ -227,6 +227,9 @@ parameters:
                 compta_journal:
                     nom: 'Journal'
                     niveau: 'ROLE_ADMIN'
+                    extra_routes:
+                        - admin_accounting_journal_add
+                        - admin_accounting_journal_edit
                 compta_conf_evenement:
                     nom: 'Configuration'
                     niveau: 'ROLE_ADMIN'

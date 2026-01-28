@@ -1,0 +1,17 @@
+<script>
+$(document).ready(function () {
+    let vatFields = [
+        {link: 'apply-vat-5-5', input: 'transaction_amountTva5_5', rate: 0.055},
+        {link: 'apply-vat-10', input: 'transaction_amountTva10', rate: 0.1},
+        {link: 'apply-vat-20', input: 'transaction_amountTva20', rate: 0.2},
+        {link: 'apply-vat-0', input: 'transaction_amountTva0', rate: 0}
+    ];
+    for (let i = 0; i < vatFields.length; i++) {
+        document.getElementById(vatFields[i].link).addEventListener('click', function (event) {
+            document.getElementById(vatFields[i].input).value = Number.parseFloat(Math.round(parseFloat(document.getElementById('transaction_amount').value) / (1 + vatFields[i].rate) * 100) / 100).toFixed(2);
+            event.preventDefault();
+            return false;
+        });
+    }
+});
+</script>
