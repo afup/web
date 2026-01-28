@@ -1,0 +1,153 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Inscriptions</h2>
+    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
+
+    <div class="ui menu">
+        <a href="/pages/administration/index.php?page=forum_inscriptions&amp;action=ajouter&amp;id_forum={{ event.id }}" class="item">
+            <div data-tooltip="Ajouter une inscription" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+        <div class="ui simple dropdown item" tabindex="0">
+            <i class="icon download"></i>
+            <span class="text">Exports</span>
+            <i class="dropdown icon"></i>
+            <div class="menu hidden" tabindex="-1">
+                <a class="item" href="{{ url("admin_event_badges", {id: event.id}) }}">
+                    Exporter les inscriptions pour les badges <em>(prends environ une minute)</em></a>
+                <a class="item" href="{{ url("admin_event_previous_registrations", {previous_registrations: event.id}) }}">
+                    Exporter les inscrits aux 4 derniers évènements <em>(ayant accepté d'être contactés, et pour les évènements passés)</em></a>
+            </div>
+        </div>
+    </div>
+
+    {% include 'admin/event/ticket/statistics.html.twig' with {computed: computed, statistics: statistics} only %}
+
+    <div class="ui segment">
+        {% form_theme filter_form 'form_theme_admin_filter.html.twig' %}
+        {{ form_start(filter_form) }}
+        <div class="ui form">
+            <div class="inline fields">
+                {{ form_row(filter_form.filter, {label: 'Recherche'}) }}
+                {{ form_row(filter_form.submit, {label: 'Filtrer'}) }}
+            </div>
+        </div>
+        {{ form_end(filter_form) }}
+
+        {% set sort_direction = filter.sort_direction == 'asc' ? 'desc' : 'asc'%}
+        <table class="ui table striped compact celled">
+            <thead>
+            <tr>
+                <th><a href="{{ url('admin_event_ticket_list', filter|merge({sort_key: 'date', sort_direction: sort_direction})) }}">Date</a></th>
+                <th><a href="{{ url('admin_event_ticket_list', filter|merge({sort_key: 'label', sort_direction: sort_direction})) }}">Nom Prénom</a></th>
+                <th><a href="{{ url('admin_event_ticket_list', filter|merge({sort_key: 'company', sort_direction: sort_direction})) }}">Société (facturation)</a></th>
+                <th><a href="{{ url('admin_event_ticket_list', filter|merge({sort_key: 'ticketType', sort_direction: sort_direction})) }}">Type</a></th>
+                <th><a href="{{ url('admin_event_ticket_list', filter|merge({sort_key: 'ticketStatus', sort_direction: sort_direction})) }}">État</a></th>
+                <th>Règ.</th>
+                <th title="Applicable uniquement aux tarifs afup">Statut cotisation<br />(tarif AFUP)</th>
+                <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for a in tickets %}
+                <tr style="{{ a.ticket.status == 1 ? "color:#999;font-style:italic;text-decoration-line: line-through;" }}">
+                    <td nowrap="nowrap">{{ a.ticket.date|date('d/m/Y H:i') }}</td>
+                    <td>
+                        <strong>{{ a.ticket.lastname }} {{ a.ticket.firstname }}</strong>
+                        <a href="{{ path("admin_members_user_list", {filter: a.ticket.email}) }}"
+                           data-position="right center"
+                           data-tooltip="Rechercher dans les membres"
+                           class="compact ui icon mini button">
+                            <i class="search icon"></i>
+                        </a>
+                    </td>
+                    <td>
+                        {% if a.invoice.company %}
+                            {{ a.invoice.company }}
+                            <a href="{{ path("admin_members_company_list", {filter: a.invoice.company}) }}"
+                               data-position="right center"
+                               data-tooltip="Rechercher dans les personnes morales"
+                               class="compact ui icon mini button">
+                                <i class="search icon"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>{{ a.ticketType.prettyName }}</td>
+                    <td>
+                        {% if a.ticket.status == 0 %}
+                            <span class="ui orange label">Créé</span>
+                        {% elseif a.ticket.status == 1 %}
+                            <span class="ui label">Annulé</span>
+                        {% elseif a.ticket.status == 2 %}
+                            <span class="ui red label">Erreur</span>
+                        {% elseif a.ticket.status == 3 %}
+                            <span class="ui red label">Refusé</span>
+                        {% elseif a.ticket.status == 4 %}
+                            <span class="ui green label">Réglé</span>
+                        {% elseif a.ticket.status == 5 %}
+                            <span class="ui green label">Invité</span>
+                        {% elseif a.ticket.status == 6 %}
+                            <span class="ui orange label">Attente règlement</span>
+                        {% elseif a.ticket.status == 7 %}
+                            Facturé
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if a.invoice.paymentType == constant('AppBundle\\Event\\Model\\Ticket::PAYMENT_CREDIT_CARD') %}
+                            CB
+                        {% elseif a.invoice.paymentType == constant('AppBundle\\Event\\Model\\Ticket::PAYMENT_CHEQUE') %}
+                            CHQ
+                        {% elseif a.invoice.paymentType == constant('AppBundle\\Event\\Model\\Ticket::PAYMENT_BANKWIRE')%}
+                            VIR
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if a.ticketType.isRestrictedToMembers %}
+                            {% if a.lastSubscription == null %}
+                                <span class="ui blue label">Non trouvée</span>
+                            {% elseif a.lastSubscription < 'now'|date('U') %}
+                                <span class="ui red label">À expiré le {{ a.lastSubscription|date('d/m/Y') }}</span>
+                                <a class="compact ui tiny icon button" href="/pages/event-payment/?ref=ins-{{ a.ticket.id }}&forum={{ event.id }}">
+                                    URL Paiement
+                                </a>
+                            {% elseif a.lastSubscription < event.dateEnd %}
+                                <span class="ui red label">Expiré le {{ a.lastSubscription|date('d/m/Y') }}</span>
+                                <a class="compact ui tiny icon button" href="/pages/event-payment/?ref=ins-{{ a.ticket.id }}&forum={{ event.id }}">
+                                    URL Paiement
+                                </a>
+                            {% else %}
+                                <span class="ui green label">OK</span>
+                            {% endif %}
+                        {% else %}
+                            <span class="ui label">n/a</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/pages/administration/index.php?page=forum_inscriptions&amp;action=modifier&amp;id={{ a.ticket.id }}"
+                           data-position="left center"
+                           data-tooltip="Modifier la fiche de {{ a.ticket.label }}"
+                           class="compact ui icon button"
+                        >
+                            <i class="pencil alernate icon"></i>
+                        </a>
+
+                        <a href="/pages/administration/index.php?page=forum_inscriptions&amp;action=supprimer&amp;id={{ a.ticket.id }}"
+                           data-position="left center"
+                           data-tooltip="Supprimer la fiche de {{ a.ticket.label }}"
+                           class="compact ui red icon button confirmable"
+                           data-confirmable-label="Êtes-vous sûr de vouloir supprimer la fiche de {{ a.ticket.label }} ?"
+                        >
+                            <i class="trash icon"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}

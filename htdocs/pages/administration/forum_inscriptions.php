@@ -130,9 +130,9 @@ if ($action == 'lister') {
     $invoice = $invoiceRepository->getByReference($_GET['id']);
     if ($forum_inscriptions->supprimerInscription($_GET['id']) && (null === $invoice || $invoiceService->deleteInvoice($invoice))) {
         Logs::log('Suppression de l\'inscription ' . $_GET['id']);
-        afficherMessage('L\'inscription a été supprimée', 'index.php?page=forum_inscriptions&action=lister');
+        afficherMessage('L\'inscription a été supprimée', '/admin/event/tickets?id=' . $_GET['id_forum']);
     } else {
-        afficherMessage('Une erreur est survenue lors de la suppression de l\'inscription', 'index.php?page=forum_inscriptions&action=lister', true);
+        afficherMessage('Une erreur est survenue lors de la suppression de l\'inscription', '/admin/event/tickets?id=' . $_GET['id_forum'], true);
     }
 } else {
 
@@ -154,7 +154,7 @@ if ($action == 'lister') {
     } else {
         $champs = $forum_inscriptions->obtenir($_GET['id']);
         if ($champs == false) {
-            afficherMessage('L\'inscription n\'existe plus', 'index.php?page=forum_inscriptions&action=lister');
+            afficherMessage('L\'inscription n\'existe plus', '/admin/event/tickets?id=' . $_GET['id_forum']);
             exit(0);
         }
         $champs2 = $forum_facturation->obtenir($champs['reference']);
@@ -409,7 +409,7 @@ if ($action == 'lister') {
             } else {
                 Logs::log('Modification de l\'inscription de ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('L\'inscription a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=forum_inscriptions&action=lister&id_forum=' . $valeurs['id_forum']);
+            afficherMessage('L\'inscription a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), '/admin/event/tickets?id=' . $_GET['id_forum']);
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'inscription');
         }
