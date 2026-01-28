@@ -5,6 +5,9 @@ default: help
 CURRENT_UID ?= $(shell id -u)
 DOCKER_UP_OPTIONS ?= --detach
 DOCKER_COMPOSE_BIN ?= docker compose
+SYMFONY_BIN := $(shell command -v symfony 2>/dev/null)
+PHP_HOST    = $(if $(SYMFONY_BIN),$(SYMFONY_BIN) php,php)
+COMPOSER_HOST = $(if $(SYMFONY_BIN),$(SYMFONY_BIN) composer,composer)
 
 # Exécutables
 DOCKER_COMP = CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN)
@@ -163,7 +166,7 @@ compose.override.yml:
 vendors: vendor node_modules
 
 vendor: composer.lock
-	composer install --no-scripts
+	$(COMPOSER_HOST) install --no-scripts
 
 node_modules:
 	npm install --legacy-peer-deps
@@ -192,10 +195,10 @@ reset-db:
 	echo 'CREATE DATABASE web' | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
 
 db-migrations:
-	php bin/phinx migrate
+	$(PHP_HOST) bin/phinx migrate
 
 db-seed:
-	php bin/phinx seed:run
+	$(PHP_HOST) bin/phinx seed:run
 
 clean-test-deprecated-log:
 	rm -f var/logs/test.deprecations.log
@@ -204,4 +207,4 @@ var/logs/test.deprecations_grouped.log:
 	cat var/logs/test.deprecations.log | cut -d "]" -f 2 | awk '{$$1=$$1};1' | sort | uniq -c | sort -nr > var/logs/test.deprecations_grouped.log
 
 var/cache/dev/AppKernelDevDebugContainer.xml:
-	php bin/console cache:warmup --env=dev
+	$(PHP_HOST) bin/console cache:warmup --env=dev
