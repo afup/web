@@ -21,11 +21,13 @@ declare(strict_types=1);
 
 // racine de l'application (pas du document root !)
 use Afup\Site\Corporate\_Site_Base_De_Donnees;
-use Afup\Site\Utils\Configuration;
+use Symfony\Component\Dotenv\Dotenv;
 
 $root = dirname(__DIR__, 3);
 
 require_once $root . '/vendor/autoload.php';
+
+(new Dotenv())->bootEnv(__DIR__ . '/../../../.env');
 
 // définitions des constantes
 if (!defined('AFUP_CHEMIN_RACINE')) {
@@ -35,12 +37,6 @@ date_default_timezone_set('Europe/Paris');
 
 // préparation de la requête / session
 require_once __DIR__ . '/../fonctions.php';
-
-// chargement de la configuration
-$conf = new Configuration();
-
-// mets la configuration dans une 'clé de registre' accessible à tout moment
-$GLOBALS['AFUP_CONF'] = $conf;
 
 // initialisation de la couche d'abstraction de la base de données
 $bdd = new _Site_Base_De_Donnees();

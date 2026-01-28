@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Afup\Site\Utils;
 
 use AppBundle\AppKernel;
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -28,6 +29,8 @@ class SymfonyKernel
         if (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'test') {
             $env = 'test';
         }
+
+        (new Dotenv())->bootEnv(__DIR__ . '/../../../.env', $env);
 
         $this->kernel = new AppKernel($env, $debug);
         $this->kernel->boot();

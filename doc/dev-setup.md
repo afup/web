@@ -52,7 +52,7 @@ La base de test inclus un utilisateur administration avec les identifiants suiva
 
 Plusieurs possibilités de configuration des containers sont disponibles, via l'utilisation de variables d'environnement.
 
-Pour faciliter leur configuration, un fichier `.env` est créé à la racine du projet à la première exécution de la commande `make docker-up`.
+Pour faciliter leur configuration, un fichier `.env.local` est créé à la racine du projet à la première exécution de la commande `make docker-up`.
 Ce fichier contient la liste des options disponibles.
 
 ### Options Docker
