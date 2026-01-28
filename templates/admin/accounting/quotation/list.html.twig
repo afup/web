@@ -31,8 +31,8 @@
                     </th>
                     <th data-tf-filter-type="input">Ville</th>
                     <th data-tf-filter-type="input">Ref client</th>
-                    <th data-tf-filter-type="input">Numero devis</th>
-                    <th data-tf-filter-type="input"class="right aligned">Prix</th>
+                    <th data-tf-filter-type="input">Numéro devis</th>
+                    <th data-tf-filter-type="input" class="right aligned">Montant HT</th>
                     <th data-tf-filter-type="select" class="center aligned">Facturé ?</th>
                     <th>&nbsp;</th>
                 </tr>
@@ -42,7 +42,7 @@
                     <tr class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
                         <td nowrap="nowrap">{{ line.quotationDate|format_date('short') }}</td>
                         <td>{{ line.company }}</td>
-                        <td  width="250">{{ line.city }}</td>
+                        <td>{{ line.city }}</td>
                         <td>{{ line.refClt1 }}</td>
                         <td>{{ line.quotationNumber }}</td>
                         <td class="right aligned">{{ line.price|number_format(2, ',', ' ') }}</td>
