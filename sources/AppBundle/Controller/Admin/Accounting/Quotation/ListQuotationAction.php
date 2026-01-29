@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Quotation;
 
+use Afup\Site\Utils\Vat;
 use AppBundle\Accounting\Form\InvoicingPeriodType;
 use AppBundle\Accounting\Model\Repository\InvoicingRepository;
 use AppBundle\Accounting\Model\Repository\InvoicingPeriodRepository;
@@ -38,6 +39,7 @@ class ListQuotationAction extends AbstractController
             'formPeriod' => $formPeriod->createView(),
             'direction' => $direction,
             'sort' => $sort,
+            'isSubjectedToVat' => Vat::isSubjectedToVat($period->getEndDate()),
         ]));
     }
 }
