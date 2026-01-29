@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Accounting\Invoice;
 
 use AppBundle\Accounting\Form\InvoicingPeriodType;
+use AppBundle\Accounting\InvoicingPaymentStatus;
+use AppBundle\Accounting\Model\Invoicing;
 use AppBundle\Accounting\Model\Repository\InvoicingRepository;
 use AppBundle\Accounting\Model\Repository\InvoicingPeriodRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,6 +33,17 @@ class ListInvoiceAction extends AbstractController
         $invoices = $this->invoiceRepository->getInvoicesByPeriodId($period->getId(), $sort, $direction);
         $periods = $this->invoicingPeriodRepository->getAll();
 
+        $totalHt = 0;
+
+        /** @var Invoicing $invoice */
+        foreach ($invoices as $invoice) {
+            if ($invoice->getPaymentStatus() === InvoicingPaymentStatus::Cancelled->value) {
+                continue;
+            }
+
+            $totalHt += $invoice->getPrice();
+        }
+
         return new Response($this->twig->render('admin/accounting/invoice/list.html.twig', [
             'lines' => $invoices,
             'periods' => $periods,
@@ -38,6 +51,7 @@ class ListInvoiceAction extends AbstractController
             'formPeriod' => $formPeriod->createView(),
             'direction' => $direction,
             'sort' => $sort,
+            'totalHt' => $totalHt,
         ]));
     }
 }
