@@ -1,0 +1,52 @@
+<script>
+  $(() => {
+    function addFormToCollection(e) {
+      const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+      const item = document.createElement('div');
+      item.id = 'invoice_row_' + (parseInt(collectionHolder.dataset.index) + 1);
+
+      item.innerHTML = collectionHolder
+          .dataset
+          .prototype
+          .replace(
+              /__name__/g,
+              collectionHolder.dataset.index
+          ).replace(
+              /__reference__/g,
+              parseInt(collectionHolder.dataset.index) + 1
+          );
+
+      collectionHolder.appendChild(item);
+
+      addDeletionButton(item, collectionHolder.dataset.index);
+      collectionHolder.dataset.index++;
+    }
+
+    function addDeletionButton(item, index = 0) {
+
+      const removeItemButton = document.createElement('a');
+      removeItemButton.innerText = 'Supprimer la ligne';
+      removeItemButton.classList.add('ui', 'red', 'button');
+      removeItemButton.id = 'remove_row_' + index;
+
+      item.querySelector('div.action_container').append(removeItemButton);
+
+      removeItemButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        // remove the li for the tag form
+        item.remove();
+      });
+    }
+
+    document
+        .querySelector('a.add_item_link')
+        .addEventListener("click", addFormToCollection)
+
+    document
+        .querySelectorAll('div.invoice_row_container > div')
+        .forEach((row, index) => {
+          addDeletionButton(row, index)
+        })
+  });
+</script>
