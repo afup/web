@@ -21,10 +21,13 @@ final class EventRepository extends EntityRepository
     /**
      * @return array<Event>
      */
-    public function getAllSortedByName(): array
+    public function getAllSortedByName(bool $usedInAccountingJournal = false): array
     {
-        return $this->createQueryBuilder('e')
-                    ->orderBy('e.name', 'asc')
+        $query = $this->createQueryBuilder('e');
+        if ($usedInAccountingJournal) {
+            $query->andWhere('e.hideInAccountingJournalAt IS NULL');
+        }
+        return $query->orderBy('e.name', 'asc')
                     ->getQuery()
                     ->execute();
     }

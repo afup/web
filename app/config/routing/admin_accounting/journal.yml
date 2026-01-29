@@ -50,3 +50,15 @@ admin_accounting_journal_upload:
   methods: [POST]
   requirements:
     id: \d+
+
+admin_accounting_journal_add:
+  path: /add
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\AddTransactionAction
+
+admin_accounting_journal_edit:
+  path: /edit/{id}
+  requirements:
+    id: '\d+'
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\EditTransactionAction
