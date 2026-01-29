@@ -31,7 +31,9 @@
                 <th class="right aligned">Numéro facture</th>
                 <th>Référence client</th>
                 <th data-tf-filter-type="select" class="center aligned">État paiement</th>
-                <th class="right aligned">Montant HT</th>
+                <th class="right aligned">
+                    Montant{% if isSubjectedToVat %} HT{% endif %}
+                </th>
                 <th></th>
             </tr>
             </thead>
@@ -89,7 +91,7 @@
         </table>
 
         <div class="ui message">
-            Total facturé en HT sur cette période : {{ totalHt|number_format(2, ',', ' ') }} €
+            Total facturé {% if isSubjectedToVat %}en HT{% endif %} sur cette période : {{ totalHt|number_format(2, ',', ' ') }} €
         </div>
     {% else %}
         <div class="ui placeholder segment">

@@ -32,7 +32,9 @@
                     <th data-tf-filter-type="input">Ville</th>
                     <th data-tf-filter-type="input">Ref client</th>
                     <th data-tf-filter-type="input">Numéro devis</th>
-                    <th data-tf-filter-type="input" class="right aligned">Montant HT</th>
+                    <th data-tf-filter-type="input" class="right aligned">
+                        Montant{% if isSubjectedToVat %} HT{% endif %}
+                    </th>
                     <th data-tf-filter-type="select" class="center aligned">Facturé ?</th>
                     <th>&nbsp;</th>
                 </tr>

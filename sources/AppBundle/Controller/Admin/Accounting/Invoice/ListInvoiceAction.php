@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Invoice;
 
+use Afup\Site\Utils\Vat;
 use AppBundle\Accounting\Form\InvoicingPeriodType;
 use AppBundle\Accounting\InvoicingPaymentStatus;
 use AppBundle\Accounting\Model\Invoicing;
@@ -52,6 +53,7 @@ class ListInvoiceAction extends AbstractController
             'direction' => $direction,
             'sort' => $sort,
             'totalHt' => $totalHt,
+            'isSubjectedToVat' => Vat::isSubjectedToVat($period->getEndDate()),
         ]));
     }
 }
