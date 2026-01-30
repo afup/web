@@ -17,7 +17,6 @@
         <table class="ui table striped compact celled afup-tab-filterable">
             <thead>
             <tr>
-                <th>Année</th>
                 <th data-tf-filter-type="input">
                     <a href="{{ url('admin_accounting_invoices_list', {'periodId': periodId, 'sort': 'date', 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
                         Date
@@ -29,17 +28,18 @@
                     </a>
                 </th>
                 <th>Ville</th>
-                <th class="right aligned">Numero facture</th>
+                <th class="right aligned">Numéro facture</th>
                 <th>Référence client</th>
-                <th data-tf-filter-type="select" class="center aligned">Etat paiement</th>
-                <th class="right aligned">Prix</th>
+                <th data-tf-filter-type="select" class="center aligned">État paiement</th>
+                <th class="right aligned">
+                    Montant{% if isSubjectedToVat %} HT{% endif %}
+                </th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             {% for line in lines %}
                 <tr class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
-                    <td nowrap="nowrap">{{ line.quotationDate|date('Y') }}</td>
                     <td nowrap="nowrap">{{ line.quotationDate|format_date('short') }}</td>
                     <td>{{ line.company }}</td>
                     <td>{{ line.city }}</td>
@@ -91,7 +91,7 @@
         </table>
 
         <div class="ui message">
-            Total facturé en HT sur cette période : {{ totalHt|number_format(2, ',', ' ') }} €
+            Total facturé {% if isSubjectedToVat %}en HT{% endif %} sur cette période : {{ totalHt|number_format(2, ',', ' ') }} €
         </div>
     {% else %}
         <div class="ui placeholder segment">
