@@ -11,6 +11,7 @@ use AppBundle\AuditLog\Audit;
 use AppBundle\MembershipFee\Form\MembershipFeeType;
 use AppBundle\MembershipFee\Model\MembershipFee;
 use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
+use Psr\Clock\ClockInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +22,7 @@ class AddMembershipFeeAction extends AbstractController
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly UserRepository $userRepository,
         private readonly MembershipFeeRepository $membershipFeeRepository,
+        private readonly ClockInterface $clock,
         private readonly Audit $audit,
     ) {}
 
@@ -32,7 +34,6 @@ class AddMembershipFeeAction extends AbstractController
             MemberType::MemberPhysical => $this->userRepository->get($memberId),
         };
 
-
         $startDate = $this->membershipFeeRepository->getMembershipStartingDate($memberType, $member->getId());
         $endDate = clone $startDate;
         $endDate->modify('+1 year');
@@ -41,6 +42,7 @@ class AddMembershipFeeAction extends AbstractController
                       ->setUserType($memberType)
                       ->setUserId($member->getId())
                       ->setToken(base64_encode(random_bytes(30)))
+                      ->setInvoiceDate($this->clock->now())
         ;
 
         $form = $this->createForm(MembershipFeeType::class, $membershipFee);
@@ -52,10 +54,12 @@ class AddMembershipFeeAction extends AbstractController
                 \IntlDateFormatter::FULL,
             );
             $fmt->setPattern('dd MMMM yyyy');
+
+            $name = $memberType->value === MemberType::MemberCompany->value ? $member->getCompanyName() : $member->getFirstName() . ' ' . $member->getLastName();
+
             try {
                 $membershipFee->setInvoiceNumber($this->membershipFeeRepository->generateInvoiceNumber());
                 $this->membershipFeeRepository->save($membershipFee);
-                $name = $memberType->value === MemberType::MemberCompany->value ? $member->getCompanyName() : $member->getFirstName() . ' ' . $member->getLastName();
                 $this->audit->log("Ajout de la cotisation jusqu'au " . $fmt->format($membershipFee->getEndDate()) . ' pour ' . $name);
                 $this->addFlash('notice', "La cotisation jusqu'au " . $fmt->format($membershipFee->getEndDate()) . ' pour ' . $name . ' a bien été ajoutée');
             } catch (\Exception) {

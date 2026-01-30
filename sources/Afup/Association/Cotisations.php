@@ -126,7 +126,7 @@ class Cotisations
     {
         $requete = 'INSERT INTO ';
         $requete .= '  afup_cotisations (type_personne, id_personne, montant, type_reglement , informations_reglement,';
-        $requete .= '                    date_debut, date_fin, numero_facture, token, commentaires, reference_client) ';
+        $requete .= '                    date_debut, date_fin, numero_facture, token, commentaires, reference_client, date_facture) ';
         $requete .= 'VALUES (';
         $requete .= $type_personne->value . ',';
         $requete .= $id_personne . ',';
@@ -138,7 +138,8 @@ class Cotisations
         $requete .= $this->_bdd->echapper($this->_genererNumeroFacture()) . ',';
         $requete .= $this->_bdd->echapper(base64_encode(random_bytes(30))) . ',';
         $requete .= $this->_bdd->echapper($commentaires) . ',';
-        $requete .= $this->_bdd->echapper($referenceClient) . ')';
+        $requete .= $this->_bdd->echapper($referenceClient) . ',';
+        $requete .= $this->_bdd->echapper(date('Y-m-d\TH:i:s')) . ')';
         return $this->_bdd->executer($requete) !== false;
     }
 
@@ -332,15 +333,20 @@ class Cotisations
         $requete = 'SELECT * FROM ' . $table . ' WHERE id=' . $cotisation['id_personne'];
         $personne = $this->_bdd->obtenirEnregistrement($requete);
 
-        $dateCotisation = \DateTimeImmutable::createFromFormat('U', $cotisation['date_debut']);
+        if ($cotisation['date_facture'] !== null) {
+            $dateFacture = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $cotisation['date_facture']);
+        } else {
+            $dateFacture = \DateTimeImmutable::createFromFormat('U', $cotisation['date_debut']);
+        }
+
         $bankAccountFactory = new BankAccountFactory();
-        $isSubjectedToVat = Vat::isSubjectedToVat($dateCotisation);
+        $isSubjectedToVat = Vat::isSubjectedToVat($dateFacture);
         // Construction du PDF
-        $pdf = new PDF_Facture($bankAccountFactory->createApplyableAt($dateCotisation), $isSubjectedToVat);
+        $pdf = new PDF_Facture($bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
-        $pdf->Cell(60, 5, 'Le ' . $dateCotisation->format('d/m/Y'));
+        $pdf->Cell(60, 5, 'Le ' . $dateFacture->format('d/m/Y'));
 
         $pdf->Ln();
         $pdf->Ln();
