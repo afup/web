@@ -1,3 +1,8 @@
+admin_accounting_journal_list:
+  path: /list
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\ListAction
+
 admin_accounting_journal_delete:
   path: /delete/{id}
   defaults:

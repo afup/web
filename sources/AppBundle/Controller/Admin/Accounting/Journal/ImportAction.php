@@ -36,16 +36,12 @@ class ImportAction extends AbstractController
                 $importer = $this->importerFactory->create($this->uploadDir . 'banque.csv', $form->get('bankAccount')->getData());
                 if ($this->compta->extraireComptaDepuisCSVBanque($importer)) {
                     $this->audit->log('Chargement fichier banque');
-                    $_SESSION['flash'] = "Le fichier a été importé";
-                    $_SESSION['erreur'] = false;
                     $this->addFlash('notice', "Le fichier a été importé");
                 } else {
-                    $_SESSION['flash'] = "Le fichier n'a pas été importé. Le format est-il valide ?";
-                    $_SESSION['erreur'] = true;
                     $this->addFlash('error', "Le fichier n'a pas été importé. Le format est-il valide ?");
                 }
                 unlink($this->uploadDir . 'banque.csv');
-                return $this->redirect('/pages/administration/index.php?page=compta_journal&&action=lister');
+                return $this->redirectToRoute('admin_accounting_journal_list');
             }
         }
 
