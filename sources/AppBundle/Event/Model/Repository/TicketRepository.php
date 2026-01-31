@@ -187,7 +187,7 @@ class TicketRepository extends Repository implements MetadataInitializer
      */
     public function getByEventWithAll(Event $event, ?string $search, ?string $sortKey, ?string $sortDirection): array
     {
-        $sql = 'SELECT ticket.*, aff.*, aft.*,
+        $sql = 'SELECT ticket.*, aff.*, aft.*, afto.*,
         CASE WHEN ticket.id_member IS NOT NULL
         THEN (SELECT MAX(ac.date_fin) AS last_subscription
               FROM afup_cotisations ac
@@ -203,6 +203,7 @@ class TicketRepository extends Repository implements MetadataInitializer
         LEFT JOIN afup_facturation_forum aff ON ticket.reference = aff.reference 
         LEFT JOIN afup_forum_tarif_event afte ON afte.id_tarif = ticket.type_inscription AND afte.id_event = ticket.id_forum
         LEFT JOIN afup_forum_tarif aft ON aft.id = afte.id_tarif
+        LEFT JOIN afup_forum_tarif afto ON afto.id = ticket.type_inscription
         WHERE %s
         ORDER BY %s';
 
@@ -234,7 +235,7 @@ class TicketRepository extends Repository implements MetadataInitializer
         foreach ($result as $row) {
             $aggregates[] = new TicketAggregate(
                 $row['ticket'],
-                $row['aft'],
+                $row['aft'] ?? $row['afto'],
                 $row['aff'],
                 $row[0]->last_subscription ? new \DateTimeImmutable('@' . $row[0]->last_subscription) : null,
             );
