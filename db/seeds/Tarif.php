@@ -65,6 +65,17 @@ class Tarif extends AbstractSeed
                 'cfp_submitter_only' => 1,
             ],
             [
+                'id' => 9,
+                'technical_name' => 'AFUP_FORUM_ORGANISATION',
+                'pretty_name' => 'Organisation',
+                'public' => false,
+                'members_only' => false,
+                'default_price' => 0,
+                'active' => true,
+                'day' => 'one,two',
+                'cfp_submitter_only' => false,
+            ],
+            [
                 'id' => 108,
                 'technical_name' => 'AFUP_FORUM_SPECIAL_PRICE',
                 'pretty_name' => 'Spécial Forum',

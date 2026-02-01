@@ -9,8 +9,8 @@ Feature: Administration - Évènements - Inscriptions
     And I should see "2 Jours 250 € 3 3 3 750 € 494"
     And I should see "2 Jours AFUP 15 € 3 3 3 45 € 494"
     And I should see "Inscrits Confirmés En attente de règlement"
-    And I should see "Jour 1 6 6 0"
-    And I should see "Jour 2 6 6 0"
+    And I should see "Jour 1 7 7 0"
+    And I should see "Jour 2 7 7 0"
 
   @reloadDbWithTestData
   Scenario: Accès à la liste des inscriptions
@@ -21,6 +21,7 @@ Feature: Administration - Évènements - Inscriptions
     And I should see "Personne Paul 2 Jours AFUP Réglé CB OK"
     And I should see "Maurice Jean 2 Jours AFUP Réglé CB Expiré le 08/07/2019 URL Paiement"
     And I should see "Annulé Lepaiement 2 Jours Annulé CB n/a"
+    And I should see "Super Bénévole AFUP Organisation Invité n/a"
     And I should see "Kirk James Tiberius 2 Jours Réglé VIR n/a"
     And I should see "Sans Cotisation 2 Jours AFUP Réglé CB Non trouvée"
 
