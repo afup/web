@@ -127,6 +127,15 @@ class MembershipFeeRepository extends Repository implements MetadataInitializer
                 'type' => 'string',
             ])
             ->addField([
+                'columnName' => 'date_facture',
+                'fieldName' => 'invoiceDate',
+                'type' => 'datetime_immutable',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'Y-m-d H:i:s'],
+                    'serialize' => ['serializeUseFormat' => true, 'format' => 'Y-m-d H:i:s'],
+                ],
+            ])
+            ->addField([
                 'columnName' => 'reference_client',
                 'fieldName' => 'clientReference',
                 'type' => 'string',

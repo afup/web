@@ -9,6 +9,7 @@ use AppBundle\Controller\Admin\Membership\MembershipFeePayment;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use DateTime;
+use DateTimeImmutable;
 
 class MembershipFee implements NotifyPropertyInterface
 {
@@ -23,6 +24,7 @@ class MembershipFee implements NotifyPropertyInterface
     private ?DateTime $startDate = null;
     private ?DateTime $endDate = null;
     private ?string $invoiceNumber = null;
+    private ?DateTimeImmutable $invoiceDate = null;
     private ?string $clientReference = null;
     private ?string $comments = null;
     private ?string $token = null;
@@ -134,6 +136,18 @@ class MembershipFee implements NotifyPropertyInterface
     {
         $this->propertyChanged('invoiceNumber', $this->invoiceNumber, $invoiceNumber);
         $this->invoiceNumber = $invoiceNumber;
+        return $this;
+    }
+
+    public function getInvoiceDate(): ?DateTimeImmutable
+    {
+        return $this->invoiceDate;
+    }
+
+    public function setInvoiceDate(?\DateTimeImmutable $invoiceDate): self
+    {
+        $this->propertyChanged('invoiceDate', $this->invoiceDate, $invoiceDate);
+        $this->invoiceDate = $invoiceDate;
         return $this;
     }
 
