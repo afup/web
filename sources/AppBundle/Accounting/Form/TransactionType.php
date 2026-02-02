@@ -13,6 +13,7 @@ use AppBundle\Accounting\Entity\Repository\OperationRepository;
 use AppBundle\Accounting\Entity\Repository\PaymentRepository;
 use AppBundle\Accounting\Model\Transaction;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -166,6 +167,27 @@ class TransactionType extends AbstractType
                 ],
             ]);
         }
+
+        $builder->get('amount')->resetViewTransformers();
+        $builder->get('amount')->addViewTransformer(
+            new MoneyToLocalizedStringTransformer(2, false, null, null, 'en'),
+        );
+        $builder->get('amountTva0')->resetViewTransformers();
+        $builder->get('amountTva0')->addViewTransformer(
+            new MoneyToLocalizedStringTransformer(2, false, null, null, 'en'),
+        );
+        $builder->get('amountTva5_5')->resetViewTransformers();
+        $builder->get('amountTva5_5')->addViewTransformer(
+            new MoneyToLocalizedStringTransformer(2, false, null, null, 'en'),
+        );
+        $builder->get('amountTva10')->resetViewTransformers();
+        $builder->get('amountTva10')->addViewTransformer(
+            new MoneyToLocalizedStringTransformer(2, false, null, null, 'en'),
+        );
+        $builder->get('amountTva20')->resetViewTransformers();
+        $builder->get('amountTva20')->addViewTransformer(
+            new MoneyToLocalizedStringTransformer(2, false, null, null, 'en'),
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
