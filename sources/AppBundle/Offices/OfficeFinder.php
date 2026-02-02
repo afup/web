@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Offices;
 
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Invoice;
 use Geocoder\Geocoder;
@@ -15,14 +15,12 @@ class OfficeFinder
 {
     public const MAX_DISTANCE_TO_OFFICE = 50000;
 
-    private readonly AntennesCollection $antennesCollection;
-
     private array $geocodeCache = [];
 
-    public function __construct(private readonly Geocoder $geocoder)
-    {
-        $this->antennesCollection = new AntennesCollection();
-    }
+    public function __construct(
+        private readonly Geocoder $geocoder,
+        private readonly AntenneRepository $antenneRepository,
+    ) {}
 
     public function findOffice(Invoice $invoice, User $user = null): ?string
     {
@@ -114,7 +112,7 @@ class OfficeFinder
     {
         $localOfficesDistance = [];
 
-        foreach ($this->antennesCollection->getAll() as $antenne) {
+        foreach ($this->antenneRepository->getAll() as $antenne) {
             if (null === $antenne->map) {
                 continue;
             }

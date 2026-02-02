@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\CompanyPublicProfile;
 
 use AppBundle\Antennes\Antenne;
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
@@ -18,6 +18,7 @@ final class IndexAction extends CompanyPublicProfileController
         CompanyMemberRepository $companyMemberRepository,
         private readonly ViewRenderer $view,
         private readonly BadgesComputer $badgesComputer,
+        private readonly AntenneRepository $antenneRepository,
     ) {
         parent::__construct($companyMemberRepository);
     }
@@ -38,10 +39,9 @@ final class IndexAction extends CompanyPublicProfileController
      */
     private function getRelatedAfupAntennes(CompanyMember $companyMember): array
     {
-        $antennesCollection = new AntennesCollection();
         $antennes = [];
         foreach ($companyMember->getFormattedRelatedAfupOffices() as $localOffice) {
-            $antenne = $antennesCollection->findByCode($localOffice);
+            $antenne = $this->antenneRepository->findByCode($localOffice);
             if ($antenne->hideOnOfficesPage) {
                 continue;
             }

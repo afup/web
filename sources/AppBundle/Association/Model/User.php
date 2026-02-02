@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Model;
 
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\NotifiableInterface;
 use AppBundle\Validator\Constraints as AppAssert;
@@ -199,7 +199,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this;
     }
 
-    public function getNearestOfficeLabel()
+    public function getNearestOfficeLabel(AntenneRepository $antenneRepository)
     {
         $code = $this->getNearestOffice();
 
@@ -208,7 +208,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
             return  null;
         }
 
-        return (new AntennesCollection())->findByCode($code)->label;
+        return $antenneRepository->findByCode($code)->label;
     }
 
     /**

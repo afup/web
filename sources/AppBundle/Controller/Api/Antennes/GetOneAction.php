@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Api\Antennes;
 
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Event\Model\Repository\MeetupRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final readonly class GetOneAction
 {
     public function __construct(
-        private AntennesCollection $antennesCollection,
+        private AntenneRepository $antennesCollection,
         private MeetupRepository $meetupRepository,
     ) {}
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Talks;
 
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -20,6 +20,7 @@ final class ListAction extends AbstractController
         private readonly string $algoliaAppId,
         #[Autowire('%algolia_frontend_api_key%')]
         private readonly string $algoliaFrontendApikey,
+        private readonly AntenneRepository $antennesRepository,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -43,7 +44,7 @@ final class ListAction extends AbstractController
         return $this->view->render('site/talks/list.html.twig', [
             'title' => $title,
             'canonical' => $canonical,
-            'antennes' => (new AntennesCollection())->getAllSortedByLabels(),
+            'antennes' => $this->antennesRepository->getAllSortedByLabels(),
             'algolia_app_id' => $this->algoliaAppId,
             'algolia_api_key' => $this->algoliaFrontendApikey,
         ]);

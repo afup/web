@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Antennes;
 
-final class AntennesCollection
+final class AntenneRepository
 {
     /** @var array<string, Antenne> */
     private array $antennes;

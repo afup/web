@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\Indexation\Meetups;
 
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Event\Model\Meetup;
 use AppBundle\Indexation\Meetups\Transformer;
 use PHPUnit\Framework\TestCase;
@@ -13,7 +13,7 @@ final class TransformerTest extends TestCase
 {
     public function testTransform(): void
     {
-        $transformer = new Transformer(new AntennesCollection());
+        $transformer = new Transformer(new AntenneRepository());
 
         $meetup = (new Meetup())
             ->setId('244992881')

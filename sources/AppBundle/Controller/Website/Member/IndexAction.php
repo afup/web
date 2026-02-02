@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Member;
 
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
@@ -26,6 +27,7 @@ final class IndexAction extends AbstractController
         private readonly BadgesComputer $badgesComputer,
         private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
         private readonly Authentication $authentication,
+        private readonly AntenneRepository $antenneRepository,
     ) {}
 
     public function __invoke(): Response
@@ -64,7 +66,7 @@ final class IndexAction extends AbstractController
             'has_member_subscribed_to_techletter' => $this->techletterSubscriptionsRepository->hasUserSubscribed($user),
             'membership_fee_call_to_update' => null === $daysBeforeMembershipExpiration || $daysBeforeMembershipExpiration < self::DAYS_BEFORE_CALL_TO_UPDATE,
             'has_up_to_date_membership_fee' => $user->hasUpToDateMembershipFee(),
-            'office_label' => $user->getNearestOfficeLabel(),
+            'office_label' => $user->getNearestOfficeLabel($this->antenneRepository),
             'has_general_meeting_planned' => $hasGeneralMeetingPlanned,
             'has_user_rspved_to_next_general_meeting' => $generalMeetingFactory->hasUserRspvedToLastGeneralMeeting($user),
             'membershipfee_end_date' => $dateFinCotisation,

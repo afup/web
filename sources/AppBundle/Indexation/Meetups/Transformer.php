@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace AppBundle\Indexation\Meetups;
 
 use AppBundle\Antennes\Antenne;
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Event\Model\Meetup;
 
 class Transformer
 {
     public const MEETUP_URL = 'https://www.meetup.com/fr-FR/';
 
-    public function __construct(private readonly AntennesCollection $antennesCollection) {}
+    public function __construct(private readonly AntenneRepository $antennesCollection) {}
 
     /**
      * @return array
