@@ -8,20 +8,22 @@ use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\SeniorityComputer;
 use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Model\TicketType;
 use AppBundle\Offices\OfficeFinder;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
-class RegistrationsExportGenerator
+readonly class RegistrationsExportGenerator
 {
     public function __construct(
-        private readonly OfficeFinder $officeFinder,
-        private readonly SeniorityComputer $seniorityComputer,
-        private readonly TicketRepository $ticketRepository,
-        private readonly InvoiceRepository $invoiceRepository,
-        private readonly UserRepository $userRepository,
+        private OfficeFinder      $officeFinder,
+        private SeniorityComputer $seniorityComputer,
+        private TicketRepository  $ticketRepository,
+        private InvoiceRepository $invoiceRepository,
+        private UserRepository    $userRepository,
     ) {}
 
     public function export(Event $event, \SplFileObject $toFile): void
@@ -71,6 +73,9 @@ class RegistrationsExportGenerator
             }
 
             $invoice = $this->invoiceRepository->getByReference($ticket->getReference());
+            if (!$invoice instanceof Invoice) {
+                continue;
+            }
 
             try {
                 $user = $this->userRepository->loadUserByUsername($ticket->getEmail());
@@ -89,9 +94,9 @@ class RegistrationsExportGenerator
                 'nom' => $ticket->getLastname(),
                 'societe' => $invoice->getCompany(),
                 'tags' => $this->extractAndCleanTags($ticket->getComments()),
-                'type_pass' => $this->getTypePass($ticket->getTicketTypeId()),
+                'type_pass' => $this->getTypePass($ticket),
                 'email' => $ticket->getEmail(),
-                'member_since' => null !== $user ? $this->comptureSeniority($user) : null,
+                'member_since' => null !== $user ? $this->computeSeniority($user) : null,
                 'office' => $office,
                 'distance' => null,
                 'error' => null,
@@ -114,22 +119,34 @@ class RegistrationsExportGenerator
         return implode(' - ', array_filter($tags));
     }
 
-    private function comptureSeniority(User $user): int
+    private function computeSeniority(User $user): int
     {
         return $this->seniorityComputer->compute($user);
     }
 
-    private function getTypePass($type): string
+    private function getTypePass(TicketType $ticketType): string
     {
-        return match ($type) {
-            Ticket::TYPE_DAY_1, Ticket::TYPE_LATE_DAY_1, Ticket::TYPE_AFUP_DAY_EARLY_BIRD, Ticket::TYPE_AFUP_DAY_CROISIERE, Ticket::TYPE_AFUP_DAY_LATE, Ticket::TYPE_AFUP_DAY_CFP_SUBMITTER, Ticket::TYPE_AFUP_DAY_LIVE_FREE, Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_1, Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_2, Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_3, Ticket::TYPE_AFUP_DAY_LIVE_SOUTIEN_4, Ticket::TYPE_AFUP_DAY_2021_LIVE_1 => 'PASS JOUR 1',
-            Ticket::TYPE_DAY_2, Ticket::TYPE_LATE_DAY_2, Ticket::TYPE_AFUP_DAY_2021_LIVE_2 => 'PASS JOUR 2',
-            Ticket::TYPE_2_DAYS, Ticket::TYPE_2_DAYS_AFUP, Ticket::TYPE_2_DAYS_STUDENT, Ticket::TYPE_2_DAYS_EARLY, Ticket::TYPE_2_DAYS_AFUP_EARLY, Ticket::TYPE_2_DAYS_STUDENT_EARLY, Ticket::TYPE_2_DAYS_VOUCHER, Ticket::TYPE_INVITATION, Ticket::TYPE_EARLY_BIRD, Ticket::TYPE_EARLY_BIRD_AFUP, Ticket::TYPE_LATE_BIRD, Ticket::TYPE_LATE_BIRD_AFUP, Ticket::TYPE_CFP_SUBMITTER, Ticket::TYPE_SPECIAL_PRICE, Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_1, Ticket::TYPE_FORUM_PHP_LIVE_FREE, Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_2, Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_3, Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_4, Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_5, Ticket::TYPE_FORUM_PHP_LIVE_SOUTIEN_6, Ticket::TYPE_AFUP_DAY_2021_LIVE_3, Ticket::TYPE_AFUP_DAY_2021_LIVE_4 => 'PASS 2 JOURS',
+        $typePass = match ($ticketType->getId()) {
             Ticket::TYPE_ORGANIZATION => 'ORGANISATION',
             Ticket::TYPE_PRESS => 'PRESSE',
             Ticket::TYPE_SPEAKER => 'CONFERENCIER',
             Ticket::TYPE_SPONSOR => 'SPONSOR',
-            default => throw new \RuntimeException(sprintf('Libellé du type %s non trouvé', var_export($type, true))),
+            default => false,
         };
+        if ($typePass !== false) {
+            return $typePass;
+        }
+
+        if ($ticketType->getDay() === 'one') {
+            return 'PASS JOUR 1';
+        }
+        if ($ticketType->getDay() === 'two') {
+            return 'PASS JOUR 2';
+        }
+        if ($ticketType->getDay() === 'one,two') {
+            return 'PASS 2 JOURS';
+        }
+
+        throw new \RuntimeException(sprintf('Libellé du type %s non trouvé', var_export($ticketType, true)));
     }
 }
