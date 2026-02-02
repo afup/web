@@ -8,7 +8,9 @@ $(document).ready(function () {
     ];
     for (let i = 0; i < vatFields.length; i++) {
         document.getElementById(vatFields[i].link).addEventListener('click', function (event) {
-            document.getElementById(vatFields[i].input).value = Number.parseFloat(Math.round(parseFloat(document.getElementById('transaction_amount').value) / (1 + vatFields[i].rate) * 100) / 100).toFixed(2);
+            let value = document.getElementById('transaction_amount').value;
+            value = value.replace(',', '.');
+            document.getElementById(vatFields[i].input).value = Number.parseFloat(Math.round(parseFloat(value) / (1 + vatFields[i].rate) * 100) / 100).toFixed(2);
             event.preventDefault();
             return false;
         });
