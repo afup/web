@@ -1,15 +1,3 @@
-imports:
-    - { resource: config_dev.yml }
-
-framework:
-    test: ~
-    profiler:
-        collect: false
-
-web_profiler:
-    toolbar: false
-    intercept_redirects: false
-
 parameters:
     database_host: dbtest
     database_port: 3306
@@ -38,19 +26,3 @@ services:
     PlanetePHP\SymfonyFeedClient:
         arguments:
             $httpClient: '@planetephp.http_client'
-
-ewz_recaptcha:
-    enabled: false
-
-
-monolog:
-    handlers:
-        deprecation_stream:
-            type: stream
-            path: "%kernel.logs_dir%/%kernel.environment%.deprecations.log"
-
-        deprecation_filter:
-            type: filter
-            handler: deprecation_stream
-            max_level: info
-            channels: ["php"]
