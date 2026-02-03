@@ -54,9 +54,13 @@ final class EditAction extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $this->ticketRepository->save($data['ticket']);
-            $this->invoiceRepository->save($data['invoice']);
+            ['ticket' => $ticket, 'invoice' => $invoice] = $form->getData();
+
+            $invoice->setStatus($ticket->getInvoiceStatus());
+            $invoice->setStatus($ticket->getStatus());
+
+            $this->ticketRepository->save($ticket);
+            $this->invoiceRepository->save($invoice);
 
             $this->audit->log(sprintf("Modification de l'inscription de %s (%d)", $ticket->getLabel(), $ticket->getId()));
             $this->addFlash('notice', "L'inscription a été modifiée.");

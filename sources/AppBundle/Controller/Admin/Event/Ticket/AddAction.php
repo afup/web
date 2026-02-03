@@ -42,6 +42,9 @@ final class AddAction extends AbstractController
 
         $ticket = new Ticket();
         $invoice = new Invoice();
+        $invoice->setPaymentType(Ticket::PAYMENT_NONE);
+        $invoice->setPaymentDate(new \DateTime());
+
         $form = $this->createForm(TicketAdminWithInvoiceType::class, [
             'ticket' => $ticket,
             'invoice' => $invoice,
@@ -72,9 +75,10 @@ final class AddAction extends AbstractController
             $invoice->setReference($reference);
             $invoice->setAmount($ticket->getAmount());
             $invoice->setForumId($ticket->getForumId());
-            $invoice->setPaymentDate($ticket->getDate());
             $invoice->setStatus($ticket->getInvoiceStatus());
+            $invoice->setStatus($ticket->getStatus());
             $invoice->setInvoice(true);
+            $invoice->setInvoiceDate($invoice->getPaymentDate());
 
             $this->ticketRepository->save($ticket);
             $this->invoiceRepository->save($invoice);
