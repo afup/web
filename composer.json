@@ -45,6 +45,7 @@
     "setasign/tfpdf": "^1.33",
     "smarty/smarty": "^5.4",
     "symfony/asset": "7.3.*",
+    "symfony/asset-mapper": "7.3.*",
     "symfony/clock": "7.3.*",
     "symfony/console": "7.3.*",
     "symfony/expression-language": "7.3.*",
@@ -60,6 +61,7 @@
     "symfony/security-bundle": "7.3.*",
     "symfony/string": "7.3.*",
     "symfony/translation": "7.3.*",
+    "symfony/twig-pack": "^1.0",
     "symfony/validator": "7.3.*",
     "symfony/yaml": "7.3.*",
     "twig/extra-bundle": "^3.21",
@@ -72,11 +74,13 @@
   "scripts": {
     "post-install-cmd": [
       "@php bin/console cache:clear --no-warmup",
-      "@php bin/console assets:install --relative htdocs"
+      "@php bin/console assets:install --relative htdocs",
+      "@php bin/console importmap:install"
     ],
     "post-update-cmd": [
       "@php bin/console cache:clear --no-warmup",
-      "@php bin/console assets:install --relative htdocs"
+      "@php bin/console assets:install --relative htdocs",
+      "@php bin/console importmap:install"
     ]
   },
   "config": {
