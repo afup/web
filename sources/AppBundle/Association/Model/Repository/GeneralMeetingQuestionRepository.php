@@ -9,6 +9,7 @@ use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
+use CCMBenchmark\Ting\Serializer\DateTimeImmutable;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 /**
@@ -120,6 +121,7 @@ SQL;
                 'columnName' => 'date',
                 'fieldName' => 'date',
                 'type' => 'datetime',
+                'serializer' => DateTimeImmutable::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['format' => 'U'],
