@@ -28,6 +28,7 @@ parameters:
 services:
     AppBundle\Offices\OfficeFinder:
         class: AppBundle\Offices\NullOfficeFinder
+        autowire: true
         arguments: ['@geocoder']
 
     Afup\Tests\Support\PlanetePHP\FeedHttpClientFactory: ~

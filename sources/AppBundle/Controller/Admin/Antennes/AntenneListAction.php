@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Antennes;
 
 use AppBundle\Antennes\Antenne;
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -13,7 +13,7 @@ use Twig\Environment;
 final readonly class AntenneListAction
 {
     public function __construct(
-        private AntennesCollection $antennesCollection,
+        private AntenneRepository $antennesCollection,
         private Environment $twig,
     ) {}
 

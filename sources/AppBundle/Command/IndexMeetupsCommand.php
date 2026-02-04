@@ -6,6 +6,7 @@ namespace AppBundle\Command;
 
 use Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
 use Algolia\AlgoliaSearch\SearchClient;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Event\Model\Repository\MeetupRepository;
 use AppBundle\Indexation\Meetups\Runner;
 use Symfony\Component\Console\Command\Command;
@@ -18,6 +19,7 @@ class IndexMeetupsCommand extends Command
     public function __construct(
         private readonly SearchClient $searchClient,
         private readonly MeetupRepository $meetupRepository,
+        private readonly AntenneRepository $antenneRepository,
     ) {
         parent::__construct();
     }
@@ -40,7 +42,7 @@ class IndexMeetupsCommand extends Command
             $this->runScraping($output);
         }
 
-        $runner = new Runner($this->searchClient, $this->meetupRepository);
+        $runner = new Runner($this->searchClient, $this->meetupRepository, $this->antenneRepository);
         $runner->run();
 
         return Command::SUCCESS;

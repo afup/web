@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Indexation\Meetups;
 
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Event\Model\Meetup;
 use AppBundle\Indexation\Meetups\GraphQL\QueryGroupsResponse;
 use CuyZ\Valinor\Mapper\Source\Source;
@@ -18,7 +18,7 @@ final readonly class MeetupClient
 
     public function __construct(
         private HttpClientInterface $httpClient,
-        private AntennesCollection $antennesCollection,
+        private AntenneRepository $antenneRepository,
         private MapperBuilder $mapperBuilder,
     ) {}
 
@@ -72,7 +72,7 @@ final readonly class MeetupClient
     {
         $queries = [];
 
-        foreach ($this->antennesCollection->getAll() as $antenne) {
+        foreach ($this->antenneRepository->getAll() as $antenne) {
             if ($antenne->meetup === null) {
                 continue;
             }

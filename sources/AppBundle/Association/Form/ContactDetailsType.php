@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Association\Form;
 
 use Afup\Site\Utils\Pays;
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Association\Model\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -23,15 +23,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ContactDetailsType extends AbstractType
 {
-    /**
-     * @var Pays
-     */
-    public $countryService;
-
-    public function __construct(Pays $countryService)
-    {
-        $this->countryService = $countryService;
-    }
+    public function __construct(
+        private readonly Pays $countryService,
+        private readonly AntenneRepository $antenneRepository,
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -111,9 +106,8 @@ class ContactDetailsType extends AbstractType
      */
     private function getOfficesList(): array
     {
-        $antennesCollection = new AntennesCollection();
         $offices = ['' => '-Aucune-'];
-        foreach ($antennesCollection->getAllSortedByLabels() as $antenne) {
+        foreach ($this->antenneRepository->getAllSortedByLabels() as $antenne) {
             $offices[$antenne->label] = $antenne->code;
         }
         return $offices;

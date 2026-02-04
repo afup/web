@@ -195,6 +195,7 @@ services:
         arguments: ['@Psr\Http\Client\ClientInterface', null, "%google_maps_api_key%"]
 
     AppBundle\Offices\OfficeFinder:
+        autowire: true
         arguments: ['@geocoder']
 
     AppBundle\Subscriber\SitemapXmlSubscriber:

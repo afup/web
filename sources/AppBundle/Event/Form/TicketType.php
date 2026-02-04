@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Form;
 
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketSpecialPriceRepository;
@@ -29,17 +29,14 @@ class TicketType extends AbstractType
     public const MEMBER_PERSONAL = 1;
     public const MEMBER_CORPORATE = 2;
 
-    private readonly AntennesCollection $antennesCollection;
-
     public function __construct(
         private readonly EventRepository $eventRepository,
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
         private readonly TicketTypeAvailability $ticketTypeAvailability,
         private readonly TicketSpecialPriceRepository $ticketSpecialPriceRepository,
         private readonly TicketTypeRepository $ticketTypeRepository,
-    ) {
-        $this->antennesCollection = new AntennesCollection();
-    }
+        private readonly AntenneRepository $antenneRepository,
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -78,7 +75,7 @@ class TicketType extends AbstractType
             ->add('nearestOffice', ChoiceType::class, [
                 'label' => 'Antenne de prédilection',
                 'required' => false,
-                'choices' => array_flip($this->antennesCollection->getOrderedLabelsByKey()),
+                'choices' => array_flip($this->antenneRepository->getOrderedLabelsByKey()),
             ])
         ;
 
