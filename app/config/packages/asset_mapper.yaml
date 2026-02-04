@@ -1,0 +1,12 @@
+framework:
+  asset_mapper:
+    # The paths to make available to the asset mapper.
+    paths:
+      - '%kernel.project_dir%/../assets/'
+    importmap_path: '%kernel.project_dir%/../importmap.php'
+    missing_import_mode: strict
+
+when@prod:
+  framework:
+    asset_mapper:
+      missing_import_mode: warn
