@@ -19,6 +19,8 @@ use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
+use AppBundle\MembershipFee\Model\MembershipFee;
+use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
 use Assert\Assertion;
 use DateInterval;
 use DateTime;
@@ -40,37 +42,12 @@ define('AFUP_COTISATIONS_PAIEMENT_REFUSE', 3);
 class Cotisations
 {
     private ?CompanyMemberRepository $companyMemberRepository = null;
+    private ?MembershipFeeRepository $membershipFeeRepository = null;
 
     public function __construct(
         private readonly Base_De_Donnees $_bdd,
         private readonly ?Droits $_droits = null,
     ) {}
-
-    /**
-     * Renvoit la liste des cotisations concernant une personne
-     *
-     * @param int $id_personne Identifiant de la personne
-     * @param string $champs Champs à renvoyer
-     * @param string $ordre Tri des enregistrements
-     * @param bool $associatif Renvoyer un tableau associatif ?
-     * @return array|false
-     */
-    public function obtenirListe(MemberType $type_personne, $id_personne, string $champs = '*', string $ordre = 'date_fin DESC', bool $associatif = false)
-    {
-        $requete = 'SELECT';
-        $requete .= '  ' . $champs . ' ';
-        $requete .= 'FROM';
-        $requete .= '  afup_cotisations ';
-        $requete .= 'WHERE';
-        $requete .= '  type_personne=' . $type_personne->value;
-        $requete .= '  AND id_personne=' . $id_personne . ' ';
-        $requete .= 'ORDER BY ' . $ordre;
-        if ($associatif) {
-            return $this->_bdd->obtenirAssociatif($requete);
-        } else {
-            return $this->_bdd->obtenirTous($requete);
-        }
-    }
 
     /**
      * Renvoit la cotisation demandée
@@ -143,51 +120,9 @@ class Cotisations
         return $this->_bdd->executer($requete) !== false;
     }
 
-    /**
-     * Modifie une cotisation
-     *
-     * @param int $id Identifiant de la cotisation à modifier
-     * @param int $type_personne Type de la personne (morale ou physique)
-     * @param int $id_personne Identifiant de la personne
-     * @param float $montant Adresse de la personne
-     * @param int $type_reglement Type de règlement (espèces, chèque, virement)
-     * @param string $informations_reglement Informations concernant le règlement (numéro de chèque, de virement etc.)
-     * @param int $date_debut Date de début de la
-     * cotisation
-     * @param int $date_fin Date de fin de la cotisation
-     * @param string $commentaires Commentaires concernnant la cotisation
-     * @param string $referenceClient Reference client à mentionner sur la facture
-     * @return bool Succès de la modification
-     */
-    public function modifier($id, $type_personne, $id_personne, $montant, $type_reglement,
-                      $informations_reglement, $date_debut, $date_fin, $commentaires, $referenceClient): bool
+    public function isAlreadyPaid($cmd): bool
     {
-        $requete = 'UPDATE';
-        $requete .= '  afup_cotisations ';
-        $requete .= 'SET';
-        $requete .= '  type_personne=' . $type_personne . ',';
-        $requete .= '  id_personne=' . $id_personne . ',';
-        $requete .= '  montant=' . $montant . ',';
-        $requete .= '  type_reglement=' . $type_reglement . ',';
-        $requete .= '  informations_reglement=' . $this->_bdd->echapper($informations_reglement) . ',';
-        $requete .= '  date_debut=' . $date_debut . ',';
-        $requete .= '  date_fin=' . $date_fin . ',';
-        $requete .= '  commentaires=' . $this->_bdd->echapper($commentaires) . ',';
-        $requete .= '  reference_client=' . $this->_bdd->echapper($referenceClient) . ' ';
-        $requete .= 'WHERE';
-        $requete .= '  id=' . $id;
-        return $this->_bdd->executer($requete) !== false;
-    }
-
-    public function estDejaReglee($cmd)
-    {
-        $requete = 'SELECT';
-        $requete .= '  1 ';
-        $requete .= 'FROM';
-        $requete .= '  afup_cotisations ';
-        $requete .= 'WHERE';
-        $requete .= '  informations_reglement=' . $this->_bdd->echapper($cmd);
-        return $this->_bdd->obtenirUn($requete);
+        return $this->membershipFeeRepository->getOneBy(['paymentDetails' => $cmd]) instanceof MembershipFee;
     }
 
     public function notifierReglementEnLigneAuTresorier(string $cmd, float $total, string $autorisation, string $transaction, UserRepository $userRepository): ?bool
@@ -196,8 +131,8 @@ class Cotisations
             // Facture
             $invoiceNumber = substr($cmd, 1);
             $cotisation = $this->getByInvoice($invoiceNumber);
-            $type_personne = $cotisation['type_personne'];
-            $id_personne = $cotisation['id_personne'];
+            $type_personne = $cotisation->getUserType()->value;
+            $id_personne = $cotisation->getUserId();
 
         } else {
             // Cotisation
@@ -259,21 +194,22 @@ class Cotisations
 
             $this
                 ->updatePayment(
-                    $cotisation['id'],
-                    AFUP_COTISATIONS_REGLEMENT_ENLIGNE, "autorisation : " . $autorisation . " / transaction : " . $transaction,
+                    $cotisation->getId(),
+                    AFUP_COTISATIONS_REGLEMENT_ENLIGNE,
+                    "autorisation : " . $autorisation . " / transaction : " . $transaction,
                 );
-        } elseif (substr(md5($reference), -3) === strtolower($verif) && !$this->estDejaReglee($cmd)) {
+        } elseif (substr(md5($reference), -3) === strtolower($verif) && !$this->isAlreadyPaid($cmd)) {
             [$ref, $date, $type_personne, $id_personne, $reste] = explode('-', (string) $cmd, 5);
             $date_debut = mktime(0, 0, 0, (int) substr($date, 2, 2), (int) substr($date, 0, 2), (int) substr($date, 4, 4));
 
-            $cotisation = $this->obtenirDerniere(MemberType::from((int) $type_personne), $id_personne);
-            $date_fin_precedente = $cotisation === false ? 0 : $cotisation['date_fin'];
+            $cotisation = $this->getLastestByUserTypeAndId(MemberType::from((int) $type_personne), (int) $id_personne);
+            $date_fin_precedente = !$cotisation instanceof MembershipFee ? 0 : $cotisation->getEndDate()->getTimestamp();
 
             if ($date_fin_precedente > 0) {
-                $date_debut = strtotime('+1day', (int) $date_fin_precedente);
+                $date_debut = strtotime('+1day', $date_fin_precedente);
             }
 
-            $date_fin = $this->finProchaineCotisation($cotisation)->format('U');
+            $date_fin = $this->getNextSubscriptionExpiration($cotisation)->format('U');
             $result = $this->ajouter(
                 MemberType::from((int) $type_personne),
                 $id_personne,
@@ -308,13 +244,18 @@ class Cotisations
     /**
      * Supprime une cotisation
      *
-     * @param int $id Identifiant de la cotisation à supprimer
+     * @param $id Identifiant de la cotisation à supprimer
      * @return bool Succès de la suppression
      */
-    public function supprimer($id)
+    public function supprimer(int $id): bool
     {
-        $requete = 'DELETE FROM afup_cotisations WHERE id=' . $id;
-        return $this->_bdd->executer($requete);
+        try {
+            $cotisation = $this->membershipFeeRepository->get($id);
+            $this->membershipFeeRepository->delete($cotisation);
+            return true;
+        } catch (\Exception $exception) {
+            return false;
+        }
     }
 
     /**
@@ -536,8 +477,8 @@ class Cotisations
 
         $cheminFacture = AFUP_CHEMIN_RACINE . 'cache/fact' . $id_cotisation . '.pdf';
         $numeroFacture = $this->genererFacture($id_cotisation, $cheminFacture);
-        $cotisation = $this->obtenirDerniere(MemberType::from((int) $personne['type_personne']), $personne['id_personne']);
-        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', (int) $cotisation['date_debut']) . '.pdf';
+        $cotisation = $this->getLastestByUserTypeAndId(MemberType::from((int) $personne['type_personne']), (int) $personne['id_personne']);
+        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', $cotisation->getStartDate()->getTimestamp()) . '.pdf';
 
         $message = new Message('Facture AFUP', null, new MailUser(
             $contactPhysique['email'],
@@ -557,62 +498,15 @@ class Cotisations
 
     /**
      * Retourne la dernière cotisation d'une personne morale
-     * @param int $id_personne Identifiant de la personne
-     * @return array|false
      */
-    public function obtenirDerniere(MemberType $type_personne, $id_personne)
+    public function getLastestByUserTypeAndId(MemberType $type_personne, int $id_personne): ?MembershipFee
     {
-        $requete = 'SELECT';
-        $requete .= '  * ';
-        $requete .= 'FROM';
-        $requete .= '  afup_cotisations ';
-        $requete .= 'WHERE';
-        $requete .= '  type_personne=' . $type_personne->value . ' ';
-        $requete .= '  AND id_personne=' . $id_personne . ' ';
-        $requete .= 'ORDER BY';
-        $requete .= '  date_fin DESC ';
-        $requete .= 'LIMIT 0, 1 ';
-        return $this->_bdd->obtenirEnregistrement($requete);
+        return $this->membershipFeeRepository->getLastestByUserTypeAndId($type_personne, $id_personne);
     }
 
-    /**
-     * Retourne la date de début d'une cotisation.
-     *
-     * Cette date est déterminée par la date de fin de la cotisation précédente
-     * s'il y en a une ou alors sur la date du jour dans le cas contraire.
-     *
-     * @param    int $type_personne Identifiant du type de personne
-     * @param    int $id_personne Identifiant de la personne
-     * @return    int                    Timestamp de la date de la cotisation
-     */
-    public function obtenirDateDebut($type_personne, $id_personne)
+    public function getNextSubscriptionExpiration(?MembershipFee $cotisation = null): DateTime
     {
-        $requete = 'SELECT';
-        $requete .= '  date_fin ';
-        $requete .= 'FROM';
-        $requete .= '  afup_cotisations ';
-        $requete .= 'WHERE';
-        $requete .= '  type_personne=' . $type_personne . ' ';
-        $requete .= 'AND';
-        $requete .= ' id_personne=' . $id_personne . ' ';
-        $requete .= 'ORDER BY';
-        $requete .= ' date_fin DESC';
-        $date_debut = $this->_bdd->obtenirUn($requete);
-
-        if ($date_debut !== false) {
-            return (int) $date_debut;
-        } else {
-            return time();
-        }
-    }
-
-    /**
-     * @param array|false $cotisation from Afup_Personnes_Physiques::obtenirDerniereCotisation
-     * @return DateTime Date of end of next subscription
-     */
-    public function finProchaineCotisation($cotisation = false): DateTime
-    {
-        $endSubscription = $cotisation === false ? new DateTime() : new \DateTime('@' . $cotisation['date_fin']);
+        $endSubscription = $cotisation ? $cotisation->getEndDate() : new DateTime();
         $base = $now = new DateTime();
 
         $year = new DateInterval('P1Y');
@@ -628,71 +522,55 @@ class Cotisations
     /**
      * Renvoit la cotisation demandée
      *
-     * @param string $invoiceId Identifiant de la facture
-     * @param string|null $token Token de la facture. Si null, pas de vérification
-     * @return array
+     * @param $invoiceId Identifiant de la facture
+     * @param $token Token de la facture. Si null, pas de vérification
      */
-    public function getByInvoice(string $invoiceId, string $token = null)
+    public function getByInvoice(string $invoiceId, string $token = null): ?MembershipFee
     {
-        $requete = 'SELECT';
-        $requete .= '  * ';
-        $requete .= 'FROM';
-        $requete .= '  afup_cotisations ';
-        $requete .= 'WHERE';
-        $requete .= '  numero_facture = ' . $this->_bdd->echapper($invoiceId);
+        $criterias = ['invoiceNumber' => $invoiceId];
         if ($token !== null) {
-            $requete .= ' AND token = ' . $this->_bdd->echapper($token);
+            $criterias['token'] = $token;
         }
-
-        return $this->_bdd->obtenirEnregistrement($requete);
+        return $this->membershipFeeRepository->getOneBy($criterias);
     }
 
     /**
      * Modifie une cotisation
      *
-     * @param int $id Identifiant de la cotisation à modifier
-     * @param int $type_reglement Type de règlement (espèces, chèque, virement)
-     * @param string $informations_reglement Informations concernant le règlement (numéro de chèque, de virement etc.)
+     * @param $id Identifiant de la cotisation à modifier
+     * @param $type_reglement Type de règlement (espèces, chèque, virement)
+     * @param $informations_reglement Informations concernant le règlement (numéro de chèque, de virement etc.)
      * @return bool Succès de la modification
      */
-    public function updatePayment($id, $type_reglement, string $informations_reglement): bool
+    public function updatePayment(int $id, int $type_reglement, string $informations_reglement): bool
     {
-        $requete = 'UPDATE';
-        $requete .= '  afup_cotisations ';
-        $requete .= 'SET';
-        $requete .= '  type_reglement=' . $type_reglement . ',';
-        $requete .= '  informations_reglement=' . $this->_bdd->echapper($informations_reglement);
-        $requete .= ' WHERE';
-        $requete .= '  id=' . $id;
-        return $this->_bdd->executer($requete) !== false;
+        return $this->membershipFeeRepository->updatePayment($id, $type_reglement, $informations_reglement) !== false;
     }
 
-    public function isCurrentUserAllowedToReadInvoice(string $invoiceId)
+    public function isCurrentUserAllowedToReadInvoice(string $invoiceId): bool
     {
         if (!$this->_droits) {
             throw new \RuntimeException('La variable $_droits ne doit pas être null.');
         }
 
-        $sql = 'SELECT type_personne, id_personne FROM afup_cotisations WHERE id = ' . $this->_bdd->echapper($invoiceId);
-        $result = $this->_bdd->obtenirEnregistrement($sql);
-
-        if (!$result) {
+        $cotisation = $this->membershipFeeRepository->get($invoiceId);
+        if (!$cotisation instanceof MembershipFee) {
             return false;
         }
 
         /**
          * si type_personne = 0, alors personne physique: id_personne doit être identique l'id de l'utilisateur connecté
          */
-        if ($result['type_personne'] === "0") {
-            return $result['id_personne'] == $this->_droits->obtenirIdentifiant();
+        if ($cotisation->getUserType() == MemberType::MemberPhysical) {
+            return $cotisation->getUserId() == $this->_droits->obtenirIdentifiant();
         }
 
         /**
          * si type_personne = 1, alors personne morale: id_personne doit être égale à compagnyId de l'utilisateur connecté
          * qui doit aussi avoir le droit "ROLE_COMPAGNY_MANAGER"
          */
-        if ($result['type_personne'] == MemberType::MemberCompany->value) {
-            return $this->_droits->verifierDroitManagerPersonneMorale($result['id_personne']);
+        if ($cotisation->getUserType() == MemberType::MemberCompany) {
+            return $this->_droits->verifierDroitManagerPersonneMorale($cotisation->getUserId());
         }
 
         return false;
@@ -701,5 +579,10 @@ class Cotisations
     public function setCompanyMemberRepository(CompanyMemberRepository $companyMemberRepository): void
     {
         $this->companyMemberRepository = $companyMemberRepository;
+    }
+
+    public function setMembershipFeeRepository(MembershipFeeRepository $membershipFeeRepository): void
+    {
+        $this->membershipFeeRepository = $membershipFeeRepository;
     }
 }

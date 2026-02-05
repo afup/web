@@ -10,6 +10,7 @@ use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\AuditLog\Audit;
+use AppBundle\MembershipFee\Model\MembershipFee;
 use AppBundle\Payment\PayboxResponseFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,9 +47,9 @@ final readonly class PayboxCallbackAction
 
         if ($etat == AFUP_COTISATIONS_PAIEMENT_REGLE) {
             $account = $this->cotisations->getAccountFromCmd($payboxResponse->getCmd());
-            $lastCotisation = $this->cotisations->obtenirDerniere(MemberType::from($account['type']), $account['id']);
+            $lastCotisation = $this->cotisations->getLastestByUserTypeAndId(MemberType::from($account['type']), $account['id']);
 
-            if ($lastCotisation === false && $account['type'] == MemberType::MemberPhysical->value) {
+            if (!$lastCotisation instanceof MembershipFee && $account['type'] == MemberType::MemberPhysical->value) {
                 $user = $this->userRepository->get($account['id']);
                 $this->eventDispatcher->dispatch(new NewMemberEvent($user));
             }

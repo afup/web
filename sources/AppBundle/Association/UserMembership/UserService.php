@@ -12,6 +12,7 @@ use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
+use AppBundle\MembershipFee\Model\MembershipFee;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -85,10 +86,7 @@ BODY
         return $this->mailer->send($message);
     }
 
-    /**
-     * @return array
-     */
-    public function getLastSubscription(User $user)
+    public function getLastSubscription(User $user): ?MembershipFee
     {
         if ($user->getCompanyId()) {
             $id = $user->getCompanyId();
@@ -98,6 +96,6 @@ BODY
             $personType = MemberType::MemberPhysical;
         }
 
-        return $this->cotisations->obtenirDerniere($personType, $id);
+        return $this->cotisations->getLastestByUserTypeAndId($personType, $id);
     }
 }

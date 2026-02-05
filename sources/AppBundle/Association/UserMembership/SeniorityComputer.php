@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\UserMembership;
 
-use Afup\Site\Association\Cotisations;
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\User;
+use AppBundle\MembershipFee\Model\MembershipFee;
+use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
+use CCMBenchmark\Ting\Repository\Collection;
 
 class SeniorityComputer
 {
-    public function __construct(private readonly Cotisations $cotisations) {}
+    public function __construct(private readonly MembershipFeeRepository $membershipFeeRepository) {}
 
     public function computeCompany(CompanyMember $companyMember)
     {
-        $cotis = $this->cotisations->obtenirListe(MemberType::MemberCompany, $companyMember->getId());
+        $cotis = $this->membershipFeeRepository->getListByUserTypeAndId(MemberType::MemberCompany, $companyMember->getId());
 
         $infos = $this->computeFromCotisationsAndReturnInfos($cotis);
 
@@ -24,7 +26,7 @@ class SeniorityComputer
 
     public function computeCompanyAndReturnInfos(CompanyMember $companyMember): array
     {
-        $cotis = $this->cotisations->obtenirListe(MemberType::MemberCompany, $companyMember->getId());
+        $cotis = $this->membershipFeeRepository->getListByUserTypeAndId(MemberType::MemberCompany, $companyMember->getId());
 
         return $this->computeFromCotisationsAndReturnInfos($cotis);
     }
@@ -38,20 +40,23 @@ class SeniorityComputer
 
     public function computeAndReturnInfos(User $user): array
     {
-        $cotis = $this->cotisations->obtenirListe(MemberType::MemberPhysical, $user->getId());
+        $cotis = $this->membershipFeeRepository->getListByUserTypeAndId(MemberType::MemberPhysical, $user->getId());
 
         return $this->computeFromCotisationsAndReturnInfos($cotis);
     }
 
-    private function computeFromCotisationsAndReturnInfos(array $cotisations): array
+    /**
+     * @param Collection<MembershipFee> $cotisations
+     */
+    private function computeFromCotisationsAndReturnInfos(Collection $cotisations): array
     {
         $now = new \DateTime();
         $diffs = [];
 
         $years = [];
         foreach ($cotisations as $coti) {
-            $from = new \DateTimeImmutable('@' . $coti['date_debut']);
-            $to = new \DateTimeImmutable('@' . $coti['date_fin']);
+            $from = $coti->getStartDate();
+            $to = $coti->getEndDate();
             $to = min($now, $to);
             $diffs[] = $from->diff($to);
             $years[] = $from->format('Y');
