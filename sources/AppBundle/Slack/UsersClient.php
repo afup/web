@@ -12,9 +12,9 @@ final readonly class UsersClient
     public const USER_LIST_API = '/users.list';
 
     public function __construct(
-        #[Autowire('%slack_membre_token%')]
+        #[Autowire('%env(SLACK_MEMBRE_TOKEN)%')]
         private string $token,
-        #[Autowire('%slack_api_url%')]
+        #[Autowire('%env(SLACK_API_URL)%')]
         private string $apiBaseUrl,
     ) {}
 

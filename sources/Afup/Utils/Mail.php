@@ -16,12 +16,10 @@ class Mail
 
     public static function createMailer(): Mailer
     {
-        $configuration = new Configuration();
-
         return new Mailer(
             new NullLogger(),
             new Environment(new FilesystemLoader(self::PROJECT_DIR . '/templates/')),
-            PhpMailerAdapter::createFromConfiguration($configuration),
+            PhpMailerAdapter::createFromConfiguration(),
         );
     }
 }

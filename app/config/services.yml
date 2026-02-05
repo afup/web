@@ -4,8 +4,8 @@ parameters:
     app.badge_dir: "%kernel.project_dir%/../htdocs/uploads/badges"
     app.members_logo_dir: "%kernel.project_dir%/../htdocs/uploads/members_logo"
     app.general_meetings_dir: "%kernel.project_dir%/../htdocs/uploads/general_meetings_reports"
-    bluesky.api.identifier: "%bluesky_api_identifier%"
-    bluesky.api.app_password: "%bluesky_api_app_password%"
+    bluesky.api.identifier: "%env(BLUESKY_API_IDENTIFIER)%"
+    bluesky.api.app_password: "%env(BLUESKY_API_APP_PASSWORD)%"
 
 services:
 #    service_name:
@@ -26,9 +26,9 @@ services:
     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
         public:    false
         arguments:
-            - 'mysql:host=%database_host%;port=%database_port%;dbname=%database_name%'
-            - db_username: '%database_user%'
-              db_password: '%database_password%'
+            - 'mysql:host=%env(DATABASE_HOST)%;port=%env(int:DATABASE_PORT)%;dbname=%env(DATABASE_NAME)%'
+            - db_username: '%env(DATABASE_USER)%'
+              db_password: '%env(DATABASE_PASSWORD)%'
               lock_mode: !php/const Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler::LOCK_NONE
 
     Laminas\Feed\Reader\Http\ClientInterface: '@PlanetePHP\SymfonyFeedClient'
@@ -81,19 +81,19 @@ services:
 
     AppBundle\Payment\PayboxFactory:
         autowire: true
-        arguments: ["@router", "%paybox_domain_server%", "%paybox_secret_key%", "%paybox_site%", "%paybox_rang%", "%paybox_identifiant%"]
+        arguments: ["@router", "%env(PAYBOX_DOMAIN_SERVER)%", "%env(PAYBOX_SECRET_KEY)%", "%env(PAYBOX_SITE)%", "%env(PAYBOX_RANG)%", "%env(PAYBOX_IDENTIFIANT)%"]
 
     AppBundle\Slack\LegacyClient:
-        arguments: ["%slack_members_legacy_token%"]
+        arguments: ["%env(SLACK_MEMBERS_LEGACY_TOKEN)%"]
 
     Algolia\AlgoliaSearch\SearchClient:
         factory: [ Algolia\AlgoliaSearch\SearchClient, create ]
-        arguments: ["%algolia_app_id%", "%algolia_backend_api_key%"]
+        arguments: ["%env(ALGOLIA_APP_ID)%", "%env(ALGOLIA_BACKEND_API_KEY)%"]
 
     # API/Client Meetup techletter
     app.mailchimp_techletter_client:
         class: DrewM\MailChimp\MailChimp
-        arguments: ["%mailchimp_techletter_api_key%"]
+        arguments: ["%env(MAILCHIMP_TECHLETTER_API_KEY)%"]
         public: false
     app.mailchimp_techletter_api:
         class: AppBundle\Mailchimp\Mailchimp
@@ -103,7 +103,7 @@ services:
     # API/Client Meetup
     app.mailchimp_client:
         class: DrewM\MailChimp\MailChimp
-        arguments: ["%mailchimp_api_key%"]
+        arguments: ["%env(MAILCHIMP_API_KEY)%"]
         public: false
     app.mailchimp_api:
         class: AppBundle\Mailchimp\Mailchimp
@@ -114,23 +114,27 @@ services:
         autowire: true
         arguments:
             $mailchimp: '@app.mailchimp_techletter_api'
-            $listId: "%mailchimp_techletter_list%"
+            $listId: "%env(MAILCHIMP_TECHLETTER_LIST)%"
 
     AppBundle\Mailchimp\MailchimpMembersAutoListSynchronizer:
         autowire: true
         arguments:
             $mailchimp: '@app.mailchimp_api'
-            $listId: "%mailchimp_members_list%"
+            $listId: "%env(MAILCHIMP_MEMBERS_LIST)%"
 
     AppBundle\Email\Mailer\Adapter\MailerAdapter:
-      class: AppBundle\Email\Mailer\Adapter\PhpMailerAdapter
-      factory: [AppBundle\Email\Mailer\Adapter\PhpMailerAdapter, createFromConfiguration]
-      arguments: ['@Afup\Site\Utils\Configuration']
+        class: AppBundle\Email\Mailer\Adapter\PhpMailerAdapter
+        arguments:
+            $smtpServer: '%env(SMTP_HOST)%'
+            $tls: '%env(SMTP_TLS)%'
+            $username: '%env(SMTP_USERNAME)%'
+            $password: '%env(SMTP_PASSWORD)%'
+            $port: '%env(SMTP_PORT)%'
 
     AppBundle\Mailchimp\EventEventSubscriber:
         arguments:
             - '@app.mailchimp_api'
-            - "%mailchimp_members_list%"
+            - "%env(MAILCHIMP_MEMBERS_LIST)%"
         tags:
           - { name: kernel.event_listener, event: user.disabled, method: onUserDisabled }
 
@@ -140,10 +144,7 @@ services:
 
     AppBundle\Event\Ticket\QrCodeGenerator:
         autowire: true
-        arguments: ["%qr_code_salt%"]
-
-    Afup\Site\Utils\Configuration:
-        autowire: true
+        arguments: ["%env(QR_CODE_SALT)%"]
 
     Afup\Site\Utils\LegacyConnectionFactory: ~
     Afup\Site\Utils\Base_De_Donnees:
@@ -192,7 +193,7 @@ services:
 
     geocoder_provider_google_maps:
         class: Geocoder\Provider\GoogleMaps\GoogleMaps
-        arguments: ['@Psr\Http\Client\ClientInterface', null, "%google_maps_api_key%"]
+        arguments: ['@Psr\Http\Client\ClientInterface', null, "%env(GOOGLE_MAPS_API_KEY)%"]
 
     AppBundle\Offices\OfficeFinder:
         autowire: true
@@ -207,7 +208,7 @@ services:
     Doctrine\DBAL\Connection:
         factory: '@AppBundle\Doctrine\ConnectionFactory'
         arguments:
-            $url: 'mysql://%database_user%:%database_password%@%database_host%:%database_port%/%database_name%?charset=utf8mb4'
+            $url: 'mysql://%env(DATABASE_USER)%:%env(DATABASE_PASSWORD)%@%env(DATABASE_HOST)%:%env(DATABASE_PORT)%/%env(DATABASE_NAME)%?charset=utf8mb4'
 
     AppBundle\Github\GithubClient:
         arguments:

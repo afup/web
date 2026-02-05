@@ -16,7 +16,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 final readonly class SlackNotifier
 {
     public function __construct(
-        #[Autowire('%slack_url%')]
+        #[Autowire('%env(SLACK_URL)%')]
         private string $postUrl,
         private MessageFactory $messageFactory,
         #[Autowire('@jms_serializer.serializer')]

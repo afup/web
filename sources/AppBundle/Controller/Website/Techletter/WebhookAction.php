@@ -13,7 +13,7 @@ final readonly class WebhookAction
 {
     public function __construct(
         private TechletterUnsubscriptionsRepository $techletterUnsubscriptionsRepository,
-        #[Autowire('%mailchimp_techletter_webhook_key%')]
+        #[Autowire('%env(MAILCHIMP_TECHLETTER_WEBHOOK_KEY)%')]
         private string $mailchimpTechletterWebhookKey,
     ) {}
 
