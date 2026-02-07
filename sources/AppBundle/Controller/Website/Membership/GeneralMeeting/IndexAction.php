@@ -15,14 +15,14 @@ use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\GeneralMeeting\ReportListBuilder;
 use AppBundle\Security\Authentication;
 use AppBundle\Twig\ViewRenderer;
-use Assert\Assertion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Webmozart\Assert\Assert;
 
 final class IndexAction extends AbstractController
 {
@@ -45,7 +45,7 @@ final class IndexAction extends AbstractController
         $title = 'Présence prochaine AG';
         $generalMeetingRepository = $this->generalMeetingRepository;
         $latestDate = $generalMeetingRepository->getLatestAttendanceDate();
-        Assertion::notNull($latestDate);
+        Assert::notNull($latestDate);
         $generalMeetingPlanned = $generalMeetingRepository->hasGeneralMeetingPlanned();
 
         $cotisation = $userService->getLastSubscription($user);
@@ -72,7 +72,7 @@ final class IndexAction extends AbstractController
 
         $form = $this->createFormBuilder($data, [
             'constraints' => [
-                new Assert\Callback(callback: static function (array $data, ExecutionContextInterface $context): void {
+                new Constraints\Callback(callback: static function (array $data, ExecutionContextInterface $context): void {
                     if ($data['presence'] === 1 && $data['id_personne_avec_pouvoir']) {
                         $context
                             ->buildViolation("Vous ne pouvez pas donner votre pouvoir et indiquer que vous participez en même temps.")

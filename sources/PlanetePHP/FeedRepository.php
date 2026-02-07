@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PlanetePHP;
 
-use Assert\Assertion;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 class FeedRepository
 {
@@ -37,7 +37,7 @@ class FeedRepository
             'url' => 'f.url',
             'status' => 'f.etat',
         ];
-        Assertion::keyExists($sorts, $sort);
+        Assert::keyExists($sorts, $sort);
         $qb = $this->connection->createQueryBuilder()
             ->select('f.id', 'f.nom', 'f.url', 'f.feed', 'f.etat', 'f.id_personne_physique')
             ->from('afup_planete_flux', 'f')

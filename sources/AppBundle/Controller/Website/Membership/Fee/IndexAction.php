@@ -16,9 +16,9 @@ use AppBundle\Association\UserMembership\UserService;
 use AppBundle\Payment\PayboxBilling;
 use AppBundle\Payment\PayboxFactory;
 use AppBundle\Twig\ViewRenderer;
-use Assert\Assertion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Webmozart\Assert\Assert;
 
 final class IndexAction extends AbstractController
 {
@@ -38,7 +38,7 @@ final class IndexAction extends AbstractController
 
         $identifiant = $this->droits->obtenirIdentifiant();
         $user = $this->userRepository->get($identifiant);
-        Assertion::notNull($user);
+        Assert::notNull($user);
         $cotisation = $userService->getLastSubscription($user);
         $now = new \DateTime('now');
         $isSubjectedToVat = Vat::isSubjectedToVat($now);

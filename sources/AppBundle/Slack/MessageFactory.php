@@ -13,9 +13,9 @@ use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
-use Assert\Assertion;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 class MessageFactory
 {
@@ -151,7 +151,7 @@ class MessageFactory
     public function createMessageForGeneralMeeting(GeneralMeetingRepository $generalMeetingRepository, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator): Message
     {
         $latestDate = $generalMeetingRepository->getLatestAttendanceDate();
-        Assertion::notNull($latestDate);
+        Assert::notNull($latestDate);
         $nombrePersonnesAJourDeCotisation = count($userRepository->getActiveMembers());
 
         $message = new Message();

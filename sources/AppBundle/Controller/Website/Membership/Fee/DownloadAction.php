@@ -12,11 +12,11 @@ use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\AuditLog\Audit;
-use Assert\Assertion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Webmozart\Assert\Assert;
 
 final class DownloadAction extends AbstractController
 {
@@ -44,11 +44,11 @@ final class DownloadAction extends AbstractController
 
         if ($cotisation['type_personne'] == MemberType::MemberCompany->value) {
             $company = $this->companyMemberRepository->get($cotisation['id_personne']);
-            Assertion::isInstanceOf($company, CompanyMember::class);
+            Assert::isInstanceOf($company, CompanyMember::class);
             $patternPrefix = $company->getCompanyName();
         } else {
             $user = $this->userRepository->get($cotisation['id_personne']);
-            Assertion::isInstanceOf($user, User::class);
+            Assert::isInstanceOf($user, User::class);
             $patternPrefix = $user->getLastName();
         }
 

@@ -8,7 +8,6 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Ting\JoinHydrator;
-use Assert\Assertion;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
@@ -16,6 +15,7 @@ use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @extends Repository<Speaker>
@@ -146,8 +146,8 @@ class SpeakerRepository extends Repository implements MetadataInitializer
             'name' => 'c.nom',
             'company' => 'c.societe',
         ];
-        Assertion::keyExists($sorts, $sort);
-        Assertion::inArray($direction, ['asc', 'desc']);
+        Assert::keyExists($sorts, $sort);
+        Assert::inArray($direction, ['asc', 'desc']);
         $params = ['eventId' => $event->getId()];
         $filterCondition = '';
         if ($filter) {

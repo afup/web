@@ -6,7 +6,6 @@ namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\CompanyMember;
-use Assert\Assertion;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -17,6 +16,7 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 use InvalidArgumentException;
+use Webmozart\Assert\Assert;
 
 /**
  * @extends Repository<CompanyMember>
@@ -71,12 +71,12 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
      */
     public function search($sort = 'name', $direction = 'asc', $filter = null, $onlyDisplayActive = true)
     {
-        Assertion::inArray($direction, ['asc', 'desc']);
+        Assert::inArray($direction, ['asc', 'desc']);
         $sorts = [
             'name' => ['raison_sociale'],
             'status' => ['etat', 'raison_sociale'],
         ];
-        Assertion::keyExists($sorts, $sort);
+        Assert::keyExists($sorts, $sort);
         $queryBuilder = $this->getQueryBuilderWithCompleteCompanyMember()
             ->orderBy(array_map(static fn($field): string => $field . ' ' . $direction, $sorts[$sort]));
 

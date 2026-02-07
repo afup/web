@@ -19,9 +19,9 @@ use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
-use Assert\Assertion;
 use DateInterval;
 use DateTime;
+use Webmozart\Assert\Assert;
 
 define('AFUP_COTISATIONS_REGLEMENT_ESPECES', 0);
 define('AFUP_COTISATIONS_REGLEMENT_CHEQUE', 1);
@@ -509,7 +509,7 @@ class Cotisations
 
         if ($personne['type_personne'] == MemberType::MemberCompany->value) {
             $company = $this->companyMemberRepository ? $this->companyMemberRepository->get($personne['id_personne']) : null;
-            Assertion::notNull($company);
+            Assert::notNull($company);
             $contactPhysique = [
                 'nom' => $company->getLastName(),
                 'prenom' => $company->getFirstName(),
@@ -517,7 +517,7 @@ class Cotisations
             ];
         } else {
             $user = $userRepository->get($personne['id_personne']);
-            Assertion::notNull($user);
+            Assert::notNull($user);
             $contactPhysique = [
                 'nom' => $user->getLastName(),
                 'prenom' => $user->getFirstName(),
