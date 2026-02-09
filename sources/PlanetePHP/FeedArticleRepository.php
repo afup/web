@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PlanetePHP;
 
-use Assert\Assertion;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
+use Webmozart\Assert\Assert;
 
 class FeedArticleRepository
 {
@@ -45,8 +45,8 @@ class FeedArticleRepository
             'content' => 'b.contenu',
             'status' => 'b.etat',
         ];
-        Assertion::keyExists($sorts, $sort);
-        Assertion::inArray($direction, ['asc', 'desc']);
+        Assert::keyExists($sorts, $sort);
+        Assert::inArray($direction, ['asc', 'desc']);
         $qb = $this->connection->createQueryBuilder();
         $qb->from('afup_planete_billet', 'b')
             ->select('b.*')

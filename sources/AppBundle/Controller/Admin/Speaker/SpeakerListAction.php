@@ -10,10 +10,10 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
-use Assert\Assertion;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Webmozart\Assert\Assert;
 
 class SpeakerListAction
 {
@@ -31,8 +31,8 @@ class SpeakerListAction
     {
         $sort = $request->query->get('sort', 'name');
         $direction = $request->query->get('direction', 'asc');
-        Assertion::inArray($sort, self::VALID_SORTS);
-        Assertion::inArray($direction, self::VALID_DIRECTIONS);
+        Assert::inArray($sort, self::VALID_SORTS);
+        Assert::inArray($direction, self::VALID_DIRECTIONS);
         $filter = $request->query->get('filter');
 
         $event = $eventSelection->event;

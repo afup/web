@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin;
 
-use Assert\Assertion;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Webmozart\Assert\Assert;
 
 class GetMenuAction
 {
@@ -23,7 +23,7 @@ class GetMenuAction
     public function __invoke(): Response
     {
         $masterRequest = $this->requestStack->getMainRequest();
-        Assertion::notNull($masterRequest);
+        Assert::notNull($masterRequest);
         $page = $masterRequest->query->get('page');
         $route = $masterRequest->get('_route');
 

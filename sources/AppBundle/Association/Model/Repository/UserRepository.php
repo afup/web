@@ -8,7 +8,6 @@ use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Badge;
-use Assert\Assertion;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -26,6 +25,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @extends Repository<User>
@@ -176,13 +176,13 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         $isCompanyManager = null,
         $needsUptoDateMembership = null,
     ) {
-        Assertion::inArray($direction, ['asc', 'desc']);
+        Assert::inArray($direction, ['asc', 'desc']);
         $sorts = [
             'lastname' => ['nom', 'prenom'],
             'firstname' => ['prenom', 'nom'],
             'status' => ['etat','nom', 'prenom'],
         ];
-        Assertion::keyExists($sorts, $sort);
+        Assert::keyExists($sorts, $sort);
 
         $queryBuilder = $this->getQueryBuilderWithCompleteUser()
             ->orderBy(array_map(static fn($field): string => $field . ' ' . $direction, $sorts[$sort]));

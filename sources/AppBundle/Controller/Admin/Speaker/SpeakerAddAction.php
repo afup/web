@@ -11,10 +11,10 @@ use AppBundle\Event\Form\SpeakerType;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;
-use Assert\Assertion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Webmozart\Assert\Assert;
 
 class SpeakerAddAction extends AbstractController
 {
@@ -28,7 +28,7 @@ class SpeakerAddAction extends AbstractController
     public function __invoke(Request $request): Response
     {
         $event = $this->eventRepository->get($request->query->get('eventId'));
-        Assertion::notNull($event);
+        Assert::notNull($event);
         $data = new SpeakerFormData();
         $form = $this->createForm(SpeakerType::class, $data, [
             SpeakerType::OPT_USER_GITHUB => true,

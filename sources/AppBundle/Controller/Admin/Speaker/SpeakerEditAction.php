@@ -13,9 +13,9 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
-use Assert\Assertion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Webmozart\Assert\Assert;
 
 class SpeakerEditAction extends AbstractController
 {
@@ -33,9 +33,9 @@ class SpeakerEditAction extends AbstractController
     public function __invoke(Request $request)
     {
         $speaker = $this->speakerRepository->get($request->query->get('id'));
-        Assertion::notNull($speaker);
+        Assert::notNull($speaker);
         $event = $this->eventRepository->get($speaker->getEventId());
-        Assertion::notNull($event);
+        Assert::notNull($event);
         $data = $this->speakerFormDataFactory->fromSpeaker($speaker);
         $form = $this->createForm(SpeakerType::class, $data, [
             SpeakerType::OPT_PHOTO_REQUIRED => null === $speaker->getPhoto(),

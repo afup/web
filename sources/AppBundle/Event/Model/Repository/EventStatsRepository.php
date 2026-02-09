@@ -9,10 +9,10 @@ use AppBundle\Event\Model\EventStats\TicketTypeStats;
 use AppBundle\Event\Model\EventStats;
 use AppBundle\Event\Model\EventStats\DailyStats;
 use AppBundle\Event\Model\Ticket;
-use Assert\Assertion;
 use Datetime;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 class EventStatsRepository
 {
@@ -86,7 +86,7 @@ class EventStatsRepository
 
     private function getStatsForDay(int $eventId, string $day, ?Datetime $from = null): DailyStats
     {
-        Assertion::inArray($day, self::DAYS);
+        Assert::inArray($day, self::DAYS);
         $baseQueryBuilder = $this->connection->createQueryBuilder()
             ->select('COUNT(*) AS c')
             ->from('afup_inscription_forum', 'aif')
