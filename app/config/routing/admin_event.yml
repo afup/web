@@ -137,6 +137,5 @@ admin_event_sessions_delete:
   requirements:
     id: \d+
 
-admin_event_ticket_list:
-  path: /tickets
-  defaults: { _controller: AppBundle\Controller\Admin\Event\Ticket\IndexAction }
+admin_event_ticket:
+  resource: "admin_event_ticket.yml"

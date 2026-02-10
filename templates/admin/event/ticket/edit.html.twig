@@ -1,0 +1,6 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Modifier une inscription pour le {{ event.title }}</h2>
+    {%  include 'admin/event/ticket/form.html.twig' %}
+{% endblock %}
