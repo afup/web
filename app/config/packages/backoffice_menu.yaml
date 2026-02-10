@@ -131,6 +131,8 @@ parameters:
                     url: '/admin/event/tickets'
                     extra_routes:
                         - admin_event_ticket_list
+                        - admin_event_ticket_add
+                        - admin_event_ticket_edit
                 forum_pending_bankwires:
                     nom: 'Virements en attente'
                     niveau: 'ROLE_ADMIN'

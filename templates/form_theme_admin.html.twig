@@ -25,6 +25,20 @@
     </div>
 {%- endblock checkbox_widget -%}
 
+{% block choice_widget_expanded -%}
+    {%- set attr = row_attr|merge({class: row_attr.class|default('') }) -%}
+    <div{% with {attr: attr} %}{{ block('attributes') }}{% endwith %}>
+        {% for child in form %}
+            <div class="field">
+                <div class="ui radio checkbox">
+                    {{- form_widget(child) -}}
+                    <label>{{ child.vars.label }}</label>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{%- endblock choice_widget_expanded %}
+
 {%- block datetime_widget -%}
     {% if widget == 'single_text' %}
         {{- block('form_widget_simple') -}}
