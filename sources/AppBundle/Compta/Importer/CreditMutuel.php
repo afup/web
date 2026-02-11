@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Compta\Importer;
 
+use AppBundle\Accounting\OperationType;
 use AppBundle\Model\ComptaCompte;
 
 class CreditMutuel implements Importer

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\Compta\Importer;
 
+use AppBundle\Accounting\OperationType;
 use AppBundle\Compta\Importer\AutoQualifier;
 use AppBundle\Compta\Importer\Operation;
-use AppBundle\Compta\Importer\OperationType;
 use AppBundle\Model\ComptaCategorie;
 use AppBundle\Model\ComptaEvenement;
 use AppBundle\Model\ComptaModeReglement;

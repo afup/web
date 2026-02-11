@@ -46,7 +46,7 @@ class EditTransactionAction extends AbstractController
             if ($submitAndPassButton instanceof SubmitButton && $submitAndPassButton->isClicked()) {
                 return $this->redirectToRoute('admin_accounting_journal_edit', ['id' => $nextTransaction->getId()]);
             } else {
-                return $this->redirect('/pages/administration/index.php?page=compta_journal&action=lister#L' . $transaction->getId());
+                return $this->redirect('/admin/accounting/journal/list#L' . $transaction->getId());
             }
         }
         return $this->render('admin/accounting/journal/edit.html.twig', [
