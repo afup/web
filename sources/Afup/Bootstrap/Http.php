@@ -25,6 +25,7 @@ declare(strict_types=1);
 use Afup\Site\Corporate\Site;
 use Smarty\Smarty;
 
+require_once __DIR__ . '/../../../vendor/autoload.php';
 require_once __DIR__ . '/_Common.php';
 
 // initialisation de la session / requête
