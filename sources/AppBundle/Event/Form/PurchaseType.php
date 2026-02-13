@@ -19,6 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\Length;
 
 class PurchaseType extends AbstractType
 {
@@ -69,7 +70,12 @@ class PurchaseType extends AbstractType
             ])
             ->add('firstname', TextType::class)
             ->add('lastname', TextType::class)
-            ->add('company', TextType::class, ['required' => false])
+            ->add('company', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Length(max: 40),
+                ],
+            ])
             ->add('email', EmailType::class)
             ->add('address', TextType::class)
             ->add('zipcode', TextType::class, ['label' => 'Zip code'])
