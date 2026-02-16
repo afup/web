@@ -22,7 +22,7 @@ final class ListAction extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $page = $request->get('page', 1);
+        $page = $request->query->getInt('page', 1);
 
         $form = $this->createForm(NewsFiltersType::class);
         $form->handleRequest($request);

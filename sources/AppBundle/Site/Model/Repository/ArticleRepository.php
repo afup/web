@@ -79,7 +79,7 @@ class ArticleRepository extends Repository implements MetadataInitializer
         return $row['cnt'];
     }
 
-    public function findPublishedNews($page, $itemsPerPage, array $filters)
+    public function findPublishedNews(int $page, int $itemsPerPage, array $filters)
     {
         [$sql, $params] = $this->getSqlPublishedNews($filters);
 

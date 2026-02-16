@@ -67,6 +67,6 @@ class DataExtractor
             }
         }
 
-        return array_map(fn($value): string => trim($value), $data);
+        return array_map(fn(mixed $value): string => trim((string) $value), $data);
     }
 }
