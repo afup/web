@@ -6,7 +6,7 @@ namespace AppBundle\Accounting\Form;
 
 use Afup\Site\Utils\Pays;
 use AppBundle\Accounting\InvoicingCurrency;
-use AppBundle\Accounting\Model\InvoicingDetail;
+use AppBundle\Accounting\Model\Invoicing;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -151,7 +151,6 @@ class QuotationType extends AbstractType
             'keep_as_list' => true,
             'allow_add' => true,
             'allow_delete' => true,
-            'delete_empty' => $this->validate(...) ,
         ]);
 
         if ($options['actionType'] === 'edit') {
@@ -166,15 +165,11 @@ class QuotationType extends AbstractType
         }
     }
 
-    private function validate(?InvoicingDetail $detail = null): bool
-    {
-        return null === $detail || (empty($detail->getUnitPrice()) && empty($detail->getQuantity()));
-    }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'actionType' => 'add',
+            'data_class' => Invoicing::class,
         ]);
 
         $resolver->addAllowedTypes('actionType', 'string');

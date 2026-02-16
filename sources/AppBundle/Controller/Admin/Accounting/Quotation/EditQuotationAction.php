@@ -43,6 +43,7 @@ class EditQuotationAction extends AbstractController
                     $this->invoicingDetailRepository->save($detail);
                 }
 
+                //dump($existingIds, $idsToRemove);
                 $idsToRemove = array_diff($idsToRemove, $existingIds);
                 if ($idsToRemove) {
                     $this->invoicingDetailRepository->removeRowsPerIds($idsToRemove);
@@ -52,6 +53,7 @@ class EditQuotationAction extends AbstractController
                 $this->addFlash('success',  'L\'écriture a été modifiée');
                 return $this->redirectToRoute('admin_accounting_quotations_list');
             } catch (\Exception $e) {
+//                dump($e->getMessage());
                 $this->invoicingRepository->rollback();
                 $this->addFlash('error',  'L\'écriture n\'a pas pu être enregistrée');
             }

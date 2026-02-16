@@ -48,6 +48,7 @@ return (new Config())
                                             '--disable-dev-shm-usage',
                                             '--disable-extensions',
                                             '--ignore-certificate-errors',
+                                            '--disable-smooth-scrolling',
                                         ],
                                     ],
                                 ],

@@ -21,15 +21,13 @@ class InvoicingRowType extends AbstractType
     {
         $builder->add('reference', TextType::class, [
             'label' => 'Référence',
-            'required' => false,
             'constraints' => [
                 new Assert\NotBlank(),
-                new Assert\Type('string'),
+                new Assert\Type(type: 'string'),
                 new Assert\Length(max: 20),
             ],
         ])->add('designation', TextareaType::class, [
             'label' => 'Désignation',
-            'required' => false,
             'constraints' => [
                 new Assert\NotBlank(),
                 new Assert\Type('string'),
@@ -37,21 +35,20 @@ class InvoicingRowType extends AbstractType
             ],
         ])->add('quantity', NumberType::class, [
             'label' => 'Quantité',
-            'required' => false,
             'scale' => 2,
             'constraints' => [
                 new Assert\NotBlank(),
+                new Assert\Type(type: 'numeric'),
             ],
         ])->add('unitPrice', NumberType::class, [
             'label' => 'Prix unitaire HT',
-            'required' => false,
             'scale' => 2,
             'constraints' => [
                 new Assert\NotBlank(),
+                new Assert\Type(type: 'numeric'),
             ],
         ])->add('tva', ChoiceType::class, [
             'label' => 'Taux de TVA',
-            'required' => false,
             'placeholder' => false,
             'choices' => ['Non soumis' => 0, '5.5%' => 5.50, '10%' => 10.00, '20%' => 20.00],
             'help' => 'Rappel : sponsoring 20%, place supplémentaire 10%.',
