@@ -420,6 +420,7 @@ class TicketRepository extends Repository implements MetadataInitializer
                 'columnName' => 'mail_partenaire',
                 'fieldName' => 'optin',
                 'type' => 'bool',
+                'default' => false,
                 'serializer' => Boolean::class,
             ])
             ->addField([

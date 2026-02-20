@@ -208,7 +208,7 @@ class MessageFactory
         $attachment = new Attachment();
         $attachment
             ->setTitle('Total des inscriptions')
-            ->setTitleLink('https://afup.org/pages/administration/index.php?page=forum_inscriptions&id_forum=' . $event->getId())
+            ->setTitleLink($this->urlGenerator->generate('admin_event_ticket_list', ['id' => $event->getId()],UrlGeneratorInterface::ABSOLUTE_URL))
         ;
 
         if ($event->lastsOneDay()) {
