@@ -4,7 +4,7 @@
 
     <h2>Liste des devis</h2>
     <div class="ui menu">
-        <a href="/pages/administration/index.php?page=compta_devis&amp;action=ajouter" class="item">
+        <a href="{{ url('admin_accounting_quotations_add') }}" class="item">
             <div data-tooltip="Ajouter un devis" data-position="bottom left">
                 <i class="icon plus square"></i>
                 Ajouter
@@ -57,7 +57,7 @@
                         </td>
                         <td class="right aligned single line">
                         {% if line.invoiceNumber == '' %}
-                            <a href="/pages/administration/index.php?page=compta_devis&amp;action=modifier&amp;id={{ line.id }}"
+                            <a href="{{ url('admin_accounting_quotations_edit', {'quotationId': line.id}) }}"
                                data-position="left center"
                                data-tooltip="Modifier le devis {{ line.company }}"
                                class="compact ui icon button"

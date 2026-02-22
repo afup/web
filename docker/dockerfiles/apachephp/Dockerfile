@@ -29,6 +29,7 @@ RUN apt-get update && \
         libmcrypt4 \
         libicu-dev \
         nodejs \
+        chromium \
     && \
         docker-php-ext-configure gd --with-freetype --with-jpeg \
     && \

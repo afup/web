@@ -35,6 +35,8 @@ services:
       APP_ENV: "dev"
       HOST_PWD: ${PWD}
       SYMFONY_IDE: "%env(IDE_USED)%://open?url=file://%%f&line=%%l&/var/www/html/>%env(HOST_PWD)%/"
+      PANTHER_NO_SANDBOX: 1
+      PANTHER_CHROME_ARGUMENTS: '--disable-dev-shm-usage --disable-features=IsolateOrigins,site-per-process,TrackingProtection3pcd'
     env_file:
       .env
     volumes:
