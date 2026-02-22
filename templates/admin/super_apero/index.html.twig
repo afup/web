@@ -1,0 +1,78 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Liste des Super Apéros</h2>
+
+    {% if not hasSuperAperoForCurrentYear %}
+        <div class="ui menu">
+            <a href="{{ path('admin_super_apero_add') }}" class="item">
+                <div data-tooltip="Choisir la date du prochain Super Apéro" data-position="bottom left">
+                    <i class="icon plus square"></i>
+                    Planifier le Super Apéro {{ currentYear }}
+                </div>
+            </a>
+        </div>
+    {% endif %}
+
+    <div class="ui message">
+        <p>
+            Un Super Apéro devient actif lorsque sa date est dans l'année courante, n'est pas encore passée et qu'au
+            moins une des antennes a des informations renseignées.<br />
+            Si un Super Apéro est actif, <a href="{{ url('superapero') }}">la page du site</a> affichera les informations. Sinon, elle redirige vers la page d'accueil.
+        </p>
+    </div>
+
+    <table class="ui table striped compact celled">
+        <thead>
+        <tr>
+            <th>Année</th>
+            <th>Date</th>
+            <th>Antennes</th>
+            <th>État</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for apero in aperos %}
+        <tr>
+            <td>{{ apero.annee }}</td>
+            <td>{{ apero.date|date('d/m/Y') }}</td>
+            <td>
+                {% for meetup in apero.meetups %}
+                    <span class="ui label">{{ office_name(meetup.antenne) }}</span>
+                {% endfor %}
+            </td>
+            <td>
+                {% if apero.isActive %}
+                    <span class="ui green label">Actif</span>
+                {% else %}
+                    <span class="ui grey label">Inactif</span>
+                {% endif %}
+            </td>
+            <td class="single line right aligned">
+                <a id="modifier_{{ apero.id }}"
+                   href="{{ path('admin_super_apero_edit', {'id': apero.id }) }}"
+                   data-position="left center"
+                   data-tooltip="Modifier le Super Apéro {{ apero.annee }}"
+                   class="compact ui icon button"
+                >
+                    <i class="pencil alernate icon"></i>
+                </a>
+
+                <form method="post" action="{{ path('admin_super_apero_delete', {'id': apero.id}) }}" style="display: inline" class="confirmable" data-confirmable-label="Etes-vous sûr de vouloir supprimer le Super Apéro {{ apero.annee }} ?">
+                    <input type="hidden" name="_token" value="{{ csrf_token('super_apero_delete') }}">
+                    <button type="submit"
+                            id="supprimer_{{ apero.id }}"
+                            data-position="left center"
+                            data-tooltip="Supprimer le Super Apéro {{ apero.annee }}"
+                            class="compact ui red icon button"
+                    >
+                        <i class="trash icon"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

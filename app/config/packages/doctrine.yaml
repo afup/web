@@ -29,6 +29,11 @@ doctrine:
         is_bundle: false
         dir: '%kernel.project_dir%/../sources/AppBundle/Site/Entity'
         prefix: 'AppBundle\Site\Entity'
+      SuperApero:
+        type: attribute
+        is_bundle: false
+        dir: '%kernel.project_dir%/../sources/AppBundle/SuperApero/Entity'
+        prefix: 'AppBundle\SuperApero\Entity'
 
 when@test:
   doctrine:
