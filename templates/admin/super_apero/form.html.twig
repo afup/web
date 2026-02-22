@@ -1,0 +1,72 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% form_theme form 'form_theme_admin.html.twig' %}
+
+{% block content %}
+    <h2>{{ formTitle }}</h2>
+
+    {{ form_start(form) }}
+
+        <div class="ui segment">
+            <div class="ui form">
+                {{ form_row(form.date) }}
+            </div>
+
+            <div class="ui grid">
+                <div class="three wide column"></div>
+                <div class="nine wide column">
+
+                    <h2 class="ui header">Antennes</h2>
+
+                    <div class="ui message">
+                        <p>
+                            Seules les antennes ayant soit un ID meetup, soit une description seront affichées sur le site.
+                        </p>
+                    </div>
+
+                    <table class="ui table compact">
+                        <thead>
+                        <tr>
+                            <th>Antenne</th>
+                            <th style="width: 200px;">ID Meetup</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for meetup in form.meetups %}
+                            <tr>
+                                <td class="top aligned">{{ meetup.vars.label }}</td>
+                                <td class="top aligned">
+                                    <div class="ui form" style="width: 200px;">
+                                        {{ form_widget(meetup.meetupId) }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="ui form">
+                                        {{ form_widget(meetup.description) }}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui segment">
+            <div>
+                <div class="ui form">
+                    <div class="inline fields ui grid">
+                        <div class="three wide column">
+                        </div>
+                        <div class="three wide column">
+                            <input type="submit" value="{{ submitLabel }}" class="ui primary button">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {{ form_end(form) }}
+{% endblock %}
