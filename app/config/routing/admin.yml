@@ -45,6 +45,10 @@ admin_antennes:
   resource: "admin_antennes.yml"
   prefix: /antennes
 
+admin_super_apero:
+  resource: "admin_super_apero.yml"
+  prefix: /super-apero
+
 admin_members_reporting:
   path: /members/reporting
   defaults: {_controller: AppBundle\Controller\MembershipAdmin\ReportingAction}

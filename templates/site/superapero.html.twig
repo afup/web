@@ -39,10 +39,10 @@
             <h2 style="text-align: center">Des apéros PHP le même jour dans toutes les antennes !</h2>
 
             <blockquote>
-                <p>Bloquez votre soirée du mercredi 11 mars et rendez-vous dans votre antenne locale pour une soirée de conférences et d'échanges, où toute la communauté PHP sera invitée à lever son verre pour célébrer le langage !</p>
+                <p>Bloquez votre soirée du {{ superApero.date|format_date(pattern='EEEE d MMMM', locale='fr') }} et rendez-vous dans votre antenne locale pour une soirée de conférences et d'échanges, où toute la communauté PHP sera invitée à lever son verre pour célébrer le langage !</p>
             </blockquote>
 
-            {% for apero in aperos %}
+            {% for meetup in superApero.meetups %}
                 {% if loop.index is odd %}
                     <div class="container">
                 {% endif %}
@@ -50,19 +50,19 @@
                 <div class="col-md-6">
                     <div class="container">
                         <div class="col-md-2">
-                            <img src="{{ office_logo(apero.code) }}" alt="" />
+                            <img src="{{ office_logo(meetup.antenne) }}" alt="" />
                         </div>
                         <div class="col-md-10">
-                            <h3>{{ office_name(apero.code) }}</h3>
+                            <h3>{{ office_name(meetup.antenne) }}</h3>
                         </div>
                     </div>
                     <div class="container">
-                        <div class="col-md-{% if apero.meetup_id is defined %}8{% else %}12{% endif %}">
-                            {{ apero.content|raw }}
+                        <div class="col-md-{% if meetup.meetupId %}8{% else %}12{% endif %}">
+                            {{ meetup.description|raw }}
                         </div>
-                        {% if apero.meetup_id is defined %}
+                        {% if meetup.meetupId %}
                         <div class="col-md-4">
-                                <a href="https://www.meetup.com/fr-FR/{{ office_meetup_urlname(apero.code) }}/events/{{ apero.meetup_id }}/" class="button">S'inscrire</a>
+                                <a href="https://www.meetup.com/fr-FR/{{ office_meetup_urlname(meetup.antenne) }}/events/{{ meetup.meetupId }}/" class="button">S'inscrire</a>
                         </div>
                         {% endif %}
                     </div>
@@ -73,7 +73,7 @@
                 {% endif %}
             {% endfor %}
 
-            {% if aperos|length is odd %}
+            {% if superApero.meetups|length is odd %}
                 </div>
             {% endif %}
     </div>
