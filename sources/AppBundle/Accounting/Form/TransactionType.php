@@ -226,7 +226,7 @@ class TransactionType extends AbstractType
     {
         $choices = [];
         /** @var Event $event */
-        foreach ($this->eventRepository->getAllSortedByName(true) as $event) {
+        foreach ($this->eventRepository->getAllSortedByName() as $event) {
             $choices[$event->name] = $event->id;
         }
 
