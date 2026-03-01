@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Accounting\Quotation;
 
 use AppBundle\Accounting\Form\QuotationType;
+use AppBundle\Accounting\Model\Invoicing;
 use AppBundle\Accounting\Model\Repository\InvoicingDetailRepository;
 use AppBundle\Accounting\Model\Repository\InvoicingRepository;
-use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,8 +24,10 @@ class EditQuotationAction extends AbstractController
         $quotationId = $request->query->getInt('quotationId');
         $quotation = $this->invoicingRepository->getQuotationById($quotationId);
         if ($quotation === null) {
-            throw new InvalidArgumentException("Ce devis n'existe pas");
+            throw $this->createNotFoundException("Ce devis n'existe pas");
         }
+
+        $this->cleanLegacyData($quotation);
 
         $form = $this->createForm(QuotationType::class, $quotation, ['actionType' => 'edit']);
         $form->handleRequest($request);
@@ -43,7 +45,6 @@ class EditQuotationAction extends AbstractController
                     $this->invoicingDetailRepository->save($detail);
                 }
 
-                //dump($existingIds, $idsToRemove);
                 $idsToRemove = array_diff($idsToRemove, $existingIds);
                 if ($idsToRemove) {
                     $this->invoicingDetailRepository->removeRowsPerIds($idsToRemove);
@@ -53,7 +54,6 @@ class EditQuotationAction extends AbstractController
                 $this->addFlash('success',  'L\'écriture a été modifiée');
                 return $this->redirectToRoute('admin_accounting_quotations_list');
             } catch (\Exception $e) {
-//                dump($e->getMessage());
                 $this->invoicingRepository->rollback();
                 $this->addFlash('error',  'L\'écriture n\'a pas pu être enregistrée');
             }
@@ -64,5 +64,22 @@ class EditQuotationAction extends AbstractController
             'form' => $form->createView(),
             'submitLabel' => 'Modifier',
         ]);
+    }
+
+    /**
+     * Pour simplifier la modification d'un devis créé avant ma refonte sous symfony, on supprime les lignes vides
+     */
+    private function cleanLegacyData(Invoicing $quotation): void
+    {
+        $cleanedDetails = [];
+        foreach ($quotation->getDetails() as $detail) {
+            if (empty($detail->getDesignation()) && empty($detail->getQuantity()) && empty($detail->getUnitPrice()) && empty($detail->getReference())) {
+                $this->invoicingDetailRepository->delete($detail);
+            } else {
+                $cleanedDetails[] = $detail;
+            }
+        }
+        $quotation->setDetails($cleanedDetails);
+
     }
 }

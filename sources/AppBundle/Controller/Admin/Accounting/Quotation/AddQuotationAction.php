@@ -52,7 +52,7 @@ class AddQuotationAction extends AbstractController
         ]);
     }
 
-    private function init(int $quotationId)
+    private function init(int $quotationId): Invoicing
     {
         $baseQuotation = $this->invoicingRepository->get($quotationId);
         if (!$baseQuotation instanceof Invoicing) {

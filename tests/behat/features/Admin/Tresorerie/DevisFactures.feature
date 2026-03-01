@@ -92,8 +92,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I should see "Paris Cedex 1"
     And I should see a yellow label "En attente"
     # Modification de la facture
-    Then I follow the button of tooltip "Modifier la ligne ESN dev en folie"
-    And I should see "Modifier une facture"
+    When I follow the button of tooltip "Modifier la ligne ESN dev en folie" and wait until I see "Modifier une facture"
     Then I fill in "ville" with "Paris Cedex 7"
     Then I select "1" from "etat_paiement"
     When I press "Modifier" and wait until I see "L'écriture a été modifiée"

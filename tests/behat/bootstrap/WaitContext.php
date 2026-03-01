@@ -69,6 +69,42 @@ trait WaitContext
         $this->waitToSeeText($text, $timeout);
     }
 
+    #[When('/^I follow the button of tooltip "(?P<tooltip>[^"]*)" and wait until I see "(?P<text>[^"]*)"(?:| within (?P<timeout>\d+)ms)$/')]
+    public function clickLinkOfTooltipAndWaitToSee(string $tooltip, string $text, ?string $timeout = null): void
+    {
+        $link = $this->minkContext->getSession()->getPage()->find('css', sprintf('a[data-tooltip="%s"]', $tooltip));
+
+        if (null === $link) {
+            throw new ExpectationException(
+                sprintf('Link of tooltip "%s" not found', $tooltip),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+
+        $session = $this->minkContext->getSession();
+
+        if ($session->getDriver() instanceof \Behat\Mink\Driver\PantherDriver) {
+            $href = $link->getAttribute('href');
+            $session->executeScript(sprintf('window.location.href = %s;', json_encode($href)));
+
+            $timeoutMs = $timeout !== null ? (int) $timeout : self::DEFAULT_TIMEOUT_MS;
+            $this->waitForCondition(
+                fn() => str_contains($session->getPage()->getContent(), $text),
+                sprintf(
+                    'Text "%s" did not appear within %dms. Current URL: %s. Page excerpt: %s',
+                    $text,
+                    $timeoutMs,
+                    $session->getCurrentUrl(),
+                    substr(strip_tags($session->getPage()->getContent()), 0, 500),
+                ),
+                $timeoutMs,
+            );
+        } else {
+            $link->click();
+            $this->waitToSeeText($text, $timeout);
+        }
+    }
+
     /**
      * Generic wait-for-condition method that polls until timeout.
      *

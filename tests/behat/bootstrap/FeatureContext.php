@@ -227,7 +227,7 @@ class FeatureContext implements Context
             );
         }
 
-        $this->minkContext->getSession()->executeScript('document.querySelector("' . $selector . '").click();');
+        $node->click();
     }
 
     #[Then('/^(?:|I )open menu "(?P<text>(?:[^"]|\\")*)"$/')]
