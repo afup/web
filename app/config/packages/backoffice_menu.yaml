@@ -100,6 +100,14 @@ parameters:
                         - admin_site_articles_list
                         - admin_site_articles_add
                         - admin_site_articles_edit
+                super_apero_infos:
+                    nom: 'Super Apéro'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/super-apero'
+                    extra_routes:
+                        - admin_super_apero_list
+                        - admin_super_apero_add
+                        - admin_super_apero_edit
         forum:
             nom: 'Évènements'
             niveau: 'ROLE_FORUM'
