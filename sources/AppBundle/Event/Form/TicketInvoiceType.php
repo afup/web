@@ -29,15 +29,17 @@ class TicketInvoiceType extends AbstractType
         $builder
             ->add('reference', TextType::class, [
                 'label' => 'Référence',
-                'disabled' => !$options['data'],
+                'disabled' => true,
                 'required' => false,
             ])
             ->add('authorization', TextType::class, [
                 'label' => 'Autorisation',
+                'disabled' => (bool) $options['data'],
                 'required' => false,
             ])
             ->add('transaction', TextType::class, [
                 'label' => 'Transaction',
+                'disabled' => (bool) $options['data'],
                 'required' => false,
             ])
 
