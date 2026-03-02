@@ -4,7 +4,7 @@ Feature: Gestion des Super Apéro
   Scenario: Ajout d'un Super Apéro
     Given the current date is "2025-01-15 10:00:00"
     And I am logged in as admin and on the Administration
-    And I am on "/admin/super-apero/"
+    And I follow "Super Apéro"
     Then I should see "Liste des Super Apéros"
     When I follow "Planifier le Super Apéro 2025"
     Then I should see "Ajouter un Super Apéro"
@@ -25,13 +25,13 @@ Feature: Gestion des Super Apéro
   Scenario: Activation d'un Super Apéro
     Given the current date is "2025-03-11 23:59:59"
     And I am logged in as admin and on the Administration
-    And I am on "/admin/super-apero/"
+    And I follow "Super Apéro"
     Then I should see "Liste des Super Apéros"
     And I should see "2025"
     And I should see "11/03/2025"
     And I should see a green label "Actif"
     When the current date is "2025-03-12 00:00:00"
-    And I am on "/admin/super-apero/"
+    And I follow "Super Apéro"
     Then I should see "Liste des Super Apéros"
     And I should see "2025"
     And I should see "11/03/2025"
@@ -40,6 +40,10 @@ Feature: Gestion des Super Apéro
   Scenario: Un seul Super Apéro possible par année
     Given the current date is "2025-01-15 10:00:00"
     And I am logged in as admin and on the Administration
+    And I follow "Super Apéro"
+    Then I should not see "Planifier le Super Apéro"
+    Then I should not see "Planifier le Super Apéro 2025"
+    # Url en dur car le bouton n'est pas affiché si un super apéro existe déjà pour l'année courante
     And I am on "/admin/super-apero/add"
     When I fill in "super_apero[date]" with "2025-09-20"
     And I press "Ajouter"
@@ -48,7 +52,7 @@ Feature: Gestion des Super Apéro
   Scenario: Modifier la date d'un Super Apéro
     Given the current date is "2025-01-15 10:00:00"
     And I am logged in as admin and on the Administration
-    And I am on "/admin/super-apero/"
+    And I follow "Super Apéro"
     When I follow "modifier_1"
     Then I should see "Modifier le Super Apéro 2025"
     When I fill in "super_apero[date]" with "2025-06-15"
@@ -60,7 +64,8 @@ Feature: Gestion des Super Apéro
   Scenario: Ajouter une ville à un Super Apéro
     Given the current date is "2025-01-15 10:00:00"
     And I am logged in as admin and on the Administration
-    And I am on "/admin/super-apero/edit/1"
+    And I follow "Super Apéro"
+    When I follow "modifier_1"
     When I fill in "super_apero[meetups][nantes][meetupId]" with "11111"
     And I fill in "super_apero[meetups][nantes][description]" with "Super Apéro PHP à Nantes"
     And I press "Modifier"
@@ -70,7 +75,8 @@ Feature: Gestion des Super Apéro
   Scenario: Modifier une ville d'un Super Apéro
     Given the current date is "2025-01-15 10:00:00"
     And I am logged in as admin and on the Administration
-    And I am on "/admin/super-apero/edit/1"
+    And I follow "Super Apéro"
+    When I follow "modifier_1"
     When I fill in "super_apero[meetups][lyon][meetupId]" with "99999"
     And I fill in "super_apero[meetups][lyon][description]" with "Super Apéro PHP à Lyon modifié"
     And I fill in "super_apero[meetups][paris][description]" with "Super Apéro PHP à Paris modifié"
@@ -82,7 +88,8 @@ Feature: Gestion des Super Apéro
   Scenario: Supprimer une ville d'un Super Apéro
     Given the current date is "2025-01-15 10:00:00"
     And I am logged in as admin and on the Administration
-    And I am on "/admin/super-apero/edit/1"
+    And I follow "Super Apéro"
+    When I follow "modifier_1"
     When I fill in "super_apero[meetups][nantes][meetupId]" with ""
     And I fill in "super_apero[meetups][nantes][description]" with ""
     And I press "Modifier"
@@ -92,7 +99,7 @@ Feature: Gestion des Super Apéro
   Scenario: Supprimer un Super Apéro
     Given the current date is "2025-01-15 10:00:00"
     And I am logged in as admin and on the Administration
-    And I am on "/admin/super-apero/"
+    And I follow "Super Apéro"
     When I press "supprimer_1"
     Then I should see "Le Super Apéro 2025 a été supprimé"
     And I should not see "15/06/2025"

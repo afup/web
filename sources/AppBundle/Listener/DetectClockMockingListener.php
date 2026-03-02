@@ -4,44 +4,32 @@ declare(strict_types=1);
 
 namespace AppBundle\Listener;
 
+use Afup\Tests\Support\TimeMocker;
 use Symfony\Component\Clock\Clock;
 use Symfony\Component\Clock\MockClock;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
-#[AsEventListener]
-final class DetectClockMockingListener
+final readonly class DetectClockMockingListener
 {
-    public const HEADER = 'X-Test-Mock-Clock';
-
     public function __construct(
         #[Autowire('%kernel.environment%')]
-        private readonly string $env,
+        private string $env,
     ) {}
 
     public function __invoke(RequestEvent $event): void
     {
         if ($this->env !== 'test') {
+            // Le listener est configuré manuellement uniquement dans l'env de test.
+            // Mais on ne sait jamais alors, alors on vérifie ici au cas où.
             return;
         }
 
-        if (!$event->isMainRequest()) {
+        $currentDateMock = (new TimeMocker())->getCurrentDateMock();
+        if ($currentDateMock === null) {
             return;
         }
 
-        $request = $event->getRequest();
-
-        if (!$request->headers->has(self::HEADER)) {
-            return;
-        }
-
-        $headerValue = $request->headers->get(self::HEADER);
-
-        if ($headerValue === null || $headerValue === '') {
-            return;
-        }
-
-        Clock::set(new MockClock($headerValue));
+        Clock::set(new MockClock($currentDateMock));
     }
 }

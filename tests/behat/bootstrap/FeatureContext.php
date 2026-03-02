@@ -30,6 +30,8 @@ class FeatureContext implements Context
     public function __construct()
     {
         $this->databaseManager = new DatabaseManager(true);
+
+        $this->initTimeContext();
     }
 
     #[BeforeScenario]
