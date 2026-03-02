@@ -174,25 +174,41 @@ if ($action == 'lister') {
 
 
 
-    $formulaire->addElement('header'  , '', 'Contenu');
-    $formulaire->addElement('text'    , 'ref'    , 'Référence'        , ['size' => 50, 'maxlength' => 100]);
-    $formulaire->addElement('textarea', 'designation'  , 'Désignation', ['cols' => 42, 'rows' => 5]);
-    $formulaire->addElement('text'    , 'quantite'    , 'Quantite'        , ['size' => 50, 'maxlength' => 100]);
-    $formulaire->addElement('text'    , 'pu'    , 'Prix Unitaire'        , ['size' => 50, 'maxlength' => 100]);
-
-
-
-    for ($i = 1;$i < 6;$i++) {
+    $nbRow = count($champsRecup);
+    if ($nbRow === 5) {
         $formulaire->addElement('header'  , '', 'Contenu');
-        $formulaire->addElement('static'  , 'note'     , ''  , 'Ligne ' . $i . '<br /><br />');
-        $formulaire->addElement('hidden'    , 'id' . $i    , 'id');
-        $formulaire->addElement('text'    , 'ref' . $i    , 'Référence'        , ['size' => 50, 'maxlength' => 100]);
-        $formulaire->addElement('static'  , 'note'     , ''  , 'Rappel : sponsoring 20%, place supplémentaire 10%.<br />');
-        $formulaire->addElement('select'    , 'tva' . $i    , 'Taux de TVA'        , ['0' => 'Non soumis', '5.50' => '5.5%', '10.00' => '10%', '20.00' => '20%']);
-        $formulaire->addElement('textarea', 'designation' . $i  , 'Désignation', ['cols' => 42, 'rows' => 5]);
-        $formulaire->addElement('text'    , 'quantite' . $i    , 'Quantite'        , ['size' => 50, 'maxlength' => 100]);
-        $formulaire->addElement('text'    , 'pu' . $i    , 'Prix Unitaire HT'        , ['size' => 50, 'maxlength' => 100]);
+        $formulaire->addElement('text'    , 'ref'    , 'Référence'        , ['size' => 50, 'maxlength' => 100]);
+        $formulaire->addElement('textarea', 'designation'  , 'Désignation', ['cols' => 42, 'rows' => 5]);
+        $formulaire->addElement('text'    , 'quantite'    , 'Quantite'        , ['size' => 50, 'maxlength' => 100]);
+        $formulaire->addElement('text'    , 'pu'    , 'Prix Unitaire'        , ['size' => 50, 'maxlength' => 100]);
+
+
+
+        for ($i = 1;$i < 6;$i++) {
+            $formulaire->addElement('header'  , '', 'Contenu');
+            $formulaire->addElement('static'  , 'note'     , ''  , 'Ligne ' . $i . '<br /><br />');
+            $formulaire->addElement('hidden'    , 'id' . $i    , 'id');
+            $formulaire->addElement('text'    , 'ref' . $i    , 'Référence'        , ['size' => 50, 'maxlength' => 100]);
+            $formulaire->addElement('static'  , 'note'     , ''  , 'Rappel : sponsoring 20%, place supplémentaire 10%.<br />');
+            $formulaire->addElement('select'    , 'tva' . $i    , 'Taux de TVA'        , ['0' => 'Non soumis', '5.50' => '5.5%', '10.00' => '10%', '20.00' => '20%']);
+            $formulaire->addElement('textarea', 'designation' . $i  , 'Désignation', ['cols' => 42, 'rows' => 5]);
+            $formulaire->addElement('text'    , 'quantite' . $i    , 'Quantite'        , ['size' => 50, 'maxlength' => 100]);
+            $formulaire->addElement('text'    , 'pu' . $i    , 'Prix Unitaire HT'        , ['size' => 50, 'maxlength' => 100]);
+        }
+    } else {
+        for ($i = 1;$i <= $nbRow;$i++) {
+            $formulaire->addElement('header'  , '', 'Contenu');
+            $formulaire->addElement('static'  , 'note'     , ''  , 'Ligne ' . $i . '<br /><br />');
+            $formulaire->addElement('hidden'    , 'id' . $i    , 'id');
+            $formulaire->addElement('text'    , 'ref' . $i    , 'Référence'        , ['size' => 50, 'maxlength' => 100]);
+            $formulaire->addElement('static'  , 'note'     , ''  , 'Rappel : sponsoring 20%, place supplémentaire 10%.<br />');
+            $formulaire->addElement('select'    , 'tva' . $i    , 'Taux de TVA'        , ['0' => 'Non soumis', '5.50' => '5.5%', '10.00' => '10%', '20.00' => '20%']);
+            $formulaire->addElement('textarea', 'designation' . $i  , 'Désignation', ['cols' => 42, 'rows' => 5]);
+            $formulaire->addElement('text'    , 'quantite' . $i    , 'Quantite'        , ['size' => 50, 'maxlength' => 100]);
+            $formulaire->addElement('text'    , 'pu' . $i    , 'Prix Unitaire HT'        , ['size' => 50, 'maxlength' => 100]);
+        }
     }
+
 
 
 

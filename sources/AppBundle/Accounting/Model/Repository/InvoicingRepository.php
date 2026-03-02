@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace AppBundle\Accounting\Model\Repository;
 
+use CCMBenchmark\Ting\Repository\Hydrator\AggregateFrom;
+use CCMBenchmark\Ting\Repository\Hydrator\AggregateTo;
+use CCMBenchmark\Ting\Repository\Hydrator\RelationMany;
+use CCMBenchmark\Ting\Repository\HydratorRelational;
 use CCMBenchmark\Ting\Serializer\DateTime;
 use AppBundle\Accounting\InvoicingCurrency;
 use AppBundle\Accounting\Model\Invoicing;
@@ -21,6 +25,34 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
  */
 class InvoicingRepository extends Repository implements MetadataInitializer
 {
+    public function getQuotationById(int $periodId): ?Invoicing
+    {
+        /** @var Select $builder */
+        $builder = $this->getQueryBuilder(self::QUERY_SELECT);
+        $builder->cols(['acf.*', 'acfd.*'])
+                ->from('afup_compta_facture acf')
+                ->leftJoin('afup_compta_facture_details acfd', 'acfd.idafup_compta_facture = acf.id')
+                ->where('acf.id = :periodId');
+
+        $hydrator = new HydratorRelational();
+        $hydrator->addRelation(new RelationMany(new AggregateFrom('acfd'), new AggregateTo('acf'), 'setDetails'));
+        $hydrator->callableFinalizeAggregate(fn(array $row) => $row['acf']);
+
+        $collection = $this->getQuery($builder->getStatement())
+                    ->setParams(['periodId' => $periodId])
+                    ->query($this->getCollection($hydrator));
+
+        if ($collection->count() === 0) {
+            return null;
+        }
+
+        /** @var Invoicing $entity */
+        $entity = $collection->first();
+        $entity->setDetails(array_values($entity->getDetails()));
+
+        return $entity;
+    }
+
     public function getQuotationsByPeriodId(?int $periodId = null, string $sort = 'date', string $direction = 'desc'): CollectionInterface
     {
         $filter = 'acf.date_devis';

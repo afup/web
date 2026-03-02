@@ -6,6 +6,7 @@ namespace Afup\Tests\Behat\Bootstrap;
 
 use AppBundle\Listener\DetectClockMockingListener;
 use Behat\Hook\BeforeScenario;
+use Behat\Mink\Driver\PantherDriver;
 use Behat\Step\Given;
 use Behat\Step\Then;
 use DateTimeImmutable;
@@ -16,6 +17,10 @@ trait TimeContext
     #[BeforeScenario]
     public function clearTestClock(): void
     {
+        if ($this->minkContext->getSession()->getDriver() instanceof PantherDriver) {
+            // setRequestHeader is not supported by PantherDriver
+            return;
+        }
         $this->minkContext->getSession()->getDriver()->setRequestHeader(DetectClockMockingListener::HEADER, '');
     }
 
