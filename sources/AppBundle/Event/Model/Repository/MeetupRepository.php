@@ -89,6 +89,11 @@ class MeetupRepository extends Repository implements MetadataInitializer
                 'columnName' => 'antenne_name',
                 'fieldName' => 'antenneName',
                 'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'photo_url',
+                'fieldName' => 'photoUrl',
+                'type' => 'string',
             ]);
 
         return $metadata;

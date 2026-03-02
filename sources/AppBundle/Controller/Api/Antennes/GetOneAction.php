@@ -49,6 +49,7 @@ final readonly class GetOneAction
                 'location' => $nextMeetup->getLocation(),
                 'description' => $nextMeetup->getDescription(),
                 'url' => 'https://www.meetup.com/fr-FR/' . $antenne->meetup->urlName . '/events/' . $nextMeetup->getId(),
+                'photo' => $nextMeetup->getPhotoUrl(),
             ];
         }
 
