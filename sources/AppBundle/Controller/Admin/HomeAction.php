@@ -79,7 +79,7 @@ class HomeAction extends AbstractController
 
                 // Les stats du CFP sont affichés pendant un certain temps après la date de fin de l'appel
                 $dateEndCallForPapers = $event->getDateEndCallForPapers();
-                if ($dateEndCallForPapers && $dateEndCallForPapers < $this->clock->now()->add(new \DateInterval('P3M'))) {
+                if ($dateEndCallForPapers && $dateEndCallForPapers->add(new \DateInterval('P2M')) > $this->clock->now()) {
                     $cfp['statistics'][$event->getTitle()] = [
                         [
                             'icon' => 'microphone',
