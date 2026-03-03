@@ -59,6 +59,7 @@ class ScrappingMeetupEventsCommand extends Command
                     $existingMeetup->setDescription($meetup->getDescription());
                     $existingMeetup->setLocation($meetup->getLocation());
                     $existingMeetup->setDate($meetup->getDate());
+                    $existingMeetup->setPhotoUrl($meetup->getPhotoUrl());
 
                     // On doit remplacer la variable, car l'ORM a une référence vers l'instance récupérée
                     // via le get et pas celle de la boucle.
