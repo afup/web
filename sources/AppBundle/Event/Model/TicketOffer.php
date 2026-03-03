@@ -7,10 +7,11 @@ namespace AppBundle\Event\Model;
 final readonly class TicketOffer
 {
     public function __construct(
-        public int $id,
+        public int $ticketTypeId,
         public string $name,
         public float $price,
         public int $availableTickets,
-        public Event $event,
+        public ?Event $event = null,
+        public ?TicketEventType $ticketEventType = null,
     ) {}
 }

@@ -73,7 +73,7 @@ class HomeAction extends AbstractController
                 }
 
                 $info['statistics']['montant total'] = number_format($montantTotal, 0, ',', "\u{a0}") . "\u{a0}€";
-                $info['url'] = '/pages/administration/index.php?page=forum_inscriptions&id_forum=' . $event->getId();
+                $info['url'] = $this->generateUrl('admin_event_ticket_list', ['id' => $event->getId()]);
 
                 $cards[] = $info;
 
