@@ -15,8 +15,8 @@ class Inscriptions extends AbstractSeed
             [
                 'date' => time(),
                 'reference' => 'REF-TEST-001',
-                'type_inscription' => Ticket::TYPE_2_DAYS,
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS],
+                'type_inscription' => Tarif::TYPE_2_DAYS['id'],
+                'montant' => Tarif::TYPE_2_DAYS['default_price'],
                 'civilite' => 'Mme',
                 'nom' => 'Michu',
                 'prenom' => 'Bernadette',
@@ -32,8 +32,8 @@ class Inscriptions extends AbstractSeed
             [
                 'date' => (new \DateTime("2023-06-25"))->getTimestamp(),
                 'reference' => 'REF-TEST-002',
-                'type_inscription' => Ticket::TYPE_2_DAYS,
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS],
+                'type_inscription' => Tarif::TYPE_2_DAYS['id'],
+                'montant' => Tarif::TYPE_2_DAYS['default_price'],
                 'civilite' => 'Mme',
                 'nom' => 'Jean',
                 'prenom' => 'Maurice',
@@ -49,8 +49,8 @@ class Inscriptions extends AbstractSeed
             [
                 'date' => (new \DateTime("2024-01-02"))->getTimestamp(),
                 'reference' => 'REF-TEST-003',
-                'type_inscription' => Ticket::TYPE_2_DAYS,
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS],
+                'type_inscription' => Tarif::TYPE_2_DAYS['id'],
+                'montant' => Tarif::TYPE_2_DAYS['default_price'],
                 'civilite' => 'Mme',
                 'nom' => 'Kirk',
                 'prenom' => 'James Tiberius',
@@ -66,8 +66,8 @@ class Inscriptions extends AbstractSeed
             [
                 'date' => (new \DateTime("2024-01-02"))->getTimestamp(),
                 'reference' => 'REF-TEST-004',
-                'type_inscription' => Ticket::TYPE_2_DAYS_AFUP,
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS_AFUP],
+                'type_inscription' => Tarif::TYPE_2_DAYS_AFUP['id'],
+                'montant' => Tarif::TYPE_2_DAYS_AFUP['default_price'],
                 'civilite' => 'Mme',
                 'nom' => 'Sans',
                 'prenom' => 'Cotisation',
@@ -83,8 +83,8 @@ class Inscriptions extends AbstractSeed
             [
                 'date' => time(),
                 'reference' => 'REF-TEST-005',
-                'type_inscription' => Ticket::TYPE_2_DAYS_AFUP,
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS_AFUP],
+                'type_inscription' => Tarif::TYPE_2_DAYS_AFUP['id'],
+                'montant' => Tarif::TYPE_2_DAYS_AFUP['default_price'],
                 'civilite' => 'M',
                 'nom' => 'Personne',
                 'prenom' => 'Paul',
@@ -101,8 +101,8 @@ class Inscriptions extends AbstractSeed
             [
                 'date' => time(),
                 'reference' => 'REF-TEST-006',
-                'type_inscription' => Ticket::TYPE_2_DAYS_AFUP,
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS_AFUP],
+                'type_inscription' => Tarif::TYPE_2_DAYS_AFUP['id'],
+                'montant' => Tarif::TYPE_2_DAYS_AFUP['default_price'],
                 'civilite' => 'M',
                 'nom' => 'Maurice',
                 'prenom' => 'Jean',
@@ -119,8 +119,8 @@ class Inscriptions extends AbstractSeed
             [
                 'date' => time(),
                 'reference' => 'REF-TEST-007',
-                'type_inscription' => Ticket::TYPE_2_DAYS,
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS],
+                'type_inscription' => Tarif::TYPE_2_DAYS['id'],
+                'montant' => Tarif::TYPE_2_DAYS['default_price'],
                 'civilite' => 'Mme',
                 'nom' => 'Annulé',
                 'prenom' => 'Lepaiement',
@@ -136,8 +136,8 @@ class Inscriptions extends AbstractSeed
             [
                 'date' => time(),
                 'reference' => 'REF-TEST-008',
-                'type_inscription' => Ticket::TYPE_ORGANIZATION,
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_ORGANIZATION],
+                'type_inscription' => Tarif::TYPE_ORGANIZATION['id'],
+                'montant' => Tarif::TYPE_ORGANIZATION['default_price'],
                 'civilite' => 'Mme',
                 'nom' => 'Super',
                 'prenom' => 'Bénévole',
@@ -164,7 +164,7 @@ class Inscriptions extends AbstractSeed
         $data = [
             [
                 'reference' => 'REF-TEST-001',
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS],
+                'montant' => Tarif::TYPE_2_DAYS['default_price'],
                 'date_reglement' => time(),
                 'type_reglement' => Ticket::PAYMENT_CREDIT_CARD,
                 'email' => 'bernadette@yahoo.fr',
@@ -184,7 +184,7 @@ class Inscriptions extends AbstractSeed
             ],
             [
                 'reference' => 'REF-TEST-002',
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS],
+                'montant' => Tarif::TYPE_2_DAYS['default_price'],
                 'date_reglement' => (new \DateTime("2023-06-25"))->getTimestamp(),
                 'type_reglement' => Ticket::PAYMENT_CHEQUE,
                 'email' => 'jean@yahoo.fr',
@@ -203,7 +203,7 @@ class Inscriptions extends AbstractSeed
             ],
             [
                 'reference' => 'REF-TEST-003',
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS],
+                'montant' => Tarif::TYPE_2_DAYS['default_price'],
                 'date_reglement' => (new \DateTime("2024-01-02"))->getTimestamp(),
                 'type_reglement' => Ticket::PAYMENT_BANKWIRE,
                 'email' => 'james@starfleet.fr',
@@ -222,7 +222,7 @@ class Inscriptions extends AbstractSeed
             ],
             [
                 'reference' => 'REF-TEST-004',
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS_AFUP],
+                'montant' => Tarif::TYPE_2_DAYS_AFUP['default_price'],
                 'date_reglement' => (new \DateTime("2024-01-02"))->getTimestamp(),
                 'type_reglement' => Ticket::PAYMENT_CREDIT_CARD,
                 'email' => 'sans@cotisation.fr',
@@ -241,7 +241,7 @@ class Inscriptions extends AbstractSeed
             ],
             [
                 'reference' => 'REF-TEST-005',
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS_AFUP],
+                'montant' => Tarif::TYPE_2_DAYS_AFUP['default_price'],
                 'date_reglement' => (new \DateTime("2024-01-02"))->getTimestamp(),
                 'type_reglement' => Ticket::PAYMENT_CREDIT_CARD,
                 'nom' => 'Personne',
@@ -260,7 +260,7 @@ class Inscriptions extends AbstractSeed
             ],
             [
                 'reference' => 'REF-TEST-006',
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS_AFUP],
+                'montant' => Tarif::TYPE_2_DAYS_AFUP['default_price'],
                 'date_reglement' => (new \DateTime("2024-01-02"))->getTimestamp(),
                 'type_reglement' => Ticket::PAYMENT_CREDIT_CARD,
                 'nom' => 'Maurice',
@@ -279,7 +279,7 @@ class Inscriptions extends AbstractSeed
             ],
             [
                 'reference' => 'REF-TEST-007',
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_2_DAYS],
+                'montant' => Tarif::TYPE_2_DAYS['default_price'],
                 'date_reglement' => time(),
                 'type_reglement' => Ticket::PAYMENT_CREDIT_CARD,
                 'nom' => 'Annulé',
@@ -298,7 +298,7 @@ class Inscriptions extends AbstractSeed
             ],
             [
                 'reference' => 'REF-TEST-008',
-                'montant' => $GLOBALS['AFUP_Tarifs_Forum'][Ticket::TYPE_ORGANIZATION],
+                'montant' => Tarif::TYPE_ORGANIZATION['default_price'],
                 'date_reglement' => time(),
                 'type_reglement' => Ticket::PAYMENT_NONE,
                 'societe' => 'AFUP',
