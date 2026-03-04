@@ -1,5 +1,5 @@
 ---
-Id: ADR-002
+Id: ADR-001
 Date: 2026-03-01
 Statut: Proposé
 ---
@@ -32,8 +32,6 @@ Par exemple, on ne dit pas "General Meeting" entre bénévoles, mais "Assemblée
 En revanche, on ne dit pas "Dépot" mais "Repository" par habitude dans notre métier.
 
 ## Raisons
-
-{Listez les raisons principales qui justifient cette décision}
 
 1. De par la nature francophone de l'AFUP, la majorité du vocabulaire de l'association est en français
 2. Le code métier anglais est difficile à naviguer, car il faut presque systématiquement le traduire pour le comprendre

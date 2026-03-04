@@ -1,10 +1,10 @@
 ---
-Id: ADR-001
+Id: ADR-002
 Date: 2026-03-01
 Statut: Proposé
 ---
 
-# Doctrine ORM
+# Accès à la base de données
 
 ## Contexte
 
@@ -19,7 +19,7 @@ Il y a à ce jour 3 façon d'accéder à la base de données :
 
 Les accès à la base de données se font via l'utilisation de soit [Doctrine DBAL][doctrine-dbal], soit [Doctrine ORM][doctrine-orm].
 
-### Détails d'implémentation (optionnel)
+### Détails d'implémentation
 
 ## Entité
 
