@@ -172,6 +172,7 @@ services:
 
     Afup\Site\Association\Cotisations:
         factory: ['@Afup\Site\Association\CotisationsFactory', 'create']
+        lazy: true
 
     Afup\Site\Comptabilite\Comptabilite:
         autowire: true
