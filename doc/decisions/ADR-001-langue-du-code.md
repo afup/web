@@ -31,6 +31,14 @@ La logique principale est d'utiliser la langue déjà utilisée à l'oral pour c
 Par exemple, on ne dit pas "General Meeting" entre bénévoles, mais "Assemblée Générale".
 En revanche, on ne dit pas "Dépot" mais "Repository" par habitude dans notre métier.
 
+> [!NOTE]
+> Les mots français dans le code doivent être écrits sans accents.
+>
+> Certains outils (Psalm, PHPStan, Doctrine, Git, SQL) ont du mal à les gérer
+> donc on se simplifie les choses en ne mettant pas d'accents.
+>
+> Cela ne s'applique pas aux commentaires qui n'ont pas ce problème.
+
 ## Raisons
 
 1. De par la nature francophone de l'AFUP, la majorité du vocabulaire de l'association est en français
