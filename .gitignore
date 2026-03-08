@@ -51,4 +51,4 @@ js_dist
 /compose.override.yml
 /composer.phar
 /data
-
+/assets/vendor/
