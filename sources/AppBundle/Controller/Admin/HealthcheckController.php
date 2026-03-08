@@ -39,6 +39,9 @@ class HealthcheckController extends AbstractController
                 'php' => phpversion(),
                 'symfony' => Kernel::VERSION,
             ],
+            'deployment' => [
+                'commit' => getenv('CC_COMMIT_ID'),
+            ],
         ]);
     }
 }

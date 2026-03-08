@@ -23,6 +23,7 @@
 @use 'components/general-meeting';
 @use 'components/members';
 @use "components/prev-next-links";
+@use "components/impersonation";
 
 @use 'generic/form';
 @use 'generic/table' as generictable;

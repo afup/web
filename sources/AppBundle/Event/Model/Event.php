@@ -23,12 +23,11 @@ class Event implements NotifyPropertyInterface
      */
     private $CFP;
 
-    private ?\DateTime $dateStart = null;
+    private ?DateTime $dateStart = null;
 
-    /**
-     * @var DateTime
-     */
-    private $dateEnd;
+    private ?DateTime $dateEnd = null;
+
+    private ?string $year = null;
 
     /**
      * @var DateTime
@@ -178,22 +177,27 @@ class Event implements NotifyPropertyInterface
         return $this->getDateStart() < $dateTime;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getDateEnd()
+    public function getDateEnd(): ?DateTime
     {
         return $this->dateEnd;
     }
 
-    /**
-     * @param DateTime $dateEnd
-     * @return Event
-     */
-    public function setDateEnd($dateEnd): self
+    public function setDateEnd(?DateTime $dateEnd): self
     {
         $this->propertyChanged('dateEnd', $this->dateEnd, $dateEnd);
         $this->dateEnd = $dateEnd;
+        return $this;
+    }
+
+    public function getYear(): ?string
+    {
+        return $this->year;
+    }
+
+    public function setYear(?string $year): self
+    {
+        $this->propertyChanged('year', $this->year, $year);
+        $this->year = $year;
         return $this;
     }
 

@@ -75,7 +75,7 @@ DTEND;VALUE=DATE:{$dtEnd}
 DTSTAMP:{$created}
 ORGANIZER:CN={$organizerCN}
 ATTENDEE:CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;CN=
-{$attendeeEmail};X-NUM-GUESTS=0:mailto:{$attendeeCN}
+mailto:{$attendeeEmail};X-NUM-GUESTS=0:{$attendeeCN}
 UID:{$uid}
 CREATED:{$created}
 LAST-MODIFIED:{$created}

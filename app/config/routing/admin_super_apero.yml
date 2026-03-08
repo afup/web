@@ -1,0 +1,20 @@
+admin_super_apero_list:
+  path: /
+  defaults: {_controller: AppBundle\Controller\Admin\SuperApero\ListAction}
+
+admin_super_apero_add:
+  path: /add
+  defaults: {_controller: AppBundle\Controller\Admin\SuperApero\AddAction}
+
+admin_super_apero_edit:
+  path: /edit/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\SuperApero\EditAction}
+  requirements:
+    id: '\d+'
+
+admin_super_apero_delete:
+  path: /delete/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\SuperApero\DeleteAction}
+  methods: [POST]
+  requirements:
+    id: '\d+'

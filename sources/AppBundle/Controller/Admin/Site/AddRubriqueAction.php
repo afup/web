@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Site;
 
-use Afup\Site\Logger\DbLoggerTrait;
+use AppBundle\AuditLog\Audit;
 use AppBundle\Site\Form\RubriqueType;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
 use AppBundle\Site\Model\Rubrique;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AddRubriqueAction extends AbstractController
+final class AddRubriqueAction extends AbstractController
 {
-    use DbLoggerTrait;
-
     public function __construct(
         private readonly RubriqueRepository $rubriqueRepository,
-        private string $storageDir,
+        #[Autowire('%kernel.project_dir%/../htdocs/templates/site/images')]
+        private readonly string $storageDir,
+        private readonly Audit $audit,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -38,7 +39,7 @@ class AddRubriqueAction extends AbstractController
                 $rubrique->setIcone($newFilename);
             }
             $this->rubriqueRepository->save($rubrique);
-            $this->log('Ajout de la rubrique ' . $rubrique->getNom());
+            $this->audit->log('Ajout de la rubrique ' . $rubrique->getNom());
             $this->addFlash('notice', 'La rubrique ' . $rubrique->getNom() . ' a été ajoutée');
             return $this->redirectToRoute('admin_site_rubriques_list', [
                 'filter' => $rubrique->getNom(),

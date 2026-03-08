@@ -12,10 +12,7 @@ class SponsorTicket implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    /**
-     * @var int
-     */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @var string
@@ -68,18 +65,12 @@ class SponsorTicket implements NotifyPropertyInterface
      */
     private $qrCodesScannerAvailable = false;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;

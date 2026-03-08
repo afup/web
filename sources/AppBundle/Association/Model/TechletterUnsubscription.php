@@ -28,10 +28,7 @@ class TechletterUnsubscription implements NotifyPropertyInterface
      */
     private $reason;
 
-    /**
-     * @var string
-     */
-    private $mailchimpId;
+    private ?string $mailchimpId = null;
 
     /**
      * @return int
@@ -122,12 +119,7 @@ class TechletterUnsubscription implements NotifyPropertyInterface
         return $this->mailchimpId;
     }
 
-    /**
-     * @param string $mailchimpId
-     *
-     * @return $this
-     */
-    public function setMailchimpId($mailchimpId): self
+    public function setMailchimpId(?string $mailchimpId): self
     {
         $this->propertyChanged('mailchimpId', $this->mailchimpId, $mailchimpId);
         $this->mailchimpId = $mailchimpId;

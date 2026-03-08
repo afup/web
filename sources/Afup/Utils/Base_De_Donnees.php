@@ -168,7 +168,7 @@ class Base_De_Donnees
      * @param int $type Type de résultat souhaité. Les valeurs possibles sont MYSQLI_ASSOC, MYSQLI_NUM, MYSQLI_BOTH.
      *                              Elles permettent respectivement de récupérer les valeurs sous forme d'un tableau associatif, indexé ou les deux.
      *                              La valeur par défaut est MYSQLI_ASSOC.
-     * @return mixed    Les enregistrements correspondant dans un tableau ou false si la requête échoue
+     * @return array|false    Les enregistrements correspondant dans un tableau ou false si la requête échoue
      */
     public function obtenirTous($requete, $type = MYSQLI_ASSOC)
     {
@@ -212,7 +212,7 @@ class Base_De_Donnees
      * Exécute une requête SQL et retourne les enregistrements correspondant dans un tableau associatif dont le premier champ est la clé
      *
      * @param string $requete Requête à exécuter
-     * @return mixed    Les enregistrements correspondant dans un tableau associatif ou false si la requête échoue
+     * @return array|false    Les enregistrements correspondant dans un tableau associatif ou false si la requête échoue
      */
     public function obtenirAssociatif($requete)
     {

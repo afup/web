@@ -160,7 +160,7 @@ Feature: Espace membre, accueil
     When I follow "Consulter"
     Then I should see "Payer ma cotisation"
     When I follow "Télécharger la facture"
-    Then the response header "Content-disposition" should equal 'attachment; filename=MyCorp_COTIS-2025-200_13072018.pdf'
+    Then the response header "Content-disposition" should equal 'attachment; filename=MyCorp_COTIS-2026-200_13072018.pdf'
 
   @reloadDbWithTestData
   @clearEmails

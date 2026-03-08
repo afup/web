@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Form;
 
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -27,28 +27,30 @@ class CompanyPublicProfile extends AbstractType
     public const DESCRIPTION_MAX_LENGTH = 2000;
     public const MEMBERSHIP_REASON_MAX_LENGTH = 150;
 
+    public function __construct(
+        private readonly AntenneRepository $antennesRepository,
+    ) {}
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $antennesCollection = new AntennesCollection();
-
         $antennesInfos = [];
-        foreach ($antennesCollection->getAll() as $antenne) {
+        foreach ($this->antennesRepository->getAll() as $antenne) {
             $antennesInfos[$antenne->label] = $antenne->code;
         }
 
         $logoConstraints = [
-            new File([
-                'mimeTypes' => [
+            new File(
+                mimeTypes: [
                     'image/jpeg',
                     'image/png',
                 ],
-            ]),
-            new Image([
-                'maxHeight' => 1000,
-                'maxWidth' => 1000,
-                'minHeight' => 200,
-                'minWidth' => 200,
-            ]),
+            ),
+            new Image(
+                maxHeight: 1000,
+                maxWidth: 1000,
+                minHeight: 200,
+                minWidth: 200,
+            ),
         ];
 
         if ($options['logo_required']) {
@@ -63,7 +65,7 @@ class CompanyPublicProfile extends AbstractType
                     'label' => 'Page publique activée',
                     'required' => false,
                     'constraints' => [
-                        new Type(['type' => 'boolean']),
+                        new Type(type: 'boolean'),
                     ],
                 ],
             )
@@ -77,7 +79,7 @@ class CompanyPublicProfile extends AbstractType
                     'help' => sprintf("Maximum %s caractères", self::DESCRIPTION_MAX_LENGTH),
                     'constraints' => [
                         new NotNull(),
-                        new Length(['max' => self::DESCRIPTION_MAX_LENGTH]),
+                        new Length(max: self::DESCRIPTION_MAX_LENGTH),
                     ],
                 ],
             )
@@ -139,11 +141,11 @@ class CompanyPublicProfile extends AbstractType
                     'required' => false,
                     'label' => "Présence dans ces antennes AFUP",
                     'constraints' => [
-                        new Choice([
-                            'choices' => array_values($antennesInfos),
-                            'multiple' => true,
-                            'strict' => true,
-                        ]),
+                        new Choice(
+                            choices: array_values($antennesInfos),
+                            multiple: true,
+                            strict: true,
+                        ),
                     ],
                 ],
             )
@@ -155,7 +157,7 @@ class CompanyPublicProfile extends AbstractType
                     'help' => sprintf($this->getMembershipReasonHelp(), self::MEMBERSHIP_REASON_MAX_LENGTH),
                     'required' => false,
                     'constraints' => [
-                        new Length(['max' => self::MEMBERSHIP_REASON_MAX_LENGTH]),
+                        new Length(max: self::MEMBERSHIP_REASON_MAX_LENGTH),
                     ],
                 ])
             ->add('submit', SubmitType::class, ['label' => 'Enregistrer'])

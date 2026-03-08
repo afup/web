@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\JoinHydrator;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Model\TicketSpecialPrice;
+use AppBundle\Ting\JoinHydrator;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -20,11 +20,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
  */
 class TicketSpecialPriceRepository extends Repository implements MetadataInitializer
 {
-    /**
-     * @param string $token
-     * @return TicketSpecialPrice
-     */
-    public function findUnusedToken(Event $event, $token)
+    public function findUnusedToken(Event $event, ?string $token): ?TicketSpecialPrice
     {
         $query = $this
             ->getPreparedQuery(

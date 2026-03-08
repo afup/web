@@ -9,10 +9,7 @@ use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\EventCompareSelectType;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
-use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
-use AppBundle\Event\Model\Ticket;
-use AppBundle\LegacyModelFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,16 +18,15 @@ class StatsAction extends AbstractController
 {
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,
-        private readonly LegacyModelFactory $legacyModelFactory,
-        private readonly TicketRepository $ticketRepository,
         private readonly TicketTypeRepository $ticketTypeRepository,
         private readonly EventStatsRepository $eventStatsRepository,
         private readonly EventRepository $eventRepository,
+        private readonly Inscriptions $inscriptions,
     ) {}
 
     public function __invoke(Request $request): Response
     {
-        $event = $this->eventActionHelper->getEventById($request->query->get('event_id'));
+        $event = $this->eventActionHelper->getFromRequest('event_id')->event;
         if ($comparedEventId = $request->query->get('compared_event_id')) {
             $comparedEvent = $this->eventActionHelper->getEventById($comparedEventId, false);
         } else {
@@ -44,11 +40,7 @@ class StatsAction extends AbstractController
             'events' => $this->eventRepository->getAll(),
         ]);
 
-        $legacyInscriptions = $this->legacyModelFactory->createObject(Inscriptions::class);
-        $stats = $legacyInscriptions->obtenirSuivi($event->getId(), $comparedEvent->getId());
-        $ticketsDayOne = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_ONE, $event);
-        $ticketsDayTwo = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_TWO, $event);
-
+        $stats = $this->inscriptions->obtenirSuivi($event->getId(), $comparedEvent->getId());
         $ticketTypes = [];
 
         $chart = [
@@ -139,8 +131,6 @@ class StatsAction extends AbstractController
             'stats' => $stats,
             'seats' => [
                 'available' => $event->getSeats(),
-                'one' => $ticketsDayOne,
-                'two' => $ticketsDayTwo,
             ],
             'event_compare_form' => $comparedEventForm->createView(),
         ]);

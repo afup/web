@@ -34,10 +34,8 @@ class Droits
 
     /**
      * Renvoit l'identifiant de l'utilisateur
-     *
-     * @return int|null
      */
-    public function obtenirIdentifiant()
+    public function obtenirIdentifiant(): ?int
     {
         $user = $this->tokenStorage->getToken()->getUser();
 

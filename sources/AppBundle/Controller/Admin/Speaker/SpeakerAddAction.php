@@ -4,34 +4,31 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Speaker;
 
-use Afup\Site\Logger\DbLoggerTrait;
+use AppBundle\AuditLog\Audit;
 use AppBundle\CFP\PhotoStorage;
 use AppBundle\Event\Form\SpeakerFormData;
 use AppBundle\Event\Form\SpeakerType;
-use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;
-use Assert\Assertion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Webmozart\Assert\Assert;
 
 class SpeakerAddAction extends AbstractController
 {
-    use DbLoggerTrait;
-
     public function __construct(
-        private EventRepository $eventRepository,
-        private SpeakerRepository $speakerRepository,
-        private PhotoStorage $photoStorage,
+        private readonly EventRepository $eventRepository,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly PhotoStorage $photoStorage,
+        private readonly Audit $audit,
     ) {}
 
     public function __invoke(Request $request): Response
     {
-        /** @var Event $event */
         $event = $this->eventRepository->get($request->query->get('eventId'));
-        Assertion::notNull($event);
+        Assert::notNull($event);
         $data = new SpeakerFormData();
         $form = $this->createForm(SpeakerType::class, $data, [
             SpeakerType::OPT_USER_GITHUB => true,
@@ -46,6 +43,7 @@ class SpeakerAddAction extends AbstractController
             $speaker->setBiography($data->biography);
             $speaker->setTwitter($data->twitter);
             $speaker->setMastodon($data->mastodon);
+            $speaker->setLinkedin($data->linkedin);
             $speaker->setBluesky($data->bluesky);
             $speaker->setEmail($data->email);
             $speaker->setUser($data->githubUser !== null ? $data->githubUser->getId() : null);
@@ -58,7 +56,7 @@ class SpeakerAddAction extends AbstractController
                 $speaker->setPhoto($fileName);
                 $this->speakerRepository->save($speaker);
             }
-            $this->log('Ajout du conférencier de ' . $speaker->getFirstname() . ' ' . $speaker->getLastname());
+            $this->audit->log('Ajout du conférencier de ' . $speaker->getFirstname() . ' ' . $speaker->getLastname());
 
             $this->addFlash('notice', 'Le conférencier a été ajouté');
 

@@ -17,11 +17,14 @@ use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\TalkInvitation;
 use AppBundle\Event\Talk\InvitationFormHandler;
 use AppBundle\Event\Talk\TalkFormHandler;
+use AppBundle\Security\Authentication;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -40,13 +43,14 @@ class EditAction extends AbstractController
         private readonly VoteRepository $voteRepository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly SidebarRenderer $sidebarRenderer,
+        private readonly Authentication $authentication,
     ) {}
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse|Response
     {
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
-        $user = $this->eventActionHelper->getUser();
-        if ($event->getDateEndCallForPapers() < new DateTime()) {
+        $githubUser = $this->authentication->getGithubUser();
+        if (!$event->isCfpOpen()) {
             return $this->render('event/cfp/closed.html.twig', ['event' => $event]);
         }
         $speaker = $this->speakerFactory->getSpeaker($event);
@@ -58,7 +62,6 @@ class EditAction extends AbstractController
             ]);
         }
         $talkId = (int) $request->attributes->get('talkId');
-        /** @var Talk $talk */
         $talk = $this->talkRepository->getOneBy(['id' => $talkId, 'forumId' => $event->getId()]);
         if ($talk === null) {
             throw $this->createNotFoundException(sprintf('Talk %d not found', $talkId));
@@ -82,8 +85,8 @@ class EditAction extends AbstractController
                 'talkId' => $talk->getId(),
             ]);
         }
-        $invitationForm = $this->createInvitationForm($user, $talk);
-        $invitationSent = $this->invitationFormHandler->handle($request, $event, $invitationForm, $user, $talk);
+        $invitationForm = $this->createInvitationForm($githubUser, $talk);
+        $invitationSent = $this->invitationFormHandler->handle($request, $event, $invitationForm, $githubUser, $talk);
         if ($invitationSent) {
             $this->addFlash('success', $this->translator->trans('Invitation envoyée !'));
         }

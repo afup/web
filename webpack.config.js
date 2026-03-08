@@ -17,16 +17,10 @@ const adminConfig = {
   },
   plugins: [
     new CleanWebpackPlugin([
-      path.resolve(__dirname, 'htdocs/assets/calendrier/'),
       path.resolve(__dirname, 'htdocs/js_dist')
     ]),
     new CopyWebpackPlugin([
       { from: path.resolve(__dirname, 'node_modules/tablefilter/dist') },
-      { from: path.resolve(__dirname, 'node_modules/jquery/dist/jquery.min.js'), to: path.resolve(__dirname, 'htdocs/assets/calendrier/js/jquery.min.js') },
-      { from: path.resolve(__dirname, 'node_modules/angular/angular.min.js'), to: path.resolve(__dirname, 'htdocs/assets/calendrier/js/angular.min.js') },
-      { from: path.resolve(__dirname, 'node_modules/bootstrap/dist/js/bootstrap.min.js'), to: path.resolve(__dirname, 'htdocs/assets/calendrier/js/bootstrap.min.js') },
-      { from: path.resolve(__dirname, 'node_modules/bootswatch/yeti/bootstrap.min.css'), to: path.resolve(__dirname, 'htdocs/assets/calendrier/css/bootstrap.min.css') },
-      { from: path.resolve(__dirname, 'node_modules/bootswatch/fonts/'), to: path.resolve(__dirname, 'htdocs/assets/calendrier/fonts/') },
       { from: path.resolve(__dirname, 'node_modules/notyf/dist/'), to: path.resolve(__dirname, 'htdocs/assets/techletter/') },
       { from: path.resolve(__dirname, 'node_modules/qr-scanner/qr-scanner.min.js'), to: path.resolve(__dirname, 'htdocs/assets/qr-scanner/qr-scanner.min.js') },
       { from: path.resolve(__dirname, 'node_modules/qr-scanner/qr-scanner-worker.min.js'), to: path.resolve(__dirname, 'htdocs/assets/qr-scanner/qr-scanner-worker.min.js') },

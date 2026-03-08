@@ -1,5 +1,6 @@
 imports:
     - { resource: config_dev.yml }
+    - { resource: services_test.yaml }
 
 framework:
     test: ~
@@ -24,13 +25,21 @@ parameters:
     smtp_username: ""
     smtp_password: ""
     smtp_port: 1025
-    mailer_force_recipients: []
-    mailer_bcc: []
 
 services:
     AppBundle\Offices\OfficeFinder:
         class: AppBundle\Offices\NullOfficeFinder
+        autowire: true
         arguments: ['@geocoder']
+
+    Afup\Tests\Support\PlanetePHP\FeedHttpClientFactory: ~
+    planetephp.http_client:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: '@Afup\Tests\Support\PlanetePHP\FeedHttpClientFactory'
+
+    PlanetePHP\SymfonyFeedClient:
+        arguments:
+            $httpClient: '@planetephp.http_client'
 
 ewz_recaptcha:
     enabled: false

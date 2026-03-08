@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Model;
 
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\NotifiableInterface;
 use AppBundle\Validator\Constraints as AppAssert;
@@ -108,10 +108,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
      */
     private $city;
 
-    /**
-     * @var string
-     */
-    private $country = 'FR';
+    private string $country = 'FR';
 
     /**
      * @var string
@@ -135,17 +132,11 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
      */
     private $hash;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $lastSubscription;
+    private ?\DateTimeImmutable $lastSubscription = null;
 
     private ?CompanyMember $company = null;
 
-    /**
-     * @var string
-     */
-    private $nearestOffice;
+    private ?string $nearestOffice = null;
 
     /**
      * @var int
@@ -193,10 +184,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getNearestOffice()
+    public function getNearestOffice(): ?string
     {
         return $this->nearestOffice;
     }
@@ -211,7 +199,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this;
     }
 
-    public function getNearestOfficeLabel()
+    public function getNearestOfficeLabel(AntenneRepository $antenneRepository)
     {
         $code = $this->getNearestOffice();
 
@@ -220,7 +208,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
             return  null;
         }
 
-        return (new AntennesCollection())->findByCode($code)->label;
+        return $antenneRepository->findByCode($code)->label;
     }
 
     /**
@@ -452,18 +440,12 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getCountry()
+    public function getCountry(): string
     {
         return $this->country;
     }
 
-    /**
-     * @param string $country
-     */
-    public function setCountry($country): self
+    public function setCountry(string $country): self
     {
         $this->propertyChanged('country', $this->country, $country);
         $this->country = $country;
@@ -544,10 +526,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this->firstName . ' ' . $this->lastName;
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getLastSubscription()
+    public function getLastSubscription(): ?\DateTimeImmutable
     {
         return $this->lastSubscription;
     }
@@ -573,13 +552,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
             $now = new \DateTime();
         }
 
-        $lastSubscription = $this->getLastSubscription();
-
-        if (null === $lastSubscription) {
-            return null;
-        }
-
-        return $this->getLastSubscription()->diff($now)->days;
+        return $this->lastSubscription?->diff($now)->days;
     }
 
     /**
@@ -666,7 +639,9 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         }
 
         // On enlève le rôle ROLE_MEMBER_EXPIRED vu qu'il est défini en fonction de la cotisation dans les defaultRoles
-        $userRoles = array_diff($this->roles, ['ROLE_MEMBER_EXPIRED']);
+        // on fait de même avec tous les autres rôles définis en fonction des champs levelModules car ils peuvent se retrouver
+        // en base dans le tableau de rôle, et on ne veux pas que si on modifie le levelModules pour l'enlever, il reste via le roles
+        $userRoles = array_diff($this->roles, ['ROLE_MEMBER_EXPIRED', 'ROLE_SUPER_ADMIN', 'ROLE_APERO', 'ROLE_ANNUAIRE', 'ROLE_SITE', 'ROLE_FORUM', 'ROLE_ANTENNE']);
 
         return array_unique(array_merge($userRoles, $defaultRoles));
     }
@@ -748,7 +723,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
 
     public function getDirectoryLevel()
     {
-        return $this->levelModules[1];
+        return $this->levelModules[1] ?? '0';
     }
 
     public function setDirectoryLevel($level): self
@@ -762,7 +737,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
 
     public function getWebsiteLevel()
     {
-        return $this->levelModules[2];
+        return $this->levelModules[2] ?? '0';
     }
 
     public function setWebsiteLevel($level): void
@@ -774,7 +749,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
 
     public function getEventLevel()
     {
-        return $this->levelModules[3];
+        return $this->levelModules[3] ?? '0';
     }
 
     public function setEventLevel($level): void
@@ -786,7 +761,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
 
     public function getOfficeLevel()
     {
-        return $this->levelModules[4];
+        return $this->levelModules[4] ?? '0';
     }
 
     public function setOfficeLevel($level): void

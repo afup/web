@@ -6,7 +6,6 @@ declare(strict_types=1);
 use Afup\Site\Comptabilite\Comptabilite;
 use Afup\Site\Comptabilite\Facture;
 use Afup\Site\Utils\Logs;
-use Afup\Site\Utils\Pays;
 
 if (!defined('PAGE_LOADED_USING_INDEX')) {
     trigger_error("Direct access forbidden.", E_USER_ERROR);
@@ -25,7 +24,7 @@ $smarty->assign('action', $action);
 
 
 $compta = new Comptabilite($bdd);
-$comptaFact = new Facture($bdd);
+$comptaFact = new Facture($bdd, $this->pays);
 
 if ($action == 'lister') {
     $id_periode = isset($_GET['id_periode']) && $_GET['id_periode'] ? $_GET['id_periode'] : "";
@@ -36,11 +35,10 @@ if ($action == 'lister') {
     $smarty->assign('listPeriode', $compta->obtenirListPeriode());
 } elseif ($action == 'transfert') {
     $comptaFact->transfertDevis($_GET['ref']);
-    afficherMessage('Le devis a été transformé en facture', 'index.php?page=compta_facture&action=lister');
+    afficherMessage('Le devis a été transformé en facture', '/admin/accounting/invoices/list');
 } elseif ($action == 'telecharger_devis') {
     $comptaFact->genererDevis($_GET['ref']);
 } elseif ($action == 'ajouter' || $action == 'modifier') {
-    $pays = new Pays($bdd);
 
     $formulaire = instancierFormulaire();
 
@@ -120,7 +118,7 @@ if ($action == 'lister') {
     $formulaire->addElement('textarea', 'adresse'    , 'Adresse'        , ['cols' => 42, 'rows'      => 10]);
     $formulaire->addElement('text'    , 'code_postal', 'Code postal'    , ['size' =>  6, 'maxlength' => 10]);
     $formulaire->addElement('text'    , 'ville'      , 'Ville'          , ['size' => 30, 'maxlength' => 50]);
-    $formulaire->addElement('select'  , 'id_pays'    , 'Pays'           , $pays->obtenirPays());
+    $formulaire->addElement('select'  , 'id_pays'    , 'Pays'           , $this->pays->obtenirPays());
 
     $formulaire->addElement('header', null          , 'Contact');
     $formulaire->addElement('text'    , 'nom'        , 'Nom'            , ['size' => 30, 'maxlength' => 40]);
@@ -191,6 +189,7 @@ if ($action == 'lister') {
         $date_devis = $valeur['date_devis']['Y'] . "-" . $valeur['date_devis']['F'] . "-" . $valeur['date_devis']['d'] ;
 
         if ($action === 'ajouter') {
+            $bdd->executer('START TRANSACTION');
             $ok = $comptaFact->ajouter(
                                     $date_devis,
                                     $valeur['societe'],
@@ -213,16 +212,21 @@ if ($action == 'lister') {
                   $valeur['devise_facture'],
                                     );
 
+            $id = $comptaFact->obtenirDernier();
             for ($i = 1;$i < 6;$i++) {
                 $ok = $comptaFact->ajouter_details(
-                                    $valeur['ref' . $i],
-                                    $valeur['designation' . $i],
-                                    (int) $valeur['quantite' . $i],
-                                    (float) $valeur['pu' . $i],
-                                    (int) $valeur['tva' . $i],
-                                    );
+                    $id,
+                    $valeur['ref' . $i],
+                    $valeur['designation' . $i],
+                    (int) $valeur['quantite' . $i],
+                    (float) $valeur['pu' . $i],
+                    (int) $valeur['tva' . $i],
+                );
             }
+            $bdd->executer('COMMIT');
+
         } else {
+            $bdd->executer('START TRANSACTION');
             $ok = $comptaFact->modifier(
                                     $_GET['id'],
                                     $date_devis,
@@ -257,6 +261,7 @@ if ($action == 'lister') {
                                     (int) $valeur['tva' . $i],
                                     );
             }
+            $bdd->executer('COMMIT');
         }
 
         if ($ok) {
@@ -272,6 +277,6 @@ if ($action == 'lister') {
     }
 
 
-    $smarty->assign('devis_id', $_GET['id']);
+    $smarty->assign('devis_id', $_GET['id'] ?? null);
     $smarty->assign('formulaire', genererFormulaire($formulaire));
 }

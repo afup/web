@@ -16,10 +16,14 @@ use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
 use AppBundle\Event\Model\Ticket;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class Facturation
 {
-    public function __construct(private readonly Base_De_Donnees $_bdd) {}
+    public function __construct(
+        private readonly Base_De_Donnees $_bdd,
+        private readonly Pays $pays,
+    ) {}
 
     /**
      * Renvoit les informations concernant une inscription
@@ -57,7 +61,7 @@ class Facturation
         $requete .= '  ' . $champs . ' ';
         $requete .= 'FROM';
         $requete .= '  afup_facturation_forum ';
-        $requete .= 'WHERE etat IN ( ' . AFUP_FORUM_ETAT_REGLE . ', ' . AFUP_FORUM_ETAT_ATTENTE_REGLEMENT . ', ' . AFUP_FORUM_ETAT_CONFIRME . ') ';
+        $requete .= 'WHERE etat IN ( ' . Ticket::STATUS_PAID . ', ' . Ticket::STATUS_WAITING . ', ' . Ticket::STATUS_CONFIRMED . ') ';
         $requete .= '  AND id_forum =' . $id_forum . ' ';
         if ($filtre) {
             $requete .= '  AND (societe LIKE \'%' . $filtre . '%\' OR reference LIKE \'%' . $filtre . '%\' ) ';
@@ -73,7 +77,9 @@ class Facturation
 
     public function creerReference($id_forum, $label): string
     {
-        $label = preg_replace('/[^A-Z0-9_\-\:\.;]/', '', strtoupper((string) supprimerAccents($label)));
+        $slugger = new AsciiSlugger();
+
+        $label = preg_replace('/[^A-Z0-9_\-\:\.;]/', '', strtoupper($slugger->slug($label)->toString()));
 
         return 'F' . date('Y') . sprintf('%02d', $id_forum) . '-' . date('dm') . '-' . substr((string) $label, 0, 5) . '-' . substr(md5(date('r') . $label), -5);
     }
@@ -81,14 +87,14 @@ class Facturation
     public function estFacture($reference)
     {
         $facture = $this->obtenir($reference, 'etat, facturation');
-        if ($facture['facturation'] == AFUP_FORUM_FACTURE_A_ENVOYER) {
+        if ($facture['facturation'] == Ticket::INVOICE_TODO) {
             $requete = 'UPDATE afup_inscription_forum ';
-            $requete .= 'SET facturation=' . AFUP_FORUM_FACTURE_ENVOYEE . ' ';
+            $requete .= 'SET facturation=' . Ticket::INVOICE_SENT . ' ';
             $requete .= 'WHERE reference=' . $this->_bdd->echapper($reference);
             $this->_bdd->executer($requete);
 
             $requete = 'UPDATE afup_facturation_forum ';
-            $requete .= 'SET facturation=' . AFUP_FORUM_FACTURE_ENVOYEE . ', date_facture= ' . time() . ' ';
+            $requete .= 'SET facturation=' . Ticket::INVOICE_SENT . ', date_facture= ' . time() . ' ';
             $requete .= 'WHERE reference=' . $this->_bdd->echapper($reference);
             return $this->_bdd->executer($requete);
         }
@@ -109,18 +115,13 @@ class Facturation
         WHERE reference=' . $this->_bdd->echapper($reference);
         $inscriptions = $this->_bdd->obtenirTous($requete);
 
-
-        $configuration = $GLOBALS['AFUP_CONF'];
-
-        $pays = new Pays($this->_bdd);
-
         $dateFacture = isset($facture['date_facture']) && !empty($facture['date_facture'])
             ? new \DateTimeImmutable('@' . $facture['date_facture'])
             : new \DateTimeImmutable();
 
         $bankAccountFactory = new BankAccountFactory();
         // Construction du PDF
-        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture));
+        $pdf = new PDF_Facture($bankAccountFactory->createApplyableAt($dateFacture));
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
@@ -139,7 +140,7 @@ class Facturation
         $pdf->Cell(130, 5, 'Objet : Devis n°' . $reference);
         $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(10);
-        $pdf->MultiCell(130, 5, $facture['societe'] . "\n" . $facture['adresse'] . "\n" . $facture['code_postal'] . "\n" . $facture['ville'] . "\n" . $pays->obtenirNom($facture['id_pays']));
+        $pdf->MultiCell(130, 5, $facture['societe'] . "\n" . $facture['adresse'] . "\n" . $facture['code_postal'] . "\n" . $facture['ville'] . "\n" . $this->pays->obtenirNom($facture['id_pays']));
 
         $pdf->Ln(15);
 
@@ -207,10 +208,6 @@ class Facturation
         WHERE reference=' . $this->_bdd->echapper($reference);
         $inscriptions = $this->_bdd->obtenirTous($requete);
 
-        $configuration = $GLOBALS['AFUP_CONF'];
-
-        $pays = new Pays($this->_bdd);
-
         // Construction du PDF
 
         $dateFacture = isset($facture['date_facture']) && !empty($facture['date_facture'])
@@ -222,7 +219,7 @@ class Facturation
 
         $bankAccountFactory = new BankAccountFactory();
         // Construction du PDF
-        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
+        $pdf = new PDF_Facture($bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
@@ -241,7 +238,7 @@ class Facturation
         $pdf->Cell(130, 5, 'Objet : Facture n°' . $reference);
         $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(10);
-        $pdf->MultiCell(130, 5, $facture['societe'] . "\n" . $facture['adresse'] . "\n" . $facture['code_postal'] . "\n" . $facture['ville'] . "\n" . $pays->obtenirNom($facture['id_pays']));
+        $pdf->MultiCell(130, 5, $facture['societe'] . "\n" . $facture['adresse'] . "\n" . $facture['code_postal'] . "\n" . $facture['ville'] . "\n" . $this->pays->obtenirNom($facture['id_pays']));
 
         $pdf->Ln(15);
 

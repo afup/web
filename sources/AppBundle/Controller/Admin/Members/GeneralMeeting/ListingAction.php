@@ -6,11 +6,11 @@ namespace AppBundle\Controller\Admin\Members\GeneralMeeting;
 
 use Afup\Site\Utils\PDF_AG;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
-use Assert\Assertion;
 use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Webmozart\Assert\Assert;
 
 class ListingAction
 {
@@ -19,7 +19,7 @@ class ListingAction
     public function __invoke(Request $request): BinaryFileResponse
     {
         $latestDate = $this->generalMeetingRepository->getLatestAttendanceDate();
-        Assertion::notNull($latestDate);
+        Assert::notNull($latestDate);
         $selectedDate = $latestDate;
         if ($request->query->has('date')) {
             $selectedDate = DateTimeImmutable::createFromFormat('d/m/Y', (string) $request->query->get('date'));

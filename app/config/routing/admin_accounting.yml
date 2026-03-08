@@ -1,0 +1,41 @@
+admin_accounting_configuration:
+  resource: "admin_accounting/configuration.yml"
+  prefix: /configuration
+
+admin_accounting_membership_fee:
+  resource: "admin_accounting/membership_fee.yml"
+  prefix: /membership-fee
+
+admin_accounting_journal:
+  resource: "admin_accounting/journal.yml"
+  prefix: /journal
+
+admin_accounting_quotations_list:
+  path: /quotations/list
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Quotation\ListQuotationAction}
+
+admin_accounting_quotations_download:
+  path: /quotations/download
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Quotation\DownloadQuotationAction}
+
+admin_accounting_quotations_convert:
+  path: /quotations/convert
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Quotation\ConvertQuotationAction}
+
+admin_accounting_invoices_list:
+  path: /invoices/list
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Invoice\ListInvoiceAction}
+
+admin_accounting_invoices_download:
+  path: /invoices/download
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Invoice\DownloadInvoiceAction}
+
+admin_accounting_invoices_send_email:
+  path: /invoices/send
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Invoice\SendInvoiceEmailAction}
+
+admin_accounting_search:
+  path: /search
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\SearchAction}
+
+

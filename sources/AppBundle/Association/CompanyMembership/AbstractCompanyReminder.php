@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Association\CompanyMembership;
 
 use AppBundle\Association\MembershipReminderInterface;
+use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
-use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\SubscriptionReminderLog;
 use AppBundle\Association\NotifiableInterface;
 use AppBundle\Email\Mailer\Attachment;
@@ -36,7 +36,7 @@ abstract class AbstractCompanyReminder implements MembershipReminderInterface
             ->setUserId($user->getId())
             ->setReminderDate(new \DateTime())
             ->setReminderKey($this->getKey())
-            ->setUserType(UserRepository::USER_TYPE_COMPANY)
+            ->setUserType(MemberType::MemberCompany->value)
         ;
 
         $message = new Message($this->getSubject(), MailUserFactory::sponsors(), new MailUser($user->getEmail()));

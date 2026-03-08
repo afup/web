@@ -1,0 +1,11 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% form_theme form 'form_theme_admin.html.twig' %}
+
+
+{% block content %}
+    <h2>Ajouter une conférence pour le {{ event.title }}</h2>
+
+    {% include '/admin/talk/form.html.twig' %}
+{% endblock %}
+

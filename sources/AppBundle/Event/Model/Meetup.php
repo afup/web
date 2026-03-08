@@ -42,6 +42,8 @@ class Meetup implements NotifyPropertyInterface
      */
     private $antenneName;
 
+    private ?string $photoUrl = null;
+
     /**
      * @return int
      */
@@ -154,5 +156,16 @@ class Meetup implements NotifyPropertyInterface
         $this->antenneName = $antenneName;
 
         return $this;
+    }
+
+    public function getPhotoUrl(): ?string
+    {
+        return $this->photoUrl;
+    }
+
+    public function setPhotoUrl(?string $photoUrl): void
+    {
+        $this->propertyChanged('photoUrl', $this->photoUrl, $photoUrl);
+        $this->photoUrl = $photoUrl;
     }
 }

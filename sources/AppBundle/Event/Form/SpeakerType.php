@@ -23,6 +23,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class SpeakerType extends AbstractType
 {
@@ -48,6 +49,7 @@ class SpeakerType extends AbstractType
             ->add('biography', TextareaType::class)
             ->add('twitter', TextType::class, ['required' => false])
             ->add('mastodon', UrlType::class, ['required' => false, 'help' => 'Exemple https://mastodon.online/@afup', 'default_protocol' => 'https'])
+            ->add('linkedin', UrlType::class, ['required' => false, 'help' => 'Exemple https://www.linkedin.com/in/votrepseudo', 'default_protocol' => 'https'])
             ->add('bluesky', TextType::class, ['required' => false, 'help' => 'Exemple acme.bsky.social'])
         ;
 
@@ -84,8 +86,8 @@ class SpeakerType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent): void {
             $speaker = $formEvent->getData();
             $user = null;
-            if ($this->tokenStorage->getToken() instanceof TokenStorageInterface) {
-                $user = $this->tokenStorage->getToken()->getUser();
+            if (($token = $this->tokenStorage->getToken()) instanceof TokenInterface) {
+                $user = $token->getUser();
             }
 
             if ($user instanceof GithubUser && $speaker instanceof Speaker && $speaker->getId() === null) {
@@ -101,6 +103,7 @@ class SpeakerType extends AbstractType
                     $speaker->setBiography($previousSpeakerInfos->getBiography());
                     $speaker->setTwitter($previousSpeakerInfos->getTwitter());
                     $speaker->setMastodon($previousSpeakerInfos->getMastodon());
+                    $speaker->setLinkedin($previousSpeakerInfos->getLinkedin());
                     $speaker->setBluesky($previousSpeakerInfos->getBluesky());
                     $speaker->setPhoto($previousSpeakerInfos->getPhoto());
 

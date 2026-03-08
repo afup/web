@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\User;
 use Phinx\Seed\AbstractSeed;
 
@@ -179,14 +180,14 @@ class Users extends AbstractSeed
         $data = [
             [
                 'date_debut' => $now - $oneMonthInSeconds,
-                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
+                'type_personne' => MemberType::MemberPhysical->value,
                 'id_personne' => self::ID_USER_ADMIN,
                 'montant' => 25,
                 'date_fin' => $now + $oneMonthInSeconds * 12,
             ],
             [
                 'date_debut' => $dateDebutUserExpire,
-                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
+                'type_personne' => MemberType::MemberPhysical->value,
                 'id_personne' => self::ID_USER_EXPIRIE,
                 'montant' => 25,
                 'date_fin' => $dateDebutUserExpire + $oneMonthInSeconds * 12,
@@ -194,7 +195,7 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => $dateDebutUserExpire,
-                'type_personne' => AFUP_PERSONNES_MORALES,
+                'type_personne' => MemberType::MemberCompany->value,
                 'id_personne' => self::ID_PERSONNE_MORALE_MY_CORP,
                 'montant' => 150,
                 'date_fin' => $now + $oneMonthInSeconds * 12,
@@ -202,7 +203,7 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => $dateDebutUserExpire,
-                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
+                'type_personne' => MemberType::MemberPhysical->value,
                 'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE,
                 'montant' => 25,
                 'date_fin' => $now + $oneMonthInSeconds * 12,
@@ -210,7 +211,7 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => mktime(16, 10, 10, 1, 1, 2023),
-                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
+                'type_personne' => MemberType::MemberPhysical->value,
                 'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
                 'montant' => 30,
                 'date_fin' => mktime(16, 10, 10, 1, 1, 2024),
@@ -218,7 +219,7 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => mktime(16, 10, 10, 1, 1, 2024),
-                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
+                'type_personne' => MemberType::MemberPhysical->value,
                 'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
                 'montant' => 30,
                 'date_fin' => mktime(16, 10, 10, 1, 1, 2025),
@@ -226,7 +227,7 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => mktime(16, 10, 10, 1, 1, $year),
-                'type_personne' => AFUP_PERSONNES_PHYSIQUES,
+                'type_personne' => MemberType::MemberPhysical->value,
                 'id_personne' => self::ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS,
                 'montant' => 30,
                 'date_fin' => mktime(16, 10, 10, 1, 1, $year + 1),
@@ -234,7 +235,7 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => mktime(16, 10, 10, 1, 2, 2023),
-                'type_personne' => AFUP_PERSONNES_MORALES,
+                'type_personne' => MemberType::MemberCompany->value,
                 'id_personne' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
                 'montant' => 150,
                 'date_fin' => mktime(16, 10, 10, 1, 2, 2024),
@@ -242,7 +243,7 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => mktime(16, 10, 10, 1, 2, 2024),
-                'type_personne' => AFUP_PERSONNES_MORALES,
+                'type_personne' => MemberType::MemberCompany->value,
                 'id_personne' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
                 'montant' => 180,
                 'date_fin' => mktime(16, 10, 10, 1, 2, 2025),
@@ -250,7 +251,7 @@ class Users extends AbstractSeed
             ],
             [
                 'date_debut' => mktime(16, 10, 10, 1, 2, $year),
-                'type_personne' => AFUP_PERSONNES_MORALES,
+                'type_personne' => MemberType::MemberCompany->value,
                 'id_personne' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
                 'montant' => 180,
                 'date_fin' => mktime(16, 10, 10, 1, 2, $year + 1),

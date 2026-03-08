@@ -41,6 +41,14 @@ admin_planete_routes:
   resource: "admin_planete.yml"
   prefix: /planete
 
+admin_antennes:
+  resource: "admin_antennes.yml"
+  prefix: /antennes
+
+admin_super_apero:
+  resource: "admin_super_apero.yml"
+  prefix: /super-apero
+
 admin_members_reporting:
   path: /members/reporting
   defaults: {_controller: AppBundle\Controller\MembershipAdmin\ReportingAction}
@@ -101,6 +109,10 @@ admin_site:
   resource: "admin_site.yml"
   prefix: /site
 
+admin_accounting:
+  resource: "admin_accounting.yml"
+  prefix: /accounting
+
 admin_github_user_routes:
   resource: "admin_github_user.yml"
   prefix: /event/github-user
@@ -108,3 +120,15 @@ admin_github_user_routes:
 admin_healthcheck:
   path: /healthcheck
   defaults: {_controller: AppBundle\Controller\Admin\HealthcheckController}
+
+admin_logs:
+  path: /logs/{page}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Audit\IndexAction
+    page: 1
+  requirements:
+    id: '\d+'
+
+admin_administrators:
+  path: /administrators
+  defaults: {_controller: AppBundle\Controller\Admin\AdministratorsListAction}

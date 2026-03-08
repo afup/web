@@ -570,22 +570,6 @@ a:hover {
 /* +------------------------------------------------------------+ */
 /* |  Logos Bar                                                 | */
 /* +------------------------------------------------------------+ */
-#LogoBar {
-	float: right;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	margin-top: 32px;
-	width: 935px;
-	border-top: 1px solid #2D4B96;
-	border-bottom: 1px solid #2D4B96;
-}
-#LogoBar li {
-	width: 100%;
-	text-align: center;
-}
-#LogoBar img {
-	margin-right: 14px;
-}
 #LogoElement {
 	margin: 0 auto;
 	text-align: center;

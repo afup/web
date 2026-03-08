@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Model\Repository;
 
+use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\CompanyMember;
-use Assert\Assertion;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -16,6 +16,7 @@ use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 use InvalidArgumentException;
+use Webmozart\Assert\Assert;
 
 /**
  * @extends Repository<CompanyMember>
@@ -70,12 +71,12 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
      */
     public function search($sort = 'name', $direction = 'asc', $filter = null, $onlyDisplayActive = true)
     {
-        Assertion::inArray($direction, ['asc', 'desc']);
+        Assert::inArray($direction, ['asc', 'desc']);
         $sorts = [
             'name' => ['raison_sociale'],
             'status' => ['etat', 'raison_sociale'],
         ];
-        Assertion::keyExists($sorts, $sort);
+        Assert::keyExists($sorts, $sort);
         $queryBuilder = $this->getQueryBuilderWithCompleteCompanyMember()
             ->orderBy(array_map(static fn($field): string => $field . ' ' . $direction, $sorts[$sort]));
 
@@ -121,7 +122,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
     public function remove(CompanyMember $companyMember): void
     {
         $nbCotisations = (int) $this->getQuery('SELECT COUNT(*) nb FROM afup_cotisations WHERE type_personne = :memberType AND id_personne = :id')
-            ->setParams(['memberType' => AFUP_PERSONNES_MORALES, 'id' => $companyMember->getId()])
+            ->setParams(['memberType' => MemberType::MemberCompany->value, 'id' => $companyMember->getId()])
             ->query()->first()[0]->nb;
         if (0 < $nbCotisations) {
             throw new InvalidArgumentException('Impossible de supprimer une personne morale qui a des cotisations');
@@ -188,6 +189,28 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
             ->groupBy(['apm.`id`']);
 
         return $queryBuilder;
+    }
+
+    public function searchCompanyMemberSubscriptions(string $search)
+    {
+        $query = $this->getPreparedQuery(
+            'SELECT pers.nom, pers.prenom, pers.email, pers.raison_sociale, cotis.*
+  FROM afup_personnes_morales AS pers
+
+  LEFT JOIN afup_cotisations AS cotis
+    ON pers.id = cotis.id_personne
+  WHERE
+    cotis.type_personne = 1
+    AND (
+      cotis.informations_reglement LIKE :like
+      OR cotis.numero_facture LIKE :like
+      OR cotis.commentaires LIKE :like
+      OR pers.email LIKE :like
+      OR pers.nom LIKE :like
+      OR pers.prenom LIKE :like
+    )',
+        )->setParams(['like' => "%{$search}%"]);
+        return $query->query($this->getCollection(new HydratorArray()));
     }
 
     /**

@@ -1,0 +1,3 @@
+afup_api_antennes_get:
+    path: /antennes/{code}
+    defaults: { _controller: AppBundle\Controller\Api\Antennes\GetOneAction }

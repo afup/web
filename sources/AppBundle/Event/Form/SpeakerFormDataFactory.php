@@ -20,6 +20,7 @@ class SpeakerFormDataFactory
         $data->biography = $speaker->getBiography();
         $data->twitter = $speaker->getTwitter();
         $data->mastodon = $speaker->getMastodon();
+        $data->linkedin = $speaker->getLinkedin();
         $data->bluesky = $speaker->getBluesky();
         $data->githubUser = $speaker->getUser();
         $data->phoneNumber = $speaker->getPhoneNumber();

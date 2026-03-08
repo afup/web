@@ -4,43 +4,38 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Speaker;
 
-use Afup\Site\Logger\DbLoggerTrait;
 use Afup\Site\Utils\Utils;
+use AppBundle\AuditLog\Audit;
 use AppBundle\CFP\PhotoStorage;
 use AppBundle\Event\Form\SpeakerFormDataFactory;
 use AppBundle\Event\Form\SpeakerType;
-use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
-use Assert\Assertion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Webmozart\Assert\Assert;
 
 class SpeakerEditAction extends AbstractController
 {
-    use DbLoggerTrait;
-
     public const ID_FORUM_PHOTO_STORAGE = 16;
 
     public function __construct(
-        private SpeakerRepository $speakerRepository,
-        private TalkRepository $talkRepository,
-        private EventRepository $eventRepository,
-        private PhotoStorage $photoStorage,
-        private SpeakerFormDataFactory $speakerFormDataFactory,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly TalkRepository $talkRepository,
+        private readonly EventRepository $eventRepository,
+        private readonly PhotoStorage $photoStorage,
+        private readonly SpeakerFormDataFactory $speakerFormDataFactory,
+        private readonly Audit $audit,
     ) {}
 
     public function __invoke(Request $request)
     {
-        /** @var Speaker $speaker */
         $speaker = $this->speakerRepository->get($request->query->get('id'));
-        Assertion::notNull($speaker);
-        /** @var Event $event */
+        Assert::notNull($speaker);
         $event = $this->eventRepository->get($speaker->getEventId());
-        Assertion::notNull($event);
+        Assert::notNull($event);
         $data = $this->speakerFormDataFactory->fromSpeaker($speaker);
         $form = $this->createForm(SpeakerType::class, $data, [
             SpeakerType::OPT_PHOTO_REQUIRED => null === $speaker->getPhoto(),
@@ -71,6 +66,7 @@ class SpeakerEditAction extends AbstractController
             $speaker->setTwitter($data->twitter);
             $speaker->setBluesky($data->bluesky);
             $speaker->setMastodon($data->mastodon);
+            $speaker->setLinkedin($data->linkedin);
             $speaker->setEmail($data->email);
             $speaker->setUser($data->githubUser !== null ? $data->githubUser->getId() : null);
             $speaker->setCompany($data->company);
@@ -88,7 +84,7 @@ class SpeakerEditAction extends AbstractController
                 $speaker->setPhoto($fileName);
             }
             $this->speakerRepository->save($speaker);
-            $this->log('Modification du conférencier de ' . $speaker->getFirstname() . ' ' . $speaker->getLastname() . ' (' . $speaker->getId() . ')');
+            $this->audit->log('Modification du conférencier de ' . $speaker->getFirstname() . ' ' . $speaker->getLastname() . ' (' . $speaker->getId() . ')');
 
             $this->addFlash('notice', 'Le conférencier a été modifié');
 

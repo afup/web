@@ -1,0 +1,13 @@
+admin_accounting_payments_list:
+  path: /list
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ListPaymentAction}
+
+admin_accounting_payments_add:
+  path: /add
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\AddPaymentAction}
+
+admin_accounting_payments_edit:
+  path: /edit/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditPaymentAction}
+  requirements:
+    id: '\d+'

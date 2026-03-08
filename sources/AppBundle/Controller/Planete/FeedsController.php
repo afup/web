@@ -19,8 +19,8 @@ final readonly class FeedsController
 
         foreach ($feeds as $feed) {
             $data[] = [
-                'name' => $feed->getName(),
-                'url' => $feed->getUrl(),
+                'name' => $feed->name,
+                'url' => $feed->url,
             ];
         }
 

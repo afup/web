@@ -6,6 +6,7 @@ namespace AppBundle\Command;
 
 use AppBundle\Event\Model\Repository\MeetupRepository;
 use AppBundle\Indexation\Meetups\MeetupClient;
+use CuyZ\Valinor\Mapper\MappingError;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,11 +30,16 @@ class ScrappingMeetupEventsCommand extends Command
             ->setName('scrapping-meetup-event')
             ->setAliases(['s-m-e'])
             ->setDescription('Récupère les évènements meetup AFUP sur meetup.com pour les afficher sur le site de l\'afup.')
+            ->addOption('refresh-old-meetups', description: 'Mettre à jour les anciens meetups')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if ($input->getOption('refresh-old-meetups') === true) {
+            $quantityOfPastEvents = 100;
+        }
+
         $io = new SymfonyStyle($input, $output);
         $io->title('Import des events meetups via scrapping de meetup.com');
 
@@ -44,7 +50,7 @@ class ScrappingMeetupEventsCommand extends Command
         }
 
         try {
-            $meetups = $this->meetupClient->getEvents();
+            $meetups = $this->meetupClient->getEvents($quantityOfPastEvents ?? null);
 
             $io->progressStart(count($meetups));
             foreach ($meetups as $meetup) {
@@ -59,6 +65,7 @@ class ScrappingMeetupEventsCommand extends Command
                     $existingMeetup->setDescription($meetup->getDescription());
                     $existingMeetup->setLocation($meetup->getLocation());
                     $existingMeetup->setDate($meetup->getDate());
+                    $existingMeetup->setPhotoUrl($meetup->getPhotoUrl());
 
                     // On doit remplacer la variable, car l'ORM a une référence vers l'instance récupérée
                     // via le get et pas celle de la boucle.
@@ -73,9 +80,12 @@ class ScrappingMeetupEventsCommand extends Command
 
             return Command::SUCCESS;
         } catch (\Exception $e) {
+            if ($e instanceof MappingError) {
+                // Le bundle Valinor affiche automatiquement des détails en cas d'erreur
+                throw $e;
+            }
+
             throw new \Exception('Problème lors du scraping ou de la sauvegarde des évènements Meetup', $e->getCode(), $e);
         }
-
-        return Command::FAILURE;
     }
 }

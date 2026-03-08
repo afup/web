@@ -18,6 +18,7 @@ Feature: Administration - Évènements - Tokens Sponsors
     And I press "Enregistrer"
     # Listing des tokens
     Then I should see "Invitations totales"
+    And I should see tooltip "Supprimer"
     When I press "Voir les invitations"
     # Listing des invitations vides
     Then I should see "Billetterie sponsor: forum - Ma société"
@@ -36,6 +37,7 @@ Feature: Administration - Évènements - Tokens Sponsors
     And I press "Enregistrer"
     # Listing des invitations renseignées
     Then I should see "personneinvitee@masociete.com"
+    And I should not see tooltip "Supprimer"
     # La modification d'une place ne modifie pas le nombre de places disponibles
     And I should see "Places disponibles: 1 / 2"
     When I follow "Modifier"
@@ -53,3 +55,19 @@ Feature: Administration - Évènements - Tokens Sponsors
       | <personneinvitee@masociete.com> | [forum] Merci !                                              |
       | <testToken1@mail.com>           | Sponsor: enregistrez-vous pour le forum                      |
 
+  @reloadDbWithTestData
+  @clearEmails
+  Scenario: Suppression d'un token sponsor
+    Given I am logged in as admin and on the Administration
+    And I follow "Tokens sponsors"
+    Then the ".content h2" element should contain "Liste des tokens sponsors pour forum"
+    # ajout d'un token
+    When I fill in "sponsor_token[company]" with "Ma société"
+    And I fill in "sponsor_token[contactEmail]" with "testToken1@mail.com"
+    And I fill in "sponsor_token[maxInvitations]" with "2"
+    And I press "Enregistrer"
+    # Listing des tokens
+    Then I should see "Invitations totales"
+    And I should see tooltip "Supprimer"
+    When I follow the button of tooltip "Supprimer"
+    And I should see "Le token a été supprimé"

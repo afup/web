@@ -12,5 +12,6 @@ final readonly class TalkAggregate
         public array $speakers,
         public ?Room $room,
         public ?Planning $planning,
+        public ?TalkAggregateVote $vote = null,
     ) {}
 }

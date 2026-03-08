@@ -24,7 +24,7 @@ class PayboxResponseFactory
         return new PayboxResponse(
             $query->get('cmd'),
             $query->get('status'),
-            $query->get('total'),
+            $query->getInt('total'),
             $query->get('autorisation'),
             $query->get('transaction'),
         );

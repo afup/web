@@ -18,9 +18,9 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 class RoomRepository extends Repository implements MetadataInitializer
 {
     /**
-     * @return CollectionInterface
+     * @return CollectionInterface<Room>
      */
-    public function getByEvent(Event $event)
+    public function getByEvent(Event $event): CollectionInterface
     {
         return $this->getBy(['eventId' => $event->getId()]);
     }

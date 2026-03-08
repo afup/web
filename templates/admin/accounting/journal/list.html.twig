@@ -1,0 +1,386 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Journal</h2>
+
+    <div class="ui menu">
+        <a href="{{ path('admin_accounting_journal_add') }}" class="item">
+            <div data-tooltip="Ajouter une écriture" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+        <a href="{{ url('admin_accounting_journal_import') }}" class="item">
+            <i class="icon upload"></i>
+            Importer un fichier CSV
+        </a>
+    </div>
+
+    {% include 'admin/accounting/invoicing-period.form.html.twig' with {form: formPeriod, url: path('admin_accounting_quotations_list')} %}
+
+    <div class="ui segment">
+        <form method="GET" name="filtre" class="js-form-search">
+            <input type="hidden" name="periodId" value="{{ periodId }}" />
+
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" tabindex="0" class="hidden" name="with_reconciled" {% if withReconciled %}checked="checked"{% endif %}>
+                            <label>Afficher aussi les entrées déjà pointées</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="Filtrer" class="ui button" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="ui menu">
+        <a href="{{ url('admin_accounting_journal_export', {periodId: periodId, with_reconciled: withReconciled}) }}" class="item">
+            <i class="icon file"></i>
+            Exporter la période en CSV
+        </a>
+        <a href="{{ url('admin_accounting_journal_download_attachments', {periodId: periodId}) }}" class="item">
+            <i class="icon file zip"></i>
+            Télécharger les justificatifs groupés par mois
+        </a>
+    </div>
+
+    <div class="ui top attached tabular menu">
+        <a class="item {% if type is null %}active{% endif %}" href="{{ url('admin_accounting_journal_list', {periodId, with_reconciled: withReconciled}) }}">Dépenses/Recettes</a>
+        <a class="item {% if type == enum('AppBundle\\Accounting\\OperationType').Debit %}active{% endif %}" href="{{ url('admin_accounting_journal_list', {periodId, type: enum('AppBundle\\Accounting\\OperationType').Debit.value, with_reconciled: withReconciled}) }}">Dépenses</a>
+        <a class="item {% if type == enum('AppBundle\\Accounting\\OperationType').Credit %}active{% endif %}" href="{{ url('admin_accounting_journal_list', {periodId, type: enum('AppBundle\\Accounting\\OperationType').Credit.value, with_reconciled: withReconciled}) }}">Recettes</a>
+    </div>
+
+    <div class="ui bottom attached segment">
+    {% if transactions.count > 0 %}
+    <table class="ui table striped compact celled afup-tab-filterable">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th data-tf-filter-type="select">Compte</th>
+            <th data-tf-filter-type="select">Évènement</th>
+            <th data-tf-filter-type="select">Catégorie</th>
+            <th data-tf-filter-type="input">Description</th>
+            <th data-tf-filter-type="input" class="right aligned">Débit</th>
+            <th data-tf-filter-type="input" class="right aligned">Crédit</th>
+            <th data-tf-filter-type="select">Règlement</th>
+            <th>Justif ?</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for line in transactions %}
+            <tr class="{{ cycle(['odd', 'even'], loop.index0) }}" id="journal-ligne-{{ line.idtmp }}">
+                <td nowrap="nowrap"><a name="L{{ line.idtmp }}"></a>{{ line.date_ecriture|format_date('short') }}</td>
+                <td>{{ line.nom_compte }}</td>
+                <td>
+                    {% if line.evenement == 'A déterminer' %}
+                    <div class="ui form">
+                        <select class=" js-select-change" data-post-url="{{ path('admin_accounting_journal_update_info', {'id': line.idtmp, 'modification': 'event'}) }}" style="min-width:130px">
+                            {% for event in events %}
+                            <option value="{{ event.id }}" {% if event.name == "A déterminer" %}selected="selected"{% endif %}>{{ event.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% else %}
+                    {{ line.evenement }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if line.categorie == 'A déterminer' %}
+                    <div class="ui form">
+                        <select class="js-select-change" data-post-url="{{ path('admin_accounting_journal_update_info', {'id': line.idtmp, 'modification': 'category'}) }}" style="min-width:130px">
+                            {% for category in categories %}
+                                <option value="{{ category.id }}" {% if category.name == "A déterminer" %}selected="selected"{% endif %}>{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% else %}
+                    {{ line.categorie }}
+                    {% endif %}
+                </td>
+                <td  width="250">
+                    {{ line.description }}
+                </td>
+                {% if line.idoperation == 1 %}
+                <td class="right aligned" width='100'>-{{ line.montant|number_format(2, ',', ' ') }}</td>
+                <td width='100'></td>
+                {% else %}
+                <td width='100'></td>
+                <td class="right aligned" width='100'>+{{ line.montant|number_format(2, ',', ' ') }}</td>
+                {% endif %}
+
+                <td>
+                    {% if line.reglement == 'A déterminer'%}
+                    <div class="ui form">
+                        <select class="js-select-change" data-post-url="{{ path('admin_accounting_journal_update_info', {'id': line.idtmp, 'modification': 'paymentType'}) }}" style="min-width:130px">
+                            {% for payment in paymentTypes %}
+                                <option value="{{ payment.id }}" {% if payment.name == "A déterminer" %}selected="selected"{% endif %}>{{ payment.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% else %}
+                    {{ line.reglement }}
+                    {% endif %}
+                </td>
+                <td align="center">
+                    <input
+                            type="checkbox" class="js-attachment-change"
+                            data-post-url="{{ path('admin_accounting_journal_update_info', {'id': line.idtmp, 'modification': 'requiredAttachment'}) }}"
+                            value="1"
+                            {% if line.attachment_required %}checked{% endif %}
+                    />
+                    <a
+                            {% if line.attachment_filename == false %}style="display:none;"{% endif %}
+                    class="js-has-attachment"
+                    href="{{ path('admin_accounting_journal_download', {'id': line.idtmp}) }}"
+                    title="Télécharger le justificatif"
+                    >
+                    <i class="paperclip icon"></i>
+                    </a>
+                    <div class="js-attachment-form-container" style="{% if line.attachment_required == false %}display:none;"{% endif %}"
+                    data-position="left center"
+                    data-tooltip="Cliquez ou déposez un fichier dans la zone pour ajouter un justificatif"
+                    >
+                    <form action="{{ path('admin_accounting_journal_upload', {'id': line.idtmp}) }}"
+                          class="js-dropzone{% if line.attachment_required == false %}--lazy{% endif %} dz-journal-form ui center aligned tertiary blue segment"
+                          style="display:none;cursor: pointer"
+                    >
+                        <i class="upload icon dz-message"></i>
+                    </form>
+                </div>
+                </td>
+                <td style="text-align: right" class="single line">
+                    <a class="js-edit-comment compact ui icon button"
+                       style="cursor:pointer;"
+                       data-position="left center"
+                       data-tooltip='Editer le commentaire{% if line.comment %} ("{{ line.comment}}"){% endif %}'
+                       data-post-url="{{ path('admin_accounting_journal_update_info', {'id': line.idtmp, 'modification': 'comment'}) }}"
+                       data-comment="{{ line.comment|e('js') }}">
+                        <i class="comment {% if line.comment is empty %}outline{% endif %} icon"></i>
+                    </a>
+
+                    <a href="{{ path('admin_accounting_journal_edit', {'id': line.idtmp }) }}"
+                       data-position="left center"
+                       data-tooltip="Modifier la ligne {{ line.description }}"
+                       class="compact ui icon button"
+                    >
+                        <i class="pencil alternate icon"></i>
+                    </a>
+
+                    <a href="#"
+                       data-position="left center"
+                       data-tooltip="Ventiler la fiche de {{ line.description }}"
+                       class="compact ui icon button"
+                       onclick="javascript:ventiler({{ line.idtmp }}, {{ line.montant}});return false;"
+                    >
+                        <i class="calculator icon"></i>
+                    </a>
+
+                    <a href="{{ path('admin_accounting_journal_delete', {'id': line.idtmp }) }}"
+                       data-position="left center"
+                       data-tooltip="Supprimer la fiche de {{ line.description }} "
+                       class="compact ui red icon button confirmable"
+                       data-confirmable-label="Etes-vous sûr de vouloir supprimer la fiche de {{ line.description }} ?"
+                    >
+                        <i class="trash icon"></i>
+                    </a>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucune ecriture
+            </div>
+            <div class="inline">
+                {% if withReconciled == false %}
+                <a class="ui button" href="{{ url('admin_accounting_journal_list', {type: type ? type.value : null, periodId: periodId, with_reconciled: 1}) }}">Afficher aussi les entrées pointées</a>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="js-dz-preview-template" style="display:none;">
+        <div class="dz-preview"></div>
+    </div>
+
+    <div class="js-upload-loader upload-loader" style="display: none;">
+        <img class="loader" src="/templates/administration/images/ajax-loader.gif" alt="Loading…" />
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+<script>
+  // Ventiler une ligne
+  function ventiler(idLigne, montant) {
+    ventilation = prompt('Combien souhaitez-vous ventiler ? (utilisez le séparateur ; pour ventiler sur plusieurs lignes)' + "\n" + '(toutes les values saisies seront déduites de la ligne existante)', montant);
+    if (ventilation) {
+      if (ventilation >= montant) {
+        alert('Vous ne pouvez pas saisir une valeur égale ou supérieur à la valeur initiale !')
+      } else {
+        window.location='/admin/accounting/journal/allocate/' + idLigne + '?amount=' + encodeURIComponent(ventilation);
+      }
+    }
+  }
+
+  // Update line column value using select
+  // Or update comment using simple link and dialog box
+  (function ($) {
+    $(document).ready(function () {
+      // Init dropzones
+      var initDropzone = function(container) {
+        $('.js-dropzone', container).each(function () {
+          var elmt = $(this);
+          elmt.dropzone({
+            url: elmt.attr('href'),
+            previewTemplate: $('.js-dz-preview-template').html(),
+            init: function() {
+              this.on("error", function(file, errorMessage, xhr) {
+                $('.js-upload-loader').hide();
+                alert(errorMessage);
+              });
+              this.on("success", function(file) {
+                $(elmt.parents('td').get(0)).find('.js-has-attachment').show();
+                $('.js-upload-loader').hide();
+              });
+              this.on("uploadprogress", function(file, progress, bytesSent) {
+                // Display the progress
+                if (!(progress >= 100)) {
+                  $('.js-upload-loader').show();
+                } else {
+                  $('.js-upload-loader').hide();
+                }
+              });
+            }
+          });
+          elmt.show();
+        });
+      }
+      initDropzone(document);
+      // When we change the checked flag of a checkbox
+      $('.js-attachment-change').change(function (e) {
+        var checkbox = e.target;
+        var val = checkbox.checked ? checkbox.value : null;
+
+        // Process request to change the column
+        $.ajax({
+          url: $(checkbox).data('post-url'),
+          type: 'post',
+          data: {
+            val: val
+          },
+          dataType: 'json',
+          success: function (/* data, textStatus, jqXHR */) {
+            // Change visibility of the form
+            var formContainer = $(checkbox).parent().find('.js-attachment-form-container');
+            if (val) {
+              formContainer.find('.js-dropzone--lazy')
+                  .addClass('js-dropzone')
+                  .removeClass('js-dropzone--lazy')
+              ;
+              initDropzone(formContainer);
+              formContainer.show();
+            } else {
+              formContainer.hide();
+            }
+          },
+          error: function (/* data, textStatus, jqXHR */) {
+            // Reverse checked status (put it back)
+            checkbox.checked = !checkbox.checked;
+            alert('Oops… something went wrong. Still logged in?');
+          }
+        });
+      });
+
+      // When we change the value of a select
+      $('.js-select-change').change(function (e) {
+        var elmt = $(e.target);
+
+        // Process request to change the column
+        $.ajax({
+          url: elmt.data('post-url'),
+          type: 'post',
+          data: {
+            val: elmt.val()
+          },
+          dataType: 'json',
+          success: function (data, textStatus, jqXHR) {
+            // remove all span in td
+            elmt.parent().find('span').remove();
+
+            // update td content
+            var span = $('<span></span>');
+            span.html(elmt.find('option:selected').html() + " &#x2705;"); // success emoji: &#x2705;
+            elmt.parent().append(span);
+            elmt.remove();
+          },
+          error: function (data, textStatus, jqXHR) {
+            // remove all span in td
+            elmt.parent().find('span').remove();
+
+            // update td content
+            var span = $('<span></span>');
+            span.html(" &#x1F6AB;"); // error emoji: &#x1F6AB;
+            elmt.parent().append(span);
+            elmt.val("");
+          }
+        });
+      });
+
+      // When we click on the comment link
+      $('a.js-edit-comment').click(function (e) {
+        e.stopPropagation(); // Stop here
+
+        if (e.target.nodeName === "I") {
+          var elmt = $(e.target).parent();
+        } else {
+          var elmt = $(e.target);
+        }
+
+        // Get comment
+        var comment = prompt("Commentaire :", elmt.data('comment'));
+
+        // We have a comment, so update it!
+        if (comment !== null) {
+          $.ajax({
+            url: elmt.data('post-url'),
+            type: 'post',
+            data: {
+              val: comment
+            },
+            dataType: 'json',
+            success: function () {
+              var icon = $('.icon', elmt);
+              icon.toggleClass('outline', comment.length === 0);
+              var tooltipLabel = 'Editer le commentaire';
+              if (comment.length > 0) {
+                tooltipLabel += ' ("' + comment + '")';
+              }
+              $(elmt).attr("data-tooltip", tooltipLabel);
+              $(elmt).data('comment', comment);
+            },
+            error: function () {
+              alert('Oops… something went wrong. Still logged in?');
+            }
+          });
+        }
+
+        return false;
+      });
+    });
+  })(jQuery);
+</script>
+{% endblock %}

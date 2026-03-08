@@ -9,7 +9,6 @@ use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Model\Repository\TalkInvitationRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
-use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\TalkInvitation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,13 +31,13 @@ class InviteAction extends AbstractController
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
         $token = $request->attributes->get('token');
         $talkId = (int) $request->attributes->get('talkId');
-        /** @var TalkInvitation $invitation */
         $invitation = $this->talkInvitationRepository->get(['talk_id' => $talkId, 'token' => $token]);
-        /** @var Talk $talk */
         $talk = $this->talkRepository->get($talkId);
+
         if ($invitation === null || $talk === null || $talk->getForumId() !== $event->getId()) {
             throw $this->createNotFoundException('Invitation or talk not found');
         }
+
         $speaker = $this->speakerFactory->getSpeaker($event);
 
         if ($speaker->getId() === null) {

@@ -329,7 +329,7 @@ class Comptabilite
     public function obtenirListComptes($filtre = '', ?string $where = '')
     {
         $requete = 'SELECT ';
-        $requete .= 'id, nom_compte ';
+        $requete .= 'id, nom_compte, archived_at ';
         $requete .= 'FROM  ';
         $requete .= 'compta_compte  ';
         if ($where) {
@@ -352,6 +352,23 @@ class Comptabilite
 
             return $result;
         }
+    }
+
+    /**
+     * @return array<int, array{'id': int, 'nom_compte': string}>
+     */
+    public function obtenirListeComptesActifs(): array
+    {
+        $requete = 'SELECT id, nom_compte FROM compta_compte ';
+        $requete .= 'WHERE archived_at IS NULL ORDER BY nom_compte ';
+
+        $data = $this->_bdd->obtenirTous($requete);
+        $result = [];
+        foreach ($data as $row) {
+            $result[$row['id']] = $row['nom_compte'];
+        }
+
+        return $result;
     }
 
     public function obtenirListCategories($filtre = '', ?string $where = '', $usedInAccountingJournal = false)
@@ -649,23 +666,6 @@ SQL;
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-    public function obtenirSuivantADeterminer($numero_operation)
-    {
-        $requete = 'SELECT';
-        $requete .= '  id ';
-        $requete .= 'FROM';
-        $requete .= '  compta ';
-        $requete .= 'WHERE ';
-        $requete .= '  (';
-        $requete .= '    idcategorie = 26 ';
-        $requete .= '      OR ';
-        $requete .= '    idevenement = 8';
-        $requete .= '   )';
-        $requete .= ' AND id > ' . $this->_bdd->echapper($numero_operation);
-        $requete .= ' LIMIT 1;';
-        return $this->_bdd->obtenirEnregistrement($requete);
-    }
-
     public function obtenirTous()
     {
         $requete = 'SELECT';
@@ -698,12 +698,11 @@ SQL;
         $qualifier = new AutoQualifier($this->obtenirListRegles(true));
 
         foreach ($importer->extract() as $operation) {
-            $numero_operation = $operation->getNumeroOperation();
+            $numero_operation = $operation->numeroOperation;
             // On vérife si l'enregistrement existe déjà
             $enregistrement = $this->obtenirParNumeroOperation($numero_operation);
 
             $operationQualified = $qualifier->qualify($operation);
-
             if (!is_array($enregistrement)) {
                 $this->ajouter(
                     $operationQualified['idoperation'],
@@ -719,7 +718,7 @@ SQL;
                     $operationQualified['date_ecriture'],
                     '',
                     $operationQualified['evenement'],
-                    $operationQualified['numero_operation'],
+                    $operationQualified['numero_operation'] ?? null,
                     $operationQualified['attachmentRequired'],
                     $operationQualified['montant_ht_soumis_tva_0'],
                     $operationQualified['montant_ht_soumis_tva_5_5'],
@@ -946,14 +945,5 @@ SQL;
         $requete .= 'id = ' . intval($id) . ' ';
 
         return $this->_bdd->executer($requete);
-    }
-
-    public static function getTvaZoneLabel($tvaZoneCode, $defaultValue = null)
-    {
-        if (!isset(self::TVA_ZONES[$tvaZoneCode])) {
-            return $defaultValue;
-        }
-
-        return self::TVA_ZONES[$tvaZoneCode];
     }
 }

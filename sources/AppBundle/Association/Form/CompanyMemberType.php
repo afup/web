@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 
 class CompanyMemberType extends AbstractType
 {
@@ -28,15 +29,51 @@ class CompanyMemberType extends AbstractType
         }
 
         $builder
-            ->add('companyName', TextType::class, ['label' => 'Company'])
-            ->add('firstName', TextType::class, ['label' => 'Firstname'])
-            ->add('lastName', TextType::class, ['label' => 'Lastname'])
-            ->add('email', EmailType::class)
-            ->add('siret', TextType::class)
+            ->add('companyName', TextType::class, [
+                'label' => 'Company',
+                'constraints' => [
+                    new Length(max: 100),
+                ],
+            ])
+            ->add('firstName', TextType::class, [
+                'label' => 'Firstname',
+                'constraints' => [
+                    new Length(max: 40),
+                ],
+            ])
+            ->add('lastName', TextType::class, [
+                'label' => 'Lastname',
+                'constraints' => [
+                    new Length(max: 40),
+                ],
+            ])
+            ->add('email', EmailType::class, [
+                'constraints' => [
+                    new Length(max: 100),
+                ],
+            ])
+            ->add('siret', TextType::class, [
+                'constraints' => [
+                    new Length(max: 14),
+                ],
+            ])
             ->add('address', TextareaType::class)
-            ->add('zipcode', TextType::class, ['label' => 'Zip code'])
-            ->add('city', TextType::class)
-            ->add('phone', TextType::class)
+            ->add('zipcode', TextType::class, [
+                'label' => 'Zip code',
+                'constraints' => [
+                    new Length(max: 10),
+                ],
+            ])
+            ->add('city', TextType::class, [
+                'constraints' => [
+                    new Length(max: 50),
+                ],
+            ])
+            ->add('phone', TextType::class, [
+                'constraints' => [
+                    new Length(max: 20),
+                ],
+            ])
             ->add(
                 'maxMembers',
                 ChoiceType::class,

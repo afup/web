@@ -6,21 +6,16 @@ namespace AppBundle\Mailchimp;
 
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-class Runner
+final readonly class Runner
 {
-    /**
-     * Runner constructor.
-     * @param $membersListId
-     * @param string $membersListId
-     */
     public function __construct(
-        private readonly Mailchimp $mailchimp,
-        private readonly UserRepository $userRepository,
-        /**
-         * @var string id of the mailchimp list to use
-         */
-        private $membersListId,
+        #[Autowire('@app.mailchimp_api')]
+        private Mailchimp $mailchimp,
+        private UserRepository $userRepository,
+        #[Autowire('%mailchimp_members_list%')]
+        private string $membersListId,
     ) {}
 
     /**
@@ -33,7 +28,7 @@ class Runner
         /**
          * @var User[] $users
          */
-        $users = $this->userRepository->getActiveMembers(UserRepository::USER_TYPE_ALL);
+        $users = $this->userRepository->getActiveMembers();
         foreach ($users as $user) {
             // Add to members list
             try {
@@ -58,7 +53,7 @@ class Runner
         /**
          * @var User[] $users
          */
-        $users = $this->userRepository->getUsersByEndOfMembership($dateUnsubscribe, UserRepository::USER_TYPE_ALL);
+        $users = $this->userRepository->getUsersByEndOfMembership($dateUnsubscribe);
         foreach ($users as $user) {
             // Delete from members list
             try {
@@ -69,7 +64,7 @@ class Runner
         }
         // Then - add new members
         $dateNextYear = new \DateTimeImmutable('+1 year - 1 day');
-        $users = $this->userRepository->getUsersByEndOfMembership($dateNextYear, UserRepository::USER_TYPE_ALL);
+        $users = $this->userRepository->getUsersByEndOfMembership($dateNextYear);
         foreach ($users as $user) {
             // Add to the members list
             try {

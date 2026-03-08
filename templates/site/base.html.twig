@@ -54,15 +54,11 @@
     {% autoescape false %}
         <div class="mw1400p center" id="container">
             <div class="line">
-                <div id="main" class="mod item left content w66 m50 t100">
+                <div id="main" class="mod item left content w100">
                     {% block inner_content %}
                         {{ content }}
                     {% endblock %}
                 </div>
-                <aside id="sidebar-article" class="mod item w33 m50 t100">
-                    <h2>L'afup organise...</h2>
-                    {{ sidebar.naviguer(1, 2, "externe", "") }}
-                </aside>
             </div>
         </div>
     {% endautoescape %}

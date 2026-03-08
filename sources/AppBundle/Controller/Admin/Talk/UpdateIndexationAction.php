@@ -21,6 +21,6 @@ class UpdateIndexationAction extends AbstractController
 
         $this->addFlash('notice', 'Indexation effectuée');
 
-        return $this->redirect($request->headers->get('referer', '/pages/administration/index.php?page=forum_sessions'));
+        return $this->redirect($request->headers->get('referer', $this->generateUrl('admin_talk_list')));
     }
 }

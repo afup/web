@@ -39,12 +39,12 @@ class EventRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @return CollectionInterface|Event|null
+     * @return CollectionInterface<Event>|null
      */
     public function getNextEvents()
     {
         $query = $this
-            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_fin_appel_conferencier, date_fin_vente FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut')
+            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_debut_appel_conferencier, date_fin_appel_conferencier, date_fin_vente, nb_places FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut')
         ;
 
         $events = $query->query($this->getCollection(new HydratorSingleObject()));
@@ -53,6 +53,26 @@ class EventRepository extends Repository implements MetadataInitializer
             return null;
         }
         return $events;
+    }
+
+    /**
+     * @return Event[]
+     */
+    public function getNextPublicizedEvents(): array
+    {
+        $nextPublizedEvents = [];
+        $currentDate = new \DateTime();
+
+        foreach ($this->getNextEvents() as $event) {
+
+            if ($currentDate < $event->getDateStartCallForPapers()) {
+                continue;
+            }
+
+            $nextPublizedEvents[] = $event;
+        }
+
+        return $nextPublizedEvents;
     }
 
     public function getLastEvent()
@@ -302,6 +322,11 @@ SQL;
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => false],
                 ],
+            ])
+            ->addField([
+                'columnName' => 'annee',
+                'fieldName' => 'year',
+                'type' => 'string',
             ])
             ->addField([
                 'columnName' => 'date_fin_appel_projet',

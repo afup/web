@@ -13,6 +13,7 @@ use JMS\Serializer\SerializerBuilder;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\Translator;
 
 final class SlackNotifierTest extends TestCase
@@ -22,7 +23,7 @@ final class SlackNotifierTest extends TestCase
         $mockResponse = new MockResponse();
         $client = new MockHttpClient([$mockResponse]);
 
-        $messageFactory = new MessageFactory(new Translator('fr'));
+        $messageFactory = new MessageFactory(new Translator('fr'), $this->createMock(UrlGeneratorInterface::class));
 
         $notifier = new SlackNotifier(
             'http://fake-slack-endpoint',

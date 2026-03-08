@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace AppBundle\Planete;
 
 use AppBundle\Association\Model\Repository\UserRepository;
-use PlanetePHP\Feed;
+use PlanetePHP\FeedStatus;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -19,7 +20,7 @@ class FeedFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $users = [null => ''];
+        $users = [null => null];
         foreach ($this->userRepository->search() as $user) {
             $users[$user->getLastName() . ' ' . $user->getFirstName()] = $user->getId();
         }
@@ -53,13 +54,10 @@ class FeedFormType extends AbstractType
                 'required' => false,
                 'choices' => $users,
             ])
-            ->add('status', ChoiceType::class, [
-                'label' => 'Etat',
+            ->add('status', EnumType::class, [
+                'label' => 'État',
                 'required' => true,
-                'choices' => [
-                    'Actif' => Feed::STATUS_ACTIVE,
-                    'Inactif' => Feed::STATUS_INACTIVE,
-                ],
+                'class' => FeedStatus::class,
             ])
             ->add('save', SubmitType::class, ['label' => 'Ajouter']);
     }

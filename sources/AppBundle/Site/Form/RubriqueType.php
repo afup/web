@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Site\Form;
 
-use Afup\Site\Corporate\Feuilles;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Site\Model\Repository\RubriqueRepository;
+use AppBundle\Site\Model\Repository\SheetRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -24,6 +24,7 @@ class RubriqueType extends AbstractType
     public function __construct(
         private readonly RubriqueRepository $rubriqueRepository,
         private readonly UserRepository $userRepository,
+        private readonly SheetRepository $sheetRepository,
     ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -32,7 +33,11 @@ class RubriqueType extends AbstractType
         foreach ($this->userRepository->getAll() as $user) {
             $users[$user->getLastName() . ' ' . $user->getFirstName()] = $user->getId();
         }
-        $feuilles = (new Feuilles($GLOBALS['AFUP_DB']))->obtenirListe('nom, id', 'nom', true);
+        $sheets = [];
+        foreach ($this->sheetRepository->getAll() as $sheet) {
+            $sheets[$sheet->getName()] = $sheet->getId();
+        }
+        ksort($sheets, SORT_NATURAL);
         $positions = [];
         for ($i = self::POSITIONS_RUBRIQUES ; $i >= -(self::POSITIONS_RUBRIQUES); $i--) {
             $positions[$i] = $i;
@@ -50,7 +55,7 @@ class RubriqueType extends AbstractType
                     'size' => 60,
                 ],
                 'constraints' => [
-                    new Assert\Length(['max' => 255]),
+                    new Assert\Length(max: 255),
                     new Assert\NotBlank(),
                     new Assert\Type('string'),
                 ],
@@ -65,7 +70,7 @@ class RubriqueType extends AbstractType
                     'class' => 'tinymce',
                 ],
                 'constraints' => [
-                    new Assert\Length(['max' => 255]),
+                    new Assert\Length(max: 255),
                     new Assert\Type('string'),
                 ],
             ])
@@ -88,10 +93,10 @@ class RubriqueType extends AbstractType
                 'required' => false,
                 'data_class' => null,
                 'constraints' => [
-                    new Assert\Image([
-                        'minHeight' => 37,
-                        'maxHeight' => 43,
-                    ]),
+                    new Assert\Image(
+                        minHeight: 37,
+                        maxHeight: 43,
+                    ),
                 ],
             ])
             ->add('raccourci', TextType::class, [
@@ -102,7 +107,7 @@ class RubriqueType extends AbstractType
                     'size' => 60,
                 ],
                 'constraints' => [
-                    new Assert\Length(['max' => 255]),
+                    new Assert\Length(max: 255),
                     new Assert\NotBlank(),
                     new Assert\Type('string'),
                 ],
@@ -137,7 +142,7 @@ class RubriqueType extends AbstractType
             ])
             ->add('position', ChoiceType::class, [
                 'required' => false,
-                'label' => 'Position ',
+                'label' => 'Position',
                 'choices' => $positions,
                 'constraints' => [
                     new Assert\Type("integer"),
@@ -164,7 +169,7 @@ class RubriqueType extends AbstractType
             ->add('feuilleAssociee', ChoiceType::class, [
                 'label' => 'Feuille associée',
                 'required' => false,
-                'choices' => $feuilles,
+                'choices' => $sheets,
                 'constraints' => [
                     new Assert\Type("integer"),
                 ],

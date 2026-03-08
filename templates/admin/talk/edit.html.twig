@@ -1,0 +1,15 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% form_theme form 'form_theme_admin.html.twig' %}
+
+
+{% block content %}
+    <h2>Modifier la conférence pour le {{ event.title }}</h2>
+    <div class="ui menu">
+        <a href="{{ url('talks_show', {id: talk.id, slug: talk.slug}) }}" class="item" target="_blank">
+            Voir la fiche publique
+        </a>
+    </div>
+    {% include '/admin/talk/form.html.twig' %}
+{% endblock %}
+

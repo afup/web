@@ -29,6 +29,10 @@ admin_event_sponsor_ticket:
   path: /sponsor
   defaults: {_controller: AppBundle\Controller\Admin\Event\SponsorTicketAction}
 
+admin_event_sponsor_delete_token:
+  path: /sponsor/delete-token/{tokenId}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\DeleteSponsorTicketAction}
+
 admin_event_sponsor_mail:
   path: /sponsor/mail
   defaults: {_controller: AppBundle\Controller\Admin\Event\ResendSponsorTokenAction}
@@ -105,3 +109,33 @@ admin_event_restore:
 admin_event_votes:
   path: /votes
   defaults: {_controller: AppBundle\Controller\Admin\Event\VotesListeAction}
+
+admin_event_sessions:
+  path: /sessions
+  defaults: { _controller: AppBundle\Controller\Admin\Event\Session\IndexAction }
+
+admin_event_sessions_edit:
+  path: /sessions/{talkId}/{sessionId}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Event\Session\EditAction
+    sessionId: ~
+  requirements:
+    talkId: \d+
+
+admin_event_sessions_calendar_ajax:
+  path: /sessions/{id}.json
+  defaults:
+    _controller: AppBundle\Controller\Admin\Event\Session\CalendarAjaxAction
+  requirements:
+    id: \d+
+
+admin_event_sessions_delete:
+  path: /sessions/delete/{id}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Event\Session\DeleteAction
+    id: ~
+  requirements:
+    id: \d+
+
+admin_event_ticket:
+  resource: "admin_event_ticket.yml"

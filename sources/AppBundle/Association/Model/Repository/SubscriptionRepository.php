@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Model\User;
+use AppBundle\Ting\JoinHydrator;
+use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -20,6 +22,55 @@ class SubscriptionRepository extends Repository implements MetadataInitializer
         // Personnes physiques
 
         // Personnes morales
+    }
+
+    public function searchCompanyMemberSubscriptions(string $search)
+    {
+        $hydrator = new JoinHydrator();
+        $hydrator->aggregateOn('cotis', 'compagny', 'getCompanyId');
+
+        $query = $this->getPreparedQuery(
+            'SELECT pers.nom, pers.prenom, pers.email, pers.raison_sociale, cotis.*
+  FROM afup_cotisations AS cotis
+  LEFT JOIN afup_personnes_morales AS pers
+    ON pers.id = cotis.id_personne
+  WHERE
+    cotis.type_personne = 1
+    AND (
+      cotis.informations_reglement LIKE :like
+      OR cotis.numero_facture LIKE :like
+      OR cotis.commentaires LIKE :like
+      OR pers.email LIKE :like
+      OR pers.nom LIKE :like
+      OR pers.prenom LIKE :like
+    )',
+        )->setParams(['like' => "%{$search}%"]);
+        return $query->query($this->getCollection($hydrator));
+    }
+
+    public function searchMemberSubscriptions(string $search)
+    {
+        $hydrator = new JoinHydrator();
+        $hydrator->aggregateOn('cotis', 'compagny', 'getCompanyId');
+
+        $query = $this->getPreparedQuery(
+            'SELECT pers.nom, pers.prenom, pers.email, pers.login, cotis.*
+  FROM afup_cotisations AS cotis
+  LEFT JOIN afup_personnes_physiques AS pers
+    ON pers.id = cotis.id_personne
+  WHERE
+    cotis.type_personne = 0
+    AND (
+      cotis.informations_reglement LIKE :like
+      OR cotis.numero_facture LIKE :like
+      OR cotis.commentaires LIKE :like
+      OR pers.login LIKE :like
+      OR pers.email LIKE :like
+      OR pers.nom LIKE :like
+      OR pers.prenom LIKE :like
+    )',
+        )->setParams(['like' => "%{$search}%"]);
+        return $query->query($this->getCollection(new HydratorArray()));
     }
 
     /**

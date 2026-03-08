@@ -34,14 +34,13 @@ if (ob_get_level() === 0) {
 
 // mise à jour des paramétrages PHP en fonction de la configuration
 
-if (getenv('SYMFONY_ENV') === 'prod') {
+if (getenv('APP_ENV') === 'prod') {
     ini_set('error_reporting',  (string) (E_ALL ^ E_WARNING ^ E_NOTICE));
     ini_set('display_errors', '0');
 } else {
     ini_set('error_reporting', (string) E_ALL);
     ini_set('display_errors', '1');
 }
-ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . __DIR__ . '/../../../dependencies/PEAR/');
 
 header('Content-type: text/html; charset=UTF-8');
 
@@ -73,7 +72,7 @@ $smarty->registerPlugin("modifier","stripslashes", "stripslashes");
 $smarty->registerPlugin("modifier","floatval", "floatval");
 
 $smarty->assign('url_base',          'https://' . $_SERVER['HTTP_HOST'] . '/');
-$smarty->assign('chemin_template',   $serveur . Site::WEB_PATH . 'templates/' . $sous_site . '/');
-$smarty->assign('chemin_javascript', $serveur . Site::WEB_PATH . 'javascript/');
+$smarty->assign('chemin_template',   $serveur . '/templates/' . $sous_site . '/');
+$smarty->assign('chemin_javascript', $serveur . '/javascript/');
 
 require_once(__DIR__ . '/commonStart.php');

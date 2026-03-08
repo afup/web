@@ -13,6 +13,7 @@ final readonly class Node
         public string $title,
         public string $description,
         public DateTime $dateTime,
-        public ?Venue $venue,
+        public Venue $venue,
+        public Photo $displayPhoto,
     ) {}
 }

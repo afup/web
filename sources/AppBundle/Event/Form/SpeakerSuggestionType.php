@@ -25,7 +25,7 @@ class SpeakerSuggestionType extends AbstractType
                     'label' => 'Votre email',
                     'constraints' => [
                         new NotBlank(),
-                        new Length(['max' => 254]),
+                        new Length(max: 254),
                         new Email(),
                     ],
                 ],
@@ -37,7 +37,7 @@ class SpeakerSuggestionType extends AbstractType
                     'label' => 'Vos nom/prénom',
                     'constraints' => [
                         new NotBlank(),
-                        new Length(['max' => 254]),
+                        new Length(max: 254),
                     ],
                 ],
             )
@@ -48,7 +48,7 @@ class SpeakerSuggestionType extends AbstractType
                         'label' => 'Conférencier·e suggéré·e',
                         'constraints' => [
                             new NotBlank(),
-                            new Length(['max' => 254]),
+                            new Length(max: 254),
                         ],
                     ],
             )
@@ -60,7 +60,7 @@ class SpeakerSuggestionType extends AbstractType
                     'label' => 'Commentaire',
                     'constraints' => [
                         new NotBlank(),
-                        new Length(['max' => 1500]),
+                        new Length(max: 1500),
                     ],
                 ],
             )

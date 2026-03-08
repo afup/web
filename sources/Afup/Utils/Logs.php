@@ -11,8 +11,6 @@ use Afup\Site\Corporate\_Site_Base_De_Donnees;
  */
 class Logs
 {
-    private int $_nombre_logs_par_page = 10;
-
     public function __construct(
         private readonly _Site_Base_De_Donnees $_bdd,
         private readonly int $_id_utilisateur,
@@ -62,46 +60,5 @@ class Logs
         $requete .= '  ' . $instance->_bdd->echapper($texte);
         $requete .= ')';
         $instance->_bdd->Executer($requete);
-    }
-
-    /**
-     * Renvoit tous les logs de la page indiquée
-     *
-     * @param  int $numero_page Numéro de la page concernée
-     * @return array    Les logs correspondant à la page indiquée
-     */
-    public static function obtenirTous($numero_page)
-    {
-        $instance = & self::_obtenirInstance();
-        $depart = ($numero_page - 1) * $instance->_nombre_logs_par_page;
-        $requete = 'SELECT';
-        $requete .= '  afup_logs.*,';
-        $requete .= '  IF(afup_personnes_physiques.nom != "", afup_personnes_physiques.nom, "BOT") as nom,';
-        $requete .= '  afup_personnes_physiques.prenom ';
-        $requete .= 'FROM';
-        $requete .= '  afup_logs';
-        $requete .= '  LEFT JOIN afup_personnes_physiques';
-        $requete .= '  ON afup_personnes_physiques.id=afup_logs.id_personne_physique ';
-        $requete .= 'ORDER BY';
-        $requete .= '  afup_logs.date DESC ';
-        $requete .= 'LIMIT';
-        $requete .= '  ' . $depart . ', ' . $instance->_nombre_logs_par_page;
-        return $instance->_bdd->obtenirTous($requete);
-    }
-
-    /**
-     * Renvoit le nombre de pages de logs
-     *
-     * @return int  Nombre de pages
-     */
-    public static function obtenirNombrePages(): int
-    {
-        $instance = & self::_obtenirInstance();
-        $nombre = $instance->_bdd->obtenirUn('SELECT COUNT(*) FROM afup_logs');
-        if (!$instance->_nombre_logs_par_page) {
-            return 1;
-        }
-        $nombre = ceil($nombre / $instance->_nombre_logs_par_page);
-        return $nombre === 0.0 ? 1 : (int) $nombre;
     }
 }

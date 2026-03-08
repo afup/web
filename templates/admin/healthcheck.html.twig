@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Healthcheck</h1>
     <div class="ui grid">
-        <div class="eight wide column">
+        <div class="five wide column">
             <div class="ui segment">
                 <h2 class="ui header">Dates</h2>
                 <div class="ui clearing divider"></div>
@@ -21,7 +21,7 @@
                 </dl>
             </div>
         </div>
-        <div class="eight wide column">
+        <div class="five wide column">
             <div class="ui segment">
                 <h2 class="ui header">Versions</h2>
                 <div class="ui clearing divider"></div>
@@ -33,6 +33,21 @@
                 </dl>
             </div>
         </div>
+
+        {% if deployment.commit %}
+            <div class="five wide column">
+                <div class="ui segment">
+                    <h2 class="ui header">Déploiement</h2>
+                    <div class="ui clearing divider"></div>
+                    <dl>
+                        <dt>Commit</dt>
+                        <dd>
+                            <a href="https://github.com/afup/web/commit/{{ deployment.commit }}">{{ deployment.commit }}</a>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        {% endif %}
     </div>
     <style>
         dt {

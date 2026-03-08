@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event;
 
 use Afup\Site\Forum\Facturation;
-use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Email\Emails;
 use AppBundle\Email\Mailer\MailUser;
-use AppBundle\Event\Form\Support\EventSelectFactory;
+use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
-use AppBundle\LegacyModelFactory;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -24,24 +22,22 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-class PendingBankwiresAction extends AbstractController implements AdminActionWithEventSelector
+class PendingBankwiresAction extends AbstractController
 {
     public function __construct(
-        private readonly EventActionHelper $eventActionHelper,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly TicketRepository $ticketRepository,
-        private readonly LegacyModelFactory $legacyModelFactory,
         private readonly Emails $emails,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
-        private readonly EventSelectFactory $eventSelectFactory,
+        private readonly Facturation $facturation,
     ) {}
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, AdminEventSelection $eventSelection): Response
     {
         $id = $request->query->get('id');
 
-        $event = $this->eventActionHelper->getEventById($id);
+        $event = $eventSelection->event;
 
         if ($request->isMethod(Request::METHOD_POST)) {
             if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('admin_event_bankwires',
@@ -58,11 +54,11 @@ class PendingBankwiresAction extends AbstractController implements AdminActionWi
         }
 
         return $this->render('admin/event/bankwires.html.twig', [
-            'pendingBankwires' => $event === null ? [] : $this->invoiceRepository->getPendingBankwires($event),
+            'pendingBankwires' => $this->invoiceRepository->getPendingBankwires($event),
             'event' => $event,
             'title' => 'Virements en attente',
             'token' => $this->csrfTokenManager->getToken('admin_event_bankwires'),
-            'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
+            'event_select_form' => $eventSelection->selectForm(),
         ]);
     }
 
@@ -74,8 +70,7 @@ class PendingBankwiresAction extends AbstractController implements AdminActionWi
         $this->invoiceRepository->save($invoice);
         $tickets = $this->ticketRepository->getByReference($invoice->getReference());
 
-        $forumFacturation = $this->legacyModelFactory->createObject(Facturation::class);
-        $forumFacturation->envoyerFacture($invoice->getReference());
+        $this->facturation->envoyerFacture($invoice->getReference());
         $this->addFlash('notice', sprintf('La facture %s a été marquée comme payée', $invoice->getReference()));
 
         foreach ($tickets as $ticket) {

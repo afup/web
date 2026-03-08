@@ -19,6 +19,7 @@
             {{ form_row(form.biography) }}
             {{ form_row(form.twitter) }}
             {{ form_row(form.mastodon) }}
+            {{ form_row(form.linkedin) }}
             {{ form_row(form.bluesky) }}
             {{ form_row(form.referent_person) }}
             {{ form_row(form.referent_person_email) }}
@@ -66,7 +67,7 @@
                 <div class="item">
                     <i class="book icon"></i>
                     <div class="content">
-                        <a href="/pages/administration/index.php?page=forum_sessions&action=modifier&id={{ talk.id }}&id_forum={{ eventId }}">
+                        <a href="{{ url('admin_talk_edit', {id: talk.id}) }}">
                             {{ talk.title }}
                         </a>
                     </div>

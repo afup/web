@@ -1,0 +1,34 @@
+{% if votes|length > 0 %}
+    {% set average = (votes | reduce((sum, val) => sum + val.vote, 0)) / (votes | length) %}
+    <h3>{{ 'Votes'|trans }} ({{ votes|length }} - {{ average|number_format(1) }}/5)    </h3>
+    {% if cfp_open %}
+        <p>{{ "Retrouvez ici les votes déposés sur cette proposition. Ils peuvent vous aider à l'améliorer si nécessaire."|trans }}</p>
+    {% else %}
+        <p>{{ "Retrouvez ici les notes déposées sur cette proposition."|trans }}</p>
+    {% endif %}
+    {% include 'common/star.html.twig' %}
+    <div class="cfp--votes">
+        <ul>
+            {% for vote in votes %}
+                <li>
+                    {% if cfp_open and vote.githubUser and vote.githubUser.afupCrew == true %}
+                        <p class="cfp--vote-afup" title="{{ 'Ce commentaire a été déposé par un membre du staff'|trans|e('html_attr') }}">AFUP</p>
+                    {% endif %}
+                    <p>{{ vote.submittedOn|format_date }}</p>
+                    <div class="event--vote-stars">
+                        <div style="display: inline-block">
+                            <div class="stars">
+                                {% for i in 5..1 %}
+                                    <a class="star {% if vote.vote >= i %}is-selected{% endif %}" href="#"><svg><use xlink:href="#star"></use></svg></a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% if cfp_open %}
+                        <p>{{ vote.comment }}</p>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

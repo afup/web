@@ -6,10 +6,10 @@ namespace AppBundle\Controller\Admin\Members\GeneralMeeting;
 
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
-use Assert\Assertion;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Webmozart\Assert\Assert;
 
 class ListAction
 {
@@ -27,10 +27,10 @@ class ListAction
         $latestDate = $this->generalMeetingRepository->getLatestAttendanceDate();
         $sort = $request->query->get('sort', 'nom');
         $direction = $request->query->get('direction', 'asc');
-        Assertion::inArray($sort, self::VALID_SORTS);
-        Assertion::inArray($direction, self::VALID_DIRECTIONS);
+        Assert::inArray($sort, self::VALID_SORTS);
+        Assert::inArray($direction, self::VALID_DIRECTIONS);
         $dates = $this->generalMeetingRepository->getAllDates();
-        $convocations = count($this->userRepository->getActiveMembers(UserRepository::USER_TYPE_ALL));
+        $convocations = count($this->userRepository->getActiveMembers());
         $nbAttendeesAndPowers = $nbAttendees = $quorum = $validAttendeeIds = null;
         if (null !== $latestDate) {
             $nbAttendeesAndPowers = $this->generalMeetingRepository->countAttendeesAndPowers($latestDate);

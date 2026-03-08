@@ -16,6 +16,7 @@ services:
 
     _instanceof:
         AppBundle\SocialNetwork\Transport:
+            autowire: true
             tags: [ 'app.social_network.transport' ]
 
         # @see \AppBundle\DependencyInjection\TingRepositoryPass
@@ -29,6 +30,8 @@ services:
             - db_username: '%database_user%'
               db_password: '%database_password%'
               lock_mode: !php/const Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler::LOCK_NONE
+
+    Laminas\Feed\Reader\Http\ClientInterface: '@PlanetePHP\SymfonyFeedClient'
 
     AppBundle\:
         resource: '../../sources/AppBundle/'
@@ -69,177 +72,12 @@ services:
 
     ### Pages legacy - FIN
 
-    AppBundle\Command\UpdateMailchimpMembersCommand:
-        autoconfigure: true
-        autowire: true
-        arguments:
-            $mailchimp: '@app.mailchimp_api'
-            $mailchimpMembersList: "%mailchimp_members_list%"
-
-    AppBundle\Controller\Admin\Site\AddRubriqueAction:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments :
-            $storageDir: '%kernel.project_dir%/../htdocs/templates/site/images'
-
-    AppBundle\Controller\Admin\Site\EditRubriqueAction:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments :
-            $storageDir: '%kernel.project_dir%/../htdocs/templates/site/images'
-
-    AppBundle\Controller\Admin\Members\BadgeNewAction:
-        autowire: true
-        autoconfigure: true
-        arguments:
-            $storageDir: '%app.badge_dir%'
-
-    AppBundle\Controller\Website\BadgeController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $storageDir: '%app.badge_dir%'
-
-    AppBundle\Controller\Website\HomeController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $homeAlgoliaEnabled: '%home_algolia_enabled%'
-
-    AppBundle\Controller\Website\MeetupsController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $algoliaAppId: '%algolia_app_id%'
-            $algoliaFrontendApikey: '%algolia_frontend_api_key%'
-
-    AppBundle\Controller\Website\CompanyPublicProfileController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $storageDir: '%app.members_logo_dir%'
-
-    AppBundle\Controller\Website\Member\CompanyPublicProfileController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $storageDir: '%app.members_logo_dir%'
-
-    AppBundle\Controller\Website\MemberShipController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $storageDir: '%app.general_meetings_dir%'
-            $formLoginAuthenticator: '@security.authenticator.form_login.legacy_secured_area'
-
-    AppBundle\Controller\Website\NewsController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $projectDir: '%kernel.project_dir%'
-
-    AppBundle\Controller\Website\NewsletterController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $mailchimp: '@app.mailchimp_api'
-            $mailchimpSubscribersList: '%mailchimp_subscribers_list%'
-
-    AppBundle\Controller\Website\StaticController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $superAperoCsvUrl: '%super_apero_csv_url%'
-
-    AppBundle\Controller\Website\TalksController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $algoliaAppId: '%algolia_app_id%'
-            $algoliaFrontendApikey: '%algolia_frontend_api_key%'
-
-    AppBundle\Controller\Website\TechletterController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $mailchimpTechletterWebhookKey: '%mailchimp_techletter_webhook_key%'
-
-    AppBundle\Controller\Website\TechnoWatchController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $technoWatchCalendarKey: '%techno_watch_calendar_key%'
-            $technoWatchCalendarUrl: '%techno_watch_calendar_url%'
-
-    AppBundle\Controller\Admin\GetMenuAction:
-        autowire: true
-        arguments:
-            $backOfficePages: '%app.pages_backoffice%'
-
-    AppBundle\Controller\Admin\TechLetter\TechLetterGenerateController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $mailchimp: '@app.mailchimp_techletter_api'
-            $techletterTestEmailAddress: '%techletter_test_email_address%'
-            $mailchimpTechletterList: '%mailchimp_techletter_list%'
-
-    AppBundle\Mailchimp\Runner:
-        autowire: true
-        arguments:
-            $mailchimp: '@app.mailchimp_api'
-            $membersListId: '%mailchimp_members_list%'
-
     AppBundle\Controller\LegacyController:
         autowire: true
         autoconfigure: true
         public: false
         arguments:
             $backOfficePages: '%app.pages_backoffice%'
-
-    AppBundle\Listener\LocaleEventSubscriber:
-        arguments: [ "%kernel.default_locale%" ]
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, priority: 100 }
-
-    AppBundle\CFP\SpeakerFactory:
-        autowire: true
-        arguments:
-            $tokenStorage: '@security.token_storage'
-
-    AppBundle\Security\TalkVoter:
-        arguments: ['@AppBundle\Event\Model\Repository\SpeakerRepository']
-        tags:
-          - { name: security.voter }
-        public: false
-
-    AppBundle\CFP\PhotoStorage:
-        arguments:
-            $basePath: "%kernel.project_dir%/../htdocs/uploads/speakers"
-            $publicPath: "/uploads/speakers"
-            $legacyBasePath: "%kernel.project_dir%/../htdocs"
-
-    AppBundle\SpeakerInfos\SpeakersExpensesStorage:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $basePath: "%kernel.project_dir%/../htdocs/uploads/speaker_expenses"
 
     AppBundle\Payment\PayboxFactory:
         autowire: true
@@ -248,26 +86,9 @@ services:
     AppBundle\Slack\LegacyClient:
         arguments: ["%slack_members_legacy_token%"]
 
-    AppBundle\Slack\UsersClient:
-        autowire: true
-        arguments: ["%slack_membre_token%", "%slack_api_url%"]
-
-    AppBundle\Notifier\SlackNotifier:
-        arguments:
-            $postUrl: "%slack_url%"
-            $messageFactory: '@AppBundle\Slack\MessageFactory'
-            $serializer: '@jms_serializer.serializer'
-            $httpClient: '@http_client'
-
     Algolia\AlgoliaSearch\SearchClient:
         factory: [ Algolia\AlgoliaSearch\SearchClient, create ]
         arguments: ["%algolia_app_id%", "%algolia_backend_api_key%"]
-
-    AppBundle\Joindin\JoindinComments:
-        arguments: ["@cache.system"]
-
-    AppBundle\Joindin\JoindinTalk:
-        arguments: ["@cache.system"]
 
     # API/Client Meetup techletter
     app.mailchimp_techletter_client:
@@ -301,9 +122,6 @@ services:
             $mailchimp: '@app.mailchimp_api'
             $listId: "%mailchimp_members_list%"
 
-    Afup\Site\Utils\Configuration:
-        autowire: true
-
     AppBundle\Email\Mailer\Adapter\MailerAdapter:
       class: AppBundle\Email\Mailer\Adapter\PhpMailerAdapter
       factory: [AppBundle\Email\Mailer\Adapter\PhpMailerAdapter, createFromConfiguration]
@@ -324,36 +142,45 @@ services:
         autowire: true
         arguments: ["%qr_code_salt%"]
 
+    Afup\Site\Utils\Configuration:
+        autowire: true
+
+    Afup\Site\Utils\LegacyConnectionFactory: ~
+    Afup\Site\Utils\Base_De_Donnees:
+        factory: '@Afup\Site\Utils\LegacyConnectionFactory'
+
     Afup\Site\Forum\AppelConferencier:
-        class: Afup\Site\Forum\AppelConferencier
-        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
-        arguments:
-          - 'Afup\Site\Forum\AppelConferencier'
+        autowire: true
 
     Afup\Site\Forum\Forum:
-        class: Afup\Site\Forum\Forum
-        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
-        arguments:
-          - 'Afup\Site\Forum\Forum'
+        autowire: true
 
     Afup\Site\Utils\Pays:
-        class: Afup\Site\Utils\Pays
-        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
-        arguments:
-          - 'Afup\Site\Utils\Pays'
+        autowire: true
 
     Afup\Site\Forum\Inscriptions:
-        class: Afup\Site\Forum\Inscriptions
-        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
-        arguments:
-          - 'Afup\Site\Forum\Inscriptions'
+        autowire: true
+
+    Afup\Site\Association\CotisationsFactory:
+        autowire: true
+
+    Afup\Site\Corporate\Page:
+        autowire: true
+
+    Afup\Site\Forum\Facturation:
+        autowire: true
 
     Afup\Site\Association\Cotisations:
-        factory: ['@AppBundle\LegacyModelFactory', 'createObject']
-        arguments:
-          - 'Afup\Site\Association\Cotisations'
-        calls:
-          - [setCompanyMemberRepository, ['@AppBundle\Association\Model\Repository\CompanyMemberRepository']]
+        factory: ['@Afup\Site\Association\CotisationsFactory', 'create']
+
+    Afup\Site\Comptabilite\Comptabilite:
+        autowire: true
+
+    Afup\Site\Comptabilite\Facture:
+      autowire: true
+
+    Afup\Site\Droits:
+        autowire: true
 
     Parsedown:
         class: Parsedown
@@ -368,10 +195,8 @@ services:
         arguments: ['@Psr\Http\Client\ClientInterface', null, "%google_maps_api_key%"]
 
     AppBundle\Offices\OfficeFinder:
+        autowire: true
         arguments: ['@geocoder']
-
-    AppBundle\Event\Ticket\RegistrationsExportGenerator:
-        arguments: ['@AppBundle\Offices\OfficeFinder', '@AppBundle\Association\UserMembership\SeniorityComputer', '@AppBundle\Event\Model\Repository\TicketRepository', '@AppBundle\Event\Model\Repository\InvoiceRepository', '@AppBundle\Association\Model\Repository\UserRepository']
 
     AppBundle\Subscriber\SitemapXmlSubscriber:
         autowire: true

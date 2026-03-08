@@ -7,7 +7,6 @@ use Afup\Site\Forum\Facturation;
 use Afup\Site\Forum\Forum;
 use Afup\Site\Forum\Inscriptions;
 use Afup\Site\Utils\Logs;
-use Afup\Site\Utils\Pays;
 use AppBundle\Controller\LegacyController;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\EventRepository;
@@ -70,7 +69,7 @@ function updateGlobalsForTarif(
 
 $forum = new Forum($bdd);
 $forum_inscriptions = new Inscriptions($bdd);
-$forum_facturation = new Facturation($bdd);
+$forum_facturation = new Facturation($bdd, $this->pays);
 
 if ($action == 'lister') {
     $list_champs = 'i.id, i.date, i.nom, i.prenom, i.email, f.societe, i.etat, i.coupon, i.type_inscription, f.type_reglement, i.presence_day1, i.presence_day2';
@@ -131,12 +130,11 @@ if ($action == 'lister') {
     $invoice = $invoiceRepository->getByReference($_GET['id']);
     if ($forum_inscriptions->supprimerInscription($_GET['id']) && (null === $invoice || $invoiceService->deleteInvoice($invoice))) {
         Logs::log('Suppression de l\'inscription ' . $_GET['id']);
-        afficherMessage('L\'inscription a été supprimée', 'index.php?page=forum_inscriptions&action=lister');
+        afficherMessage('L\'inscription a été supprimée', '/admin/event/tickets?id=' . $_GET['id_forum']);
     } else {
-        afficherMessage('Une erreur est survenue lors de la suppression de l\'inscription', 'index.php?page=forum_inscriptions&action=lister', true);
+        afficherMessage('Une erreur est survenue lors de la suppression de l\'inscription', '/admin/event/tickets?id=' . $_GET['id_forum'], true);
     }
 } else {
-    $pays = new Pays($bdd);
 
     $formulaire = instancierFormulaire();
     if ($action == 'ajouter') {
@@ -156,7 +154,7 @@ if ($action == 'lister') {
     } else {
         $champs = $forum_inscriptions->obtenir($_GET['id']);
         if ($champs == false) {
-            afficherMessage('L\'inscription n\'existe plus', 'index.php?page=forum_inscriptions&action=lister');
+            afficherMessage('L\'inscription n\'existe plus', '/admin/event/tickets?id=' . $_GET['id_forum']);
             exit(0);
         }
         $champs2 = $forum_facturation->obtenir($champs['reference']);
@@ -220,30 +218,32 @@ if ($action == 'lister') {
     $formulaire->addElement('text'  , 'autorisation', 'Autorisation', ['size' => 50, 'maxlength' => 100]);
     $formulaire->addElement('text'  , 'transaction' , 'Transaction' , ['size' => 50, 'maxlength' => 100]);
 
-    $state = [AFUP_FORUM_ETAT_CREE          => 'Inscription créée',
-        AFUP_FORUM_ETAT_ANNULE            => 'Inscription annulée',
-        AFUP_FORUM_ETAT_ERREUR            => 'Paiement CB erreur',
-        AFUP_FORUM_ETAT_REFUSE            => 'Paiement CB refusé',
-        AFUP_FORUM_ETAT_REGLE             => 'Inscription réglée',
-        AFUP_FORUM_ETAT_INVITE            => 'Invitation',
-        AFUP_FORUM_ETAT_ATTENTE_REGLEMENT => 'Attente règlement',
-        AFUP_FORUM_ETAT_CONFIRME          => 'Inscription confirmée',
-        AFUP_FORUM_ETAT_A_POSTERIORI      => 'Inscription à posteriori',
+    $state = [
+        Ticket::STATUS_CREATED      => 'Inscription créée',
+        Ticket::STATUS_CANCELLED    => 'Inscription annulée',
+        Ticket::STATUS_ERROR        => 'Paiement CB erreur',
+        Ticket::STATUS_DECLINED     => 'Paiement CB refusé',
+        Ticket::STATUS_PAID         => 'Inscription réglée',
+        Ticket::STATUS_GUEST        => 'Invitation',
+        Ticket::STATUS_WAITING      => 'Attente règlement',
+        Ticket::STATUS_CONFIRMED    => 'Inscription confirmée',
+        Ticket::STATUS_PAID_AFTER   => 'Inscription à posteriori',
     ];
     $formulaire->addElement('select', 'etat'        , 'Etat'        , $state);
 
-    $facturation = [AFUP_FORUM_FACTURE_A_ENVOYER => 'Facture à envoyer',
-        AFUP_FORUM_FACTURE_ENVOYEE                    => 'Facture envoyée',
-        AFUP_FORUM_FACTURE_RECUE                      => 'Facture reçue',
+    $facturation = [
+        Ticket::INVOICE_TODO        => 'Facture à envoyer',
+        Ticket::INVOICE_SENT        => 'Facture envoyée',
+        Ticket::INVOICE_RECEIVED    => 'Facture reçue',
     ];
     $formulaire->addElement('select', 'facturation' , 'Facturation'  , $facturation);
 
     $formulaire->addElement('header'  , ''                       , 'Règlement');
     $groupe = [];
-    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Carte bancaire', AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE);
-    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Chèque'        , AFUP_FORUM_REGLEMENT_CHEQUE);
-    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Virement'      , AFUP_FORUM_REGLEMENT_VIREMENT);
-    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Aucun'         , AFUP_FORUM_REGLEMENT_AUCUN);
+    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Carte bancaire', Ticket::PAYMENT_CREDIT_CARD);
+    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Chèque'        , Ticket::PAYMENT_CHEQUE);
+    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Virement'      , Ticket::PAYMENT_BANKWIRE);
+    $groupe[] = $formulaire->createElement('radio', 'type_reglement', null, 'Aucun'         , Ticket::PAYMENT_NONE);
     $formulaire->addGroup($groupe, 'groupe_type_reglement', 'Règlement', '&nbsp;', false);
     $formulaire->addElement('textarea'   , 'informations_reglement', 'Informations règlement', ['cols' => 42, 'rows' => 4]);
 
@@ -260,7 +260,7 @@ if ($action == 'lister') {
     $formulaire->addElement('textarea', 'adresse_facturation'    , 'Adresse'        , ['cols' => 42, 'rows'      => 10]);
     $formulaire->addElement('text'    , 'code_postal_facturation', 'Code postal'    , ['size' =>  6, 'maxlength' => 10]);
     $formulaire->addElement('text'    , 'ville_facturation'      , 'Ville'          , ['size' => 30, 'maxlength' => 50]);
-    $formulaire->addElement('select'  , 'id_pays_facturation'    , 'Pays'           , $pays->obtenirPays());
+    $formulaire->addElement('select'  , 'id_pays_facturation'    , 'Pays'           , $this->pays->obtenirPays());
     $formulaire->addElement('text'    , 'email_facturation'      , 'Email (facture)', ['size' => 30, 'maxlength' => 100]);
     $formulaire->addElement('text'    , 'coupon'                 , 'Coupon'         , ['size' => 30, 'maxlength' => 200]);
 
@@ -409,7 +409,7 @@ if ($action == 'lister') {
             } else {
                 Logs::log('Modification de l\'inscription de ' . $formulaire->exportValue('prenom') . ' ' . $formulaire->exportValue('nom') . ' (' . $_GET['id'] . ')');
             }
-            afficherMessage('L\'inscription a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), 'index.php?page=forum_inscriptions&action=lister&id_forum=' . $valeurs['id_forum']);
+            afficherMessage('L\'inscription a été ' . (($action == 'ajouter') ? 'ajoutée' : 'modifiée'), '/admin/event/tickets?id=' . $_GET['id_forum']);
         } else {
             $smarty->assign('erreur', 'Une erreur est survenue lors de ' . (($action == 'ajouter') ? "l'ajout" : 'la modification') . ' de l\'inscription');
         }

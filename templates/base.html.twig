@@ -29,6 +29,9 @@
     </head>
     <body id="body" class="{% block body_css %}{% endblock %}">
         <a class="evitement" href="#contenu">Aller au contenu</a>
+
+        {{ include('site/partials/impersonation_helper.html.twig') }}
+
         <div id="afup-global-menu">
             <a href="https://afup.org" class="lien-entete lien-entete__active" tabindex="-1">AFUP</a>
             <a href="https://event.afup.org" class="lien-entete" tabindex="-1">{{ global_menu_event_label }}</a>

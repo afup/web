@@ -7,7 +7,7 @@ namespace AppBundle\Event\Form;
 use AppBundle\Event\Model\TicketSpecialPrice;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,7 +23,7 @@ class TicketSpecialPriceType extends AbstractType
             ->add('token', TextType::class, [
                 'constraints' => [
                     new NotBlank(),
-                    new Length(['max' => 255]),
+                    new Length(max: 255),
                 ],
             ])
             ->add('dateStart', DateType::class, [
@@ -32,17 +32,17 @@ class TicketSpecialPriceType extends AbstractType
             ->add('dateEnd', DateType::class, [
                 'label' => 'Date de fin',
             ])
-            ->add('price', IntegerType::class, [
+            ->add('price', NumberType::class, [
                 'label' => 'Prix (TTC)',
                 'constraints' => [
-                    new GreaterThan(['value' => 0]),
+                    new GreaterThan(value: 0),
                 ],
             ])
             ->add('description', TextType::class, [
                 'label' => 'Description (interne)',
                 'constraints' => [
                     new NotBlank(),
-                    new Length(['max' => 255]),
+                    new Length(max: 255),
                 ],
             ])
         ;

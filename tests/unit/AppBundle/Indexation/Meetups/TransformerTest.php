@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\Indexation\Meetups;
 
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Event\Model\Meetup;
 use AppBundle\Indexation\Meetups\Transformer;
 use PHPUnit\Framework\TestCase;
@@ -13,7 +13,7 @@ final class TransformerTest extends TestCase
 {
     public function testTransform(): void
     {
-        $transformer = new Transformer(new AntennesCollection());
+        $transformer = new Transformer(new AntenneRepository());
 
         $meetup = (new Meetup())
             ->setId('244992881')
@@ -33,12 +33,11 @@ final class TransformerTest extends TestCase
                 'year' => '2050',
                 'datetime' => '2050-12-14 17:30:00',
                 'day_month' => '14 Dec',
-                'office' =>
-                    [
-                        'label' => 'Reims',
-                        'logo_url' => '/images/offices/reims.svg',
-                    ],
-                'description' => 'Nous vous invitons au Grand Comptoir à partir de 18h30 pour discuter de PHP autour d\'un verre.',
+                'office' => [
+                    'label' => 'Reims',
+                    'logo_url' => '/images/offices/reims.svg',
+                ],
+                'description' => '<p>Nous vous invitons au Grand Comptoir à partir de 18h30 pour discuter de PHP autour d\'un verre.</p>',
                 'twitter' => 'afup_reims',
                 'custom_sort' => 9223372034300127607,
                 'is_upcoming' => true,

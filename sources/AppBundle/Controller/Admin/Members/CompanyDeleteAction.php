@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members;
 
-use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\AuditLog\Audit;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,9 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CompanyDeleteAction extends AbstractController
 {
-    use DbLoggerTrait;
-
-    public function __construct(private CompanyMemberRepository $companyMemberRepository) {}
+    public function __construct(
+        private readonly CompanyMemberRepository $companyMemberRepository,
+        private readonly Audit $audit,
+    ) {}
 
     public function __invoke(Request $request): RedirectResponse
     {
@@ -26,7 +27,7 @@ class CompanyDeleteAction extends AbstractController
         }
         try {
             $this->companyMemberRepository->remove($companyMember);
-            $this->log('Suppression de la personne morale ' . $companyMember->getId());
+            $this->audit->log('Suppression de la personne morale ' . $companyMember->getId());
             $this->addFlash('notice', 'La personne morale a été supprimée');
         } catch (InvalidArgumentException $e) {
             $this->addFlash('error', $e->getMessage());

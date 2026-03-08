@@ -19,9 +19,9 @@ class TicketsCfpSubmitterValidator extends ConstraintValidator
         $specialCFPSubmitter = 0;
 
         foreach ($value as $index => $ticket) {
-            if ($ticket->getTicketEventType() &&
-                $ticket->getTicketEventType()->getTicketType() &&
-                $ticket->getTicketEventType()->getTicketType()->getIsRestrictedToCfpSubmitter()) {
+            if ($ticket->getTicketEventType()
+                && $ticket->getTicketEventType()->getTicketType()
+                && $ticket->getTicketEventType()->getTicketType()->getIsRestrictedToCfpSubmitter()) {
                 $specialCFPSubmitter++;
 
                 // On autorise qu'un seul ticket au tarif CFP submitter

@@ -32,8 +32,7 @@ class AvailableTicketValidator extends ConstraintValidator
         $event = $this->eventRepository->get($ticket->getTicketEventType()->getEventId());
         if (
             $ticket->getTicketEventType()->getDateEnd() < new \DateTime()
-            ||
-            $this->ticketTypeAvailability->getStock($ticket->getTicketEventType(), $event) <= 0
+            || $this->ticketTypeAvailability->getStock($ticket->getTicketEventType(), $event) <= 0
         ) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('ticketEventType')

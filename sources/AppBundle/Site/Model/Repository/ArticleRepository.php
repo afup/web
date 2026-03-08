@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace AppBundle\Site\Model\Repository;
 
-use Afup\Site\Corporate\Rubrique;
 use AppBundle\Site\Model\Article;
+use AppBundle\Site\Model\Rubrique;
+use Aura\SqlQuery\Common\SelectInterface;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -77,7 +79,7 @@ class ArticleRepository extends Repository implements MetadataInitializer
         return $row['cnt'];
     }
 
-    public function findPublishedNews($page, $itemsPerPage, array $filters)
+    public function findPublishedNews(int $page, int $itemsPerPage, array $filters)
     {
         [$sql, $params] = $this->getSqlPublishedNews($filters);
 
@@ -230,13 +232,85 @@ class ArticleRepository extends Repository implements MetadataInitializer
          WHERE id_site_rubrique = :rubricId AND CONCAT(id, "-", raccourci) = :slug',
             )
             ->setParams(['rubricId' => Rubrique::ID_RUBRIQUE_ACTUALITES, 'slug' => $slug]);
-        $events = $query->query($this->getCollection(new HydratorSingleObject()));
+        $articles = $query->query($this->getCollection(new HydratorSingleObject()));
 
-        if ($events->count() === 0) {
+        if ($articles->count() === 0) {
             return null;
         }
 
-        return $events->first();
+        return $articles->first();
+    }
+
+    public function findBySlug(string $slug): ?Article
+    {
+        $query = $this
+            ->getPreparedQuery('SELECT * FROM afup_site_article WHERE CONCAT(id, "-", raccourci) = :slug')
+            ->setParams(['slug' => $slug]);
+
+        $articles = $query->query($this->getCollection(new HydratorSingleObject()));
+
+        if ($articles->count() === 0) {
+            return null;
+        }
+
+        return $articles->first();
+    }
+
+    public function getAllArticlesWithCategoryAndTheme(string $ordre = 'titre', string $direction = 'desc', string $filtre = '%'): CollectionInterface
+    {
+        if ($direction !== 'desc' && $direction !== 'asc') {
+            $direction = 'desc';
+        }
+        $metadata = $this->getMetadata();
+        $columnNameFound = false;
+        foreach ($metadata->getFields() as $field) {
+            if ($field['columnName'] === $ordre) {
+                $columnNameFound = true;
+                break;
+            }
+        }
+        if ($columnNameFound === false) {
+            $ordre = 'nom';
+        }
+
+        $requete = 'SELECT  afup_site_article.*, afup_site_rubrique.nom as nom_rubrique, afup_forum.titre as nom_forum
+        FROM afup_site_article 
+        INNER JOIN afup_site_rubrique on afup_site_article.id_site_rubrique = afup_site_rubrique.id 
+        LEFT JOIN afup_forum on afup_site_article.id_forum = afup_forum.id 
+        WHERE 1 = 1 ';
+        if ($filtre) {
+            $requete .= 'AND (afup_site_article.titre LIKE :filtre OR afup_site_article.contenu LIKE :filtre) ';
+        }
+
+        $requete .= 'ORDER BY ' . $ordre . ' ' . $direction;
+        $query = $this->getQuery($requete);
+        $query->setParams(['filtre' => '%' . $filtre . '%']);
+
+        return $query->query($this->getCollection(new HydratorArray()));
+    }
+
+    /**
+     * @return CollectionInterface<Article>
+     */
+    public function findListForHome(): CollectionInterface
+    {
+        /** @var SelectInterface $builder */
+        $builder = $this->getQueryBuilder(self::QUERY_SELECT);
+        $builder->cols(['*'])
+            ->from('afup_site_article')
+            ->innerJoin('afup_site_rubrique', 'ON afup_site_article.id_site_rubrique = afup_site_rubrique.id')
+            ->where('afup_site_article.etat = 1')
+            ->where('afup_site_article.date <= UNIX_TIMESTAMP(NOW())')
+            ->where('id_parent <> 52') // On n'affiche pas les articles des forums
+            ->where('afup_site_rubrique.id <> ' . Rubrique::ID_RUBRIQUE_ASSOCIATION)
+            ->where('afup_site_rubrique.id <> ' . Rubrique::ID_RUBRIQUE_ANTENNES)
+            ->where('afup_site_rubrique.id <> ' . Rubrique::ID_RUBRIQUE_NOS_ACTIONS)
+            ->orderBy(['afup_site_article.date DESC'])
+            ->offset(0)
+            ->limit(5)
+        ;
+
+        return $this->getQuery($builder->getStatement())->query($this->getCollection(new HydratorSingleObject()));
     }
 
     /**
@@ -305,11 +379,22 @@ class ArticleRepository extends Repository implements MetadataInitializer
                 'type' => 'datetime',
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
+                    'serialize' => [ 'format' => 'U'],
                 ],
             ])
             ->addField([
                 'columnName' => 'etat',
                 'fieldName' => 'state',
+                'type' => 'int',
+            ])
+            ->addField([
+                'columnName' => 'position',
+                'fieldName' => 'position',
+                'type' => 'int',
+            ])
+            ->addField([
+                'columnName' => 'id_personne_physique',
+                'fieldName' => 'authorId',
                 'type' => 'int',
             ])
         ;

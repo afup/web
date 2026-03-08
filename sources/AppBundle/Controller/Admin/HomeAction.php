@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
-use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\StatisticsComputer;
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
-use Assert\Assertion;
+use AppBundle\Security\Authentication;
+use Psr\Clock\ClockInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class HomeAction extends AbstractController
 {
@@ -24,6 +26,9 @@ class HomeAction extends AbstractController
         private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
         private readonly GeneralMeetingRepository $generalMeetingRepository,
         private readonly StatisticsComputer $statisticsComputer,
+        private readonly ClockInterface $clock,
+        private readonly Authentication $authentication,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {}
 
     public function __invoke(): Response
@@ -31,14 +36,31 @@ class HomeAction extends AbstractController
         $nextevents = $this->eventRepository->getNextEvents();
         $cards = [];
         if ($this->isGranted('ROLE_FORUM') && $nextevents) {
+            $cfp = [
+                'title' => 'CFP',
+                'subtitle' => 'Talks et speakers',
+                'url' => $this->urlGenerator->generate('admin_talk_list'),
+                'statistics' => [],
+            ];
+
+            /** @var Event $event */
             foreach ($nextevents as $event) {
                 $stats = $this->eventStatsRepository->getStats((int) $event->getId());
                 $info = [];
                 if ($event->lastsOneDay()) {
-                    $info['statistics']['entrées'] = $stats->firstDay->registered;
+                    $ticketsLabel = 'entrées';
+                    $tickets = $stats->firstDay->confirmed + $stats->firstDay->pending;
+                    if ($event->getSeats()) {
+                        $percentage = floor(($tickets * 100) / $event->getSeats());
+                        $tickets = $tickets . ' / ' . $event->getSeats();
+
+                        $ticketsLabel = "entrées ($percentage%)";
+                    }
+
+                    $info['statistics'][$ticketsLabel] = $tickets;
                 } else {
-                    $info['statistics']['entrées (premier jour)'] = $stats->firstDay->registered;
-                    $info['statistics']['entrées (deuxième jour)'] = $stats->secondDay->registered;
+                    $info['statistics']['entrées (premier jour)'] = $stats->firstDay->confirmed + $stats->firstDay->pending;
+                    $info['statistics']['entrées (deuxième jour)'] = $stats->secondDay->confirmed + $stats->secondDay->pending;
                 }
                 $info['title'] = $event->getTitle();
                 $info['subtitle'] = 'Inscriptions';
@@ -51,9 +73,28 @@ class HomeAction extends AbstractController
                 }
 
                 $info['statistics']['montant total'] = number_format($montantTotal, 0, ',', "\u{a0}") . "\u{a0}€";
-                $info['url'] = '/pages/administration/index.php?page=forum_inscriptions&id_forum=' . $event->getId();
+                $info['url'] = $this->generateUrl('admin_event_ticket_list', ['id' => $event->getId()]);
 
                 $cards[] = $info;
+
+                // Les stats du CFP sont affichés pendant un certain temps après la date de fin de l'appel
+                $dateEndCallForPapers = $event->getDateEndCallForPapers();
+                if ($dateEndCallForPapers && $dateEndCallForPapers->add(new \DateInterval('P2M')) > $this->clock->now()) {
+                    $cfp['statistics'][$event->getTitle()] = [
+                        [
+                            'icon' => 'microphone',
+                            'value' => $stats->cfp->talks,
+                        ],
+                        [
+                            'icon' => 'user',
+                            'value' => $stats->cfp->speakers,
+                        ],
+                    ];
+                }
+            }
+
+            if (count($cfp['statistics']) > 0) {
+                $cards[] = $cfp;
             }
         }
 
@@ -63,11 +104,7 @@ class HomeAction extends AbstractController
                 'statistics' => ['Abonnements' => $this->techletterSubscriptionsRepository->countAllSubscriptionsWithUser()],
                 'url' => $this->generateUrl('admin_techletter_members'),
             ];
-        }
-        /** @var User $user */
-        $user = $this->getUser();
-        Assertion::isInstanceOf($user, User::class);
-        if ($this->isGranted(('ROLE_ADMIN'))) {
+
             $statistics = $this->statisticsComputer->computeStatistics();
             $cards[] = [
                 'title' => 'Membres',
@@ -100,7 +137,7 @@ class HomeAction extends AbstractController
         }
 
         return $this->render('admin/home.html.twig', [
-            'user_label' => $user->getLabel(),
+            'user_label' => $this->authentication->getAfupUser()->getLabel(),
             'cards' => $cards,
         ]);
     }

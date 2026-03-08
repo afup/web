@@ -78,6 +78,8 @@ services:
 
 ## Base de données
 
+### MySQL
+
 Config par défaut :
 
 - user : `afup`
@@ -87,6 +89,24 @@ Config par défaut :
 - database : `web`
 
 La base de donnée est accessible via le script `docker/bin/mysql`.
+
+### Algolia (recherche à facettes)
+
+Pour que la recherche à facettes fonctionne, il faut créer un compte gratuit sur [www.algolia.com](https://dashboard.algolia.com/users/sign_up) et créer une application Algolia.
+Une fois l'application crée, mettre à jour le fichier `.env` avec les clés d'API automatiquement générées et relancer le projet via Docker.
+
+```dotenv
+ALGOLIA_APP_ID=DVB92YWTPE # Algolia Application ID
+ALGOLIA_BACKEND_API_KEY=78e71e5r5c2Rb353f5a03376gb9878779 # Algolia Write API Key
+ALGOLIA_FRONTEND_API_KEY=74e71e5r5c2Rb353f5a03376gb9878777 # Algolia Search API Key
+```
+
+Lancer les commandes suivantes pour créer les différents index :
+```bash
+php bin/console indexing:meetups
+php bin/console indexing:planete
+php bin/console indexing:talks
+```
 
 ## Tests
 
@@ -188,14 +208,14 @@ Ensuite pour le paiement, il faut utiliser ces informations [de carte](https://w
 
 #### Callbacks de paiement
 
-Après le paiement, paybox effectue un retour sur le serveur et c'est suite à ce retour que l'on effectue des actions
-comme l'ajout de la cotisation.
+Afin de simuler un appel Paybox, il y a une commande disponible (en environnement de `dev` uniquement).
 
-Afin d'en simplifier l'appel, il existe une commande dédiée qui s'appelle comme cela, où l'argument en exemple
-correspond à l'URL de la page de retour sur le site après paiement.
+Cette commande utilise une série de questions pour guider son utilisation.
+Il faut cependant récupérer le cmd qui est indiqué dans la fenêtre de Paybox.
+Ce paramètre est de la forme : `C2026-170120261126-0-1-ADMIN-84B` ou `F202601-1701-JDOE-11f8d`
 
 ```
-bin/console dev:callback-paybox-cotisation "https://localhost:9206/association/paybox-redirect?total=3000&cmd=C2020-150120201239-0-770-GALLO-E4F&autorisation=XXXXXX&transaction=588033888&status=00000"
+bin/console dev:paybox-callback-simulator
 ```
 
 ### GitHub

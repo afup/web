@@ -1,0 +1,32 @@
+admin_membership_fee_list:
+  path: /list/{memberType}/{memberId}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\MembershipFee\ListMembershipFeeAction
+    parameters:
+      memberType: \d+
+      memberId: \d+
+
+admin_membership_fee_send_invoice:
+  path: /send-invoice/{memberType}/{memberId}/{membershipFeeId}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\MembershipFee\SendMembershipFeeInvoiceAction
+
+admin_membership_fee_download_invoice:
+  path: /download/{memberType}/{memberId}/{membershipFeeId}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\MembershipFee\DownloadMembershipFeeInvoiceAction
+
+admin_membership_fee_edit:
+  path: /edit/{memberType}/{memberId}/{membershipFeeId}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\MembershipFee\EditMembershipFeeAction
+
+admin_membership_fee_delete:
+  path: /delete/{memberType}/{memberId}/{membershipFeeId}/{token}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\MembershipFee\DeleteMembershipFeeAction
+
+admin_membership_fee_add:
+  path: /add/{memberType}/{memberId}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\MembershipFee\AddMembershipFeeAction

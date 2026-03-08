@@ -27,41 +27,6 @@ class Forum
         return $this->_bdd->obtenirEnregistrement($requete);
     }
 
-    public function supprimable(string $id): bool
-    {
-        $requete = 'SELECT';
-        $requete .= '  f.id, count(session_id) as sessions,count(i.id) as inscriptions ';
-        $requete .= 'FROM';
-        $requete .= '  afup_forum f ';
-        $requete .= 'LEFT JOIN afup_sessions s ON (f.id = s.id_forum) ';
-        $requete .= 'LEFT JOIN afup_inscription_forum i ON (f.id = i.id_forum) ';
-        $requete .= 'WHERE f.id=' . $id;
-
-        $forum = $this->_bdd->obtenirEnregistrement($requete);
-
-        return $forum['sessions'] == 0 && $forum['inscriptions'] == 0;
-    }
-
-    public function obtenirNombrePlaces($id = null)
-    {
-        if (empty($id)) {
-            $id = $this->obtenirDernier();
-        }
-        $enregistrement = $this->obtenir($id, 'nb_places');
-
-        return $enregistrement['nb_places'];
-    }
-
-    public function obtenirDebut($id_forum)
-    {
-        $requete = 'SELECT UNIX_TIMESTAMP(date_debut)';
-        $requete .= 'FROM';
-        $requete .= '  afup_forum ';
-        $requete .= 'WHERE';
-        $requete .= '  id =  ' . (int) $id_forum;
-        return $this->_bdd->obtenirUn($requete);
-    }
-
     public function obtenirForumPrecedent($id_forum)
     {
         $requete = 'SELECT MAX(id)';
@@ -111,134 +76,6 @@ class Forum
         return $this->_bdd->obtenirTous('SELECT * FROM afup_forum WHERE archived_at IS NULL ORDER BY titre');
     }
 
-    public function afficherDeroulementMobile($sessions): string
-    {
-        $deroulement = "<div class=\"deroulements\">";
-        $jour = 0;
-        $heure = 0;
-        foreach ($sessions as $session) {
-            if ($jour != mktime(0, 0, 0, (int) date("m", $session['debut']), (int) date("d", $session['debut']), (int) date("Y", $session['debut']))) {
-                $jour = mktime(0, 0, 0, (int) date("m", $session['debut']), (int) date("d", $session['debut']), (int) date("Y", $session['debut']));
-                $deroulement .= "<h2 class=\"jour\">" . ($jour > 10000 ? date("d/m/Y", $jour) : 'Jour à définir') . "</h2>";
-            }
-            if ($heure != $session['debut']) {
-                $heure = $session['debut'];
-                $deroulement .= "<h3 class=\"horaire\">" . date("H\hi", $heure) . "</h3>";
-            }
-
-            $classes = ["deroulement"];
-            $classes[] = $session['journee'];
-            if ($session['keynote'] == 1) {
-                $classes[] = "keynote";
-            }
-
-            $conferenciers = $session['conf1'];
-            if (!empty($session['conf2'])) {
-                $conferenciers .= "<br />" . $session['conf2'];
-            }
-
-            $deroulement .= "<div class=\"" . implode(" ", $classes) . "\">";
-            $deroulement .= "    <div class=\"session\"><a href=\"sessions.php#" . $session['session_id'] . "\">" . $session['titre'] . "</a></div>";
-            $deroulement .= "    <div class=\"conferenciers\">" . $conferenciers . "</div>";
-            $deroulement .= "    <div class=\"salle\">" . $session['nom_salle'] . "</div>";
-            $deroulement .= "</div>";
-        }
-
-        return $deroulement . "</div>";
-    }
-
-    public function afficherDeroulement($sessions): string
-    {
-        $deroulement = "<div class=\"deroulements\">";
-        $jour = 0;
-        $heure = 0;
-        foreach ($sessions as $session) {
-            if ($jour != mktime(0, 0, 0, (int) date("m", $session['debut']), (int) date("d", $session['debut']), (int) date("Y", $session['debut']))) {
-                $jour = mktime(0, 0, 0, (int) date("m", $session['debut']), (int) date("d", $session['debut']), (int) date("Y", $session['debut']));
-                $deroulement .= "<h2 class=\"jour\">" . ($jour > 10000 ? date("d/m/Y", $jour) : 'Jour à définir') . "</h2>";
-            }
-            if ($heure != $session['debut']) {
-                $heure = $session['debut'];
-                $deroulement .= "<h3 class=\"horaire\">" . date("H\hi", $heure) . "</h3>";
-            }
-
-            $classes = ["deroulement"];
-            $classes[] = $session['journee'];
-            if ($session['keynote'] == 1) {
-                $classes[] = "keynote";
-            }
-
-            $conferenciers = $session['conf1'];
-            if (!empty($session['conf2'])) {
-                $conferenciers .= "<br />" . $session['conf2'];
-            }
-
-            $deroulement .= "<div class=\"" . implode(" ", $classes) . "\">";
-            $deroulement .= "    <div class=\"session\"><a href=\"sessions.php#" . $session['session_id'] . "\">" . $session['titre'] . "</a></div>";
-            $deroulement .= "    <div class=\"conferenciers\">" . $conferenciers . "</div>";
-            $deroulement .= "</div>";
-        }
-
-        return $deroulement . "</div>";
-    }
-
-    public function afficherAgenda($sessions): string
-    {
-        $slots = [];
-        $salles = [];
-        $debuts = [];
-        foreach ($sessions as $session) {
-            $jour = mktime(0, 0, 0, (int) date("m", $session['debut']), (int) date("d", $session['debut']), (int) date("Y", $session['debut']));
-            $slots[$jour][$session['nom_salle']][$session['debut']] = $session;
-            $debuts[$jour] = isset($debuts[$jour]) ? min($session['debut'], $debuts[$jour]) : $session['debut'];
-            $salles[] = $session['id_salle'];
-        }
-        $salles = array_unique($salles);
-        sort($salles);
-        $salles = array_flip($salles);
-
-        $agenda = "";
-        $passage_jour = 0;
-        foreach ($slots as $jour => $slots_avec_salle) {
-            $nb_salles = count($slots_avec_salle);
-            $agenda .= "<div class=\"slots\" style=\"height: 1700px;\">";
-            $agenda .= "<h2 style=\"position: absolute; width: 100%; top: " . round($passage_jour * 1600) . "px;\">" . date("d/m/Y", $jour) . "</h2>";
-            foreach ($slots_avec_salle as $slots_avec_horaire) {
-                foreach ($slots_avec_horaire as $session) {
-                    $classes = ["slot"];
-                    $classes[] = $session['journee'];
-
-                    $conferenciers = $session['conf1'];
-                    if (!empty($session['conf2'])) {
-                        $conferenciers .= "<br />" . $session['conf2'];
-                    }
-
-                    $styles = ["position: absolute;"];
-                    if ($session['keynote'] == 1) {
-                        $classes[] = "keynote";
-                        $styles[] = "width: 100%;";
-                        $styles[] = "left: 0%;";
-                    } else {
-                        $styles[] = "width: " . round(100 / $nb_salles) . "%;";
-                        $styles[] = "left: " . ($salles[$session['id_salle']] * round(100 / $nb_salles)) . "%;";
-                    }
-                    $styles[] = "height: " . round(($session['fin'] - $session['debut']) / 19) . "px;";
-                    $styles[] = "top: " . round(40 + $passage_jour * 1600 + ($session['debut'] - $debuts[$jour]) / 19) . "px;";
-
-                    $agenda .= "<div class=\"" . implode(" ", $classes) . "\" style=\"" . implode(" ", $styles) . "\">";
-                    $agenda .= "    <div class=\"session\"><a href=\"sessions.php#" . $session['session_id'] . "\">" . $session['titre'] . "</a></div>";
-                    $agenda .= "    <div class=\"conferenciers\">" . $conferenciers . "</div>";
-                    $agenda .= "    <div class=\"horaire\">" . date("H\hi", $session['debut']) . " - " . date("H\hi", $session['fin']) . "</div>";
-                    $agenda .= "</div>";
-                }
-            }
-            $agenda .= "</div>";
-            $passage_jour++;
-        }
-
-        return $agenda;
-    }
-
     /**
      * Récupérer l'agenda du forum.
      *
@@ -264,22 +101,22 @@ class Forum
         }
 
         $sWhere = "WHERE " . implode(" AND ", $aWhere);
-        $requete = "SELECT " .
-            " ( SELECT CONCAT(c.nom,' ', c.prenom , ' - ', c.societe )  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = s.session_id order by c.conferencier_id asc limit 1) as conf1 ,
-                      ( SELECT CONCAT(c.nom,' ', c.prenom, ' - ', c.societe)  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = s.session_id order by c.conferencier_id asc limit 1,1) as conf2 , " .
+        $requete = "SELECT "
+            . " ( SELECT CONCAT(c.nom,' ', c.prenom , ' - ', c.societe )  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = s.session_id order by c.conferencier_id asc limit 1) as conf1 ,
+                      ( SELECT CONCAT(c.nom,' ', c.prenom, ' - ', c.societe)  FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = s.session_id order by c.conferencier_id asc limit 1,1) as conf2 , "
 
-            "    s.session_id, s.titre, s.journee, " .
-            "    FROM_UNIXTIME(p.debut, '%d-%m-%Y') AS 'jour', " .
-            "    FROM_UNIXTIME(p.debut, '%H:%i') AS 'debut', " .
-            "    FROM_UNIXTIME(p.fin, '%H:%i') AS 'fin', " .
-            "    p.id_salle, " .
-            "    p.keynote, " .
-            "    l.nom " .
-            "FROM   afup_sessions       s " .
-            "  JOIN afup_forum_planning p ON s.session_id = p.id_session " .
-            "  JOIN afup_forum_salle    l ON p.id_salle   = l.id " .
-            $sWhere . " " .
-            "ORDER BY p.debut ASC, p.id_salle ASC";
+            . "    s.session_id, s.titre, s.journee, "
+            . "    FROM_UNIXTIME(p.debut, '%d-%m-%Y') AS 'jour', "
+            . "    FROM_UNIXTIME(p.debut, '%H:%i') AS 'debut', "
+            . "    FROM_UNIXTIME(p.fin, '%H:%i') AS 'fin', "
+            . "    p.id_salle, "
+            . "    p.keynote, "
+            . "    l.nom "
+            . "FROM   afup_sessions       s "
+            . "  JOIN afup_forum_planning p ON s.session_id = p.id_session "
+            . "  JOIN afup_forum_salle    l ON p.id_salle   = l.id "
+            . $sWhere . " "
+            . "ORDER BY p.debut ASC, p.id_salle ASC";
         return $this->_bdd->obtenirTous($requete);
     }
 
@@ -309,7 +146,7 @@ class Forum
      *
      * @param  String $infoSeance
      * @param  Boolean $for_bo
-     * @param  string $linkFormat if $for_bo = false, this format will be used (if not null) to construct the link.
+     * @param  ?string $linkFormat if $for_bo = false, this format will be used (if not null) to construct the link.
      *                  i.e : "/sessions.php#%1" . %1 is the session id
      * @return String
      */
@@ -370,7 +207,7 @@ class Forum
 
             /* On boucle sur chaque journée du programme. */
             foreach ($aProgramme as $journee => $aInfos) {
-                $journee_aff = date('d/m/Y', strtotime($journee));
+                $journee_aff = date('d/m/Y', strtotime((string) $journee));
                 $sTable .= <<<CODE_HTML
 <div class="ui segment">
 <h2 class="ui header">Jour {$j} : {$journee_aff}</h2>
@@ -424,9 +261,9 @@ CODE_HTML;
                             for ($c = 0; $c < $nbConf; $c++):
                                     //var_dump($aAgenda[$c]);
                                     if (
-                                        $aAgenda[$c]['debut'] == $sHeure . ":" . $m &&
-                                        $aAgenda[$c]['id_salle'] == $idSalle &&
-                                        $aAgenda[$c]['jour'] == $journee
+                                        $aAgenda[$c]['debut'] == $sHeure . ":" . $m
+                                        && $aAgenda[$c]['id_salle'] == $idSalle
+                                        && $aAgenda[$c]['jour'] == $journee
                                     ):
                                         /* Si on toruve une scéance, on ne mettra pas de cellule vide. */
                                         $bSeance = true;
@@ -487,80 +324,6 @@ CODE_HTML;
 CODE_HTML;
         }
         return $sTable;
-    }
-
-    public function obtenirCsvJoindIn($id_forum): string
-    {
-        $id_forum = $this->_bdd->echapper($id_forum);
-
-        // Récupération des données
-        $requete = "
-        SELECT afup_sessions.titre, afup_sessions.abstract, afup_sessions.genre, afup_sessions.journee,
-        	   DATE_FORMAT(FROM_UNIXTIME(afup_forum_planning.debut), '%Y-%m-%d') AS date,
-			   DATE_FORMAT(FROM_UNIXTIME(afup_forum_planning.debut), '%H:%i') AS heure,
-			   afup_forum_planning.keynote,
-
-        	(SELECT CONCAT(afup_conferenciers1.prenom, ' ', afup_conferenciers1.nom)
-        	 FROM afup_conferenciers_sessions AS afup_conferenciers_sessions
-                INNER JOIN afup_conferenciers AS afup_conferenciers1 ON afup_conferenciers1.conferencier_id = afup_conferenciers_sessions.conferencier_id
-        	 WHERE afup_conferenciers_sessions.session_id = afup_sessions.session_id
-                LIMIT 0,1) AS conferencier1,
-
-        	(SELECT CONCAT(afup_conferenciers2.prenom, ' ', afup_conferenciers2.nom)
-        	 FROM afup_conferenciers_sessions AS afup_conferenciers_sessions
-                INNER JOIN afup_conferenciers AS afup_conferenciers2 ON afup_conferenciers2.conferencier_id = afup_conferenciers_sessions.conferencier_id
-        	 WHERE afup_conferenciers_sessions.session_id = afup_sessions.session_id
-                LIMIT 1,1) AS conferencier2
-
-        FROM afup_sessions
-        INNER JOIN afup_forum_planning ON afup_forum_planning.id_session = afup_sessions.session_id
-        WHERE afup_sessions.id_forum = $id_forum AND afup_sessions.plannifie = 1;";
-        $donnees = $this->_bdd->obtenirTous($requete);
-
-        // Génération des données CSV
-        $csv = "Title,Description,Speaker,Date,Time,Type\n";
-        foreach ($donnees as $conference) {
-
-            // Gestion de la description
-            $description = html_entity_decode((string) $conference['abstract'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-            $description = strip_tags($description);
-            $description = str_replace('"', '\"', $description);
-
-            // Gestion des conférenciers
-            $conferenciers = [];
-            for ($i = 1; $i <= 2; $i++) {
-                if (!empty($conference['conferencier' . $i]) &&
-                    'En cours de validation' !== trim((string) $conference['conferencier' . $i])
-                ) {
-                    $conferenciers[] = $conference['conferencier' . $i];
-                }
-            }
-            if ($conferenciers === []) {
-                $conferenciers[] = '-';
-            }
-            $conferenciers = implode(',', $conferenciers);
-
-            // Gestion du type de conférence
-            if (1 == $conference['keynote']) {
-                $type = 'Keynote';
-            } elseif (2 == $conference['genre']) {
-                $type = 'Workshop';
-            } else {
-                $type = 'Talk';
-            }
-
-            $csv .= sprintf(
-                "\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"\n",
-                $conference['titre'],
-                $description,
-                $conferenciers,
-                $conference['date'],
-                $conference['heure'],
-                $type,
-            );
-        }
-
-        return $csv;
     }
 
     public function ajouter(

@@ -9,51 +9,11 @@ use AppBundle\Compta\BankAccount\BankAccount;
 
 class PDF_Facture extends PDF
 {
-    /**
-     * The Afup\Site\Utils\Configuration object
-     *
-     * @var Configuration
-     *
-     */
-    public $configuration;
-
-    /**
-     * Constructor
-     *
-     * @param Configuration $configuration The Afup\Site\Utils\Configuration object
-     * @param string $orientation The page's orientation (portrait = P, landscape = L)
-     * @param string $unit The page's units. Default is mm
-     * @param string $format The page's format. Default is A4
-     * @return void
-     * @throws \Exception
-     * @param bool $isSubjectedToVat
-     */
     public function __construct(
-        $configuration,
         private readonly BankAccount $bankAccount,
-        private $isSubjectedToVat = false,
-        $orientation = 'P',
-        $unit = 'mm',
-        $format = 'A4',
+        private readonly bool $isSubjectedToVat = false,
     ) {
-        parent::__construct($orientation, $unit, $format);
-
-        $this->setAFUPConfiguration($configuration);
-    }
-
-    /**
-     * Set the Afup\Site\Utils\Configuration object
-     *
-     * @param Configuration $configuration The Afup\Site\Utils\Configuration object
-     * @throws \Exception
-     */
-    public function setAFUPConfiguration($configuration): void
-    {
-        if (!is_object($configuration) || !($configuration instanceof Configuration)) {
-            throw new \Exception('$configuration parameter must be an instance of Afup\Site\Utils\AFUP_Configuration class');
-        }
-
-        $this->configuration = $configuration;
+        parent::__construct();
     }
 
     public function header(): void
@@ -88,16 +48,6 @@ class PDF_Facture extends PDF
         $this->Ln();
         $this->Ln();
         $this->Ln();
-    }
-
-    /**
-     * Returns the Afup\Site\Utils\Configuration object
-     *
-     * @return Configuration
-     */
-    public function getAFUPConfiguration()
-    {
-        return $this->configuration;
     }
 
     public function _putinfo(): void
@@ -143,34 +93,34 @@ class PDF_Facture extends PDF
         $this->SetFont('Arial', 'B', 6);
         $this->Cell(130, 3, 'Identification RIB : Banque', 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
-        $this->Cell(-95, 3, $this->bankAccount->getEtablissement(), 0, 0, 'C');
+        $this->Cell(-95, 3, $this->bankAccount->etablissement, 0, 0, 'C');
 
         $this->SetFont('Arial', 'B', 6);
         $this->Cell(112, 3, 'Guichet', 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
-        $this->Cell(-95, 3, $this->bankAccount->getGuichet(), 0, 0, 'C');
+        $this->Cell(-95, 3, $this->bankAccount->guichet, 0, 0, 'C');
 
         $this->SetFont('Arial', 'B', 6);
         $this->Cell(111, 3, 'N° Cpte', 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
-        $this->Cell(-88, 3, $this->bankAccount->getCompte(), 0, 0, 'C');
+        $this->Cell(-88, 3, $this->bankAccount->compte, 0, 0, 'C');
 
         $this->SetFont('Arial', 'B', 6);
         $this->Cell(107, 3, 'Clé', 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
-        $this->Cell(-99, 3, $this->bankAccount->getCle(), 0, 0, 'C');
+        $this->Cell(-99, 3, $this->bankAccount->cle, 0, 0, 'C');
 
         $this->Ln();
 
         $this->SetFont('Arial', 'B', 6);
         $this->Cell(120, 3, 'Identification IBAN', 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
-        $this->Cell(-62, 3, $this->bankAccount->getIban(), 0, 0, 'C');
+        $this->Cell(-62, 3, $this->bankAccount->iban, 0, 0, 'C');
 
         $this->SetFont('Arial', 'B', 6);
         $this->Cell(110, 3, 'BIC', 0, 0, 'C');
         $this->SetFont('Arial', null, 6);
-        $this->Cell(-90, 3, $this->bankAccount->getBic(), 0, 0, 'C');
+        $this->Cell(-90, 3, $this->bankAccount->bic, 0, 0, 'C');
 
         if ($this->isSubjectedToVat) {
             $this->Ln();

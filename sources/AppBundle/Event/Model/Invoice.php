@@ -44,16 +44,10 @@ class Invoice implements NotifyPropertyInterface
     #[Assert\Email]
     private $email;
 
-    /**
-     * @var string
-     */
-    private $company;
+    private ?string $company = null;
 
-    /**
-     * @var string
-     */
     #[Assert\NotBlank]
-    private $lastname;
+    private ?string $lastname = null;
 
     /**
      * @var string
@@ -245,36 +239,24 @@ class Invoice implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getCompany()
+    public function getCompany(): ?string
     {
         return $this->company;
     }
 
-    /**
-     * @param string $company
-     */
-    public function setCompany($company): self
+    public function setCompany(?string $company): self
     {
         $this->propertyChanged('company', $this->company, $company);
         $this->company = $company;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getLastname()
+    public function getLastname(): ?string
     {
         return $this->lastname;
     }
 
-    /**
-     * @param string $lastname
-     */
-    public function setLastname($lastname): self
+    public function setLastname(?string $lastname): self
     {
         $this->propertyChanged('lastname', $this->lastname, $lastname);
         $this->lastname = $lastname;

@@ -6,20 +6,21 @@ namespace AppBundle\Indexation\Meetups;
 
 use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\AlgoliaSearch\SearchIndex;
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Event\Model\Meetup;
 use AppBundle\Event\Model\Repository\MeetupRepository;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 
-class Runner
+final readonly class Runner
 {
     protected Transformer $transformer;
 
     public function __construct(
-        protected SearchClient $algoliaClient,
-        protected MeetupRepository $meetupRepository,
+        private SearchClient $algoliaClient,
+        private MeetupRepository $meetupRepository,
+        private AntenneRepository $antenneRepository,
     ) {
-        $this->transformer = new Transformer(new AntennesCollection());
+        $this->transformer = new Transformer($this->antenneRepository);
     }
 
     public function run(): void

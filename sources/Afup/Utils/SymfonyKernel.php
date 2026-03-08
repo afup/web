@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Afup\Site\Utils;
 
+use AppBundle\AppKernel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class SymfonyKernel
 {
-    protected \AppKernel $kernel;
+    protected AppKernel $kernel;
     protected ?Request $request;
     protected ?Response $response = null;
 
@@ -19,16 +20,16 @@ class SymfonyKernel
         $env = 'prod';
         $debug = false;
 
-        if (isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] === 'dev') {
+        if (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'dev') {
             $debug = true;
             $env = 'dev';
         }
 
-        if (isset($_ENV['SYMFONY_ENV']) && $_ENV['SYMFONY_ENV'] === 'test') {
+        if (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'test') {
             $env = 'test';
         }
 
-        $this->kernel = new \AppKernel($env, $debug);
+        $this->kernel = new AppKernel($env, $debug);
         $this->kernel->boot();
         if (!$request instanceof Request) {
             $request = Request::createFromGlobals();

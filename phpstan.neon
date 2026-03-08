@@ -2,9 +2,27 @@ includes:
     - vendor/cuyz/valinor/qa/PHPStan/valinor-phpstan-configuration.php
 
 parameters:
-    level: 3
+    level: 4
     paths:
         - sources
     stubFiles:
             - tests/stubs/Ting/Repository/Repository.php.stub
             - tests/stubs/Ting/Repository/RepositoryFactory.php.stub
+    ignoreErrors:
+        -
+            identifier: property.onlyWritten
+            path: sources/AppBundle/Controller/LegacyController.php
+    type_coverage:
+      return: 71
+      param: 71
+      property: 45
+      # since PHP 8.3
+      # constant: 30
+    doctrine:
+        ormRepositoryClass: AppBundle\Doctrine\EntityRepository
+
+rules:
+    - AppBundle\StaticAnalysis\Rule\NoDebugFunctionsRule
+    - AppBundle\StaticAnalysis\Rule\NoGetUserMethodRule
+    - AppBundle\StaticAnalysis\Rule\DoctrineRepositoryRule
+    - AppBundle\StaticAnalysis\Rule\DoctrineDisableDQLRule

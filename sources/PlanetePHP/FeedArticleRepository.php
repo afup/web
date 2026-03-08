@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PlanetePHP;
 
-use Assert\Assertion;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
+use Webmozart\Assert\Assert;
 
 class FeedArticleRepository
 {
@@ -36,22 +36,17 @@ class FeedArticleRepository
     }
 
     /**
-     * @param string $sort
-     * @param string $direction
-     * @param int    $limit
-     *
      * @return FeedArticle[]
      */
-    public function search($sort, $direction, $limit = 20): array
+    public function search(string $sort, string $direction, int $limit = 20): array
     {
         $sorts = [
             'title' => 'b.titre',
             'content' => 'b.contenu',
             'status' => 'b.etat',
         ];
-        Assertion::integer($limit);
-        Assertion::keyExists($sorts, $sort);
-        Assertion::inArray($direction, ['asc', 'desc']);
+        Assert::keyExists($sorts, $sort);
+        Assert::inArray($direction, ['asc', 'desc']);
         $qb = $this->connection->createQueryBuilder();
         $qb->from('afup_planete_billet', 'b')
             ->select('b.*')
@@ -63,7 +58,7 @@ class FeedArticleRepository
 
     public function save(FeedArticle $billet)
     {
-        $id = $this->findIdByKey($billet->getKey());
+        $id = $this->findIdByKey($billet->key);
         if (null !== $id) {
             return $this->update($billet, $id);
         }
@@ -124,17 +119,17 @@ class FeedArticleRepository
                 etat = :status
             WHERE id = :id');
 
-        $statement->bindValue('feedId', $billet->getFeedId());
-        $statement->bindValue('key', $billet->getKey());
-        $statement->bindValue('title', $billet->getTitle());
-        $statement->bindValue('url', $billet->getUrl());
-        $statement->bindValue('update', $billet->getUpdate());
-        $statement->bindValue('author', $billet->getAuthor());
-        $statement->bindValue('summary', $billet->getSummary());
-        $statement->bindValue('content', $billet->getContent());
-        $statement->bindValue('status', $billet->getStatus());
+        $statement->bindValue('feedId', $billet->feedId);
+        $statement->bindValue('key', $billet->key);
+        $statement->bindValue('title', $billet->title);
+        $statement->bindValue('url', $billet->url);
+        $statement->bindValue('update', $billet->update);
+        $statement->bindValue('author', $billet->author);
+        $statement->bindValue('summary', $billet->summary);
+        $statement->bindValue('content', $billet->content);
+        $statement->bindValue('status', $billet->status);
 
-        $statement->bindValue('id', $id ?: $billet->getId());
+        $statement->bindValue('id', $id ?: $billet->id);
 
         return $statement->executeStatement();
     }
@@ -145,15 +140,15 @@ class FeedArticleRepository
             (afup_planete_flux_id, clef, titre, url, maj, auteur, resume, contenu, etat) 
             VALUES (:feedId, :key, :title, :url, :update, :author, :summary, :content, :status)');
 
-        $statement->bindValue('feedId', $billet->getFeedId());
-        $statement->bindValue('key', $billet->getKey());
-        $statement->bindValue('title', $billet->getTitle());
-        $statement->bindValue('url', $billet->getUrl());
-        $statement->bindValue('update', $billet->getUpdate());
-        $statement->bindValue('author', $billet->getAuthor());
-        $statement->bindValue('summary', $billet->getSummary());
-        $statement->bindValue('content', $billet->getContent());
-        $statement->bindValue('status', $billet->getStatus());
+        $statement->bindValue('feedId', $billet->feedId);
+        $statement->bindValue('key', $billet->key);
+        $statement->bindValue('title', $billet->title);
+        $statement->bindValue('url', $billet->url);
+        $statement->bindValue('update', $billet->update);
+        $statement->bindValue('author', $billet->author);
+        $statement->bindValue('summary', $billet->summary);
+        $statement->bindValue('content', $billet->content);
+        $statement->bindValue('status', $billet->status);
 
         return $statement->executeStatement();
     }

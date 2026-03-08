@@ -9,6 +9,14 @@ class Feuilles extends AbstractSeed
 {
     public function run(): void
     {
+
+        $dir = 'htdocs/templates/site/images/';
+        if (!is_dir($dir) && (!mkdir($dir) && !is_dir($dir))) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
+        }
+
+        copy('tests/behat/files/tech-letter.png', $dir . 'tech-letter.png');
+
         $data = [
             [
                 'id' => Feuille::ID_FEUILLE_HEADER,
@@ -113,6 +121,14 @@ class Feuilles extends AbstractSeed
                 'nom' => 'Plan du site',
                 'lien' => '/plan-du-site',
                 'date' => 1732710484,
+                'etat' => 1,
+            ],
+            [
+                'id_parent' => Feuille::ID_FEUILLE_COLONNE_DROITE,
+                'lien' => '/plan-du-site',
+                'nom' => 'La VEILLE de l\'AFUP',
+                'image' => 'tech-letter.png',
+                'alt' => 'Membres AFUP, profitez du meilleur de PHP et soyez à jour sur son actualité : abonnez-vous à notre newsletter La Veille de l’AFUP. Progrès du langage, conseils de spécialistes, nouvelles versions, l’AFUP fait la veille pour vous et vous l’envoie par mail.',
                 'etat' => 1,
             ],
         ];

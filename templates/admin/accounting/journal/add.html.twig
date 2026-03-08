@@ -1,0 +1,13 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Ajouter une écriture (facture)</h2>
+
+    {% include 'admin/accounting/journal/form.html.twig' %}
+
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+{{ include('admin/accounting/journal/vat_calculation.js.twig') }}
+{% endblock %}

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Indexation\Meetups;
 
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Event\Model\Meetup;
 use AppBundle\Indexation\Meetups\GraphQL\QueryGroupsResponse;
 use CuyZ\Valinor\Mapper\Source\Source;
@@ -18,21 +18,21 @@ final readonly class MeetupClient
 
     public function __construct(
         private HttpClientInterface $httpClient,
-        private AntennesCollection $antennesCollection,
+        private AntenneRepository $antenneRepository,
         private MapperBuilder $mapperBuilder,
     ) {}
 
     /**
      * @return Meetup[]
      */
-    public function getEvents(): array
+    public function getEvents(?int $quantityOfPastEvents = null): array
     {
-        $response = $this->httpClient->request('POST', '/gql', [
+        $response = $this->httpClient->request('POST', '/gql-ext', [
             'body' => json_encode([
                 'query' => $this->getEventsQuery(),
                 'variables' => [
                     'quantityUpcoming' => self::QUANTITY_UPCOMING_EVENTS,
-                    'quantityPast' => self::QUANTITY_PAST_EVENTS,
+                    'quantityPast' => $quantityOfPastEvents ?? self::QUANTITY_PAST_EVENTS,
                 ],
             ]),
         ]);
@@ -40,7 +40,7 @@ final readonly class MeetupClient
         /** @var QueryGroupsResponse $groupResponse */
         $groupResponse = $this->mapperBuilder
             ->allowSuperfluousKeys()
-            ->supportDateFormats('Y-m-d\TH:iP')
+            ->supportDateFormats('Y-m-d\TH:i:sP')
             ->mapper()
             ->map(QueryGroupsResponse::class, Source::array($response->toArray()));
 
@@ -56,10 +56,8 @@ final readonly class MeetupClient
                 $meetup->setDescription($edge->node->description);
                 $meetup->setDate($edge->node->dateTime);
                 $meetup->setAntenneName($nameAntenne);
-
-                if ($edge->node->venue !== null) {
-                    $meetup->setLocation($edge->node->venue->name);
-                }
+                $meetup->setLocation($edge->node->venue->name);
+                $meetup->setPhotoUrl($edge->node->displayPhoto->standardUrl);
 
                 $meetups[] = $meetup;
             }
@@ -72,7 +70,7 @@ final readonly class MeetupClient
     {
         $queries = [];
 
-        foreach ($this->antennesCollection->getAll() as $antenne) {
+        foreach ($this->antenneRepository->getAll() as $antenne) {
             if ($antenne->meetup === null) {
                 continue;
             }
@@ -94,16 +92,17 @@ fragment EventFragment on Event {
     description
     dateTime
     venue { name }
+    displayPhoto { standardUrl }
 }
 
 fragment GroupFragment on Group {
-    upcomingEvents(input: {last: $quantityUpcoming}) {
+    upcomingEvents: events(first: $quantityUpcoming, filter: {status: ACTIVE}) {
         edges {
             node { ... EventFragment }
         }
     }
 
-    pastEvents(input: {first: $quantityPast}, sortOrder: DESC) {
+    pastEvents: events(first: $quantityPast, sort: DESC, filter: {status: PAST}) {
         edges {
             node { ... EventFragment }
         }

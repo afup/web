@@ -1,0 +1,69 @@
+admin_accounting_journal_list:
+  path: /list
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\ListAction
+
+admin_accounting_journal_delete:
+  path: /delete/{id}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\DeleteAction
+  requirements:
+    id: \d+
+
+admin_accounting_journal_download:
+  path: /download/{id}
+  requirements:
+    id: '\d+'
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\DownloadAttachmentAction
+
+admin_accounting_journal_download_attachments:
+  path: /download-attachments
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\DownloadAttachmentsAction
+
+admin_accounting_journal_allocate:
+  path: /allocate/{id}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\AllocateAction
+  requirements:
+    id: \d+
+
+admin_accounting_journal_import:
+  path: /import
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\ImportAction
+
+admin_accounting_journal_export:
+  path: /export
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\ExportAction
+
+
+admin_accounting_journal_update_info:
+  path: /update-info/{id}/{modification}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\UpdateInfoAction
+  methods: [POST]
+  requirements:
+    id: \d+
+
+admin_accounting_journal_upload:
+  path: /upload/{id}
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\UploadAttachmentAction
+  methods: [POST]
+  requirements:
+    id: \d+
+
+admin_accounting_journal_add:
+  path: /add
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\AddTransactionAction
+
+admin_accounting_journal_edit:
+  path: /edit/{id}
+  requirements:
+    id: '\d+'
+  defaults:
+    _controller: AppBundle\Controller\Admin\Accounting\Journal\EditTransactionAction

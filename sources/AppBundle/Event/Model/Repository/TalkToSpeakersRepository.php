@@ -20,14 +20,18 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
  */
 class TalkToSpeakersRepository extends Repository implements MetadataInitializer
 {
-    public function getNumberOfSpeakers(Event $event, \DateTime $since = null)
+    public function getNumberOfSpeakers(Event|int $event, \DateTime $since = null)
     {
+        if ($event instanceof Event) {
+            $event = $event->getId();
+        }
+
         $sql = 'SELECT COUNT(distinct conferencier_id) AS count 
                 FROM afup_conferenciers_sessions
                 JOIN afup_sessions ON (afup_conferenciers_sessions.session_id = afup_sessions.session_id)
                 WHERE id_forum = :event
         ';
-        $params = ['event' => $event->getId()];
+        $params = ['event' => $event];
         if ($since instanceof \DateTime) {
             $sql .= ' AND afup_sessions.date_soumission >= :since ';
             $params['since'] = $since->format('Y-m-d');
@@ -46,7 +50,7 @@ class TalkToSpeakersRepository extends Repository implements MetadataInitializer
     {
         $this->startTransaction();
         try {
-            $delete = $this->getPreparedQuery('DELETE FROM afup_conferenciers_sessions WHERE talk_id = :talk');
+            $delete = $this->getPreparedQuery('DELETE FROM afup_conferenciers_sessions WHERE session_id = :talk');
             $delete->setParams(['talk' => $talk->getId()])->execute();
 
             $insert = $this->getPreparedQuery('INSERT INTO afup_conferenciers_sessions (conferencier_id, session_id) VALUES (:speaker, :talk)');

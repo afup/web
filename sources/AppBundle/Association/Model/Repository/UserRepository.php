@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Model\Repository;
 
+use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Badge;
-use Assert\Assertion;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -25,17 +25,13 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use UnexpectedValueException;
+use Webmozart\Assert\Assert;
 
 /**
  * @extends Repository<User>
  */
 class UserRepository extends Repository implements MetadataInitializer, UserProviderInterface, PasswordUpgraderInterface
 {
-    public const USER_TYPE_PHYSICAL = 0;
-    public const USER_TYPE_COMPANY = 1;
-    public const USER_TYPE_ALL = 2;
-
     public function loadUserByIdentifier(string $identifier): User
     {
         return $this->loadUserByUsername($identifier);
@@ -56,7 +52,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ])
             ->query($this->getCollection($this->getHydratorForUser()));
 
-        if (!$result || $result->count() === 0) {
+        if ($result->count() === 0) {
             throw new UserNotFoundException(sprintf('Could not find the user with login "%s"', $username));
         }
 
@@ -180,13 +176,13 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         $isCompanyManager = null,
         $needsUptoDateMembership = null,
     ) {
-        Assertion::inArray($direction, ['asc', 'desc']);
+        Assert::inArray($direction, ['asc', 'desc']);
         $sorts = [
             'lastname' => ['nom', 'prenom'],
             'firstname' => ['prenom', 'nom'],
             'status' => ['etat','nom', 'prenom'],
         ];
-        Assertion::keyExists($sorts, $sort);
+        Assert::keyExists($sorts, $sort);
 
         $queryBuilder = $this->getQueryBuilderWithCompleteUser()
             ->orderBy(array_map(static fn($field): string => $field . ' ' . $direction, $sorts[$sort]));
@@ -248,7 +244,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         if (0 !== $user->getCompanyId() && !$this->companyExists($user->getCompanyId())) {
             throw new InvalidArgumentException('La personne morale n\'existe pas.');
         }
-        if (null !== $user->getCountry() && !$this->countryExists($user->getCountry())) {
+        if (!$this->countryExists($user->getCountry())) {
             throw new InvalidArgumentException('Le pays n\'existe pas.');
         }
         try {
@@ -279,7 +275,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         if (0 !== $user->getCompanyId() && !$this->companyExists($user->getCompanyId())) {
             throw new InvalidArgumentException('La personne morale n\'existe pas.');
         }
-        if (null !== $user->getCountry() && !$this->countryExists($user->getCountry())) {
+        if (!$this->countryExists($user->getCountry())) {
             throw new InvalidArgumentException('Le pays n\'existe pas.');
         }
         $this->save($user);
@@ -288,7 +284,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     public function remove(User $user): void
     {
         $nbCotisations = (int) $this->getQuery('SELECT COUNT(*) nb FROM afup_cotisations WHERE type_personne = :memberType AND id_personne = :id')
-            ->setParams(['memberType' => AFUP_PERSONNES_PHYSIQUES, 'id' => $user->getId()])
+            ->setParams(['memberType' => MemberType::MemberPhysical->value, 'id' => $user->getId()])
             ->query()->first()[0]->nb;
         if (0 < $nbCotisations) {
             throw new InvalidArgumentException('Impossible de supprimer une personne physique qui a des cotisations');
@@ -339,11 +335,11 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     }
 
     /**
-     * @param int $countryId Country's identifier
+     * @param string $countryId Country's identifier
      *
      * @return bool TRUE if the country exists, FALSE otherwise
      */
-    private function countryExists($countryId): bool
+    private function countryExists(string $countryId): bool
     {
         return 0 < $this->getQuery('SELECT 1 FROM afup_pays WHERE id = :id')
                 ->setParams(['id' => $countryId])
@@ -394,14 +390,12 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
      *
      * @param $userType
      */
-    private function addUserTypeCondition(SelectInterface $queryBuilder, $userType): void
+    private function addUserTypeCondition(SelectInterface $queryBuilder, ?MemberType $userType): void
     {
-        if ($userType === self::USER_TYPE_PHYSICAL) {
+        if ($userType === MemberType::MemberPhysical) {
             $queryBuilder->where('id_personne_morale = 0');
-        } elseif ($userType === self::USER_TYPE_COMPANY) {
+        } elseif ($userType === MemberType::MemberCompany) {
             $queryBuilder->where('id_personne_morale <> 0');
-        } elseif ($userType !== self::USER_TYPE_ALL) {
-            throw new UnexpectedValueException(sprintf('Unknown user type "%s"', $userType));
         }
     }
 
@@ -417,18 +411,15 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     /**
      * Retrieve all users by the date of end of membership.
      *
-     * @param int $userType one of self::USER_TYPE_*
      * @return CollectionInterface
      */
-    public function getActiveMembers($userType = self::USER_TYPE_PHYSICAL)
+    public function getActiveMembers()
     {
         $today = new \DateTimeImmutable();
         $queryBuilder = $this->getQueryBuilderWithSubscriptions();
         $queryBuilder
             ->where('app.`etat` = :status')
         ;
-
-        $this->addUserTypeCondition($queryBuilder, $userType);
 
         return $this
             ->getPreparedQuery($queryBuilder->getStatement())
@@ -442,10 +433,9 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     /**
      * Retrieve all users by the date of end of membership.
      *
-     * @param int $userType one of self::USER_TYPE_*
      * @return CollectionInterface
      */
-    public function getUsersByEndOfMembership(\DateTimeImmutable $endOfSubscription, $userType = self::USER_TYPE_PHYSICAL)
+    public function getUsersByEndOfMembership(\DateTimeImmutable $endOfSubscription, ?MemberType $userType = null)
     {
         $startOfDay = $endOfSubscription->setTime(0, 0, 0);
         $endOfDay = $endOfSubscription->setTime(23, 59, 59);

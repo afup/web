@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model\Repository;
 
+use AppBundle\Event\Model\EventStats\CFPStats;
 use AppBundle\Event\Model\EventStats\TicketTypeStats;
 use AppBundle\Event\Model\EventStats;
 use AppBundle\Event\Model\EventStats\DailyStats;
-use Assert\Assertion;
+use AppBundle\Event\Model\Ticket;
 use Datetime;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 class EventStatsRepository
 {
@@ -18,7 +20,11 @@ class EventStatsRepository
     private const DAY_TWO = 'two';
     private const DAYS = [self::DAY_ONE, self::DAY_TWO];
 
-    public function __construct(private readonly Connection $connection) {}
+    public function __construct(
+        private readonly Connection $connection,
+        private readonly TalkRepository $talkRepository,
+        private readonly TalkToSpeakersRepository $talkToSpeakersRepository,
+    ) {}
 
     public function getStats(int $eventId, Datetime $from = null): EventStats
     {
@@ -26,6 +32,7 @@ class EventStatsRepository
             $this->getStatsForDay($eventId, self::DAY_ONE, $from),
             $this->getStatsForDay($eventId, self::DAY_TWO, $from),
             $this->getStatsForTicketTypes($eventId, $from),
+            $this->getCFPStats($eventId),
         );
     }
 
@@ -46,7 +53,7 @@ class EventStatsRepository
 
         $queryBuilder = clone $baseQueryBuilder;
         $statement = $queryBuilder->andWhere('etat IN(:states)')
-            ->setParameter('states', [AFUP_FORUM_ETAT_REGLE, AFUP_FORUM_ETAT_ATTENTE_REGLEMENT, AFUP_FORUM_ETAT_INVITE], ArrayParameterType::INTEGER)
+            ->setParameter('states', [Ticket::STATUS_PAID, Ticket::STATUS_WAITING, Ticket::STATUS_GUEST], ArrayParameterType::INTEGER)
             ->executeQuery();
 
         $confirmed = [];
@@ -56,7 +63,7 @@ class EventStatsRepository
 
         $queryBuilder = clone $baseQueryBuilder;
         $statement = $queryBuilder->andWhere('etat IN(:states)')
-            ->setParameter('states', [AFUP_FORUM_ETAT_REGLE, AFUP_FORUM_ETAT_ATTENTE_REGLEMENT], ArrayParameterType::INTEGER)
+            ->setParameter('states', [Ticket::STATUS_PAID, Ticket::STATUS_WAITING], ArrayParameterType::INTEGER)
             ->executeQuery();
 
         $paying = [];
@@ -66,7 +73,7 @@ class EventStatsRepository
 
         $queryBuilder = clone $baseQueryBuilder;
         $statement = $queryBuilder->andWhere('etat NOT IN(:states)')
-            ->setParameter('states', [AFUP_FORUM_ETAT_ANNULE, AFUP_FORUM_ETAT_ERREUR, AFUP_FORUM_ETAT_REFUSE], ArrayParameterType::INTEGER)
+            ->setParameter('states', [Ticket::STATUS_CANCELLED, Ticket::STATUS_ERROR, Ticket::STATUS_DECLINED], ArrayParameterType::INTEGER)
             ->executeQuery();
 
         $registered = [];
@@ -79,7 +86,7 @@ class EventStatsRepository
 
     private function getStatsForDay(int $eventId, string $day, ?Datetime $from = null): DailyStats
     {
-        Assertion::inArray($day, self::DAYS);
+        Assert::inArray($day, self::DAYS);
         $baseQueryBuilder = $this->connection->createQueryBuilder()
             ->select('COUNT(*) AS c')
             ->from('afup_inscription_forum', 'aif')
@@ -95,22 +102,30 @@ class EventStatsRepository
 
         $queryBuilder = clone $baseQueryBuilder;
         $registered = $queryBuilder->andWhere('etat NOT IN(:states)')
-            ->setParameter('states', [AFUP_FORUM_ETAT_ANNULE, AFUP_FORUM_ETAT_ERREUR, AFUP_FORUM_ETAT_REFUSE], ArrayParameterType::INTEGER)
+            ->setParameter('states', [Ticket::STATUS_CANCELLED, Ticket::STATUS_ERROR, Ticket::STATUS_DECLINED], ArrayParameterType::INTEGER)
             ->executeQuery()
             ->fetchOne();
 
         $queryBuilder = clone $baseQueryBuilder;
         $confirmed = $queryBuilder->andWhere('etat IN(:states)')
-            ->setParameter('states', [AFUP_FORUM_ETAT_REGLE, AFUP_FORUM_ETAT_INVITE, AFUP_FORUM_ETAT_CONFIRME], ArrayParameterType::INTEGER)
+            ->setParameter('states', [Ticket::STATUS_PAID, Ticket::STATUS_GUEST, Ticket::STATUS_CONFIRMED], ArrayParameterType::INTEGER)
             ->executeQuery()
             ->fetchOne();
 
         $queryBuilder = clone $baseQueryBuilder;
         $pending = $queryBuilder->andWhere('etat = :state')
-            ->setParameter('state', AFUP_FORUM_ETAT_ATTENTE_REGLEMENT)
+            ->setParameter('state', Ticket::STATUS_WAITING)
             ->executeQuery()
             ->fetchOne();
 
         return new DailyStats($registered, $confirmed, $pending);
+    }
+
+    public function getCFPStats(int $eventId): CFPStats
+    {
+        return new CFPStats(
+            $this->talkRepository->getNumberOfTalksByEvent($eventId)['talks'],
+            $this->talkToSpeakersRepository->getNumberOfSpeakers($eventId),
+        );
     }
 }

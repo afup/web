@@ -1,15 +1,22 @@
 home:
   path: /home
-  defaults: { _controller: AppBundle\Controller\Website\HomeController::display }
+  defaults: { _controller: AppBundle\Controller\Website\Global\HomeAction }
   options:
     sitemap: true
 
+old_home_redirect:
+  path: /
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+  defaults:
+    route: 'home'
+    permanent: false
+
 become_sponsor_latest:
   path: /become-sponsor
-  defaults: { _controller: AppBundle\Controller\Event\LeadController::becomeSponsorLatest }
+  defaults: { _controller: AppBundle\Controller\Event\Lead\BecomeSponsorLatestAction }
 
 sitemap:
   path: /plan-du-site
-  defaults: { _controller: AppBundle\Controller\Website\HtmlSitemapController::display }
+  defaults: { _controller: AppBundle\Controller\Website\Global\HtmlSitemapAction }
   options:
     sitemap: true

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Site\Form;
 
-use Afup\Site\Corporate\Article;
+use AppBundle\Site\Enum\ArticleTheme;
 use AppBundle\Site\Model\Repository\ArticleRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -43,7 +43,7 @@ class NewsFiltersType extends AbstractType
                     'label' => 'Thème',
                     'multiple' => true,
                     'expanded' => true,
-                    'choices' => array_flip(Article::getThemesLabels()),
+                    'choices' => ArticleTheme::asChoicesMap(),
                 ],
             )
             ->add(

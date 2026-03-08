@@ -1,0 +1,9 @@
+knpu_oauth2_client:
+    clients:
+        # will create a service: knpu.oauth2.client.facebook_main
+        github_main:
+            type: github
+            client_id: "%github_client_id%"
+            client_secret: "%github_client_secret%"
+            # see below
+            redirect_route: connection_github_check

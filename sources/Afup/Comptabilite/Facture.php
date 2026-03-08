@@ -16,7 +16,10 @@ use AppBundle\Email\Mailer\Message;
 
 class Facture
 {
-    public function __construct(private readonly Base_De_Donnees $_bdd) {}
+    public function __construct(
+        private readonly Base_De_Donnees $_bdd,
+        private readonly Pays $pays,
+    ) {}
 
 
     /* Journal des opération
@@ -176,13 +179,13 @@ class Facture
         return $this->_bdd->executer($requete);
     }
 
-    public function ajouter_details($ref, $designation, int $quantite, float $pu, int $tva = 0)
+    public function ajouter_details($id, $ref, $designation, int $quantite, float $pu, int $tva = 0)
     {
         $requete = 'INSERT INTO ';
         $requete .= 'afup_compta_facture_details (';
         $requete .= 'idafup_compta_facture,ref,designation,quantite,pu,tva) ';
         $requete .= 'VALUES (';
-        $requete .= $this->obtenirDernier() . ',';
+        $requete .= $id . ',';
         $requete .= $this->_bdd->echapper($ref) . ',';
         $requete .= $this->_bdd->echapper($designation) . ',';
         $requete .= $this->_bdd->echapper($quantite) . ',';
@@ -234,6 +237,10 @@ class Facture
 
     public function modifier_details(string $id, $ref, $designation, int $quantite, float $pu, int $tva = 0)
     {
+        if (!is_numeric($id)) {
+            throw new \RuntimeException('STOP ! L\'id de la ligne `afup_compta_facture_details` est invalide (' . $id . ').');
+        }
+
         $requete = 'UPDATE ';
         $requete .= 'afup_compta_facture_details ';
         $requete .= 'SET ';
@@ -317,10 +324,6 @@ class Facture
         $requete = 'SELECT * FROM afup_compta_facture_details WHERE idafup_compta_facture=' . $this->_bdd->echapper($coordonnees['id']);
         $details = $this->_bdd->obtenirTous($requete);
 
-        $configuration = $GLOBALS['AFUP_CONF'];
-
-        $pays = new Pays($this->_bdd);
-
         $dateDevis = isset($coordonnees['date_devis']) && !empty($coordonnees['date_devis'])
             ? \DateTimeImmutable::createFromFormat('Y-m-d', (string) $coordonnees['date_devis'])
             : new \DateTimeImmutable();
@@ -329,7 +332,7 @@ class Facture
 
         $bankAccountFactory = new BankAccountFactory();
         // Construction du PDF
-        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateDevis), $isSubjectedToVat);
+        $pdf = new PDF_Facture($bankAccountFactory->createApplyableAt($dateDevis), $isSubjectedToVat);
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
@@ -344,13 +347,13 @@ class Facture
         $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(10);
         $pdf->setx(120);
-        $pdf->MultiCell(130, 5, $coordonnees['societe'] . "\n" .
-            $coordonnees['service'] . "\n" .
-            $coordonnees['adresse'] . "\n" .
-            $coordonnees['code_postal'] . " " .
-            $coordonnees['ville'] . "\n" .
-            $pays->obtenirNom($coordonnees['id_pays']) .
-            ($coordonnees['tva_intra'] ? ("\n" . 'N° TVA Intracommunautaire : ' . $coordonnees['tva_intra']) : null),
+        $pdf->MultiCell(130, 5, $coordonnees['societe'] . "\n"
+            . $coordonnees['service'] . "\n"
+            . $coordonnees['adresse'] . "\n"
+            . $coordonnees['code_postal'] . " "
+            . $coordonnees['ville'] . "\n"
+            . $this->pays->obtenirNom($coordonnees['id_pays'])
+            . ($coordonnees['tva_intra'] ? ("\n" . 'N° TVA Intracommunautaire : ' . $coordonnees['tva_intra']) : null),
         );
 
         $pdf->Ln(10);
@@ -509,11 +512,6 @@ class Facture
         $requete = 'SELECT * FROM afup_compta_facture_details WHERE idafup_compta_facture=' . $this->_bdd->echapper($coordonnees['id']);
         $details = $this->_bdd->obtenirTous($requete);
 
-
-        $configuration = $GLOBALS['AFUP_CONF'];
-
-        $pays = new Pays($this->_bdd);
-
         $dateFacture = isset($coordonnees['date_facture']) && !empty($coordonnees['date_facture'])
             ? \DateTimeImmutable::createFromFormat('Y-m-d', (string) $coordonnees['date_facture'])
             : new \DateTimeImmutable();
@@ -523,7 +521,7 @@ class Facture
         $isSubjectedToVat = Vat::isSubjectedToVat($dateFacture);
 
         // Construction du PDF
-        $pdf = new PDF_Facture($configuration, $bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
+        $pdf = new PDF_Facture($bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
         $pdf->AddPage();
 
         $pdf->Cell(130, 5);
@@ -538,13 +536,13 @@ class Facture
         $pdf->SetFont('Arial', '', 10);
         $pdf->Ln(10);
         $pdf->setx(120);
-        $pdf->MultiCell(130, 5, $coordonnees['societe'] . "\n" .
-            $coordonnees['service'] . "\n" .
-            $coordonnees['adresse'] . "\n" .
-            $coordonnees['code_postal'] . "\n" .
-            $coordonnees['ville'] . "\n" .
-            $pays->obtenirNom($coordonnees['id_pays']) .
-            ($coordonnees['tva_intra'] ? ("\n" . 'N° TVA Intracommunautaire : ' . $coordonnees['tva_intra']) : null));
+        $pdf->MultiCell(130, 5, $coordonnees['societe'] . "\n"
+            . $coordonnees['service'] . "\n"
+            . $coordonnees['adresse'] . "\n"
+            . $coordonnees['code_postal'] . "\n"
+            . $coordonnees['ville'] . "\n"
+            . $this->pays->obtenirNom($coordonnees['id_pays'])
+            . ($coordonnees['tva_intra'] ? ("\n" . 'N° TVA Intracommunautaire : ' . $coordonnees['tva_intra']) : null));
 
         $pdf->Ln(10);
         $pdf->SetFont('Arial', 'BU', 10);
@@ -672,7 +670,15 @@ class Facture
         }
 
         $pdf->Ln();
-        $pdf->Cell(10, 5, 'Payable à réception');
+        $pdf->Cell(10, 5, 'Payable à réception.');
+        if ($dateFacture >= new \DateTime('2025-01-01')) {
+            $pdf->Ln();
+            $pdf->MultiCell(190, 5, "Pénalités pour retard de paiement, 3 fois le taux d'intérêt légal sur les sommes dues.
+Indemnité forfaitaire pour frais de recouvrement de 40€.
+Pas d'escompte en cas de paiement anticipé.
+");
+        }
+
         $pdf->Ln(10);
         if ($coordonnees['observation']) {
             $pdf->Cell(10, 5, 'Observations : ');

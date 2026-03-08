@@ -1,0 +1,13 @@
+admin_accounting_rules_list:
+  path: /list
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ListRuleAction}
+
+admin_accounting_rules_add:
+  path: /add
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\AddRuleAction}
+
+admin_accounting_rules_edit:
+  path: /edit/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditRuleAction}
+  requirements:
+    id: '\d+'

@@ -1,0 +1,19 @@
+<div class="ui center aligned clearing segment">
+    {% if currentPage < nbPages %}
+        <div class="ui right floated segment">
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({page: currentPage + 1})) }}" class="ui right labeled icon button">
+            <i class="right chevron icon"></i>
+            Page suivante
+            </a>
+        </div>
+    {% endif %}
+    {{ currentPage }} / {{ nbPages }}
+    {% if currentPage > 1 %}
+        <div class="ui left floated segment">
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({page: currentPage - 1}))  }}" class="ui labeled icon button">
+            <i class="left chevron icon"></i>
+            Page précédente
+            </a>
+        </div>
+    {% endif %}
+</div>

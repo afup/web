@@ -121,7 +121,24 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
                 'plannifie' => 0,
                 'genre' => 3,
             ],
+            [
+                'session_id' => 6,
+                'id_forum' => Event::ID_PASSED,
+                'date_soumission' => '2020-05-01',
+                'titre' => 'Révolutionons PHP',
+                'abstract' => 'Hey ! Viens changer PHP avec moi !',
+                'staff_notes' => null,
+                'journee' => 0,
+                'genre' => 1,
+                'skill' => 0,
+                'plannifie' => 1,
+            ],
         ];
+
+        $sessionsByIds = [];
+        foreach ($sessions as $session) {
+            $sessionsByIds[$session['session_id']] = $session;
+        }
 
         $table = $this->table('afup_sessions');
         $table->truncate();
@@ -160,16 +177,26 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
             ])
             ->save();
 
+
+        $forcedPlannings = [
+            6 => [
+                'debut' => (new \DateTime('2020-09-15 10:00:00'))->format('U'),
+                'fin' => (new \DateTime('2020-09-15 10:40:00'))->format('U'),
+            ],
+        ];
+
+
         $i = 1;
         $plannings = [];
         foreach ($sessions as $session) {
+            $sessionId = $session['session_id'];
             $plannings[] = [
                 'id' => $i,
-                'id_session' => $session['session_id'],
-                'debut' => $dateDebut->format('U'),
-                'fin' => $date->format('U'),
+                'id_session' => $sessionId,
+                'debut' => $forcedPlannings[$sessionId]['debut'] ?? $dateDebut->format('U'),
+                'fin' => $forcedPlannings[$sessionId]['fin'] ??  $date->format('U'),
                 'id_salle' => 1,
-                'id_forum' => Event::ID_FORUM,
+                'id_forum' => $sessionsByIds[$sessionId]['id_forum'],
                 'keynote' => 0,
             ];
             ++$i;

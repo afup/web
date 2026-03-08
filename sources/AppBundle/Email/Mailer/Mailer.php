@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Email\Mailer;
 
-use Afup\Site\Utils\Configuration;
 use AppBundle\Email\Mailer\Adapter\MailerAdapter;
 use Psr\Log\LoggerInterface;
 use Twig\Environment;
@@ -14,38 +13,20 @@ use Twig\Environment;
  */
 class Mailer
 {
-    /** @var string|null */
-    private $forcedRecipient;
-    /** @var string[] */
-    private readonly array $defaultBccs;
-
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly Environment $twig,
         private readonly MailerAdapter $adapter,
-        Configuration $configuration,
-    ) {
-        $this->forcedRecipient = $configuration->obtenir('mailer_force_recipients');
-        $defaultBccs = $configuration->obtenir('mailer_bcc');
-        $this->defaultBccs = is_array($defaultBccs) ? $defaultBccs : [$defaultBccs];
-    }
+    ) {}
 
     /**
      * @return boolean true on success, false on failure
      */
-    public function send(Message $message, $addDefaultBccs = false): bool
+    public function send(Message $message): bool
     {
         try {
             if (!$message->getFrom() instanceof MailUser) {
                 $message->setFrom(MailUserFactory::afup());
-            }
-            if ($this->forcedRecipient) {
-                $message->addRecipient(new MailUser($this->forcedRecipient));
-            }
-            if ($addDefaultBccs) {
-                foreach ($this->defaultBccs as $bcc) {
-                    $message->addBcc(new MailUser($bcc));
-                }
             }
             $this->adapter->send($message);
 

@@ -1,0 +1,13 @@
+admin_accounting_events_list:
+  path: /list
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\ListEventAction}
+
+admin_accounting_events_add:
+  path: /add
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\AddEventAction}
+
+admin_accounting_events_edit:
+  path: /edit/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Configuration\EditEventAction}
+  requirements:
+    id: '\d+'

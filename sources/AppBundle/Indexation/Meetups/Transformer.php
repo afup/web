@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace AppBundle\Indexation\Meetups;
 
 use AppBundle\Antennes\Antenne;
-use AppBundle\Antennes\AntennesCollection;
+use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Event\Model\Meetup;
 
 class Transformer
 {
     public const MEETUP_URL = 'https://www.meetup.com/fr-FR/';
 
-    public function __construct(private readonly AntennesCollection $antennesCollection) {}
+    public function __construct(private readonly AntenneRepository $antennesCollection) {}
 
     /**
      * @return array
@@ -26,6 +26,9 @@ class Transformer
         $isUpcoming = new \DateTime() < $datetime;
 
         $eventUrl = $this->getEventUrl($antenne, $meetup);
+
+        $parseDown = new \Parsedown();
+
         $item = [
             'meetup_id' => $meetup->getId(),
             'label' => $meetup->getTitle(),
@@ -38,7 +41,7 @@ class Transformer
                 'label' => $antenne->label,
                 'logo_url' => $antenne->logoUrl,
             ],
-            'description' => $meetup->getDescription(),
+            'description' => $parseDown->parse($meetup->getDescription()),
             'is_upcoming' => $isUpcoming,
             'custom_sort' => $isUpcoming ? PHP_INT_MAX - $meetup->getDate()->getTimestamp() : $meetup->getDate()->getTimestamp(),
         ];

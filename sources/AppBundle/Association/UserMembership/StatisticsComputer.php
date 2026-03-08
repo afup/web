@@ -20,7 +20,7 @@ class StatisticsComputer
     {
         $statistics = new Statistics();
         /** @var User[] $users */
-        $users = $this->userRepository->getActiveMembers(UserRepository::USER_TYPE_ALL);
+        $users = $this->userRepository->getActiveMembers();
         foreach ($users as $user) {
             $statistics->usersCount++;
             if ($user->isMemberForCompany()) {

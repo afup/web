@@ -1,0 +1,102 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    {% set token_delete=csrf_token('sheet_delete') %}
+
+    <h2>Liste des feuilles</h2>
+
+    <div class="ui message">
+        <div class="header">
+            Si vous ne savez pas à quoi correspondent les feuilles : merci de ne pas les modifier
+        </div>
+        <p>Cela correspond au menu de gauche sur le site web.</p>
+    </div>
+    <div class="ui menu">
+        <a href="{{ path('admin_site_sheets_add') }}" class="item">
+            <div data-tooltip="Ajouter une feuille" data-position="bottom left">
+                <i class="icon plus square"></i>
+                Ajouter
+            </div>
+        </a>
+    </div>
+
+    <table class="ui table striped compact celled w-100">
+        <thead>
+            <tr>
+                <th>
+                    <a href="{{ url('admin_site_rubriques_list', {'sort': 'date', 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
+                        Date
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ path('admin_site_rubriques_list', {'sort': 'nom', 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
+                        Nom
+                    </a>
+                </th>
+                <th class="center aligned">
+                    <a href="{{ path('admin_site_rubriques_list', {'sort': 'etat' , 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
+                        Etat
+                    </a>
+                </th>
+                <th class="right aligned">
+                    <a href="{{ path('admin_site_rubriques_list', {'sort': 'position' , 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
+                        Position
+                    </a>
+                </th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+        {% if sheets|length > 0 %}
+            {% for sheet in sheets %}
+            <tr>
+                <td>{% if sheet.date != null %}{{ sheet.date|date('d-m-Y') }}{% endif %}</td>
+                <td style="white-space : normal;">
+                    {{ sheet.nom }}
+                    {% if sheet.image is not empty %}
+                        <br/><img src="../../templates/site/images/{{ sheet.image }}" alt="{{ sheet.image_alt|default('') }}" width="125" />
+                    {% endif %}
+                </td>
+                <td class="center aligned">
+                    {% if sheet.etat == 1 %}
+                        <a class="ui orange label">En ligne</a>
+                    {% elseif sheet.etat == -1 %}
+                        <a class="ui grey label">Hors ligne</a>
+                    {% else %}
+                        <a class="ui violet label">En attente</a>
+                    {% endif %}
+                </td>
+                <td class="right aligned" >{{ sheet.position }}</td>
+                <td class="single line right aligned">
+                    <a id="modifier_{{ sheet.id }}"
+                        href="{{ path('admin_site_sheets_edit', {'id': sheet.id }) }}"
+                        data-position="left center"
+                        data-tooltip="Modifier la feuille {{ sheet.nom }}"
+                        class="compact ui icon button"
+                    >
+                        <i class="pencil alernate icon"></i>
+                    </a>
+
+                    <a id="supprimer_{{ sheet.id }}"
+                    href="{{path('admin_site_sheets_delete', {'id': sheet.id, 'token': token_delete }) }}"
+                    data-position="left center"
+                    data-tooltip="Supprimer la feuille {{ sheet.nom }}"
+                    class="compact ui red icon button confirmable"
+                    data-confirmable-label="Etes-vous sûr de vouloir supprimer la feuille {{ sheet.nom }} ?"
+                    >
+                        <i class="trash icon"></i>
+                    </a>
+                </td>
+             <tr>
+            {% endfor %}
+
+        {% else %}
+            <tr>
+                <td colspan="4"><em>Aucune feuille</em></td>
+            </tr>
+        {% endif %}
+        </tbody>
+
+    </table>
+{% endblock %}

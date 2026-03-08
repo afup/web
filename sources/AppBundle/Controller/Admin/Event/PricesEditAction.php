@@ -21,7 +21,7 @@ class PricesEditAction extends AbstractController
         private readonly EventSelectFactory $eventSelectFactory,
     ) {}
 
-    public function __invoke(Request $request, $event, $id)
+    public function __invoke(Request $request, int $event, int $id)
     {
         $event = $this->eventActionHelper->getEventById($event);
         $ticketType = $this->ticketTypeRepository->get($id);

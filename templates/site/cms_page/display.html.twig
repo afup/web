@@ -1,6 +1,6 @@
 {% extends 'site/base.html.twig' %}
 
-{% block title %}{{ article.titre }} - AFUP{% endblock %}
+{% block title %}{{ article.title }} - AFUP{% endblock %}
 
 {% block header %}
     {{ parent() }}
@@ -10,17 +10,17 @@
 {% block content %}
 {{ render(controller(
     'AppBundle\\Controller\\Website\\SecondaryMenuController::display',
-    { 'feuille_id': rubrique.feuille_associee }
+    { 'feuille_id': rubrique.feuilleAssociee }
 )) }}
 <div class="mw1400p center" id="container">
     <div class="line" id="main">
         <h1>{{ rubrique.nom }}</h1>
-        <h2>{{ article.titre }}</h2>
+        <h2>{{ article.title }}</h2>
 
-        {% if article.type_contenu == constant('\\Afup\\Site\\Corporate\\Article::TYPE_CONTENU_MARKDOWN') %}
-            {{ article.contenu|markdown|raw }}
+        {% if article.contentTypeMarkdown %}
+            {{ article.content|markdown|raw }}
         {% else %}
-            {{ article.contenu|raw }}
+            {{ article.content|raw }}
         {% endif %}
     </div>
 </div>

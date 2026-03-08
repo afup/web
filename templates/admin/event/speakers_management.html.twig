@@ -17,6 +17,7 @@
                 <th data-tf-filter-type="select" class="center aligned">Nuit d'hotel entre les deux jours ?</th>
                 <th data-tf-filter-type="select" class="center aligned">Nuit d'hotel après l'évènement ?</th>
                 <th data-tf-filter-type="select" class="center aligned">Pas de nuit d'hotel ?</th>
+                <th data-tf-filter-type="select" class="center aligned">Sponsors ?</th>
                 <th data-tf-filter-type="select" class="center aligned">Justificatifs envoyés ?</th>
                 <th></th>
             </tr>
@@ -76,7 +77,7 @@
                     {% endif %}
                 </td>
                 <td class="center aligned">
-                    <span {% if speaker.speaker.hasHotelNightBefore is null %}class="ui red label" {% endif %}>
+                    <span class="ui {% if speaker.speaker.hasHotelNightBefore is null %}red{% endif %} label">
                     {% if speaker.speaker.hasHotelNightBefore is null %}
                         N/A
                     {% elseif speaker.speaker.hasHotelNightBefore %}
@@ -118,6 +119,20 @@
                         non
                     {% endif %}
                     </span>
+                </td>
+                <td  class="center aligned">
+                    {% if not speaker.speaker.travelRefundSponsored and not speaker.speaker.hasHostingSponsor %}
+                        <span class="ui label">non</span>
+                    {% else %}
+                        <div class="vertical-labels">
+                            {% if speaker.speaker.travelRefundSponsored %}
+                                <span class="ui label">travel</span>
+                            {% endif %}
+                            {% if speaker.speaker.hasHostingSponsor %}
+                                <span class="ui label">hosting</span>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 </td>
                 <td  class="center aligned">
                     <span class="ui label">

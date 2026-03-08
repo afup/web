@@ -6,7 +6,7 @@ namespace Afup\Site\Tests\Association;
 
 use Afup\Site\Association\Cotisations;
 use Afup\Site\Utils\Base_De_Donnees;
-use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Association\MemberType;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -51,11 +51,11 @@ final class CotisationsTest extends TestCase
         return [
             'Personne Morale' => [
                 'FCOTIS-2023-202',
-                ['type' => UserRepository::USER_TYPE_COMPANY, 'id' => '202'],
+                ['type' => MemberType::MemberCompany->value, 'id' => '202'],
             ],
             'Personne physique' => [
                 'C2023-211120232237-0-5-PAUL-431',
-                ['type' => UserRepository::USER_TYPE_PHYSICAL, 'id' => '5'],
+                ['type' => MemberType::MemberPhysical->value, 'id' => '5'],
             ],
         ];
     }

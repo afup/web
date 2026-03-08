@@ -4,73 +4,21 @@ declare(strict_types=1);
 
 namespace Afup\Site\Corporate;
 
-use Afup\Site\Utils\Configuration;
+use AppBundle\Site\Model\Repository\SheetRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class Page
+final readonly class Page
 {
-    public $route = "";
-    public $content;
-    public $title;
-
-
-    /**
-     * @var Configuration
-     */
-    public $conf;
-
-    /**
-     * @var _Site_Base_De_Donnees
-     */
-    private $bdd;
-
-    public function __construct($bdd = false)
-    {
-        $this->bdd = $bdd ?: new _Site_Base_De_Donnees();
-        $this->conf = $GLOBALS['AFUP_CONF'];
-    }
-
-    public function definirRoute($route): void
-    {
-        $this->route = $route;
-        switch (true) {
-            case preg_match("%\s*/[0-9]*/\s*%", (string) $this->route):
-                [, $id, ] = explode("/", (string) $this->route);
-                $article = new Article($id, $this->bdd);
-                $article->charger();
-                $this->title = $article->titre;
-                $this->content = $article->afficher();
-                break;
-
-            case preg_match("%s*/[0-9]*%", (string) $this->route):
-                [, $id] = explode("/", (string) $this->route);
-                $rubrique = new Rubrique($id, $this->bdd);
-                $rubrique->charger();
-                $this->title = $rubrique->nom;
-                $this->content = $rubrique->afficher();
-                break;
-
-            default:
-                $accueil = new Accueil($this->bdd);
-                $accueil->charger();
-                $this->title = "promouvoir le PHP aupr&egrave;s des professionnels";
-                $this->content = $accueil->afficher();
-        }
-    }
-
-    public function community(): string
-    {
-        $branche = new Branche($this->bdd);
-        return $branche->naviguer(5, 2);
-    }
+    public function __construct(
+        private SheetRepository $sheetRepository,
+    ) {}
 
     public function header($url = null, UserInterface $user = null): string
     {
-        $branche = new Branche($this->bdd);
         $url = urldecode((string) $url);
         $str = '<ul>';
 
-        $feuillesEnfants = $branche->feuillesEnfants(Feuille::ID_FEUILLE_HEADER);
+        $feuillesEnfants = iterator_to_array($this->sheetRepository->getActiveChildrenByParentId(Feuille::ID_FEUILLE_HEADER));
 
         if ($user instanceof UserInterface) {
             $feuillesEnfants[] = [
@@ -121,9 +69,9 @@ class Page
             }
 
             if (false === $isCurrent) {
-                $enfants = $branche->feuillesEnfants($feuille['id']);
+                $enfants = $this->sheetRepository->getActiveChildrenByParentId($feuille['id']);
                 foreach ($enfants as $feuilleEnfant) {
-                    foreach ($branche->feuillesEnfants($feuilleEnfant['id']) as $feuillesEnfant2) {
+                    foreach ($this->sheetRepository->getActiveChildrenByParentId($feuilleEnfant['id']) as $feuillesEnfant2) {
                         if (str_contains($url, (string) $feuillesEnfant2['lien'])) {
                             $isCurrent = true;
                         }
@@ -143,50 +91,19 @@ class Page
         return $str . '<ul>';
     }
 
-    public function content()
-    {
-        return $this->content;
-    }
-
-    public function social(): string
-    {
-        return
-            '<ul id="menufooter-share">
-                <li>
-                    <a href="' . Site::WEB_PATH . Site::WEB_PREFIX . Site::WEB_QUERY_PREFIX . 'faq/53/comment-contacter-l-afup" class="spriteshare spriteshare-mail">Nous contacter</a>
-                </li>
-                <li>
-                    <a href="http://www.facebook.com/fandelafup" class="spriteshare spriteshare-facebook">L\'AFUP sur Facebook</a>
-                </li>
-                <li>
-                    <a href="https://twitter.com/afup" class="spriteshare spriteshare-twitter">L\'AFUP sur Twitter</a>
-                </li>
-            </ul>
-                ';
-    }
-
     /**
      * @return array{nom: mixed, items: mixed}[]
      */
     public function footer(): array
     {
-        $branche = new Branche($this->bdd);
-
         $footerColumns = [];
-        foreach ($branche->feuillesEnfants(Feuille::ID_FEUILLE_FOOTER) as $feuilleColonne) {
+        foreach ($this->sheetRepository->getActiveChildrenByParentId(Feuille::ID_FEUILLE_FOOTER) as $feuilleColonne) {
             $footerColumns[] = [
-                'nom' => $branche->getNom($feuilleColonne['id']),
-                'items' => $branche->feuillesEnfants($feuilleColonne['id']),
+                'nom' => $feuilleColonne['nom'],
+                'items' => $this->sheetRepository->getActiveChildrenByParentId($feuilleColonne['id']),
             ];
         }
 
         return $footerColumns;
-    }
-
-    public function getRightColumn(): Branche
-    {
-        $branche = new Branche($this->bdd);
-        $branche->navigation_avec_image(true);
-        return $branche;
     }
 }

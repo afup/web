@@ -59,11 +59,9 @@ class TechnoWatchCalendarGenerator
 
             $date = \DateTimeImmutable::createFromFormat('d/m/Y', trim((string) $row[0]));
 
-            if (false == $date) {
+            if (false === $date) {
                 continue;
             }
-
-            $date->setTime(0, 0, 0);
 
             if ($date < $this->currentDate) {
                 continue;

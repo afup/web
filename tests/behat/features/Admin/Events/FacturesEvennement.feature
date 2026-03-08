@@ -7,7 +7,7 @@ Feature: Administration - Évènements - Factures d'évènement
     Then the ".content h2" element should contain "Factures d'évènement"
     And the ".content table" element should contain "REF-TEST-001"
     When I follow "devis_REF-TEST-001"
-    Then the response header "Content-disposition" should match '#attachment; filename="Devis - Michu Bernadette - (.*).pdf"#'
+    Then the response header "Content-disposition" should match '#attachment; filename="Devis - Helios Aerospace - (.*).pdf"#'
 
   @reloadDbWithTestData
   @vat
@@ -25,12 +25,13 @@ Feature: Administration - Évènements - Factures d'évènement
     Then The page "1" of the PDF should contain "2 Jours Maurice Jean 250 €"
     Then The page "1" of the PDF should not contain "Total HT"
     Then The page "1" of the PDF should not contain "Total TVA"
-    Then The page "1" of the PDF should contain "TOTAL 250 €"
+    Then The page "1" of the PDF should contain "FRAIS Paiement par chèque 25 €"
+    Then The page "1" of the PDF should contain "TOTAL 275 €"
     Then The page "1" of the PDF should not contain "Total TTC"
-    Then The page "1" of the PDF should contain "Payé par CB le 25/06/2023"
+    Then The page "1" of the PDF should contain "Payé par chèque le 25/06/2023"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
     Then The page "1" of the PDF should not contain "TOTAL TTC 250 €"
-    Then the checksum of the response content should be "7ee7e977465db7d540cbd4b4d1e31061"
+    Then the checksum of the response content should be "c0469956c7972c51a16f9a03604bfd13"
 
   @reloadDbWithTestData
   @vat
@@ -49,10 +50,10 @@ Feature: Administration - Évènements - Factures d'évènement
     Then The page "1" of the PDF should contain "Total HT 227,27 €"
     Then The page "1" of the PDF should contain "Total TVA 10% 22,73 €"
     Then The page "1" of the PDF should contain "TOTAL TTC 250,00 €"
-    Then The page "1" of the PDF should contain "Payé par CB le 02/01/2024"
+    Then The page "1" of the PDF should contain "Payé par virement le 02/01/2024"
     Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
     Then The page "1" of the PDF should contain "Numéro de TVA intracommunautaire FR27 500 869 011"
-    Then the checksum of the response content should be "50c90902d9702d79a93550fa8b93f3fd"
+    Then the checksum of the response content should be "5689b814512a03e2b420272a3fb0711a"
 
   @reloadDbWithTestData
   @clearEmails
@@ -74,7 +75,7 @@ Feature: Administration - Évènements - Factures d'évènement
     And I follow "Factures d'évènement"
     When I follow "facture_REF-TEST-001"
     And I follow "telecharger_REF-TEST-001"
-    Then the response header "Content-disposition" should match '#attachment; filename="Facture - Michu Bernadette - (.*).pdf"#'
+    Then the response header "Content-disposition" should match '#attachment; filename="Facture - Helios Aerospace - (.*).pdf"#'
 
   @reloadDbWithTestData
   Scenario: On peut supprimer la facture

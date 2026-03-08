@@ -27,7 +27,7 @@ $smarty->assign('action', $action);
 
 
 $forum = new Forum($bdd);
-$forum_facturation = new Facturation($bdd);
+$forum_facturation = new Facturation($bdd, $this->pays);
 
 if ($action == 'lister') {
     // Valeurs par défaut des paramètres de tri

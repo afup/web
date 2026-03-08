@@ -62,7 +62,7 @@ jobs:
           composer-options: "--no-scripts"
 
       - name: PHPStan
-        run: make phpstan
+        run: php ./bin/phpstan
 
   functional:
     name: "Functional tests"
@@ -139,4 +139,4 @@ jobs:
           composer-options: "--no-scripts"
 
       - name: Rector
-        run: make rector
+        run: php ./bin/rector

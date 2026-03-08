@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model\Repository;
 
+use AppBundle\Event\Model\TalkAggregateVote;
+use CCMBenchmark\Ting\Repository\Hydrator\AggregateFrom;
+use CCMBenchmark\Ting\Repository\Hydrator\AggregateTo;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\GithubUser;
-use AppBundle\Event\Model\JoinHydrator;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\TalkAggregate;
+use AppBundle\Ting\JoinHydrator;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
+use CCMBenchmark\Ting\Repository\Hydrator\RelationMany;
 use CCMBenchmark\Ting\Repository\HydratorArray;
+use CCMBenchmark\Ting\Repository\HydratorRelational;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -26,15 +31,19 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
  */
 class TalkRepository extends Repository implements MetadataInitializer
 {
-    public function getNumberOfTalksByEvent(Event $event, \DateTime $since = null)
+    public function getNumberOfTalksByEvent(Event|int $event, \DateTime $since = null)
     {
         return $this->getNumberOfTalksByEventAndLanguage($event, null, $since);
     }
 
-    public function getNumberOfTalksByEventAndLanguage(Event $event, $languageCode = null, \DateTime $since = null)
+    public function getNumberOfTalksByEventAndLanguage(Event|int $event, $languageCode = null, \DateTime $since = null)
     {
+        if ($event instanceof Event) {
+            $event = $event->getId();
+        }
+
         $sql = 'SELECT COUNT(session_id) AS talks FROM afup_sessions WHERE id_forum = :event';
-        $params = ['event' => $event->getId()];
+        $params = ['event' => $event];
         if ($since instanceof \DateTime) {
             $sql .= ' AND date_soumission >= :since ';
             $params['since'] = $since->format('Y-m-d');
@@ -65,6 +74,36 @@ class TalkRepository extends Repository implements MetadataInitializer
         )->setParams(['event' => $event->getId(), 'speaker' => $speaker->getId()]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
+     * @return CollectionInterface&iterable<Talk>
+     */
+    public function getTalksBySpeakerWithVotes(Event $event, Speaker $speaker)
+    {
+        $query = $this->getPreparedQuery(
+            'SELECT sessions.session_id, titre, abstract, id_forum, sessions.plannifie, skill, genre, votes.*
+            FROM afup_sessions sessions
+            LEFT JOIN afup_conferenciers_sessions cs ON cs.session_id = sessions.session_id
+            LEFT JOIN afup_sessions_vote_github votes ON votes.session_id = sessions.session_id
+            LEFT JOIN afup_user_github aug ON aug.id = votes.user
+            INNER JOIN (
+                SELECT afup_conferenciers_sessions.session_id
+                FROM afup_conferenciers_sessions
+                INNER JOIN afup_sessions ON afup_conferenciers_sessions.session_id = afup_sessions.session_id
+                WHERE afup_sessions.id_forum = :event
+                AND afup_conferenciers_sessions.conferencier_id = :speaker
+                LIMIT 0, 20
+            ) as s2 ON s2.session_id = sessions.session_id
+            WHERE cs.conferencier_id = :speaker
+            ORDER BY titre
+        ',
+        )->setParams(['event' => $event->getId(), 'speaker' => $speaker->getId()]);
+        $hydrator = new HydratorRelational();
+        $hydrator->addRelation(new RelationMany(new AggregateFrom('github_user'), new AggregateTo('votes'), 'setGithubUser'));
+        $hydrator->addRelation(new RelationMany(new AggregateFrom('votes'), new AggregateTo('sessions'), 'setVotes'));
+        $hydrator->callableFinalizeAggregate(fn(array $row) => $row['sessions']);
+        return $query->query($this->getCollection($hydrator));
     }
 
     /**
@@ -235,14 +274,14 @@ class TalkRepository extends Repository implements MetadataInitializer
             sprintf('SELECT talk.id_forum, talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code,
             talk.joindin,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe,
-            planning.debut, planning.fin, room.id, room.nom
+            planning.id, planning.debut, planning.fin, room.id, room.nom
             FROM afup_sessions AS talk
             LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
             LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
             LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
             WHERE talk.id_forum IN(%s) AND plannifie = 1 %s
-            ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC ', $inEvents, $publicationdateFilters),
+            ORDER BY planning.debut ASC, room.id ASC, talk.date_publication DESC, talk.session_id ASC ', $inEvents, $publicationdateFilters),
         )->setParams($params);
 
         $result = $query->query($this->getCollection($hydrator));
@@ -260,6 +299,67 @@ class TalkRepository extends Repository implements MetadataInitializer
         return $aggregates;
     }
 
+    /**
+     * @return array<TalkAggregate>
+     * @throws QueryException
+     */
+    public function getByEventWithSpeakersAndVotes(Event $event, string $search = '', string $orderBy = 'talk.date_soumission ASC', bool $planned = false, bool $needMentoring = false): array
+    {
+        $sql = <<<SQL
+            SELECT talk.id_forum, talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code,
+            talk.joindin, talk.youtube_id, talk.slides_url, talk.interview_url, talk.blog_post_url, talk.needs_mentoring,
+            talk.date_soumission,
+            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe,
+            planning.id, planning.debut, planning.fin, room.id, room.nom,
+            (SELECT AVG(vote) FROM afup_sessions_vote_github asvg WHERE asvg.session_id = talk.session_id) AS vote_note,
+            (SELECT COUNT(vote) FROM afup_sessions_vote_github asvg WHERE asvg.session_id = talk.session_id) AS vote_total
+            FROM afup_sessions AS talk
+            LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
+            LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
+            LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
+            LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
+            WHERE talk.id_forum = :id %s
+            ORDER BY %s 
+SQL;
+
+        $params = [
+            'id' => $event->getId(),
+        ];
+
+        $where = '';
+        if ($search) {
+            $where .= ' AND talk.titre LIKE :search';
+            $params["search"] = "%{$search}%";
+        }
+        if ($planned) {
+            $where .= ' AND talk.plannifie = 1 AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)';
+        }
+        if ($needMentoring) {
+            $where .= ' AND talk.needs_mentoring = 1';
+        }
+
+
+        $query = $this
+            ->getPreparedQuery(sprintf($sql, $where, $orderBy))
+            ->setParams($params);
+
+        $hydrator = new JoinHydrator();
+        $hydrator->aggregateOn('talk', 'speaker', 'getId');
+        $result = $query->query($this->getCollection($hydrator));
+
+        $aggregates = [];
+        foreach ($result as $row) {
+            $aggregates[] = new TalkAggregate(
+                $row['talk'],
+                $row['.aggregation']['speaker'],
+                $row['room'] ?? null,
+                $row['planning'] ?? null,
+                $row[0]->vote_note ? new TalkAggregateVote($row[0]->vote_note, $row[0]->vote_total) : null,
+            );
+        }
+
+        return $aggregates;
+    }
 
     /**
      * @return CollectionInterface
@@ -342,7 +442,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'session_id',
                 'fieldName' => 'id',
-                'primary'       => true,
+                'primary' => true,
                 'autoincrement' => true,
                 'type' => 'int',
             ])
@@ -354,6 +454,14 @@ class TalkRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'date_soumission',
                 'fieldName' => 'submittedOn',
+                'type' => 'datetime',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => false],
+                ],
+            ])
+            ->addField([
+                'columnName' => 'date_publication',
+                'fieldName' => 'publishedOn',
                 'type' => 'datetime',
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => false],

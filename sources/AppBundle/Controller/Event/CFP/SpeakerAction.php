@@ -9,7 +9,6 @@ use AppBundle\CFP\SpeakerFactory;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\SpeakerType;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
-use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,13 +30,14 @@ class SpeakerAction extends AbstractController
     public function __invoke(Request $request): Response
     {
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
-        if ($event->getDateEndCallForPapers() < new DateTime()) {
+
+        if (!$event->isCfpOpen()) {
             return $this->render('event/cfp/closed.html.twig', [
                 'event' => $event,
             ]);
         }
-        $speaker = $this->speakerFactory->getSpeaker($event);
 
+        $speaker = $this->speakerFactory->getSpeaker($event);
         $form = $this->createForm(SpeakerType::class, $speaker, [
             SpeakerType::OPT_PHOTO_REQUIRED => null === $speaker->getPhoto(),
         ]);

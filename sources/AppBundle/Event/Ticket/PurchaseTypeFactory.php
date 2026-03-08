@@ -23,14 +23,13 @@ class PurchaseTypeFactory
         private readonly SpeakerRepository $speakerRepository,
     ) {}
 
-    public function getPurchaseForUser(Event $event, User $user = null, $specialPriceToken = null)
+    public function getPurchaseForUser(Event $event, ?User $user = null, $specialPriceToken = null)
     {
         $memberType = TicketType::MEMBER_NOT;
 
         if (
             $this->securityChecker->isGranted('ROLE_USER', $user)
-            &&
-            $user->hasRole('ROLE_MEMBER_EXPIRED') === false
+            && $user->hasRole('ROLE_MEMBER_EXPIRED') === false
         ) {
             if ($user->getCompanyId() > 0) {
                 $memberType = TicketType::MEMBER_CORPORATE;

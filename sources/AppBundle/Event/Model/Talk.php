@@ -36,7 +36,8 @@ class Talk implements NotifyPropertyInterface
     #[Assert\GreaterThan(0)]
     private ?int $forumId = null;
 
-    private ?\DateTime $submittedOn = null;
+    private \DateTime $submittedOn;
+    private ?\DateTime $publishedOn = null;
 
     #[Assert\NotBlank]
     private string $title = '';
@@ -91,6 +92,17 @@ class Talk implements NotifyPropertyInterface
     #[Assert\NotNull]
     private bool $hasAllowedToSharingWithLocalOffices = false;
 
+    /**
+     * @var Vote[]
+     */
+    private array $votes = [];
+
+    public function __construct()
+    {
+        $this->submittedOn = new \DateTime();
+        $this->languageCode = self::LANGUAGE_CODE_FR;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -124,6 +136,18 @@ class Talk implements NotifyPropertyInterface
     {
         $this->propertyChanged('submittedOn', $this->submittedOn, $submittedOn);
         $this->submittedOn = $submittedOn;
+        return $this;
+    }
+
+    public function getPublishedOn(): ?\DateTime
+    {
+        return $this->publishedOn;
+    }
+
+    public function setPublishedOn(?\DateTime $publishedOn): self
+    {
+        $this->propertyChanged('publishedOn', $this->publishedOn, $publishedOn);
+        $this->publishedOn = $publishedOn;
         return $this;
     }
 
@@ -339,11 +363,18 @@ class Talk implements NotifyPropertyInterface
 
     public function getOpenfeedbackPath(): ?string
     {
-        return $this->openfeedbackPath;
+        $openfeedbackPath = (string) $this->openfeedbackPath;
+
+        if (0 === strlen(trim($openfeedbackPath))) {
+            return null;
+        }
+
+        return $openfeedbackPath;
     }
 
     public function setOpenfeedbackPath(?string $openfeedbackPath): self
     {
+        $this->propertyChanged('openfeedbackPath', $this->openfeedbackPath, $openfeedbackPath);
         $this->openfeedbackPath = $openfeedbackPath;
 
         return $this;
@@ -365,7 +396,13 @@ class Talk implements NotifyPropertyInterface
 
     public function getBlogPostUrl(): ?string
     {
-        return $this->blogPostUrl;
+        $blogPostUrl = (string) $this->blogPostUrl;
+
+        if (0 === strlen(trim($blogPostUrl))) {
+            return null;
+        }
+
+        return $blogPostUrl;
     }
 
     public function setBlogPostUrl(?string $blogPostUrl): self
@@ -527,6 +564,7 @@ class Talk implements NotifyPropertyInterface
 
     public function setTweets(?string $tweets): self
     {
+        $this->propertyChanged('tweets', $this->tweets, $tweets);
         $this->tweets = $tweets;
 
         return $this;
@@ -587,6 +625,17 @@ class Talk implements NotifyPropertyInterface
         $this->propertyChanged('hasAllowedToSharingWithLocalOffices', $this->hasAllowedToSharingWithLocalOffices, $hasAllowedToSharingWithLocalOffices);
         $this->hasAllowedToSharingWithLocalOffices = $hasAllowedToSharingWithLocalOffices;
 
+        return $this;
+    }
+
+    public function getVotes(): array
+    {
+        return $this->votes;
+    }
+
+    public function setVotes(array $votes): self
+    {
+        $this->votes = $votes;
         return $this;
     }
 }

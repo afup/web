@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\JoinHydrator;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
-use Assert\Assertion;
+use AppBundle\Ting\JoinHydrator;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
@@ -16,6 +15,7 @@ use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @extends Repository<Speaker>
@@ -28,7 +28,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
     public function getSpeakersByTalk(Talk $talk)
     {
         $query = $this->getPreparedQuery('SELECT c.conferencier_id, c.id_forum, c.civilite, c.nom, c.prenom, c.email,c.societe,
-        c.biographie, c.twitter, c.user_github, c.photo, c.bluesky, c.mastodon
+        c.biographie, c.twitter, c.user_github, c.photo, c.bluesky, c.mastodon, c.linkedin
         FROM afup_conferenciers c
         LEFT JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = c.conferencier_id
         WHERE cs.session_id = :talkId
@@ -42,7 +42,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
      * @param bool $returnTalksThatWillBePublished
      * @return CollectionInterface
      */
-    public function getScheduledSpeakersByEvent(Event $event, $returnTalksThatWillBePublished = false)
+    public function getScheduledSpeakersByEvent(Event $event, $returnTalksThatWillBePublished = false): CollectionInterface
     {
         $hydrator = new JoinHydrator();
         $hydrator->aggregateOn('speaker', 'talk', 'getId');
@@ -60,7 +60,10 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         speaker.referent_person_email,
         speaker.special_diet_description,
         speaker.hotel_nights,
-        speaker.phone_number
+        speaker.phone_number,
+        speaker.has_hosting_sponsor,
+        speaker.travel_refund_needed,
+        speaker.travel_refund_sponsored
         FROM afup_conferenciers speaker
         INNER JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = speaker.conferencier_id
         INNER JOIN afup_sessions talk ON talk.session_id = cs.session_id
@@ -143,8 +146,8 @@ class SpeakerRepository extends Repository implements MetadataInitializer
             'name' => 'c.nom',
             'company' => 'c.societe',
         ];
-        Assertion::keyExists($sorts, $sort);
-        Assertion::inArray($direction, ['asc', 'desc']);
+        Assert::keyExists($sorts, $sort);
+        Assert::inArray($direction, ['asc', 'desc']);
         $params = ['eventId' => $event->getId()];
         $filterCondition = '';
         if ($filter) {
@@ -248,6 +251,11 @@ SQL
                 'type' => 'string',
             ])
             ->addField([
+                'columnName' => 'linkedin',
+                'fieldName' => 'linkedin',
+                'type' => 'string',
+            ])
+            ->addField([
                 'columnName' => 'bluesky',
                 'fieldName' => 'bluesky',
                 'type' => 'string',
@@ -293,6 +301,24 @@ SQL
                 'columnName' => 'referent_person_email',
                 'fieldName' => 'referentPersonEmail',
                 'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'has_hosting_sponsor',
+                'fieldName' => 'hasHostingSponsor',
+                'type' => 'bool',
+                'serializer' => Boolean::class,
+            ])
+            ->addField([
+                'columnName' => 'travel_refund_needed',
+                'fieldName' => 'travelRefundNeeded',
+                'type' => 'bool',
+                'serializer' => Boolean::class,
+            ])
+            ->addField([
+                'columnName' => 'travel_refund_sponsored',
+                'fieldName' => 'travelRefundSponsored',
+                'type' => 'bool',
+                'serializer' => Boolean::class,
             ])
         ;
 

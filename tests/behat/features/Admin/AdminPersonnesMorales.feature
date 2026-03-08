@@ -41,3 +41,15 @@ Feature: Administration - Partie Personnes morales
     When I follow the button of tooltip "Supprimer la fiche de My Corp modifié"
     Then I should see "La personne morale a été supprimée"
 
+  Scenario: Accès au personnes physique associé même si'ils sont inactif
+    Given I am logged in as admin and on the Administration
+    And I follow "Personnes morales"
+    Then the ".content h2" element should contain "Liste des personnes morales"
+    When I follow the button of tooltip "Modifier la fiche de Helios Aerospace"
+    Then the ".content h2" element should contain "Modifier une personne morale"
+    And the "div.content > div.ui.segment > h2" element should contain "Personnes physiques associées"
+    And I should see "Ayesa Dev"
+    And I should see "inactif"
+
+
+

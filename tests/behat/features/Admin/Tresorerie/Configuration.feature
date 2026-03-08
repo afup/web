@@ -1,5 +1,18 @@
 Feature: Administration - Trésorerie - Configuration
 
+  Scenario: Un membre ne peut pas accéder aux page de trésorie
+    Given I am logged-in with the user "paul" and the password "paul"
+    And I am on "/admin/accounting/configuration/events/list"
+    Then the response status code should be 403
+    And I am on "/admin/accounting/configuration/categories/list"
+    Then the response status code should be 403
+    And I am on "/admin/accounting/configuration/accounts/list"
+    Then the response status code should be 403
+    And I am on "/admin/accounting/configuration/payments/list"
+    Then the response status code should be 403
+    And I am on "/admin/accounting/configuration/rules/list"
+    Then the response status code should be 403
+
   @reloadDbWithTestData
   Scenario: Création/liste des évènements
     Given I am logged in as admin and on the Administration
@@ -7,10 +20,10 @@ Feature: Administration - Trésorerie - Configuration
     Then the ".content h2" element should contain "Configuration"
     When I follow "Évènements"
     When I follow "Ajouter"
-    Then the ".content h2" element should contain "Ajouter une ligne configuration 'Evenement'"
-    When I fill in "evenement" with "Un super évènement"
-    And I press "soumettre"
-    Then the ".content .message" element should contain "L'écriture a été ajoutée"
+    Then the ".content h2" element should contain "Ajouter un évènement"
+    When I fill in "event[name]" with "Un super évènement"
+    And I press "Ajouter"
+    Then the ".content .message" element should contain "L'évènement a été ajouté"
     And I should see "Un super évènement"
 
   @reloadDbWithTestData
@@ -20,10 +33,10 @@ Feature: Administration - Trésorerie - Configuration
     Then the ".content h2" element should contain "Configuration"
     When I follow "Catégories"
     When I follow "Ajouter"
-    Then the ".content h2" element should contain "Ajouter une categorie"
-    When I fill in "categorie" with "Une super catégorie"
-    And I press "soumettre"
-    Then the ".content .message" element should contain "L'écriture a été ajoutée"
+    Then the ".content h2" element should contain "Ajouter une catégorie"
+    When I fill in "category[name]" with "Une super catégorie"
+    And I press "Ajouter"
+    Then the ".content .message" element should contain "La catégorie a été ajoutée"
     And I should see "Une super catégorie"
 
   @reloadDbWithTestData
@@ -34,22 +47,22 @@ Feature: Administration - Trésorerie - Configuration
     When I follow "Opérations"
     When I follow "Ajouter"
     Then the ".content h2" element should contain "Ajouter une opération"
-    When I fill in "operation" with "Une super opération"
-    And I press "soumettre"
-    Then the ".content .message" element should contain "L'écriture a été ajoutée"
+    When I fill in "operation[name]" with "Une super opération"
+    And I press "Ajouter"
+    Then the ".content .message" element should contain "L'opération a été ajoutée"
     And I should see "Une super opération"
 
   @reloadDbWithTestData
-  Scenario: Création/liste des opérations
+  Scenario: Création/liste des types de règlements
     Given I am logged in as admin and on the Administration
     When I follow "Configuration"
     Then the ".content h2" element should contain "Configuration"
     When I follow "Modes de réglements"
     When I follow "Ajouter"
-    Then the ".content h2" element should contain "Ajouter un type de reglement"
-    When I fill in "reglement" with "Un super règlement"
-    And I press "soumettre"
-    Then the ".content .message" element should contain "L'écriture a été ajoutée"
+    Then the ".content h2" element should contain "Ajouter un type de règlement"
+    When I fill in "payment[name]" with "Un super règlement"
+    And I press "Ajouter"
+    Then the ".content .message" element should contain "Le type de règlement a été ajouté"
     And I should see "Un super règlement"
 
   @reloadDbWithTestData
@@ -60,10 +73,20 @@ Feature: Administration - Trésorerie - Configuration
     When I follow "Comptes"
     When I follow "Ajouter"
     Then the ".content h2" element should contain "Ajouter un compte"
-    When I fill in "nom_compte" with "Un super compte"
-    And I press "soumettre"
-    Then the ".content .message" element should contain "L'écriture a été ajoutée"
+    When I fill in "account[name]" with "Un super compte"
+    And I press "Ajouter"
+    Then the ".content .message" element should contain "Le compte Un super compte a été créé"
     And I should see "Un super compte"
+
+  Scenario: Archivage d'un compte
+    Given I am logged in as admin and on the Administration
+    When I follow "Configuration"
+    Then the ".content h2" element should contain "Configuration"
+    When I follow "Comptes"
+    And I follow the button of tooltip "Modifier la ligne Un super compte"
+    Then the "account[name]" field should contain "Un super compte"
+    When I follow "Archiver ce compte"
+    Then I should see "Ce compte est archivé"
 
   @reloadDbWithTestData
   Scenario: Création/liste des règles
@@ -73,29 +96,29 @@ Feature: Administration - Trésorerie - Configuration
     When I follow "Règles"
     When I follow "Ajouter"
     Then the ".content h2" element should contain "Ajouter une règle"
-    When I fill in "label" with "Une nouvelle règle"
-    When I fill in "condition" with "REM INSCRIPTION"
-    When I fill in "is_credit" with "1"
+    When I fill in "rule[label]" with "Une nouvelle règle"
+    When I fill in "rule[condition]" with "REM INSCRIPTION"
+    When I fill in "rule[isCredit]" with "1"
     # CB
-    When I fill in "mode_regl_id" with "2"
+    When I fill in "rule[paymentTypeId]" with "2"
     # TVA à 5.5%
-    When I fill in "vat" with "5_5"
+    When I fill in "rule[vat]" with "5_5"
     # À determiner
-    When I fill in "category_id" with "26"
+    When I fill in "rule[category]" with "26"
     # Association AFUP
-    When I fill in "event_id" with "27"
+    When I fill in "rule[event]" with "27"
     # Justification obligatoire
-    When I fill in "attachment_required" with "1"
-    And I press "soumettre"
+    When I fill in "rule[attachmentRequired]" with "1"
+    And I press "Ajouter"
     Then the ".content .message" element should contain "La règle a été ajoutée"
     And I should see "Une nouvelle règle REM INSCRIPTION"
 
     When I follow the button of tooltip "Modifier la règle Une nouvelle règle"
-    And the "label" field should contain "Une nouvelle règle"
-    And the "condition" field should contain "REM INSCRIPTION"
-    And The "is_credit" field should have the following selected value "1"
-    And The "mode_regl_id" field should have the following selected value "2"
-    And The "vat" field should have the following selected value "5_5"
-    And The "category_id" field should have the following selected value "26"
-    And The "event_id" field should have the following selected value "27"
-    And The "attachment_required" field should have the following selected value "1"
+    And the "rule[label]" field should contain "Une nouvelle règle"
+    And the "rule[condition]" field should contain "REM INSCRIPTION"
+    And The "rule[isCredit]" field should have the following selected value "1"
+    And The "rule[paymentTypeId]" field should have the following selected value "2"
+    And The "rule[vat]" field should have the following selected value "5_5"
+    And The "rule[category]" field should have the following selected value "26"
+    And The "rule[event]" field should have the following selected value "27"
+    And The "rule[attachmentRequired]" field should have the following selected value "1"

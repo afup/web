@@ -49,6 +49,49 @@ class ExportGenerator
         }
     }
 
+    public function exportJoindIn(Event $event, \SplFileObject $toFile): void
+    {
+        // Récupération des données
+        $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event);
+
+        $toFile->fputcsv(['Title','Description','Speaker','Date','Time','Type']);
+
+        foreach ($talkAggregates as $talkAggregate) {
+
+            // Gestion de la description
+            $abstract = html_entity_decode($talkAggregate->talk->getAbstract(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+            $abstract = strip_tags($abstract);
+
+            // Gestion des conférenciers
+            $speakers = [];
+            foreach ($talkAggregate->speakers as $speaker) {
+                $speakers[] = $speaker->getFirstname() . ' ' . $speaker->getLastname();
+            }
+            if ($speakers === []) {
+                $speakers[] = '-';
+            }
+            $speakers = implode(',', $speakers);
+
+            // Gestion du type de conférence
+            if ($talkAggregate->planning?->getIsKeynote()) {
+                $type = 'Keynote';
+            } elseif (Talk::TYPE_WORKSHOP === $talkAggregate->talk->getType()) {
+                $type = 'Workshop';
+            } else {
+                $type = 'Talk';
+            }
+
+            $toFile->fputcsv([
+                $talkAggregate->talk->getTitle(),
+                $abstract,
+                $speakers,
+                $talkAggregate->planning?->getStart()?->format('Y-m-d'),
+                $talkAggregate->planning?->getStart()?->format('H:i'),
+                $type,
+            ]);
+        }
+    }
+
     /**
      *
      * @return \Generator

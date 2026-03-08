@@ -9,6 +9,7 @@ use PlanetePHP\DisplayableFeedArticle;
 use PlanetePHP\FeedArticleRepository;
 use PlanetePHP\FeedCrawler;
 use PlanetePHP\FeedRepository;
+use PlanetePHP\FeedStatus;
 use PlanetePHP\SymfonyFeedClient;
 use Psr\Log\NullLogger;
 use Symfony\Component\Clock\MockClock;
@@ -23,13 +24,13 @@ final class FeedCrawlerTest extends IntegrationTestCase
         $feedRepository = self::getContainer()->get(FeedRepository::class);
 
         // L'auto-incrément démarre à 148 dans le script de création de la bdd
-        $feedRepository->insert('fake rss', 'https://rss.fake', 'https://rss.fake', 1);
-        $feedRepository->insert('fake atom', 'https://atom.fake', 'https://atom.fake', 1);
-        $feedRepository->insert('fake invalid', 'https://invalid.fake', 'https://invalid.fake', 1);
-        $feedRepository->insert('fake html', 'https://html.fake', 'https://html.fake', 1);
-        $feedRepository->insert('fake error 500', 'https://error500.fake', 'https://error500.fake', 1);
-        $feedRepository->insert('fake error 404', 'https://error404.fake', 'https://error404.fake', 1);
-        $feedRepository->insert('fake empty', 'https://empty.fake', 'https://empty.fake', 1);
+        $feedRepository->insert('fake rss', 'https://rss.fake', 'https://rss.fake', FeedStatus::Active);
+        $feedRepository->insert('fake atom', 'https://atom.fake', 'https://atom.fake', FeedStatus::Active);
+        $feedRepository->insert('fake invalid', 'https://invalid.fake', 'https://invalid.fake', FeedStatus::Active);
+        $feedRepository->insert('fake html', 'https://html.fake', 'https://html.fake', FeedStatus::Active);
+        $feedRepository->insert('fake error 500', 'https://error500.fake', 'https://error500.fake', FeedStatus::Active);
+        $feedRepository->insert('fake error 404', 'https://error404.fake', 'https://error404.fake', FeedStatus::Active);
+        $feedRepository->insert('fake empty', 'https://empty.fake', 'https://empty.fake', FeedStatus::Active);
 
         $client = new MockHttpClient(function (string $method, string $url): MockResponse {
             if ($url === 'https://atom.fake/') {
@@ -81,27 +82,27 @@ final class FeedCrawlerTest extends IntegrationTestCase
         self::assertCount(3, $articles);
 
         self::assertInstanceOf(DisplayableFeedArticle::class, $articles[0]);
-        self::assertEquals('fake rss', $articles[0]->getFeedName());
-        self::assertEquals("Lorem Ipsum 🐘", $articles[0]->getTitle());
-        self::assertEquals("https://rss.fake/news/123-lorem-ipsum", $articles[0]->getUrl());
-        self::assertNull($articles[0]->getAuthor());
-        self::assertEquals('2025-03-17T07:15:12+01:00', $articles[0]->getUpdate());
-        self::assertEquals("<h3>Test php</h3>\n<p>salut</p>", $articles[0]->getContent());
+        self::assertEquals('fake rss', $articles[0]->feedName);
+        self::assertEquals("Lorem Ipsum 🐘", $articles[0]->title);
+        self::assertEquals("https://rss.fake/news/123-lorem-ipsum", $articles[0]->url);
+        self::assertNull($articles[0]->author);
+        self::assertEquals('2025-03-17T07:15:12+01:00', $articles[0]->update);
+        self::assertEquals("<h3>Test php</h3>\n<p>salut</p>", $articles[0]->content);
 
         self::assertInstanceOf(DisplayableFeedArticle::class, $articles[1]);
-        self::assertEquals('fake atom', $articles[1]->getFeedName());
-        self::assertEquals("Lorem Ipsum", $articles[1]->getTitle());
-        self::assertEquals("https://atom.fake/lorem-ipsum", $articles[1]->getUrl());
-        self::assertEquals('Ada Lovelace', $articles[1]->getAuthor());
-        self::assertEquals('2025-03-16T14:15:00+01:00', $articles[1]->getUpdate());
-        self::assertEquals('<p>Contenu PHP</p>', $articles[1]->getContent());
+        self::assertEquals('fake atom', $articles[1]->feedName);
+        self::assertEquals("Lorem Ipsum", $articles[1]->title);
+        self::assertEquals("https://atom.fake/lorem-ipsum", $articles[1]->url);
+        self::assertEquals('Ada Lovelace', $articles[1]->author);
+        self::assertEquals('2025-03-16T14:15:00+01:00', $articles[1]->update);
+        self::assertEquals('<p>Contenu PHP</p>', $articles[1]->content);
 
         self::assertInstanceOf(DisplayableFeedArticle::class, $articles[2]);
-        self::assertEquals('fake rss', $articles[2]->getFeedName());
-        self::assertEquals("Autre article", $articles[2]->getTitle());
-        self::assertEquals("https://rss.fake/news/456-autre-article", $articles[2]->getUrl());
-        self::assertNull($articles[2]->getAuthor());
-        self::assertEquals('2025-03-14T22:26:02+01:00', $articles[2]->getUpdate());
-        self::assertEquals('<p>contenu php</p>', $articles[2]->getContent());
+        self::assertEquals('fake rss', $articles[2]->feedName);
+        self::assertEquals("Autre article", $articles[2]->title);
+        self::assertEquals("https://rss.fake/news/456-autre-article", $articles[2]->url);
+        self::assertNull($articles[2]->author);
+        self::assertEquals('2025-03-14T22:26:02+01:00', $articles[2]->update);
+        self::assertEquals('<p>contenu php</p>', $articles[2]->content);
     }
 }

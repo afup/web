@@ -13,16 +13,19 @@ use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
-use Assert\Assertion;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 class MessageFactory
 {
     /**
      * MessageFactory constructor.
      */
-    public function __construct(private readonly TranslatorInterface $translator) {}
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly UrlGeneratorInterface $urlGenerator,
+    ) {}
 
     public function createMessageForVote(Vote $vote): Message
     {
@@ -76,10 +79,12 @@ class MessageFactory
      */
     public function createMessageForTalk(Talk $talk, Event $event): Message
     {
+        $link = $this->urlGenerator->generate('admin_talk_list', ['id' => $event->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+
         $attachment = new Attachment();
         $attachment
             ->setTitle('Nouvelle proposition sur le CFP - ' . $event->getTitle())
-            ->setTitleLink('https://afup.org/pages/administration/index.php?' . http_build_query(['page' => 'forum_sessions', 'id_forum' => $event->getId()]))
+            ->setTitleLink($link)
             ->setFallback(sprintf(
                     'Nouvelle proposition intitulée "%s". Type %s - Public %s',
                     $talk->getTitle(),
@@ -146,8 +151,8 @@ class MessageFactory
     public function createMessageForGeneralMeeting(GeneralMeetingRepository $generalMeetingRepository, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator): Message
     {
         $latestDate = $generalMeetingRepository->getLatestAttendanceDate();
-        Assertion::notNull($latestDate);
-        $nombrePersonnesAJourDeCotisation = count($userRepository->getActiveMembers(UserRepository::USER_TYPE_ALL));
+        Assert::notNull($latestDate);
+        $nombrePersonnesAJourDeCotisation = count($userRepository->getActiveMembers());
 
         $message = new Message();
         $message
@@ -203,13 +208,18 @@ class MessageFactory
         $attachment = new Attachment();
         $attachment
             ->setTitle('Total des inscriptions')
-            ->setTitleLink('https://afup.org/pages/administration/index.php?page=forum_inscriptions')
+            ->setTitleLink($this->urlGenerator->generate('admin_event_ticket_list', ['id' => $event->getId()],UrlGeneratorInterface::ABSOLUTE_URL))
         ;
 
-
         if ($event->lastsOneDay()) {
+            $tickets = $eventStats->firstDay->confirmed + $eventStats->firstDay->pending;
+            if ($event->getSeats()) {
+                $percentage = floor(($tickets * 100) / $event->getSeats());
+                $tickets = $tickets . ' / ' . $event->getSeats() . " ($percentage%)";
+            }
+
             $attachment->addField((new Field())->setShort(true)->setTitle('Journée unique')
-                ->setValue($eventStats->firstDay->confirmed + $eventStats->firstDay->pending));
+                ->setValue($tickets));
         } else {
             $attachment
                 ->addField((new Field())->setShort(true)->setTitle('Premier jour')
@@ -255,10 +265,12 @@ class MessageFactory
             }
         }
 
+        $link = $this->urlGenerator->generate(name: 'admin_talk_list', referenceType: UrlGeneratorInterface::ABSOLUTE_URL);
+
         $attachment = new Attachment();
         $attachment
             ->setTitle(sprintf('Total des réponses au CFP du %s', $event->getTitle()))
-            ->setTitleLink('https://afup.org/pages/administration/index.php?page=forum_sessions')
+            ->setTitleLink($link)
         ;
 
         foreach ($this->prepareCfpStatsFields($talkRepository, $talkToSpeakersRepository, $event) as $field) {

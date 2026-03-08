@@ -23,9 +23,9 @@ class EarlyBirdTicketValidator extends ConstraintValidator
         $count = 0;
 
         foreach ($value as $index => $ticket) {
-            if ($ticket->getTicketEventType() &&
-                $ticket->getTicketEventType()->getTicketType() &&
-                $ticket->getTicketEventType()->getTicketType()->isEarly()) {
+            if ($ticket->getTicketEventType()
+                && $ticket->getTicketEventType()->getTicketType()
+                && $ticket->getTicketEventType()->getTicketType()->isEarly()) {
                 $count++;
 
                 // On autorise qu'un seul ticket

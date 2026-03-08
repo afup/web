@@ -18,10 +18,9 @@ class Speaker implements NotifyPropertyInterface
     public const NIGHT_BETWEEN = 'between';
     public const NIGHT_AFTER = 'after';
 
-    /**
-     * @var int
-     */
-    private $id;
+    private const LINKEDIN_URL_PREFIX = "https://www.linkedin.com/in/";
+
+    private ?int $id = null;
 
     /**
      * @var int
@@ -78,21 +77,17 @@ class Speaker implements NotifyPropertyInterface
     #[Assert\NotBlank]
     private $biography;
 
-    /**
-     * @var string
-     */
-    private $twitter;
+    private ?string $twitter = null;
 
     private ?string $mastodon = null;
+
+    private ?string $linkedin = null;
 
     private ?string $bluesky = null;
 
     private ?GithubUser $githubUser = null;
 
-    /**
-     * @var string|null
-     */
-    private $photo;
+    private ?string $photo = null;
 
     /**
      * Wrapper for SpeakerType to allow picture upload
@@ -135,18 +130,17 @@ class Speaker implements NotifyPropertyInterface
      */
     private $referentPersonEmail;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    private bool $hasHostingSponsor = false;
+
+    private bool $travelRefundNeeded = true;
+    private bool $travelRefundSponsored = false;
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;
@@ -382,6 +376,11 @@ class Speaker implements NotifyPropertyInterface
         return $this->mastodon;
     }
 
+    public function getLinkedin(): ?string
+    {
+        return $this->linkedin;
+    }
+
     public function getBluesky(): ?string
     {
         return $this->bluesky;
@@ -394,6 +393,38 @@ class Speaker implements NotifyPropertyInterface
         }
 
         return 'https://bsky.app/profile/' . $this->bluesky;
+    }
+
+    public function getUrlLinkedin(): ?string
+    {
+        $username = $this->getUsernameLinkedin();
+
+        if ($username === null) {
+            return null;
+        }
+
+        return self::LINKEDIN_URL_PREFIX . $username;
+    }
+
+    public function getUsernameLinkedin(): ?string
+    {
+        if (null === $this->linkedin) {
+            return null;
+        }
+
+        if (0 === strlen(trim($this->linkedin))) {
+            return null;
+        }
+
+        if (str_starts_with($this->linkedin, self::LINKEDIN_URL_PREFIX)) {
+            return rtrim(substr($this->linkedin, strlen(self::LINKEDIN_URL_PREFIX)), '/');
+        }
+
+        if (str_starts_with($this->linkedin, 'https://')) {
+            return null;
+        }
+
+        return rtrim($this->linkedin, '/');
     }
 
     public function getUsernameTwitter(): string
@@ -426,16 +457,16 @@ class Speaker implements NotifyPropertyInterface
         return trim($username);
     }
 
-    public function getUrlMastodon(): string
+    public function getUrlMastodon(): ?string
     {
         if ($this->getUsernameMastodon() === '' || $this->getUsernameMastodon() === '0') {
-            return '';
+            return null;
         }
 
         $mastodon = $this->getMastodon();
 
         if ($mastodon === null) {
-            return '';
+            return null;
         }
 
         if (preg_match('#https?://@(.+)@(.+)#', $mastodon, $matches)) {
@@ -476,6 +507,13 @@ class Speaker implements NotifyPropertyInterface
         return $this;
     }
 
+    public function setLinkedin($linkedin): self
+    {
+        $this->propertyChanged('linkedin', $this->linkedin, $linkedin);
+        $this->linkedin = $linkedin;
+        return $this;
+    }
+
     public function setBluesky(?string $bluesky): self
     {
         if ($bluesky !== null) {
@@ -505,18 +543,12 @@ class Speaker implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getPhoto()
+    public function getPhoto(): ?string
     {
         return $this->photo;
     }
 
-    /**
-     * @param string $photo
-     */
-    public function setPhoto($photo): self
+    public function setPhoto(?string $photo): self
     {
         if ($this->photo === null || $photo !== null) {
             $this->propertyChanged('photo', $this->photo, $photo);
@@ -637,6 +669,42 @@ class Speaker implements NotifyPropertyInterface
         $this->propertyChanged('hotelNights', $this->hotelNights, $hotelNights);
         $this->hotelNights = $hotelNights;
 
+        return $this;
+    }
+
+    public function hasHostingSponsor(): bool
+    {
+        return $this->hasHostingSponsor;
+    }
+
+    public function setHasHostingSponsor(bool $hasHostingSponsor): self
+    {
+        $this->propertyChanged('hasHostingSponsor', $this->hasHostingSponsor, $hasHostingSponsor);
+        $this->hasHostingSponsor = $hasHostingSponsor;
+        return $this;
+    }
+
+    public function isTravelRefundNeeded(): bool
+    {
+        return $this->travelRefundNeeded;
+    }
+
+    public function setTravelRefundNeeded(bool $travelRefundNeeded): self
+    {
+        $this->propertyChanged('travelRefundNeeded', $this->travelRefundNeeded, $travelRefundNeeded);
+        $this->travelRefundNeeded = $travelRefundNeeded;
+        return $this;
+    }
+
+    public function isTravelRefundSponsored(): bool
+    {
+        return $this->travelRefundSponsored;
+    }
+
+    public function setTravelRefundSponsored(bool $travelRefundSponsored): self
+    {
+        $this->propertyChanged('travelRefundSponsored', $this->travelRefundSponsored, $travelRefundSponsored);
+        $this->travelRefundSponsored = $travelRefundSponsored;
         return $this;
     }
 

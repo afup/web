@@ -11,14 +11,16 @@
     "ext-libxml": "*",
     "ext-openssl": "*",
     "ext-pdo": "*",
+    "ext-zip": "*",
     "algolia/algoliasearch-client-php": "^3.4",
-    "beberlei/assert": "^2.9",
     "captioning/captioning": "^2.6",
     "ccmbenchmark/ting_bundle": "^3.8",
     "cocur/slugify": "^2.3",
-    "cuyz/valinor-bundle": "^1.0",
+    "cuyz/valinor-bundle": "^2.0",
     "cweagans/composer-patches": "^1.7",
     "doctrine/dbal": "4.*",
+    "doctrine/doctrine-bundle": "^2.18",
+    "doctrine/orm": "^3.6",
     "drewm/mailchimp-api": "^2.5",
     "ekino/newrelic-bundle": "dev-patch-1#2cd9951c163bda2d18a1515b43ee574e51aac871",
     "erusev/parsedown": "^1.6",
@@ -41,27 +43,29 @@
     "sabre/vobject": "^4.1",
     "setasign/tfpdf": "^1.33",
     "smarty/smarty": "^5.4",
-    "symfony/asset": "6.4.*",
-    "symfony/clock": "7.2.*",
-    "symfony/console": "6.4.*",
-    "symfony/expression-language": "6.4.*",
-    "symfony/form": "6.4.*",
-    "symfony/framework-bundle": "6.4.*",
-    "symfony/http-client": "6.4.*",
-    "symfony/http-kernel": "6.4.*",
-    "symfony/intl": "6.4.*",
-    "symfony/lock": "6.4.*",
-    "symfony/mime": "6.4.*",
+    "symfony/asset": "7.3.*",
+    "symfony/clock": "7.3.*",
+    "symfony/console": "7.3.*",
+    "symfony/expression-language": "7.3.*",
+    "symfony/form": "7.3.*",
+    "symfony/framework-bundle": "7.3.*",
+    "symfony/http-client": "7.3.*",
+    "symfony/http-kernel": "7.3.*",
+    "symfony/intl": "7.3.*",
+    "symfony/lock": "7.3.*",
+    "symfony/mime": "7.3.*",
     "symfony/monolog-bundle": "^3.1",
-    "symfony/security-bundle": "6.4.*",
-    "symfony/string": "6.4.*",
-    "symfony/translation": "6.4.*",
-    "symfony/validator": "6.4.*",
-    "symfony/yaml": "6.4.*",
+    "symfony/runtime": "7.4.*",
+    "symfony/security-bundle": "7.3.*",
+    "symfony/string": "7.3.*",
+    "symfony/translation": "7.3.*",
+    "symfony/validator": "7.3.*",
+    "symfony/yaml": "7.3.*",
     "twig/extra-bundle": "^3.21",
     "twig/intl-extra": "^3.21",
     "twig/string-extra": "^3.21",
     "twig/twig": "^3.21",
+    "webmozart/assert": "^2.1",
     "znk3r/html_common": "*",
     "znk3r/html_quickform": "4.0.2"
   },
@@ -82,7 +86,8 @@
     "allow-plugins": {
       "cweagans/composer-patches": true,
       "php-http/discovery": true,
-      "phpstan/extension-installer": true
+      "phpstan/extension-installer": true,
+      "symfony/runtime": true
     }
   },
   "extra": {
@@ -107,10 +112,6 @@
       "AppBundle\\": "sources/AppBundle/",
       "PlanetePHP\\": "sources/PlanetePHP/"
     },
-    "classmap": [
-      "app/AppKernel.php",
-      "app/AppCache.php"
-    ],
     "files": [
       "sources/Afup/Bootstrap/_Common.php",
       "sources/Afup/Bootstrap/commonStart.php"
@@ -120,7 +121,10 @@
     "psr-4": {
       "Afup\\Site\\Tests\\": "tests/unit/Afup/",
       "Afup\\Tests\\Support\\": "tests/support/",
+      "Afup\\Tests\\Stubs\\PHPStan\\": "tests/stubs/phpstan/",
+      "Afup\\Tests\\Behat\\Bootstrap\\": "tests/behat/bootstrap/",
       "AppBundle\\Tests\\": "tests/unit/AppBundle/",
+      "AppBundle\\IntegrationTests\\": "tests/integration/AppBundle/",
       "PlanetePHP\\IntegrationTests\\": "tests/integration/PlanetePHP/"
     }
   },
@@ -133,8 +137,8 @@
   ],
   "minimum-stability": "stable",
   "require-dev": {
-    "behat/behat": "^3.15",
-    "behat/mink-goutte-driver": "^2.0",
+    "behat/behat": "^3.29",
+    "behat/mink-browserkit-driver": "^2.3",
     "fakerphp/faker": "^1.24",
     "friends-of-behat/mink-extension": "^2.7",
     "friendsofphp/php-cs-fixer": "^3.75",
@@ -142,13 +146,18 @@
     "kubawerlos/php-cs-fixer-custom-fixers": "^3.24",
     "phpstan/extension-installer": "^1.4",
     "phpstan/phpstan": "^2.1",
+    "phpstan/phpstan-beberlei-assert": "^2.0",
+    "phpstan/phpstan-doctrine": "^2.0",
     "phpstan/phpstan-symfony": "^2.0",
+    "phpstan/phpstan-webmozart-assert": "^2.0",
     "phpunit/phpunit": "11.*",
     "rector/rector": "^2.0",
     "smalot/pdfparser": "^0.19.0",
-    "symfony/debug-bundle": "6.4.*",
-    "symfony/web-profiler-bundle": "6.4.*",
-    "symplify/vendor-patches": "^11.4"
+    "symfony/debug-bundle": "7.3.*",
+    "symfony/json-path": "7.3.*",
+    "symfony/web-profiler-bundle": "7.3.*",
+    "symplify/vendor-patches": "^11.4",
+    "tomasvotruba/type-coverage": "^2.1"
   },
   "repositories": [
     {

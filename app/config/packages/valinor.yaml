@@ -1,0 +1,7 @@
+valinor:
+    console:
+        # When a mapping error occurs during a console command, the output will
+        # automatically be enhanced to show information about errors. The
+        # maximum number of errors that will be displayed can be configured
+        # below, or set to 0 to disable this feature entirely.
+        mapping_errors_to_output: 15

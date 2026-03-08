@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members\GeneralMeeting;
 
-use Afup\Site\Logger\DbLoggerTrait;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\GeneralMeeting\PrepareFormType;
 use DateTime;
@@ -14,9 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EditAction extends AbstractController
 {
-    use DbLoggerTrait;
-
-    public function __construct(private GeneralMeetingRepository $generalMeetingRepository) {}
+    public function __construct(private readonly GeneralMeetingRepository $generalMeetingRepository) {}
 
     public function __invoke(Request $request): Response
     {

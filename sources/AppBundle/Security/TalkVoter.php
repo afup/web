@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Security;
 
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Talk;
@@ -26,7 +27,7 @@ class TalkVoter extends Voter
         return true;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         $user = $token->getUser();
         if (!$user instanceof GithubUser) {

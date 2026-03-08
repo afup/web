@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use AppBundle\Association\Form\HTML_QuickForm;
-use AppBundle\Controller\Admin\Event\AdminActionWithEventSelector;
+use AppBundle\Controller\Admin\Event\RedirectEventFromSessionListener;
 
 /**
  * Affiche un message puis redirige le visiteur vers une URL spécifiée
@@ -65,14 +65,13 @@ function genererFormulaire(HTML_QuickForm &$formulaire)
  *
  * L'action par défaut est la première des actions disponibles.
  *
- * @param   array  $actions_disponibles    Actions disponibles
+ * @param   array<string>  $actions_disponibles    Actions disponibles
  * @return  string
  */
-function verifierAction($actions_disponibles)
+function verifierAction(array $actions_disponibles)
 {
-    if (!is_array($actions_disponibles) || count($actions_disponibles) == 0) {
+    if (count($actions_disponibles) == 0) {
         trigger_error("Les actions disponibles doivent être passées sous forme d'un tableau d'au moins un élément", E_USER_ERROR);
-        return false;
     }
 
     if (!empty($_GET['action']) && in_array($_GET['action'], $actions_disponibles)) {
@@ -80,18 +79,6 @@ function verifierAction($actions_disponibles)
     } else {
         return $actions_disponibles[0];
     }
-}
-
-/*
- * Remplace une caractère accentué par sa version non accentuée
- *
- * @param   string  $texte  Texte à traiter
- * @return  string          Texte traité
- */
-function supprimerAccents($texte): ?string
-{
-    $texte = htmlentities((string) $texte);
-    return preg_replace('/&([a-z])[a-z]+;/i',"$1", $texte);
 }
 
 function obtenirTitre($pages, $page)
@@ -113,12 +100,12 @@ function obtenirTitre($pages, $page)
 
 function chargerForumId(): void
 {
-    $_GET['id_forum'] ??= $_SESSION['_sf2_attributes'][AdminActionWithEventSelector::SESSION_KEY] ?? 0;
+    $_GET['id_forum'] ??= $_SESSION['_sf2_attributes'][RedirectEventFromSessionListener::SESSION_KEY] ?? 0;
 }
 
 function checkForumRedirection(): void
 {
-    $idFromSession = $_SESSION['_sf2_attributes'][AdminActionWithEventSelector::SESSION_KEY] ?? null;
+    $idFromSession = $_SESSION['_sf2_attributes'][RedirectEventFromSessionListener::SESSION_KEY] ?? null;
 
     if (
         $_SERVER['REQUEST_METHOD'] === 'GET'

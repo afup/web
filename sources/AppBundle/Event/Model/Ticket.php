@@ -38,41 +38,52 @@ class Ticket implements NotifyPropertyInterface
         AFUP_TRANSPORT_DISTANCE_1000 => '> 1000 km',
     ];
 
-    public const STATUS_CREATED = AFUP_FORUM_ETAT_CREE;
-    public const STATUS_CANCELLED = AFUP_FORUM_ETAT_ANNULE;
-    public const STATUS_ERROR = AFUP_FORUM_ETAT_ERREUR;
-    public const STATUS_DECLINED = AFUP_FORUM_ETAT_REFUSE;
-    public const STATUS_PAID = AFUP_FORUM_ETAT_REGLE;
-    public const STATUS_GUEST = AFUP_FORUM_ETAT_INVITE;
-    public const STATUS_WAITING = AFUP_FORUM_ETAT_ATTENTE_REGLEMENT;
-    public const STATUS_CONFIRMED = AFUP_FORUM_ETAT_CONFIRME; // Je ne comprends pas ce que veut dire ce statut @todo check & delete
-    public const STATUS_PAID_AFTER = AFUP_FORUM_REGLEMENT_A_POSTERIORI; // Je ne comprends pas l'intéret @todo check & delete
+    public const STATUS_CREATED = 0;
+    public const STATUS_CANCELLED = 1;
+    public const STATUS_ERROR = 2;
+    public const STATUS_DECLINED = 3;
+    public const STATUS_PAID = 4;
+    public const STATUS_GUEST = 5;
+    public const STATUS_WAITING = 6;
+    public const STATUS_CONFIRMED = 7;
+    public const STATUS_PAID_AFTER = 8;
 
-    public const INVOICE_TODO = AFUP_FORUM_FACTURE_A_ENVOYER;
-    public const INVOICE_SENT = AFUP_FORUM_FACTURE_ENVOYEE;
-    public const INVOICE_RECEIVED = AFUP_FORUM_FACTURE_RECUE; // Je ne comprends pas ce que veut dire ce statut ici @todo check & delete
+    public const INVOICE_TODO = 0;
+    public const INVOICE_SENT = 1;
+    public const INVOICE_RECEIVED = 2;
 
-    public const TYPE_DAY_1 = AFUP_FORUM_PREMIERE_JOURNEE;
-    public const TYPE_DAY_2 = AFUP_FORUM_DEUXIEME_JOURNEE;
-    public const TYPE_2_DAYS = AFUP_FORUM_2_JOURNEES;
-    public const TYPE_2_DAYS_AFUP = AFUP_FORUM_2_JOURNEES_AFUP;
-    public const TYPE_2_DAYS_STUDENT = AFUP_FORUM_2_JOURNEES_ETUDIANT;
-    public const TYPE_2_DAYS_EARLY = AFUP_FORUM_2_JOURNEES_PREVENTE;
-    public const TYPE_2_DAYS_AFUP_EARLY = AFUP_FORUM_2_JOURNEES_AFUP_PREVENTE;
-    public const TYPE_2_DAYS_STUDENT_EARLY = AFUP_FORUM_2_JOURNEES_ETUDIANT_PREVENTE;
-    public const TYPE_2_DAYS_VOUCHER = AFUP_FORUM_2_JOURNEES_COUPON;
-    public const TYPE_ORGANIZATION = AFUP_FORUM_ORGANISATION;
-    public const TYPE_SPONSOR = AFUP_FORUM_SPONSOR;
-    public const TYPE_PRESS = AFUP_FORUM_PRESSE;
-    public const TYPE_SPEAKER = AFUP_FORUM_CONFERENCIER;
-    public const TYPE_INVITATION = AFUP_FORUM_INVITATION;
-    public const TYPE_PROJECT = AFUP_FORUM_PROJET;
-    public const TYPE_2_DAYS_SPONSOR = AFUP_FORUM_2_JOURNEES_SPONSOR;
-    public const TYPE_TEACHER = AFUP_FORUM_PROF;
-    public const TYPE_DAY_1_STUDENT_EARLY = AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT_PREVENTE;
-    public const TYPE_DAY_2_STUDENT_EARLY = AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT_PREVENTE;
-    public const TYPE_DAY_1_STUDENT = AFUP_FORUM_PREMIERE_JOURNEE_ETUDIANT;
-    public const TYPE_DAY_2_STUDENT = AFUP_FORUM_DEUXIEME_JOURNEE_ETUDIANT;
+    public const TYPE_DAY_1 = 0;
+    public const TYPE_DAY_2 = 1;
+    public const TYPE_2_DAYS = 2;
+    public const TYPE_2_DAYS_AFUP = 3;
+    public const TYPE_2_DAYS_STUDENT = 4;
+    public const TYPE_2_DAYS_EARLY = 5;
+    public const TYPE_2_DAYS_AFUP_EARLY = 6;
+    public const TYPE_2_DAYS_STUDENT_EARLY = 7;
+    public const TYPE_2_DAYS_VOUCHER = 8;
+    public const TYPE_ORGANIZATION = 9;
+    public const TYPE_SPONSOR = 10;
+    public const TYPE_PRESS = 11;
+    public const TYPE_SPEAKER = 12;
+    public const TYPE_INVITATION = 13;
+    public const TYPE_PROJECT = 14;
+    public const TYPE_2_DAYS_SPONSOR = 15;
+    public const TYPE_TEACHER = 16;
+    public const TYPE_DAY_1_STUDENT_EARLY = 17;
+    public const TYPE_DAY_2_STUDENT_EARLY = 18;
+    public const TYPE_EARLY_PLUS_MEMBERSHIP = 19;
+    public const TYPE_DAY_1_AFUP = 20;
+    public const TYPE_DAY_2_AFUP = 21;
+    public const TYPE_DAY_1_STUDENT = 22;
+    public const TYPE_DAY_2_STUDENT = 23;
+    public const TYPE_EARLY_BIRD = 100;
+    public const TYPE_EARLY_BIRD_AFUP = 101;
+    public const TYPE_LATE_BIRD = 102;
+    public const TYPE_LATE_BIRD_AFUP = 103;
+    public const TYPE_LATE_DAY_1 = 105;
+    public const TYPE_LATE_DAY_2 = 106;
+    public const TYPE_CFP_SUBMITTER = 107;
+    public const TYPE_SPECIAL_PRICE = 108;
     public const TYPE_AFUP_DAY_EARLY_BIRD = 109;
     public const TYPE_AFUP_DAY_CROISIERE = 110;
     public const TYPE_AFUP_DAY_LATE = 111;
@@ -96,21 +107,15 @@ class Ticket implements NotifyPropertyInterface
     public const TYPE_AFUP_DAY_2021_LIVE_3 = 127;
     public const TYPE_AFUP_DAY_2021_LIVE_4 = 128;
 
-    public const SPECIAL_PRICE = AFUP_FORUM_SPECIAL_PRICE;
-
-    public const PAYMENT_CREDIT_CARD = AFUP_FORUM_REGLEMENT_CARTE_BANCAIRE;
-    public const PAYMENT_CHEQUE = AFUP_FORUM_REGLEMENT_CHEQUE;
-    public const PAYMENT_BANKWIRE = AFUP_FORUM_REGLEMENT_VIREMENT;
-    public const PAYMENT_NONE = AFUP_FORUM_REGLEMENT_AUCUN;
-    public const PAYMENT_AFTER = AFUP_FORUM_REGLEMENT_A_POSTERIORI; // @todo check & delete je comprends pas
+    public const PAYMENT_CREDIT_CARD = 0;
+    public const PAYMENT_CHEQUE = 1;
+    public const PAYMENT_BANKWIRE = 2;
+    public const PAYMENT_NONE = 3;
 
     public const DAY_ONE = 'one';
     public const DAY_TWO = 'two';
 
-    /**
-     * @var int
-     */
-    private $id;
+    private ?int $id = null;
 
     private ?\DateTime $date = null;
 
@@ -255,18 +260,12 @@ class Ticket implements NotifyPropertyInterface
      */
     protected $qrCode;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->propertyChanged('id', $this->id, $id);
         $this->id = $id;

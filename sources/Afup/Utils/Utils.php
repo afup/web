@@ -71,6 +71,7 @@ class Utils
         $key = 'PaiementFactureAFUP_AFUP';
         $iv = '@PaiFact';
 
-        return trim(openssl_decrypt($ref, 'des-ede3-cbc', $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv));
+        $decrypt = openssl_decrypt($ref, 'des-ede3-cbc', $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv);
+        return trim($decrypt ?: "");
     }
 }

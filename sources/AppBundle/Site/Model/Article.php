@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Site\Model;
 
+use AppBundle\Site\Enum\ArticleContentType;
+use AppBundle\Site\Enum\ArticleTheme;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 
@@ -38,24 +40,27 @@ class Article implements NotifyPropertyInterface
      */
     private $content;
 
-    /***
-     * @var string
-     */
-    private $contentType;
+    private string $contentType;
 
-    /**
-     * @var int
-     */
-    private $theme;
+    private ?int $theme = null;
 
-    /**
-     * @var int
-     */
-    private $eventId;
+    private ?int $eventId = null;
 
     private ?\DateTime $publishedAt = null;
 
     private ?int $state = null;
+
+    private ?int $position = null;
+
+    private ?int $authorId = null;
+
+    public function __construct()
+    {
+        $this->position = 0;
+        $this->state = 0;
+        $this->contentType = ArticleContentType::Markdown->value;
+        $this->publishedAt = new \DateTime();
+    }
 
     /**
      * @return int
@@ -146,7 +151,7 @@ class Article implements NotifyPropertyInterface
     /**
      * @return string
      */
-    public function getLeadParagraph()
+    public function getFormatedLeadParagraph()
     {
         $leadParagraph = $this->leadParagraph;
 
@@ -156,6 +161,11 @@ class Article implements NotifyPropertyInterface
         }
 
         return $leadParagraph;
+    }
+
+    public function getLeadParagraph()
+    {
+        return $this->leadParagraph;
     }
 
     /**
@@ -175,6 +185,11 @@ class Article implements NotifyPropertyInterface
      * @return string
      */
     public function getContent()
+    {
+        return $this->content;
+    }
+
+    public function getFormatedContent()
     {
         $content = $this->content;
 
@@ -207,12 +222,7 @@ class Article implements NotifyPropertyInterface
         return $this->contentType;
     }
 
-    /**
-     * @param string $contentType
-     *
-     * @return $this
-     */
-    public function setContentType($contentType): self
+    public function setContentType(string $contentType): self
     {
         $this->propertyChanged('contentType', $this->contentType, $contentType);
         $this->contentType = $contentType;
@@ -222,7 +232,7 @@ class Article implements NotifyPropertyInterface
 
     public function isContentTypeMarkdown(): bool
     {
-        return $this->contentType == \Afup\Site\Corporate\Article::TYPE_CONTENU_MARKDOWN;
+        return $this->contentType === ArticleContentType::Markdown->value;
     }
 
     /**
@@ -244,37 +254,26 @@ class Article implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getTheme()
+    public function getTheme(): ?int
     {
         return $this->theme;
     }
 
-    /**
-     * @param int $theme
-     *
-     * @return $this
-     */
-    public function setTheme($theme): self
+    public function getThemeEnum(): ?ArticleTheme
+    {
+        if ($this->theme === null) {
+            return null;
+        }
+
+        return ArticleTheme::from($this->theme);
+    }
+
+    public function setTheme(?int $theme): self
     {
         $this->propertyChanged('theme', $this->theme, $theme);
         $this->theme = $theme;
 
         return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getThemeLabel()
-    {
-        if (null === ($theme = $this->getTheme())) {
-            return null;
-        }
-
-        return \Afup\Site\Corporate\Article::getThemeLabel($this->getTheme());
     }
 
     /**
@@ -303,8 +302,8 @@ class Article implements NotifyPropertyInterface
      */
     public function getTeaser()
     {
-        if (strlen($leadParagraph = $this->getLeadParagraph()) !== 0) {
-            return strip_tags($leadParagraph);
+        if (strlen((string) $leadParagraph = $this->getLeadParagraph()) !== 0) {
+            return strip_tags((string) $leadParagraph);
         }
 
         return  substr(strip_tags($this->getContent()), 0, 200);
@@ -337,6 +336,31 @@ class Article implements NotifyPropertyInterface
         $state = (int) $state;
         $this->propertyChanged('state', $this->state, $state);
         $this->state = $state;
+        return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): self
+    {
+        $this->propertyChanged('position', $this->position, $position);
+        $this->position = $position;
+        return $this;
+    }
+
+
+    public function getAuthorId(): ?int
+    {
+        return $this->authorId;
+    }
+
+    public function setAuthorId(?int $authorId): self
+    {
+        $this->propertyChanged('authorId', $this->authorId, $authorId);
+        $this->authorId = $authorId;
         return $this;
     }
 }

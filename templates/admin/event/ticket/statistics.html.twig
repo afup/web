@@ -1,0 +1,74 @@
+<div class="ui segment">
+    <table class="ui table striped very compact celled">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th class="right aligned">Tarif</th>
+                <th class="right aligned">Nb. inscrits</th>
+                <th class="right aligned">Nb. confirmés</th>
+                <th class="right aligned">Nb. payants</th>
+                <th class="right aligned">Montant</th>
+                <th class="right aligned">Places restantes</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% set registered = 0 %}
+        {% set confirmed = 0 %}
+        {% set paying = 0 %}
+        {% set payingAmount = 0 %}
+        {% for ticket in computed %}
+            {% set registered = registered + ticket.registered %}
+            {% set confirmed = confirmed + ticket.confirmed %}
+            {% set paying = paying + ticket.paying %}
+            {% set payingAmount = payingAmount + ticket.payingAmount %}
+            <tr>
+                <td>
+                    {{ ticket.label }}
+                </td>
+                <td class="right aligned">{{ ticket.amount }} €</td>
+                <td class="right aligned">{{ ticket.registered }}</td>
+                <td class="right aligned">{{ ticket.confirmed }}</td>
+                <td class="right aligned">{{ ticket.paying }}</td>
+                <td class="right aligned">{{ ticket.payingAmount }} €</td>
+                <td class="right aligned">{{ ticket.availableTickets }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th></th>
+                <th></th>
+                <th class="right aligned">{{ registered }}</th>
+                <th class="right aligned">{{ confirmed }}</th>
+                <th class="right aligned">{{ paying }}</th>
+                <th class="right aligned">{{ payingAmount }} €</th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <table class="ui table striped very compact celled">
+        <thead>
+            <tr>
+                <th></th>
+                <th class="right aligned">Inscrits</th>
+                <th class="right aligned">Confirmés</th>
+                <th class="right aligned">En attente de règlement</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Jour 1</td>
+                <td class="right aligned">{{ statistics.firstDay.registered }}</td>
+                <td class="right aligned">{{ statistics.firstDay.confirmed }}</td>
+                <td class="right aligned">{{ statistics.firstDay.pending }}</td>
+            </tr>
+            <tr>
+                <td>Jour 2</td>
+                <td class="right aligned">{{ statistics.secondDay.registered }}</td>
+                <td class="right aligned">{{ statistics.secondDay.confirmed }}</td>
+                <td class="right aligned">{{ statistics.secondDay.pending }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

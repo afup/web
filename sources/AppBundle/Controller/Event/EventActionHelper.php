@@ -4,28 +4,26 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Event;
 
+use AppBundle\Controller\Admin\Event\RedirectEventFromSessionListener;
+use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\EventRepository;
-use Assert\Assertion;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class EventActionHelper
+final readonly class EventActionHelper
 {
     public function __construct(
-        protected EventRepository $eventRepository,
-        private readonly TokenStorageInterface $tokenStorage,
+        private EventRepository $eventRepository,
+        private FormFactoryInterface $formFactory,
+        private RequestStack $requestStack,
     ) {}
 
     /**
-     * @param string $eventSlug
-     *
-     * @return Event
-     *
      * @throws NotFoundHttpException
      */
-    public function getEvent($eventSlug)
+    public function getEvent(string $eventSlug): Event
     {
         $event = $this->eventRepository->getOneBy(['path' => $eventSlug]);
         if ($event === null) {
@@ -36,22 +34,15 @@ class EventActionHelper
     }
 
     /**
-     * @param int|null $id
-     * @param bool     $allowFallback
-     *
-     * @return Event
+     * @throws NotFoundHttpException
      */
-    public function getEventById($id = null, $allowFallback = true)
+    public function getEventById(int|string|null $id = null, bool $allowFallback = true): Event
     {
         $event = null;
         if (null !== $id) {
             $event = $this->eventRepository->get((int) $id);
         } elseif ($allowFallback) {
-            $event = $this->eventRepository->getNextEvent();
-
-            if (null === $event && null !== ($latestEvent = $this->eventRepository->getLastEvent())) {
-                $event = $latestEvent;
-            }
+            $event = $this->getFromRequest('id', $allowFallback)->event;
         }
 
         if ($event === null) {
@@ -61,17 +52,35 @@ class EventActionHelper
         return $event;
     }
 
-    /**
-     * @return GithubUser
-     */
-    public function getUser()
+    public function getFromRequest(string $queryParamName, bool $allowFallback = true): AdminEventSelection
     {
-        $token = $this->tokenStorage->getToken();
-        Assertion::notNull($token);
-        /** @var GithubUser $user */
-        $user = $token->getUser();
-        Assertion::isInstanceOf($user, GithubUser::class);
+        $request = $this->requestStack->getMainRequest();
 
-        return $user;
+        // L'id dans l'URL est prioritaire sur celui de la session
+        $selectedEventId = $request->query->get($queryParamName) ?? $request->getSession()->get(RedirectEventFromSessionListener::SESSION_KEY);
+
+        // Si l'id est présent dans l'URL, il est stocké en session
+        if ($request->query->has($queryParamName)) {
+            $request->getSession()->set(RedirectEventFromSessionListener::SESSION_KEY, $selectedEventId);
+        }
+
+        $selectedEvent = $this->eventRepository->get($selectedEventId);
+        if ($selectedEvent === null && $allowFallback) {
+            $selectedEvent = $this->eventRepository->getNextEvent() ?? $this->eventRepository->getLastEvent();
+        }
+
+        if ($selectedEvent === null) {
+            if ($request->query->has($queryParamName)) {
+                // Si l'id n'existe pas, erreur 404
+                throw new NotFoundHttpException("Event $selectedEventId inexistant");
+            }
+
+            throw new NotFoundHttpException("Impossible de trouver le bon event");
+        }
+
+        return new AdminEventSelection(
+            $this->formFactory,
+            $selectedEvent,
+        );
     }
 }
