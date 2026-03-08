@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a55bcfd2a0998e8ea473bd3f6dc52e40",
+    "content-hash": "41949cc47d80cc04d34f176a9d248edf",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -2050,80 +2050,6 @@
                 "source": "https://github.com/drewm/mailchimp-api/tree/master"
             },
             "time": "2019-08-06T09:24:58+00:00"
-        },
-        {
-            "name": "ekino/newrelic-bundle",
-            "version": "dev-patch-1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webgriffe/EkinoNewRelicBundle.git",
-                "reference": "2cd9951c163bda2d18a1515b43ee574e51aac871"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webgriffe/EkinoNewRelicBundle/zipball/2cd9951c163bda2d18a1515b43ee574e51aac871",
-                "reference": "2cd9951c163bda2d18a1515b43ee574e51aac871",
-                "shasum": ""
-            },
-            "require": {
-                "monolog/monolog": "^3.0",
-                "php": "^8.1",
-                "symfony/config": "^6.4|^7.0",
-                "symfony/console": "^6.4|^7.0",
-                "symfony/dependency-injection": "^6.4|^7.0",
-                "symfony/event-dispatcher": "^6.4|^7.0",
-                "symfony/http-kernel": "^6.4|^7.0"
-            },
-            "require-dev": {
-                "matthiasnoback/symfony-dependency-injection-test": "^4.3|^5.1",
-                "symfony/framework-bundle": "^6.4|^7.0",
-                "symfony/monolog-bundle": "^3.10",
-                "symfony/phpunit-bridge": "^5.3|^6.0|^7.0",
-                "twig/twig": "^1.32|^2.4|^3.0"
-            },
-            "suggest": {
-                "symfony/monolog-bundle": "^3.10"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Ekino\\NewRelicBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Ekino\\NewRelicBundle\\Tests\\": "Tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Thomas Rabaix",
-                    "email": "thomas.rabaix@ekino.com",
-                    "homepage": "http://ekino.com"
-                }
-            ],
-            "description": "Integrate New Relic into Symfony2",
-            "homepage": "https://github.com/ekino/EkinoNewRelicBundle",
-            "keywords": [
-                "metric",
-                "monitoring",
-                "performance"
-            ],
-            "support": {
-                "source": "https://github.com/webgriffe/EkinoNewRelicBundle/tree/patch-1"
-            },
-            "time": "2024-05-06T12:52:23+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -10534,6 +10460,85 @@
             "time": "2025-05-03T07:21:55+00:00"
         },
         {
+            "name": "webgriffe/newrelic-bundle",
+            "version": "2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webgriffe/EkinoNewRelicBundle.git",
+                "reference": "94650b2a457cc058e51870f257256f7814ee6337"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webgriffe/EkinoNewRelicBundle/zipball/94650b2a457cc058e51870f257256f7814ee6337",
+                "reference": "94650b2a457cc058e51870f257256f7814ee6337",
+                "shasum": ""
+            },
+            "require": {
+                "monolog/monolog": "^3.0",
+                "php": "^8.1",
+                "symfony/config": "^6.4|^7.0",
+                "symfony/console": "^6.4|^7.0",
+                "symfony/dependency-injection": "^6.4|^7.0",
+                "symfony/event-dispatcher": "^6.4|^7.0",
+                "symfony/http-kernel": "^6.4|^7.0"
+            },
+            "require-dev": {
+                "matthiasnoback/symfony-dependency-injection-test": "^4.3|^5.1",
+                "symfony/framework-bundle": "^6.4|^7.0",
+                "symfony/monolog-bundle": "^3.10",
+                "symfony/phpunit-bridge": "^5.3|^6.0|^7.0",
+                "twig/twig": "^1.32|^2.4|^3.0"
+            },
+            "suggest": {
+                "symfony/monolog-bundle": "^3.10"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ekino\\NewRelicBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Ekino\\NewRelicBundle\\Tests\\": "Tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Thomas Rabaix",
+                    "email": "thomas.rabaix@ekino.com",
+                    "homepage": "http://ekino.com"
+                },
+                {
+                    "name": "Webgriffe SRL",
+                    "email": "support@webgriffe.com",
+                    "homepage": "https://www.webgriffe.com"
+                }
+            ],
+            "description": "Integrate New Relic into Symfony2",
+            "homepage": "https://github.com/webgriffe/EkinoNewRelicBundle",
+            "keywords": [
+                "metric",
+                "monitoring",
+                "performance"
+            ],
+            "support": {
+                "source": "https://github.com/webgriffe/EkinoNewRelicBundle/tree/2.5.0"
+            },
+            "time": "2025-07-15T08:48:27+00:00"
+        },
+        {
             "name": "webmozart/assert",
             "version": "2.1.2",
             "source": {
@@ -15175,9 +15180,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "ekino/newrelic-bundle": 20
-    },
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
