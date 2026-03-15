@@ -9,8 +9,8 @@ enum MembershipFeePayment: int
     case Cash = 0;
     case Check = 1;
     case BankTransfert = 2;
-    case OnlinePayment = 3;
-    case Other = 4;
+    case Other = 3;
+    case OnlinePayment = 4;
 
     public function label(): string
     {
@@ -18,8 +18,8 @@ enum MembershipFeePayment: int
             self::Cash => 'Espèces',
             self::Check => 'Chèques',
             self::BankTransfert => 'Virement',
-            self::OnlinePayment => 'En ligne',
             self::Other => 'Autre',
+            self::OnlinePayment => 'En ligne',
         };
     }
 }
