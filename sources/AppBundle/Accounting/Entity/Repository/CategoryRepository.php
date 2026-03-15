@@ -21,10 +21,15 @@ final class CategoryRepository extends EntityRepository
     /**
      * @return array<Category>
      */
-    public function getAllSortedByName(): array
+    public function getAllSortedByName(bool $usedInAccountingJournal = false): array
     {
-        return $this->createQueryBuilder('c')
-            ->orderBy('c.name', 'asc')
+        $query = $this->createQueryBuilder('c');
+
+        if ($usedInAccountingJournal) {
+            $query->andWhere('c.hideInAccountingJournalAt IS NULL');
+        }
+
+        return $query->orderBy('c.name', 'asc')
             ->getQuery()
             ->execute();
     }
