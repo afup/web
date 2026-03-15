@@ -42,8 +42,8 @@ class ListAction extends AbstractController
             'formPeriod' => $formPeriod->createView(),
             'withReconciled' => $withReconciled,
             'type' => $type,
-            'categories' => $this->categoryRepository->getAllSortedByName(),
-            'events' => $this->eventRepository->getAllSortedByName(),
+            'categories' => $this->categoryRepository->getAllSortedByName(true),
+            'events' => $this->eventRepository->getAllSortedByName(true),
             'paymentTypes' => $this->paymentRepository->getAllSortedByName(),
             'transactions' => $transactions,
         ]);
