@@ -122,10 +122,22 @@ services:
             $mailchimp: '@app.mailchimp_api'
             $listId: "%mailchimp_members_list%"
 
-    AppBundle\Email\Mailer\Adapter\MailerAdapter:
+    mailer.adapter.php:
       class: AppBundle\Email\Mailer\Adapter\PhpMailerAdapter
       factory: [AppBundle\Email\Mailer\Adapter\PhpMailerAdapter, createFromConfiguration]
       arguments: ['@Afup\Site\Utils\Configuration']
+
+    mailer.adapter.symfony:
+        class: AppBundle\Email\Mailer\Adapter\SymfonyMailerAdapter
+        autowire: true
+
+    AppBundle\Email\Mailer\Adapter\MailerAdapter: '@mailer.adapter.php'
+
+    mailer.client.symfony:
+        class: AppBundle\Email\Mailer\Mailer
+        autowire: true
+        arguments:
+            $adapter: '@mailer.adapter.symfony'
 
     AppBundle\Mailchimp\EventEventSubscriber:
         arguments:

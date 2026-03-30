@@ -1,0 +1,8 @@
+framework:
+    mailer:
+        dsn: 'smtp://%env(SMTP_USERNAME)%:%env(SMTP_PASSWORD)%@%env(SMTP_HOST)%:%env(SMTP_PORT)%'
+
+when@test:
+    framework:
+        mailer:
+            dsn: 'smtp://mailcatcher:1025'

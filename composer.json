@@ -54,6 +54,7 @@
     "symfony/http-kernel": "7.3.*",
     "symfony/intl": "7.3.*",
     "symfony/lock": "7.3.*",
+    "symfony/mailer": "^7.4",
     "symfony/mime": "7.3.*",
     "symfony/monolog-bundle": "^3.1",
     "symfony/runtime": "7.4.*",

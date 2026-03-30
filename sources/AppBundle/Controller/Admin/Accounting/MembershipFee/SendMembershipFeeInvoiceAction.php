@@ -10,11 +10,13 @@ use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\AuditLog\Audit;
 use AppBundle\Email\Mailer\Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
 
 class SendMembershipFeeInvoiceAction extends AbstractController
 {
     public function __construct(
+        #[Autowire('@mailer.client.symfony')]
         private readonly Mailer $mailer,
         private readonly UserRepository $userRepository,
         private readonly Cotisations $cotisations,
