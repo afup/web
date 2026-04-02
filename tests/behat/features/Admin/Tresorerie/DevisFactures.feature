@@ -53,7 +53,6 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I fill in "quotation[details][1][quantity]" with "1"
     And I fill in "quotation[details][1][unitPrice]" with "12000"
     When I press "Ajouter" and wait until I see "L'écriture a été ajoutée"
-    Then I should see "L'écriture a été ajoutée"
     And I should see "ESN dev en folie"
     And I should see "Paris"
     And I should see "CLIENT-AFGD5S"

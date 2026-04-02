@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Accounting\Quotation;
 
 use AppBundle\Accounting\Form\QuotationType;
-use AppBundle\Accounting\Model\Invoicing;
 use AppBundle\Accounting\Model\Repository\InvoicingDetailRepository;
 use AppBundle\Accounting\Model\Repository\InvoicingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,7 +33,6 @@ class EditQuotationAction extends AbstractController
                 $idsToRemove = $this->invoicingDetailRepository->getRowsIdsPerInvoicingId($quotation->getId());
                 $existingIds = [];
                 $this->invoicingRepository->startTransaction();
-                $this->cleanLegacyData($quotation);
                 $this->invoicingRepository->save($quotation);
                 foreach ($quotation->getDetails() as $detail) {
                     if ($detail->getId() !== null) {
@@ -62,22 +60,5 @@ class EditQuotationAction extends AbstractController
             'form' => $form->createView(),
             'submitLabel' => 'Modifier',
         ]);
-    }
-
-    /**
-     * Pour simplifier la modification d'un devis créé avant ma refonte sous symfony, on supprime les lignes vides
-     */
-    private function cleanLegacyData(Invoicing $quotation): void
-    {
-        $cleanedDetails = [];
-        foreach ($quotation->getDetails() as $detail) {
-            if (empty($detail->getDesignation()) && empty($detail->getQuantity()) && empty($detail->getUnitPrice()) && empty($detail->getReference())) {
-                $this->invoicingDetailRepository->delete($detail);
-            } else {
-                $cleanedDetails[] = $detail;
-            }
-        }
-        $quotation->setDetails($cleanedDetails);
-
     }
 }

@@ -82,8 +82,7 @@ trait WaitContext
         $session = $this->minkContext->getSession();
 
         if ($session->getDriver() instanceof \Behat\Mink\Driver\PantherDriver) {
-            $href = $link->getAttribute('href');
-            $session->executeScript(sprintf('window.location.href = %s;', json_encode($href)));
+            $link->click();
 
             $timeoutMs = $timeout !== null ? (int) $timeout : self::DEFAULT_TIMEOUT_MS;
             $this->waitForCondition(
