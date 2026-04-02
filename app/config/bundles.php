@@ -14,7 +14,7 @@ return [
     JMS\SerializerBundle\JMSSerializerBundle::class => ['all' => true],
     Presta\SitemapBundle\PrestaSitemapBundle::class => ['all' => true],
     EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle::class => ['all' => true],
-    Ekino\NewRelicBundle\EkinoNewRelicBundle::class => ['all' => true],
+    Tiime\NewRelicBundle\TiimeNewRelicBundle::class => ['all' => true],
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
     CuyZ\ValinorBundle\ValinorBundle::class => ['all' => true],

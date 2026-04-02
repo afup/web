@@ -67,7 +67,7 @@
     "twig/intl-extra": "^3.21",
     "twig/string-extra": "^3.21",
     "twig/twig": "^3.21",
-    "webgriffe/newrelic-bundle": "^2.5.0",
+    "tiime/newrelic-bundle": "^1.0",
     "webmozart/assert": "^2.1",
     "znk3r/html_common": "*",
     "znk3r/html_quickform": "4.0.2"
@@ -213,10 +213,6 @@
           ]
         }
       }
-    },
-    {
-      "type": "vcs",
-      "url": "https://github.com/webgriffe/EkinoNewRelicBundle"
     }
   ],
   "replace": {
