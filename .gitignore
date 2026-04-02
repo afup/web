@@ -54,3 +54,4 @@ js_dist
 /assets/vendor/
 drivers
 chromedriver.log
+/htdocs/dist

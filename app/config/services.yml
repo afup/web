@@ -240,3 +240,12 @@ services:
         autowire: true
         arguments:
             $transports: !tagged_iterator app.social_network.transport
+
+    asset_mapper.local_public_assets_filesystem:
+        class: AppBundle\AssetMapper\PostCompilationCopyHandler
+        autowire: true
+
+    asset_mapper.compiled_asset_mapper_config_reader:
+        class: Symfony\Component\AssetMapper\CompiledAssetMapperConfigReader
+        arguments:
+            $directory: '%kernel.project_dir%/../htdocs/dist'

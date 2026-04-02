@@ -16,4 +16,11 @@ return [
         'path' => './assets/app.js',
         'entrypoint' => true,
     ],
+    'semantic-ui/dist/semantic.min.css' => [
+        'version' => '2.5.0',
+        'type' => 'css'
+    ],
+    'semantic-ui/dist/semantic.min.js' => [
+        'version' => '2.5.0'
+    ],
 ];

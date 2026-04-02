@@ -54,4 +54,6 @@ RewriteRule ^ask/forum/? https://event.afup.org [R=301,L]
 RewriteRule ^ask/? / [R=301,L]
 
 ## This url are handled by symfony
+RewriteCond %{ENV:APP_ENV} ^dev$
+RewriteRule (dist)/? /index.php [L] # Asset in local development
 RewriteRule (event|connect|_|association|talks|meetups|blog|admin|p|home|news|techno_watch|member|login|logout|password-reset|rss.xml)/? /index.php [END]
