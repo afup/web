@@ -148,6 +148,8 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
      */
     private $needsUpToDateMembership = false;
 
+    private ?\DateTimeImmutable $lastLogin = null;
+
     /**
      * @return int
      */
@@ -500,6 +502,18 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
     {
         $this->propertyChanged('reminderDate', $this->reminderDate, $reminderDate);
         $this->reminderDate = $reminderDate;
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeImmutable
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(?\DateTimeImmutable $lastLogin): self
+    {
+        $this->propertyChanged('lastLogin', $this->lastLogin, $lastLogin);
+        $this->lastLogin = $lastLogin;
         return $this;
     }
 

@@ -379,7 +379,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'app.`adresse`', 'app.`code_postal`', 'app.`ville`', 'app.`id_pays`', 'app.`telephone_fixe`',
                 'app.`telephone_portable`', 'app.`etat`', 'app.`date_relance`', 'app.`compte_svn`',
                 'app.`slack_invite_status`', 'app.`slack_alternate_email`', 'app.`needs_up_to_date_membership`',
-                'app.`nearest_office`',
+                'app.`nearest_office`', 'app.`last_login`',
                 'MD5(CONCAT(app.`id`, \'_\', app.`email`, \'_\', app.`login`)) as hash',
                 "MAX(ac.date_fin) AS lastsubcription",
             ]);
@@ -600,6 +600,15 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'fieldName' => 'needsUpToDateMembership',
                 'type' => 'bool',
                 'serializer' => Boolean::class,
+            ])
+            ->addField([
+                'columnName' => 'last_login',
+                'fieldName' => 'lastLogin',
+                'type' => 'datetime_immutable',
+                'serializer_options' => [
+                    'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'Y-m-d H:i:s'],
+                    'serialize' => ['serializeUseFormat' => true, 'format' => 'Y-m-d H:i:s'],
+                ],
             ])
         ;
 

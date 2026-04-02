@@ -1,4 +1,5 @@
 services:
     AppBundle\Listener\DetectClockMockingListener:
         autowire: true
-        tags: [ kernel.event_listener ]
+        tags:
+            - { name: kernel.event_listener, priority: 1000 }

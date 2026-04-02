@@ -33,6 +33,13 @@
                 </a>
             {% endif %}
         {% endif %}
+        <span class="item">
+            {% if user.lastLogin %}
+                Dernière connexion : {{ user.lastLogin|date('d/m/Y H:i:s') }}
+            {% else %}
+                <em>Aucune connexion</em>
+            {% endif %}
+        </span>
     </div>
 
     <div class="ui segment">
