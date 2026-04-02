@@ -49,7 +49,7 @@ class HomeAction extends AbstractController
                 $info = [];
                 if ($event->lastsOneDay()) {
                     $ticketsLabel = 'entrées';
-                    $tickets = $stats->firstDay->confirmed + $stats->firstDay->pending;
+                    $tickets = $stats->firstDay->paid;
                     if ($event->getSeats()) {
                         $percentage = floor(($tickets * 100) / $event->getSeats());
                         $tickets = $tickets . ' / ' . $event->getSeats();
@@ -59,8 +59,8 @@ class HomeAction extends AbstractController
 
                     $info['statistics'][$ticketsLabel] = $tickets;
                 } else {
-                    $info['statistics']['entrées (premier jour)'] = $stats->firstDay->confirmed + $stats->firstDay->pending;
-                    $info['statistics']['entrées (deuxième jour)'] = $stats->secondDay->confirmed + $stats->secondDay->pending;
+                    $info['statistics']['entrées (premier jour)'] = $stats->firstDay->paid;
+                    $info['statistics']['entrées (deuxième jour)'] = $stats->secondDay->paid;
                 }
                 $info['title'] = $event->getTitle();
                 $info['subtitle'] = 'Inscriptions';

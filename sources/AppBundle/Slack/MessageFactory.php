@@ -212,7 +212,7 @@ class MessageFactory
         ;
 
         if ($event->lastsOneDay()) {
-            $tickets = $eventStats->firstDay->confirmed + $eventStats->firstDay->pending;
+            $tickets = $eventStats->firstDay->paid;
             if ($event->getSeats()) {
                 $percentage = floor(($tickets * 100) / $event->getSeats());
                 $tickets = $tickets . ' / ' . $event->getSeats() . " ($percentage%)";
@@ -223,9 +223,9 @@ class MessageFactory
         } else {
             $attachment
                 ->addField((new Field())->setShort(true)->setTitle('Premier jour')
-                    ->setValue($eventStats->firstDay->confirmed + $eventStats->firstDay->pending))
+                    ->setValue($eventStats->firstDay->paid))
                 ->addField((new Field())->setShort(true)->setTitle('Deuxième jour')
-                    ->setValue($eventStats->secondDay->confirmed + $eventStats->secondDay->pending))
+                    ->setValue($eventStats->secondDay->paid))
             ;
         }
 

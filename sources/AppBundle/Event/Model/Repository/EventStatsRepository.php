@@ -118,7 +118,13 @@ class EventStatsRepository
             ->executeQuery()
             ->fetchOne();
 
-        return new DailyStats($registered, $confirmed, $pending);
+        $queryBuilder = clone $baseQueryBuilder;
+        $paid = $queryBuilder->andWhere('etat = :state')
+            ->setParameter('state', Ticket::STATUS_PAID)
+            ->executeQuery()
+            ->fetchOne();
+
+        return new DailyStats($registered, $confirmed, $pending, $paid);
     }
 
     public function getCFPStats(int $eventId): CFPStats

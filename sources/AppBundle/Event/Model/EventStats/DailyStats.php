@@ -10,5 +10,6 @@ final readonly class DailyStats
         public int $registered,
         public int $confirmed,
         public int $pending,
+        public int $paid,
     ) {}
 }
