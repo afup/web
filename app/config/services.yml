@@ -131,13 +131,7 @@ services:
         class: AppBundle\Email\Mailer\Adapter\SymfonyMailerAdapter
         autowire: true
 
-    AppBundle\Email\Mailer\Adapter\MailerAdapter: '@mailer.adapter.php'
-
-    mailer.client.symfony:
-        class: AppBundle\Email\Mailer\Mailer
-        autowire: true
-        arguments:
-            $adapter: '@mailer.adapter.symfony'
+    AppBundle\Email\Mailer\Adapter\MailerAdapter: '@mailer.adapter.symfony'
 
     AppBundle\Mailchimp\EventEventSubscriber:
         arguments:
