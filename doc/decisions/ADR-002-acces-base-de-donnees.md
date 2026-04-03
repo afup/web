@@ -1,7 +1,7 @@
 ---
 Id: ADR-002
 Date: 2026-03-01
-Statut: Proposé
+Statut: Accepté
 ---
 
 # Accès à la base de données

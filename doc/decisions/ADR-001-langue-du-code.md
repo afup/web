@@ -1,7 +1,7 @@
 ---
 Id: ADR-001
 Date: 2026-03-01
-Statut: Proposé
+Statut: Accepté
 ---
 
 # Langue du code
