@@ -59,9 +59,9 @@ En revanche, on ne dit pas "Dépot" mais "Repository" par habitude dans notre m�
 
 ### Positives
 
-- La navigation et la compréhension du le code est plus simple
+- La navigation et la compréhension du code est plus simple
 - Quand un ou une bénévole parle du site ou d'un sujet de l'association, il est plus simple de retrouver le code concerné
-- la contribution est facilité car il y a moins de vocabulaire à apprendre
+- la contribution est facilitée car il y a moins de vocabulaire à apprendre
 
 ### Négatives
 
