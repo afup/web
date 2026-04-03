@@ -39,7 +39,7 @@ class UserService
         $this->userRepository->save($user);
 
         $login = $user->getUsername();
-        $url = $this->urlGenerator->generate('admin_login', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = $this->urlGenerator->generate('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $message = new Message(
             'AFUP : Mot de passe perdu ?',
             new MailUser($this->sender),

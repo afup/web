@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Admin;
+namespace AppBundle\Controller\Auth;
 
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class LoginAction
+final readonly class LoginAction
 {
     public function __construct(
-        private readonly AuthenticationUtils $authenticationUtils,
-        private readonly ViewRenderer $view,
+        private AuthenticationUtils $authenticationUtils,
+        private ViewRenderer $view,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -29,7 +29,7 @@ class LoginAction
         $noDomain = parse_url($targetUri, PHP_URL_HOST) === null;
         $targetPath = $targetUri !== $actualUrl && $noDomain ? $targetUri : null;
 
-        return $this->view->render('admin/login.html.twig', [
+        return $this->view->render('site/auth/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
             'target_path' => $targetPath,

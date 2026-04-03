@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Admin;
+namespace AppBundle\Controller\Auth;
 
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\Twig\ViewRenderer;
@@ -32,7 +32,7 @@ class LostPasswordAction extends AbstractController
             $this->addFlash('notice', 'Votre demande a été prise en compte. Si un compte correspond à cet email vous recevez un nouveau mot de passe rapidement.');
         }
 
-        return $this->view->render('admin/lost_password.html.twig', [
+        return $this->view->render('site/auth/lost_password.html.twig', [
             'form' => $form->createView(),
             'title' => 'Mot de passe perdu',
             'page' => 'motdepasse_perdu',

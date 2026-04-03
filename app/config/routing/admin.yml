@@ -10,17 +10,6 @@ admin_void:
   path: /void
   defaults: {_controller: AppBundle\Controller\LegacyController::backOffice}
 
-admin_login:
-  path: /login
-  defaults: {_controller: AppBundle\Controller\Admin\LoginAction}
-
-admin_logout:
-  path: /logout
-
-admin_password:
-  path: /password
-  defaults: {_controller: AppBundle\Controller\Admin\LostPasswordAction}
-
 admin_members:
     resource: "admin_members.yml"
     prefix: /members

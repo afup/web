@@ -27,7 +27,7 @@
                     {% if app.user.canAccessAdmin %}
                         <a href="{{ path('admin_home') }}" class="header-button header-button__connect">Administration</a>
                     {% endif %}
-                    <a href="{{ path('admin_logout') }}" class="header-button header-button__connect">Se déconnecter</a>
+                    <a href="{{ path('app_logout') }}" class="header-button header-button__connect">Se déconnecter</a>
                 {%  else  %}
                     <a href="{{ path('member_index') }}" class="header-button header-button__connect">Se connecter</a>
                     <a href="{{ path('become_member') }}" class="header-button header-button__become-member">Adhérer</a>

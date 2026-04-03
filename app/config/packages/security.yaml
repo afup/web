@@ -24,16 +24,16 @@ security:
             security: false
 
         legacy_secured_area:
-            pattern: ^(/admin/|/event/\w+/tickets|/association/techletter|/member)
+            pattern: ^(/admin/|/event/\w+/tickets|/association/techletter|/member|/login|/logout)
             provider: database_users
             logout:
-                path:   /admin/logout
+                path:   /logout
                 target: /
             form_login:
                 username_parameter: utilisateur
                 password_parameter: mot_de_passe
-                login_path: admin_login
-                check_path: admin_login
+                login_path: app_login
+                check_path: app_login
                 default_target_path: /member/
                 enable_csrf: true
             context: share_context
@@ -51,7 +51,7 @@ security:
     access_control:
         - { path: ^/event/vote/, roles: ROLE_GITHUB }
         - { path: ^(/event/.*/(vote|cfp|speaker-infos)|/connect/github/check|/event/speaker-infos), roles: ROLE_GITHUB }
-        - { path: ^/admin/(login|register|password), roles: PUBLIC_ACCESS }
+        - { path: ^/(login|register|password-reset), roles: PUBLIC_ACCESS }
         - { path: ^/admin/techletter/members, roles: ROLE_ADMIN }
         - { path: ^/admin/techletter, roles: ROLE_VEILLE }
         - { path: ^/admin/company, roles: ROLE_COMPANY_MANAGER }

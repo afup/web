@@ -25,7 +25,7 @@ trait AuthContext
     #[Given('I am logged-in with the user :username and the password :password')]
     public function iAmLoggedInWithTheUserAndThePassword(string $username, string $password): void
     {
-        $this->minkContext->visitPath('/admin/login');
+        $this->minkContext->visitPath('/login');
         $this->minkContext->fillField('utilisateur', $username);
         $this->minkContext->fillField('mot_de_passe', $password);
         $this->minkContext->pressButton('Se connecter');

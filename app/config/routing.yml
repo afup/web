@@ -86,3 +86,6 @@ presta_sitemap:
 
 global:
     resource: "routing/global.yml"
+
+auth:
+    resource: "routing/auth.yml"

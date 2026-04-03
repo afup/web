@@ -54,4 +54,4 @@ RewriteRule ^ask/forum/? https://event.afup.org [R=301,L]
 RewriteRule ^ask/? / [R=301,L]
 
 ## This url are handled by symfony
-RewriteRule (event|connect|_|association|talks|meetups|blog|admin|p|home|news|techno_watch|member|rss.xml)/? /index.php [END]
+RewriteRule (event|connect|_|association|talks|meetups|blog|admin|p|home|news|techno_watch|member|login|logout|password-reset|rss.xml)/? /index.php [END]
