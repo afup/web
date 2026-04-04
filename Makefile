@@ -128,6 +128,7 @@ phpstan:
 ### Compiler les assets pour la production
 assets:
 	./node_modules/.bin/webpack -p
+	php bin/console importmap:install
 
 ### Lancer le watcher pour les assets
 watch:

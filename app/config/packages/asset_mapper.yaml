@@ -6,6 +6,7 @@ framework:
     importmap_path: '%kernel.project_dir%/../importmap.php'
     missing_import_mode: strict
     vendor_dir: '%kernel.project_dir%/../assets/vendor'
+    public_prefix: /dist/
 
 when@prod:
   framework:
