@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0b6692e824bb408f2dcd4fcaddaf326b",
+    "content-hash": "e2bad9887ac83df51f8f95993847c1f2",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -14683,26 +14683,22 @@
         },
         {
             "name": "smalot/pdfparser",
-            "version": "v0.19.0",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smalot/pdfparser.git",
-                "reference": "1895c17417aefa4508e35836c46da61988d61f26"
+                "reference": "43e436f32fd0e3d1f808c3b1768975c598c9a7df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/1895c17417aefa4508e35836c46da61988d61f26",
-                "reference": "1895c17417aefa4508e35836c46da61988d61f26",
+                "url": "https://api.github.com/repos/smalot/pdfparser/zipball/43e436f32fd0e3d1f808c3b1768975c598c9a7df",
+                "reference": "43e436f32fd0e3d1f808c3b1768975c598c9a7df",
                 "shasum": ""
             },
             "require": {
                 "ext-zlib": "*",
-                "php": ">=5.6",
+                "php": ">=7.1",
                 "symfony/polyfill-mbstring": "^1.18"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.16",
-                "symfony/phpunit-bridge": "^5.2"
             },
             "type": "library",
             "autoload": {
@@ -14731,9 +14727,9 @@
             ],
             "support": {
                 "issues": "https://github.com/smalot/pdfparser/issues",
-                "source": "https://github.com/smalot/pdfparser/tree/v0.19.0"
+                "source": "https://github.com/smalot/pdfparser/tree/v1.1.0"
             },
-            "time": "2021-04-13T08:27:56+00:00"
+            "time": "2021-08-03T08:33:34+00:00"
         },
         {
             "name": "staabm/side-effects-detector",
