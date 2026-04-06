@@ -14,7 +14,8 @@
 'Notes aux organisateurs (2)': 'Notes to organizers (2)'
 'Je propose de faire un atelier': 'I propose a workshop'
 'Je souhaite profiter du programme d''accompagnement des jeunes speakers': 'I''d like to take advantage of the support program for young speakers'
-'J''accepte le code de conduite et les conditions générales de participation (1)': 'I accept the code of conduct and the general conditions of participation (1)'
+'J''accepte le code de conduite et les conditions générales de participation (2)': 'I accept the code of conduct and the general conditions of participation (2)'
+'J''ai bien pris connaissance du processus de sélection des conférences (3)': 'I have carefully reviewed the talks selection process (3)'
 'Autoriser l’AFUP à transmettre ma proposition de conférence à ses antennes locales ?': 'Authorize AFUP to forward my conference proposal to its local branches?'
 'J''autorise': 'I authorize'
 'Je refuse': 'I refuse'
@@ -98,6 +99,8 @@ type.3: '20 mn'
 code_of_conduct_warning: |
   The code of conduct is <a href="https://afup.org/p/985-code-of-conduct" target="_blank">available online</a>.<br />
   As a speaker, I agree to be filmed and photographed free of charge for the exclusive benefit of AFUP, for distribution on the Internet or on any other communication medium distributed in particular in Europe, for a period of 10 years after my conference.
+talks_selection_acknowledgement: |
+  The selection process is <a href="https://event.afup.org/processus-de-selection-eventsafup/" target="_blank">available online</a>.
 Phone: Phone
 Position: Position
 Language: Language

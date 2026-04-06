@@ -18,8 +18,9 @@
 
         {% include 'event/cfp/form.html.twig' with {'form': form} %}
 
-        <p>(1) {{ 'code_of_conduct_warning'|trans|raw }}</p>
-        <p>(2) {{ 'Ces notes facultatives peuvent contenir des informations sur votre conférence que vous ne voudriez pas voir apparaitre sur le système de vote et dans le programme'|trans }}.</p>
+        <p>(1) {{ 'Ces notes facultatives peuvent contenir des informations sur votre conférence que vous ne voudriez pas voir apparaitre sur le système de vote et dans le programme'|trans }}.</p>
+        <p>(2) {{ 'code_of_conduct_warning'|trans|raw }}</p>
+        <p>(3) {{ 'talks_selection_acknowledgement'|trans|raw }}</p>
     </div>
     {{ sidebar|raw }}
 {% endblock %}

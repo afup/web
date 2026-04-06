@@ -55,6 +55,7 @@ Feature: Event pages - CFP
     And I fill in "talk[abstract]" with "L'histoire des poissons rouges à travers les ages"
     And I fill in "talk[hasAllowedToSharingWithLocalOffices]" with "1"
     And I check "talk[codeOfConduct]"
+    And I check "talk[selectionAcknowledgement]"
     # Proposition d'atelier présent
     And I should see "Je propose de faire un atelier"
     And I should see "nous souhaitons proposer des ateliers"

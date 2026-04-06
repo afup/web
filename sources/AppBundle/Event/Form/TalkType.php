@@ -16,6 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class TalkType extends AbstractType
 {
     public const OPT_COC_CHECKED = 'codeOfConductChecked';
+    public const OPT_SELECTION_ACKNOWLEDGEMENT_CHECKED = 'selectionAcknowledgementChecked';
     public const IS_AFUP_DAY = 'isAfupDay';
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -65,10 +66,16 @@ class TalkType extends AbstractType
             'required' => false,
         ])
         ->add('codeOfConduct', CheckboxType::class, [
-            'label' => 'J\'accepte le code de conduite et les conditions générales de participation (1)',
+            'label' => 'J\'accepte le code de conduite et les conditions générales de participation (2)',
             'mapped' => false,
             'required' => true,
             'data' => $options[self::OPT_COC_CHECKED],
+        ])
+        ->add('selectionAcknowledgement', CheckboxType::class, [
+            'label' => 'J\'ai bien pris connaissance du processus de sélection des conférences (3)',
+            'mapped' => false,
+            'required' => true,
+            'data' => $options[self::OPT_SELECTION_ACKNOWLEDGEMENT_CHECKED],
         ])
         ->add('hasAllowedToSharingWithLocalOffices', ChoiceType::class, [
             'choices' => [
@@ -89,6 +96,7 @@ class TalkType extends AbstractType
     {
         $resolver->setDefaults([
             self::OPT_COC_CHECKED => false,
+            self::OPT_SELECTION_ACKNOWLEDGEMENT_CHECKED => false,
             self::IS_AFUP_DAY => false,
         ]);
     }
