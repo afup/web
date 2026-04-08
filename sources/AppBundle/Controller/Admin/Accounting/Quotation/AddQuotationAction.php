@@ -54,7 +54,7 @@ class AddQuotationAction extends AbstractController
 
     private function init(int $quotationId): Invoicing
     {
-        $baseQuotation = $this->invoicingRepository->getQuotationById($quotationId);
+        $baseQuotation = $this->invoicingRepository->getById($quotationId);
         if (!$baseQuotation instanceof Invoicing) {
             $quotation =  new Invoicing();
             $quotation->setQuotationDate(new \DateTime());

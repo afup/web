@@ -38,7 +38,7 @@ class ListInvoiceAction extends AbstractController
 
         /** @var Invoicing $invoice */
         foreach ($invoices as $invoice) {
-            if ($invoice->getPaymentStatus() === InvoicingPaymentStatus::Cancelled->value) {
+            if ($invoice->getPaymentStatus() === InvoicingPaymentStatus::Cancelled) {
                 continue;
             }
 

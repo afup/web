@@ -40,15 +40,15 @@
             <tbody>
             {% for line in lines %}
                 <tr class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
-                    <td nowrap="nowrap">{{ line.quotationDate|format_date('short') }}</td>
+                    <td nowrap="nowrap">{{ line.invoiceDate|format_date('short') }}</td>
                     <td>{{ line.company }}</td>
                     <td>{{ line.city }}</td>
                     <td class="right aligned">{{ line.invoiceNumber }}</td>
                     <td>{{ line.refClt1 }}</td>
                     <td class="center aligned">
-                        {% if line.paymentStatus == 2 %}
+                        {% if line.paymentStatus == enum('AppBundle\\Accounting\\InvoicingPaymentStatus').Cancelled %}
                             <span class="ui label">Annulé</span>
-                        {% elseif line.paymentStatus == 1 %}
+                        {% elseif line.paymentStatus == enum('AppBundle\\Accounting\\InvoicingPaymentStatus').Payed %}
                             <span class="ui green label">Payé</span>
                         {% else %}
                             <span class="ui yellow label">En attente</span>
@@ -56,12 +56,12 @@
                     </td>
                     <td class="right aligned">{{ line.price|number_format(2, ',', ' ') }}</td>
                     <td class="right aligned single line">
-                        <a href="/pages/administration/index.php?page=compta_facture&amp;action=modifier&amp;id={{ line.id }}"
+                        <a href="{{ path('admin_accounting_invoices_edit', {'invoiceId': line.id}) }}"
                            data-position="left center"
                            data-tooltip="Modifier la ligne {{ line.company }}"
                            class="compact ui icon button"
                         >
-                            <i class="pencil alernate icon"></i>
+                            <i class="pencil alternate icon"></i>
                         </a>
                         <a href="{{ url('admin_accounting_invoices_download', {'ref': line.invoiceNumber}) }}"
                            data-position="left center"
