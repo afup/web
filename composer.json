@@ -109,7 +109,10 @@
     "symfony-web-dir": "htdocs",
     "symfony-bin-dir": "bin",
     "symfony-var-dir": "var",
-    "symfony-tests-dir": "tests"
+    "symfony-tests-dir": "tests",
+    "symfony": {
+      "require": "7.4.*"
+    }
   },
   "autoload": {
     "psr-4": {
@@ -160,9 +163,9 @@
     "rector/rector": "^2.0",
     "robertfausk/behat-panther-extension": "^1.2",
     "smalot/pdfparser": "^1.0",
-    "symfony/debug-bundle": "7.3.*",
-    "symfony/json-path": "7.3.*",
-    "symfony/web-profiler-bundle": "7.3.*",
+    "symfony/debug-bundle": "7.4.*",
+    "symfony/json-path": "7.4.*",
+    "symfony/web-profiler-bundle": "7.4.*",
     "symplify/vendor-patches": "^11.4",
     "tomasvotruba/type-coverage": "^2.1"
   },
