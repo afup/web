@@ -9,6 +9,8 @@ doctrine:
 
     profiling_collect_backtrace: '%kernel.debug%'
     use_savepoints: true
+    types:
+      unix_timestamp: AppBundle\Doctrine\Type\UnixTimestampType
   orm:
     auto_generate_proxy_classes: true
     enable_lazy_ghost_objects: true
@@ -18,6 +20,9 @@ doctrine:
     auto_mapping: true
     controller_resolver:
       auto_mapping: false
+    dql:
+      datetime_functions:
+        UNIX_TIMESTAMP: DoctrineExtensions\Query\Mysql\UnixTimestamp
     mappings:
       Accounting:
         type: attribute

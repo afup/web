@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Afup\Site\Corporate;
 
-use AppBundle\Site\Model\Repository\SheetRepository;
+use AppBundle\Site\Entity\Feuille as FeuilleEntity;
+use AppBundle\Site\Entity\Repository\FeuilleRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 final readonly class Page
 {
     public function __construct(
-        private SheetRepository $sheetRepository,
+        private FeuilleRepository $feuilleRepository,
     ) {}
 
     public function header($url = null, UserInterface $user = null): string
@@ -18,41 +19,33 @@ final readonly class Page
         $url = urldecode((string) $url);
         $str = '<ul>';
 
-        $feuillesEnfants = iterator_to_array($this->sheetRepository->getActiveChildrenByParentId(Feuille::ID_FEUILLE_HEADER));
+        $feuillesEnfants = $this->feuilleRepository->getFeuillesEnfant(Feuille::ID_FEUILLE_HEADER);
+
+        $cssClasses = [];
+        $feuilleLogin = new FeuilleEntity();
+        $feuilleLogin->idParent = Feuille::ID_FEUILLE_HEADER;
+        $feuilleLogin->lien = '/member';
+        $feuilleLogin->alt = '';
+        $feuilleLogin->position = 999;
+        $feuilleLogin->etat = 1;
 
         if ($user instanceof UserInterface) {
-            $feuillesEnfants[] = [
-                'id' => PHP_INT_MAX,
-                'id_parent' => Feuille::ID_FEUILLE_HEADER,
-                'nom' => 'Espace membre',
-                'lien' => '/member',
-                'alt' => '',
-                'position' => '999',
-                'date' => null,
-                'etat' => '1',
-                'image' => null,
-                'patterns' => "#/admin/company#",
-            ];
+            $feuilleLogin->id = PHP_INT_MAX;
+            $feuilleLogin->nom = 'Espace membre';
+            $feuilleLogin->patterns = "#/admin/company#";
         } else {
-            $feuillesEnfants[] = [
-                'id' => PHP_INT_MAX - 1,
-                'id_parent' => Feuille::ID_FEUILLE_HEADER,
-                'nom' => 'Se connecter',
-                'lien' => '/member',
-                'alt' => '',
-                'position' => '999',
-                'date' => null,
-                'etat' => '1',
-                'image' => null,
-                'patterns' => null,
-                'class' => 'desktop-hidden',
-            ];
+            $feuilleLogin = new FeuilleEntity();
+            $feuilleLogin->id = PHP_INT_MAX - 1;
+            $feuilleLogin->nom = 'Se connecter';
+            $cssClasses[PHP_INT_MAX - 1] = 'desktop-hidden';
         }
+
+        $feuillesEnfants[] = $feuilleLogin;
 
         foreach ($feuillesEnfants as $feuille) {
             $isCurrent = false;
-            if ($feuille['patterns']) {
-                foreach (explode(PHP_EOL, (string) $feuille['patterns']) as $pattern) {
+            if ($feuille->patterns) {
+                foreach (explode(PHP_EOL, (string) $feuille->patterns) as $pattern) {
                     $pattern = trim($pattern);
                     if ($pattern === '') {
                         continue;
@@ -64,15 +57,15 @@ final readonly class Page
                 }
             }
 
-            if (str_contains($url, (string) $feuille['lien'])) {
+            if (str_contains($url, (string) $feuille->lien)) {
                 $isCurrent = true;
             }
 
             if (false === $isCurrent) {
-                $enfants = $this->sheetRepository->getActiveChildrenByParentId($feuille['id']);
+                $enfants = $this->feuilleRepository->getFeuillesEnfant($feuille->id);
                 foreach ($enfants as $feuilleEnfant) {
-                    foreach ($this->sheetRepository->getActiveChildrenByParentId($feuilleEnfant['id']) as $feuillesEnfant2) {
-                        if (str_contains($url, (string) $feuillesEnfant2['lien'])) {
+                    foreach ($this->feuilleRepository->getFeuillesEnfant($feuilleEnfant->id) as $feuilleEnfant2) {
+                        if (str_contains($url, (string) $feuilleEnfant2->lien)) {
                             $isCurrent = true;
                         }
                     }
@@ -81,26 +74,26 @@ final readonly class Page
 
             $class = $isCurrent ? " subheader-current " : "";
 
-            if (isset($feuille['class'])) {
-                $class .= ' ' . $feuille['class'];
+            if (isset($cssClasses[$feuille->id])) {
+                $class .= ' ' . $cssClasses[$feuille->id];
             }
 
-            $str .= sprintf("<li class='%s'><a href='%s'>%s</a></li>", $class, $feuille['lien'], $feuille['nom']);
+            $str .= sprintf("<li class='%s'><a href='%s'>%s</a></li>", $class, $feuille->lien, $feuille->nom);
         }
 
         return $str . '<ul>';
     }
 
     /**
-     * @return array{nom: mixed, items: mixed}[]
+     * @return array{nom: mixed, items: FeuilleEntity[]}[]
      */
     public function footer(): array
     {
         $footerColumns = [];
-        foreach ($this->sheetRepository->getActiveChildrenByParentId(Feuille::ID_FEUILLE_FOOTER) as $feuilleColonne) {
+        foreach ($this->feuilleRepository->getFeuillesEnfant(Feuille::ID_FEUILLE_FOOTER) as $feuilleColonne) {
             $footerColumns[] = [
-                'nom' => $feuilleColonne['nom'],
-                'items' => $this->sheetRepository->getActiveChildrenByParentId($feuilleColonne['id']),
+                'nom' => $feuilleColonne->nom,
+                'items' => $this->feuilleRepository->getFeuillesEnfant($feuilleColonne->id),
             ];
         }
 

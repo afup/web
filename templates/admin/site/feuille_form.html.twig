@@ -13,8 +13,8 @@
             <div>
                 <div class="ui form">
                     {{ form_row(form.idParent) }}
-                    {{ form_row(form.name) }}
-                    {{ form_row(form.link) }}
+                    {{ form_row(form.nom) }}
+                    {{ form_row(form.lien) }}
                     {{ form_row(form.alt) }}
                     {{ form_row(form.image) }}
                     {% if image  %}
@@ -32,11 +32,11 @@
                     </div>
                     {% endif %}
                     {{ form_row(form.imageAlt) }}
-                    {{ form_row(form.creationDate) }}
-                    {{ form_row(form.publicationStart) }}
-                    {{ form_row(form.publicationEnd) }}
+                    {{ form_row(form.dateCreation) }}
+                    {{ form_row(form.dateDebutPublication) }}
+                    {{ form_row(form.dateFinPublication) }}
                     {{ form_row(form.position) }}
-                    {{ form_row(form.state) }}
+                    {{ form_row(form.etat) }}
                     {{ form_row(form.patterns) }}
 
                 </div>

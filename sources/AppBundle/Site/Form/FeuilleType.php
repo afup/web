@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Site\Form;
 
-use AppBundle\Site\Model\Repository\SheetRepository;
+use AppBundle\Site\Entity\Repository\FeuilleRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -14,37 +14,37 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class SheetType extends AbstractType
+class FeuilleType extends AbstractType
 {
     public const POSITIONS_RUBRIQUES = 9;
 
     public function __construct(
-        private readonly SheetRepository $sheetRepository,
+        private readonly FeuilleRepository $feuilleRepository,
     ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $sheets = [];
-        foreach ($this->sheetRepository->getAll() as $sheet) {
-            $sheets[$sheet->getName()] = $sheet->getId();
+        $feuilles = [];
+        foreach ($this->feuilleRepository->findAll() as $feuille) {
+            $feuilles[$feuille->nom] = $feuille->id;
         }
-        ksort($sheets, SORT_NATURAL);
+        ksort($feuilles, SORT_NATURAL);
 
         $positions = [];
-        for ($i = self::POSITIONS_RUBRIQUES ; $i >= -(self::POSITIONS_RUBRIQUES); $i--) {
+        for ($i = self::POSITIONS_RUBRIQUES; $i >= -(self::POSITIONS_RUBRIQUES); $i--) {
             $positions[$i] = $i;
         }
 
         $builder
             ->add('idParent', ChoiceType::class, [
                 'label' => 'Parent',
-                'choices' => $sheets,
+                'choices' => $feuilles,
                 'required' => false,
                 'constraints' => [
                     new Assert\Type("integer"),
                 ],
             ])
-            ->add('name', TextType::class, [
+            ->add('nom', TextType::class, [
                 'label' => 'Nom',
                 'required' => true,
                 'attr' => [
@@ -57,7 +57,7 @@ class SheetType extends AbstractType
                     new Assert\Type('string'),
                 ],
             ])
-            ->add('link', TextType::class, [
+            ->add('lien', TextType::class, [
                 'required' => true,
                 'label' => 'Lien',
                 'attr' => [
@@ -88,7 +88,7 @@ class SheetType extends AbstractType
                 'data_class' => null,
                 'mapped' => false,
                 'constraints' => [
-                    new Assert\Image(mimeTypes: ['image/jpg','image/jpeg','image/gif','image/png']),
+                    new Assert\Image(mimeTypes: ['image/jpg', 'image/jpeg', 'image/gif', 'image/png']),
                 ],
             ])
             ->add('imageAlt', TextType::class, [
@@ -103,7 +103,7 @@ class SheetType extends AbstractType
                     new Assert\Type('string'),
                 ],
             ])
-            ->add('creationDate', DateType::class, [
+            ->add('dateCreation', DateType::class, [
                 'required' => false,
                 'label' => 'Date',
                 'input' => 'datetime',
@@ -112,8 +112,7 @@ class SheetType extends AbstractType
                     new Assert\Type("datetime"),
                 ],
             ])
-
-            ->add('publicationStart', DateType::class, [
+            ->add('dateDebutPublication', DateType::class, [
                 'required' => false,
                 'label' => 'Date de début de publication',
                 'input' => 'datetime',
@@ -122,7 +121,7 @@ class SheetType extends AbstractType
                     new Assert\Type("datetime"),
                 ],
             ])
-            ->add('publicationEnd', DateType::class, [
+            ->add('dateFinPublication', DateType::class, [
                 'required' => false,
                 'label' => 'Date de fin de publication',
                 'input' => 'datetime',
@@ -131,7 +130,6 @@ class SheetType extends AbstractType
                     new Assert\Type("datetime"),
                 ],
             ])
-
             ->add('position', ChoiceType::class, [
                 'required' => false,
                 'label' => 'Position',
@@ -140,7 +138,7 @@ class SheetType extends AbstractType
                     new Assert\Type("integer"),
                 ],
             ])
-            ->add('state', ChoiceType::class, [
+            ->add('etat', ChoiceType::class, [
                 'label' => 'Etat',
                 'required' => false,
                 'choices' => [

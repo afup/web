@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\Admin\Site\Sheet;
+namespace AppBundle\Controller\Admin\Site\Feuille;
 
-use AppBundle\Site\Model\Repository\SheetRepository;
+use AppBundle\Site\Entity\Repository\FeuilleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class ListSheetsAction
+final readonly class ListFeuillesAction
 {
     public function __construct(
-        private readonly SheetRepository $sheetRepository,
-        private readonly Environment $twig,
+        private FeuilleRepository $feuilleRepository,
+        private Environment $twig,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -26,10 +26,10 @@ class ListSheetsAction
         }
         $direction = $request->query->get('direction', 'desc');
         $filter = $request->query->get('filter', '');
-        $sheets = $this->sheetRepository->getAllSheets($sort, $direction, $filter);
+        $feuilles = $this->feuilleRepository->getAllFeuilles($sort, $direction, $filter);
 
-        return new Response($this->twig->render('admin/site/sheet_list.html.twig', [
-            'sheets' => $sheets,
+        return new Response($this->twig->render('admin/site/feuille_list.html.twig', [
+            'feuilles' => $feuilles,
             'filter' => $filter,
             'sort' => $sort,
             'direction' => $direction,

@@ -14,9 +14,9 @@ use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
+use AppBundle\Site\Entity\Repository\FeuilleRepository;
 use AppBundle\Site\Model\Article;
 use AppBundle\Site\Model\Repository\ArticleRepository;
-use AppBundle\Site\Model\Repository\SheetRepository;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
 use Presta\SitemapBundle\Service\UrlContainerInterface;
 use Presta\SitemapBundle\Sitemap\Url\GoogleVideo;
@@ -34,7 +34,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
         private readonly EventRepository $eventRepository,
         private readonly ArticleRepository $articleRepository,
         private readonly CompanyMemberRepository $companyMemberRepository,
-        private readonly SheetRepository $sheetRepository,
+        private readonly FeuilleRepository $feuilleRepository,
     ) {}
 
     public static function getSubscribedEvents(): array
@@ -72,7 +72,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                 ),
                 $talk->getSubmittedOn(),
             );
-            $urls->addUrl($url,'talks');
+            $urls->addUrl($url, 'talks');
 
             if ($talk->hasYoutubeId()) {
                 $video = new GoogleVideo(
@@ -83,7 +83,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                 );
                 $decoratedUrl = new GoogleVideoUrlDecorator($url);
                 $decoratedUrl->addVideo($video);
-                $urls->addUrl($decoratedUrl,'video');
+                $urls->addUrl($decoratedUrl, 'video');
             }
         }
     }
@@ -100,7 +100,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                     UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
             );
-            $urls->addUrl($url,'talks');
+            $urls->addUrl($url, 'talks');
         }
     }
 
@@ -119,7 +119,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                 UrlConcrete::CHANGEFREQ_DAILY,
                 1,
             );
-            $urls->addUrl($url,'talks');
+            $urls->addUrl($url, 'talks');
         }
     }
 
@@ -133,7 +133,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                 new UrlConcrete(
                     $this->urlGenerator->generate(
                         'news_display',
-                        ['code' => $article->getSlug(),],
+                        ['code' => $article->getSlug()],
                         UrlGeneratorInterface::ABSOLUTE_URL,
                     ),
                     $article->getPublishedAt(),
@@ -195,14 +195,14 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
 
     private function fromFeuilleId(int $id, UrlContainerInterface $urls): void
     {
-        $leafs = $this->sheetRepository->getActiveChildrenByParentId($id);
-        foreach ($leafs as $leaf) {
-            if (!$leaf['lien'] || !str_starts_with((string) $leaf['lien'], 'http')) {
+        $feuilles = $this->feuilleRepository->getFeuillesEnfant($id);
+        foreach ($feuilles as $feuille) {
+            if (!$feuille->lien || !str_starts_with((string) $feuille->lien, 'http')) {
                 continue;
             }
 
             $urls->addUrl(
-                new UrlConcrete($leaf['lien']),
+                new UrlConcrete($feuille->lien),
                 'default',
             );
         }

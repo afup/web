@@ -1,7 +1,7 @@
 {% extends 'admin/base_with_header.html.twig' %}
 
 {% block content %}
-    {% set token_delete=csrf_token('sheet_delete') %}
+    {% set token_delete=csrf_token('feuille_delete') %}
 
     <h2>Liste des feuilles</h2>
 
@@ -12,7 +12,7 @@
         <p>Cela correspond au menu de gauche sur le site web.</p>
     </div>
     <div class="ui menu">
-        <a href="{{ path('admin_site_sheets_add') }}" class="item">
+        <a href="{{ path('admin_site_feuilles_add') }}" class="item">
             <div data-tooltip="Ajouter une feuille" data-position="bottom left">
                 <i class="icon plus square"></i>
                 Ajouter
@@ -50,44 +50,44 @@
             </tr>
         </thead>
         <tbody>
-        {% if sheets|length > 0 %}
-            {% for sheet in sheets %}
+        {% if feuilles|length > 0 %}
+            {% for feuille in feuilles %}
             <tr>
-                <td>{% if sheet.date != null %}{{ sheet.date|date('d-m-Y') }}{% endif %}</td>
+                <td>{% if feuille.dateCreation != null %}{{ feuille.dateCreation|date('d-m-Y') }}{% endif %}</td>
                 <td style="white-space : normal;">
-                    {{ sheet.nom }}
-                    {% if sheet.image is not empty %}
-                        <br/><img src="../../templates/site/images/{{ sheet.image }}" alt="{{ sheet.image_alt|default('') }}" width="125" />
+                    {{ feuille.nom }}
+                    {% if feuille.image is not empty %}
+                        <br/><img src="../../templates/site/images/{{ feuille.image }}" alt="{{ feuille.imageAlt|default('') }}" width="125" />
                     {% endif %}
                 </td>
-                <td>{% if sheet.date_debut_publication is not null %}{{ sheet.date_debut_publication|date('d-m-Y') }}{% endif %}</td>
-                <td>{% if sheet.date_fin_publication is not null %}{{ sheet.date_fin_publication|date('d-m-Y') }}{% endif %}</td>
+                <td>{% if feuille.dateDebutPublication is not null %}{{ feuille.dateDebutPublication|date('d-m-Y') }}{% endif %}</td>
+                <td>{% if feuille.dateFinPublication is not null %}{{ feuille.dateFinPublication|date('d-m-Y') }}{% endif %}</td>
                 <td class="center aligned">
-                    {% if sheet.etat == 1 %}
+                    {% if feuille.etat == 1 %}
                         <a class="ui orange label">En ligne</a>
-                    {% elseif sheet.etat == -1 %}
+                    {% elseif feuille.etat == -1 %}
                         <a class="ui grey label">Hors ligne</a>
                     {% else %}
                         <a class="ui violet label">En attente</a>
                     {% endif %}
                 </td>
-                <td class="right aligned" >{{ sheet.position }}</td>
+                <td class="right aligned" >{{ feuille.position }}</td>
                 <td class="single line right aligned">
-                    <a id="modifier_{{ sheet.id }}"
-                        href="{{ path('admin_site_sheets_edit', {'id': sheet.id }) }}"
+                    <a id="modifier_{{ feuille.id }}"
+                        href="{{ path('admin_site_feuilles_edit', {'id': feuille.id }) }}"
                         data-position="left center"
-                        data-tooltip="Modifier la feuille {{ sheet.nom }}"
+                        data-tooltip="Modifier la feuille {{ feuille.nom }}"
                         class="compact ui icon button"
                     >
                         <i class="pencil alernate icon"></i>
                     </a>
 
-                    <a id="supprimer_{{ sheet.id }}"
-                    href="{{path('admin_site_sheets_delete', {'id': sheet.id, 'token': token_delete }) }}"
+                    <a id="supprimer_{{ feuille.id }}"
+                    href="{{path('admin_site_feuilles_delete', {'id': feuille.id, 'token': token_delete }) }}"
                     data-position="left center"
-                    data-tooltip="Supprimer la feuille {{ sheet.nom }}"
+                    data-tooltip="Supprimer la feuille {{ feuille.nom }}"
                     class="compact ui red icon button confirmable"
-                    data-confirmable-label="Etes-vous sûr de vouloir supprimer la feuille {{ sheet.nom }} ?"
+                    data-confirmable-label="Etes-vous sûr de vouloir supprimer la feuille {{ feuille.nom }} ?"
                     >
                         <i class="trash icon"></i>
                     </a>

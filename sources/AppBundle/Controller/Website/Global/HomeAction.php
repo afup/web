@@ -11,7 +11,7 @@ use AppBundle\Event\Model\Meetup;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Model\Repository\ArticleRepository;
-use AppBundle\Site\Model\Repository\SheetRepository;
+use AppBundle\Site\Entity\Repository\FeuilleRepository;
 use AppBundle\Twig\ViewRenderer;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
@@ -33,14 +33,14 @@ final class HomeAction extends AbstractController
         #[Autowire('%home_algolia_enabled%')]
         private readonly bool $homeAlgoliaEnabled,
         private readonly ArticleRepository $articleRepository,
-        private readonly SheetRepository $sheetRepository,
+        private readonly FeuilleRepository $feuilleRepository,
     ) {}
 
     public function __invoke(): Response
     {
         $derniers_articles = $this->articleRepository->findListForHome();
 
-        $enfants = iterator_to_array($this->sheetRepository->getActiveChildrenByParentId(Feuille::ID_FEUILLE_COLONNE_DROITE));
+        $enfants = $this->feuilleRepository->getFeuillesEnfant(Feuille::ID_FEUILLE_COLONNE_DROITE);
 
         $premiereFeuille = array_shift($enfants);
         $deuxiemeFeuille = array_shift($enfants);
