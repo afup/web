@@ -19,7 +19,7 @@ jobs:
         with:
           php-version: ${{ env.php_version }}
 
-      - uses: ramsey/composer-install@v3
+      - uses: ramsey/composer-install@4.0.0
         with:
           composer-options: "--no-scripts"
 
@@ -38,7 +38,7 @@ jobs:
         with:
           php-version: ${{ env.php_version }}
 
-      - uses: ramsey/composer-install@v3
+      - uses: ramsey/composer-install@4.0.0
         with:
           composer-options: "--no-scripts"
 
@@ -57,7 +57,7 @@ jobs:
         with:
           php-version: ${{ env.php_version }}
 
-      - uses: ramsey/composer-install@v3
+      - uses: ramsey/composer-install@4.0.0
         with:
           composer-options: "--no-scripts"
 
@@ -134,7 +134,7 @@ jobs:
         with:
           php-version: ${{ env.php_version }}
 
-      - uses: ramsey/composer-install@v3
+      - uses: ramsey/composer-install@4.0.0
         with:
           composer-options: "--no-scripts"
 
