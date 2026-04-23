@@ -6,7 +6,7 @@ namespace AppBundle\Site\Form;
 
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Site\Entity\Repository\FeuilleRepository;
-use AppBundle\Site\Model\Repository\RubriqueRepository;
+use AppBundle\Site\Entity\Repository\RubriqueRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -43,8 +43,8 @@ class RubriqueType extends AbstractType
             $positions[$i] = $i;
         }
         $rubriques = [];
-        foreach ($this->rubriqueRepository->getAll() as $rubrique) {
-            $rubriques[$rubrique->getNom()] = $rubrique->getId();
+        foreach ($this->rubriqueRepository->findAll() as $rubrique) {
+            $rubriques[$rubrique->nom] = $rubrique->id;
         }
         $builder
             ->add('nom', TextType::class, [

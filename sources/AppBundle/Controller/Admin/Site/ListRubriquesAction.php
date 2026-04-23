@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Site;
 
-use AppBundle\Site\Model\Repository\RubriqueRepository;
+use AppBundle\Site\Entity\Repository\RubriqueRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;

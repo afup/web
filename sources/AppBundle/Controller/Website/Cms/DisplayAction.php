@@ -6,8 +6,8 @@ namespace AppBundle\Controller\Website\Cms;
 
 use AppBundle\Site\Model\Article;
 use AppBundle\Site\Model\Repository\ArticleRepository;
-use AppBundle\Site\Model\Repository\RubriqueRepository;
-use AppBundle\Site\Model\Rubrique;
+use AppBundle\Site\Entity\Repository\RubriqueRepository;
+use AppBundle\Site\Entity\Rubrique;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +32,7 @@ final class DisplayAction extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $rubrique = $this->rubriqueRepository->get($article->getRubricId());
+        $rubrique = $this->rubriqueRepository->find($article->getRubricId());
 
         if (!$this->isRubriqueAllowed($rubrique)) {
             throw $this->createNotFoundException();
@@ -46,6 +46,6 @@ final class DisplayAction extends AbstractController
 
     protected function isRubriqueAllowed(Rubrique $rubrique): bool
     {
-        return in_array($rubrique->getId(), [Rubrique::ID_RUBRIQUE_ASSOCIATION, Rubrique::ID_RUBRIQUE_ANTENNES, Rubrique::ID_RUBRIQUE_INFORMATIONS_PRATIQUES, Rubrique::ID_RUBRIQUE_NOS_ACTIONS]);
+        return in_array($rubrique->id, [Rubrique::ID_RUBRIQUE_ASSOCIATION, Rubrique::ID_RUBRIQUE_ANTENNES, Rubrique::ID_RUBRIQUE_INFORMATIONS_PRATIQUES, Rubrique::ID_RUBRIQUE_NOS_ACTIONS]);
     }
 }

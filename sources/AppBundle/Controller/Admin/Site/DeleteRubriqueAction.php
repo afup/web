@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Site;
 
 use AppBundle\AuditLog\Audit;
-use AppBundle\Site\Model\Repository\RubriqueRepository;
+use AppBundle\Site\Entity\Repository\RubriqueRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -25,8 +25,8 @@ class DeleteRubriqueAction extends AbstractController
             $this->addFlash('error', 'Token invalide');
             return $this->redirectToRoute('admin_site_rubriques_list');
         }
-        $rubrique = $this->rubriqueRepository->get($id);
-        $name = $rubrique->getNom();
+        $rubrique = $this->rubriqueRepository->find($id);
+        $name = $rubrique->nom;
         $this->rubriqueRepository->delete($rubrique);
         $this->audit->log('Suppression de la Rubrique ' . $name);
         $this->addFlash('notice', 'La rubrique ' . $name . ' a été supprimée');
