@@ -36,7 +36,7 @@ help:
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
-.PHONY: install docker-up docker-stop docker-down test hooks vendors db-seed db-migrations reset-db init console phpstan assets
+.PHONY: install docker-up docker-stop docker-down test test-functional test-functional-no-js test-functional-js hooks vendors db-seed db-migrations reset-db init console phpstan assets
 
 ##@ Setup
 
@@ -108,6 +108,26 @@ test-functional: data config htdocs/uploads tmp
 	make clean-test-deprecated-log
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/bdi detect drivers
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/behat
+	make var/logs/test.deprecations_grouped.log
+	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
+
+### Tests fonctionnels (scénarios sans JS)
+test-functional-no-js: data config htdocs/uploads tmp
+	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
+	$(DOCKER_COMP) up -d dbtest apachephptest mailcatcher
+	make clean-test-deprecated-log
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/bdi detect drivers
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/behat --suite=web_features_no_js
+	make var/logs/test.deprecations_grouped.log
+	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
+
+### Tests fonctionnels (scénarios JS via Panther)
+test-functional-js: data config htdocs/uploads tmp
+	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
+	$(DOCKER_COMP) up -d dbtest apachephptest mailcatcher
+	make clean-test-deprecated-log
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/bdi detect drivers
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/behat --suite=web_features_js
 	make var/logs/test.deprecations_grouped.log
 	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
 
