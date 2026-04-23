@@ -137,6 +137,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     Then I should see "Télécharger la facture en PDF"
 
   # On n'utilise pas @reloadDbWithTestData pour conserver les données
+  @javascript-group
   Scenario: Téléchargement d'un devis et d'une facture
     Given I am logged in as admin and on the Administration
     When I follow "Devis"

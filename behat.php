@@ -3,6 +3,7 @@
 use Afup\Tests\Behat\Bootstrap\FeatureContext;
 use Behat\Config\Config;
 use Behat\Config\Extension;
+use Behat\Config\Filter\TagFilter;
 use Behat\Config\Profile;
 use Behat\Config\Suite;
 use Behat\MinkExtension\Context\MinkContext;
@@ -59,11 +60,21 @@ return (new Config())
                 ],
             ]))
             ->withSuite(
-                (new Suite('web_features'))
+                (new Suite('web_features_no_js'))
                     ->withContexts(
                         FeatureContext::class,
                         MinkContext::class
                     )
                     ->withPaths('%paths.base%/tests/behat')
+                    ->withFilter(new TagFilter('~@javascript-group&&~@javascript'))
+            )
+            ->withSuite(
+                (new Suite('web_features_js'))
+                    ->withContexts(
+                        FeatureContext::class,
+                        MinkContext::class
+                    )
+                    ->withPaths('%paths.base%/tests/behat')
+                    ->withFilter(new TagFilter('@javascript-group,@javascript'))
             )
     );
