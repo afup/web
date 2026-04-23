@@ -25,6 +25,7 @@ Feature: Administration - Trésorerie - Journal
     And I select "26" from "transaction[categoryId]"
     And I fill in "transaction[vendorName]" with "Fournisseur"
     And I fill in "transaction[tvaIntra]" with "FR4412345"
+    And I select "france" from "transaction[tvaZone]"
     And I fill in "transaction[number]" with "001"
     And I fill in "transaction[description]" with "Description dépense 001"
     And I fill in "transaction[amount]" with "12000"

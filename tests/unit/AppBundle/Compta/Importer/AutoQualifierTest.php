@@ -137,6 +137,36 @@ final class AutoQualifierTest extends TestCase
         ];
     }
 
+    public function testRuleWithCategoryButNoEvent(): void
+    {
+        $rule = $this->createRule(1, 'test', 'MATCH', null, null, null, ComptaCategorie::GOODIES, null, null);
+        $qualifier = new AutoQualifier([$rule]);
+        $actual = $qualifier->qualify(new Operation('2022-02-22', 'MATCH something', 100, OperationType::Credit, '1'));
+
+        self::assertEquals(ComptaCategorie::GOODIES, $actual['categorie'], 'Category must be applied even when event is null');
+        self::assertEquals(AutoQualifier::DEFAULT_EVENEMENT, $actual['evenement'], 'Event must stay at default when rule has no event');
+    }
+
+    public function testRuleWithEventButNoCategory(): void
+    {
+        $rule = $this->createRule(1, 'test', 'MATCH', null, null, null, null, ComptaEvenement::GESTION, null);
+        $qualifier = new AutoQualifier([$rule]);
+        $actual = $qualifier->qualify(new Operation('2022-02-22', 'MATCH something', 100, OperationType::Credit, '1'));
+
+        self::assertEquals(ComptaEvenement::GESTION, $actual['evenement'], 'Event must be applied even when category is null');
+        self::assertEquals(AutoQualifier::DEFAULT_CATEGORIE, $actual['categorie'], 'Category must stay at default when rule has no category');
+    }
+
+    public function testRuleWithNeitherCategoryNorEvent(): void
+    {
+        $rule = $this->createRule(1, 'test', 'MATCH', null, null, null, null, null, null);
+        $qualifier = new AutoQualifier([$rule]);
+        $actual = $qualifier->qualify(new Operation('2022-02-22', 'MATCH something', 100, OperationType::Credit, '1'));
+
+        self::assertEquals(AutoQualifier::DEFAULT_CATEGORIE, $actual['categorie']);
+        self::assertEquals(AutoQualifier::DEFAULT_EVENEMENT, $actual['evenement']);
+    }
+
     private function createRule(
         int $id,
         string $label,
@@ -144,15 +174,21 @@ final class AutoQualifierTest extends TestCase
         ?bool $isCredit,
         ?int $paymentTypeId,
         ?string $vat,
-        int $categoryId,
-        int $eventId,
+        ?int $categoryId,
+        ?int $eventId,
         ?bool $attachmentRequired,
     ): Rule {
-        $category = new Category();
-        $category->id = $categoryId;
+        $category = null;
+        if ($categoryId !== null) {
+            $category = new Category();
+            $category->id = $categoryId;
+        }
 
-        $event = new Event();
-        $event->id = $eventId;
+        $event = null;
+        if ($eventId !== null) {
+            $event = new Event();
+            $event->id = $eventId;
+        }
 
         $rule = new Rule();
         $rule->id = $id;

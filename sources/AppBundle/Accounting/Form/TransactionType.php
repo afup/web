@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Accounting\Form;
 
-use Afup\Site\Comptabilite\Comptabilite;
 use AppBundle\Accounting\Entity\Event;
 use AppBundle\Accounting\Entity\Repository\AccountRepository;
 use AppBundle\Accounting\Entity\Repository\CategoryRepository;
@@ -12,10 +11,12 @@ use AppBundle\Accounting\Entity\Repository\EventRepository;
 use AppBundle\Accounting\Entity\Repository\OperationRepository;
 use AppBundle\Accounting\Entity\Repository\PaymentRepository;
 use AppBundle\Accounting\Model\Transaction;
+use AppBundle\Accounting\TvaZone;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -124,11 +125,13 @@ class TransactionType extends AbstractType
             'required' => false,
             'currency' => '',
         ])
-        ->add('tvaZone', ChoiceType::class, [
+        ->add('tvaZone', EnumType::class, [
             'label' => 'Zone TVA',
             'required' => false,
-            'choices' => array_flip(Comptabilite::TVA_ZONES),
+            'class' => TvaZone::class,
             'placeholder' => 'Non définie',
+            'choice_filter' => fn(?TvaZone $zone): bool => $zone !== TvaZone::Undefined,
+            'choice_label' => fn(TvaZone $choice, string $key, mixed $value): string => $choice->getLabel(),
 
         ])
         ->add('paymentTypeId', ChoiceType::class, [

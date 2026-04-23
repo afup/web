@@ -59,10 +59,10 @@ class AutoQualifier
 
         foreach ($this->rules as $rule) {
             if (($operation->isCredit() === (bool) $rule->isCredit || is_null($rule->isCredit)) && str_contains($operationQualified['description'], (string) $rule->condition)) {
-                if (null !== $rule->event->id) {
+                if (null !== $rule->event?->id) {
                     $operationQualified['evenement'] = $rule->event->id;
                 }
-                if (null !== $rule->event->id) {
+                if (null !== $rule->category) {
                     $operationQualified['categorie'] = $rule->category->id;
                 }
                 if (null !== $rule->attachmentRequired) {
