@@ -71,16 +71,26 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Cache Docker images.
-        uses: AndreKurait/docker-cache@0.6.0
+      - name: Create .env from .env.dist
+        run: cp .env.dist .env
+
+      - uses: docker/setup-buildx-action@v4
+
+      - name: Build images with GHA cache
+        uses: docker/bake-action@v7
         with:
-          key: |
-            docker-${{ runner.os }}-${{ hashFiles(
-              'compose.yml',
-              'docker/dockerfiles/apachephp/Dockerfile',
-              'docker/dockerfiles/mysql/Dockerfile',
-              'docker/dockerfiles/mysqltest/Dockerfile'
-            ) }}
+          files: |
+            compose.yml
+            compose.override.yml-dist
+          targets: |
+            apachephp
+            apachephptest
+          load: true
+          set: |
+            apachephp.cache-from=type=gha,scope=apachephp-full
+            apachephp.cache-to=type=gha,scope=apachephp-full,mode=max
+            apachephptest.cache-from=type=gha,scope=apachephp-full
+            apachephptest.cache-to=type=gha,scope=apachephp-full,mode=max
 
       - name: Delete symfony cache
         run: rm -rf var/cache/test
@@ -101,20 +111,30 @@ jobs:
   integration:
     name: "Integration tests"
     runs-on: ubuntu-22.04
+    env:
+      APACHEPHPTEST_TARGET: base
 
     steps:
       - uses: actions/checkout@v6
 
-      - name: Cache Docker images.
-        uses: AndreKurait/docker-cache@0.6.0
+      - name: Create .env from .env.dist
+        run: cp .env.dist .env
+
+      - uses: docker/setup-buildx-action@v4
+
+      - name: Build images with GHA cache
+        uses: docker/bake-action@v7
         with:
-          key: |
-            docker-${{ runner.os }}-${{ hashFiles(
-              'compose.yml',
-              'docker/dockerfiles/apachephp/Dockerfile',
-              'docker/dockerfiles/mysql/Dockerfile',
-              'docker/dockerfiles/mysqltest/Dockerfile'
-            ) }}
+          files: |
+            compose.yml
+            compose.override.yml-dist
+          targets: |
+            apachephptest
+            dbtest
+          load: true
+          set: |
+            apachephptest.cache-from=type=gha,scope=apachephp-base
+            apachephptest.cache-to=type=gha,scope=apachephp-base,mode=max
 
       - name: Delete symfony cache
         run: rm -rf var/cache/test
