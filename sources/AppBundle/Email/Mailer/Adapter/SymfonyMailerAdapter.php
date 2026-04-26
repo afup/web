@@ -13,9 +13,7 @@ use UnexpectedValueException;
 
 final readonly class SymfonyMailerAdapter implements MailerAdapter
 {
-    public function __construct(
-        private MailerInterface $mailer,
-    ) {}
+    public function __construct(private MailerInterface $mailer) {}
 
     public function send(Message $message): void
     {

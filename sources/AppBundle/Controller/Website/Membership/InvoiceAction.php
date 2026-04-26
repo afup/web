@@ -10,9 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class InvoiceAction extends AbstractController
 {
-    public function __construct(
-        private readonly Cotisations $cotisations,
-    ) {}
+    public function __construct(private readonly Cotisations $cotisations) {}
 
     public function __invoke(string $invoiceNumber, ?string $token): Response
     {

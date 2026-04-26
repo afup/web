@@ -11,9 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CalendarAjaxAction extends AbstractController
 {
-    public function __construct(
-        private readonly PlanningRepository $planningRepository,
-    ) {}
+    public function __construct(private readonly PlanningRepository $planningRepository) {}
 
     public function __invoke(int $id, Request $request): Response
     {

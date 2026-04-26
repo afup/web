@@ -88,23 +88,21 @@ class TicketType extends AbstractType
                 $filteredEventTickets[] = $eventTicket;
             }
 
-            if ($options['event_id'] !== null) {
-                $event = $this->eventRepository->get($options['event_id']);
-                $ticketSpecialPrice = $this->ticketSpecialPriceRepository->findUnusedToken($event, $options['special_price_token']);
+            $event = $this->eventRepository->get($options['event_id']);
+            $ticketSpecialPrice = $this->ticketSpecialPriceRepository->findUnusedToken($event, $options['special_price_token']);
 
-                if (null !== $ticketSpecialPrice) {
-                    $ticketType = $this->ticketTypeRepository->get(Ticket::TYPE_SPECIAL_PRICE);
+            if (null !== $ticketSpecialPrice) {
+                $ticketType = $this->ticketTypeRepository->get(Ticket::TYPE_SPECIAL_PRICE);
 
-                    $eToken = new TicketEventType();
-                    $eToken->setDateStart($ticketSpecialPrice->getDateStart());
-                    $eToken->setDateEnd($ticketSpecialPrice->getDateEnd());
-                    $eToken->setPrice($ticketSpecialPrice->getPrice());
-                    $eToken->setTicketType($ticketType);
-                    $eToken->setEventId($ticketSpecialPrice->getEventId());
-                    $eToken->setTicketTypeId(Ticket::TYPE_SPECIAL_PRICE);
-                    $filteredEventTickets = [];
-                    $filteredEventTickets[] = $eToken;
-                }
+                $eToken = new TicketEventType();
+                $eToken->setDateStart($ticketSpecialPrice->getDateStart());
+                $eToken->setDateEnd($ticketSpecialPrice->getDateEnd());
+                $eToken->setPrice($ticketSpecialPrice->getPrice());
+                $eToken->setTicketType($ticketType);
+                $eToken->setEventId($ticketSpecialPrice->getEventId());
+                $eToken->setTicketTypeId(Ticket::TYPE_SPECIAL_PRICE);
+                $filteredEventTickets = [];
+                $filteredEventTickets[] = $eToken;
             }
 
             $formEvent->getForm()->add('ticketEventType', ChoiceType::class, [

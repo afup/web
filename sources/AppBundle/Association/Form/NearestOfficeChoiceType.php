@@ -11,9 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NearestOfficeChoiceType extends AbstractType
 {
-    public function __construct(
-        private readonly AntenneRepository $antennesRepository,
-    ) {}
+    public function __construct(private readonly AntenneRepository $antennesRepository) {}
 
     public function configureOptions(OptionsResolver $resolver): void
     {

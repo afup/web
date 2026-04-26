@@ -23,9 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 final readonly class NoGetUserMethodRule implements Rule
 {
-    public function __construct(
-        private ReflectionProvider $reflectionProvider,
-    ) {}
+    public function __construct(private ReflectionProvider $reflectionProvider) {}
 
     public function getNodeType(): string
     {

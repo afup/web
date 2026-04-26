@@ -10,9 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class PostLeadAction extends AbstractController
 {
-    public function __construct(
-        private readonly EventActionHelper $eventActionHelper,
-    ) {}
+    public function __construct(private readonly EventActionHelper $eventActionHelper) {}
 
     public function __invoke($eventSlug): Response
     {

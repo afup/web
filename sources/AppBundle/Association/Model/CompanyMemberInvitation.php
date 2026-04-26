@@ -77,7 +77,7 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
 
     public function setManager(bool $manager): self
     {
-        $this->propertyChanged('manager', $this->manager ?? null, $manager);
+        $this->propertyChanged('manager', $this->manager, $manager);
         $this->manager = $manager;
         return $this;
     }
@@ -107,7 +107,7 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
      */
     public function setStatus(int $status): self
     {
-        $this->propertyChanged('status', $this->status ?? null, $status);
+        $this->propertyChanged('status', $this->status, $status);
         $this->status = $status;
         return $this;
     }

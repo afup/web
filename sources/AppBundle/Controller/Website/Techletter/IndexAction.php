@@ -9,9 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final readonly class IndexAction
 {
-    public function __construct(
-        private ViewRenderer $view,
-    ) {}
+    public function __construct(private ViewRenderer $view) {}
 
     public function __invoke(): Response
     {

@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class IndexAction extends AbstractController
 {
-    public function __construct(
-        private readonly SendingRepository $sendingRepository,
-    ) {}
+    public function __construct(private readonly SendingRepository $sendingRepository) {}
 
     public function __invoke(Request $request): Response
     {

@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ExtendSpecialPriceAction extends AbstractController
 {
-    public function __construct(
-        private readonly TicketSpecialPriceRepository $ticketSpecialPriceRepository,
-    ) {}
+    public function __construct(private readonly TicketSpecialPriceRepository $ticketSpecialPriceRepository) {}
 
     public function __invoke(int $id, AdminEventSelection $eventSelection): Response
     {

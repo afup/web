@@ -31,9 +31,8 @@ final readonly class DoctrineRepositoryRule implements Rule
     private ClassReflection $repositoryClassReflection;
     private ClassReflection $formClassReflection;
 
-    public function __construct(
-        private ReflectionProvider $reflectionProvider,
-    ) {
+    public function __construct(private ReflectionProvider $reflectionProvider)
+    {
         $this->repositoryClassReflection = $this->reflectionProvider->getClass(EntityRepository::class);
         $this->formClassReflection = $this->reflectionProvider->getClass(AbstractType::class);
     }

@@ -21,9 +21,8 @@ final readonly class DoctrineDisableDQLRule implements Rule
 {
     private ClassReflection $entityManagerClass;
 
-    public function __construct(
-        private ReflectionProvider $reflectionProvider,
-    ) {
+    public function __construct(private ReflectionProvider $reflectionProvider)
+    {
         $this->entityManagerClass = $this->reflectionProvider->getClass(EntityManagerInterface::class);
     }
 

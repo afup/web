@@ -10,9 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final class CalendarLatestAction extends AbstractController
 {
-    public function __construct(
-        private readonly EventRepository $eventRepository,
-    ) {}
+    public function __construct(private readonly EventRepository $eventRepository) {}
 
     public function __invoke(): RedirectResponse
     {

@@ -9,9 +9,7 @@ use CuyZ\Valinor\MapperBuilder;
 
 final readonly class TechLetterFactory
 {
-    public function __construct(
-        private MapperBuilder $mapperBuilder,
-    ) {}
+    public function __construct(private MapperBuilder $mapperBuilder) {}
 
     public function createTechLetterFromJson(?string $json): TechLetter
     {

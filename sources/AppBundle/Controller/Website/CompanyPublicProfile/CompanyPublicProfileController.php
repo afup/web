@@ -10,9 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 abstract class CompanyPublicProfileController extends AbstractController
 {
-    public function __construct(
-        private readonly CompanyMemberRepository $companyMemberRepository,
-    ) {}
+    public function __construct(private readonly CompanyMemberRepository $companyMemberRepository) {}
 
     protected function checkAndGetCompanyMember(int $id, string $slug): CompanyMember
     {

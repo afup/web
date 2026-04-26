@@ -9,9 +9,7 @@ use SimpleXMLElement;
 
 final readonly class FeedTester
 {
-    public function __construct(
-        private ClientInterface $feedClient,
-    ) {}
+    public function __construct(private ClientInterface $feedClient) {}
 
     public function test(Feed $feed): bool
     {

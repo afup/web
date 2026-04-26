@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class VotesListeAction extends AbstractController
 {
-    public function __construct(
-        private readonly VoteRepository $voteRepository,
-    ) {}
+    public function __construct(private readonly VoteRepository $voteRepository) {}
 
     public function __invoke(Request $request, AdminEventSelection $eventSelection): Response
     {

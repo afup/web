@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AllocateAction extends AbstractController
 {
-    public function __construct(
-        private readonly TransactionRepository $transactionRepository,
-    ) {}
+    public function __construct(private readonly TransactionRepository $transactionRepository) {}
 
     public function __invoke(Request $request, int $id): RedirectResponse
     {

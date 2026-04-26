@@ -10,9 +10,7 @@ use Twig\TwigFunction;
 
 class OfficesExtension extends AbstractExtension
 {
-    public function __construct(
-        private readonly AntenneRepository $antennesRepository,
-    ) {}
+    public function __construct(private readonly AntenneRepository $antennesRepository) {}
 
     public function getFunctions(): array
     {

@@ -14,9 +14,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 #[AsTaggedItem(index: 'admin_event_selection', priority: 150)]
 final readonly class AdminEventSelectionValueResolver implements ValueResolverInterface
 {
-    public function __construct(
-        private EventActionHelper $eventActionHelper,
-    ) {}
+    public function __construct(private EventActionHelper $eventActionHelper) {}
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {

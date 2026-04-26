@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class SponsorScanController extends AbstractController
 {
-    public function __construct(
-        private readonly SponsorTicketRepository $sponsorTicketRepository,
-    ) {}
+    public function __construct(private readonly SponsorTicketRepository $sponsorTicketRepository) {}
 
     protected function checkSponsorTicket(Request $request): SponsorTicket
     {

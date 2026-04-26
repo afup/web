@@ -11,9 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class TalkWidgetAction extends AbstractController
 {
-    public function __construct(
-        private readonly TalkRepository $talkRepository,
-    ) {}
+    public function __construct(private readonly TalkRepository $talkRepository) {}
 
     public function __invoke(Request $request): Response
     {

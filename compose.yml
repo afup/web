@@ -75,6 +75,6 @@ services:
     image: dockage/mailcatcher:0.9.0
 
   statictestresources:
-    image: nginx:1.25.4
+    image: nginx:1.29.7
     volumes:
       - ./docker/dockerfiles/statictestresources:/usr/share/nginx/html:ro

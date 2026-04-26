@@ -10,9 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class IndexAction extends AbstractController
 {
-    public function __construct(
-        private readonly AuditLogRepository $auditLogRepository,
-    ) {}
+    public function __construct(private readonly AuditLogRepository $auditLogRepository) {}
 
     public function __invoke(int $page): Response
     {

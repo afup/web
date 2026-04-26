@@ -18,9 +18,7 @@ class FeuilleType extends AbstractType
 {
     public const POSITIONS_RUBRIQUES = 9;
 
-    public function __construct(
-        private readonly FeuilleRepository $feuilleRepository,
-    ) {}
+    public function __construct(private readonly FeuilleRepository $feuilleRepository) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

@@ -10,9 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class MembersAction extends AbstractController
 {
-    public function __construct(
-        private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
-    ) {}
+    public function __construct(private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository) {}
 
     public function __invoke(): Response
     {

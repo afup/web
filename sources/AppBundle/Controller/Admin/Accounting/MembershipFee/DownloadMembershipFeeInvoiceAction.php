@@ -11,9 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DownloadMembershipFeeInvoiceAction extends AbstractController
 {
-    public function __construct(
-        private readonly Cotisations $cotisations,
-    ) {}
+    public function __construct(private readonly Cotisations $cotisations) {}
 
     public function __invoke(MemberType $memberType, int $memberId, int $membershipFeeId): Response
     {

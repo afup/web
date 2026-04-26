@@ -12,9 +12,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateCompanyMemberStateCommand extends Command
 {
-    public function __construct(
-        private readonly CompanyMemberRepository $companyMemberRepository,
-    ) {
+    public function __construct(private readonly CompanyMemberRepository $companyMemberRepository)
+    {
         parent::__construct();
     }
 

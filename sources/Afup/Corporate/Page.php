@@ -10,9 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 final readonly class Page
 {
-    public function __construct(
-        private FeuilleRepository $feuilleRepository,
-    ) {}
+    public function __construct(private FeuilleRepository $feuilleRepository) {}
 
     public function header($url = null, UserInterface $user = null): string
     {

@@ -14,11 +14,11 @@
     "file-loader": "^3.0",
     "notyf": "^2.0",
     "qr-scanner": "^1.4",
-    "sass": "^1.0",
+    "sass": "^1.99.0",
     "sass-loader": "^7.1",
     "style-loader": "^0.23",
-    "tablefilter": "^0.5",
-    "tarteaucitronjs": "^1.19",
+    "tablefilter": "^0.7.0",
+    "tarteaucitronjs": "^1.32.0",
     "webpack": "^3.6"
   },
   "scripts": {

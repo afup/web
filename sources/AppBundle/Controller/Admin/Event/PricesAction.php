@@ -11,9 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PricesAction extends AbstractController
 {
-    public function __construct(
-        private readonly TicketEventTypeRepository $ticketEventTypeRepository,
-    ) {}
+    public function __construct(private readonly TicketEventTypeRepository $ticketEventTypeRepository) {}
 
     public function __invoke(AdminEventSelection $eventSelection): Response
     {

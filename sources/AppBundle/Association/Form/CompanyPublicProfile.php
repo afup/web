@@ -27,9 +27,7 @@ class CompanyPublicProfile extends AbstractType
     public const DESCRIPTION_MAX_LENGTH = 2000;
     public const MEMBERSHIP_REASON_MAX_LENGTH = 150;
 
-    public function __construct(
-        private readonly AntenneRepository $antennesRepository,
-    ) {}
+    public function __construct(private readonly AntenneRepository $antennesRepository) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
