@@ -27,6 +27,7 @@ services:
   apachephp:
     build:
       context: ./docker/dockerfiles/apachephp
+      target: ${APACHEPHP_TARGET:-full}
       args:
         uid: ${CURRENT_UID:-1001}
         gid: "1001"
@@ -48,6 +49,7 @@ services:
   apachephptest:
     build:
       context: ./docker/dockerfiles/apachephp
+      target: ${APACHEPHPTEST_TARGET:-full}
       args:
         uid: ${CURRENT_UID:-1001}
         gid: "1001"

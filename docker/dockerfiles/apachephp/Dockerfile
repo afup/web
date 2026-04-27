@@ -1,49 +1,35 @@
-FROM php:8.2-apache
+FROM php:8.2-apache AS base
 
 ARG ENABLE_XDEBUG=false
 ARG uid=1008
 ARG gid=1008
 
+# Download PHP extension installer
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
 ## Update system
 RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get autoremove --purge -y && \
-    rm -rf /var/lib/apt/lists/* && \
+    apt-get install -y --no-install-recommends ca-certificates curl && \
     # Create user for Apache
     groupadd -g ${gid} localUser && \
     useradd -l -u ${uid} -g ${gid} -m -s /bin/bash localUser && \
-    usermod -a -G www-data localUser
+    usermod -a -G www-data localUser && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN if [ "$ENABLE_XDEBUG" = "true" ]; then echo ************ XDEBUG ENABLED **********; \
-else echo ------------ XDEBUG DISABLED ==========; fi
-
-RUN curl -sL https://deb.nodesource.com/setup_22.x | bash -
-
-# Install required PHP extensions for AFUP website and other management package
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libpng-dev \
-        libzip-dev \
-        libmcrypt4 \
-        libicu-dev \
-        nodejs \
-        chromium \
-    && \
-        docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && \
-    docker-php-ext-install \
+RUN install-php-extensions \
         pdo_mysql \
         mysqli \
         zip \
         gd \
         intl \
-        pcntl \
-    && \
-    if [ "$ENABLE_XDEBUG" = "true" ]; then pecl install xdebug-3.4.2 && docker-php-ext-enable xdebug; fi && \
-    apt-get autoremove --purge -y && \
-    rm -rf /var/lib/apt/lists/*
+        pcntl
+
+RUN if [ "$ENABLE_XDEBUG" = "true" ]; then \
+        echo "************ XDEBUG ENABLED **********" && \
+        install-php-extensions xdebug-3.4.2; \
+    else \
+        echo "------------ XDEBUG DISABLED =========="; \
+    fi
 
 # Configuration of Apache and PHP
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
@@ -58,3 +44,9 @@ RUN sed --in-place "s/User \${APACHE_RUN_USER}/User localUser/" /etc/apache2/apa
 
 # Installing Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+FROM base AS full
+
+RUN curl -sL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -y --no-install-recommends nodejs chromium && \
+    rm -rf /var/lib/apt/lists/*
