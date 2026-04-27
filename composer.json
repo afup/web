@@ -12,7 +12,7 @@
     "ext-openssl": "*",
     "ext-pdo": "*",
     "ext-zip": "*",
-    "algolia/algoliasearch-client-php": "^3.4",
+    "algolia/algoliasearch-client-php": "^3.4.2",
     "beberlei/doctrineextensions": "^1.5",
     "captioning/captioning": "^2.6",
     "ccmbenchmark/ting_bundle": "^3.8",
