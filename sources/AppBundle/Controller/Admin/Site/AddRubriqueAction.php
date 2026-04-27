@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Site;
 
 use AppBundle\AuditLog\Audit;
+use AppBundle\Site\Entity\Repository\RubriqueRepository;
+use AppBundle\Site\Entity\Rubrique;
 use AppBundle\Site\Form\RubriqueType;
-use AppBundle\Site\Model\Repository\RubriqueRepository;
-use AppBundle\Site\Model\Rubrique;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,13 +36,13 @@ final class AddRubriqueAction extends AbstractController
                 $safeFilename = hash('sha1', $originalFilename);
                 $newFilename = $safeFilename . '.' . $file->guessExtension();
                 $file->move($this->storageDir, $newFilename);
-                $rubrique->setIcone($newFilename);
+                $rubrique->icone = $newFilename;
             }
             $this->rubriqueRepository->save($rubrique);
-            $this->audit->log('Ajout de la rubrique ' . $rubrique->getNom());
-            $this->addFlash('notice', 'La rubrique ' . $rubrique->getNom() . ' a été ajoutée');
+            $this->audit->log('Ajout de la rubrique ' . $rubrique->nom);
+            $this->addFlash('notice', 'La rubrique ' . $rubrique->nom . ' a été ajoutée');
             return $this->redirectToRoute('admin_site_rubriques_list', [
-                'filter' => $rubrique->getNom(),
+                'filter' => $rubrique->nom,
             ]);
         }
 

@@ -6,7 +6,7 @@ namespace AppBundle\Site\Form;
 
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Site\Enum\ArticleTheme;
-use AppBundle\Site\Model\Repository\RubriqueRepository;
+use AppBundle\Site\Entity\Repository\RubriqueRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToTimestampTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -28,12 +28,12 @@ class ArticleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $positions = [];
-        for ($i = self::POSITIONS_RUBRIQUES ; $i >= -(self::POSITIONS_RUBRIQUES); $i--) {
+        for ($i = self::POSITIONS_RUBRIQUES; $i >= -(self::POSITIONS_RUBRIQUES); $i--) {
             $positions[$i] = $i;
         }
         $rubriques = [];
-        foreach ($this->rubriqueRepository->getAll() as $rubrique) {
-            $rubriques[$rubrique->getNom()] = $rubrique->getId();
+        foreach ($this->rubriqueRepository->findAll() as $rubrique) {
+            $rubriques[$rubrique->nom] = $rubrique->id;
         }
 
         $events = [];
