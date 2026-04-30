@@ -476,6 +476,12 @@ SQL;
                 'serializer' => Boolean::class,
             ])
             ->addField([
+                'columnName' => 'mic_type_enabled',
+                'fieldName' => 'micTypeEnabled',
+                'type' => 'bool',
+                'serializer' => Boolean::class,
+            ])
+            ->addField([
                 'columnName' => 'waiting_list_url',
                 'fieldName' => 'waitingListUrl',
                 'type' => 'string',

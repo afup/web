@@ -132,6 +132,10 @@ class EventType extends AbstractType
                 'label' => 'Activer les nuits d\'hôtel',
                 'required' => false,
             ])
+            ->add('micTypeEnabled', CheckboxType::class, [
+                'label' => 'Activer le choix du type de microphone',
+                'required' => false,
+            ])
             ->add('coupons', TextareaType::class, [
                 'mapped' => false,
                 'label' => 'Liste des coupons',

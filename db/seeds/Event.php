@@ -50,6 +50,7 @@ class Event extends AbstractSeed
                 'date_annonce_planning' => $now - $oneMonthInSeconds,
                 'transport_information_enabled' => 1,
                 'has_prices_defined_with_vat' => 1,
+                'mic_type_enabled' => 1,
             ],
             [
                 'id' => 2,

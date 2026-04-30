@@ -86,6 +86,8 @@ class Event implements NotifyPropertyInterface
 
     private ?bool $accomodationEnabled = null;
 
+    private ?bool $micTypeEnabled = null;
+
     private ?bool $transportInformationEnabled = null;
 
     /**
@@ -621,6 +623,21 @@ class Event implements NotifyPropertyInterface
 
         $this->propertyChanged('accomodationEnabled', $this->accomodationEnabled, $accomodationEnabled);
         $this->accomodationEnabled = $accomodationEnabled;
+
+        return $this;
+    }
+
+    public function getMicTypeEnabled(): ?bool
+    {
+        return $this->micTypeEnabled;
+    }
+
+    public function setMicTypeEnabled($micTypeEnabled): self
+    {
+        $micTypeEnabled = (bool) $micTypeEnabled;
+
+        $this->propertyChanged('micTypeEnabled', $this->micTypeEnabled, $micTypeEnabled);
+        $this->micTypeEnabled = $micTypeEnabled;
 
         return $this;
     }

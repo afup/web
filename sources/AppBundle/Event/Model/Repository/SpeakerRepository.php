@@ -7,6 +7,7 @@ namespace AppBundle\Event\Model\Repository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
+use AppBundle\Event\Speaker\MicrophoneType;
 use AppBundle\Ting\JoinHydrator;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -14,6 +15,7 @@ use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
+use CCMBenchmark\Ting\Serializer\BackedEnum;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -63,7 +65,8 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         speaker.phone_number,
         speaker.has_hosting_sponsor,
         speaker.travel_refund_needed,
-        speaker.travel_refund_sponsored
+        speaker.travel_refund_sponsored,
+        speaker.mic_type
         FROM afup_conferenciers speaker
         INNER JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = speaker.conferencier_id
         INNER JOIN afup_sessions talk ON talk.session_id = cs.session_id
@@ -319,6 +322,15 @@ SQL
                 'fieldName' => 'travelRefundSponsored',
                 'type' => 'bool',
                 'serializer' => Boolean::class,
+            ])
+            ->addField([
+                'columnName' => 'mic_type',
+                'fieldName' => 'micType',
+                'type' => 'enum',
+                'serializer' => BackedEnum::class,
+                'serializer_options' => [
+                    'unserialize' => ['enum' => MicrophoneType::class],
+                ],
             ])
         ;
 

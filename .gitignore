@@ -55,3 +55,4 @@ js_dist
 drivers
 chromedriver.log
 /htdocs/dist
+app/config/reference.php
