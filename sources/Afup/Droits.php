@@ -22,11 +22,6 @@ define('AFUP_DROITS_ETAT_ACTIF', 1);
  */
 class Droits
 {
-    /**
-     * Liste structurée avec toutes les pages référencées dans l'application
-     */
-    private array $_pages = [];
-
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
@@ -44,37 +39,6 @@ class Droits
         }
 
         return null;
-    }
-
-    public function chargerToutesLesPages($pages): void
-    {
-        if (is_array($pages)) {
-            $this->_pages = $pages;
-        }
-    }
-
-    /**
-     * @param int|string $page
-     */
-    public function verifierDroitSurLaPage($page): bool
-    {
-        if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
-            return true;
-        }
-        foreach ($this->_pages as $_page => $_page_details) {
-            if ($page == $_page && (isset($_page_details['niveau']) && $this->authorizationChecker->isGranted($_page_details['niveau']))) {
-                return true;
-            }
-            if (isset($_page_details['elements']) && is_array($_page_details['elements'])) {
-                foreach ($_page_details['elements'] as $_element => $_element_details) {
-                    if ($page == $_element && (isset($_element_details['niveau']) && $this->authorizationChecker->isGranted($_element_details['niveau']))) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
     }
 
     /**
