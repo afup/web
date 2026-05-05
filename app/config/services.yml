@@ -75,13 +75,6 @@ services:
 
     ### Pages legacy - FIN
 
-    AppBundle\Controller\LegacyController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $backOfficePages: '%app.pages_backoffice%'
-
     AppBundle\Payment\PayboxFactory:
         autowire: true
         arguments: ["@router", "%paybox_domain_server%", "%paybox_secret_key%", "%paybox_site%", "%paybox_rang%", "%paybox_identifiant%"]
