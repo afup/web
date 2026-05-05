@@ -65,7 +65,7 @@
                                 <i class="pencil alernate icon"></i>
                             </a>
                         {% else %}
-                            <a href="/pages/administration/index.php?page=compta_facture&amp;action=modifier&amp;id={{ line.id }}"
+                            <a href="{{ url('admin_accounting_invoices_edit', {'invoiceId': line.id}) }}"
                                data-position="left center"
                                data-tooltip="Modifier la facture {{ line.company }}"
                                class="compact ui icon button"

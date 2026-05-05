@@ -264,7 +264,7 @@
                             <td class="center aligned" style="background-color:#FBD61A">En attente de paiement</td>
                         {% endif %}
                         <td class="single line right aligned">
-                            <a href="/pages/administration/index.php?page=compta_facture&amp;action=modifier&amp;id={{ invoice.id }}"
+                            <a href="{{ url('admin_accounting_invoices_edit', {'invoiceId': invoice.id}) }}"
                                class="compact ui icon button"
                             >
                                 Voir

@@ -21,7 +21,7 @@ class EditQuotationAction extends AbstractController
     public function __invoke(Request $request): Response
     {
         $quotationId = $request->query->getInt('quotationId');
-        $quotation = $this->invoicingRepository->getQuotationById($quotationId);
+        $quotation = $this->invoicingRepository->getById($quotationId);
         if ($quotation === null) {
             throw $this->createNotFoundException("Ce devis n'existe pas");
         }

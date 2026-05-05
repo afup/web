@@ -6,6 +6,7 @@ namespace AppBundle\Accounting\Model;
 
 use Afup\Site\Utils\Utils;
 use AppBundle\Accounting\InvoicingCurrency;
+use AppBundle\Accounting\InvoicingPaymentStatus;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use DateTime;
@@ -34,7 +35,7 @@ class Invoicing implements NotifyPropertyInterface
     private string $lastname = '';
     private string $firstname = '';
     private string $phone = '';
-    private int $paymentStatus = 0;
+    private InvoicingPaymentStatus $paymentStatus = InvoicingPaymentStatus::Waiting;
     private ?DateTime $paymentDate = null;
     private ?InvoicingCurrency $currency = null;
     /** @var InvoicingDetail[] */
@@ -301,12 +302,12 @@ class Invoicing implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getPaymentStatus(): int
+    public function getPaymentStatus(): InvoicingPaymentStatus
     {
         return $this->paymentStatus;
     }
 
-    public function setPaymentStatus(int $paymentStatus): self
+    public function setPaymentStatus(InvoicingPaymentStatus $paymentStatus): self
     {
         $this->propertyChanged('paymentStatus', $this->paymentStatus, $paymentStatus);
         $this->paymentStatus = $paymentStatus;

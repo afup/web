@@ -33,6 +33,9 @@ trait PdfContext
         foreach ($pages as $i => $page) {
             $this->pdfPages[++$i] = $page->getText();
         }
+
+        unset($pdf, $parser, $pages, $pageContent);
+        gc_collect_cycles();
     }
 
     #[Then('The page :page of the PDF should contain :content')]

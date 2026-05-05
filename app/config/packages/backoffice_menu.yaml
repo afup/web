@@ -236,6 +236,7 @@ parameters:
                     niveau: 'ROLE_ADMIN'
                     extra_routes:
                         - admin_accounting_invoices_list
+                        - admin_accounting_invoices_edit
                 compta_journal:
                     nom: 'Journal'
                     url: '/admin/accounting/journal/list'

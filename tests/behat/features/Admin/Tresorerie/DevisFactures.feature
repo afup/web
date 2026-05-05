@@ -117,8 +117,9 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I should see a yellow label "En attente"
     # Modification de la facture
     When I follow the button of tooltip "Modifier la ligne ESN dev en folie" and wait until I see "Modifier une facture"
-    Then I fill in "ville" with "Paris Cedex 7"
-    Then I select "1" from "etat_paiement"
+    Then I fill in "invoice[city]" with "Paris Cedex 7"
+    And I select "1" from "invoice[paymentStatus]"
+    And I fill in "invoice[paymentDate]" with "2026-12-31"
     When I press "Modifier" and wait until I see "L'écriture a été modifiée"
     And I should see "Paris Cedex 7"
     And I should see "Payé"

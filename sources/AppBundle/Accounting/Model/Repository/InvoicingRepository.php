@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Accounting\Model\Repository;
 
+use AppBundle\Accounting\InvoicingPaymentStatus;
 use CCMBenchmark\Ting\Repository\Hydrator\AggregateFrom;
 use CCMBenchmark\Ting\Repository\Hydrator\AggregateTo;
 use CCMBenchmark\Ting\Repository\Hydrator\RelationMany;
@@ -25,21 +26,21 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
  */
 class InvoicingRepository extends Repository implements MetadataInitializer
 {
-    public function getQuotationById(int $periodId): ?Invoicing
+    public function getById(int $id): ?Invoicing
     {
         /** @var Select $builder */
         $builder = $this->getQueryBuilder(self::QUERY_SELECT);
         $builder->cols(['acf.*', 'acfd.*'])
                 ->from('afup_compta_facture acf')
                 ->leftJoin('afup_compta_facture_details acfd', 'acfd.idafup_compta_facture = acf.id')
-                ->where('acf.id = :periodId');
+                ->where('acf.id = :id');
 
         $hydrator = new HydratorRelational();
         $hydrator->addRelation(new RelationMany(new AggregateFrom('acfd'), new AggregateTo('acf'), 'setDetails'));
         $hydrator->callableFinalizeAggregate(fn(array $row) => $row['acf']);
 
         $collection = $this->getQuery($builder->getStatement())
-                    ->setParams(['periodId' => $periodId])
+                    ->setParams(['id' => $id])
                     ->query($this->getCollection($hydrator));
 
         if ($collection->count() === 0) {
@@ -240,7 +241,11 @@ class InvoicingRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'etat_paiement',
                 'fieldName' => 'paymentStatus',
-                'type' => 'int',
+                'type' => 'enum',
+                'serializer' => BackedEnum::class,
+                'serializer_options' => [
+                    'unserialize' => ['enum' => InvoicingPaymentStatus::class],
+                ],
             ])
             ->addField([
                 'columnName' => 'date_paiement',
