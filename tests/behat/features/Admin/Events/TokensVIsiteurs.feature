@@ -20,7 +20,7 @@ Feature: Administration - Évènements - Tokens Visiteurs
     Then the ".content table" element should contain "Token visiteur de test"
     # Lien d'un token
     And I follow "Lien"
-    Then I should see "Spécial Forum * 2€ TTC"
+    Then I should see "Tarif spécial * 2€ TTC"
 
   @reloadDbWithTestData
   Scenario: Prolonger la validité d'un token visiteur
