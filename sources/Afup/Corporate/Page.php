@@ -32,7 +32,6 @@ final readonly class Page
             $feuilleLogin->nom = 'Espace membre';
             $feuilleLogin->patterns = "#/admin/company#";
         } else {
-            $feuilleLogin = new FeuilleEntity();
             $feuilleLogin->id = PHP_INT_MAX - 1;
             $feuilleLogin->nom = 'Se connecter';
             $cssClasses[PHP_INT_MAX - 1] = 'desktop-hidden';
