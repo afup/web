@@ -18,12 +18,31 @@
                 width: 210px;
                 height: 100%;
                 -webkit-box-flex: 0;
+                transition: transform 0.2s ease;
             }
 
             .article {
                 margin-left: 210px;
                 flex: 1 1 auto;
                 min-width: 0;
+                transition: margin-left 0.2s ease;
+            }
+
+            .sidebar-toggle {
+                position: absolute;
+                opacity: 0;
+            }
+
+            .sidebar-toggle-button {
+                cursor: pointer;
+            }
+
+            .sidebar-toggle:checked ~ .full-height .toc {
+                transform: translateX(-100%);
+            }
+
+            .sidebar-toggle:checked ~ .article {
+                margin-left: 0;
             }
 
             .content {
@@ -83,6 +102,21 @@
 
     {% block body %}
         <body id="{{ page|default('') }}" class="{{ class|default('') }}">
+            <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle" aria-hidden="true">
+            <script>
+                // Ce script est inline ici exprès pour que le menu soit correctement affiché au chargement de la page
+                (function () {
+                    const toggle = document.getElementById('sidebar-toggle');
+
+                    if (localStorage.getItem('admin-sidebar-hidden') === '1') {
+                        toggle.checked = true;
+                    }
+
+                    toggle.addEventListener('change', function () {
+                        localStorage.setItem('admin-sidebar-hidden', toggle.checked ? '1' : '0');
+                    });
+                })();
+            </script>
             <div class="full-height">
                 <div class="toc">
                     <div class="ui vertical inverted menu accordion">
@@ -95,6 +129,9 @@
             </div>
             <div class="article">
                 <div class="ui menu asd borderless">
+                    <label for="sidebar-toggle" class="item sidebar-toggle-button" title="Afficher/masquer le menu" aria-label="Afficher/masquer le menu">
+                        <i class="bars icon"></i>
+                    </label>
                     <div class="right menu">
                         <div class="item">
                             <a class="ui button" href="{{ path('home') }}">Retour site</a>
