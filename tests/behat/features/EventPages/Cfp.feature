@@ -44,6 +44,7 @@ Feature: Event pages - CFP
     Then I should see "Les nouvelles conférences à noter"
     And I should see "Il n'y a plus aucune conférence à noter !"
 
+  @clearEmails
   Scenario: On crée une nouvelle proposition en tant que userGithub1 mais on ne peut pas la noter
     Given I am on "/event/forum/cfp"
     Then I should see "Oauth login test"
@@ -62,6 +63,9 @@ Feature: Event pages - CFP
     And I press "Sauvegarder"
     Then I should not see "Cette valeur ne doit pas être vide."
     And I should see "Proposition enregistrée !"
+    And I should only receive the following emails:
+      | to                      | subject                                                                             |
+      | <monemail@provider.fr>  | AFUP - forum - Confirmation de soumission au CFP - Généalogie des poissons rouges  |
     When I am on "/event/forum/cfp"
     Then I should see "Généalogie des poissons rouges"
     When I am on "/event/forum/vote"

@@ -242,3 +242,16 @@ speaker_infos.microphone.label: "Type de microphone"
 speaker_infos.microphone.placeholder: "Pas de préférence"
 speaker_infos.microphone.choice.headset: "Micro casque"
 speaker_infos.microphone.choice.handheld: "Micro à main"
+'mail.cfp_submission.subject': 'AFUP - %event% - Confirmation de soumission au CFP - %title%'
+'mail.cfp_submission.title': 'Confirmation de soumission au CFP %event%'
+'mail.cfp_submission.text': |
+  <p>Bonjour,</p>
+
+  <p>Nous vous confirmons la bonne réception de votre soumission « %title% » au CFP %event%.</p>
+
+  <p>Une fois l'appel à conférences terminé, le %date%, le pôle conférences effectuera une sélection en respectant bien le <a href="https://event.afup.org/processus-de-selection-eventsafup/">processus tel que décrit sur la page dédiée</a>.</p>
+
+  <p>Quel que soit le résultat, un courriel vous sera envoyé dans les semaines qui suivront la fin du CFP.</p>
+'mail.cfp_submission.vote_section': '<p>N''hésitez pas à consulter les commentaires et votes du public sur la <a href="%url%">page dédiée</a>. Notez bien que ceux-ci sont indicatifs, le pôle conférences est seul décisionnaire sur la sélection.</p>'
+'mail.cfp_submission.abstract': 'Voici un extrait de votre soumission :'
+'mail.cfp_submission.signature': 'Merci pour votre contribution,'
