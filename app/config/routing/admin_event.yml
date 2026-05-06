@@ -82,6 +82,30 @@ admin_event_prices_edit:
     event: \d+
     id: \d+
 
+admin_event_factures:
+  path: /invoices
+  defaults: {_controller: AppBundle\Controller\Admin\Event\Facturation\ListFacturesAction }
+
+admin_event_factures_download_facture:
+  path: /invoices/download/invoice
+  defaults: {_controller: AppBundle\Controller\Admin\Event\Facturation\DownloadFactureAction }
+
+admin_event_factures_download_devis:
+  path: /invoices/download/quotation
+  defaults: {_controller: AppBundle\Controller\Admin\Event\Facturation\DownloadDevisAction }
+
+admin_event_factures_issue_facture:
+  path: /invoices/issue/invoice
+  defaults: {_controller: AppBundle\Controller\Admin\Event\Facturation\IssueFactureAction }
+
+admin_event_factures_send_facture:
+  path: /invoices/send/invoice
+  defaults: {_controller: AppBundle\Controller\Admin\Event\Facturation\SendFactureAction }
+
+admin_event_factures_delete_facture:
+  path: /invoices/delete/invoice/{token}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\Facturation\DeleteFactureAction }
+
 admin_event_speaker_infos:
   path: /speaker-infos
   defaults: {_controller: AppBundle\Controller\Admin\Event\SpeakerInfosAction }

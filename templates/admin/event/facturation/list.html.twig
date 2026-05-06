@@ -1,0 +1,121 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Factures d'évènements</h2>
+    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
+
+    <div class="ui segment">
+        <form method="GET" name="filter">
+            <input type="hidden" name="sort"  value="{{ sort }}" />
+            <input type="hidden" name="direction" value="{{ direction }}" />
+            <div class="ui form">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>Recherche</label>
+                        <input type="text" name="filter" value="{{ filter }}">
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="Filtrer" class="ui button" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <table class="ui table striped compact celled">
+            <thead>
+            <tr>
+                <th><a href="{{ url('admin_event_factures', {'sort': 'date_facture', 'direction' : ((direction == 'asc' and sort == 'date_facture') ? 'desc': 'asc')}) }}">Date facture</a></th>
+                <th><a href="{{ url('admin_event_factures', {'sort': 'reference', 'direction' : ((direction == 'asc' and sort == 'reference') ? 'desc': 'asc')}) }}">Référence</a></th>
+                <th><a href="{{ url('admin_event_factures', {'sort': 'societe', 'direction' : ((direction == 'asc' and sort == 'societe') ? 'desc': 'asc')}) }}">Société / personne physique</a></th>
+                <th class="right aligned"><a href="{{ url('admin_event_factures', {'sort': 'montant', 'direction' : ((direction == 'asc' and sort == 'montant') ? 'desc': 'asc')}) }}">Montant</a></th>
+                <th class="center aligned"><a href="{{ url('admin_event_factures', {'sort': 'etat', 'direction' : ((direction == 'asc' and sort == 'etat') ? 'desc': 'asc')}) }}">Etat</a></th>
+                <th class="center aligned"><a href="{{ url('admin_event_factures', {'sort': 'facturation', 'direction' : ((direction == 'asc' and sort == 'facturation') ? 'desc': 'asc')}) }}">Facturation</a></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for invoice in invoices %}
+                <tr class="{{ loop.index % 2 ? 'odd' : 'even' }}">
+                    <td nowrap="nowrap">{{ invoice.invoiceDate|format_date('short') }}</td>
+                    <td>{{ invoice.reference }}</td>
+                    <td><strong>{% if invoice.company %}{{ invoice.company}}{% else %}<em style="color:#999">{{ invoice.lastname ~ ' ' ~invoice.firstname }}</em>{% endif %}</strong></td>
+                    <td class="right aligned">{{ invoice.amount }} &euro;</td>
+                    <td  class="center aligned">
+                        {% if invoice.status == 4 %}
+                            <span class="regle" title="{{ invoice.reference }}"{% if invoice.paymentDate %} alt="{{ invoice.paymentDate|format_date('short') }}"{% endif %}>Reglée{% if invoice.paymentDate %}<br/>
+                    <em style="color:#999">{{ invoice.paymentDate|format_date('short') }}</em>{% endif %}</span>
+                        {% elseif invoice.status == 6 %}
+                            En attente règlement
+                        {% elseif invoice.status == 7 %}
+                            Confirmée
+                        {% else %}
+                            --
+                        {% endif %}
+                    </td>
+                    <td class="center aligned">
+                        {% if invoice.invoice %}
+                            Facturée
+                        {% else %}
+                            À facturer
+                        {% endif %}
+                    </td>
+                    <td style="text-align: right" nowrap="nowrap">
+                        <a href="{{ url('admin_event_factures_download_devis', {'ref': invoice.reference}) }}"
+                           data-position="left center"
+                           data-tooltip="Télécharger le devis"
+                           class="compact ui icon button"
+                           id="devis_{{ invoice.reference }}"
+                        >
+                            <i class="warehouse icon"></i>
+                        </a>
+                        {% if invoice.invoice == 0 %}
+                            <a href="{{ url('admin_event_factures_issue_facture', {'ref': invoice.reference}) }}"
+                               title="Passer à l'état facturée"
+                               id="facture_{{ invoice.reference }}"
+                            >
+                                <i class="shopping cart icon"></i>
+                            </a>
+                        {% endif %}
+                        {% if invoice.invoice == 1 %}
+                            <a href="{{ url('admin_event_factures_send_facture', {'ref': invoice.reference}) }}"
+                               data-position="left center"
+                               data-tooltip="Envoyer la facture par mail"
+                               class="compact ui icon button"
+                               id="email_{{ invoice.reference }}"
+                            >
+                                <i class="paper plane icon"></i>
+                            </a>
+
+                            <a href="{{ url('admin_event_factures_download_facture', {'ref': invoice.reference}) }}"
+                               data-position="left center"
+                               data-tooltip="Télécharger la facture"
+                               class="compact ui icon button"
+                               id="telecharger_{{ invoice.reference }}"
+                            >
+                                <i class="file pdf icon"></i>
+                            </a>
+
+                            <a href="{{ url('admin_event_factures_delete_facture', {'ref': invoice.reference, 'token': csrf_token('event_invoice_delete')}) }}"
+                               data-position="left center"
+                               data-tooltip="Supprimer la facture"
+                               class="compact ui red icon button confirmable"
+                               data-confirmable-label="Etes-vous certain de vouloir supprimer la facture de {% if invoice.company %}{{ invoice.company }}{% else %}{{ invoice.lastname ~ ' ' ~invoice.firstname }}{% endif %}?"
+                               id="supprimer_{{ invoice.reference }}"
+                            >
+                                <i class="trash icon"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7"><em>Aucune facturation</em></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+

@@ -167,9 +167,12 @@ parameters:
                         - admin_event_prices
                         - admin_event_prices_add
                         - admin_event_prices_edit
-                forum_facturation:
+                admin_event_factures:
                     nom: "Factures d'évènement"
                     niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/invoices'
+                    extra_routes:
+                        - admin_event_factures
                 talks:
                     nom: 'Conférences'
                     niveau: 'ROLE_FORUM'
