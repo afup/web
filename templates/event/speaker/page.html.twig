@@ -13,6 +13,7 @@
 {% form_theme speakers_diner_form 'bootstrap_3_layout.html.twig' %}
 {% form_theme hotel_reservation_form 'bootstrap_3_layout.html.twig' %}
 {% form_theme travel_sponsor_form 'bootstrap_3_layout.html.twig' %}
+{% form_theme speakers_microphone_form 'bootstrap_3_layout.html.twig' %}
 
 {% block content %}
 
@@ -120,6 +121,28 @@
             </div>
 
             {{ form_end(speakers_contact_form) }}
+
+            {% if should_display_microphone_form %}
+            <h2><a id="microphone" href="#microphone">🎤 {% trans %}speaker_infos.microphone.title{% endtrans %}</a></h2>
+            <p>{% trans %}speaker_infos.microphone.intro{% endtrans %}</p>
+
+            {{ form_start(speakers_microphone_form, { attr: { class: "speakers-infos-form" }, action: '#microphone'}) }}
+
+            <div class="container">
+                <span>
+                    {{ form_label(speakers_microphone_form.type) }}
+                </span>
+                <span>
+                    {{ form_widget(speakers_microphone_form.type) }}
+                    {{ form_errors(speakers_microphone_form.type) }}
+                </span>
+                <div class="submit-container">
+                    {{ form_widget(speakers_microphone_form.submit, {attr: {title: "Enregistrer le choix de microphone"}}) }}
+                </div>
+            </div>
+
+            {{ form_end(speakers_microphone_form) }}
+            {% endif %}
 
             {% if event.speakersDinerEnabled %}
             <h2><a id="diner" href="#diner">🍽️ {% trans %}Nous vous invitons au restaurant{% endtrans %}</a></h2>

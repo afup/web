@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model;
 
+use AppBundle\Event\Speaker\MicrophoneType;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -134,6 +135,8 @@ class Speaker implements NotifyPropertyInterface
 
     private bool $travelRefundNeeded = true;
     private bool $travelRefundSponsored = false;
+
+    private ?MicrophoneType $micType = null;
 
     public function getId(): ?int
     {
@@ -706,6 +709,17 @@ class Speaker implements NotifyPropertyInterface
         $this->propertyChanged('travelRefundSponsored', $this->travelRefundSponsored, $travelRefundSponsored);
         $this->travelRefundSponsored = $travelRefundSponsored;
         return $this;
+    }
+
+    public function getMicType(): ?MicrophoneType
+    {
+        return $this->micType;
+    }
+
+    public function setMicType(?MicrophoneType $micType): void
+    {
+        $this->propertyChanged('micType', $this->micType, $micType);
+        $this->micType = $micType;
     }
 
     public function hasHotelNightBefore(): ?bool

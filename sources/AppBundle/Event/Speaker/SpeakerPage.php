@@ -15,6 +15,7 @@ use AppBundle\SpeakerInfos\Form\HotelReservationType;
 use AppBundle\SpeakerInfos\Form\SpeakersContactType;
 use AppBundle\SpeakerInfos\Form\SpeakersDinerType;
 use AppBundle\SpeakerInfos\Form\SpeakersExpensesType;
+use AppBundle\SpeakerInfos\Form\SpeakersMicrophoneType;
 use AppBundle\SpeakerInfos\Form\TravelSponsorType;
 use AppBundle\SpeakerInfos\SpeakersExpensesStorage;
 use DateTime;
@@ -50,6 +51,18 @@ class SpeakerPage extends AbstractController
             $speaker->setPhoneNumber($speakersContactData['phone_number']);
             $this->speakerRepository->save($speaker);
             $this->addFlash('notice', 'Informations de contact enregistrées');
+
+            return $this->redirectFromRequest($request);
+        }
+
+        $shouldDisplayMicrophoneForm = (bool) $event->getMicTypeEnabled();
+
+        $speakersMicrophoneType = $this->createForm(SpeakersMicrophoneType::class, ['type' => $speaker->getMicType()]);
+        $speakersMicrophoneType->handleRequest($request);
+        if ($shouldDisplayMicrophoneForm && $speakersMicrophoneType->isSubmitted() && $speakersMicrophoneType->isValid()) {
+            $speaker->setMicType($speakersMicrophoneType->getData()['type']);
+            $this->speakerRepository->save($speaker);
+            $this->addFlash('notice', 'Préférence de microphone enregistrée');
 
             return $this->redirectFromRequest($request);
         }
@@ -169,6 +182,7 @@ class SpeakerPage extends AbstractController
             'description' => $description,
             'talks_infos' => $this->addTalkInfos($event, $talks),
             'speaker' => $speaker,
+            'should_display_microphone_form' => $shouldDisplayMicrophoneForm,
             'should_display_speakers_diner_form' => $shouldDisplaySpeakersDinerForm,
             'should_display_hotel_reservation_form' => $shouldDisplayHotelReservationForm,
             'speakers_expenses_form' => $speakersExpensesType->createView(),
@@ -177,6 +191,7 @@ class SpeakerPage extends AbstractController
             'speakers_diner_form' => $speakersDinerType->createView(),
             'hotel_reservation_form' => $hotelReservationType->createView(),
             'speakers_contact_form' => $speakersContactType->createView(),
+            'speakers_microphone_form' => $speakersMicrophoneType->createView(),
             'day_before_event' => DateTimeImmutable::createFromMutable($event->getDateStart())->modify('- 1 day'),
         ]);
     }

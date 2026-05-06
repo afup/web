@@ -66,3 +66,23 @@ Feature: Event > Profil speaker
     And I press "Enregistrer le travel sponsor"
     Then I should see "Informations sur vos transports enregistrées "
     Then the "travel_sponsor_choices_1" checkbox should be checked
+
+  @reloadDbWithTestData
+  Scenario: Saisie du type de microphone - micro casque
+    Given I go to "/event/forum/speaker-infos"
+    When I follow "Connect as agallou"
+
+    When I select "headset" from "speakers_microphone[type]"
+    And I press "Enregistrer le choix de microphone"
+    Then I should see "Préférence de microphone enregistrée"
+    Then the "speakers_microphone_type_0" checkbox should be checked
+
+  @reloadDbWithTestData
+  Scenario: Saisie du type de microphone - micro à main
+    Given I go to "/event/forum/speaker-infos"
+    When I follow "Connect as agallou"
+
+    When I select "handheld" from "speakers_microphone[type]"
+    And I press "Enregistrer le choix de microphone"
+    Then I should see "Préférence de microphone enregistrée"
+    Then the "speakers_microphone_type_1" checkbox should be checked
