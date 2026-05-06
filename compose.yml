@@ -80,3 +80,6 @@ services:
     image: nginx:1.29.7
     volumes:
       - ./docker/dockerfiles/statictestresources:/usr/share/nginx/html:ro
+
+  httpbin:
+    image: mccutchen/go-httpbin

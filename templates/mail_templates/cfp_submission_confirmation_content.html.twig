@@ -1,0 +1,14 @@
+{{ 'mail.cfp_submission.text'|trans({
+    '%title%': talk.title|e,
+    '%event%': eventParam|e,
+    '%date%': cfpEndDate|date('d/m/Y')
+}, 'messages', locale)|raw }}
+
+{% if votePageUrl %}
+{{ 'mail.cfp_submission.vote_section'|trans({'%url%': votePageUrl}, 'messages', locale)|raw }}
+{% endif %}
+
+<p>{{ 'mail.cfp_submission.abstract'|trans({}, 'messages', locale) }}</p>
+<pre>{{ talk.abstract }}</pre>
+
+<p>{{ 'mail.cfp_submission.signature'|trans({}, 'messages', locale) }}</p>

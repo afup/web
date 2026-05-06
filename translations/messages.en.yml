@@ -218,3 +218,16 @@ speaker_infos.microphone.label: "Microphone type"
 speaker_infos.microphone.placeholder: "No preference"
 speaker_infos.microphone.choice.headset: "Headset microphone"
 speaker_infos.microphone.choice.handheld: "Handheld microphone"
+'mail.cfp_submission.subject': 'AFUP - %event% - CFP submission confirmation - %title%'
+'mail.cfp_submission.title': 'CFP submission confirmation - %event%'
+'mail.cfp_submission.text': |
+  <p>Hello,</p>
+
+  <p>We confirm receipt of your talk submission « %title% » to the CFP %event%.</p>
+
+  <p>Once the call for papers closes on %date%, the conference team will make a selection following the <a href="https://event.afup.org/processus-de-selection-eventsafup/">process described on the dedicated page</a>.</p>
+
+  <p>Whatever the outcome, you will receive an email in the weeks following the end of the CFP.</p>
+'mail.cfp_submission.vote_section': '<p>Feel free to check the public comments and votes on the <a href="%url%">dedicated page</a>. Please note these are advisory — the conference team has sole decision-making authority.</p>'
+'mail.cfp_submission.abstract': 'Here is an abstract of your submission:'
+'mail.cfp_submission.signature': 'Thank you for your contribution,'
