@@ -1,7 +1,10 @@
 <script>
   $(() => {
-    function addFormToCollection(e) {
-      const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+    const modalElement = document.getElementById('produit_picker_modal');
+    const $modal = $(modalElement).modal();
+
+    function addFormToCollection() {
+      const collectionHolder = document.querySelector('.invoice_row_container');
 
       const item = document.createElement('div');
       item.id = 'invoice_row_' + (parseInt(collectionHolder.dataset.index) + 1);
@@ -41,12 +44,34 @@
 
     document
         .querySelector('a.add_item_link')
-        .addEventListener("click", addFormToCollection)
+        .addEventListener("click", addFormToCollection);
 
     document
         .querySelectorAll('div.invoice_row_container > div')
         .forEach((row, index) => {
-          addDeletionButton(row, index)
-        })
+            addDeletionButton(row, index)
+        });
+
+    document
+        .querySelector('a.add_item_from_produit_link')
+        .addEventListener('click', () => {
+            $modal.modal('show');
+        });
+
+    modalElement.querySelectorAll('.choose_produit_button')
+        .forEach((btn) => {
+            btn.addEventListener('click', () => {
+                addFormToCollection();
+
+                const newRow = document.querySelector('.invoice_row_container').lastElementChild;
+
+                newRow.querySelector('[name$="[reference]"]').value = btn.dataset.reference;
+                newRow.querySelector('[name$="[quantity]"]').value = btn.dataset.quantite || '';
+                newRow.querySelector('[name$="[unitPrice]"]').value = btn.dataset.prixUnitaireHt;
+                newRow.querySelector('[name$="[tva]"]').value = btn.dataset.tauxTva;
+
+                $modal.modal('hide');
+            });
+        });
   });
 </script>
