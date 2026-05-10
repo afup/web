@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use CCMBenchmark\Ting\Services;
-use Symfony\Component\Security\Csrf\CsrfTokenManager;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\Translator;
 
@@ -30,27 +28,3 @@ $debug = false;
 if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'afup.dev') {
     $debug = true;
 }
-
-// Initialisation de ting
-$services = new Services();
-$services->get('ConnectionPool')->setConfig([
-    'main' => [
-        'namespace' => '\CCMBenchmark\Ting\Driver\Mysqli',
-        'master' => [
-            'host'      => $GLOBALS['AFUP_CONF']->obtenir('database_host'),
-            'user'      => $GLOBALS['AFUP_CONF']->obtenir('database_user'),
-            'password'  => $GLOBALS['AFUP_CONF']->obtenir('database_password'),
-            'port'      => 3306,
-        ],
-    ],
-]);
-
-$services
-    ->get('MetadataRepository')
-    ->batchLoadMetadata(
-        'AppBundle\Event\Model\Repository',
-        __DIR__ . '/../Event/Model/Repository/*.php',
-        ['default' => ['database' => $GLOBALS['AFUP_CONF']->obtenir('database_name')]],
-    )
-;
-$services->set('security.csrf.token_manager', fn(): CsrfTokenManager => new CsrfTokenManager());
