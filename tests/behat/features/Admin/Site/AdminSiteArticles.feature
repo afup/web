@@ -39,7 +39,7 @@ Feature: Administration - Partie Site
     When I should see "Liste des articles"
     Then the ".content table" element should contain "Le titre de l'article"
     # vérification de l'article sur le site publique
-    When I go to "/news/18-url-article"
+    When I go to "/news/17-url-article"
     Then I should see "Le titre de l'article"
     Then I should see "Le chapeau de l'article"
     Then I should see "Le contenu de l'article"
@@ -106,7 +106,7 @@ Feature: Administration - Partie Site
     And I follow "Articles"
 
     # Vérification du markdown inchangé dans le formulaire
-    Then I follow "modifier_18"
+    Then I follow "modifier_17"
     And I should see "Modifier un article"
     And the "article[title]" field should contain "Le titre markdown"
     And the "article[leadParagraph]" field should contain "Le *chapeau* markdown"
