@@ -14,14 +14,6 @@ class ListAction extends AbstractController
 
     public function __invoke(): Response
     {
-        //TODO : à supprimer quand les actions via le formulaire auront été migée
-        if (isset($_SESSION['flash']['message'])) {
-            $this->addFlash('notice', $_SESSION['flash']['message']);
-        }
-        if (isset($_SESSION['flash']['erreur'])) {
-            $this->addFlash('error', $_SESSION['flash']['erreur']);
-        }
-        unset($_SESSION['flash']);
         $list = $this->eventRepository->getList();
         return $this->render('admin/event/list.html.twig', [
             'events' => $list,
