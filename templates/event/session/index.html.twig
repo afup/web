@@ -113,21 +113,20 @@
                             {% endif %}
                         </td>
                         <td style="text-align: right" nowrap="nowrap">
-                            {% set template_path="/templates/administration/images/famfamfam/" %}
                             <a href="{{ path("admin_event_sessions_edit", {talkId: session.talk.id, sessionId: session.planning ? session.planning.id }) }}"
-                               title="Modifier la session {{ session.talk.title }}">
-                                <img src="{{ template_path }}application_form_edit.png" alt="Modifier"/>
+                               title="Modifier la session {{ session.talk.title }}" class="ui icon button">
+                                <i class="pencil alernate icon"></i>
                             </a>
                             {% if session.planning %}
                                 <a href="{{ path("admin_event_sessions_delete", {id: session.planning.id }) }}"
                                    title="Supprimer la session {{ session.talk.title }}"
-                                   onclick="return confirm('Etes-vous sûr de vouloir supprimer la session {{ session.talk.title }} ?');">
-                                    <img src="{{ template_path }}delete.png" alt="Supprimer"/>
+                                   onclick="return confirm('Etes-vous sûr de vouloir supprimer la session {{ session.talk.title }} ?');" class="ui icon button">
+                                    <i class="trash alernate icon"></i>
                                 </a>
                             {% else %}
                                 <a href="{{ path("admin_event_sessions_edit", { talkId: session.talk.id, mode: 'add' }) }}"
-                                   title="Ajouter la session à 09H00-09H40 dans la première salle">
-                                    <img src="{{ template_path }}add.png" alt="Ajouter"/>
+                                   title="Ajouter la session à 09H00-09H40 dans la première salle" class="ui icon button">
+                                    <i class="plus alernate icon"></i>
                                 </a>
                             {% endif %}
                         </td>
