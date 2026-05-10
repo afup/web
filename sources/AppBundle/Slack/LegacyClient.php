@@ -10,7 +10,11 @@ class LegacyClient
 
     public function invite($email): void
     {
-        $return = file_get_contents(sprintf("https://slack.com/api/users.admin.invite?token=%s&email=%s", $this->token, $email));
+        $url = 'https://slack.com/api/users.admin.invite?' . http_build_query([
+            'token' => $this->token,
+            'email' => $email,
+        ]);
+        $return = file_get_contents($url);
 
         if (false === $return) {
             throw new \RuntimeException("Erreur lors de l'appel à l'API slack");
