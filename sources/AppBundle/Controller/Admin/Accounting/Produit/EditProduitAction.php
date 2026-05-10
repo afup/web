@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Produit;
 
+use AppBundle\Accounting\Entity\Produit;
 use AppBundle\Accounting\Entity\Repository\ProduitRepository;
 use AppBundle\Accounting\Form\ProduitType;
 use AppBundle\AuditLog\Audit;
@@ -21,8 +22,13 @@ final class EditProduitAction extends AbstractController
     public function __invoke(int $id, Request $request): Response
     {
         $produit = $this->produitRepository->find($id);
+        if (!$produit instanceof Produit) {
+            throw $this->createNotFoundException(sprintf('Le produit n\'a pas été trouvé avec l\'id "%s"', $id));
+        }
+
         $form = $this->createForm(ProduitType::class, $produit);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $this->produitRepository->save($produit);
             $this->audit->log('Modification du produit ' . $produit->reference);

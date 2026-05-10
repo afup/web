@@ -24,7 +24,7 @@ class Produit
     #[ORM\Column(nullable: true)]
     public ?int $quantite = null;
 
-    #[ORM\Column(nullable: false)]
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: false)]
     public float $prixUnitaireHt;
 
     #[ORM\Column(nullable: true)]

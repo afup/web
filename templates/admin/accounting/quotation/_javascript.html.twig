@@ -69,6 +69,7 @@
                 newRow.querySelector('[name$="[quantity]"]').value = btn.dataset.quantite || '';
                 newRow.querySelector('[name$="[unitPrice]"]').value = btn.dataset.prixUnitaireHt;
                 newRow.querySelector('[name$="[tva]"]').value = btn.dataset.tauxTva;
+                newRow.querySelector('[name$="[designation]"]').value = btn.dataset.designation;
 
                 $modal.modal('hide');
             });
