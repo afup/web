@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller;
 
-use Afup\Site\Utils\Logs;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\Utils;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
@@ -78,7 +77,6 @@ class LegacyController extends AbstractController
             return $this->redirectToRoute('admin_home');
         }
         // Initialisation de AFUP_Log
-        Logs::initialiser($bdd, $droits->obtenirIdentifiant());
         require_once __DIR__ . '/../../../htdocs/pages/administration/' . $_GET['page'] . '.php';
         // On gère des infos popups
         if (isset($_SESSION['flash']['message'])) {
