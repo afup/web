@@ -13,6 +13,7 @@ use CCMBenchmark\Ting\Driver\Exception;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorArray;
+use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -164,6 +165,29 @@ class InvoiceRepository extends Repository implements MetadataInitializer
 
         return $query->query($this->getCollection(new HydratorArray()));
     }
+
+    public function getByEventId(int $eventId, string $sort = 'date_facture', string $direction = 'desc', string $filter = ''): CollectionInterface
+    {
+        /** @var Select $builder */
+        $builder = $this->getQueryBuilder(self::QUERY_SELECT);
+        $builder->cols(['*'])
+                ->from('afup_facturation_forum aff')
+                ->where('aff.id_forum = :event_id')
+                ->where(
+                    'aff.etat in (' . Ticket::STATUS_PAID . ', ' . Ticket::STATUS_WAITING . ', ' . Ticket::STATUS_CONFIRMED . ')',
+                );
+        if ($filter !== '') {
+            $builder->where('(aff.societe LIKE :filter OR aff.reference LIKE :filter)')
+                    ->bindValues(['filter' => '%' . $filter . '%']);
+        }
+        $builder->orderBy(["$sort $direction"])
+                ->bindValues(['event_id' => $eventId]);
+
+        return $this->getQuery($builder->getStatement())
+                    ->setParams($builder->getBindValues())
+                    ->query($this->getCollection(new HydratorSingleObject()));
+    }
+
 
     /**
      * @inheritDoc

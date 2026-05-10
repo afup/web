@@ -84,6 +84,15 @@ class EventRepository extends Repository implements MetadataInitializer
         return $query->query($this->getCollection(new HydratorSingleObject()))->first();
     }
 
+    public function getMostRecentEvent(): ?Event
+    {
+        $query = $this
+            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_fin_appel_conferencier, date_fin_vente FROM afup_forum ORDER BY date_debut DESC')
+        ;
+
+        return $query->query($this->getCollection(new HydratorSingleObject()))->first();
+    }
+
     public function getNextEventForGithubUser(GithubUser $githubUser)
     {
         $events = $this
@@ -276,6 +285,13 @@ SQL;
     public function getAllActive(): CollectionInterface
     {
         $query = $this->getQuery('SELECT * FROM afup_forum WHERE archived_at IS NULL');
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    public function getAllSortedByTitre(): CollectionInterface
+    {
+        $query = $this->getQuery('SELECT * FROM afup_forum ORDER BY titre ASC');
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
