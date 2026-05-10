@@ -22,10 +22,7 @@ class Forum2009ConferenciersAction
         if ('projet' === $type) {
             $sessions = $this->appelConferencier->obtenirListeProjets(
                 Forum2009Config::ID,
-                's.*',
                 's.titre',
-                false,
-                false,
                 Forum2009Config::PROJECT_IDS,
             );
         } else {

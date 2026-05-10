@@ -11,6 +11,7 @@ use AppBundle\Event\Speaker\MicrophoneType;
 use AppBundle\Ting\JoinHydrator;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
+use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -178,6 +179,22 @@ SQL
         return (int) $query->query()->first()[0]->nb;
     }
 
+    public function getSpeakersBySession(int $sessionId): CollectionInterface
+    {
+        $sql = ' SELECT ';
+        $sql .= '  LOWER(CONCAT(SUBSTRING(c.prenom, 1, 1), c.nom)) as code, ';
+        $sql .= '  c.* ';
+        $sql .= ' FROM ';
+        $sql .= '  afup_conferenciers c ';
+        $sql .= ' INNER JOIN ';
+        $sql .= '  afup_conferenciers_sessions cs';
+        $sql .= ' ON ';
+        $sql .= '  c.conferencier_id = cs.conferencier_id';
+        $sql .= ' WHERE cs.session_id = :sessionId';
+
+        $query = $this->getPreparedQuery($sql)->setParams(['sessionId' => $sessionId]);
+        return $query->query($this->getCollection(new HydratorArray()));
+    }
     /**
      * @inheritDoc
      */

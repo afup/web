@@ -135,7 +135,6 @@ class Speaker implements NotifyPropertyInterface
 
     private bool $travelRefundNeeded = true;
     private bool $travelRefundSponsored = false;
-
     private ?MicrophoneType $micType = null;
 
     public function getId(): ?int
@@ -721,7 +720,6 @@ class Speaker implements NotifyPropertyInterface
         $this->propertyChanged('micType', $this->micType, $micType);
         $this->micType = $micType;
     }
-
     public function hasHotelNightBefore(): ?bool
     {
         if (null === ($hotelNights = $this->getHotelNightsArray())) {

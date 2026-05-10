@@ -428,6 +428,89 @@ SQL;
     }
 
     /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function getScheduledTalksByEvent(int $forumId): array
+    {
+        $sql = 'SELECT se.session_id, se.*
+                FROM afup_sessions se
+                LEFT JOIN afup_forum_planning pl ON se.session_id = pl.id_session
+                WHERE se.id_forum = :forumId
+                AND se.plannifie = 1
+                AND se.genre != 9
+                ORDER BY pl.debut, se.titre';
+
+        $query = $this->getPreparedQuery($sql)->setParams(['forumId' => $forumId]);
+
+        return iterator_to_array($query->query($this->getCollection(new HydratorArray())));
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function getPlannedTalksWithSpeakers(int $forumId): array
+    {
+        $sql = 'SELECT
+            ( SELECT CONCAT(c.prenom, \' \', c.nom,\' - \', c.societe) FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = se.session_id ORDER BY c.conferencier_id ASC LIMIT 1) as conf1,
+            ( SELECT twitter FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = se.session_id ORDER BY c.conferencier_id ASC LIMIT 1) as twitter1,
+            ( SELECT cs.conferencier_id FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = se.session_id ORDER BY c.conferencier_id ASC LIMIT 1) as conferencier_id1,
+            ( SELECT CONCAT(c.prenom, \' \', c.nom,\' - \', c.societe) FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = se.session_id ORDER BY c.conferencier_id ASC LIMIT 1,1) as conf2,
+            ( SELECT twitter FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = se.session_id ORDER BY c.conferencier_id ASC LIMIT 1,1) as twitter2,
+            ( SELECT cs.conferencier_id FROM afup_conferenciers_sessions cs INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id WHERE cs.session_id = se.session_id ORDER BY c.conferencier_id ASC LIMIT 1,1) as conferencier_id2,
+            se.*,
+            IF(se.journee = 1, "boss", IF(se.journee = 2, "geek", "boss geek")) as journee,
+            sa.nom as nom_salle,
+            pl.id,
+            pl.debut,
+            pl.fin,
+            pl.keynote,
+            pl.id_salle,
+            se.joindin
+        FROM afup_sessions se
+        LEFT JOIN afup_forum_planning pl ON se.session_id = pl.id_session
+        LEFT JOIN afup_forum_salle sa ON sa.id = pl.id_salle
+        WHERE se.id_forum = :forumId
+        AND se.genre != 9
+        AND se.plannifie = 1
+        ORDER BY pl.debut, sa.nom, se.titre';
+
+        $query = $this->getPreparedQuery($sql)->setParams(['forumId' => $forumId]);
+
+        return iterator_to_array($query->query($this->getCollection(new HydratorArray())));
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function getProjectTalks(
+        int $forumId,
+        string $order = 's.date_soumission',
+        array $onlyIds = [],
+    ): array {
+        if (!in_array($order, ['s.date_soumission', 's.titre'], true)) {
+            throw new \InvalidArgumentException(sprintf('Invalid order column "%s".', $order));
+        }
+
+        $sql = 'SELECT COUNT(co.id) as commentaires_nombre, s.*
+                FROM afup_sessions s
+                INNER JOIN afup_conferenciers_sessions cs ON cs.session_id = s.session_id
+                INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id
+                LEFT JOIN afup_forum_sessions_commentaires co ON cs.session_id = co.id_session
+                WHERE c.id_forum = :forumId';
+
+        if ($onlyIds !== []) {
+            $sql .= ' AND s.session_id IN (' . implode(', ', array_map('intval', $onlyIds)) . ')';
+        }
+
+        $sql .= ' AND s.genre = 9 GROUP BY s.session_id ORDER BY ' . $order;
+
+        $query = $this->getPreparedQuery($sql)->setParams(['forumId' => $forumId]);
+        $collection = $query->query($this->getCollection(new HydratorArray()));
+
+        return iterator_to_array($collection->getIterator());
+    }
+
+    /**
      * @return Metadata
      */
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])

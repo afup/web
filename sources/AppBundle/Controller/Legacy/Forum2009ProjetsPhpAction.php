@@ -20,10 +20,7 @@ class Forum2009ProjetsPhpAction
     {
         $sessions = $this->appelConferencier->obtenirListeProjets(
             Forum2009Config::ID,
-            's.*',
             's.titre',
-            false,
-            false,
             Forum2009Config::PROJECT_IDS,
         );
 
