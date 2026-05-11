@@ -200,16 +200,14 @@
                         <td>{{ product.designation }}</td>
                         <td class="right aligned">{{ product.quantite ?? '-' }}</td>
                         <td class="right aligned">{{ product.prixUnitaireHt|number_format(2, ',', ' ') }} €</td>
-                        <td class="right aligned">
-                            {{ product.tauxTva ? product.tauxTva ~ '%' : '-' }}
-                        </td>
+                        <td class="right aligned">{{ product.tauxTva.label }}</td>
                         <td>
                             <button type="button" class="ui primary button choose_produit_button"
                                     data-reference="{{ product.reference|e('html_attr') }}"
                                     data-designation="{{ product.designation|e('html_attr') }}"
                                     data-quantite="{{ product.quantite }}"
                                     data-prix-unitaire-ht="{{ product.prixUnitaireHt }}"
-                                    data-taux-tva="{{ product.tauxTva ?? '' }}">
+                                    data-taux-tva="{{ product.tauxTva.toNumber }}">
                                 Choisir
                             </button>
                         </td>

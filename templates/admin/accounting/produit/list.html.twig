@@ -28,13 +28,7 @@
                     <td>{{ produit.designation }}</td>
                     <td class="right aligned">{{ produit.quantite ?? '-' }}</td>
                     <td class="right aligned">{{ produit.prixUnitaireHt|number_format(2, ',', ' ') }} €</td>
-                    <td class="right aligned">
-                        {%- if produit.tauxTva is not null -%}
-                            {{ produit.tauxTva }}&nbsp;%
-                        {%- else -%}
-                            <em>non soumis</em>
-                        {%- endif -%}
-                    </td>
+                    <td class="right aligned">{{ produit.tauxTva.label }}</td>
                     <td style="text-align: right">
                         <a href="{{ url('admin_accounting_produits_edit', {id: produit.id}) }}"
                            data-position="left center"

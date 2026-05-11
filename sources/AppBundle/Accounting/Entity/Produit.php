@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Accounting\Entity;
 
+use AppBundle\Accounting\TvaTaux;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -27,6 +28,6 @@ class Produit
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: false)]
     public float $prixUnitaireHt;
 
-    #[ORM\Column(nullable: true)]
-    public ?float $tauxTva = null;
+    #[ORM\Column(nullable: false, enumType: TvaTaux::class)]
+    public TvaTaux $tauxTva;
 }

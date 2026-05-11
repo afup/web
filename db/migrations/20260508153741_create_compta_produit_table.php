@@ -13,7 +13,7 @@ final class CreateComptaProduitTable extends AbstractMigration
             ->addColumn('designation', 'string', ['limit' => 255, 'null' => false])
             ->addColumn('quantite', 'integer', ['null' => true])
             ->addColumn('prix_unitaire_ht', 'float', ['null' => false])
-            ->addColumn('taux_tva', 'float', ['null' => true])
+            ->addColumn('taux_tva', 'string', ['limit' => 16, 'null' => false])
             ->create();
     }
 }

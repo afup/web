@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace AppBundle\Accounting\Form;
 
+use AppBundle\Accounting\TvaTaux;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -47,17 +49,13 @@ class ProduitType extends AbstractType
                 new Assert\NotBlank(),
                 new Assert\Positive(),
             ],
-        ])->add('tauxTva', ChoiceType::class, [
+        ])->add('tauxTva', EnumType::class, [
             'label' => 'Taux de TVA',
-            'required' => false,
+            'class' => TvaTaux::class,
+            'required' => true,
             'expanded' => true,
             'multiple' => false,
-            'placeholder' => 'Non soumis',
-            'choices' => [
-                '5.5%' => 5.5,
-                '10%' => 10.0,
-                '20%' => 20.0,
-            ],
+            'choice_label' => fn (TvaTaux $taux) => $taux->label(),
         ]);
     }
 }
