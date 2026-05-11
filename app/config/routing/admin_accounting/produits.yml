@@ -1,0 +1,19 @@
+admin_accounting_produits_list:
+  path: /
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Produit\ListProduitAction}
+
+admin_accounting_produits_add:
+  path: /add
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Produit\AddProduitAction}
+
+admin_accounting_produits_edit:
+  path: /edit/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Produit\EditProduitAction}
+  requirements:
+    id: '\d+'
+
+admin_accounting_produits_delete:
+  path: /delete/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Produit\DeleteProduitAction}
+  requirements:
+    id: '\d+'

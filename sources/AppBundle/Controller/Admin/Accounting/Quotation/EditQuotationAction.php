@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Quotation;
 
+use AppBundle\Accounting\Entity\Repository\ProduitRepository;
 use AppBundle\Accounting\Form\QuotationType;
 use AppBundle\Accounting\Model\Repository\InvoicingDetailRepository;
 use AppBundle\Accounting\Model\Repository\InvoicingRepository;
@@ -16,6 +17,7 @@ class EditQuotationAction extends AbstractController
     public function __construct(
         private readonly InvoicingRepository $invoicingRepository,
         private readonly InvoicingDetailRepository $invoicingDetailRepository,
+        private readonly ProduitRepository $produitRepository,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -59,6 +61,7 @@ class EditQuotationAction extends AbstractController
             'quotation' => $quotation,
             'form' => $form->createView(),
             'submitLabel' => 'Modifier',
+            'produits' => $this->produitRepository->getAllSortedByReference(),
         ]);
     }
 }

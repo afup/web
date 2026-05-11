@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Accounting\Quotation;
 
 use Afup\Site\Comptabilite\Facture;
+use AppBundle\Accounting\Entity\Repository\ProduitRepository;
 use AppBundle\Accounting\Form\QuotationType;
 use AppBundle\Accounting\Model\Invoicing;
 use AppBundle\Accounting\Model\InvoicingDetail;
@@ -20,6 +21,7 @@ class AddQuotationAction extends AbstractController
         private readonly InvoicingRepository $invoicingRepository,
         private readonly Facture $facture,
         private readonly InvoicingDetailRepository $invoicingDetailRepository,
+        private readonly ProduitRepository $produitRepository,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -49,6 +51,7 @@ class AddQuotationAction extends AbstractController
             'quotation' => $quotation,
             'form' => $form->createView(),
             'submitLabel' => 'Ajouter',
+            'produits' => $this->produitRepository->getAllSortedByReference(),
         ]);
     }
 
@@ -59,7 +62,6 @@ class AddQuotationAction extends AbstractController
             $quotation =  new Invoicing();
             $quotation->setQuotationDate(new \DateTime());
             $quotation->setCountryId('FR');
-            $quotation->setDetails([new InvoicingDetail()]);
 
             return $quotation;
         }

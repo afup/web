@@ -1,0 +1,58 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+
+    <h2>Produits</h2>
+
+        <div class="ui menu">
+            <a href="{{ url('admin_accounting_produits_add') }}" class="item">
+                <i class="icon plus square"></i> Ajouter
+            </a>
+        </div>
+
+        <table class="ui table striped compact celled">
+            <thead>
+            <tr>
+                <th>Référence</th>
+                <th>Désignation</th>
+                <th class="right aligned">Quantité par défaut</th>
+                <th class="right aligned">Prix unitaire HT</th>
+                <th class="right aligned">Taux de TVA</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for produit in produits %}
+                <tr>
+                    <td>{{ produit.reference }}</td>
+                    <td>{{ produit.designation }}</td>
+                    <td class="right aligned">{{ produit.quantite ?? '-' }}</td>
+                    <td class="right aligned">{{ produit.prixUnitaireHt|number_format(2, ',', ' ') }} €</td>
+                    <td class="right aligned">{{ produit.tauxTva.label }}</td>
+                    <td style="text-align: right">
+                        <a href="{{ url('admin_accounting_produits_edit', {id: produit.id}) }}"
+                           data-position="left center"
+                           data-tooltip="Modifier la ligne"
+                           class="compact ui icon button"
+                        >
+                            <i class="pencil alternate icon"></i>
+                        </a>
+                        <a href="{{ url('admin_accounting_produits_delete', {id: produit.id}) }}"
+                           data-position="left center"
+                           data-tooltip="Supprimer la ligne"
+                           class="compact ui icon button"
+                           onclick="return confirm('Supprimer ce produit ?');"
+                        >
+                            <i class="trash icon"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6"><em>Aucun produit actuellement</em></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+{% endblock %}

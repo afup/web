@@ -117,7 +117,7 @@
 <div class="ui segment">
     <div class="inline grid ui">
         <div class="column twelve wide">
-            <h2 class="ui header" >Contenu</h2>
+            <h2 class="ui header">Contenu</h2>
         </div>
     </div>
     {% set index = form.details|length > 0 ? (form.details|length) : 0 %}
@@ -146,7 +146,11 @@
     <div class="inline grid ui">
         <div class="column twelve wide"></div>
         <div class="column four wide">
-            <a href="javascript:void(0);" class="ui primary button add_item_link" data-collection-holder-class="invoice_row_container">Ajouter une ligne</a>
+            <a href="javascript:void(0);" class="ui primary button add_item_link">Ajouter une ligne vide</a>
+            {% if produits|length > 0 %}
+                <div class="ui hidden divider"></div>
+                <a href="javascript:void(0);" class="ui primary button add_item_from_produit_link">Ajouter une ligne depuis un produit</a>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -170,3 +174,50 @@
 
 {{ form_end(form) }}
 
+{% if produits|length > 0 %}
+    <div class="ui modal" id="produit_picker_modal">
+        <i class="close icon"></i>
+        <div class="header">
+            Choisir un produit<br/>
+            <small>Les informations seront copiées dans le devis</small>
+        </div>
+        <div class="scrolling content">
+            <table class="ui table striped compact celled">
+                <thead>
+                <tr>
+                    <th>Référence</th>
+                    <th>Désignation</th>
+                    <th class="right aligned">Qté</th>
+                    <th class="right aligned">Prix unitaire HT</th>
+                    <th class="right aligned">Taux TVA</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for product in produits %}
+                    <tr>
+                        <td>{{ product.reference }}</td>
+                        <td>{{ product.designation }}</td>
+                        <td class="right aligned">{{ product.quantite ?? '-' }}</td>
+                        <td class="right aligned">{{ product.prixUnitaireHt|number_format(2, ',', ' ') }} €</td>
+                        <td class="right aligned">{{ product.tauxTva.label }}</td>
+                        <td>
+                            <button type="button" class="ui primary button choose_produit_button"
+                                    data-reference="{{ product.reference|e('html_attr') }}"
+                                    data-designation="{{ product.designation|e('html_attr') }}"
+                                    data-quantite="{{ product.quantite }}"
+                                    data-prix-unitaire-ht="{{ product.prixUnitaireHt }}"
+                                    data-taux-tva="{{ product.tauxTva.toNumber }}">
+                                Choisir
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="actions">
+            <button type="button" class="ui cancel button">Annuler</button>
+        </div>
+    </div>
+{% endif %}

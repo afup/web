@@ -260,6 +260,14 @@ parameters:
                         - admin_accounting_payments_list
                         - admin_accounting_accounts_list
                         - admin_accounting_rules_list
+                compta_produits:
+                    nom: 'Produits'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/accounting/produits'
+                    extra_routes:
+                        - admin_accounting_produits_list
+                        - admin_accounting_produits_add
+                        - admin_accounting_produits_edit
                 compta_recherche:
                     nom: 'Recherche comptable'
                     niveau: 'ROLE_ADMIN'
