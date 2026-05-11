@@ -30,7 +30,7 @@ Feature: Administration - Trésorerie - Produits
     And I should see "Forum PHP 2027 - Sponsoring Argent sans stand"
     And I should see "2"
     And I should see "456"
-    And I should see "5.5 %"
+    And I should see "5,5 %"
 
     When I follow the button of tooltip "Supprimer la ligne"
     Then the ".content .message" element should contain "Le produit a été supprimé"
