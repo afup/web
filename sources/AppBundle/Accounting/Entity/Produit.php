@@ -26,7 +26,7 @@ class Produit
     public ?int $quantite = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: false)]
-    public float $prixUnitaireHt;
+    public string $prixUnitaireHt;
 
     #[ORM\Column(nullable: false, enumType: TvaTaux::class)]
     public TvaTaux $tauxTva;
