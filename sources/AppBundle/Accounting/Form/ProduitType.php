@@ -6,7 +6,6 @@ namespace AppBundle\Accounting\Form;
 
 use AppBundle\Accounting\TvaTaux;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -55,7 +54,7 @@ class ProduitType extends AbstractType
             'required' => true,
             'expanded' => true,
             'multiple' => false,
-            'choice_label' => fn (TvaTaux $taux) => $taux->label(),
+            'choice_label' => fn(TvaTaux $taux) => $taux->label(),
         ]);
     }
 }
