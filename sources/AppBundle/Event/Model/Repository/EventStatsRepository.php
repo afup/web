@@ -13,6 +13,7 @@ use Datetime;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
+use DateTimeImmutable;
 
 class EventStatsRepository
 {
@@ -24,6 +25,7 @@ class EventStatsRepository
         private readonly Connection $connection,
         private readonly TalkRepository $talkRepository,
         private readonly TalkToSpeakersRepository $talkToSpeakersRepository,
+        private readonly EventRepository $eventRepository,
     ) {}
 
     public function getStats(int $eventId, Datetime $from = null): EventStats
@@ -125,6 +127,93 @@ class EventStatsRepository
             ->fetchOne();
 
         return new DailyStats($registered, $confirmed, $pending, $paid);
+    }
+
+    public function getRegistrationTracking(int $eventId, ?int $previousEventId = null): array
+    {
+        if ($previousEventId === null) {
+            $previousEventId = $this->eventRepository->getPreviousForum($eventId) ?? 0;
+        }
+
+        $event = $this->eventRepository->get($eventId);
+
+        $now = new \DateTime();
+        $dateForum = DateTimeImmutable::createFromInterface($event->getDateEndSales());
+
+        $daysToEndOfSales = 0;
+        if ($dateForum >= $now) {
+            $daysToEndOfSales = (int) $dateForum->diff($now)->format('%r%a');
+        }
+
+        $sql = "
+        SELECT SUM(nombre) as nombre, jour, id_forum
+        FROM (
+            SELECT
+              COUNT(*) as nombre,
+              DATEDIFF(FROM_UNIXTIME(date, '%Y-%m-%d'), FROM_UNIXTIME(af.date_fin_vente, '%Y-%m-%d')) as jour,
+              id_forum
+            FROM
+              afup_inscription_forum i
+            RIGHT JOIN afup_forum_tarif aft ON (aft.id = i.type_inscription AND aft.default_price > 0)
+            LEFT JOIN afup_forum af ON af.id = i.id_forum
+            WHERE
+              i.id_forum IN (:eventId, :previousEventId)
+            AND
+              etat <> 1
+            GROUP BY jour, i.id_forum
+            HAVING jour < 0
+            UNION ALL
+            SELECT
+                SUM(max_invitations) as nombre,
+                DATEDIFF(created_on, FROM_UNIXTIME(af.date_fin_vente, '%Y-%m-%d')) as jour,
+                id_forum
+            FROM afup_forum_sponsors_tickets st
+            LEFT JOIN afup_forum af ON af.id = st.id_forum
+            WHERE
+              st.id_forum IN (:eventId, :previousEventId)
+            GROUP BY jour, st.id_forum
+            HAVING jour < 0
+            ORDER BY jour ASC
+        ) all_data
+        GROUP BY jour, id_forum
+        ";
+
+        $nombreParDate = $this->connection->executeQuery(
+            $sql,
+            ['eventId' => $eventId, 'previousEventId' => $previousEventId],
+        )->fetchAllAssociative();
+
+        if ($nombreParDate === []) {
+            $nombreParDate = [['jour' => 1]];
+        }
+
+        $suivis = [];
+        for ($i = $nombreParDate[0]['jour']; $i <= 0; $i++) {
+            $infoForum = array_sum(array_map(function (array $info) use ($i, $eventId) {
+                if ((int) $info['id_forum'] === $eventId && $info['jour'] <= $i) {
+                    return $info['nombre'];
+                }
+                return 0;
+            }, $nombreParDate));
+            $infoN1 = array_sum(array_map(function (array $info) use ($i, $previousEventId) {
+                if ((int) $info['id_forum'] === $previousEventId && $info['jour'] <= $i) {
+                    return $info['nombre'];
+                }
+                return 0;
+            }, $nombreParDate));
+            $suivis[$i] = [
+                'jour' => $i,
+                'n' => $daysToEndOfSales >= $i ? $infoForum : null,
+                'n_1' => $infoN1,
+            ];
+        }
+
+        return [
+            'suivi' => $suivis,
+            'min' => $nombreParDate[0]['jour'],
+            'max' => $i,
+            'daysToEndOfSales' => $daysToEndOfSales,
+        ];
     }
 
     public function getCFPStats(int $eventId): CFPStats
