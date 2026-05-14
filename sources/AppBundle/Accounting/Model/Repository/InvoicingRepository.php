@@ -15,6 +15,7 @@ use AppBundle\Accounting\Model\Invoicing;
 use Aura\SqlQuery\Mysql\Select;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
+use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
@@ -28,30 +29,7 @@ class InvoicingRepository extends Repository implements MetadataInitializer
 {
     public function getById(int $id): ?Invoicing
     {
-        /** @var Select $builder */
-        $builder = $this->getQueryBuilder(self::QUERY_SELECT);
-        $builder->cols(['acf.*', 'acfd.*'])
-                ->from('afup_compta_facture acf')
-                ->leftJoin('afup_compta_facture_details acfd', 'acfd.idafup_compta_facture = acf.id')
-                ->where('acf.id = :id');
-
-        $hydrator = new HydratorRelational();
-        $hydrator->addRelation(new RelationMany(new AggregateFrom('acfd'), new AggregateTo('acf'), 'setDetails'));
-        $hydrator->callableFinalizeAggregate(fn(array $row) => $row['acf']);
-
-        $collection = $this->getQuery($builder->getStatement())
-                    ->setParams(['id' => $id])
-                    ->query($this->getCollection($hydrator));
-
-        if ($collection->count() === 0) {
-            return null;
-        }
-
-        /** @var Invoicing $entity */
-        $entity = $collection->first();
-        $entity->setDetails(array_values($entity->getDetails()));
-
-        return $entity;
+        return $this->findOneWithDetails('acf.id = :id', ['id' => $id]);
     }
 
     public function getQuotationsByPeriodId(?int $periodId = null, string $sort = 'date', string $direction = 'desc'): CollectionInterface
@@ -114,6 +92,77 @@ class InvoicingRepository extends Repository implements MetadataInitializer
         return $this->getQuery($builder->getStatement())
                     ->setParams($builder->getBindValues())
                     ->query($this->getCollection($hydrator));
+    }
+
+    public function getOneByInvoiceNumber(string $number): ?Invoicing
+    {
+        return $this->findOneWithDetails('acf.numero_facture = :number', ['number' => $number]);
+    }
+
+    public function getOneByQuotationNumber(string $number): ?Invoicing
+    {
+        return $this->findOneWithDetails('acf.numero_devis = :number', ['number' => $number]);
+    }
+
+    public function getNextInvoiceIndex(int $year): ?int
+    {
+        $sql = 'SELECT MAX(CAST(SUBSTRING_INDEX(numero_facture, \'-\', -1) AS UNSIGNED)) + 1 AS next_index
+                FROM afup_compta_facture
+                WHERE LEFT(numero_facture, 4) = :year';
+
+        $rows = iterator_to_array(
+            $this->getQuery($sql)->setParams(['year' => (string) $year])->query($this->getCollection(new HydratorArray())),
+        );
+
+        return isset($rows[0]['next_index']) ? (int) $rows[0]['next_index'] : null;
+    }
+
+    public function getNextQuotationIndex(int $year): ?int
+    {
+        $sql = 'SELECT MAX(CAST(SUBSTRING_INDEX(numero_devis, \'-\', -1) AS UNSIGNED)) + 1 AS next_index
+                FROM afup_compta_facture
+                WHERE LEFT(numero_devis, 4) = :year';
+
+        $rows = iterator_to_array(
+            $this->getQuery($sql)->setParams(['year' => (string) $year])->query($this->getCollection(new HydratorArray())),
+        );
+
+        return isset($rows[0]['next_index']) ? (int) $rows[0]['next_index'] : null;
+    }
+
+    public function convertQuotationToInvoice(Invoicing $quotation, string $invoiceNumber): void
+    {
+        $quotation->setInvoiceNumber($invoiceNumber);
+        $quotation->setInvoiceDate(new \DateTime());
+        $this->save($quotation);
+    }
+
+    private function findOneWithDetails(string $whereClause, array $params): ?Invoicing
+    {
+        /** @var Select $builder */
+        $builder = $this->getQueryBuilder(self::QUERY_SELECT);
+        $builder->cols(['acf.*', 'acfd.*'])
+                ->from('afup_compta_facture acf')
+                ->leftJoin('afup_compta_facture_details acfd', 'acfd.idafup_compta_facture = acf.id')
+                ->where($whereClause);
+
+        $hydrator = new HydratorRelational();
+        $hydrator->addRelation(new RelationMany(new AggregateFrom('acfd'), new AggregateTo('acf'), 'setDetails'));
+        $hydrator->callableFinalizeAggregate(fn(array $row) => $row['acf']);
+
+        $collection = $this->getQuery($builder->getStatement())
+                    ->setParams($params)
+                    ->query($this->getCollection($hydrator));
+
+        if ($collection->count() === 0) {
+            return null;
+        }
+
+        /** @var Invoicing $entity */
+        $entity = $collection->first();
+        $entity->setDetails(array_values($entity->getDetails()));
+
+        return $entity;
     }
 
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])

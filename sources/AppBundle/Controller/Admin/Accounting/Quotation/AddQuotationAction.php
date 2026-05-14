@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Quotation;
 
-use Afup\Site\Comptabilite\Facture;
+use AppBundle\Accounting\InvoicingNumberGenerator;
 use AppBundle\Accounting\Entity\Repository\ProduitRepository;
 use AppBundle\Accounting\Form\QuotationType;
 use AppBundle\Accounting\Model\Invoicing;
@@ -19,7 +19,7 @@ class AddQuotationAction extends AbstractController
 {
     public function __construct(
         private readonly InvoicingRepository $invoicingRepository,
-        private readonly Facture $facture,
+        private readonly InvoicingNumberGenerator $numberGenerator,
         private readonly InvoicingDetailRepository $invoicingDetailRepository,
         private readonly ProduitRepository $produitRepository,
     ) {}
@@ -32,7 +32,7 @@ class AddQuotationAction extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->invoicingRepository->startTransaction();
-                $quotation->setQuotationNumber($this->facture->genererNumeroDevis());
+                $quotation->setQuotationNumber($this->numberGenerator->generateQuotationNumber());
                 $this->invoicingRepository->save($quotation);
                 foreach ($quotation->getDetails() as $detail) {
                     $detail->setInvoicingId($quotation->getId());
