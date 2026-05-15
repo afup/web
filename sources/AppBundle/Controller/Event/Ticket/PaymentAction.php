@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Event\Ticket;
 
-use Afup\Site\Forum\Facturation;
 use Afup\Site\Utils\Utils;
+use AppBundle\Event\Invoice\EventInvoiceMailer;
 use Afup\Site\Utils\Vat;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\Controller\Event\EventActionHelper;
@@ -32,7 +32,7 @@ final class PaymentAction extends AbstractController
         private readonly TicketRepository $ticketRepository,
         private readonly PayboxFactory $payboxFactory,
         private readonly EventActionHelper $eventActionHelper,
-        private readonly Facturation $facturation,
+        private readonly EventInvoiceMailer $invoiceMailer,
     ) {}
 
     public function __invoke($eventSlug, Request $request): Response
@@ -79,7 +79,7 @@ final class PaymentAction extends AbstractController
 
             $invoiceRepository->save($invoice);
 
-            $this->facturation->envoyerFacture($invoice->getReference());
+            $this->invoiceMailer->send($invoice->getReference());
 
             $ticketRepository = $this->ticketRepository;
             $tickets = $ticketRepository->getByInvoiceWithDetail($invoice);
@@ -102,7 +102,7 @@ final class PaymentAction extends AbstractController
             $params['bankAccount'] = $bankAccountFactory->createApplyableAt($invoice->getinvoiceDate());
 
             // For bankwire, companies need to retrieve the invoice
-            $this->facturation->envoyerFacture($invoiceRef);
+            $this->invoiceMailer->send($invoiceRef);
         }
 
         return $this->render('event/ticket/payment.html.twig', $params);

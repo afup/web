@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event\Facturation;
 
-use Afup\Site\Forum\Facturation;
 use AppBundle\AuditLog\Audit;
+use AppBundle\Event\Invoice\EventInvoiceMailer;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class SendFactureAction extends AbstractController
 {
     public function __construct(
-        private readonly Facturation $facturation,
+        private readonly EventInvoiceMailer $invoiceMailer,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly Audit $audit,
     ) {}
@@ -29,7 +29,7 @@ class SendFactureAction extends AbstractController
             throw new NotFoundHttpException("Cette facture n'existe pas");
         }
 
-        if ($this->facturation->envoyerFacture($reference)) {
+        if ($this->invoiceMailer->send($reference)) {
             $this->audit->log('Facturation => facture n°' . $reference);
             $this->addFlash('notice', 'La facture a été envoyée');
             return $this->redirectToRoute('admin_event_factures');
