@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event;
 
-use Afup\Site\Forum\Facturation;
 use AppBundle\Email\Emails;
+use AppBundle\Event\Invoice\EventInvoiceMailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Model\Event;
@@ -30,7 +30,7 @@ class PendingBankwiresAction extends AbstractController
         private readonly Emails $emails,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
-        private readonly Facturation $facturation,
+        private readonly EventInvoiceMailer $invoiceMailer,
     ) {}
 
     public function __invoke(Request $request, AdminEventSelection $eventSelection): Response
@@ -70,7 +70,7 @@ class PendingBankwiresAction extends AbstractController
         $this->invoiceRepository->save($invoice);
         $tickets = $this->ticketRepository->getByReference($invoice->getReference());
 
-        $this->facturation->envoyerFacture($invoice->getReference());
+        $this->invoiceMailer->send($invoice->getReference());
         $this->addFlash('notice', sprintf('La facture %s a été marquée comme payée', $invoice->getReference()));
 
         foreach ($tickets as $ticket) {

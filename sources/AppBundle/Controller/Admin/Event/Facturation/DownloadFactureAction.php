@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event\Facturation;
 
-use Afup\Site\Forum\Facturation;
+use AppBundle\Event\Invoice\EventInvoicePdfGenerator;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class DownloadFactureAction extends AbstractController
 {
     public function __construct(
-        private readonly Facturation $facturation,
+        private readonly EventInvoicePdfGenerator $pdfGenerator,
         private readonly InvoiceRepository $invoiceRepository,
     ) {}
 
@@ -27,12 +27,13 @@ class DownloadFactureAction extends AbstractController
             throw new NotFoundHttpException("Cette facture n'existe pas");
         }
 
-        ob_start();
-        $this->facturation->genererFacture($reference);
-        $pdf = ob_get_clean();
+        $date = $facture->getInvoiceDate() ?? new \DateTime();
+        $label = $facture->getCompany() ?: ($facture->getLastname() . ' ' . $facture->getFirstname());
+        $filename = 'Facture - ' . $label . ' - ' . $date->format('Y-m-d_H-i') . '.pdf';
 
-        $response = new Response($pdf);
+        $response = new Response($this->pdfGenerator->generateInvoice($reference));
         $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '"');
 
         return $response;
     }

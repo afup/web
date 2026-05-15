@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Event\Ticket;
 
-use Afup\Site\Forum\Facturation;
 use AppBundle\Controller\Event\EventActionHelper;
+use AppBundle\Event\Invoice\EventInvoiceMailer;
 use AppBundle\Email\Emails;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
@@ -30,7 +30,7 @@ final class PayboxCallbackAction extends AbstractController
         private readonly InvoiceRepository $invoiceRepository,
         private readonly TicketRepository $ticketRepository,
         private readonly EventActionHelper $eventActionHelper,
-        private readonly Facturation $facturation,
+        private readonly EventInvoiceMailer $invoiceMailer,
     ) {}
 
     public function __invoke(string $eventSlug, Request $request): Response
@@ -67,7 +67,7 @@ final class PayboxCallbackAction extends AbstractController
         $tickets = $this->ticketRepository->getByReference($invoice->getReference());
 
         if ($paymentStatus === Ticket::STATUS_PAID) {
-            $this->facturation->envoyerFacture($invoice->getReference());
+            $this->invoiceMailer->send($invoice->getReference());
         }
 
         foreach ($tickets as $ticket) {

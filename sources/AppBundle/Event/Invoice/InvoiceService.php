@@ -8,6 +8,7 @@ use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
+use DateTime;
 
 class InvoiceService
 {
@@ -78,6 +79,24 @@ class InvoiceService
         if (null !== $oldInvoice && $oldReference !== $reference) {
             $this->deleteInvoice($oldInvoice);
         }
+    }
+
+    public function markAsInvoiced(Invoice $invoice): bool
+    {
+        if ($invoice->getInvoice()) {
+            return true;
+        }
+
+        $tickets = $this->ticketRepository->getByReference($invoice->getReference());
+        foreach ($tickets as $ticket) {
+            $ticket->setInvoiceStatus(Ticket::INVOICE_SENT);
+            $this->ticketRepository->save($ticket);
+        }
+
+        $invoice->setInvoice(true)->setInvoiceDate(new DateTime());
+        $this->invoiceRepository->save($invoice);
+
+        return true;
     }
 
     public function deleteInvoice(Invoice $invoice): void
