@@ -62,7 +62,7 @@
                                data-tooltip="Modifier le devis {{ line.company }}"
                                class="compact ui icon button"
                             >
-                                <i class="pencil alernate icon"></i>
+                                <i class="pencil alternate icon"></i>
                             </a>
                         {% else %}
                             <a href="{{ url('admin_accounting_invoices_edit', {'invoiceId': line.id}) }}"
@@ -70,7 +70,7 @@
                                data-tooltip="Modifier la facture {{ line.company }}"
                                class="compact ui icon button"
                             >
-                                <i class="pencil alernate icon"></i>
+                                <i class="pencil alternate icon"></i>
                             </a>
                         {% endif %}
                             <a href="{{ url('admin_accounting_quotations_download', {'ref': line.quotationNumber}) }}"

@@ -115,7 +115,7 @@
                         <td style="text-align: right" nowrap="nowrap">
                             <a href="{{ path("admin_event_sessions_edit", {talkId: session.talk.id, sessionId: session.planning ? session.planning.id }) }}"
                                title="Modifier la session {{ session.talk.title }}" class="ui icon button">
-                                <i class="pencil alernate icon"></i>
+                                <i class="pencil alternate icon"></i>
                             </a>
                             {% if session.planning %}
                                 <a href="{{ path("admin_event_sessions_delete", {id: session.planning.id }) }}"
