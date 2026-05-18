@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model;
 
+use AppBundle\Model\HasUniqueId;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 
-class TicketEventType implements NotifyPropertyInterface
+class TicketEventType implements NotifyPropertyInterface, HasUniqueId
 {
     use NotifyProperty;
 
@@ -177,5 +178,14 @@ class TicketEventType implements NotifyPropertyInterface
         $this->maxTickets = $maxTickets;
 
         return $this;
+    }
+
+    public function uniqueId(): ?string
+    {
+        if ($this->ticketTypeId === null || $this->eventId === null) {
+            return null;
+        }
+
+        return sprintf('%d-%d', $this->ticketTypeId, $this->eventId);
     }
 }
