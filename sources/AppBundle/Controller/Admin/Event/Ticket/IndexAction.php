@@ -31,16 +31,6 @@ class IndexAction extends AbstractController
 
     public function __invoke(Request $request, AdminEventSelection $eventSelection): Response
     {
-        //TODO : à supprimer quand les actions via le formulaire auront été migrées
-        if (isset($_SESSION['flash']['message'])) {
-            $this->addFlash('notice', $_SESSION['flash']['message']);
-        }
-        if (isset($_SESSION['flash']['erreur'])) {
-            $this->addFlash('error', $_SESSION['flash']['erreur']);
-        }
-        unset($_SESSION['flash']);
-
-
         $event = $eventSelection->event;
         $data = [
             'id' => $event->getId(),
