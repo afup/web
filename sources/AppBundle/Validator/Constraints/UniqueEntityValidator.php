@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Validator\Constraints;
 
+use AppBundle\Model\HasUniqueId;
 use CCMBenchmark\TingBundle\Repository\RepositoryFactory;
+use LogicException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -21,6 +23,11 @@ class UniqueEntityValidator extends ConstraintValidator
         if (!$constraint instanceof UniqueEntity) {
             throw new UnexpectedTypeException($constraint, UniqueEntity::class);
         }
+
+        if (!$entity instanceof HasUniqueId) {
+            throw new LogicException(sprintf('Le modèle %s doit implémenter %s', $entity::class, HasUniqueId::class));
+        }
+
         $repository = $this->repositoryFactory->get($constraint->repository);
 
         $fields = $constraint->fields;
@@ -31,8 +38,11 @@ class UniqueEntityValidator extends ConstraintValidator
         }
 
         $myEntity = $repository->getOneBy($criteria);
+        if (!$myEntity instanceof HasUniqueId) {
+            return;
+        }
 
-        if ($myEntity !== null && $myEntity->getId() !== $entity->getId()) {
+        if ($myEntity->uniqueId() !== $entity->uniqueId()) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ data }}', implode(', ', $criteria))
                 ->addViolation();

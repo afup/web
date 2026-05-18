@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model;
 
+use AppBundle\Model\HasUniqueId;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInterface, \Stringable
+class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInterface, \Stringable, HasUniqueId
 {
     use NotifyProperty;
 
@@ -209,5 +210,14 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
          * @var self $user
          */
         return ($user->getId() === $this->id);
+    }
+
+    public function uniqueId(): ?string
+    {
+        if ($this->id === null) {
+            return null;
+        }
+
+        return (string) $this->id;
     }
 }
