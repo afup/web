@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Site\Model\Repository;
 
+use AppBundle\Site\Enum\ArticleContentType;
 use AppBundle\Site\Model\Article;
 use AppBundle\Site\Model\Rubrique;
 use Aura\SqlQuery\Common\SelectInterface;
@@ -311,6 +312,34 @@ class ArticleRepository extends Repository implements MetadataInitializer
         ;
 
         return $this->getQuery($builder->getStatement())->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
+     * @return CollectionInterface<Article>
+     */
+    public function findAllHtmlArticles(int $limit = 0): CollectionInterface
+    {
+        $sql = 'SELECT * FROM afup_site_article WHERE type_contenu = :contentType ORDER BY id ASC';
+        $params = ['contentType' => ArticleContentType::Html->value];
+        if ($limit > 0) {
+            $sql .= ' LIMIT :limit';
+            $params['limit'] = $limit;
+        }
+
+        return $this->getPreparedQuery($sql)
+            ->setParams($params)
+            ->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    public function findOneHtmlArticleById(int $id): ?Article
+    {
+        $collection = $this->getPreparedQuery(
+            'SELECT * FROM afup_site_article WHERE id = :id AND type_contenu = :contentType',
+        )
+            ->setParams(['id' => $id, 'contentType' => ArticleContentType::Html->value])
+            ->query($this->getCollection(new HydratorSingleObject()));
+
+        return $collection->count() === 0 ? null : $collection->first();
     }
 
     /**
