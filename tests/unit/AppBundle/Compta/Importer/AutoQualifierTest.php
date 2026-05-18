@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\Compta\Importer;
 
+use AppBundle\Accounting\Entity\Category;
+use AppBundle\Accounting\Entity\Event;
+use AppBundle\Accounting\Entity\Rule;
 use AppBundle\Accounting\OperationType;
 use AppBundle\Compta\Importer\AutoQualifier;
 use AppBundle\Compta\Importer\Operation;
@@ -99,7 +102,7 @@ final class AutoQualifierTest extends TestCase
         ?string $expectedHTKey,
     ): void {
         $operation = new Operation('2022-02-22', $operationDescription, 100, $operationType, '1234');
-        $qualifier = new AutoQualifier($this->fakeBD());
+        $qualifier = new AutoQualifier($this->fakeRules());
         $actual = $qualifier->qualify($operation);
 
         self::assertEquals($expectedCategorie, $actual['categorie']);
@@ -112,152 +115,92 @@ final class AutoQualifierTest extends TestCase
         }
     }
 
-    private function fakeBD(): array
+    /**
+     * @return array<Rule>
+     */
+    private function fakeRules(): array
     {
         return [
-            [
-                'id' => 1,
-                'label' => 'VIR sprd.net',
-                'condition' => 'VIR SEPA sprd.net AG',
-                'is_credit' => '1',
-                'mode_regl_id' => ComptaModeReglement::VIREMENT,
-                'vat' => '0',
-                'category_id' => ComptaCategorie::GOODIES,
-                'event_id' => ComptaEvenement::ASSOCIATION_AFUP,
-                'attachment_required' => 1,
-            ],
-            [
-                'id' => 2,
-                'label' => 'CB COM AFUP',
-                'condition' => '*CB COM AFUP ',
-                'is_credit' => 0,
-                'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
-                'vat' => '5_5',
-                'category_id' => ComptaCategorie::FRAIS_DE_COMPTE,
-                'event_id' => ComptaEvenement::GESTION,
-                'attachment_required' => null,
-            ],
-            [
-                'id' => 3,
-                'label' => 'COTIS ASSOCIATIS ESSENTIEL',
-                'condition' => '* COTIS ASSOCIATIS ESSENTIEL',
-                'is_credit' => 0,
-                'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
-                'vat' => '10',
-                'category_id' => ComptaCategorie::FRAIS_DE_COMPTE,
-                'event_id' => ComptaEvenement::GESTION,
-                'attachment_required' => null,
-            ],
-            [
-                'id' => 4,
-                'label' => 'URSSAF',
-                'condition' => 'PRLV URSSAF',
-                'is_credit' => 0,
-                'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
-                'vat' => '20',
-                'category_id' => ComptaCategorie::CHARGES_SOCIALES,
-                'event_id' => ComptaEvenement::GESTION,
-                'attachment_required' => null,
-            ],
-            [
-                'id' => 5,
-                'label' => 'DGFIP',
-                'condition' => 'PRLV B2B DGFIP',
-                'is_credit' => 0,
-                'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
-                'vat' => null,
-                'category_id' => ComptaCategorie::PRELEVEMENT_SOURCE,
-                'event_id' => ComptaEvenement::GESTION,
-                'attachment_required' => null,
-            ],
-            [
-                'id' => 6,
-                'label' => 'MALAKOFF HUMANIS',
-                'condition' => 'PRLV A3M - RETRAITE - MALAKOFF HUMANIS',
-                'is_credit' => 0,
-                'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
-                'vat' => null,
-                'category_id' => ComptaCategorie::CHARGES_SOCIALES,
-                'event_id' => ComptaEvenement::GESTION,
-                'attachment_required' => null,
-            ],
-            [
-                'id' => 7,
-                'label' => 'Online SAS',
-                'condition' => 'PRLV Online SAS -',
-                'is_credit' => 0,
-                'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
-                'vat' => null,
-                'category_id' => ComptaCategorie::OUTILS,
-                'event_id' => ComptaEvenement::ASSOCIATION_AFUP,
-                'attachment_required' => 1,
-            ],
-            [
-                'id' => 8,
-                'label' => 'meetup.org',
-                'condition' => 'CB MEETUP ORG',
-                'is_credit' => 0,
-                'mode_regl_id' => ComptaModeReglement::CB,
-                'vat' => null,
-                'category_id' => ComptaCategorie::MEETUP,
-                'event_id' => ComptaEvenement::ASSOCIATION_AFUP,
-                'attachment_required' => 1,
-            ],
-            [
-                'id' => 9,
-                'label' => 'POINT TRANSACTION SYSTEM',
-                'condition' => 'PRLV POINT TRANSACTION SYSTEM -',
-                'is_credit' => 0,
-                'mode_regl_id' => ComptaModeReglement::PRELEVEMENT,
-                'vat' => null,
-                'category_id' => ComptaCategorie::FRAIS_DE_COMPTE,
-                'event_id' => ComptaEvenement::GESTION,
-                'attachment_required' => 1,
-            ],
-            [
-                'id' => 10,
-                'label' => 'Mailchimp',
-                'condition' => 'CB MAILCHIMP FACT',
-                'is_credit' => 0,
-                'mode_regl_id' => ComptaModeReglement::CB,
-                'vat' => null,
-                'category_id' => ComptaCategorie::MAILCHIMP,
-                'event_id' => ComptaEvenement::ASSOCIATION_AFUP,
-                'attachment_required' => 1,
-            ],
-            [
-                'id' => 11,
-                'label' => 'AWS',
-                'condition' => 'CB AWS EMEA FACT',
-                'is_credit' => 0,
-                'mode_regl_id' => ComptaModeReglement::CB,
-                'vat' => null,
-                'category_id' => ComptaCategorie::OUTILS,
-                'event_id' => ComptaEvenement::ASSOCIATION_AFUP,
-                'attachment_required' => 1,
-            ],
-            [
-                'id' => 12,
-                'label' => 'gandi.net',
-                'condition' => 'CB GANDI FACT',
-                'is_credit' => 0,
-                'mode_regl_id' => ComptaModeReglement::CB,
-                'vat' => null,
-                'category_id' => ComptaCategorie::GANDI,
-                'event_id' => ComptaEvenement::ASSOCIATION_AFUP,
-                'attachment_required' => 1,
-            ],
-            [
-                'id' => 13,
-                'label' => 'Twilio',
-                'condition' => 'CB Twilio',
-                'is_credit' => 0,
-                'mode_regl_id' => ComptaModeReglement::CB,
-                'vat' => null,
-                'category_id' => ComptaCategorie::OUTILS,
-                'event_id' => ComptaEvenement::ASSOCIATION_AFUP,
-                'attachment_required' => 1,
-            ],
+            $this->createRule(1, 'VIR sprd.net', 'VIR SEPA sprd.net AG', true, ComptaModeReglement::VIREMENT, '0', ComptaCategorie::GOODIES, ComptaEvenement::ASSOCIATION_AFUP, true),
+            $this->createRule(2, 'CB COM AFUP', '*CB COM AFUP ', false, ComptaModeReglement::PRELEVEMENT, '5_5', ComptaCategorie::FRAIS_DE_COMPTE, ComptaEvenement::GESTION, null),
+            $this->createRule(3, 'COTIS ASSOCIATIS ESSENTIEL', '* COTIS ASSOCIATIS ESSENTIEL', false, ComptaModeReglement::PRELEVEMENT, '10', ComptaCategorie::FRAIS_DE_COMPTE, ComptaEvenement::GESTION, null),
+            $this->createRule(4, 'URSSAF', 'PRLV URSSAF', false, ComptaModeReglement::PRELEVEMENT, '20', ComptaCategorie::CHARGES_SOCIALES, ComptaEvenement::GESTION, null),
+            $this->createRule(5, 'DGFIP', 'PRLV B2B DGFIP', false, ComptaModeReglement::PRELEVEMENT, null, ComptaCategorie::PRELEVEMENT_SOURCE, ComptaEvenement::GESTION, null),
+            $this->createRule(6, 'MALAKOFF HUMANIS', 'PRLV A3M - RETRAITE - MALAKOFF HUMANIS', false, ComptaModeReglement::PRELEVEMENT, null, ComptaCategorie::CHARGES_SOCIALES, ComptaEvenement::GESTION, null),
+            $this->createRule(7, 'Online SAS', 'PRLV Online SAS -', false, ComptaModeReglement::PRELEVEMENT, null, ComptaCategorie::OUTILS, ComptaEvenement::ASSOCIATION_AFUP, true),
+            $this->createRule(8, 'meetup.org', 'CB MEETUP ORG', false, ComptaModeReglement::CB, null, ComptaCategorie::MEETUP, ComptaEvenement::ASSOCIATION_AFUP, true),
+            $this->createRule(9, 'POINT TRANSACTION SYSTEM', 'PRLV POINT TRANSACTION SYSTEM -', false, ComptaModeReglement::PRELEVEMENT, null, ComptaCategorie::FRAIS_DE_COMPTE, ComptaEvenement::GESTION, true),
+            $this->createRule(10, 'Mailchimp', 'CB MAILCHIMP FACT', false, ComptaModeReglement::CB, null, ComptaCategorie::MAILCHIMP, ComptaEvenement::ASSOCIATION_AFUP, true),
+            $this->createRule(11, 'AWS', 'CB AWS EMEA FACT', false, ComptaModeReglement::CB, null, ComptaCategorie::OUTILS, ComptaEvenement::ASSOCIATION_AFUP, true),
+            $this->createRule(12, 'gandi.net', 'CB GANDI FACT', false, ComptaModeReglement::CB, null, ComptaCategorie::GANDI, ComptaEvenement::ASSOCIATION_AFUP, true),
+            $this->createRule(13, 'Twilio', 'CB Twilio', false, ComptaModeReglement::CB, null, ComptaCategorie::OUTILS, ComptaEvenement::ASSOCIATION_AFUP, true),
         ];
+    }
+
+    public function testRuleWithCategoryButNoEvent(): void
+    {
+        $rule = $this->createRule(1, 'test', 'MATCH', null, null, null, ComptaCategorie::GOODIES, null, null);
+        $qualifier = new AutoQualifier([$rule]);
+        $actual = $qualifier->qualify(new Operation('2022-02-22', 'MATCH something', 100, OperationType::Credit, '1'));
+
+        self::assertEquals(ComptaCategorie::GOODIES, $actual['categorie'], 'Category must be applied even when event is null');
+        self::assertEquals(AutoQualifier::DEFAULT_EVENEMENT, $actual['evenement'], 'Event must stay at default when rule has no event');
+    }
+
+    public function testRuleWithEventButNoCategory(): void
+    {
+        $rule = $this->createRule(1, 'test', 'MATCH', null, null, null, null, ComptaEvenement::GESTION, null);
+        $qualifier = new AutoQualifier([$rule]);
+        $actual = $qualifier->qualify(new Operation('2022-02-22', 'MATCH something', 100, OperationType::Credit, '1'));
+
+        self::assertEquals(ComptaEvenement::GESTION, $actual['evenement'], 'Event must be applied even when category is null');
+        self::assertEquals(AutoQualifier::DEFAULT_CATEGORIE, $actual['categorie'], 'Category must stay at default when rule has no category');
+    }
+
+    public function testRuleWithNeitherCategoryNorEvent(): void
+    {
+        $rule = $this->createRule(1, 'test', 'MATCH', null, null, null, null, null, null);
+        $qualifier = new AutoQualifier([$rule]);
+        $actual = $qualifier->qualify(new Operation('2022-02-22', 'MATCH something', 100, OperationType::Credit, '1'));
+
+        self::assertEquals(AutoQualifier::DEFAULT_CATEGORIE, $actual['categorie']);
+        self::assertEquals(AutoQualifier::DEFAULT_EVENEMENT, $actual['evenement']);
+    }
+
+    private function createRule(
+        int $id,
+        string $label,
+        string $condition,
+        ?bool $isCredit,
+        ?int $paymentTypeId,
+        ?string $vat,
+        ?int $categoryId,
+        ?int $eventId,
+        ?bool $attachmentRequired,
+    ): Rule {
+        $category = null;
+        if ($categoryId !== null) {
+            $category = new Category();
+            $category->id = $categoryId;
+        }
+
+        $event = null;
+        if ($eventId !== null) {
+            $event = new Event();
+            $event->id = $eventId;
+        }
+
+        $rule = new Rule();
+        $rule->id = $id;
+        $rule->label = $label;
+        $rule->condition = $condition;
+        $rule->isCredit = $isCredit;
+        $rule->paymentTypeId = $paymentTypeId;
+        $rule->vat = $vat;
+        $rule->category = $category;
+        $rule->event = $event;
+        $rule->attachmentRequired = $attachmentRequired;
+
+        return $rule;
     }
 }

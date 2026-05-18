@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Accounting\Model;
 
+use AppBundle\Accounting\TvaZone;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use DateTime;
@@ -20,7 +21,7 @@ class Transaction implements NotifyPropertyInterface
     private ?string $operationNumber = null;
     private string $vendorName = '';
     private ?string $tvaIntra = null;
-    private ?string $tvaZone = null;
+    private ?TvaZone $tvaZone = null;
     private float $amount = 0.0;
     private string $description = '';
     private ?string $comment = null;
@@ -146,12 +147,12 @@ class Transaction implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getTvaZone(): ?string
+    public function getTvaZone(): ?TvaZone
     {
         return $this->tvaZone;
     }
 
-    public function setTvaZone(?string $tvaZone): self
+    public function setTvaZone(?TvaZone $tvaZone): self
     {
         $this->propertyChanged('tvaZone', $this->tvaZone, $tvaZone);
         $this->tvaZone = $tvaZone;

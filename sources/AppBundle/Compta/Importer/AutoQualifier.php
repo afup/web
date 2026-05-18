@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Compta\Importer;
 
 use Afup\Site\Utils\Vat;
+use AppBundle\Accounting\Entity\Rule;
 use AppBundle\Model\ComptaModeReglement;
 
 class AutoQualifier
@@ -14,6 +15,9 @@ class AutoQualifier
     public const DEFAULT_REGLEMENT = 9;
     public const DEFAULT_ATTACHMENT = 0;
 
+    /**
+     * @param array<Rule> $rules
+     */
     public function __construct(protected array $rules) {}
 
     public function qualify(Operation $operation): array
@@ -54,22 +58,22 @@ class AutoQualifier
         $operationQualified['montant_ht_soumis_tva_20'] = null;
 
         foreach ($this->rules as $rule) {
-            if (($operation->isCredit() === (bool) $rule['is_credit'] || is_null($rule['is_credit'])) && str_contains($operationQualified['description'], (string) $rule['condition'])) {
-                if (null !== $rule['event_id']) {
-                    $operationQualified['evenement'] = $rule['event_id'];
+            if (($operation->isCredit() === (bool) $rule->isCredit || is_null($rule->isCredit)) && str_contains($operationQualified['description'], (string) $rule->condition)) {
+                if (null !== $rule->event?->id) {
+                    $operationQualified['evenement'] = $rule->event->id;
                 }
-                if (null !== $rule['category_id']) {
-                    $operationQualified['categorie'] = $rule['category_id'];
+                if (null !== $rule->category) {
+                    $operationQualified['categorie'] = $rule->category->id;
                 }
-                if (null !== $rule['attachment_required']) {
-                    $operationQualified['attachmentRequired'] = $rule['attachment_required'];
+                if (null !== $rule->attachmentRequired) {
+                    $operationQualified['attachmentRequired'] = $rule->attachmentRequired;
                 }
-                if (null !== $rule['mode_regl_id']) {
-                    $operationQualified['idModeReglement'] = $rule['mode_regl_id'];
+                if (null !== $rule->paymentTypeId) {
+                    $operationQualified['idModeReglement'] = $rule->paymentTypeId;
                 }
-                if (null !== $rule['vat']) {
+                if (null !== $rule->vat) {
                     $tx = ['0' => 0, '5_5' => 0.055, '10' => 0.1, '20' => 0.2];
-                    $operationQualified['montant_ht_soumis_tva_' . $rule['vat']] = Vat::getRoundedWithoutVatPriceFromPriceWithVat($operationQualified['montant'], $tx[$rule['vat']]);
+                    $operationQualified['montant_ht_soumis_tva_' . $rule->vat] = Vat::getRoundedWithoutVatPriceFromPriceWithVat($operationQualified['montant'], $tx[$rule->vat]);
                 }
                 break;
             }

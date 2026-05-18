@@ -6,12 +6,14 @@ namespace AppBundle\Accounting\Model\Repository;
 
 use AppBundle\Accounting\Model\Transaction;
 use AppBundle\Accounting\Model\InvoicingPeriod;
+use AppBundle\Accounting\TvaZone;
 use AppBundle\Compta\Importer\AutoQualifier;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
+use CCMBenchmark\Ting\Serializer\BackedEnum;
 use CCMBenchmark\Ting\Serializer\DateTime;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
@@ -148,7 +150,11 @@ class TransactionRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'tva_zone',
                 'fieldName' => 'tvaZone',
-                'type' => 'string',
+                'type' => 'enum',
+                'serializer' => BackedEnum::class,
+                'serializer_options' => [
+                    'unserialize' => ['enum' => TvaZone::class],
+                ],
             ])
             ->addField([
                 'columnName' => 'montant',

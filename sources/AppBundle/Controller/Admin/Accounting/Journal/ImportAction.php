@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Journal;
 
-use Afup\Site\Comptabilite\Comptabilite;
 use AppBundle\Accounting\Form\TransactionsImportType;
 use AppBundle\AuditLog\Audit;
+use AppBundle\Compta\CsvExtractor;
 use AppBundle\Compta\Importer\Factory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -18,8 +18,8 @@ class ImportAction extends AbstractController
 {
     public function __construct(
         private readonly Audit $audit,
-        private readonly Comptabilite $compta,
         private readonly Factory $importerFactory,
+        private readonly CsvExtractor $csvExtractor,
         #[Autowire('%kernel.project_dir%/../tmp/')]
         private readonly string $uploadDir,
     ) {}
@@ -34,7 +34,7 @@ class ImportAction extends AbstractController
 
                 $uploadedFile->move($this->uploadDir, 'banque.csv');
                 $importer = $this->importerFactory->create($this->uploadDir . 'banque.csv', $form->get('bankAccount')->getData());
-                if ($this->compta->extraireComptaDepuisCSVBanque($importer)) {
+                if ($this->csvExtractor->extract($importer)) {
                     $this->audit->log('Chargement fichier banque');
                     $this->addFlash('notice', "Le fichier a été importé");
                 } else {
