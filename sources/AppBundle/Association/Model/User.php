@@ -499,7 +499,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this->reminderDate;
     }
 
-    public function setReminderDate(\DateTime $reminderDate = null): self
+    public function setReminderDate(?\DateTime $reminderDate = null): self
     {
         $this->propertyChanged('reminderDate', $this->reminderDate, $reminderDate);
         $this->reminderDate = $reminderDate;
@@ -553,7 +553,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         }
     }
 
-    public function hasUpToDateMembershipFee(\DateTimeInterface $now = null): bool
+    public function hasUpToDateMembershipFee(?\DateTimeInterface $now = null): bool
     {
         if (!$now instanceof \DateTimeInterface) {
             $now = new \DateTime();
@@ -561,7 +561,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this->getLastSubscription() > $now;
     }
 
-    public function getDaysBeforeMembershipExpiration(\DateTimeInterface $now = null)
+    public function getDaysBeforeMembershipExpiration(?\DateTimeInterface $now = null)
     {
         if (!$now instanceof \DateTimeInterface) {
             $now = new \DateTime();
@@ -670,7 +670,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return in_array($role, $roles);
     }
 
-    public function setRoles(array $roles = null): self
+    public function setRoles(?array $roles = null): self
     {
         if ($roles === null) {
             $roles = [];

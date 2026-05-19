@@ -20,7 +20,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
  */
 class TalkToSpeakersRepository extends Repository implements MetadataInitializer
 {
-    public function getNumberOfSpeakers(Event|int $event, \DateTime $since = null)
+    public function getNumberOfSpeakers(Event|int $event, ?\DateTime $since = null)
     {
         if ($event instanceof Event) {
             $event = $event->getId();

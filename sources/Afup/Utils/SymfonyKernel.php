@@ -15,7 +15,7 @@ class SymfonyKernel
     protected ?Request $request;
     protected ?Response $response = null;
 
-    public function __construct(Request $request = null)
+    public function __construct(?Request $request = null)
     {
         $env = 'prod';
         $debug = false;

@@ -9,7 +9,7 @@ use AppBundle\Event\Model\Invoice;
 
 class NullOfficeFinder extends OfficeFinder
 {
-    public function findOffice(Invoice $invoice, User $user = null): ?string
+    public function findOffice(Invoice $invoice, ?User $user = null): ?string
     {
         return null;
     }

@@ -45,7 +45,7 @@ SQL
         return null !== $maxDate ? new DateTimeImmutable('@' . $maxDate) : null;
     }
 
-    public function hasGeneralMeetingPlanned(DateTimeInterface $currentDate = null): bool
+    public function hasGeneralMeetingPlanned(?DateTimeInterface $currentDate = null): bool
     {
         if (!$currentDate instanceof \DateTimeInterface) {
             $currentDate = new DateTime();

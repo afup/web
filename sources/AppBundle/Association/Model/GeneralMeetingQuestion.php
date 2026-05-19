@@ -100,7 +100,7 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
     /**
      * @return $this
      */
-    public function setOpenedAt(\DateTime $openedAt = null): self
+    public function setOpenedAt(?\DateTime $openedAt = null): self
     {
         $this->propertyChanged('openedAt', $this->openedAt, $openedAt);
         $this->openedAt = $openedAt;
@@ -119,7 +119,7 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
     /**
      * @return $this
      */
-    public function setClosedAt(\DateTime $closedAt = null): self
+    public function setClosedAt(?\DateTime $closedAt = null): self
     {
         $this->propertyChanged('closedAt', $this->closedAt, $closedAt);
         $this->closedAt = $closedAt;

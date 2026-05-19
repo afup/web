@@ -178,7 +178,7 @@ class MessageFactory
         return $message;
     }
 
-    public function createMessageForTicketStats(Event $event, EventStatsRepository $eventStatsRepository, TicketTypeRepository $ticketRepository, \DateTime $date = null): Message
+    public function createMessageForTicketStats(Event $event, EventStatsRepository $eventStatsRepository, TicketTypeRepository $ticketRepository, ?\DateTime $date = null): Message
     {
         $eventStats = $eventStatsRepository->getStats((int) $event->getId());
         $message = new Message();
@@ -235,7 +235,7 @@ class MessageFactory
     }
 
 
-    public function createMessageForCfpStats(Event $event, TalkRepository $talkRepository, TalkToSpeakersRepository $talkToSpeakersRepository, \DateTime $currentDate, \DateTime $since = null): Message
+    public function createMessageForCfpStats(Event $event, TalkRepository $talkRepository, TalkToSpeakersRepository $talkToSpeakersRepository, \DateTime $currentDate, ?\DateTime $since = null): Message
     {
         $message = new Message();
         $message
@@ -291,7 +291,7 @@ class MessageFactory
     /**
      * @return Field[]
      */
-    private function prepareCfpStatsFields(TalkRepository $talkRepository, TalkToSpeakersRepository $talkToSpeakersRepository, Event $event, \DateTime $since = null): array
+    private function prepareCfpStatsFields(TalkRepository $talkRepository, TalkToSpeakersRepository $talkToSpeakersRepository, Event $event, ?\DateTime $since = null): array
     {
         $infos = [
             'Nombre de talks' => $talkRepository->getNumberOfTalksByEvent($event, $since)['talks'],

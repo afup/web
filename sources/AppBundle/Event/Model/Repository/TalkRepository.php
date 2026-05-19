@@ -31,12 +31,12 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
  */
 class TalkRepository extends Repository implements MetadataInitializer
 {
-    public function getNumberOfTalksByEvent(Event|int $event, \DateTime $since = null)
+    public function getNumberOfTalksByEvent(Event|int $event, ?\DateTime $since = null)
     {
         return $this->getNumberOfTalksByEventAndLanguage($event, null, $since);
     }
 
-    public function getNumberOfTalksByEventAndLanguage(Event|int $event, $languageCode = null, \DateTime $since = null)
+    public function getNumberOfTalksByEventAndLanguage(Event|int $event, $languageCode = null, ?\DateTime $since = null)
     {
         if ($event instanceof Event) {
             $event = $event->getId();

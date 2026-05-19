@@ -124,7 +124,7 @@ class TicketRepository extends Repository implements MetadataInitializer
         return $this->getPublicSoldTicketsByDayOfType($event, $day);
     }
 
-    public function getPublicSoldTicketsByDayOfType(Event $event, $day = null, TicketType $ticketType = null)
+    public function getPublicSoldTicketsByDayOfType(Event $event, $day = null, ?TicketType $ticketType = null)
     {
         $sql = '
             SELECT COUNT(aif.id) AS sold_tickets
@@ -161,7 +161,7 @@ class TicketRepository extends Repository implements MetadataInitializer
         return $tickets->first()['sold_tickets'];
     }
 
-    public function getPublicSoldTicketsOfType(Event $event, TicketType $ticketType = null)
+    public function getPublicSoldTicketsOfType(Event $event, ?TicketType $ticketType = null)
     {
         return $this->getPublicSoldTicketsByDayOfType($event, null, $ticketType);
     }

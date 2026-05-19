@@ -34,6 +34,7 @@ return (new PhpCsFixer\Config())
             'minimum_number_of_parameters' => 2,
         ],
         'type_declaration_spaces' => true,
+        'nullable_type_declaration_for_default_null_value' => true,
     ])
     ->setFinder($finder)
     ->setCacheFile(__DIR__.'/var/.php-cs-fixer.cache')
