@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Cms;
 
-use AppBundle\Site\Model\Article;
-use AppBundle\Site\Model\Repository\ArticleRepository;
-use AppBundle\Site\Entity\Repository\RubriqueRepository;
+use AppBundle\Site\Entity\Article;
+use AppBundle\Site\Entity\Repository\ArticleRepository;
 use AppBundle\Site\Entity\Rubrique;
+use AppBundle\Site\Enum\ArticleEtat;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +17,6 @@ final class DisplayAction extends AbstractController
     public function __construct(
         private readonly ViewRenderer $view,
         private readonly ArticleRepository $articleRepository,
-        private readonly RubriqueRepository $rubriqueRepository,
     ) {}
 
     public function __invoke(string $code): Response
@@ -28,13 +27,13 @@ final class DisplayAction extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        if (false === $this->isGranted('ROLE_ADMIN') && $article->getState() !== 1) {
+        if (false === $this->isGranted('ROLE_ADMIN') && $article->etat !== ArticleEtat::EnLigne) {
             throw $this->createAccessDeniedException();
         }
 
-        $rubrique = $this->rubriqueRepository->find($article->getRubricId());
+        $rubrique = $article->rubrique;
 
-        if (!$this->isRubriqueAllowed($rubrique)) {
+        if ($rubrique === null || !$this->isRubriqueAllowed($rubrique)) {
             throw $this->createNotFoundException();
         }
 
