@@ -6,8 +6,9 @@ namespace AppBundle\Controller\Website\News;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Site\Model\Article;
-use AppBundle\Site\Model\Repository\ArticleRepository;
+use AppBundle\Site\Entity\Article;
+use AppBundle\Site\Entity\Repository\ArticleRepository;
+use AppBundle\Site\Enum\ArticleEtat;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -27,12 +28,12 @@ final class DisplayAction extends AbstractController
 
     public function __invoke(string $code): Response
     {
-        $article = $this->articleRepository->findNewsBySlug($code);
+        $article = $this->articleRepository->findArticleBySlug($code);
         if (null === $article) {
             throw $this->createNotFoundException();
         }
 
-        if (!$this->authorizationChecker->isGranted('ROLE_ADMIN') && ($article->getState() === 0 || $article->getPublishedAt() > new \DateTime())) {
+        if (!$this->authorizationChecker->isGranted('ROLE_ADMIN') && ($article->etat !== ArticleEtat::EnLigne || $article->datePublication > new \DateTime())) {
             throw $this->createNotFoundException();
         }
 
@@ -47,20 +48,20 @@ final class DisplayAction extends AbstractController
 
     private function getRelatedEvent(Article $article): ?Event
     {
-        if (null === ($eventId = $article->getEventId())) {
+        if (null === $article->idEvent) {
             return null;
         }
 
-        return $this->eventRepository->get($eventId);
+        return $this->eventRepository->get($article->idEvent);
     }
 
     private function getHeaderImageUrl(Article $article): ?string
     {
-        if (null === ($theme = $article->getTheme())) {
+        if (null === $article->theme) {
             return null;
         }
 
-        $image = '/images/news/' . $theme . '.png';
+        $image = '/images/news/' . $article->theme->value . '.png';
 
         $url = $this->projectDir . '/htdocs' . $image ;
 

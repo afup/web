@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace AppBundle\Site\Form;
 
 use AppBundle\Site\Enum\ArticleTheme;
-use AppBundle\Site\Model\Repository\ArticleRepository;
+use AppBundle\Site\Entity\Repository\ArticleRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,16 +37,13 @@ class NewsFiltersType extends AbstractType
                         'choices' => $yearValues,
                     ],
             )
-            ->add(
-                'theme',
-                ChoiceType::class,
-                [
-                    'label' => 'Thème',
-                    'multiple' => true,
-                    'expanded' => true,
-                    'choices' => ArticleTheme::asChoicesMap(),
-                ],
-            )
+            ->add('theme', EnumType::class, [
+                'class' => ArticleTheme::class,
+                'label' => 'Thème',
+                'multiple' => true,
+                'expanded' => true,
+                'choice_label' => fn(ArticleTheme $theme) => $theme->label(),
+            ])
             ->add(
                 'event',
                 ChoiceType::class,

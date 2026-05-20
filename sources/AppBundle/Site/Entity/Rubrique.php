@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Rubrique
 {
     public const ID_RUBRIQUE_ACTUALITES = 9;
+    public const ID_RUBRIQUE_FORUM = 52;
     public const ID_RUBRIQUE_ASSOCIATION = 85;
     public const ID_RUBRIQUE_ANTENNES = 84;
     public const ID_RUBRIQUE_INFORMATIONS_PRATIQUES = 86;

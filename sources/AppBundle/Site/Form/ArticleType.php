@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace AppBundle\Site\Form;
 
 use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Site\Entity\Rubrique;
+use AppBundle\Site\Enum\ArticleEtat;
 use AppBundle\Site\Enum\ArticleTheme;
-use AppBundle\Site\Entity\Repository\RubriqueRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToTimestampTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -20,10 +23,7 @@ class ArticleType extends AbstractType
 {
     public const POSITIONS_RUBRIQUES = 9;
 
-    public function __construct(
-        private readonly RubriqueRepository $rubriqueRepository,
-        private readonly EventRepository $eventRepository,
-    ) {}
+    public function __construct(private readonly EventRepository $eventRepository) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -31,23 +31,14 @@ class ArticleType extends AbstractType
         for ($i = self::POSITIONS_RUBRIQUES; $i >= -(self::POSITIONS_RUBRIQUES); $i--) {
             $positions[$i] = $i;
         }
-        $rubriques = [];
-        foreach ($this->rubriqueRepository->findAll() as $rubrique) {
-            $rubriques[$rubrique->nom] = $rubrique->id;
-        }
 
         $events = [];
         foreach ($this->eventRepository->getAll() as $event) {
             $events[$event->getTitle()] = $event->getId();
         }
 
-        /** @var \AppBundle\Site\Model\Article|null $article */
-        $article = $builder->getData();
-        $textareaCssClass = 'easymde';
-
-
         $builder
-            ->add('title', TextType::class, [
+            ->add('titre', TextType::class, [
                 'label' => 'Titre de l\'article',
                 'required' => true,
                 'attr' => [
@@ -60,19 +51,19 @@ class ArticleType extends AbstractType
                     new Assert\Type('string'),
                 ],
             ])
-            ->add('leadParagraph', TextareaType::class, [
+            ->add('chapeau', TextareaType::class, [
                 'label' => 'Chapeau',
                 'required' => false,
                 'attr' => [
                     'cols' => 42,
                     'rows' => 10,
-                    'class' => $textareaCssClass,
+                    'class' => 'easymde',
                 ],
                 'constraints' => [
                     new Assert\Type('string'),
                 ],
             ])
-            ->add('content', TextareaType::class, [
+            ->add('contenu', TextareaType::class, [
                 'label' => 'Contenu',
                 // Désactive la validation HTML5, nécessaire à cause du wysiwyg qui masque l'input
                 // tout en le mettant à required, ce qui bloque la soumission du formulaire.
@@ -80,14 +71,14 @@ class ArticleType extends AbstractType
                 'attr' => [
                     'cols' => 42,
                     'rows' => 20,
-                    'class' => $textareaCssClass,
+                    'class' => 'easymde',
                 ],
                 'constraints' => [
                     new Assert\NotBlank(message: 'Ce champ est obligatoire'),
                     new Assert\Type('string'),
                 ],
             ])
-            ->add('path', TextType::class, [
+            ->add('raccourci', TextType::class, [
                 'required' => true,
                 'label' => 'Raccourci',
                 'attr' => [
@@ -101,15 +92,13 @@ class ArticleType extends AbstractType
                     new Assert\Regex('/(\s)/', 'Ne doit pas contenir d\'espaces', null, false),
                 ],
             ])
-            ->add('rubricId', ChoiceType::class, [
+            ->add('rubrique', EntityType::class, [
                 'required' => true,
                 'label' => 'Rubrique',
-                'choices' => $rubriques,
-                'constraints' => [
-                    new Assert\Type("integer"),
-                ],
+                'class' => Rubrique::class,
+                'choice_label' => 'nom',
             ])
-            ->add('publishedAt', DateTimeType::class, [
+            ->add('datePublication', DateTimeType::class, [
                 'required' => false,
                 'html5' => true,
                 'label' => 'Date',
@@ -133,28 +122,19 @@ class ArticleType extends AbstractType
                     new Assert\Type("integer"),
                 ],
             ])
-            ->add('state', ChoiceType::class, [
+            ->add('etat', EnumType::class, [
                 'label' => 'Etat',
                 'required' => false,
-                'choices' => [
-                    'Hors ligne' => -1,
-                    'En attente' => 0,
-                    'En ligne' => 1,
-                ],
-                'placeholder' => false,
-                'constraints' => [
-                    new Assert\Type("integer"),
-                ],
+                'class' => ArticleEtat::class,
+                'choice_label' => fn(ArticleEtat $etat) => $etat->label(),
             ])
-            ->add('theme', ChoiceType::class, [
+            ->add('theme', EnumType::class, [
                 'label' => 'Thème',
                 'required' => false,
-                'choices' => ArticleTheme::asChoicesMap(),
-                'constraints' => [
-                    new Assert\Type("integer"),
-                ],
+                'class' => ArticleTheme::class,
+                'choice_label' => fn(ArticleTheme $theme) => $theme->label(),
             ])
-            ->add('eventId', ChoiceType::class, [
+            ->add('idEvent', ChoiceType::class, [
                 'label' => 'Événement',
                 'required' => false,
                 'choices' => $events,
@@ -163,6 +143,6 @@ class ArticleType extends AbstractType
                 ],
             ])
         ;
-        $builder->get('publishedAt')->addModelTransformer(new DateTimeToTimestampTransformer());
+        $builder->get('datePublication')->addModelTransformer(new DateTimeToTimestampTransformer());
     }
 }
