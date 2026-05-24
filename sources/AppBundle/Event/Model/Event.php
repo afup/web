@@ -261,14 +261,14 @@ class Event implements NotifyPropertyInterface
     /**
      * @return Event
      */
-    public function setDateEndVote(DateTime $dateEndVote = null): self
+    public function setDateEndVote(?DateTime $dateEndVote = null): self
     {
         $this->propertyChanged('dateEndVote', $this->dateEndVote, $dateEndVote);
         $this->dateEndVote = $dateEndVote;
         return $this;
     }
 
-    public function isCfpOpen(DateTime $currentDate = null): bool
+    public function isCfpOpen(?DateTime $currentDate = null): bool
     {
         if (!$currentDate instanceof \DateTime) {
             $currentDate = new DateTime();
@@ -278,7 +278,7 @@ class Event implements NotifyPropertyInterface
             && $currentDate >= $this->getDateStartCallForPapers();
     }
 
-    public function isVoteAvailable(DateTime $currentDate = null): bool
+    public function isVoteAvailable(?DateTime $currentDate = null): bool
     {
         if (!$currentDate instanceof \DateTime) {
             $currentDate = new DateTime();
@@ -494,7 +494,7 @@ class Event implements NotifyPropertyInterface
     /**
      * @return $this
      */
-    public function setDateEndSpeakersDinerInfosCollection(DateTime $dateEndSpeakersDinerInfosCollection = null): self
+    public function setDateEndSpeakersDinerInfosCollection(?DateTime $dateEndSpeakersDinerInfosCollection = null): self
     {
         $this->propertyChanged('dateEndSpeakersDinerInfosCollection', $this->dateEndSpeakersDinerInfosCollection, $dateEndSpeakersDinerInfosCollection);
         $this->dateEndSpeakersDinerInfosCollection = $dateEndSpeakersDinerInfosCollection;
@@ -513,7 +513,7 @@ class Event implements NotifyPropertyInterface
     /**
      * @return $this
      */
-    public function setDateEndHotelInfosCollection(DateTime $dateEndHotelInfosCollection = null): self
+    public function setDateEndHotelInfosCollection(?DateTime $dateEndHotelInfosCollection = null): self
     {
         $this->propertyChanged('dateEndHotelInfosCollection', $this->dateEndHotelInfosCollection, $dateEndHotelInfosCollection);
         $this->dateEndHotelInfosCollection = $dateEndHotelInfosCollection;
@@ -540,7 +540,7 @@ class Event implements NotifyPropertyInterface
      *
      * @return $this
      */
-    public function setDatePlanningAnnouncement(DateTime $datePlanningAnnouncement = null): self
+    public function setDatePlanningAnnouncement(?DateTime $datePlanningAnnouncement = null): self
     {
         $this->propertyChanged('datePlanningAnnouncement', $this->datePlanningAnnouncement, $datePlanningAnnouncement);
         $this->datePlanningAnnouncement = $datePlanningAnnouncement;

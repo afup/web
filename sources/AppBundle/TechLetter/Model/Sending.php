@@ -59,7 +59,7 @@ class Sending implements NotifyPropertyInterface
         return $this->sendingDate;
     }
 
-    public function setSendingDate(\DateTime $sendingDate = null): self
+    public function setSendingDate(?\DateTime $sendingDate = null): self
     {
         $this->propertyChanged('sendingDate', $this->sendingDate, $sendingDate);
         $this->sendingDate = $sendingDate;

@@ -22,14 +22,14 @@ class OfficeFinder
         private readonly AntenneRepository $antenneRepository,
     ) {}
 
-    public function findOffice(Invoice $invoice, User $user = null): ?string
+    public function findOffice(Invoice $invoice, ?User $user = null): ?string
     {
         $infos = $this->findInfos($invoice, $user);
 
         return $infos['office'] ?? null;
     }
 
-    protected function findInfos(Invoice $invoice, User $user = null): array
+    protected function findInfos(Invoice $invoice, ?User $user = null): array
     {
         $coordinates = $this->findCoordinates($invoice, $user);
 
@@ -54,7 +54,7 @@ class OfficeFinder
         return $infos;
     }
 
-    protected function findCoordinates(Invoice $invoice, User $user = null): ?Coordinates
+    protected function findCoordinates(Invoice $invoice, ?User $user = null): ?Coordinates
     {
         if ($user instanceof User) {
             if ($user->getCountry() !== 'FR') {

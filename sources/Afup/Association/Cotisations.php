@@ -632,7 +632,7 @@ class Cotisations
      * @param string|null $token Token de la facture. Si null, pas de vérification
      * @return array
      */
-    public function getByInvoice(string $invoiceId, string $token = null)
+    public function getByInvoice(string $invoiceId, ?string $token = null)
     {
         $requete = 'SELECT';
         $requete .= '  * ';

@@ -6,7 +6,7 @@ namespace AppBundle\Compta\BankAccount;
 
 class BankAccountFactory
 {
-    public function createApplyableAt(\DateTimeInterface $applicationDate = null): BankAccount
+    public function createApplyableAt(?\DateTimeInterface $applicationDate = null): BankAccount
     {
         $comparisonDate = new \Datetime('2023-01-01');
         $comparisonDate->setTime(0, 0, 1);

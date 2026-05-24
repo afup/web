@@ -12,7 +12,7 @@ final readonly class Page
 {
     public function __construct(private FeuilleRepository $feuilleRepository) {}
 
-    public function header($url = null, UserInterface $user = null): string
+    public function header($url = null, ?UserInterface $user = null): string
     {
         $url = urldecode((string) $url);
         $str = '<ul>';

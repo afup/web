@@ -68,7 +68,7 @@ class UserBadge implements NotifyPropertyInterface
         return $this->badge;
     }
 
-    public function setBadge(Badge $badge = null): self
+    public function setBadge(?Badge $badge = null): self
     {
         $this->badge = $badge;
 
@@ -83,7 +83,7 @@ class UserBadge implements NotifyPropertyInterface
     /**
      * @return $this
      */
-    public function setIssuedAt(\DateTime $issuedAt = null): self
+    public function setIssuedAt(?\DateTime $issuedAt = null): self
     {
         $this->propertyChanged('issuedAt', $this->issuedAt, $issuedAt);
         $this->issuedAt = $issuedAt;

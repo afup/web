@@ -80,7 +80,7 @@ class TestGithubAuthenticator extends OAuth2Authenticator implements Authenticat
         return new RedirectResponse($request->getSession()->get('_security.github_secured_area.target_path'));
     }
 
-    public function start(Request $request, AuthenticationException $authException = null): Response
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
     {
         $body = "<h1>Oauth login test</h1>";
         foreach (array_keys($this->getTestUsersDetails()) as $name) {

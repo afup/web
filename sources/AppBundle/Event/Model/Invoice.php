@@ -140,7 +140,7 @@ class Invoice implements NotifyPropertyInterface
         return $this->paymentDate;
     }
 
-    public function setPaymentDate(\DateTime $paymentDate = null): self
+    public function setPaymentDate(?\DateTime $paymentDate = null): self
     {
         $this->propertyChanged('paymentDate', $this->paymentDate, $paymentDate);
         $this->paymentDate = $paymentDate;
@@ -155,7 +155,7 @@ class Invoice implements NotifyPropertyInterface
         return $this->invoiceDate;
     }
 
-    public function setInvoiceDate(\DateTime $invoiceDate = null): self
+    public function setInvoiceDate(?\DateTime $invoiceDate = null): self
     {
         $this->propertyChanged('invoiceDate', $this->invoiceDate, $invoiceDate);
         $this->invoiceDate = $invoiceDate;

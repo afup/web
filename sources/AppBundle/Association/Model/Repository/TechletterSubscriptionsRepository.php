@@ -18,7 +18,7 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
  */
 class TechletterSubscriptionsRepository extends Repository implements MetadataInitializer
 {
-    public function subscribe(User $user = null): void
+    public function subscribe(?User $user = null): void
     {
         $subscription = new TechletterSubscription();
         $subscription
@@ -28,7 +28,7 @@ class TechletterSubscriptionsRepository extends Repository implements MetadataIn
         $this->save($subscription);
     }
 
-    public function hasUserSubscribed(User $user = null)
+    public function hasUserSubscribed(?User $user = null)
     {
         if (!$user instanceof User) {
             return false;

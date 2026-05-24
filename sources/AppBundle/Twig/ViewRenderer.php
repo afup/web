@@ -29,7 +29,7 @@ class ViewRenderer
      *
      * @return Response A Response instance
      */
-    public function render(string $view, array $parameters = [], Response $response = null): Response
+    public function render(string $view, array $parameters = [], ?Response $response = null): Response
     {
         $blocks = [];
         if ($this->requestStack->getCurrentRequest()) {

@@ -632,7 +632,7 @@ class CompanyMember implements NotifyPropertyInterface
         }
     }
 
-    public function hasUpToDateMembershipFee(\DateTimeInterface $now = null): bool
+    public function hasUpToDateMembershipFee(?\DateTimeInterface $now = null): bool
     {
         if (!$now instanceof \DateTimeInterface) {
             $now = new \DateTime();

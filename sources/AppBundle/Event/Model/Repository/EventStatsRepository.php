@@ -26,7 +26,7 @@ class EventStatsRepository
         private readonly TalkToSpeakersRepository $talkToSpeakersRepository,
     ) {}
 
-    public function getStats(int $eventId, Datetime $from = null): EventStats
+    public function getStats(int $eventId, ?Datetime $from = null): EventStats
     {
         return new EventStats(
             $this->getStatsForDay($eventId, self::DAY_ONE, $from),

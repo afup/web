@@ -77,7 +77,7 @@ class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationE
         return new RedirectResponse($request->getSession()->get('_security.github_secured_area.target_path'));
     }
 
-    public function start(Request $request, AuthenticationException $authException = null): RedirectResponse
+    public function start(Request $request, ?AuthenticationException $authException = null): RedirectResponse
     {
         return new RedirectResponse($this->router->generate('connection_github'));
     }

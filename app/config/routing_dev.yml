@@ -1,14 +1,14 @@
 _wdt:
-    resource: "@WebProfilerBundle/Resources/config/routing/wdt.xml"
-    prefix:   /_wdt
+  resource: "@WebProfilerBundle/Resources/config/routing/wdt.php"
+  prefix: /_wdt
 
 _profiler:
-    resource: "@WebProfilerBundle/Resources/config/routing/profiler.xml"
-    prefix:   /_profiler
+  resource: "@WebProfilerBundle/Resources/config/routing/profiler.php"
+  prefix: /_profiler
 
 _errors:
-    resource: "@FrameworkBundle/Resources/config/routing/errors.xml"
-    prefix:   /_error
+  resource: "@FrameworkBundle/Resources/config/routing/errors.php"
+  prefix: /_error
 
 _main:
-    resource: routing.yml
+  resource: routing.yml
