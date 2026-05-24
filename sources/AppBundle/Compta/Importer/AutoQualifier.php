@@ -32,7 +32,7 @@ class AutoQualifier
         $operationQualified['categorie'] = self::DEFAULT_CATEGORIE;
         $operationQualified['evenement'] = self::DEFAULT_EVENEMENT;
         $operationQualified['idModeReglement'] = self::DEFAULT_REGLEMENT;
-        $operationQualified['attachmentRequired'] = self::DEFAULT_ATTACHMENT;
+        $operationQualified['attachmentRequired'] = (bool) self::DEFAULT_ATTACHMENT;
 
         $firstPartDescription = strtoupper(explode(' ', $operationQualified['description'])[0]);
         switch ($firstPartDescription) {
@@ -66,7 +66,7 @@ class AutoQualifier
                     $operationQualified['categorie'] = $rule->category->id;
                 }
                 if (null !== $rule->attachmentRequired) {
-                    $operationQualified['attachmentRequired'] = $rule->attachmentRequired;
+                    $operationQualified['attachmentRequired'] = (bool) $rule->attachmentRequired;
                 }
                 if (null !== $rule->paymentTypeId) {
                     $operationQualified['idModeReglement'] = $rule->paymentTypeId;
