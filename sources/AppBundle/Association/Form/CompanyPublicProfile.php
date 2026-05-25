@@ -24,8 +24,8 @@ use Symfony\Component\Validator\Constraints\Url;
 
 class CompanyPublicProfile extends AbstractType
 {
-    public const DESCRIPTION_MAX_LENGTH = 2000;
-    public const MEMBERSHIP_REASON_MAX_LENGTH = 150;
+    public const int DESCRIPTION_MAX_LENGTH = 2000;
+    public const int MEMBERSHIP_REASON_MAX_LENGTH = 150;
 
     public function __construct(private readonly AntenneRepository $antennesRepository) {}
 

@@ -13,8 +13,8 @@ use Webmozart\Assert\Assert;
 
 class ListFacturesAction extends AbstractController
 {
-    public const VALID_SORTS = ['date_facture', 'reference', 'societe', 'montant', 'etat', 'facturation'];
-    public const VALID_DIRECTIONS = ['asc', 'desc'];
+    public const array VALID_SORTS = ['date_facture', 'reference', 'societe', 'montant', 'etat', 'facturation'];
+    public const array VALID_DIRECTIONS = ['asc', 'desc'];
 
     public function __construct(private readonly InvoiceRepository $invoiceRepository) {}
 

@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Type;
 
 class UnixTimestampType extends Type
 {
-    public const NAME = 'unix_timestamp';
+    public const string NAME = 'unix_timestamp';
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {

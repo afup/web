@@ -9,7 +9,7 @@ class DataExtractor
     /**
      * @see https://fr.wikipedia.org/wiki/Mot_par_minute
      */
-    public const WORD_READ_BY_MINUTES = 250;
+    public const int WORD_READ_BY_MINUTES = 250;
 
     /**
      * @return mixed[]

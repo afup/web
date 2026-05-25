@@ -12,7 +12,7 @@ use Psr\Clock\ClockInterface;
 
 final readonly class AuditLogRepository
 {
-    private const ITEMS_PER_PAGE = 10;
+    private const int ITEMS_PER_PAGE = 10;
 
     public function __construct(
         private Connection $connection,

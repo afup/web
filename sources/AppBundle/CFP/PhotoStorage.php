@@ -18,10 +18,10 @@ final readonly class PhotoStorage
 {
     private Filesystem $filesystem;
 
-    public const DIR_ORIGINAL = 'originals';
-    public const DIR_THUMBS = 'thumbnails';
+    public const string DIR_ORIGINAL = 'originals';
+    public const string DIR_THUMBS = 'thumbnails';
 
-    public const FORMAT = [
+    public const array FORMAT = [
         'originals' => ['width' => 1000, 'height' => 1000],
         'thumbnails' => ['width' => 90, 'height' => 120],
     ];

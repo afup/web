@@ -15,11 +15,11 @@ class Speaker implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    public const NIGHT_BEFORE = 'before';
-    public const NIGHT_BETWEEN = 'between';
-    public const NIGHT_AFTER = 'after';
+    public const string NIGHT_BEFORE = 'before';
+    public const string NIGHT_BETWEEN = 'between';
+    public const string NIGHT_AFTER = 'after';
 
-    private const LINKEDIN_URL_PREFIX = "https://www.linkedin.com/in/";
+    private const string LINKEDIN_URL_PREFIX = "https://www.linkedin.com/in/";
 
     private ?int $id = null;
 

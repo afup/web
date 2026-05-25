@@ -16,7 +16,7 @@ use Psr\Log\LoggerInterface;
 
 final readonly class Engine
 {
-    private const VALID_TALK_TYPES = [
+    private const array VALID_TALK_TYPES = [
         Talk::TYPE_FULL_LONG,
         Talk::TYPE_FULL_SHORT,
     ];

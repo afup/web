@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class IndexAction extends AbstractController
 {
-    public const DAYS_BEFORE_CALL_TO_UPDATE = 15;
+    public const int DAYS_BEFORE_CALL_TO_UPDATE = 15;
 
     public function __construct(
         private readonly ViewRenderer $view,

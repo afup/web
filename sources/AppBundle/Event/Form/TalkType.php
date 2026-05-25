@@ -15,9 +15,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TalkType extends AbstractType
 {
-    public const OPT_COC_CHECKED = 'codeOfConductChecked';
-    public const OPT_SELECTION_ACKNOWLEDGEMENT_CHECKED = 'selectionAcknowledgementChecked';
-    public const IS_AFUP_DAY = 'isAfupDay';
+    public const string OPT_COC_CHECKED = 'codeOfConductChecked';
+    public const string OPT_SELECTION_ACKNOWLEDGEMENT_CHECKED = 'selectionAcknowledgementChecked';
+    public const string IS_AFUP_DAY = 'isAfupDay';
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

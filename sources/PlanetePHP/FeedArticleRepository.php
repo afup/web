@@ -10,9 +10,9 @@ use Webmozart\Assert\Assert;
 
 class FeedArticleRepository
 {
-    public const RELEVANT = 1;
-    public const IRRELEVANT = 0;
-    public const PERTINENCE_LIST = 'php|afup|pear|pecl|symfony|copix|jelix|wampserver|simpletest|simplexml|zend|pmo|drupal|ovidentia|mvc|magento|chrome|spip|PDO|mock|cake|hiphop|CMS|Framework|typo3|photon|pattern';
+    public const int RELEVANT = 1;
+    public const int IRRELEVANT = 0;
+    public const string PERTINENCE_LIST = 'php|afup|pear|pecl|symfony|copix|jelix|wampserver|simpletest|simplexml|zend|pmo|drupal|ovidentia|mvc|magento|chrome|spip|PDO|mock|cake|hiphop|CMS|Framework|typo3|photon|pattern';
     private readonly string $pertinenceRegex;
 
     public function __construct(private readonly Connection $connection)

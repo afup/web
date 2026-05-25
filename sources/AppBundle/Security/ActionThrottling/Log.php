@@ -11,8 +11,8 @@ class Log implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    public const ACTION_SPONSOR_TOKEN = 'sponsor_token';
-    public const LIMITATIONS = [
+    public const string ACTION_SPONSOR_TOKEN = 'sponsor_token';
+    public const array LIMITATIONS = [
         self::ACTION_SPONSOR_TOKEN => ['delay' => 'PT1H', 'limit' => 10],
     ];
 

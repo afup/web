@@ -9,7 +9,7 @@ use AppBundle\Model\ComptaCompte;
 
 class CreditMutuel implements Importer
 {
-    public const CODE = 'CMUT';
+    public const string CODE = 'CMUT';
 
     private ?\SplFileObject $file = null;
 

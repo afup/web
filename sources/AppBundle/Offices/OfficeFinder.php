@@ -13,7 +13,7 @@ use Geocoder\Model\Coordinates;
 
 class OfficeFinder
 {
-    public const MAX_DISTANCE_TO_OFFICE = 50000;
+    public const int MAX_DISTANCE_TO_OFFICE = 50000;
 
     private array $geocodeCache = [];
 
