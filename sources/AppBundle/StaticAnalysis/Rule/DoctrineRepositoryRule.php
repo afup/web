@@ -21,7 +21,7 @@ use Symfony\Component\Form\AbstractType;
  */
 final readonly class DoctrineRepositoryRule implements Rule
 {
-    private const FORBIDDEN_METHODS = [
+    private const array FORBIDDEN_METHODS = [
         'createQueryBuilder',
         'createResultSetMappingBuilder',
         'getClassName',

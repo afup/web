@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class IndexAction extends AbstractController
 {
-    public const MAX_EVENTS_HISTORY = 50;
+    public const int MAX_EVENTS_HISTORY = 50;
 
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,

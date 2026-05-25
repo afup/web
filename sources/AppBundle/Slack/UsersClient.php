@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final readonly class UsersClient
 {
-    public const USER_LIST_API = '/users.list';
+    public const string USER_LIST_API = '/users.list';
 
     public function __construct(
         #[Autowire('%slack_membre_token%')]

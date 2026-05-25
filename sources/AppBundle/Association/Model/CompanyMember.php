@@ -13,9 +13,9 @@ class CompanyMember implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    public const STATUS_PENDING = -1;
-    public const STATUS_ACTIVE = 1;
-    public const STATUS_INACTIVE = 0;
+    public const int STATUS_PENDING = -1;
+    public const int STATUS_ACTIVE = 1;
+    public const int STATUS_INACTIVE = 0;
 
     /**
      * @var int

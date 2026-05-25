@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ListAction extends AbstractController
 {
-    public const ARTICLES_PER_PAGE = 5;
+    public const int ARTICLES_PER_PAGE = 5;
 
     public function __construct(
         private readonly ViewRenderer $view,

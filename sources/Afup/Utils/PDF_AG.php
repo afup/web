@@ -9,7 +9,7 @@ use AppBundle\GeneralMeeting\Attendee;
 
 class PDF_AG extends PDF
 {
-    public const CELL_HEIGHT = 7;
+    public const int CELL_HEIGHT = 7;
     private $footerTitle = '';
 
     /**

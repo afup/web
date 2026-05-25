@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SpecialPriceAction extends AbstractController
 {
-    public const EXTEND_DAYS = 3; // jours
+    public const int EXTEND_DAYS = 3; // jours
 
     public function __construct(
         private readonly TicketSpecialPriceRepository $ticketSpecialPriceRepository,

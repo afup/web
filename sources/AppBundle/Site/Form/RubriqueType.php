@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class RubriqueType extends AbstractType
 {
-    public const POSITIONS_RUBRIQUES = 9;
+    public const int POSITIONS_RUBRIQUES = 9;
 
     public function __construct(
         private readonly RubriqueRepository $rubriqueRepository,

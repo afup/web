@@ -12,7 +12,7 @@ use Twig\Loader\FilesystemLoader;
 
 class Mail
 {
-    public const PROJECT_DIR = __DIR__ . '/../../..';
+    public const string PROJECT_DIR = __DIR__ . '/../../..';
 
     public static function createMailer(): Mailer
     {

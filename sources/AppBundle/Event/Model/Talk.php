@@ -13,22 +13,22 @@ class Talk implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    public const TYPE_FULL_LONG = 1;
-    public const TYPE_FULL_SHORT = 3;
-    public const TYPE_WORKSHOP = 2;
-    public const TYPE_KEYNOTE = 4;
-    public const TYPE_LIGHTNING_TALK = 5;
-    public const TYPE_CLINIC = 6;
-    public const TYPE_PHP_PROJECT = 9;
-    public const TYPE_SPEAKER_INTRODUCTIONS = 7;
+    public const int TYPE_FULL_LONG = 1;
+    public const int TYPE_FULL_SHORT = 3;
+    public const int TYPE_WORKSHOP = 2;
+    public const int TYPE_KEYNOTE = 4;
+    public const int TYPE_LIGHTNING_TALK = 5;
+    public const int TYPE_CLINIC = 6;
+    public const int TYPE_PHP_PROJECT = 9;
+    public const int TYPE_SPEAKER_INTRODUCTIONS = 7;
 
-    public const SKILL_JUNIOR = 1;
-    public const SKILL_MEDIOR = 2;
-    public const SKILL_SENIOR = 3;
-    public const SKILL_NA = 0;
+    public const int SKILL_JUNIOR = 1;
+    public const int SKILL_MEDIOR = 2;
+    public const int SKILL_SENIOR = 3;
+    public const int SKILL_NA = 0;
 
-    public const LANGUAGE_CODE_FR = 'fr';
-    public const LANGUAGE_CODE_EN = 'en';
+    public const string LANGUAGE_CODE_FR = 'fr';
+    public const string LANGUAGE_CODE_EN = 'en';
 
     private ?int $id = null;
 

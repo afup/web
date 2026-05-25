@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 #[AsEventListener]
 final readonly class RedirectEventFromSessionListener
 {
-    public const SESSION_KEY = 'event_selector_current_id';
+    public const string SESSION_KEY = 'event_selector_current_id';
 
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,

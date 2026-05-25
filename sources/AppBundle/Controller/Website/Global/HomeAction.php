@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class HomeAction extends AbstractController
 {
-    public const MAX_MEETUPS = 10;
+    public const int MAX_MEETUPS = 10;
 
     public function __construct(
         private readonly ViewRenderer $view,

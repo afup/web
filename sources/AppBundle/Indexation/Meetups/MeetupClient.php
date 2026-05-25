@@ -13,8 +13,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final readonly class MeetupClient
 {
-    private const QUANTITY_PAST_EVENTS = 2;
-    private const QUANTITY_UPCOMING_EVENTS = 10;
+    private const int QUANTITY_PAST_EVENTS = 2;
+    private const int QUANTITY_UPCOMING_EVENTS = 10;
 
     public function __construct(
         private HttpClientInterface $httpClient,

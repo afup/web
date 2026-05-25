@@ -6,25 +6,25 @@ namespace AppBundle\Payment;
 
 class Paybox
 {
-    public const DEVISE_EURO = 978;
+    public const int DEVISE_EURO = 978;
 
-    public const SPECIAL_CHARS_INPUTS = [
+    public const array SPECIAL_CHARS_INPUTS = [
         'PBX_SHOPPINGCART',
         'PBX_BILLING',
     ];
 
-    public const PAYBOX_SHOPPING_MAX_QUANTITY = 99;
-    public const PAYBOX_DEFAULT_STRING = 'Inconnu';
-    public const PAYBOX_DEFAULT_COUNTRY = 250; // correspond à la France en iso3166
+    public const int PAYBOX_SHOPPING_MAX_QUANTITY = 99;
+    public const string PAYBOX_DEFAULT_STRING = 'Inconnu';
+    public const int PAYBOX_DEFAULT_COUNTRY = 250; // correspond à la France en iso3166
 
     /**
      * cf http://www.paybox.com/espace-integrateur-documentation/dictionnaire-des-donnees/paybox-system/
      */
-    public const RETOUR = 'total:M;cmd:R;autorisation:A;transaction:T;status:E';
-    public const SOURCE = 'HTML';
-    public const HASH = 'SHA512';
-    public const TYPE_PAIEMENT = 'CARTE';
-    public const TYPECARTE = 'CB';
+    public const string RETOUR = 'total:M;cmd:R;autorisation:A;transaction:T;status:E';
+    public const string SOURCE = 'HTML';
+    public const string HASH = 'SHA512';
+    public const string TYPE_PAIEMENT = 'CARTE';
+    public const string TYPECARTE = 'CB';
 
     private $total = 0;
     private $cmd;

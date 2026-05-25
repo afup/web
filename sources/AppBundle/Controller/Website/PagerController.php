@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PagerController extends AbstractController
 {
-    public const PAGER_LINKS_COUNT = 6;
+    public const int PAGER_LINKS_COUNT = 6;
 
     public function display(Request $request): Response
     {
