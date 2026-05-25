@@ -551,6 +551,17 @@ $(document).ready(function() {
         cloneTransport();
         updateSummary();
 
+        // After a server-side validation failure the page re-renders at step 1, hiding field
+        // errors that live in step 2 or step 3. Detect those errors and jump to the right step
+        // so the user can see what needs to be corrected.
+        if ($('.tickets--errors p').length > 0) {
+            if ($('#ticket-step-2 .tickets--errors li').length > 0) {
+                goToStep(2);
+            } else if ($('#ticket-step-3 .tickets--errors li').length > 0) {
+                goToStep(3);
+            }
+        }
+
         // Handle form submission
         $('#formulaire').on('submit', function(e) {
             // Validate final step for payment and billing info
