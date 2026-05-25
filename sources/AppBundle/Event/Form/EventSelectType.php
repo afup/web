@@ -33,7 +33,7 @@ class EventSelectType extends AbstractType
                     'choices' => $this->eventHelper->sortEventsByStartDate(
                         iterator_to_array($this->eventRepository->getAllActive()),
                     ),
-                    'group_by' => fn(Event $choice): string => $this->eventHelper->groupByYear($choice),
+                    'group_by' => $this->eventHelper->groupByYear(...),
                 ],
             )
             ->setMethod(Request::METHOD_GET)

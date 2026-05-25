@@ -94,8 +94,8 @@ class TalkAdminType extends TalkType
                 'choices' => $allSpeakers,
                 'required' => false,
                 'data' => $speakers,
-                'choice_label' => fn(Speaker $speaker) => $speaker->getLabel(),
-                'choice_value' => fn(?Speaker $speaker) => $speaker?->getId(),
+                'choice_label' => fn(Speaker $speaker): string => $speaker->getLabel(),
+                'choice_value' => fn(?Speaker $speaker): ?int => $speaker?->getId(),
                 'choice_name' => 'id',
             ])
             ->add('verbatim', TextareaType::class, [

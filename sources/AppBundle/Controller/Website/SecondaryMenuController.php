@@ -61,7 +61,7 @@ class SecondaryMenuController extends AbstractController
         }
 
         if ($feuille->patterns) {
-            foreach (explode(PHP_EOL, (string) $feuille->patterns) as $pattern) {
+            foreach (explode(PHP_EOL, $feuille->patterns) as $pattern) {
                 $pattern = trim($pattern);
                 if ($pattern === '') {
                     continue;

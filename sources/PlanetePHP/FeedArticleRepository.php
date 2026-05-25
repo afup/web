@@ -136,8 +136,8 @@ class FeedArticleRepository
 
     private function insert(FeedArticle $billet)
     {
-        $statement = $this->connection->prepare('INSERT INTO afup_planete_billet 
-            (afup_planete_flux_id, clef, titre, url, maj, auteur, resume, contenu, etat) 
+        $statement = $this->connection->prepare('INSERT INTO afup_planete_billet
+            (afup_planete_flux_id, clef, titre, url, maj, auteur, resume, contenu, etat)
             VALUES (:feedId, :key, :title, :url, :update, :author, :summary, :content, :status)');
 
         $statement->bindValue('feedId', $billet->feedId);

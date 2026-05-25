@@ -63,7 +63,7 @@ trait PdfContext
 
         $pageContent = $this->pdfPages[$page];
 
-        if (str_contains($pageContent, $expectedContent)) {
+        if (str_contains((string) $pageContent, $expectedContent)) {
             throw new ExpectationException(
                 sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent),
                 $this->minkContext->getSession()->getDriver(),
