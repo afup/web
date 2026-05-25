@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Membership\GeneralMeeting;
 
+use Symfony\Component\Validator\Constraints\Callback;
 use Afup\Site\Droits;
 use AppBundle\Association\Model\GeneralMeetingVote;
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
@@ -72,7 +73,7 @@ final class IndexAction extends AbstractController
 
         $form = $this->createFormBuilder($data, [
             'constraints' => [
-                new Constraints\Callback(callback: static function (array $data, ExecutionContextInterface $context): void {
+                new Callback(callback: static function (array $data, ExecutionContextInterface $context): void {
                     if ($data['presence'] === 1 && $data['id_personne_avec_pouvoir']) {
                         $context
                             ->buildViolation("Vous ne pouvez pas donner votre pouvoir et indiquer que vous participez en même temps.")

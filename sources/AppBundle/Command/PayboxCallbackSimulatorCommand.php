@@ -62,7 +62,7 @@ class PayboxCallbackSimulatorCommand extends Command
         $question = new Question(sprintf('Pour quel identifiant de paiement (cmd) ? (par exemple: %s)', $example));
         $cmd = $helper->ask($input, $output, $question);
         $question->setValidator(function ($cmd) use ($regexp): void {
-            if (!preg_match($regexp, $cmd)) {
+            if (!preg_match($regexp, (string) $cmd)) {
                 throw new \RuntimeException(
                     sprintf('Le format du CMD n\'est pas valide. Il doit être de la forme : %s', $regexp),
                 );

@@ -15,13 +15,9 @@ use Psr\Clock\ClockInterface;
  */
 final class SuperAperoRepository extends EntityRepository
 {
-    private ClockInterface $clock;
-
-    public function __construct(ManagerRegistry $registry, ClockInterface $clock)
+    public function __construct(ManagerRegistry $registry, private readonly ClockInterface $clock)
     {
         parent::__construct($registry, SuperApero::class);
-
-        $this->clock = $clock;
     }
 
     /**

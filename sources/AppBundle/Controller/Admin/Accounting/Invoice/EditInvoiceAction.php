@@ -30,7 +30,7 @@ class EditInvoiceAction extends AbstractController
                 $this->invoicingRepository->save($invoice);
                 $this->addFlash('success', 'L\'écriture a été modifiée');
                 return $this->redirectToRoute('admin_accounting_invoices_list');
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 $this->invoicingRepository->rollback();
                 $this->addFlash('error', 'L\'écriture n\'a pas pu être enregistrée');
             }

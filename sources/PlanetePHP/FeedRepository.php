@@ -95,7 +95,7 @@ class FeedRepository
 
     private function hydrateAll(array $rows): array
     {
-        return array_map(fn(array $row): Feed => $this->hydrate($row), $rows);
+        return array_map($this->hydrate(...), $rows);
     }
 
     private function hydrate(array $row): Feed

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\StaticAnalysis\Rule;
 
+use PhpParser\Node\Identifier;
 use Doctrine\ORM\EntityRepository;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
@@ -44,7 +45,7 @@ final readonly class DoctrineRepositoryRule implements Rule
 
     public function processNode(Node $node, Scope $scope): array
     {
-        if (!$node->name instanceof Node\Identifier) {
+        if (!$node->name instanceof Identifier) {
             return [];
         }
 

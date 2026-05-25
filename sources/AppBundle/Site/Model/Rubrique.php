@@ -173,7 +173,7 @@ class Rubrique implements NotifyPropertyInterface
 
     public function setPagination($pagination = 0): void
     {
-        $pagination = is_null($pagination) ? 0 : $pagination;
+        $pagination ??= 0;
         $this->propertyChanged('pagination', $this->pagination, $pagination);
         $this->pagination = $pagination;
     }

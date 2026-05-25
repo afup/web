@@ -22,10 +22,10 @@ class MailchimpMembersAutoListSynchronizer
 
     public function synchronize(): void
     {
-        $subscribedEmailsOnMailchimp = array_map('strtolower', $this->mailchimp->getAllSubscribedMembersAddresses($this->listId));
-        $unSubscribedEmailsOnMailchimp = array_map('strtolower', $this->mailchimp->getAllUnSubscribedMembersAddresses($this->listId));
-        $cleanedEmailsOnMailchimp = array_map('strtolower', $this->mailchimp->getAllCleanedMembersAddresses($this->listId));
-        $subscribedEmailsOnWebsite = array_map('strtolower', $this->getSubscribedEmailsOnWebsite());
+        $subscribedEmailsOnMailchimp = array_map(strtolower(...), $this->mailchimp->getAllSubscribedMembersAddresses($this->listId));
+        $unSubscribedEmailsOnMailchimp = array_map(strtolower(...), $this->mailchimp->getAllUnSubscribedMembersAddresses($this->listId));
+        $cleanedEmailsOnMailchimp = array_map(strtolower(...), $this->mailchimp->getAllCleanedMembersAddresses($this->listId));
+        $subscribedEmailsOnWebsite = array_map(strtolower(...), $this->getSubscribedEmailsOnWebsite());
 
         $addressesToArchive = array_diff($subscribedEmailsOnMailchimp, $subscribedEmailsOnWebsite);
         // Vu qu'on archive les personnes qui ne sont plus à jour de cotisation, les adresses unsubscribed sont seulemnt les personnes

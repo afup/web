@@ -62,7 +62,7 @@ class DataExtractor
                 $data['date'] = $date->format('Y-m-d');
             }
             if (isset($schema['articleBody'])) {
-                $body = strip_tags($schema['articleBody']);
+                $body = strip_tags((string) $schema['articleBody']);
                 $data['readingTime'] = floor(str_word_count($body) / self::WORD_READ_BY_MINUTES);
             }
         }
