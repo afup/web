@@ -10,6 +10,7 @@ class CreditMutuelLivret extends CreditMutuel
 {
     public const string CODE = 'CMUTLIVRET';
 
+    #[\Override]
     public function getCompteId(): int
     {
         return ComptaCompte::LIVRET_CMUT;

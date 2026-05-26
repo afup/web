@@ -29,7 +29,7 @@ final readonly class SubscriptionManagement
             ceil($numberOfMembers / self::AFUP_PERSONNE_MORALE_SEUIL) * self::AFUP_COTISATION_PERSONNE_MORALE * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE),
             null,
             null,
-            (new \DateTime())->getTimestamp(),
+            new \DateTime()->getTimestamp(),
             $endSubscription->getTimestamp(),
             '',
         );

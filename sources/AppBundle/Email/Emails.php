@@ -58,7 +58,7 @@ class Emails
         $organizerCN = MailUserFactory::afup()->getName();
         $attendeeCN = $recipient->getName();
         $attendeeEmail = $recipient->getEmail();
-        $created = (new \DateTime())->setTimezone(new \DateTimeZone('UTC'))->format('Ymd\THis\Z');
+        $created = new \DateTime()->setTimezone(new \DateTimeZone('UTC'))->format('Ymd\THis\Z');
 
         $dtStart = $event->getDateStart()->format('Ymd');
         $dtEnd = $event->getDateEnd()->add(new \DateInterval('P1D'))->format('Ymd');

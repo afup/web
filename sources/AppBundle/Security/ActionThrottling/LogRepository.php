@@ -84,7 +84,7 @@ class LogRepository extends Repository implements MetadataInitializer
             DELETE FROM afup_throttling
             WHERE `created_on` < :date
         ');
-        $date = (new \DateTime())->sub($delay);
+        $date = new \DateTime()->sub($delay);
         $query->setParams([
             'date' => $date->format('Y-m-d H:i:s'),
         ]);

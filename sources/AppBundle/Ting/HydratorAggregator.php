@@ -57,6 +57,7 @@ class HydratorAggregator extends Hydrator
     /**
      * @return Generator
      */
+    #[\Override]
     public function getIterator(): Generator
     {
         $knownIdentifiers = [];

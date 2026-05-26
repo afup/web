@@ -19,12 +19,14 @@ class PDF extends tFPDF
         $this->AddFont('Arial','I','Arial_Italic.ttf',true);
     }
 
+    #[\Override]
     public function Header(): void       //En-tête
     {
         $this->Ln(1);              //Saut de ligne
     }
 
     //Pied de page
+    #[\Override]
     public function Footer(): void
     {
 //    $this->SetY(-15);               //Positionnement à 1,5 cm du bas

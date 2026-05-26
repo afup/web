@@ -93,7 +93,7 @@ final class IndexAction extends AbstractController
         $formattedMontant = number_format($montant, 2, ',', ' ');
         $libelle = sprintf("%s : <strong>%s€</strong>", $prefixe, $formattedMontant);
 
-        $reference = (new MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $user->getLastName());
+        $reference = new MembershipFeeReferenceGenerator()->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $user->getLastName());
 
         $payboxBilling = new PayboxBilling($user->getFirstName(), $user->getLastName(), $user->getAddress(), $user->getZipCode(), $user->getCity(), $user->getCountry());
 

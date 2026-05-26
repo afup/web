@@ -15,7 +15,7 @@ final class TransformerTest extends TestCase
     {
         $transformer = new Transformer(new AntenneRepository());
 
-        $meetup = (new Meetup())
+        $meetup = new Meetup()
             ->setId('244992881')
             ->setDate(new \DateTime('2050-12-14 17:30:00'))
             ->setTitle('Apéro PHP')

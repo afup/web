@@ -50,7 +50,7 @@ class IndexAction extends AbstractController
         }
         /** @var Talk $talk */
         foreach ($this->talkRepository->getPreviousTalksBySpeaker($event, $speaker) as $talk) {
-            if (array_key_exists($talk->getForumId(), $previousEventTalkLists)) {
+            if (array_key_exists((string) $talk->getForumId(), $previousEventTalkLists)) {
                 $previousEventTalkLists[$talk->getForumId()]->addTalk($talk);
             }
         }

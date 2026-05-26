@@ -59,7 +59,7 @@ class TicketEventTypeRepository extends Repository implements MetadataInitialize
 
         return $query->query(
             $this->getCollection(
-                (new HydratorSingleObject())->mapObjectTo('tarif', 'tarif_event', 'setTicketType'),
+                new HydratorSingleObject()->mapObjectTo('tarif', 'tarif_event', 'setTicketType'),
             ),
         );
     }

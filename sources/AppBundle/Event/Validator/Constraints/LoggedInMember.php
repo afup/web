@@ -13,6 +13,7 @@ class LoggedInMember extends Constraint
     public string $messageBadMail = 'You must use the same email for your ticket and you membership.';
     public string $messageFeeOutOfDate = 'You must have paid your membership fee to order this ticket.';
 
+    #[\Override]
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

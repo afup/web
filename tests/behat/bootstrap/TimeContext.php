@@ -36,6 +36,6 @@ trait TimeContext
     #[Then('the response should contain date :arg1 with format :arg2')]
     public function responseShouldContainsDate(string $datetimeFormat, string $withFormat = DateTimeInterface::ATOM): void
     {
-        $this->minkContext->assertResponseContains((new DateTimeImmutable($datetimeFormat))->format($withFormat));
+        $this->minkContext->assertResponseContains(new DateTimeImmutable($datetimeFormat)->format($withFormat));
     }
 }

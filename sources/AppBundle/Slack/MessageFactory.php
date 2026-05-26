@@ -47,10 +47,10 @@ class MessageFactory
 
         $attachment
             ->addField(
-                (new Field())->setShort(false)->setTitle('Talk')->setValue($vote->getTalk()->getTitle()),
+                new Field()->setShort(false)->setTitle('Talk')->setValue($vote->getTalk()->getTitle()),
             )
             ->addField(
-                (new Field())->setShort(false)->setTitle('Nouveau vote')->setValue(
+                new Field()->setShort(false)->setTitle('Nouveau vote')->setValue(
                     str_repeat(':star:', $vote->getVote()),
                 ),
             )
@@ -58,7 +58,7 @@ class MessageFactory
         if ($vote->getComment() !== null) {
             $attachment
                 ->addField(
-                    (new Field())->setShort(false)->setTitle('Commentaire')->setValue($vote->getComment()),
+                    new Field()->setShort(false)->setTitle('Commentaire')->setValue($vote->getComment()),
                 )
             ;
         }
@@ -99,19 +99,19 @@ class MessageFactory
 
         $attachment
             ->addField(
-                (new Field())->setShort(false)->setTitle('Talk')->setValue($talk->getTitle()),
+                new Field()->setShort(false)->setTitle('Talk')->setValue($talk->getTitle()),
             )
             ->addField(
-                (new Field())->setShort(false)->setTitle('Résumé')->setValue(substr($talk->getAbstract(), 0, 300)),
+                new Field()->setShort(false)->setTitle('Résumé')->setValue(substr($talk->getAbstract(), 0, 300)),
             )
             ->addField(
-                (new Field())->setShort(false)->setTitle('Accompagnement')->setValue($talk->getNeedsMentoring() ? "Oui" : "Non"),
+                new Field()->setShort(false)->setTitle('Accompagnement')->setValue($talk->getNeedsMentoring() ? "Oui" : "Non"),
             )
             ->addField(
-                (new Field())->setShort(true)->setTitle('Type')->setValue($this->translator->trans($talk->getTypeTranslationKey())),
+                new Field()->setShort(true)->setTitle('Type')->setValue($this->translator->trans($talk->getTypeTranslationKey())),
             )
             ->addField(
-                (new Field())->setShort(true)->setTitle('Public')->setValue($this->translator->trans($talk->getSkillTranslationKey())),
+                new Field()->setShort(true)->setTitle('Public')->setValue($this->translator->trans($talk->getSkillTranslationKey())),
             )
         ;
 
@@ -134,7 +134,7 @@ class MessageFactory
             ->setTitleLink('https://afup.org/admin/slackmembers/check')
             ->setColor('#FF0000')
             ->addField(
-                (new Field())->setShort(false)->setTitle('Membres à vérifier')->setValue($membersToCheckCount),
+                new Field()->setShort(false)->setTitle('Membres à vérifier')->setValue($membersToCheckCount),
             )
         ;
 
@@ -165,13 +165,13 @@ class MessageFactory
         $attachment = new Attachment();
         $attachment
             ->setTitleLink($urlGenerator->generate('admin_members_general_meeting', [], UrlGeneratorInterface::ABSOLUTE_URL))
-            ->addField((new Field())->setShort(true)->setTitle('Membres à jour de cotisation')
+            ->addField(new Field()->setShort(true)->setTitle('Membres à jour de cotisation')
                 ->setValue($nombrePersonnesAJourDeCotisation))
-            ->addField((new Field())->setShort(true)->setTitle('Présences et pouvoirs')
+            ->addField(new Field()->setShort(true)->setTitle('Présences et pouvoirs')
                 ->setValue($generalMeetingRepository->countAttendeesAndPowers($latestDate)))
-            ->addField((new Field())->setShort(true)->setTitle('Présences')
+            ->addField(new Field()->setShort(true)->setTitle('Présences')
                 ->setValue($generalMeetingRepository->countAttendees($latestDate)))
-            ->addField((new Field())->setShort(true)->setTitle('Quorum')
+            ->addField(new Field()->setShort(true)->setTitle('Quorum')
                 ->setValue($generalMeetingRepository->obtenirEcartQuorum($latestDate, $nombrePersonnesAJourDeCotisation)))
         ;
         $message->addAttachment($attachment);
@@ -199,7 +199,7 @@ class MessageFactory
                 if (0 === $value) {
                     continue;
                 }
-                $attachment->addField((new Field())->setShort(true)->setTitle($ticketRepository->get($typeId)->getPrettyName())->setValue($value));
+                $attachment->addField(new Field()->setShort(true)->setTitle($ticketRepository->get($typeId)->getPrettyName())->setValue($value));
             }
 
             $message->addAttachment($attachment);
@@ -327,7 +327,7 @@ class MessageFactory
 
         $fields = [];
         foreach ($infos as $title => $value) {
-            $fields[] = (new Field())->setShort(true)->setTitle($title)->setValue($value);
+            $fields[] = new Field()->setShort(true)->setTitle($title)->setValue($value);
         }
 
         return $fields;

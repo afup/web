@@ -25,6 +25,7 @@ class NearestOfficeChoiceType extends AbstractType
         $resolver->setDefaults(['choices' => $offices]);
     }
 
+    #[\Override]
     public function getParent()
     {
         return ChoiceType::class;

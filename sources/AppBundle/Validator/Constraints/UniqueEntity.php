@@ -21,6 +21,7 @@ class UniqueEntity extends Constraint
         parent::__construct();
     }
 
+    #[\Override]
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
