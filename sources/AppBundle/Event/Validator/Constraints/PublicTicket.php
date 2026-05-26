@@ -11,6 +11,7 @@ class PublicTicket extends Constraint
 {
     public string $messageNotLoggedIn = 'You must be connected with a valid membership to order this ticket.';
 
+    #[\Override]
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

@@ -163,7 +163,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
 
     private function getHydratorForCompanyMember()
     {
-        return (new HydratorSingleObject())
+        return new HydratorSingleObject()
             ->mapAliasTo('lastsubcription', 'apm', 'setLastSubscription');
     }
 

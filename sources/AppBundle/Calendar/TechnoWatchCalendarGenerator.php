@@ -52,7 +52,7 @@ class TechnoWatchCalendarGenerator
 
         $events = [];
 
-        while (false !== ($row = fgetcsv($fp))) {
+        while (false !== ($row = fgetcsv($fp, escape: '\\'))) {
             if (trim((string) $row[0]) === '') {
                 continue;
             }

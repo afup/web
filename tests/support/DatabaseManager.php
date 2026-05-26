@@ -15,7 +15,7 @@ use Symfony\Component\Process\Process;
  */
 final readonly class DatabaseManager
 {
-    private const DB_NAME = 'web';
+    private const string DB_NAME = 'web';
 
     private PDO $database;
     private Mysqldump $dumper;

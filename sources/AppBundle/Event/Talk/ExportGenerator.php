@@ -35,7 +35,7 @@ class ExportGenerator
             'youtube_id',
         ];
 
-        $toFile->fputcsv($columns);
+        $toFile->fputcsv($columns, escape: '\\');
 
         foreach ($this->getFromRegistrationsOnEvent($event) as $row) {
             $preparedRow = [];
@@ -45,7 +45,7 @@ class ExportGenerator
                 }
                 $preparedRow[] = $row[$column];
             }
-            $toFile->fputcsv($preparedRow);
+            $toFile->fputcsv($preparedRow, escape: '\\');
         }
     }
 
@@ -54,7 +54,7 @@ class ExportGenerator
         // Récupération des données
         $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event);
 
-        $toFile->fputcsv(['Title','Description','Speaker','Date','Time','Type']);
+        $toFile->fputcsv(['Title','Description','Speaker','Date','Time','Type'], escape: '\\');
 
         foreach ($talkAggregates as $talkAggregate) {
 
@@ -88,7 +88,7 @@ class ExportGenerator
                 $talkAggregate->planning?->getStart()?->format('Y-m-d'),
                 $talkAggregate->planning?->getStart()?->format('H:i'),
                 $type,
-            ]);
+            ], escape: '\\');
         }
     }
 

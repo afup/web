@@ -401,7 +401,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
 
     private function getHydratorForUser()
     {
-        return (new HydratorSingleObject())
+        return new HydratorSingleObject()
             ->mapAliasTo('lastsubcription', 'app', 'setLastSubscription')
             ->mapAliasTo('hash', 'app', 'setHash')
             ->mapObjectTo('apm', 'app', 'setCompany')

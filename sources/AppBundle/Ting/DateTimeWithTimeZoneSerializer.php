@@ -8,6 +8,7 @@ use CCMBenchmark\Ting\Serializer\DateTime;
 
 class DateTimeWithTimeZoneSerializer extends DateTime
 {
+    #[\Override]
     public function unserialize($serialized, array $options = [])
     {
         $value = parent::unserialize($serialized, $options);

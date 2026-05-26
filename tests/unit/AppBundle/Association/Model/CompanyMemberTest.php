@@ -20,10 +20,10 @@ class CompanyMemberTest extends TestCase
     {
         return [
             'null' => [(new CompanyMember()), AFUP_COTISATION_PERSONNE_MORALE],
-            'under' => [(new CompanyMember())->setMaxMembers(2), AFUP_COTISATION_PERSONNE_MORALE],
-            'equal' => [(new CompanyMember())->setMaxMembers(3), AFUP_COTISATION_PERSONNE_MORALE],
-            'just over' => [(new CompanyMember())->setMaxMembers(4), 2 * AFUP_COTISATION_PERSONNE_MORALE],
-            'over' => [(new CompanyMember())->setMaxMembers(6), 2 * AFUP_COTISATION_PERSONNE_MORALE],
+            'under' => [new CompanyMember()->setMaxMembers(2), AFUP_COTISATION_PERSONNE_MORALE],
+            'equal' => [new CompanyMember()->setMaxMembers(3), AFUP_COTISATION_PERSONNE_MORALE],
+            'just over' => [new CompanyMember()->setMaxMembers(4), 2 * AFUP_COTISATION_PERSONNE_MORALE],
+            'over' => [new CompanyMember()->setMaxMembers(6), 2 * AFUP_COTISATION_PERSONNE_MORALE],
         ];
     }
 

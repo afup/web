@@ -25,7 +25,7 @@ final readonly class DetectClockMockingListener
             return;
         }
 
-        $currentDateMock = (new TimeMocker())->getCurrentDateMock();
+        $currentDateMock = new TimeMocker()->getCurrentDateMock();
         if ($currentDateMock === null) {
             return;
         }

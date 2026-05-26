@@ -16,7 +16,7 @@ class CreditMutuel implements Importer
     public function initialize(string $filePath): void
     {
         $this->file = new \SplFileObject($filePath, 'r');
-        $this->file->setCsvControl(';');
+        $this->file->setCsvControl(';', escape: '\\');
         $this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::SKIP_EMPTY);
     }
 

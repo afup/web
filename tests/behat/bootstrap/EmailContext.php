@@ -14,24 +14,24 @@ use Symfony\Component\Filesystem\Filesystem;
 
 trait EmailContext
 {
-    private const MAILCATCHER_URL = 'http://mailcatcher:1080';
+    private const string MAILCATCHER_URL = 'http://mailcatcher:1080';
 
     #[BeforeScenario('@clearAllMailInscriptionAttachments')]
-    public function beforeScenarioClearAllMailInscriptionAttachments(): void
+    public static function beforeScenarioClearAllMailInscriptionAttachments(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove(Event::getInscriptionAttachmentDir());
     }
 
     #[BeforeScenario('@clearAllSponsorFiles')]
-    public function beforeScenarioClearAllSponsorFiles(): void
+    public static function beforeScenarioClearAllSponsorFiles(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove(Event::getSponsorFileDir());
     }
 
     #[BeforeScenario('@clearEmails')]
-    public function clearEmails(): void
+    public static function clearEmails(): void
     {
         $ch = curl_init();
 
@@ -43,8 +43,6 @@ trait EmailContext
         if (curl_errno($ch) !== 0) {
             throw new \RuntimeException('Error : ' . curl_error($ch));
         }
-
-        curl_close($ch);
     }
 
     #[Then('I should only receive the following emails:')]

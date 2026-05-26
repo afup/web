@@ -26,6 +26,6 @@ return RectorConfig::configure()
         symfony: true,
     )
     ->withSets([
-        LevelSetList::UP_TO_PHP_82,
+        LevelSetList::UP_TO_PHP_85,
     ])
 ;

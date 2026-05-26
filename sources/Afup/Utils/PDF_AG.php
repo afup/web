@@ -77,6 +77,7 @@ class PDF_AG extends PDF
         }
     }
 
+    #[\Override]
     public function Footer(): void
     {
         $this->SetY(-15);

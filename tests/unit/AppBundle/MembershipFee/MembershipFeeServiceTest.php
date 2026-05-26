@@ -30,8 +30,8 @@ final class MembershipFeeServiceTest extends TestCase
                 'expected' => new \DateTime('+1 year'),
             ],
             'La cotisation précédente expire dans 1 mois, la nouvelle cotisation doit expirer dans 13 mois' => [
-                'dateFin' => (new \DateTimeImmutable('+1 month'))->setTime(14, 0),
-                'expected' => (new \DateTimeImmutable('+1 month'))->setTime(14, 0)->add(new \DateInterval('P1Y')),
+                'dateFin' => new \DateTimeImmutable('+1 month')->setTime(14, 0),
+                'expected' => new \DateTimeImmutable('+1 month')->setTime(14, 0)->add(new \DateInterval('P1Y')),
             ],
         ];
     }

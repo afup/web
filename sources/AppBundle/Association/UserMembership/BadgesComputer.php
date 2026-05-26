@@ -228,7 +228,7 @@ class BadgesComputer
     private function getGeneralMeetingYears(User $user): array
     {
         $responses = $this->generalMeetingResponseRepository->getByUser($user);
-        $currentTimestamp = (new \DateTime())->format('U');
+        $currentTimestamp = new \DateTime()->format('U');
 
         $dates = [];
         foreach ($responses as $response) {

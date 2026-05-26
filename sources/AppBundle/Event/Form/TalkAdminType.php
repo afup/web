@@ -21,6 +21,7 @@ class TalkAdminType extends TalkType
 {
     public function __construct(private readonly SpeakerRepository $speakerRepository) {}
 
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
@@ -110,6 +111,7 @@ class TalkAdminType extends TalkType
         ;
     }
 
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('data_class', Talk::class);

@@ -64,7 +64,7 @@ class ExportAction extends AbstractController
             'TVA 20',
             "Zone de TVA",
         ];
-        $file->fputcsv($columns, $csvDelimiter, $csvEnclosure);
+        $file->fputcsv($columns, $csvDelimiter, $csvEnclosure, escape: '\\');
 
         foreach ($entries as $entry) {
             $total = number_format((float) $entry['montant'], 2, ',', "\u{202f}");
@@ -94,6 +94,7 @@ class ExportAction extends AbstractController
                 ],
                 $csvDelimiter,
                 $csvEnclosure,
+                escape: '\\',
             );
         }
 

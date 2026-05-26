@@ -55,7 +55,7 @@ final class IndexAction extends AbstractController
 
         if ($hasGeneralMeetingPlanned
             && null !== $latestDate
-            && ($latestDate->format('Y-m-d') === (new \DateTime('-1 day'))->format('Y-m-d'))
+            && ($latestDate->format('Y-m-d') === new \DateTime('-1 day')->format('Y-m-d'))
             && count($generalMeetingQuestionRepository->loadByDate($latestDate)) > 0
         ) {
             $displayLinkToGeneralMeetingVote = true;

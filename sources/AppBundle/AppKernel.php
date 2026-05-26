@@ -15,16 +15,19 @@ class AppKernel extends Kernel
 {
     use MicroKernelTrait;
 
+    #[\Override]
     public function getProjectDir(): string
     {
         return __DIR__ . '/../../app';
     }
 
+    #[\Override]
     public function getCacheDir(): string
     {
         return __DIR__ . '/../../var/cache/' . $this->getEnvironment();
     }
 
+    #[\Override]
     public function getLogDir(): string
     {
         return __DIR__ . '/../../var/logs';

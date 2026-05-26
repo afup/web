@@ -42,7 +42,7 @@ final class BlueskyTransport implements Transport
             $record['embed'] = $this->buildEmbed($status->embed);
         }
 
-        $facets = (new BlueskyPolyfill($this->httpClient))->parseFacets($status->text);
+        $facets = new BlueskyPolyfill($this->httpClient)->parseFacets($status->text);
 
         if ($facets !== []) {
             $record['facets'] = $facets;

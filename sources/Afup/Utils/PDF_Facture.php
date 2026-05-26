@@ -16,6 +16,7 @@ class PDF_Facture extends PDF
         parent::__construct();
     }
 
+    #[\Override]
     public function header(): void
     {
         // Haut de page [afup]
@@ -50,6 +51,7 @@ class PDF_Facture extends PDF
         $this->Ln();
     }
 
+    #[\Override]
     public function _putinfo(): void
     {
         // on surcharge le _putinfo pour ne rien faire
@@ -65,6 +67,7 @@ class PDF_Facture extends PDF
      *
      * @see FPDF::Footer()
      */
+    #[\Override]
     public function Footer(): void
     {
         $address = sprintf(

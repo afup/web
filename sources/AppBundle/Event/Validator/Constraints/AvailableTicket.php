@@ -11,6 +11,7 @@ class AvailableTicket extends Constraint
 {
     public string $message = 'This ticket is not available anymore.';
 
+    #[\Override]
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

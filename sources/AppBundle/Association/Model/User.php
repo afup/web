@@ -709,15 +709,6 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this;
     }
 
-    /**
-     * @deprecated
-     * This method can be removed in Symfony 6.0 - is not needed for apps that do not check user passwords.
-     */
-    public function getSalt(): null
-    {
-        return null;
-    }
-
     public function eraseCredentials(): void {}
 
     public function __serialize(): array
