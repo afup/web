@@ -11,7 +11,6 @@ use AppBundle\Event\Model\Repository\RoomRepository;
 use AppBundle\Event\Model\Room;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,7 +67,7 @@ class RoomAction extends AbstractController
             'event' => $event,
             'rooms' => $rooms,
             'addForm' => $addForm->createView(),
-            'editForms' => array_map(static fn(Form $form): FormView => $form->createView(), $editForms),
+            'editForms' => array_map(static fn(FormInterface $form): FormView => $form->createView(), $editForms),
             'title' => 'Gestion des salles',
             'event_select_form' => $eventSelection->selectForm(),
         ]);
