@@ -13,12 +13,13 @@ class Articles extends AbstractSeed
     public function run(): void
     {
         $chapeau = <<<EOF
-<p>Comme &agrave; chaque &eacute;dition du Forum PHP, les conf&eacute;rences ont &eacute;t&eacute; capt&eacute;es par notre partenaire dFusion. Elles sont d&eacute;sormais en ligne sur notre page "vid&eacute;os" !&nbsp;</p>
+Comme &agrave; chaque &eacute;dition du Forum PHP, les conf&eacute;rences ont &eacute;t&eacute; capt&eacute;es par notre partenaire dFusion. Elles sont d&eacute;sormais en ligne sur notre page "vid&eacute;os" !
 EOF;
 
         $contenu = <<<EOF
-<p>&nbsp;Fid&egrave;le &agrave; notre mission de diffusion du savoir aupr&egrave;s des d&eacute;veloppeurs PHP, nous mettons en ligne les captations vid&eacute;o des conf&eacute;rences donn&eacute;es il y a &agrave; peine trois semaines lors du Forum PHP 2018.</p>
-<p>Hormis la conf&eacute;rence "Cessons les estimations" de Fr&eacute;d&eacute;ric Legu&eacute;dois, qui n'&eacute;tait pas capt&eacute;e <a href="https://www.leguedois.fr/pourquoi-les-conferences-ne-sont-pas-filmees/">&agrave; sa demande</a>, tous les talks sont disponibles sur notre page "<a href="../../talks/">vid&eacute;os</a>". Faites passer &agrave; vos voisins et coll&egrave;gues, visionnez les sujets que vous avez manqu&eacute;s, revoyez ce talk qui vous a fascin&eacute;, et surtout, surtout, imaginez le plaisir de les voir en live : <strong>venez nous voir en octobre au Forum PHP 2019 ou en mai &agrave; l'AFUP Day !&nbsp;</strong></p>
+Fid&egrave;le &agrave; notre mission de diffusion du savoir aupr&egrave;s des d&eacute;veloppeurs PHP, nous mettons en ligne les captations vid&eacute;o des conf&eacute;rences donn&eacute;es il y a &agrave; peine trois semaines lors du Forum PHP 2018.
+
+Hormis la conf&eacute;rence "Cessons les estimations" de Fr&eacute;d&eacute;ric Legu&eacute;dois, qui n'&eacute;tait pas capt&eacute;e [&agrave; sa demande](https://www.leguedois.fr/pourquoi-les-conferences-ne-sont-pas-filmees/), tous les talks sont disponibles sur notre page "[vid&eacute;os](../../talks/)". Faites passer &agrave; vos voisins et coll&egrave;gues, visionnez les sujets que vous avez manqu&eacute;s, revoyez ce talk qui vous a fascin&eacute;, et surtout, surtout, imaginez le plaisir de les voir en live : **venez nous voir en octobre au Forum PHP 2019 ou en mai &agrave; l'AFUP Day !**
 EOF;
 
         $data = [
@@ -36,7 +37,6 @@ EOF;
         ];
 
         $data[] = $this->createMarkdownArticle();
-        $data[] = $this->createHTMLArticle();
 
         $slugger = Slugify::create();
         $faker = Factory::create();
@@ -75,6 +75,7 @@ Un peu **de texte en gras**.
 Et un peu *de texte en italic*.
 
 ### Une dernière section
+
 Un texte avec un lien [commodi delectus](https://afup.org) et encore un peu de texte.
 MARKDOWN;
 
@@ -88,37 +89,6 @@ MARKDOWN;
             'id_forum' => Event::ID_FORUM,
             'etat' => 1,
             'type_contenu' => ArticleContentType::Markdown->value,
-        ];
-    }
-
-    private function createHTMLArticle(): array
-    {
-        $contenu = <<<HTML
-<h3>Un premier titre !</h3>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam aperiam dolor, eligendi expedita nisi quibusdam repellendus repudiandae!</p>
-
-<h3>Encore un titre</h3>
-<p>Un peu <strong>de texte en gras</strong>.
-<br><br>
-Et un peu <em>de texte en italic</em>.</p>
-
-<h3>Une dernière section</h3>
-<p>Un texte avec un lien <a href="https://afup.org">commodi delectus</a> et encore un peu de texte.
-<br><br>
-<strong>Un peu de gras
-avec un saut de ligne en base</strong></p>
-HTML;
-
-        return [
-            'titre' => "Un article en HTML",
-            'chapeau' => "<p>Lorem <strong>ipsum</strong> dolor si amet.</p>",
-            'contenu' => $contenu,
-            'raccourci' => 'un-article-en-html',
-            'id_site_rubrique' => Rubrique::ID_RUBRIQUE_ACTUALITES,
-            'date' => 1761858722,
-            'id_forum' => Event::ID_FORUM,
-            'etat' => 1,
-            'type_contenu' => ArticleContentType::Html->value,
         ];
     }
 }

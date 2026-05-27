@@ -41,16 +41,3 @@ Feature: Site Public - News
     """
     <a href="https://afup.org">commodi delectus</a>
     """
-
-  @reloadDbWithTestData
-  Scenario: Affichage d'un article HTML
-    Given I am on the homepage
-    When I follow "Actualités"
-    And I follow "Lire l'article: Un article en HTML"
-    And the response should contain the html "<h3>Un premier titre !</h3>"
-    And the response should contain the html "<strong>de texte en gras</strong>"
-    And the response should contain the html "<em>de texte en italic</em>"
-    And the response should contain the html
-    """
-    <a href="https://afup.org">commodi delectus</a>
-    """

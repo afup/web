@@ -44,9 +44,7 @@ class ArticleType extends AbstractType
         /** @var \AppBundle\Site\Model\Article|null $article */
         $article = $builder->getData();
         $textareaCssClass = 'simplemde';
-        if ($article !== null && $article->isContentTypeMarkdown() === false) {
-            $textareaCssClass = 'tinymce';
-        }
+
 
         $builder
             ->add('title', TextType::class, [
