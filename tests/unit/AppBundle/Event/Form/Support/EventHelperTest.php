@@ -25,17 +25,17 @@ class EventHelperTest extends TestCase
     {
         yield 'with event as string' => [
             'event' => 'Forum PHP 2014',
-            'expectedYear' => '2014',
+            'expectedYear' => 'Année 2014',
         ];
 
         yield 'with start date' => [
             'event' => new Event()->setDateStart(new \DateTime('1999-12-13')),
-            'expectedYear' => '1999',
+            'expectedYear' => 'Année 1999',
         ];
 
         yield 'with date in title' => [
             'event' => new Event()->setTitle('AFUP Day 2025 Lyon'),
-            'expectedYear' => '2025',
+            'expectedYear' => 'Année 2025',
         ];
 
         yield 'without date in title' => [
