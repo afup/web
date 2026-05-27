@@ -42,6 +42,7 @@ trait PdfContext
     public function thePageOfThePdfShouldContain(string $page, string $expectedContent): void
     {
         $pageContent = $this->pdfPages[$page] ?? null;
+        $pageContent = str_replace("\t", " ", $pageContent);
 
         if (!str_contains((string) $pageContent, $expectedContent)) {
             throw new ExpectationException(
@@ -69,5 +70,11 @@ trait PdfContext
                 $this->minkContext->getSession()->getDriver(),
             );
         }
+    }
+
+    #[Then('print the page :page of the PDF')]
+    public function thePrint(string $page): void
+    {
+        echo $this->pdfPages[$page] ?? null;
     }
 }
