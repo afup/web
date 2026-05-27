@@ -296,6 +296,13 @@ SQL;
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
+    public function getPreviousForum(int $eventId): ?int
+    {
+        $query = $this->getQuery('SELECT MAX(id) as id FROM afup_forum WHERE id < :id AND titre LIKE "%Forum%"');
+
+        return $query->setParams(['id' => $eventId])->query($this->getCollection(new HydratorArray()))->first()['id'];
+    }
+
     public static function initMetadata(SerializerFactoryInterface $serializerFactory, array $options = [])
     {
         $metadata = new Metadata($serializerFactory);

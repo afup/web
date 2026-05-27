@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event;
 
-use Afup\Site\Forum\Inscriptions;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\EventCompareSelectType;
 use AppBundle\Event\Model\Repository\EventRepository;
@@ -21,7 +20,6 @@ class StatsAction extends AbstractController
         private readonly TicketTypeRepository $ticketTypeRepository,
         private readonly EventStatsRepository $eventStatsRepository,
         private readonly EventRepository $eventRepository,
-        private readonly Inscriptions $inscriptions,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -40,7 +38,7 @@ class StatsAction extends AbstractController
             'events' => $this->eventRepository->getAll(),
         ]);
 
-        $stats = $this->inscriptions->obtenirSuivi($event->getId(), $comparedEvent->getId());
+        $stats = $this->eventStatsRepository->getRegistrationTracking($event->getId(), $comparedEvent->getId());
         $ticketTypes = [];
 
         $chart = [
