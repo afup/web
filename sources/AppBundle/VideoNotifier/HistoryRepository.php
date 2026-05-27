@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\VideoNotifier;
 
 use AppBundle\Event\Model\Talk;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 
 final readonly class HistoryRepository
@@ -34,12 +35,15 @@ final readonly class HistoryRepository
      */
     public function getNumberOfStatusesPerTalk(array $talks): array
     {
+        $talkIds = array_map(fn(Talk $talk): ?int => $talk->getId(), $talks);
+
         $rows = ($qb = $this->connection->createQueryBuilder())
             ->from('video_notifier_history', 'h')
             ->select('h.talk_id', 'COUNT(h.id) AS quantity')
             ->where(
-                $qb->expr()->in('h.talk_id', array_map(fn(Talk $talk): ?int => $talk->getId(), $talks)),
+                $qb->expr()->in('h.talk_id', ':talkIds'),
             )
+            ->setParameter('talkIds', $talkIds, ArrayParameterType::INTEGER)
             ->groupBy('h.talk_id')
             ->executeQuery()
             ->fetchAllAssociative();
