@@ -166,7 +166,7 @@
     "phpunit/phpunit": "^11.5",
     "rector/rector": "^2.4",
     "robertfausk/behat-panther-extension": "^1.2",
-    "smalot/pdfparser": "^1.1",
+    "smalot/pdfparser": "^2.0",
     "symfony/debug-bundle": "7.4.*",
     "symfony/json-path": "7.4.*",
     "symfony/web-profiler-bundle": "7.4.*",
