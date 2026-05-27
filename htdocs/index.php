@@ -11,8 +11,7 @@ $isTestEnv = isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] == 'test';
 
 if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv || $isTestEnv) {
     if (!$isDevEnv && !$isTestEnv
-        &&
-        (
+        && (
             isset($_SERVER['HTTP_CLIENT_IP'])
             || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
             || !in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1', '192.168.42.1']) && php_sapi_name() !== 'cli-server'
@@ -48,7 +47,7 @@ Request::setTrustedProxies(
     Request::HEADER_X_FORWARDED_FOR
     | Request::HEADER_X_FORWARDED_HOST
     | Request::HEADER_X_FORWARDED_PORT
-    | Request::HEADER_X_FORWARDED_PROTO
+    | Request::HEADER_X_FORWARDED_PROTO,
 );
 
 $response = $kernel->handle($request);

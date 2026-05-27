@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Returns the importmap for this application.
  *
@@ -18,9 +20,9 @@ return [
     ],
     'semantic-ui/dist/semantic.min.css' => [
         'version' => '2.5.0',
-        'type' => 'css'
+        'type' => 'css',
     ],
     'semantic-ui/dist/semantic.min.js' => [
-        'version' => '2.5.0'
+        'version' => '2.5.0',
     ],
 ];

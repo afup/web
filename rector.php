@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\LevelSetList;
-use Rector\PHPUnit\Set\PHPUnitSetList;
-use Rector\Symfony\Set\SymfonySetList;
-use Rector\Symfony\Set\TwigSetList;
 
 return RectorConfig::configure()
     ->withPaths([
