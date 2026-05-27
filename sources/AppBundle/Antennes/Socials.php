@@ -12,5 +12,8 @@ final readonly class Socials
         public ?string $twitter = null,
         public ?string $linkedin = null,
         public ?string $bluesky = null,
+        public ?string $cfp = null,
+        public ?string $github = null,
+        public ?string $discord = null,
     ) {}
 }
