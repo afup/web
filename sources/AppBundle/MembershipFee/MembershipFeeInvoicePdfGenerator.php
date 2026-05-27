@@ -16,14 +16,14 @@ use AppBundle\Association\Model\User;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
 
-final class MembershipFeeInvoicePdfGenerator
+final readonly class MembershipFeeInvoicePdfGenerator
 {
     public function __construct(
-        private readonly MembershipFeeRepository $membershipFeeRepository,
-        private readonly UserRepository $userRepository,
-        private readonly CompanyMemberRepository $companyMemberRepository,
-        private readonly InvoiceGenerator $invoiceGenerator,
-        private readonly BankAccountFactory $bankAccountFactory,
+        private MembershipFeeRepository $membershipFeeRepository,
+        private UserRepository $userRepository,
+        private CompanyMemberRepository $companyMemberRepository,
+        private InvoiceGenerator $invoiceGenerator,
+        private BankAccountFactory $bankAccountFactory,
     ) {}
 
     /**

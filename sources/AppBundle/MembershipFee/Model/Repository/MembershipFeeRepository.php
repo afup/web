@@ -63,8 +63,8 @@ class MembershipFeeRepository extends Repository implements MetadataInitializer
         $sql = 'UPDATE';
         $sql .= '  afup_cotisations ';
         $sql .= 'SET';
-        $sql .= '  type_reglement= :paymentType,';
-        $sql .= '  informations_reglement=:paymentInfos';
+        $sql .= '  type_reglement = :paymentType,';
+        $sql .= '  informations_reglement = :paymentInfos';
         $sql .= ' WHERE';
         $sql .= '  id=:id';
 
@@ -78,8 +78,8 @@ class MembershipFeeRepository extends Repository implements MetadataInitializer
         $sql .= 'FROM';
         $sql .= '  afup_cotisations ';
         $sql .= 'WHERE';
-        $sql .= '  type_personne=:userType ';
-        $sql .= '  AND id_personne=:userId ';
+        $sql .= '  type_personne = :userType ';
+        $sql .= '  AND id_personne = :userId ';
         $sql .= 'ORDER BY';
         $sql .= '  date_fin DESC ';
         $sql .= 'LIMIT 0, 1 ';
@@ -100,8 +100,8 @@ class MembershipFeeRepository extends Repository implements MetadataInitializer
         $sql .= 'FROM';
         $sql .= '  afup_cotisations ';
         $sql .= 'WHERE';
-        $sql .= '  type_personne=:userType ';
-        $sql .= '  AND id_personne=:userId ';
+        $sql .= '  type_personne = :userType ';
+        $sql .= '  AND id_personne = :userId ';
         $sql .= 'ORDER BY date_fin DESC';
 
         return $this->getQuery($sql)->setParams(['userType' => $memberType->value, 'userId' => $memberId])->query($this->getCollection(new HydratorSingleObject()));

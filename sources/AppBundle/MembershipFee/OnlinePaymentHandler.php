@@ -29,11 +29,10 @@ class OnlinePaymentHandler
         return ['type' => (int) $memberType, 'id' => (int) $memberId];
     }
 
-    public function validerReglementEnLigne(string $cmd, float $total, string $autorisation, string $transaction): mixed
+    public function validerReglementEnLigne(string $cmd, float $total, string $autorisation, string $transaction): void
     {
         $reference = substr($cmd, 0, strlen($cmd) - 4);
         $verif = substr($cmd, strlen($cmd) - 3, strlen($cmd));
-        $result = false;
 
         if (str_starts_with($cmd, 'F')) {
             // This is an invoice ==> we dont have to create a new cotisation, just update the existing one
@@ -57,7 +56,7 @@ class OnlinePaymentHandler
             }
 
             $dateFin = $this->membershipFeeService->getNextSubscriptionExpiration($cotisation)->getTimestamp();
-            $result = $this->membershipFeeService->ajouter(
+            $this->membershipFeeService->ajouter(
                 MemberType::from((int) $typePersonne),
                 (int) $idPersonne,
                 $total,
@@ -68,7 +67,5 @@ class OnlinePaymentHandler
                 "autorisation : " . $autorisation . " / transaction : " . $transaction,
             );
         }
-
-        return $result;
     }
 }

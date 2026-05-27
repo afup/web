@@ -15,22 +15,25 @@ class MembershipFeeService
 {
     public function __construct(private readonly MembershipFeeRepository $membershipFeeRepository) {}
 
-    /**
-     * Ajoute une cotisation
-     *
-     * @param $idPersonne Identifiant de la personne
-     * @param $montant Montant de la cotisation (en euros)
-     * @param $typeReglement Type de règlement (espèces, chèque, virement)
-     * @param $informationsReglement Informations concernant le règlement (numéro de chèque, de virement etc.)
-     * @param $dateDebut Date de début de la cotisation
-     * @param $dateFin Date de fin de la cotisation
-     * @param $commentaires Commentaires concernant la cotisation
-     * @param $referenceClient Référence client à mentionner sur la facture
-     * @return bool Succès de l'ajout
-     */
-    public function ajouter(MemberType $typePersonne, int $idPersonne, float $montant, ?int $typeReglement,
-                     ?string $informationsReglement, int $dateDebut, int $dateFin, string $commentaires, ?string $referenceClient = null): bool
-    {
+    public function ajouter(
+        MemberType $typePersonne,
+        // Identifiant de la personne
+        int $idPersonne,
+        // Montant de la cotisation (en euros)
+        float $montant,
+        // Type de règlement (espèces, chèque, virement)
+        ?int $typeReglement,
+        // Informations concernant le règlement (numéro de chèque, de virement etc.)
+        ?string $informationsReglement,
+        // Date de début de la cotisation
+        int $dateDebut,
+        // Date de fin de la cotisation
+        int $dateFin,
+        // Commentaires concernant la cotisation
+        string $commentaires,
+        // Référence client à mentionner sur la facture
+        ?string $referenceClient = null,
+    ): void {
         $membershipFee = new MembershipFee();
         $membershipFee
             ->setUserType($typePersonne)
@@ -47,7 +50,6 @@ class MembershipFeeService
             ->setInvoiceDate(new \DateTimeImmutable())
         ;
         $this->membershipFeeRepository->save($membershipFee);
-        return true;
     }
 
     public function isAlreadyPaid(string $cmd): bool
@@ -110,7 +112,7 @@ class MembershipFeeService
      * @param $invoiceId Identifiant de la facture
      * @param $token Token de la facture. Si null, pas de vérification
      */
-    public function getByInvoice(string $invoiceId, string $token = null): ?MembershipFee
+    public function getByInvoice(string $invoiceId, ?string $token = null): ?MembershipFee
     {
         $criterias = ['invoiceNumber' => $invoiceId];
         if ($token !== null) {

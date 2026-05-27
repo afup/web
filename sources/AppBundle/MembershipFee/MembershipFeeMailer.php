@@ -15,14 +15,14 @@ use AppBundle\Email\Mailer\Message;
 use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
 use Webmozart\Assert\Assert;
 
-final class MembershipFeeMailer
+final readonly class MembershipFeeMailer
 {
     public function __construct(
-        private readonly MembershipFeeRepository $membershipFeeRepository,
-        private readonly UserRepository $userRepository,
-        private readonly CompanyMemberRepository $companyMemberRepository,
-        private readonly Mailer $mailer,
-        private readonly MembershipFeeInvoicePdfGenerator $pdfGenerator,
+        private MembershipFeeRepository $membershipFeeRepository,
+        private UserRepository $userRepository,
+        private CompanyMemberRepository $companyMemberRepository,
+        private Mailer $mailer,
+        private MembershipFeeInvoicePdfGenerator $pdfGenerator,
     ) {}
 
     /**
