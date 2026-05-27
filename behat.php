@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Afup\Tests\Behat\Bootstrap\FeatureContext;
 use Behat\Config\Config;
 use Behat\Config\Extension;
@@ -63,7 +65,7 @@ return (new Config())
                 (new Suite('web_features_no_js'))
                     ->withContexts(
                         FeatureContext::class,
-                        MinkContext::class
+                        MinkContext::class,
                     )
                     ->withPaths('%paths.base%/tests/behat')
                     ->withFilter(new TagFilter('~@javascript-group&&~@javascript'))
