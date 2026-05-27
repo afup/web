@@ -20,11 +20,8 @@ declare(strict_types=1);
  * @group    Bootstraps
  */
 
-use Afup\Site\Utils\Logs;
 
 $startMicrotime = microtime(true);
 
 require_once __DIR__ . '/_Common.php';
 require_once __DIR__ . '/../../../vendor/autoload.php';
-
-Logs::initialiser($bdd, 0);
