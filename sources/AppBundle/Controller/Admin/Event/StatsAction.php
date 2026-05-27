@@ -84,8 +84,6 @@ class StatsAction extends AbstractController
             $item = ['name' => $ticketTypes[$key], 'y' => $item / $totalInscrits];
         });
 
-        $rawStatsByType = array_values($rawStatsByType);
-
         $pieChartConf = [
             "chart" => [
                 "plotBackgroundColor" => null,
