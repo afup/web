@@ -7,10 +7,10 @@ namespace AppBundle\Antennes;
 final readonly class Socials
 {
     public function __construct(
-        public ?string $youtube,
-        public ?string $blog,
-        public ?string $twitter,
-        public ?string $linkedin,
-        public ?string $bluesky,
+        public ?string $youtube = null,
+        public ?string $blog = null,
+        public ?string $twitter = null,
+        public ?string $linkedin = null,
+        public ?string $bluesky = null,
     ) {}
 }
