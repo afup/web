@@ -4,36 +4,37 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\CompanyMembership;
 
-use Afup\Site\Association\Cotisations;
+use AppBundle\MembershipFee\MembershipFeeService;
 use Afup\Site\Utils\Utils;
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\CompanyMember;
+use AppBundle\MembershipFee\Model\MembershipFee;
 
 final readonly class SubscriptionManagement
 {
-    public function __construct(private Cotisations $cotisations) {}
+    public function __construct(private MembershipFeeService $membershipFeeService) {}
 
-    public function createInvoiceForInscription(CompanyMember $company, $numberOfMembers): array
+    public function createInvoiceForInscription(CompanyMember $company, int $numberOfMembers): array
     {
-        $endSubscription = $this->cotisations->finProchaineCotisation(false);
+        $endSubscription = $this->membershipFeeService->getNextSubscriptionExpiration(null);
 
         // Create the invoice
-        $this->cotisations->ajouter(
+        $this->membershipFeeService->ajouter(
             MemberType::MemberCompany,
             $company->getId(),
             ceil($numberOfMembers / AFUP_PERSONNE_MORALE_SEUIL) * AFUP_COTISATION_PERSONNE_MORALE * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE),
             null,
             null,
-            (new \DateTime())->format('U'),
-            $endSubscription->format('U'),
+            (new \DateTime())->getTimestamp(),
+            $endSubscription->getTimestamp(),
             '',
         );
-        $subscriptionArray = $this->cotisations->obtenirDerniere(MemberType::MemberCompany, $company->getId());
+        $subscription = $this->membershipFeeService->getLatestByUserTypeAndId(MemberType::MemberCompany, $company->getId());
 
-        if ($subscriptionArray === false) {
+        if (!$subscription instanceof MembershipFee) {
             throw new \RuntimeException('An error occured');
         }
 
-        return ['invoice' => $subscriptionArray['numero_facture'], 'token' => $subscriptionArray['token']];
+        return ['invoice' => $subscription->getInvoiceNumber(), 'token' => $subscription->getToken()];
     }
 }

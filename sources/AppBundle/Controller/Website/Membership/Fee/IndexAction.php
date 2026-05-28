@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Membership\Fee;
 
-use Afup\Site\Association\Cotisations;
+use AppBundle\MembershipFee\MembershipFeeService;
 use Afup\Site\Droits;
 use Afup\Site\Utils\Utils;
 use Afup\Site\Utils\Vat;
+use AppBundle\Security\MembershipFeeVoter;
 use AppBundle\Association\MembershipFeeReferenceGenerator;
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\UserMembership\UserService;
+use AppBundle\MembershipFee\Model\MembershipFee;
+use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
 use AppBundle\Payment\PayboxBilling;
 use AppBundle\Payment\PayboxFactory;
 use AppBundle\Twig\ViewRenderer;
@@ -28,7 +31,8 @@ final class IndexAction extends AbstractController
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly UserService $userService,
         private readonly PayboxFactory $payboxFactory,
-        private readonly Cotisations $cotisations,
+        private readonly MembershipFeeService $membershipFeeService,
+        private readonly MembershipFeeRepository $membershipFeeRepository,
         private readonly Droits $droits,
     ) {}
 
@@ -43,34 +47,27 @@ final class IndexAction extends AbstractController
         $now = new \DateTime('now');
         $isSubjectedToVat = Vat::isSubjectedToVat($now);
 
-        if (!$cotisation) {
+        if (!$cotisation instanceof MembershipFee) {
             $message = '';
         } else {
-            $endSubscription = $this->cotisations->finProchaineCotisation($cotisation);
+            $endSubscription = $this->membershipFeeService->getNextSubscriptionExpiration($cotisation);
             $message = sprintf(
                 'Votre dernière cotisation -- %s € -- est valable jusqu\'au %s. <br />
         Si vous renouvelez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s.',
-                number_format((float) $cotisation['montant'], 2, ',', ' '),
-                date("d/m/Y", (int) $cotisation['date_fin']),
+                number_format((float) $cotisation->getAmount(), 2, ',', ' '),
+                $cotisation->getEndDate()->format('d/m/Y'),
                 $endSubscription->format('d/m/Y'),
             );
         }
 
-        $cotisations_physique = $this->cotisations->obtenirListe(MemberType::MemberPhysical, $user->getId());
-        $cotisations_morale = $this->cotisations->obtenirListe(MemberType::MemberCompany, $user->getCompanyId());
+        $cotisations_physique = $this->membershipFeeRepository->getListByUserTypeAndId(MemberType::MemberPhysical, $user->getId());
+        $cotisations_morale = $this->membershipFeeRepository->getListByUserTypeAndId(MemberType::MemberCompany, $user->getCompanyId());
 
-        if (is_array($cotisations_morale) && is_array($cotisations_physique)) {
-            $liste_cotisations = array_merge($cotisations_physique, $cotisations_morale);
-        } elseif (is_array($cotisations_morale)) {
-            $liste_cotisations = $cotisations_morale;
-        } elseif (is_array($cotisations_physique)) {
-            $liste_cotisations = $cotisations_physique;
-        } else {
-            $liste_cotisations = [];
-        }
+        /** @var array<int, MembershipFee> $liste_cotisations */
+        $liste_cotisations = array_merge(iterator_to_array($cotisations_physique), iterator_to_array($cotisations_morale));
 
         foreach ($liste_cotisations as $k => $cotisation) {
-            $liste_cotisations[$k]['telecharger_facture'] = $this->cotisations->isCurrentUserAllowedToReadInvoice($cotisation['id']);
+            $cotisation->setDownloadInvoice($this->isGranted(MembershipFeeVoter::READ_INVOICE, (string) $cotisation->getId()));
         }
 
         if ($user->getCompanyId() > 0) {
@@ -112,7 +109,7 @@ final class IndexAction extends AbstractController
             'isSubjectedToVat' => $isSubjectedToVat,
             'title' => 'Ma cotisation',
             'cotisations' => $liste_cotisations,
-            'time' => time(),
+            'time' => new \DateTime(),
             'montant' => $montant,
             'libelle' => $libelle,
             'paybox' => $paybox,

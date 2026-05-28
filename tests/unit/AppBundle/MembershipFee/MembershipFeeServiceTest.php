@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Afup\Site\Tests\Association;
+namespace AppBundle\Tests\MembershipFee;
 
-use Afup\Site\Association\Cotisations;
-use Afup\Site\Utils\Base_De_Donnees;
 use AppBundle\Association\MemberType;
+use AppBundle\MembershipFee\MembershipFeeService;
+use AppBundle\MembershipFee\Model\MembershipFee;
+use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
+use AppBundle\MembershipFee\OnlinePaymentHandler;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-final class CotisationsTest extends TestCase
+final class MembershipFeeServiceTest extends TestCase
 {
     public static function generateCotisationProvider(): array
     {
@@ -37,11 +39,14 @@ final class CotisationsTest extends TestCase
     #[DataProvider('generateCotisationProvider')]
     public function testFinProchaineCotisation(\DateTimeInterface $dateFin, \DateTimeInterface $expected): void
     {
-        $bdd = new Base_De_Donnees('', '', '', '');
+        $membershipFeeRepository = $this->createMock(MembershipFeeRepository::class);
 
-        $cotisations = new Cotisations($bdd);
+        $membershipFeeService = new MembershipFeeService($membershipFeeRepository);
 
-        $actual = $cotisations->finProchaineCotisation(['date_fin' => $dateFin->format('U')]);
+        $membershipFee = new MembershipFee();
+        $membershipFee->setEndDate(new \DateTime('@' . $dateFin->format('U')));
+
+        $actual = $membershipFeeService->getNextSubscriptionExpiration($membershipFee);
 
         self::assertEquals($expected->format('Y-m-d'), $actual->format('Y-m-d'));
     }
@@ -63,11 +68,13 @@ final class CotisationsTest extends TestCase
     #[DataProvider('accountCmdProvider')]
     public function testGetAccountFromCmd(string $cmd, array $expected): void
     {
-        $bdd = new Base_De_Donnees('', '', '', '');
+        $membershipFeeRepository = $this->createMock(MembershipFeeRepository::class);
 
-        $cotisations = new Cotisations($bdd);
+        $membershipFeeService = new MembershipFeeService($membershipFeeRepository);
 
-        $actual = $cotisations->getAccountFromCmd($cmd);
+        $actual = (new OnlinePaymentHandler(
+            $membershipFeeService,
+        ))->getAccountFromCmd($cmd);
 
         self::assertEquals($expected, $actual);
     }
