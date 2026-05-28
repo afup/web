@@ -43,10 +43,10 @@
                     <h4>{{ article.datePublication|format_date('long') }}</h4>
 
                     <blockquote>
-                        {{ article.chapeauFormate|raw }}
+                        {{ article.chapeau|markdown_to_html }}
                     </blockquote>
 
-                    {{ article.contenuFormate|raw }}
+                    {{ article.contenu|markdown_to_html }}
 
                     <hr />
 
