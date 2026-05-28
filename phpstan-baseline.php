@@ -9806,18 +9806,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Security/TestGithubAuthenticator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Site\\\\Entity\\\\Article\\:\\:getChapeauFormate\\(\\) should return string but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Site/Entity/Article.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Site\\\\Entity\\\\Article\\:\\:getContenuFormate\\(\\) should return string but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Site/Entity/Article.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot cast mixed to int\\.$#',
 	'identifier' => 'cast.int',
 	'count' => 1,

@@ -170,6 +170,8 @@ services:
         class: Parsedown
         autowire: true
 
+    Twig\Extra\Markdown\MarkdownInterface: '@twig.markdown.default'
+
     geocoder:
         class: Geocoder\StatefulGeocoder
         arguments: ['@geocoder_provider_google_maps']
