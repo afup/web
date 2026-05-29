@@ -28,18 +28,4 @@ final class AccountRepository extends EntityRepository
             ->getQuery()
             ->execute();
     }
-
-
-    /**
-     * @return array<Account>
-     */
-    public function getActiveAccounts(): array
-    {
-        return $this->createQueryBuilder('c')
-                    ->where('c.archivedAt IS NULL')
-                    ->orderBy('c.name', 'asc')
-                    ->getQuery()
-                    ->execute();
-    }
-
 }

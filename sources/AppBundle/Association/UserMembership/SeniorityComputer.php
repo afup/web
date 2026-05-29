@@ -15,15 +15,6 @@ class SeniorityComputer
 {
     public function __construct(private readonly MembershipFeeRepository $membershipFeeRepository) {}
 
-    public function computeCompany(CompanyMember $companyMember)
-    {
-        $cotis = $this->membershipFeeRepository->getListByUserTypeAndId(MemberType::MemberCompany, $companyMember->getId());
-
-        $infos = $this->computeFromCotisationsAndReturnInfos($cotis);
-
-        return $infos['years'];
-    }
-
     public function computeCompanyAndReturnInfos(CompanyMember $companyMember): array
     {
         $cotis = $this->membershipFeeRepository->getListByUserTypeAndId(MemberType::MemberCompany, $companyMember->getId());
