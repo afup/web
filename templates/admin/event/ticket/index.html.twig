@@ -100,7 +100,7 @@
                             CB
                         {% elseif a.invoice.paymentType == constant('AppBundle\\Event\\Model\\Ticket::PAYMENT_CHEQUE') %}
                             CHQ
-                        {% elseif a.invoice.paymentType == constant('AppBundle\\Event\\Model\\Ticket::PAYMENT_BANKWIRE')%}
+                        {% elseif a.invoice.paymentType == constant('AppBundle\\Event\\Model\\Ticket::PAYMENT_BANKWIRE') %}
                             VIR
                         {% endif %}
                     </td>
@@ -109,15 +109,17 @@
                             {% if a.lastSubscription == null %}
                                 <span class="ui blue label">Non trouvée</span>
                             {% elseif a.lastSubscription < 'now'|date('U') %}
-                                <span class="ui red label">À expiré le {{ a.lastSubscription|date('d/m/Y') }}</span>
-                                <a class="compact ui tiny icon button" href="/pages/event-payment/?ref=ins-{{ a.ticket.id }}&forum={{ event.id }}">
-                                    URL Paiement
-                                </a>
+                                <span class="ui red label"
+                                      data-tooltip="Cette personne n'aura pas de cotisation à jour pendant l'évènement (nécessaire pour ce tarif)."
+                                      data-position="left center">
+                                    À expirée le {{ a.lastSubscription|date('d/m/Y') }}
+                                </span>
                             {% elseif a.lastSubscription < event.dateEnd %}
-                                <span class="ui red label">Expiré le {{ a.lastSubscription|date('d/m/Y') }}</span>
-                                <a class="compact ui tiny icon button" href="/pages/event-payment/?ref=ins-{{ a.ticket.id }}&forum={{ event.id }}">
-                                    URL Paiement
-                                </a>
+                                <span class="ui red label"
+                                      data-tooltip="Cette personne n'a pas de cotisation à jour (nécessaire pour ce tarif)."
+                                      data-position="left center">
+                                    Expirée le {{ a.lastSubscription|date('d/m/Y') }}
+                                </span>
                             {% else %}
                                 <span class="ui green label">OK</span>
                             {% endif %}
