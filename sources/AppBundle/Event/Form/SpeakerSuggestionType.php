@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Form;
 
+use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaIsValid;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -64,6 +66,13 @@ class SpeakerSuggestionType extends AbstractType
                     ],
                 ],
             )
+            ->add('recaptcha', EWZRecaptchaType::class, [
+                'label' => 'Vérification',
+                'mapped' => false,
+                'constraints' => [
+                    new RecaptchaIsValid(),
+                ],
+            ])
             ->add('save', SubmitType::class, ['label' => 'Suggérer'])
         ;
     }

@@ -47,6 +47,10 @@
                 {% trans %}Dans le commentaire, vous pouvez nous indiquer pourquoi vous souhaiteriez voir ce/cette conférencier(ère), ainsi que d'éventuels moyens pour le/la contacter ou des liens vers des slides/conférences précédements données.{% endtrans %}
             </div>
 
+            <div>
+                {{ form_widget(form.recaptcha) }}
+            </div>
+
             <div class="txtcenter">
                 {{ form_widget(form.save) }}
             </div>
