@@ -29,7 +29,7 @@ class PrepareFormType extends AbstractType
                 'attr' => [
                     'rows' => 5,
                     'cols' => 50,
-                    'class' => 'simplemde',
+                    'class' => 'easymde',
                 ],
             ])
             ->add('submit', SubmitType::class, [
