@@ -22,18 +22,4 @@ enum ArticleTheme: int
             self::AfupSoutien => "L'AFUP soutient",
         };
     }
-
-    /**
-     * @return array<string, int>
-     */
-    public static function asChoicesMap(): array
-    {
-        $map = [];
-
-        foreach (self::cases() as $case) {
-            $map[$case->label()] = $case->value;
-        }
-
-        return $map;
-    }
 }

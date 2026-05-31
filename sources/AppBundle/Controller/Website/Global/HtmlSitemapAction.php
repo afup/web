@@ -8,7 +8,7 @@ use Afup\Site\Corporate\Feuille;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
-use AppBundle\Site\Model\Repository\ArticleRepository;
+use AppBundle\Site\Entity\Repository\ArticleRepository;
 use AppBundle\Site\Entity\Repository\FeuilleRepository;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -75,7 +75,7 @@ final class HtmlSitemapAction extends AbstractController
     private function news(): array
     {
         $news = [];
-        $newsList = $this->articleRepository->findAllPublishedNews();
+        $newsList = $this->articleRepository->findAllPublishedArticles();
         foreach ($newsList as $newsItem) {
             $url = $this->generateUrl('news_display', [
                 'code' => $newsItem->getSlug(),

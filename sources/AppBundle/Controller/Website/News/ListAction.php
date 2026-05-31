@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\News;
 
 use AppBundle\Site\Form\NewsFiltersType;
-use AppBundle\Site\Model\Repository\ArticleRepository;
+use AppBundle\Site\Entity\Repository\ArticleRepository;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,8 +32,8 @@ final class ListAction extends AbstractController
 
         return $this->view->render('site/news/list.html.twig', [
             'filters' => $filters,
-            'articles' => $this->articleRepository->findPublishedNews($page, self::ARTICLES_PER_PAGE, $filters),
-            'total_items' => $this->articleRepository->countPublishedNews($filters),
+            'articles' => $this->articleRepository->findPublishedArticles($page, self::ARTICLES_PER_PAGE, $filters),
+            'total_items' => $this->articleRepository->countPublishedArticles($filters),
             'current_page' => $page,
             'articles_per_page' => self::ARTICLES_PER_PAGE,
             'form' => $form->createView(),

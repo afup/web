@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website;
 
-use AppBundle\Site\Model\Article;
-use AppBundle\Site\Model\Repository\ArticleRepository;
+use AppBundle\Site\Entity\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,15 +14,14 @@ class RssFeedController extends AbstractController
 
     public function __invoke(): Response
     {
-        $articles = $this->articleRepository->findPublishedNews(1, 20, []);
+        $articles = $this->articleRepository->findPublishedArticles(1, 20, []);
         $derniersArticles = [];
         foreach ($articles as $article) {
-            /** @var Article $article */
             $derniersArticles[] = [
-                'titre'   => $article->getTitle(),
-                'contenu' => $article->getFormatedContent(),
+                'titre'   => $article->titre,
+                'contenu' => $article->getContenuFormate(),
                 'url'     => $article->getSlug(),
-                'maj'     => $article->getPublishedAt()->format(DATE_RSS),
+                'maj'     => $article->datePublication->format(DATE_RSS),
             ];
         }
         $datas = [
