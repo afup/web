@@ -33,9 +33,6 @@ if (!defined('AFUP_CHEMIN_RACINE')) {
 }
 date_default_timezone_set('Europe/Paris');
 
-// préparation de la requête / session
-require_once __DIR__ . '/../fonctions.php';
-
 // chargement de la configuration
 $conf = new Configuration();
 
