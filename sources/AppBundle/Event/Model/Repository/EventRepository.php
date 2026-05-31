@@ -32,7 +32,7 @@ class EventRepository extends Repository implements MetadataInitializer
     public function getNextEvent()
     {
         $events = $this->getNextEvents();
-        if ($events->count() === 0) {
+        if ($events === null || $events->count() === 0) {
             return null;
         }
         return $events->first();
@@ -78,7 +78,7 @@ class EventRepository extends Repository implements MetadataInitializer
     public function getLastEvent()
     {
         $query = $this
-            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_fin_appel_conferencier, date_fin_vente FROM afup_forum ORDER BY date_debut DESC, id DESC')
+            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_debut_appel_conferencier, date_fin_appel_conferencier, date_fin_vente, nb_places FROM afup_forum ORDER BY date_debut DESC, id DESC')
         ;
 
         return $query->query($this->getCollection(new HydratorSingleObject()))->first();
@@ -87,7 +87,7 @@ class EventRepository extends Repository implements MetadataInitializer
     public function getMostRecentEvent(): ?Event
     {
         $query = $this
-            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_fin_appel_conferencier, date_fin_vente FROM afup_forum ORDER BY date_debut DESC')
+            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_debut_appel_conferencier, date_fin_appel_conferencier, date_fin_vente, nb_places FROM afup_forum ORDER BY date_debut DESC')
         ;
 
         return $query->query($this->getCollection(new HydratorSingleObject()))->first();
