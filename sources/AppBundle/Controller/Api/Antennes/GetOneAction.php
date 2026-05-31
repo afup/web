@@ -40,6 +40,9 @@ final readonly class GetOneAction
                 'meetup' => $this->createLink('https://www.meetup.com/fr-FR/', $antenne->meetup->urlName),
                 'linkedin' => $this->createLink('https://www.linkedin.com/company/', $antenne->socials->linkedin),
                 'bluesky' => $this->createLink('https://bsky.app/profile/', $antenne->socials->bluesky),
+                'cfp' => $antenne->socials->cfp,
+                'github' => $this->createLink('https://github.com/', $antenne->socials->github),
+                'discord' => $this->createLink('https://discord.com/invite/', $antenne->socials->discord),
             ],
         ];
 
