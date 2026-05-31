@@ -14,7 +14,7 @@ Feature: Administration - Partie Antennes
     And the "tr[data-qa='antenne-lyon']" element should contain "youtube.com"
     And the "tr[data-qa='antenne-luxembourg']" element should contain "twitter.com"
 
-    And the "tr[data-qa='antenne-nantes']" element should not contain "youtube.com"
+    And the "tr[data-qa='antenne-nantes']" element should contain "youtube.com"
 
     And the "tr[data-qa='antenne-montpellier']" element should contain "Active"
     And the "tr[data-qa='antenne-clermont']" element should contain "Inactive"
