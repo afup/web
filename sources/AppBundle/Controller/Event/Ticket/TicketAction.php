@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Event\Ticket;
 
-use Afup\Site\Forum\Facturation;
 use Afup\Site\Utils\Vat;
+use AppBundle\Event\Invoice\EventInvoiceReferenceGenerator;
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\User;
 use AppBundle\Controller\Event\EventActionHelper;
@@ -28,7 +28,7 @@ final class TicketAction extends AbstractController
         private readonly TicketRepository $ticketRepository,
         private readonly EventActionHelper $eventActionHelper,
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
-        private readonly Facturation $facturation,
+        private readonly EventInvoiceReferenceGenerator $referenceGenerator,
         private readonly Authentication $authentication,
     ) {}
 
@@ -84,7 +84,7 @@ final class TicketAction extends AbstractController
 
             $invoice->setTickets($tickets);
 
-            $reference = $this->facturation->creerReference($event->getId(), $invoice->getLabel());
+            $reference = $this->referenceGenerator->generate($event->getId(), $invoice->getLabel());
             $invoice->setReference($reference);
             $invoiceRepository->saveWithTickets($invoice);
 
