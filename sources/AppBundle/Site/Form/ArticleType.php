@@ -43,7 +43,7 @@ class ArticleType extends AbstractType
 
         /** @var \AppBundle\Site\Model\Article|null $article */
         $article = $builder->getData();
-        $textareaCssClass = 'simplemde';
+        $textareaCssClass = 'easymde';
 
 
         $builder

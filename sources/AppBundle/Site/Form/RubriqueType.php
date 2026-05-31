@@ -67,7 +67,7 @@ class RubriqueType extends AbstractType
                     'maxlength' => 255,
                     'cols' => 42,
                     'rows' => 10,
-                    'class' => 'simplemde',
+                    'class' => 'easymde',
                 ],
                 'constraints' => [
                     new Assert\Length(max: 255),
@@ -80,7 +80,7 @@ class RubriqueType extends AbstractType
                 'attr' => [
                     'cols' => 42,
                     'rows' => 20,
-                    'class' => 'simplemde',
+                    'class' => 'easymde',
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),

@@ -15,42 +15,42 @@ class EventCFPTextType extends AbstractType
         $builder
             ->add('fr', TextareaType::class, [
                 'label' => 'CFP (fr)',
-                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'simplemde'],
+                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'easymde'],
                 'required' => false,
             ])
             ->add('en', TextareaType::class, [
                 'label' => 'CFP (en)',
-                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'simplemde'],
+                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'easymde'],
                 'required' => false,
             ])
             ->add('speaker_management_fr', TextareaType::class, [
                 'label' => 'Infos speakers (fr)',
-                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'simplemde'],
+                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'easymde'],
                 'required' => false,
             ])
             ->add('speaker_management_en', TextareaType::class, [
                 'label' => 'Infos speakers (en)',
-                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'simplemde'],
+                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'easymde'],
                 'required' => false,
             ])
             ->add('sponsor_management_fr', TextareaType::class, [
                 'label' => 'Infos sponsors (fr)',
-                'attr' => ['rows' => 5,'cols' => 50, 'class' => 'simplemde'],
+                'attr' => ['rows' => 5,'cols' => 50, 'class' => 'easymde'],
                 'required' => false,
             ])
             ->add('sponsor_management_en', TextareaType::class, [
                 'label' => 'Infos sponsors (en)',
-                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'simplemde'],
+                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'easymde'],
                 'required' => false,
             ])
             ->add('mail_inscription_content', TextareaType::class, [
                 'label' => 'Contenu mail inscription',
-                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'simplemde'],
+                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'easymde'],
                 'required' => false,
             ])
             ->add('become_sponsor_description', TextareaType::class, [
                 'label' => 'Contenu page devenir sponsor',
-                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'simplemde'],
+                'attr' => ['rows' => 5, 'cols' => 50, 'class' => 'easymde'],
                 'required' => false,
             ]);
     }

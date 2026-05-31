@@ -28,9 +28,9 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-		var simplemde = new SimpleMDE({
+		var easymde = new EasyMDE({
 			spellChecker: false,
-			hideIcons: ['side-by-side', 'fullscreen']
+			hideIcons: ['side-by-side', 'fullscreen', 'check-list']
 		});
     </script>
 {% endblock %}

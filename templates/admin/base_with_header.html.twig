@@ -172,8 +172,8 @@
             <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
                 <script src="{{ asset('vendor/semantic-ui/dist/semantic.min.js') }}"></script>
 
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-            <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde@2.21.0/dist/easymde.min.css">
+            <script src="https://cdn.jsdelivr.net/npm/easymde@2.21.0/dist/easymde.min.js"></script>
 
                 <script type="text/javascript" src="/javascript/dropzone/dropzone.min.js"></script>
 
@@ -201,12 +201,12 @@
                     });
                 });
 
-                var simpleMdeList = document.getElementsByClassName('simplemde');
-                for (var i = 0; i < simpleMdeList.length; i++) {
-                    var simplemde = new SimpleMDE({
-                        element:simpleMdeList[i],
+                var easyMdeList = document.getElementsByClassName('easymde');
+                for (var i = 0; i < easyMdeList.length; i++) {
+                    var easymde = new EasyMDE({
+                        element:easyMdeList[i],
                         spellChecker: false,
-                        hideIcons: ['side-by-side', 'fullscreen']
+                        hideIcons: ['side-by-side', 'fullscreen', 'check-list']
                     });
                 }
 
