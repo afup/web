@@ -48,7 +48,7 @@ final readonly class JsonLd
                 ];
 
                 if (count($socialUrls) > 0) {
-                    $person['sameAs'] = array_values($socialUrls);
+                    $person['sameAs'] = $socialUrls;
                 }
 
                 $performers[] = $person;
