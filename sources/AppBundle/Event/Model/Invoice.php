@@ -24,7 +24,7 @@ class Invoice implements NotifyPropertyInterface
     private ?\DateTime $invoiceDate = null;
 
     /**
-     * @var int
+     * @var float
      */
     private $amount;
 
@@ -163,7 +163,7 @@ class Invoice implements NotifyPropertyInterface
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getAmount()
     {
@@ -171,7 +171,7 @@ class Invoice implements NotifyPropertyInterface
     }
 
     /**
-     * @param int $amount
+     * @param float $amount
      */
     public function setAmount($amount): self
     {

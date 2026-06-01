@@ -88,7 +88,7 @@ class Ticket implements NotifyPropertyInterface
     private ?TicketEventType $ticketEventType = null;
 
     /**
-     * @var int
+     * @var float
      */
     private $amount;
 
@@ -308,7 +308,7 @@ class Ticket implements NotifyPropertyInterface
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getAmount()
     {
@@ -316,7 +316,7 @@ class Ticket implements NotifyPropertyInterface
     }
 
     /**
-     * @param int $amount
+     * @param float $amount
      */
     public function setAmount($amount): self
     {
