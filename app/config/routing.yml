@@ -1,6 +1,3 @@
-legacy:
-    resource: "routing/legacy.yml"
-
 event:
     resource: "routing/event.yml"
     prefix:   /event
