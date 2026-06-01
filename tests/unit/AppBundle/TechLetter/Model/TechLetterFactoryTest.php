@@ -27,7 +27,7 @@ class TechLetterFactoryTest extends TestCase
             self::assertIsString($json);
         }
 
-        $actualTechLetter = (new TechLetterFactory(new MapperBuilder()))->createTechLetterFromJson($json);
+        $actualTechLetter = new TechLetterFactory(new MapperBuilder())->createTechLetterFromJson($json);
 
         self::assertEquals($expectedTechLetter, $actualTechLetter);
     }

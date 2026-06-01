@@ -15,6 +15,7 @@ class AssetsExtension extends AbstractExtension
         private readonly string $kernelProjectDir,
     ) {}
 
+    #[\Override]
     public function getFunctions(): array
     {
         return [

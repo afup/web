@@ -12,11 +12,11 @@ class Rubrique implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    public const ID_RUBRIQUE_ACTUALITES = 9;
-    public const ID_RUBRIQUE_ASSOCIATION = 85;
-    public const ID_RUBRIQUE_ANTENNES = 84;
-    public const ID_RUBRIQUE_INFORMATIONS_PRATIQUES = 86;
-    public const ID_RUBRIQUE_NOS_ACTIONS = 88;
+    public const int ID_RUBRIQUE_ACTUALITES = 9;
+    public const int ID_RUBRIQUE_ASSOCIATION = 85;
+    public const int ID_RUBRIQUE_ANTENNES = 84;
+    public const int ID_RUBRIQUE_INFORMATIONS_PRATIQUES = 86;
+    public const int ID_RUBRIQUE_NOS_ACTIONS = 88;
 
     #[Assert\Type('integer')]
     private $id;
@@ -173,7 +173,7 @@ class Rubrique implements NotifyPropertyInterface
 
     public function setPagination($pagination = 0): void
     {
-        $pagination = is_null($pagination) ? 0 : $pagination;
+        $pagination ??= 0;
         $this->propertyChanged('pagination', $this->pagination, $pagination);
         $this->pagination = $pagination;
     }

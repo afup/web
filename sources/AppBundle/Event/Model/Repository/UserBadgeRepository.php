@@ -35,7 +35,7 @@ class UserBadgeRepository extends Repository implements MetadataInitializer
 
     private function getHydratorForUserBadge()
     {
-        return (new HydratorSingleObject())
+        return new HydratorSingleObject()
             ->mapObjectTo('afup_badge', 'afup_personnes_physiques_badge', 'setBadge')
         ;
     }

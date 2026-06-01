@@ -15,7 +15,7 @@ class Ticket implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    public const TRANSPORT_MODES = [
+    public const array TRANSPORT_MODES = [
         AFUP_TRANSPORT_MODE_SEUL_THERMIQUE => 'Voiture seul·e',
         AFUP_TRANSPORT_MODE_SEUL_ELECTRIQUE => 'Voiture seul·e électrique',
         AFUP_TRANSPORT_MODE_SEUL_HYBRIDE => 'Voiture seul·e hybride',
@@ -29,7 +29,7 @@ class Ticket implements NotifyPropertyInterface
         AFUP_TRANSPORT_MODE_COMMUN => 'Transports en commun',
     ];
 
-    public const TRANSPORT_DISTANCES = [
+    public const array TRANSPORT_DISTANCES = [
         AFUP_TRANSPORT_DISTANCE_0 => '< 25 km',
         AFUP_TRANSPORT_DISTANCE_25_50 => 'entre 25 et 50 km',
         AFUP_TRANSPORT_DISTANCE_50_100 => 'entre 50 et 100 km',
@@ -38,33 +38,33 @@ class Ticket implements NotifyPropertyInterface
         AFUP_TRANSPORT_DISTANCE_1000 => '> 1000 km',
     ];
 
-    public const STATUS_CREATED = 0;
-    public const STATUS_CANCELLED = 1;
-    public const STATUS_ERROR = 2;
-    public const STATUS_DECLINED = 3;
-    public const STATUS_PAID = 4;
-    public const STATUS_GUEST = 5;
-    public const STATUS_WAITING = 6;
-    public const STATUS_CONFIRMED = 7;
-    public const STATUS_PAID_AFTER = 8;
+    public const int STATUS_CREATED = 0;
+    public const int STATUS_CANCELLED = 1;
+    public const int STATUS_ERROR = 2;
+    public const int STATUS_DECLINED = 3;
+    public const int STATUS_PAID = 4;
+    public const int STATUS_GUEST = 5;
+    public const int STATUS_WAITING = 6;
+    public const int STATUS_CONFIRMED = 7;
+    public const int STATUS_PAID_AFTER = 8;
 
-    public const INVOICE_TODO = 0;
-    public const INVOICE_SENT = 1;
-    public const INVOICE_RECEIVED = 2;
+    public const int INVOICE_TODO = 0;
+    public const int INVOICE_SENT = 1;
+    public const int INVOICE_RECEIVED = 2;
 
-    public const TYPE_ORGANIZATION = 9;
-    public const TYPE_SPONSOR = 10;
-    public const TYPE_PRESS = 11;
-    public const TYPE_SPEAKER = 12;
-    public const TYPE_SPECIAL_PRICE = 108;
+    public const int TYPE_ORGANIZATION = 9;
+    public const int TYPE_SPONSOR = 10;
+    public const int TYPE_PRESS = 11;
+    public const int TYPE_SPEAKER = 12;
+    public const int TYPE_SPECIAL_PRICE = 108;
 
-    public const PAYMENT_CREDIT_CARD = 0;
-    public const PAYMENT_CHEQUE = 1;
-    public const PAYMENT_BANKWIRE = 2;
-    public const PAYMENT_NONE = 3;
+    public const int PAYMENT_CREDIT_CARD = 0;
+    public const int PAYMENT_CHEQUE = 1;
+    public const int PAYMENT_BANKWIRE = 2;
+    public const int PAYMENT_NONE = 3;
 
-    public const DAY_ONE = 'one';
-    public const DAY_TWO = 'two';
+    public const string DAY_ONE = 'one';
+    public const string DAY_TWO = 'two';
 
     private ?int $id = null;
 

@@ -10,13 +10,14 @@ use Doctrine\DBAL\Types\Type;
 
 class UnixTimestampType extends Type
 {
-    public const NAME = 'unix_timestamp';
+    public const string NAME = 'unix_timestamp';
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getIntegerTypeDeclarationSQL($column);
     }
 
+    #[\Override]
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?\DateTime
     {
         if ($value === null) {
@@ -29,6 +30,7 @@ class UnixTimestampType extends Type
         return $date;
     }
 
+    #[\Override]
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?int
     {
         if ($value === null) {

@@ -193,7 +193,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         // C'est un peu barbare mais généralement on ne met qu'un seul terme dans la recherche… du coup c'est pas bien grave.
         if ($filter) {
             $filters = explode(' ', (string) $filter);
-            $filters = array_filter(array_map('trim', $filters));
+            $filters = array_filter(array_map(trim(...), $filters));
             $ors = [];
             foreach ($filters as $i => $value) {
                 $ors[] = "LOWER(app.login) LIKE LOWER(:filter$i) OR LOWER(app.nom) LIKE LOWER(:filter$i) OR LOWER(app.prenom) LIKE LOWER(:filter$i)
@@ -401,7 +401,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
 
     private function getHydratorForUser()
     {
-        return (new HydratorSingleObject())
+        return new HydratorSingleObject()
             ->mapAliasTo('lastsubcription', 'app', 'setLastSubscription')
             ->mapAliasTo('hash', 'app', 'setHash')
             ->mapObjectTo('apm', 'app', 'setCompany')

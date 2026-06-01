@@ -50,7 +50,7 @@ final class FlashAction extends SponsorScanController
         }
 
         if (!$scan instanceof SponsorScan) {
-            $scan = (new SponsorScan())
+            $scan = new SponsorScan()
                 ->setSponsorTicketId($sponsorTicket->getId())
                 ->setTicketId($ticket->getId());
         }

@@ -20,7 +20,7 @@ class FeedFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $users = [null => null];
+        $users = ['' => null];
         foreach ($this->userRepository->search() as $user) {
             $users[$user->getLastName() . ' ' . $user->getFirstName()] = $user->getId();
         }

@@ -9,14 +9,14 @@ use AppBundle\Model\ComptaCompte;
 
 class CreditMutuel implements Importer
 {
-    public const CODE = 'CMUT';
+    public const string CODE = 'CMUT';
 
     private ?\SplFileObject $file = null;
 
     public function initialize(string $filePath): void
     {
         $this->file = new \SplFileObject($filePath, 'r');
-        $this->file->setCsvControl(';');
+        $this->file->setCsvControl(';', escape: '\\');
         $this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::SKIP_EMPTY);
     }
 

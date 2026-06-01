@@ -23,7 +23,7 @@ final readonly class AntenneListAction
 
         uasort(
             $antennes,
-            fn(Antenne $a, Antenne $b) => strcmp($a->label, $b->label),
+            fn(Antenne $a, Antenne $b): int => strcmp($a->label, $b->label),
         );
 
         return new Response($this->twig->render('admin/antennes/list.html.twig', [

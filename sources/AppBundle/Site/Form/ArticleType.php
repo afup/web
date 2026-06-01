@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Site\Form;
 
+use AppBundle\Site\Model\Article;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Site\Enum\ArticleTheme;
 use AppBundle\Site\Entity\Repository\RubriqueRepository;
@@ -18,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ArticleType extends AbstractType
 {
-    public const POSITIONS_RUBRIQUES = 9;
+    public const int POSITIONS_RUBRIQUES = 9;
 
     public function __construct(
         private readonly RubriqueRepository $rubriqueRepository,
@@ -41,7 +42,7 @@ class ArticleType extends AbstractType
             $events[$event->getTitle()] = $event->getId();
         }
 
-        /** @var \AppBundle\Site\Model\Article|null $article */
+        /** @var Article|null $article */
         $article = $builder->getData();
         $textareaCssClass = 'easymde';
 

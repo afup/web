@@ -13,6 +13,7 @@ class CorporateMember extends Constraint
     public string $messageFeeOutOfDate = 'You must have paid your membership fee to order this ticket.';
     public string $messageTooMuchRestrictedTickets = 'You cannot order as many tickets at the discounted rate.';
 
+    #[\Override]
     public function getTargets(): string
     {
         return self::PROPERTY_CONSTRAINT;

@@ -22,7 +22,7 @@ final readonly class SymfonyMailerAdapter implements MailerAdapter
             throw new UnexpectedValueException('Trying to send a mail with no sender');
         }
 
-        $email = (new Email())
+        $email = new Email()
             ->from(new Address($from->getEmail(), $from->getName()))
             ->subject($message->getSubject());
 

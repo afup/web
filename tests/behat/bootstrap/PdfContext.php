@@ -41,9 +41,13 @@ trait PdfContext
     #[Then('The page :page of the PDF should contain :content')]
     public function thePageOfThePdfShouldContain(string $page, string $expectedContent): void
     {
-        $pageContent = $this->pdfPages[$page] ?? null;
+        $pageContent = $this->pdfPages[$page] ?? '';
 
-        if (!str_contains((string) $pageContent, $expectedContent)) {
+        $search  = ["\\t", "\\n", "\\r"];
+        $replace = [ "\t",  "\n",  "\r"];
+        $expectedContent =  str_replace($search, $replace, $expectedContent);
+
+        if (!str_contains($pageContent, $expectedContent)) {
             throw new ExpectationException(
                 sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent),
                 $this->minkContext->getSession()->getDriver(),
@@ -63,11 +67,17 @@ trait PdfContext
 
         $pageContent = $this->pdfPages[$page];
 
-        if (str_contains($pageContent, $expectedContent)) {
+        if (str_contains((string) $pageContent, $expectedContent)) {
             throw new ExpectationException(
                 sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent),
                 $this->minkContext->getSession()->getDriver(),
             );
         }
+    }
+
+    #[Then('print the page :page of the PDF')]
+    public function thePrint(string $page): void
+    {
+        echo $this->pdfPages[$page] ?? null;
     }
 }

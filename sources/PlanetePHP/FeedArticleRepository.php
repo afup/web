@@ -10,9 +10,9 @@ use Webmozart\Assert\Assert;
 
 class FeedArticleRepository
 {
-    public const RELEVANT = 1;
-    public const IRRELEVANT = 0;
-    public const PERTINENCE_LIST = 'php|afup|pear|pecl|symfony|copix|jelix|wampserver|simpletest|simplexml|zend|pmo|drupal|ovidentia|mvc|magento|chrome|spip|PDO|mock|cake|hiphop|CMS|Framework|typo3|photon|pattern';
+    public const int RELEVANT = 1;
+    public const int IRRELEVANT = 0;
+    public const string PERTINENCE_LIST = 'php|afup|pear|pecl|symfony|copix|jelix|wampserver|simpletest|simplexml|zend|pmo|drupal|ovidentia|mvc|magento|chrome|spip|PDO|mock|cake|hiphop|CMS|Framework|typo3|photon|pattern';
     private readonly string $pertinenceRegex;
 
     public function __construct(private readonly Connection $connection)
@@ -136,8 +136,8 @@ class FeedArticleRepository
 
     private function insert(FeedArticle $billet)
     {
-        $statement = $this->connection->prepare('INSERT INTO afup_planete_billet 
-            (afup_planete_flux_id, clef, titre, url, maj, auteur, resume, contenu, etat) 
+        $statement = $this->connection->prepare('INSERT INTO afup_planete_billet
+            (afup_planete_flux_id, clef, titre, url, maj, auteur, resume, contenu, etat)
             VALUES (:feedId, :key, :title, :url, :update, :author, :summary, :content, :status)');
 
         $statement->bindValue('feedId', $billet->feedId);

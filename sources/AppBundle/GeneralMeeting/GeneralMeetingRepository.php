@@ -318,7 +318,7 @@ SQL
         $query->bindValue('date', $date->getTimestamp());
         $query->bindValue('presence', $presence);
         $query->bindValue('powerId', $powerId);
-        $query->bindValue('modificationDate', (new DateTimeImmutable())->getTimestamp());
+        $query->bindValue('modificationDate', new DateTimeImmutable()->getTimestamp());
 
         return $query->executeStatement() > 0;
     }
@@ -346,7 +346,7 @@ SQL
         $query->bindValue('date', $date->getTimestamp());
         $query->bindValue('presence', $presence);
         $query->bindValue('powerId', $powerId);
-        $query->bindValue('modificationDate', (new DateTimeImmutable())->getTimestamp());
+        $query->bindValue('modificationDate', new DateTimeImmutable()->getTimestamp());
 
         return $query->executeStatement() > 0;
     }

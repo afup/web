@@ -6,7 +6,7 @@ namespace AppBundle\Model;
 
 class ComptaCompte
 {
-    public const COURANT_CE = 1;
-    public const COURANT_CMUT = 5;
-    public const LIVRET_CMUT = 6;
+    public const int COURANT_CE = 1;
+    public const int COURANT_CMUT = 5;
+    public const int LIVRET_CMUT = 6;
 }

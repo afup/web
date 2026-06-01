@@ -17,7 +17,7 @@ class CsvExtractor
         private readonly TransactionRepository $transactionRepository,
     ) {}
 
-    public function extract(Importer $importer)
+    public function extract(Importer $importer): bool
     {
         if (!$importer->validate()) {
             return false;

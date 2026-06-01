@@ -11,9 +11,9 @@ class GeneralMeetingVote implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    public const VALUE_YES = 'oui';
-    public const VALUE_NO = 'non';
-    public const VALUE_ABSTENTION = 'abstention';
+    public const string VALUE_YES = 'oui';
+    public const string VALUE_NO = 'non';
+    public const string VALUE_ABSTENTION = 'abstention';
 
     /**
      * @var int

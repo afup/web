@@ -17,8 +17,8 @@ use Webmozart\Assert\Assert;
 
 class SpeakerListAction
 {
-    public const VALID_SORTS = ['name', 'company'];
-    public const VALID_DIRECTIONS = ['asc', 'desc'];
+    public const array VALID_SORTS = ['name', 'company'];
+    public const array VALID_DIRECTIONS = ['asc', 'desc'];
 
     public function __construct(
         private readonly EventRepository $eventRepository,

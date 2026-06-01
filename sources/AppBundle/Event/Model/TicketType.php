@@ -11,8 +11,8 @@ class TicketType implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    public const SPECIAL_PRICE_TECHNICAL_NAME = 'SPECIAL_PRICE';
-    public const EARLY_BIRD_TECHNICAL_NAME = ['EARLY_BIRD', 'EARLY_BIRD_AFUP', 'AFUP_DAY_EARLY'];
+    public const string SPECIAL_PRICE_TECHNICAL_NAME = 'SPECIAL_PRICE';
+    public const array EARLY_BIRD_TECHNICAL_NAME = ['EARLY_BIRD', 'EARLY_BIRD_AFUP', 'AFUP_DAY_EARLY'];
 
     /**
      * @var int

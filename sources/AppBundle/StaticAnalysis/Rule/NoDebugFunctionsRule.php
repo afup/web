@@ -18,7 +18,7 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final class NoDebugFunctionsRule implements Rule
 {
-    private const FORBIDDEN_FUNCTIONS = ['var_dump', 'dump', 'dd', 'print_r'];
+    private const array FORBIDDEN_FUNCTIONS = ['var_dump', 'dump', 'dd', 'print_r'];
 
     public function getNodeType(): string
     {

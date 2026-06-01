@@ -19,7 +19,7 @@ use Webmozart\Assert\Assert;
 
 class SpeakerEditAction extends AbstractController
 {
-    public const ID_FORUM_PHOTO_STORAGE = 16;
+    public const int ID_FORUM_PHOTO_STORAGE = 16;
 
     public function __construct(
         private readonly SpeakerRepository $speakerRepository,

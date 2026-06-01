@@ -54,7 +54,7 @@ final readonly class GetOneAction
         $allMeetups = $this->meetupRepository->findAllForAntenne($antenne);
 
         $response['meetups'] = array_map(
-            fn(Meetup $meetup) => $this->transformMeetup($antenne, $meetup),
+            fn(Meetup $meetup): array => $this->transformMeetup($antenne, $meetup),
             iterator_to_array($allMeetups->getIterator()),
         );
 

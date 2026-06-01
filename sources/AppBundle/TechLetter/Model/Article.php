@@ -6,7 +6,7 @@ namespace AppBundle\TechLetter\Model;
 
 class Article implements \JsonSerializable
 {
-    private const DEFAULT_LANGUAGE = 'en';
+    private const string DEFAULT_LANGUAGE = 'en';
     private readonly string $language;
 
     public function __construct(

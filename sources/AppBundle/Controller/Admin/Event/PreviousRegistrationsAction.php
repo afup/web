@@ -23,7 +23,7 @@ class PreviousRegistrationsAction
         $file = new SplFileObject(sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('inscrits_', true), 'w+');
         $events = $this->eventRepository->getPreviousEvents($request->query->getInt('event_count', 4));
         foreach ($this->ticketRepository->getRegistrationsForEventsWithNewsletterAllowed($events) as $registration) {
-            $file->fputcsv($registration);
+            $file->fputcsv($registration, escape: '\\');
         }
 
         $response = new BinaryFileResponse($file, BinaryFileResponse::HTTP_OK, ['Content-Type' => 'text/csv; charset=utf-8']);

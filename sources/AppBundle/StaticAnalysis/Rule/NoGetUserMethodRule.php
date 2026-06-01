@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\StaticAnalysis\Rule;
 
+use PhpParser\Node\Identifier;
 use AppBundle\Security\Authentication;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
@@ -32,7 +33,7 @@ final readonly class NoGetUserMethodRule implements Rule
 
     public function processNode(Node $node, Scope $scope): array
     {
-        if (!$node->name instanceof Node\Identifier) {
+        if (!$node->name instanceof Identifier) {
             return [];
         }
 

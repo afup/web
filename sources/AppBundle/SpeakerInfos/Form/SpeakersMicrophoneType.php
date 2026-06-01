@@ -21,7 +21,7 @@ class SpeakersMicrophoneType extends AbstractType
                 'label'                     => 'speaker_infos.microphone.label',
                 'expanded'                  => true,
                 'placeholder'               => 'speaker_infos.microphone.placeholder',
-                'choice_label'              => fn(MicrophoneType $type) => match ($type) {
+                'choice_label'              => fn(MicrophoneType $type): string => match ($type) {
                     MicrophoneType::Headset  => 'speaker_infos.microphone.choice.headset',
                     MicrophoneType::Handheld => 'speaker_infos.microphone.choice.handheld',
                 },

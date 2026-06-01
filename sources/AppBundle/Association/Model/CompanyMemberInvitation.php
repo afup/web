@@ -12,9 +12,9 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    public const STATUS_PENDING = 0;
-    public const STATUS_ACCEPTED = 1;
-    public const STATUS_CANCELLED = 2;
+    public const int STATUS_PENDING = 0;
+    public const int STATUS_ACCEPTED = 1;
+    public const int STATUS_CANCELLED = 2;
 
     private int $id;
 

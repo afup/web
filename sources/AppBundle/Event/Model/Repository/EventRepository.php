@@ -25,11 +25,9 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 class EventRepository extends Repository implements MetadataInitializer
 {
     /**
-     * @deprecated TODO: à remplacer par getNextEvents de partout
-     *
      * @return Event|null
      */
-    public function getNextEvent()
+    public function getNextEvent(): ?Event
     {
         $events = $this->getNextEvents();
         if ($events === null || $events->count() === 0) {
@@ -41,7 +39,7 @@ class EventRepository extends Repository implements MetadataInitializer
     /**
      * @return CollectionInterface<Event>|null
      */
-    public function getNextEvents()
+    public function getNextEvents(): ?CollectionInterface
     {
         $query = $this
             ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_debut_appel_conferencier, date_fin_appel_conferencier, date_fin_vente, nb_places FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut')
@@ -145,7 +143,7 @@ ENDSQL;
         $data = [];
 
         foreach ($results as $result) {
-            $result['est_supprimable'] = !array_key_exists($result['id'], $sessions) && !array_key_exists($result['id'], $inscriptions);
+            $result['est_supprimable'] = !array_key_exists((string) $result['id'], $sessions) && !array_key_exists((string) $result['id'], $inscriptions);
 
             $data[] = $result;
         }

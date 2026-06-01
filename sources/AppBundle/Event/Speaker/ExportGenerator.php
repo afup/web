@@ -36,7 +36,7 @@ class ExportGenerator
             'commentaire',
         ];
 
-        $toFile->fputcsv($columns);
+        $toFile->fputcsv($columns, escape: '\\');
 
         foreach ($this->getFromRegistrationsOnEvent($event) as $row) {
             $preparedRow = [];
@@ -46,7 +46,7 @@ class ExportGenerator
                 }
                 $preparedRow[] = $row[$column];
             }
-            $toFile->fputcsv($preparedRow);
+            $toFile->fputcsv($preparedRow, escape: '\\');
         }
     }
 

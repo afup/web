@@ -86,7 +86,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
         // C'est un peu barbare mais généralement on ne met qu'un seul terme dans la recherche… du coup c'est pas bien grave.
         if ($filter) {
             $filters = explode(' ', $filter);
-            $filters = array_filter(array_map('trim', $filters));
+            $filters = array_filter(array_map(trim(...), $filters));
             $ors = [];
             foreach ($filters as $i => $value) {
                 $ors[] = "LOWER(apm.raison_sociale) LIKE LOWER(:filter$i) OR apm.ville LIKE :filter$i";
@@ -163,7 +163,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
 
     private function getHydratorForCompanyMember()
     {
-        return (new HydratorSingleObject())
+        return new HydratorSingleObject()
             ->mapAliasTo('lastsubcription', 'apm', 'setLastSubscription');
     }
 

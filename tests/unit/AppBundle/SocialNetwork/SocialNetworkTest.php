@@ -25,25 +25,25 @@ class SocialNetworkTest extends TestCase
     {
         yield 'bluesky without @ prefix' => [
             SocialNetwork::Bluesky,
-            (new Speaker())->setBluesky('foo.bar'),
+            new Speaker()->setBluesky('foo.bar'),
             '@foo.bar',
         ];
 
         yield 'bluesky with @ prefix' => [
             SocialNetwork::Bluesky,
-            (new Speaker())->setBluesky('@foo.bar'),
+            new Speaker()->setBluesky('@foo.bar'),
             '@foo.bar',
         ];
 
         yield 'mastodon without @ prefix' => [
             SocialNetwork::Mastodon,
-            (new Speaker())->setMastodon('foo.bar'),
+            new Speaker()->setMastodon('foo.bar'),
             '@foo.bar',
         ];
 
         yield 'mastodon with @ prefix' => [
             SocialNetwork::Mastodon,
-            (new Speaker())->setMastodon('@foo.bar'),
+            new Speaker()->setMastodon('@foo.bar'),
             '@foo.bar',
         ];
     }

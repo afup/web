@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Afup\Tests\Behat\Bootstrap;
 
+use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Step\Then;
 use Behat\Step\When;
@@ -31,7 +32,7 @@ trait WaitContext
         $timeoutMs = $timeout !== null ? (int) $timeout : self::DEFAULT_TIMEOUT_MS;
 
         $this->waitForCondition(
-            fn() => str_contains($this->minkContext->getSession()->getPage()->getText(), $text),
+            fn(): bool => str_contains($this->minkContext->getSession()->getPage()->getText(), $text),
             sprintf('Text "%s" did not appear within %dms', $text, $timeoutMs),
             $timeoutMs,
         );
@@ -48,7 +49,7 @@ trait WaitContext
         $timeoutMs = $timeout !== null ? (int) $timeout : self::DEFAULT_TIMEOUT_MS;
 
         $this->waitForCondition(
-            fn() => !str_contains($this->minkContext->getSession()->getPage()->getText(), $text),
+            fn(): bool => !str_contains($this->minkContext->getSession()->getPage()->getText(), $text),
             sprintf('Text "%s" did not disappear within %dms', $text, $timeoutMs),
             $timeoutMs,
         );
@@ -81,12 +82,12 @@ trait WaitContext
 
         $session = $this->minkContext->getSession();
 
-        if ($session->getDriver() instanceof \Behat\Mink\Driver\PantherDriver) {
+        if ($session->getDriver() instanceof PantherDriver) {
             $link->click();
 
             $timeoutMs = $timeout !== null ? (int) $timeout : self::DEFAULT_TIMEOUT_MS;
             $this->waitForCondition(
-                fn() => str_contains($session->getPage()->getContent(), $text),
+                fn(): bool => str_contains($session->getPage()->getContent(), $text),
                 sprintf(
                     'Text "%s" did not appear within %dms. Current URL: %s. Page excerpt: %s',
                     $text,
@@ -120,7 +121,7 @@ trait WaitContext
                 if ($condition()) {
                     return;
                 }
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // Ignore exceptions during polling (element might not exist yet)
             }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Journal;
 
+use AppBundle\Accounting\Model\Transaction;
 use AppBundle\Accounting\Form\TransactionType;
 use AppBundle\Accounting\Model\Repository\TransactionRepository;
 use AppBundle\AuditLog\Audit;
@@ -23,7 +24,7 @@ class EditTransactionAction extends AbstractController
     public function __invoke(Request $request, int $id): Response
     {
         $transaction = $this->transactionRepository->get($id);
-        if (!$transaction instanceof \AppBundle\Accounting\Model\Transaction) {
+        if (!$transaction instanceof Transaction) {
             throw new NotFoundHttpException();
         }
         $nextTransaction = $this->transactionRepository->getNextTransaction($transaction->getId());

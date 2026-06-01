@@ -41,7 +41,7 @@ class TicketAdminType extends AbstractType
 
         $event = $options['event'];
         $ticketOffers = $options['offers'];
-        usort($ticketOffers, static fn(TicketOffer $a, TicketOffer $b) => $a->name > $b->name ? 1 : -1);
+        usort($ticketOffers, static fn(TicketOffer $a, TicketOffer $b): int => $a->name > $b->name ? 1 : -1);
 
         $builder
             ->add('civility', ChoiceType::class, [
@@ -82,9 +82,9 @@ class TicketAdminType extends AbstractType
             ->add('ticketTypeId', ChoiceType::class, [
                 'label' => 'Formule',
                 'choices' => $ticketOffers,
-                'choice_label' => fn(TicketOffer $offer) => sprintf('%s - [%d €]', $offer->name, $offer->price),
-                'choice_value' => fn(?TicketOffer $offer) => $offer->ticketTypeId ?? null,
-                'group_by' => fn(TicketOffer $choice) => $choice->event ? 'Offre de l\'évènement' : 'Offre global',
+                'choice_label' => fn(TicketOffer $offer): string => sprintf('%s - [%d €]', $offer->name, $offer->price),
+                'choice_value' => fn(?TicketOffer $offer): ?int => $offer->ticketTypeId ?? null,
+                'group_by' => fn(TicketOffer $choice): string => $choice->event ? 'Offre de l\'évènement' : 'Offre global',
             ])
             ->add('status', ChoiceType::class, [
                 'label' => "État de l'inscription",

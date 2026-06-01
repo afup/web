@@ -39,7 +39,7 @@ final class ExportAction extends SponsorScanController
 
         $scans = $this->sponsorScanRepository->getBySponsorTicket($sponsorTicket);
 
-        $file->fputcsv(['Nom', 'Prénom', 'Email', 'Date']);
+        $file->fputcsv(['Nom', 'Prénom', 'Email', 'Date'], escape: '\\');
 
         foreach ($scans as $scan) {
             $file->fputcsv([
@@ -47,7 +47,7 @@ final class ExportAction extends SponsorScanController
                 $scan['prenom'],
                 $scan['email'],
                 $scan['created_on'],
-            ]);
+            ], escape: '\\');
         }
 
         $response = new BinaryFileResponse($file);

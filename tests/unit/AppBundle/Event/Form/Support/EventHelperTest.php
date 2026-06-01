@@ -25,21 +25,21 @@ class EventHelperTest extends TestCase
     {
         yield 'with event as string' => [
             'event' => 'Forum PHP 2014',
-            'expectedYear' => '2014',
+            'expectedYear' => 'Année 2014',
         ];
 
         yield 'with start date' => [
-            'event' => (new Event())->setDateStart(new \DateTime('1999-12-13')),
-            'expectedYear' => '1999',
+            'event' => new Event()->setDateStart(new \DateTime('1999-12-13')),
+            'expectedYear' => 'Année 1999',
         ];
 
         yield 'with date in title' => [
-            'event' => (new Event())->setTitle('AFUP Day 2025 Lyon'),
-            'expectedYear' => '2025',
+            'event' => new Event()->setTitle('AFUP Day 2025 Lyon'),
+            'expectedYear' => 'Année 2025',
         ];
 
         yield 'without date in title' => [
-            'event' => (new Event())
+            'event' => new Event()
                 ->setTitle('PHP Tour'),
             'expectedYear' => 'Année inconnue',
         ];
@@ -53,11 +53,11 @@ class EventHelperTest extends TestCase
     public function testSortEventsByStartDate(): void
     {
         $events = [
-            (new Event())->setDateStart(new \DateTime('2020-05-03')),
-            (new Event())->setDateStart(new \DateTime('2021-05-03')),
-            (new Event())->setDateStart(new \DateTime('2022-05-03')),
-            (new Event())->setDateStart(new \DateTime('2023-05-03')),
-            (new Event())->setDateStart(new \DateTime('2024-05-03')),
+            new Event()->setDateStart(new \DateTime('2020-05-03')),
+            new Event()->setDateStart(new \DateTime('2021-05-03')),
+            new Event()->setDateStart(new \DateTime('2022-05-03')),
+            new Event()->setDateStart(new \DateTime('2023-05-03')),
+            new Event()->setDateStart(new \DateTime('2024-05-03')),
         ];
 
         $helper = new EventHelper();

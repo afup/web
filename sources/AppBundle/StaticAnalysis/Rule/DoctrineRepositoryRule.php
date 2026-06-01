@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\StaticAnalysis\Rule;
 
+use PhpParser\Node\Identifier;
 use Doctrine\ORM\EntityRepository;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
@@ -20,7 +21,7 @@ use Symfony\Component\Form\AbstractType;
  */
 final readonly class DoctrineRepositoryRule implements Rule
 {
-    private const FORBIDDEN_METHODS = [
+    private const array FORBIDDEN_METHODS = [
         'createQueryBuilder',
         'createResultSetMappingBuilder',
         'getClassName',
@@ -44,7 +45,7 @@ final readonly class DoctrineRepositoryRule implements Rule
 
     public function processNode(Node $node, Scope $scope): array
     {
-        if (!$node->name instanceof Node\Identifier) {
+        if (!$node->name instanceof Identifier) {
             return [];
         }
 
