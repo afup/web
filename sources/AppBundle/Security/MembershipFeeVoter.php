@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class MembershipFeeVoter extends Voter
 {
-    public const READ_INVOICE = 'membership_fee_read_invoice';
+    public const string READ_INVOICE = 'membership_fee_read_invoice';
 
     public function __construct(
         private readonly Droits $droits,

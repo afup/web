@@ -43,12 +43,11 @@ trait PdfContext
     {
         $pageContent = $this->pdfPages[$page] ?? '';
 
-        $search  = array("\\t", "\\n", "\\r");
-        $replace = array( "\t",  "\n",  "\r");
+        $search  = ["\\t", "\\n", "\\r"];
+        $replace = [ "\t",  "\n",  "\r"];
         $expectedContent =  str_replace($search, $replace, $expectedContent);
 
         if (!str_contains($pageContent, $expectedContent)) {
-            dump($pageContent);
             throw new ExpectationException(
                 sprintf('The content "%s" was not found in the content "%s"', $expectedContent, $pageContent),
                 $this->minkContext->getSession()->getDriver(),
