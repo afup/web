@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\TechLetter;
 
-use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
+use AppBundle\Veille\Entity\Repository\NewsletterInscriptionRepository;
 use AppBundle\Mailchimp\Mailchimp;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -15,7 +15,7 @@ class MailchimpSynchronizer
 
     public function __construct(
         private readonly Mailchimp $mailchimp,
-        private readonly TechletterSubscriptionsRepository $subscriptionsRepository,
+        private readonly NewsletterInscriptionRepository $subscriptionsRepository,
         private readonly string $listId,
     ) {
         $this->logger = new NullLogger();

@@ -6,7 +6,7 @@ namespace AppBundle\Controller\Website\Member;
 
 use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
-use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
+use AppBundle\Veille\Entity\Repository\NewsletterInscriptionRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
@@ -26,7 +26,7 @@ final class IndexAction extends AbstractController
         private readonly UserService $userService,
         private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
         private readonly BadgesComputer $badgesComputer,
-        private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
+        private readonly NewsletterInscriptionRepository $newsletterInscriptionRepository,
         private readonly Authentication $authentication,
         private readonly AntenneRepository $antenneRepository,
     ) {}
@@ -64,7 +64,7 @@ final class IndexAction extends AbstractController
         return $this->view->render('site/member/index.html.twig', [
             'badges' => $this->badgesComputer->getBadges($user),
             'user' => $user,
-            'has_member_subscribed_to_techletter' => $this->techletterSubscriptionsRepository->hasUserSubscribed($user),
+            'has_member_subscribed_to_techletter' => $this->newsletterInscriptionRepository->hasUserSubscribed($user),
             'membership_fee_call_to_update' => null === $daysBeforeMembershipExpiration || $daysBeforeMembershipExpiration < self::DAYS_BEFORE_CALL_TO_UPDATE,
             'has_up_to_date_membership_fee' => $user->hasUpToDateMembershipFee(),
             'office_label' => $user->getNearestOfficeLabel($this->antenneRepository),

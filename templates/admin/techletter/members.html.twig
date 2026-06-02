@@ -24,8 +24,8 @@
         <tbody>
         {% for subscription in subscribers %}
             <tr class="{% if loop.index is even %}even{% endif %}">
-                <td>{{ subscription.user.label }}</td>
-                <td>{{ subscription.subscriptionDate|date('d/m/Y') }}</td>
+                <td>{{ subscription.prenom }} {{ subscription.nom }}</td>
+                <td>{{ subscription.subscription_date|date('d/m/Y') }}</td>
             </tr>
         {% endfor %}
         </tbody>

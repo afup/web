@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Membership\Techletter;
 
-use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
+use AppBundle\Veille\Entity\Repository\NewsletterInscriptionRepository;
 use AppBundle\Security\Authentication;
 use AppBundle\TechLetter\Model\Repository\SendingRepository;
 use AppBundle\Twig\ViewRenderer;
@@ -17,7 +17,7 @@ final class IndexAction extends AbstractController
     public function __construct(
         private readonly ViewRenderer $view,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
-        private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
+        private readonly NewsletterInscriptionRepository $newsletterInscriptionRepository,
         private readonly SendingRepository $sendingRepository,
         private readonly Authentication $authentication,
     ) {}
@@ -25,7 +25,7 @@ final class IndexAction extends AbstractController
     public function __invoke(): Response
     {
         return $this->view->render('site/member/techletter.html.twig', [
-            'subscribed' => $this->techletterSubscriptionsRepository->hasUserSubscribed($this->authentication->getAfupUser()),
+            'subscribed' => $this->newsletterInscriptionRepository->hasUserSubscribed($this->authentication->getAfupUser()),
             'feeUpToDate' => $this->authentication->getAfupUser()->getLastSubscription() > new \DateTime(),
             'token' => $this->csrfTokenManager->getToken('techletter_subscription'),
             'techletter_history' => $this->sendingRepository->getAllPastSent(),

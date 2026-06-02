@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Membership\Techletter;
 
-use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
+use AppBundle\Veille\Entity\Repository\NewsletterInscriptionRepository;
 use AppBundle\Security\Authentication;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 final class SubscribeAction extends AbstractController
 {
     public function __construct(
-        private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
+        private readonly NewsletterInscriptionRepository $newsletterInscriptionRepository,
         private readonly Authentication $authentication,
     ) {}
 
@@ -28,7 +28,7 @@ final class SubscribeAction extends AbstractController
 
         $this->addFlash('success', "Vous êtes maintenant abonné à la veille de l'AFUP");
 
-        $this->techletterSubscriptionsRepository->subscribe($user);
+        $this->newsletterInscriptionRepository->subscribe($user);
 
         return $this->redirectToRoute('member_techletter');
     }

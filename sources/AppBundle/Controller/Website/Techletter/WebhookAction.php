@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Techletter;
 
-use AppBundle\Association\Model\Repository\TechletterUnsubscriptionsRepository;
+use AppBundle\Veille\Entity\Repository\NewsletterDesinscriptionRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 final readonly class WebhookAction
 {
     public function __construct(
-        private TechletterUnsubscriptionsRepository $techletterUnsubscriptionsRepository,
+        private NewsletterDesinscriptionRepository $newsletterDesinscriptionRepository,
         #[Autowire('%mailchimp_techletter_webhook_key%')]
         private string $mailchimpTechletterWebhookKey,
     ) {}
@@ -28,8 +28,8 @@ final readonly class WebhookAction
         }
 
         if ($request->get('type') === 'unsubscribe') {
-            $techletterUnsubscription = $this->techletterUnsubscriptionsRepository->createFromWebhookData($request->get('data', []));
-            $this->techletterUnsubscriptionsRepository->save($techletterUnsubscription);
+            $techletterUnsubscription = $this->newsletterDesinscriptionRepository->createFromWebhookData($request->get('data', []));
+            $this->newsletterDesinscriptionRepository->save($techletterUnsubscription);
         }
 
         return new Response('ok');
