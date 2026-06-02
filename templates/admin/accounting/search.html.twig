@@ -203,7 +203,7 @@
                         <td>{{ invoice.transaction }}</td>
                         <td>{{ invoice.forum_titre }}</td>
                         <td class="right aligned">
-                            <a href="/pages/administration/index.php?page=forum_facturation&amp;action=telecharger_facture&amp;ref={{ invoice.reference }}"
+                            <a href="{{ url('admin_event_factures_download_facture', {'ref': invoice.reference}) }}"
                                class="compact ui icon button"
                             >
                                 <i class="file pdf icon"></i>
