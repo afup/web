@@ -19,7 +19,7 @@
         </p>
         {% if invoice is defined %}
         <p>
-            <a href="/pages/administration/index.php?page=forum_facturation&id_forum={{ event.id }}&filtre={{ invoice.reference }}">Rechercher la facture</a>
+            <a href="{{ url('admin_accounting_search', {'search': {'query': invoice.reference}}) }}">Rechercher la facture</a>
         </p>
         {% endif %}
         {{ form_row(form.invoice.reference) }}
