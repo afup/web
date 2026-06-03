@@ -23,18 +23,12 @@ final readonly class FeedListAction
     public function __invoke(Request $request): Response
     {
         $testFeeds = $request->query->getBoolean('testFeeds');
-        $filter = $request->query->get('filter');
-        $sort = $request->query->get('sort', 'name');
-        $direction = $request->query->get('direction', 'asc');
-        $feeds = $this->feedRepository->find($sort, $direction, $filter);
+        $feeds = $this->feedRepository->find();
 
         return new Response($this->twig->render('admin/planete/feed_list.html.twig', [
             'feeds' => $feeds,
             'testFeeds' => $testFeeds,
             'feedResults' => $testFeeds ? $this->testFeeds($feeds) : [],
-            'sort' => $sort,
-            'direction' => $direction,
-            'filter' => $filter,
         ]));
     }
 

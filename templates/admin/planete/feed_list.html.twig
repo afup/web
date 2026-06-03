@@ -19,37 +19,12 @@
     </div>
 
     <div class="ui segment">
-        <form method="GET" name="filtre">
-            <input type="hidden" name="sort" value="{{ sort }}"/>
-            <input type="hidden" name="direction" value="{{ direction }}"/>
-            <div class="ui form">
-                <div class="inline fields">
-                    <div class="field">
-                        <label>Recherche</label>
-                        <input type="text" name="filter" value="{{ filter|escape('html_attr') }}">
-                    </div>
-                    <div class="field">
-                        <input type="submit" value="Filtrer" class="ui button" name="submit_filtre"/>
-                    </div>
-                </div>
-            </div>
-        </form>
-
         <table class="ui table striped compact celled">
             <thead>
             <tr>
-                <th align="left"><a href="{{ path('admin_planete_feed_list', {
-                        sort: 'name',
-                        direction: direction == 'asc' and sort == 'name' ? 'desc' : 'asc'
-                    }) }}">Nom</a></th>
-                <th align="left"><a href="{{ path('admin_planete_feed_list', {
-                        sort: 'url',
-                        direction: direction == 'asc' and sort == 'url' ? 'desc' : 'asc'
-                    }) }}">URL</a></th>
-                <th class="center aligned"><a href="{{ path('admin_planete_feed_list', {
-                        sort: 'status',
-                        direction: direction == 'asc' and sort == 'status' ? 'desc' : 'asc'
-                    }) }}">Etat</a></th>
+                <th>Nom</th>
+                <th>URL</th>
+                <th class="center aligned">Etat</th>
                 <th class="center aligned">Membre lié</th>
                 <th class="center aligned">Test du flux</th>
                 <th>&nbsp;</th>
