@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\AuditLog;
 
+use CuyZ\Valinor\Mapper\Configurator\ConvertKeysToCamelCase;
 use CuyZ\Valinor\Mapper\Source\Source;
 use CuyZ\Valinor\MapperBuilder;
 use Doctrine\DBAL\Connection;
@@ -57,10 +58,11 @@ final readonly class AuditLogRepository
 
         return $this->mapperBuilder
             ->supportDateFormats('U')
+            ->configureWith(new ConvertKeysToCamelCase())
             ->mapper()
             ->map(
                 'array<' . LogEntry::class . '>',
-                Source::array($query->fetchAllAssociative())->camelCaseKeys(),
+                Source::array($query->fetchAllAssociative()),
             );
     }
 
