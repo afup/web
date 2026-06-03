@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\Membership\GeneralMeeting;
 
 use Symfony\Component\Validator\Constraints\Callback;
-use Afup\Site\Droits;
+use AppBundle\AssembleeGenerale\Entity\Repository\AssembleeGeneraleRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\QuestionRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\VoteRepository;
+use AppBundle\AssembleeGenerale\ReportListBuilder;
 use AppBundle\Association\Model\GeneralMeetingVote;
-use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
-use AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository;
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\AuditLog\Audit;
 use AppBundle\GeneralMeeting\Attendee;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
-use AppBundle\GeneralMeeting\ReportListBuilder;
 use AppBundle\Security\Authentication;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,11 +29,11 @@ final class IndexAction extends AbstractController
     public function __construct(
         private readonly ViewRenderer $view,
         private readonly UserService $userService,
+        private readonly AssembleeGeneraleRepository $assembleGeneraleRepository,
         private readonly GeneralMeetingRepository $generalMeetingRepository,
-        private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
-        private readonly GeneralMeetingVoteRepository $generalMeetingVoteRepository,
+        private readonly QuestionRepository $questionRepository,
+        private readonly VoteRepository $voteRepository,
         private readonly ReportListBuilder $reportListBuilder,
-        private readonly Droits $droits,
         private readonly Audit $audit,
         private readonly Authentication $authentication,
     ) {}
@@ -43,10 +43,9 @@ final class IndexAction extends AbstractController
         $userService = $this->userService;
         $user = $this->authentication->getAfupUser();
         $title = 'Présence prochaine AG';
-        $generalMeetingRepository = $this->generalMeetingRepository;
-        $latestDate = $generalMeetingRepository->getLatestAttendanceDate();
+        $latestDate = $this->generalMeetingRepository->getLatestAttendanceDate();
         Assert::notNull($latestDate);
-        $generalMeetingPlanned = $generalMeetingRepository->hasGeneralMeetingPlanned();
+        $generalMeetingPlanned = $this->assembleGeneraleRepository->hasPlanned();
 
         $cotisation = $userService->getLastSubscription($user);
         $needsMembersheepFeePayment = $latestDate->getTimestamp() > strtotime("+14 day", $cotisation->getEndDate()->getTimestamp());
@@ -58,8 +57,8 @@ final class IndexAction extends AbstractController
             ]);
         }
 
-        $attendee = $generalMeetingRepository->getAttendee($user->getUsername(), $latestDate);
-        $lastGeneralMeetingDescription = $generalMeetingRepository->obtenirDescription($latestDate);
+        $attendee = $this->generalMeetingRepository->getAttendee($user->getUsername(), $latestDate);
+        $lastGeneralMeetingDescription = $this->assembleGeneraleRepository->findOneByDate($latestDate)?->description;
 
         $data = [
             'presence' => 0,
@@ -92,7 +91,7 @@ final class IndexAction extends AbstractController
                 ],
             ])
             ->add('id_personne_avec_pouvoir', ChoiceType::class, [
-                'choices' => array_flip($generalMeetingRepository->getPowerSelectionList($latestDate, $user->getUsername())),
+                'choices' => array_flip($this->generalMeetingRepository->getPowerSelectionList($latestDate, $user->getUsername())),
                 'label' => 'Je donne mon pouvoir à',
                 'required' => false,
             ])
@@ -106,14 +105,14 @@ final class IndexAction extends AbstractController
             $data = $form->getData();
 
             if ($attendee instanceof Attendee) {
-                $ok = $generalMeetingRepository->editAttendee(
+                $ok = $this->generalMeetingRepository->editAttendee(
                     $user->getUsername(),
                     $latestDate,
                     $data['presence'],
                     (int) $data['id_personne_avec_pouvoir'],
                 );
             } else {
-                $ok = $generalMeetingRepository->addAttendee(
+                $ok = $this->generalMeetingRepository->addAttendee(
                     $user->getId(),
                     $latestDate,
                     $data['presence'],
@@ -130,21 +129,18 @@ final class IndexAction extends AbstractController
             $this->addFlash('error', 'Une erreur est survenue lors de la modification de la présence et du pouvoir');
         }
 
-        $attendeesWithPower = $generalMeetingRepository->getAttendees($latestDate, 'nom', 'asc', $user->getId());
+        $attendeesWithPower = $this->generalMeetingRepository->getAttendees($latestDate, 'nom', 'asc', $user->getId());
 
-        $generalMeetingQuestionRepository = $this->generalMeetingQuestionRepository;
-        $generalMeetingVoteRepository = $this->generalMeetingVoteRepository;
-
-        $currentQuestion = $generalMeetingQuestionRepository->loadNextOpenedQuestion($latestDate);
+        $currentQuestion = $this->questionRepository->loadNextOpenedQuestion($latestDate);
 
         $voteForCurrentQuestion = null;
         if (null !== $currentQuestion) {
-            $voteForCurrentQuestion = $generalMeetingVoteRepository->loadByQuestionIdAndUserId($currentQuestion->getId(), $this->droits->obtenirIdentifiant());
+            $voteForCurrentQuestion = $this->voteRepository->loadByQuestionIdAndUserId($currentQuestion->id, $user->getId());
         }
 
         $questionResults = [];
-        foreach ($generalMeetingQuestionRepository->loadClosedQuestions($latestDate) as $question) {
-            $results = $generalMeetingVoteRepository->getResultsForQuestionId($question->getId());
+        foreach ($this->questionRepository->loadClosedQuestions($latestDate) as $question) {
+            $results = $this->voteRepository->getResultsForQuestionId($question->id);
 
             $questionResults[] = [
                 'question' => $question,
