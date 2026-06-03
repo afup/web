@@ -145,6 +145,7 @@ SQL
 
     /**
      * @param string   $order
+     * @param string   $direction
      * @param int|null $idPersonneAvecPouvoir
      *
      * @return Attendee[]
