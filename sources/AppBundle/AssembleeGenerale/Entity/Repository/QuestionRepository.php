@@ -26,7 +26,7 @@ class QuestionRepository extends EntityRepository
             ->where('q.dateOuverture IS NOT NULL')
             ->andWhere('q.dateCloture IS NULL')
             ->andWhere('q.date = :date')
-            ->setParameter('date', \DateTime::createFromFormat('U', $generalMeetingDate->format('U')), UnixTimestampType::NAME)
+            ->setParameter('date', $generalMeetingDate, UnixTimestampType::NAME)
             ->orderBy('q.dateOuverture', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
@@ -43,7 +43,7 @@ class QuestionRepository extends EntityRepository
         return $this->createQueryBuilder('q')
             ->where('q.dateCloture IS NOT NULL')
             ->andWhere('q.date = :date')
-            ->setParameter('date', \DateTime::createFromFormat('U', $generalMeetingDate->format('U')), UnixTimestampType::NAME)
+            ->setParameter('date', $generalMeetingDate, UnixTimestampType::NAME)
             ->orderBy('q.dateOuverture', 'ASC')
             ->getQuery()
             ->getResult();
@@ -56,7 +56,7 @@ class QuestionRepository extends EntityRepository
     {
         return $this->createQueryBuilder('q')
             ->where('q.date = :date')
-            ->setParameter('date', \DateTime::createFromFormat('U', $generalMeetingDate->format('U')), UnixTimestampType::NAME)
+            ->setParameter('date', $generalMeetingDate, UnixTimestampType::NAME)
             ->getQuery()
             ->getResult();
     }
