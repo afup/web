@@ -7,6 +7,7 @@ namespace AppBundle\Controller\Admin\Planete;
 use AppBundle\AuditLog\Audit;
 use AppBundle\Planete\FeedFormData;
 use AppBundle\Planete\FeedFormType;
+use Exception;
 use PlanetePHP\FeedRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,21 +26,22 @@ class FeedAddAction extends AbstractController
         $form = $this->createForm(FeedFormType::class, $data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $ok = $this->feedRepository->insert(
-                $data->name,
-                $data->url,
-                $data->feed,
-                $data->status,
-                $data->userId,
-            );
+            try {
+                $this->feedRepository->insert(
+                    $data->name,
+                    $data->url,
+                    $data->feed,
+                    $data->status,
+                    $data->userId,
+                );
 
-            if ($ok) {
                 $this->audit->log('Ajout du flux ' . $data->name);
                 $this->addFlash('notice', 'Le flux a été ajouté');
 
                 return $this->redirectToRoute('admin_planete_feed_list');
+            } catch (Exception $e) {
+                $this->addFlash('error', "Une erreur est survenue lors de l'ajout du flux :\n" . $e->getMessage());
             }
-            $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout du flux');
         }
 
         return $this->render('admin/planete/feed_add.html.twig', [

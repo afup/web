@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace PlanetePHP;
 
 use Doctrine\DBAL\Connection;
-use Webmozart\Assert\Assert;
 
-class FeedRepository
+final readonly class FeedRepository
 {
-    public function __construct(private readonly Connection $connection) {}
+    public function __construct(private Connection $connection) {}
 
     /**
      * @return Feed[]
@@ -24,33 +23,19 @@ class FeedRepository
     }
 
     /**
-     * @param string      $sort
-     * @param string      $direction
-     * @param string|null $filter
-     *
      * @return Feed[]
      */
-    public function find($sort = 'name', $direction = 'asc', $filter = null): array
+    public function find(): array
     {
-        $sorts = [
-            'name' => 'f.nom',
-            'url' => 'f.url',
-            'status' => 'f.etat',
-        ];
-        Assert::keyExists($sorts, $sort);
         $qb = $this->connection->createQueryBuilder()
             ->select('f.id', 'f.nom', 'f.url', 'f.feed', 'f.etat', 'f.id_personne_physique')
             ->from('afup_planete_flux', 'f')
-            ->orderBy($sorts[$sort], $direction);
-        if (null !== $filter) {
-            $qb->where('nom LIKE :filter')
-                ->setParameter('filter', '%' . $filter . '%');
-        }
+            ->orderBy('f.nom', 'asc');
 
         return $this->hydrateAll($qb->executeQuery()->fetchAllAssociative());
     }
 
-    public function get($id): Feed
+    public function get(int $id): Feed
     {
         $query = $this->connection->prepare('SELECT id, nom, url, feed, etat, id_personne_physique
             FROM afup_planete_flux f WHERE f.id = :id');
@@ -59,7 +44,7 @@ class FeedRepository
         return $this->hydrate($query->executeQuery()->fetchAssociative());
     }
 
-    public function insert(string $name, string $url, string $feed, FeedStatus $status, ?int $userId = 0)
+    public function insert(string $name, string $url, string $feed, FeedStatus $status, ?int $userId = 0): void
     {
         $statement = $this->connection->prepare('INSERT INTO afup_planete_flux (nom, url, feed, etat, id_personne_physique) VALUES (:name, :url, :feed, :status, :userId)');
 
@@ -69,10 +54,10 @@ class FeedRepository
         $statement->bindValue('status', $status->value);
         $statement->bindValue('userId', (int) $userId);
 
-        return $statement->executeStatement();
+        $statement->executeStatement();
     }
 
-    public function update(int $id, string $name, string $url, string $feed, FeedStatus $status, ?int $userId = 0)
+    public function update(int $id, string $name, string $url, string $feed, FeedStatus $status, ?int $userId = 0): void
     {
         $statement = $this->connection->prepare('UPDATE afup_planete_flux
             SET nom = :name, url = :url, feed = :feed, etat = :status, id_personne_physique = :userId
@@ -85,12 +70,12 @@ class FeedRepository
         $statement->bindValue('userId', (int) $userId);
         $statement->bindValue('id', $id);
 
-        return $statement->executeStatement();
+        $statement->executeStatement();
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id): void
     {
-        return $this->connection->delete('afup_planete_flux', ['id' => $id]) === 1;
+        $this->connection->delete('afup_planete_flux', ['id' => $id]);
     }
 
     private function hydrateAll(array $rows): array

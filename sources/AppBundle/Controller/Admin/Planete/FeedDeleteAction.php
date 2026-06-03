@@ -20,11 +20,14 @@ class FeedDeleteAction extends AbstractController
     public function __invoke(Request $request): RedirectResponse
     {
         $id = $request->query->getInt('id');
-        if ($this->feedRepository->delete($id)) {
+
+        try {
+            $this->feedRepository->delete($id);
+
             $this->audit->log('Suppression du flux ' . $id);
             $this->addFlash('notice', 'Le flux a été supprimé');
-        } else {
-            $this->addFlash('error', 'Une erreur est survenue lors de la suppression du flux');
+        } catch (\Exception $e) {
+            $this->addFlash('error', "Une erreur est survenue lors de la suppression du flux :\n" . $e->getMessage());
         }
 
         return $this->redirectToRoute('admin_planete_feed_list');

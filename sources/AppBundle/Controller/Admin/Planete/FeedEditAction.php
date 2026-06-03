@@ -7,6 +7,7 @@ namespace AppBundle\Controller\Admin\Planete;
 use AppBundle\AuditLog\Audit;
 use AppBundle\Planete\FeedFormData;
 use AppBundle\Planete\FeedFormType;
+use Exception;
 use PlanetePHP\FeedRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,22 +33,23 @@ class FeedEditAction extends AbstractController
         $form = $this->createForm(FeedFormType::class, $data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $ok = $this->feedRepository->update(
-                $id,
-                $data->name,
-                $data->url,
-                $data->feed,
-                $data->status,
-                $data->userId,
-            );
+            try {
+                $this->feedRepository->update(
+                    $id,
+                    $data->name,
+                    $data->url,
+                    $data->feed,
+                    $data->status,
+                    $data->userId,
+                );
 
-            if ($ok) {
                 $this->audit->log(sprintf("Modification du flux %s (%d)", $data->name, $id));
                 $this->addFlash('notice', 'Le flux a été modifié');
 
                 return $this->redirectToRoute('admin_planete_feed_list');
+            } catch (Exception $e) {
+                $this->addFlash('error', "Une erreur est survenue lors de la modification du flux :\n" . $e->getMessage());
             }
-            $this->addFlash('error', 'Une erreur est survenue lors de la modification du flux');
         }
 
         return $this->render('admin/planete/feed_edit.html.twig', [
