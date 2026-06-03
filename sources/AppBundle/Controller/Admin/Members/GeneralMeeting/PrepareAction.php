@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members\GeneralMeeting;
 
+use AppBundle\AssembleeGenerale\Form\PrepareFormType;
 use AppBundle\AuditLog\Audit;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
-use AppBundle\GeneralMeeting\PrepareFormType;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
