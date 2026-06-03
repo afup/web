@@ -4,36 +4,36 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members\GeneralMeetingQuestion;
 
-use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
-use AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\QuestionRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\VoteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DeleteAction extends AbstractController
 {
     public function __construct(
-        private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
-        private readonly GeneralMeetingVoteRepository $generalMeetingVoteRepository,
+        private readonly QuestionRepository $questionRepository,
+        private readonly VoteRepository $voteRepository,
     ) {}
 
-    public function __invoke($id): RedirectResponse
+    public function __invoke(int $id): RedirectResponse
     {
-        $question = $this->generalMeetingQuestionRepository->get($id);
+        $question = $this->questionRepository->find($id);
 
         if (null === $question) {
             throw $this->createNotFoundException(sprintf('Question %d not found', $id));
         }
 
-        $results = $this->generalMeetingVoteRepository->getResultsForQuestionId($question->getId());
+        $results = $this->voteRepository->getResultsForQuestionId($question->id);
         if (true === $question->hasVotes($results)) {
             throw $this->createAccessDeniedException('Seules les questions sans vote peuvent être supprimées');
         }
 
-        $this->generalMeetingQuestionRepository->delete($question);
+        $this->questionRepository->delete($question);
         $this->addFlash('notice', 'La question a été supprimée');
 
         return $this->redirectToRoute('admin_members_general_vote_list', [
-            'date' => $question->getDate()->format('U'),
+            'date' => $question->date->format('U'),
         ]);
     }
 }
