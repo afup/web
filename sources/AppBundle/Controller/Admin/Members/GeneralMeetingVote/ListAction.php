@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members\GeneralMeetingVote;
 
-use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
-use AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\QuestionRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\VoteRepository;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +16,8 @@ class ListAction
 {
     public function __construct(
         private readonly GeneralMeetingRepository $generalMeetingRepository,
-        private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
-        private readonly GeneralMeetingVoteRepository $generalMeetingVoteRepository,
+        private readonly QuestionRepository $questionRepository,
+        private readonly VoteRepository $voteRepository,
         private readonly Environment $twig,
     ) {}
 
@@ -32,10 +32,10 @@ class ListAction
         }
 
         $rows = [];
-        foreach ($this->generalMeetingQuestionRepository->loadByDate($selectedDate) as $question) {
+        foreach ($this->questionRepository->loadByDate($selectedDate) as $question) {
             $rows[] = [
                 'question' => $question,
-                'results' => $this->generalMeetingVoteRepository->getResultsForQuestionId($question->getId()),
+                'results' => $this->voteRepository->getResultsForQuestionId($question->id),
             ];
         }
 

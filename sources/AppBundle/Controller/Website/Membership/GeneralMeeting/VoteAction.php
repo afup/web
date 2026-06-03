@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\Membership\GeneralMeeting;
 
 use Afup\Site\Droits;
+use AppBundle\AssembleeGenerale\Entity\Repository\QuestionRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\VoteRepository;
 use AppBundle\Association\Model\GeneralMeetingVote;
-use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
-use AppBundle\Association\Model\Repository\GeneralMeetingVoteRepository;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,8 +17,8 @@ final class VoteAction extends AbstractController
 {
     public function __construct(
         private readonly GeneralMeetingRepository $generalMeetingRepository,
-        private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
-        private readonly GeneralMeetingVoteRepository $generalMeetingVoteRepository,
+        private readonly QuestionRepository $questionRepository,
+        private readonly VoteRepository $voteRepository,
         private readonly Droits $droits,
     ) {}
 
@@ -32,7 +32,7 @@ final class VoteAction extends AbstractController
             throw $this->createNotFoundException('Vote manquant');
         }
 
-        $question = $this->generalMeetingQuestionRepository->get($questionId);
+        $question = $this->questionRepository->find($questionId);
 
         if (null === $question) {
             throw $this->createNotFoundException('QuestionId missing');
@@ -47,23 +47,16 @@ final class VoteAction extends AbstractController
 
         $userId = $this->droits->obtenirIdentifiant();
 
-        if (null !== $this->generalMeetingVoteRepository->loadByQuestionIdAndUserId($questionId, $userId)) {
+        if (null !== $this->voteRepository->loadByQuestionIdAndUserId($question->id, $userId)) {
             $this->addFlash('error', 'Vous avez déjà voté pour cette question');
             return $redirection;
         }
 
-        $weight = 1 + count($this->generalMeetingRepository->getAttendees($question->getDate(), 'nom', 'asc', $userId));
+        $weight = 1 + count($this->generalMeetingRepository->getAttendees($question->date, 'nom', 'asc', $userId));
 
-        $generalMeetingVote = new GeneralMeetingVote();
-        $generalMeetingVote
-            ->setQuestionId($question->getId())
-            ->setUserId($this->droits->obtenirIdentifiant())
-            ->setWeight($weight)
-            ->setValue($vote)
-            ->setCreatedAt(new \DateTime())
-        ;
+        $generalMeetingVote = $this->voteRepository->buildVote($question->id, $userId, $weight, $vote);
 
-        $this->generalMeetingVoteRepository->save($generalMeetingVote);
+        $this->voteRepository->save($generalMeetingVote);
 
         $this->addFlash('notice', 'Votre vote a été pris en compte');
 
