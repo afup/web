@@ -1,4 +1,3 @@
-'Civility': 'Civilité'
 'Firstname': 'Prénom'
 'Lastname': 'Nom'
 'Email': 'Email'
@@ -255,3 +254,6 @@ speaker_infos.microphone.choice.handheld: "Micro à main"
 'mail.cfp_submission.vote_section': '<p>N''hésitez pas à consulter les commentaires et votes du public sur la <a href="%url%">page dédiée</a>. Notez bien que ceux-ci sont indicatifs, le pôle conférences est seul décisionnaire sur la sélection.</p>'
 'mail.cfp_submission.abstract': 'Voici un extrait de votre soumission :'
 'mail.cfp_submission.signature': 'Merci pour votre contribution,'
+'genre.femme': 'Femme'
+'genre.homme': 'Homme'
+'genre.non-binaire': 'Non-binaire'

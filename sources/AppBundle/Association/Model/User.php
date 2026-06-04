@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Association\Model;
 
 use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Association\Genre;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\NotifiableInterface;
 use AppBundle\Model\HasUniqueId;
@@ -30,10 +31,6 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
 
     public const int SLACK_INVITE_STATUS_NONE = 0;
     public const int SLACK_INVITE_STATUS_REQUESTED = 1;
-
-    public const int CIVILITE_M = 0;
-    public const int CIVILITE_MME = 1;
-
     /**
      * @var int
      */
@@ -69,10 +66,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
      */
     private $roles = [];
 
-    /**
-     * @var string
-     */
-    private $civility;
+    private ?Genre $genre = null;
 
     /**
      * @var string
@@ -317,22 +311,15 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getCivility()
+    public function getGenre(): ?Genre
     {
-        return $this->civility;
+        return $this->genre;
     }
 
-    /**
-     * @param string $civility
-     */
-    public function setCivility($civility): self
+    public function setGenre(?Genre $genre): void
     {
-        $this->propertyChanged('civility', $this->civility, $civility);
-        $this->civility = $civility;
-        return $this;
+        $this->propertyChanged('genre', $this->genre, $genre);
+        $this->genre = $genre;
     }
 
     /**

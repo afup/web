@@ -95,7 +95,7 @@ class InvoiceRepository extends Repository implements MetadataInitializer
                 'invoices.id_forum',
                 'invoices.date_facture',
                 'inscriptions.id', 'inscriptions.date', 'inscriptions.reference', 'inscriptions.coupon', 'inscriptions.type_inscription',
-                'inscriptions.montant', 'inscriptions.informations_reglement', 'inscriptions.civilite', 'inscriptions.nom', 'inscriptions.prenom',
+                'inscriptions.montant', 'inscriptions.informations_reglement', 'inscriptions.genre', 'inscriptions.nom', 'inscriptions.prenom',
                 'inscriptions.email', 'inscriptions.telephone', 'inscriptions.citer_societe', 'inscriptions.newsletter_afup',
                 'inscriptions.commentaires', 'inscriptions.etat', 'inscriptions.facturation', 'inscriptions.id_forum',
                 'inscriptions.mail_partenaire', 'inscriptions.presence_day1', 'inscriptions.presence_day2',

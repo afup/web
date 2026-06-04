@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Form;
 
+use AppBundle\Association\Genre;
 use AppBundle\Event\Model\GithubUser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SpeakerFormData
 {
-    /**
-     * @var string
-     */
-    #[Assert\NotBlank]
-    public $civility;
+    public ?Genre $genre = null;
+
     /**
      * @var string
      */

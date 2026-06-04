@@ -10,7 +10,7 @@ Feature: Event pages - CFP - en anglais
     And I should see "Your speaker profile is empty."
     When I follow "My speaker profile"
     Then I should see "Profile picture"
-    Then The "speaker[civility]" field should only contain the follow values '["Mr.", "Mrs."]'
+    Then The "speaker[genre]" field should only contain the follow values '["Prefer not to say", "Woman", "Man", "Nonbinary"]'
     When I fill in "speaker[firstname]" with "Mon prénom"
     And I fill in "speaker[lastname]" with "Mon nom de famille"
     And I fill in "speaker[email]" with "monemail@provider.fr"

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\Indexation\Talks;
 
+use AppBundle\Association\Genre;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Speaker;
@@ -53,7 +54,7 @@ final class TransformerTest extends TestCase
             ->setId(800)
             ->setEventId(10)
             ->setUser(0)
-            ->setCivility('M.')
+            ->setGenre(Genre::Homme)
             ->setFirstname('Dimitri')
             ->setLastname('Fontaine')
             ->setEmail('example@example.fr')

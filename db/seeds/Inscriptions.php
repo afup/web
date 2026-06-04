@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use AppBundle\Association\Genre;
 use AppBundle\Association\MemberType;
 use AppBundle\Event\Model\Ticket;
 use Phinx\Seed\AbstractSeed;
@@ -17,7 +18,7 @@ class Inscriptions extends AbstractSeed
                 'reference' => 'REF-TEST-001',
                 'type_inscription' => Tarif::TYPE_2_DAYS['id'],
                 'montant' => Tarif::TYPE_2_DAYS['default_price'],
-                'civilite' => 'Mme',
+                'genre' => Genre::Femme->value,
                 'nom' => 'Michu',
                 'prenom' => 'Bernadette',
                 'email' => 'bernadette@yahoo.fr',
@@ -34,7 +35,7 @@ class Inscriptions extends AbstractSeed
                 'reference' => 'REF-TEST-002',
                 'type_inscription' => Tarif::TYPE_2_DAYS['id'],
                 'montant' => Tarif::TYPE_2_DAYS['default_price'],
-                'civilite' => 'Mme',
+                'genre' => Genre::Femme->value,
                 'nom' => 'Jean',
                 'prenom' => 'Maurice',
                 'email' => 'jean@yahoo.fr',
@@ -51,7 +52,7 @@ class Inscriptions extends AbstractSeed
                 'reference' => 'REF-TEST-003',
                 'type_inscription' => Tarif::TYPE_2_DAYS['id'],
                 'montant' => Tarif::TYPE_2_DAYS['default_price'],
-                'civilite' => 'Mme',
+                'genre' => Genre::Femme->value,
                 'nom' => 'Kirk',
                 'prenom' => 'James Tiberius',
                 'email' => 'james@starfleet.fr',
@@ -68,7 +69,7 @@ class Inscriptions extends AbstractSeed
                 'reference' => 'REF-TEST-004',
                 'type_inscription' => Tarif::TYPE_2_DAYS_AFUP['id'],
                 'montant' => Tarif::TYPE_2_DAYS_AFUP['default_price'],
-                'civilite' => 'Mme',
+                'genre' => Genre::Femme->value,
                 'nom' => 'Sans',
                 'prenom' => 'Cotisation',
                 'email' => 'sans@cotisation.fr',
@@ -85,7 +86,7 @@ class Inscriptions extends AbstractSeed
                 'reference' => 'REF-TEST-005',
                 'type_inscription' => Tarif::TYPE_2_DAYS_AFUP['id'],
                 'montant' => Tarif::TYPE_2_DAYS_AFUP['default_price'],
-                'civilite' => 'M',
+                'genre' => Genre::Homme->value,
                 'nom' => 'Personne',
                 'prenom' => 'Paul',
                 'email' => 'paul.personne@mycorp.fr',
@@ -103,7 +104,7 @@ class Inscriptions extends AbstractSeed
                 'reference' => 'REF-TEST-006',
                 'type_inscription' => Tarif::TYPE_2_DAYS_AFUP['id'],
                 'montant' => Tarif::TYPE_2_DAYS_AFUP['default_price'],
-                'civilite' => 'M',
+                'genre' => Genre::Homme->value,
                 'nom' => 'Maurice',
                 'prenom' => 'Jean',
                 'email' => 'userexpire@yahoo.fr',
@@ -121,7 +122,7 @@ class Inscriptions extends AbstractSeed
                 'reference' => 'REF-TEST-007',
                 'type_inscription' => Tarif::TYPE_2_DAYS['id'],
                 'montant' => Tarif::TYPE_2_DAYS['default_price'],
-                'civilite' => 'Mme',
+                'genre' => Genre::Femme->value,
                 'nom' => 'Annulé',
                 'prenom' => 'Lepaiement',
                 'email' => 'annule@example.com',
@@ -138,7 +139,7 @@ class Inscriptions extends AbstractSeed
                 'reference' => 'REF-TEST-008',
                 'type_inscription' => Tarif::TYPE_ORGANIZATION['id'],
                 'montant' => Tarif::TYPE_ORGANIZATION['default_price'],
-                'civilite' => 'Mme',
+                'genre' => Genre::Femme->value,
                 'nom' => 'Super',
                 'prenom' => 'Bénévole',
                 'email' => 'benevole@example.com',

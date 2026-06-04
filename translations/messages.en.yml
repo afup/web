@@ -58,7 +58,6 @@ N/A: N/A
 'Pour pouvoir proposer une conférence, il vous sera nécessaire de vous authentifier avec Github.': 'To submit a talk, you have to connect to your github account.'
 'Pour pouvoir voter, il vous sera nécessaire de vous authentifier avec Github.': 'To rate submitted ones, you have to connect to your github account.'
 'Le CFP est terminé pour cet évènement': 'The call for paper is closed for this event'
-Civility: Civility
 Firstname: Firstname
 Lastname: Lastname
 Email: Email
@@ -231,3 +230,8 @@ speaker_infos.microphone.choice.handheld: "Handheld microphone"
 'mail.cfp_submission.vote_section': '<p>Feel free to check the public comments and votes on the <a href="%url%">dedicated page</a>. Please note these are advisory — the conference team has sole decision-making authority.</p>'
 'mail.cfp_submission.abstract': 'Here is an abstract of your submission:'
 'mail.cfp_submission.signature': 'Thank you for your contribution,'
+'Genre': 'Gender'
+'Ne se prononce pas': 'Prefer not to say'
+'genre.femme': 'Woman'
+'genre.homme': 'Man'
+'genre.non-binaire': 'Nonbinary'

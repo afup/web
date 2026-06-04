@@ -94,7 +94,7 @@
                     <p>Vous avez utilisé toutes vos invitations. Nous avons hâte de vous retrouver lors de cet évènement !</p>
                 {% else %}
                     {{ form_start(ticketForm, {attr: {class: 'sponsor--ticket-edit'}}) }}
-                    {{ form_row(ticketForm.civility) }}
+                    {{ form_row(ticketForm.genre) }}
                     {{ form_row(ticketForm.firstname) }}
                     {{ form_row(ticketForm.lastname) }}
                     {{ form_row(ticketForm.email) }}

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Form;
 
+use AppBundle\Association\Genre;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Validator\Constraints as AppAssert;
@@ -15,9 +16,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class UserEditFormData
 {
     public $companyId;
-    #[Assert\NotBlank]
-    #[Assert\Choice(choices: ['M.', 'Mme'], strict: true)]
-    public $civility = 'M.';
+    public ?Genre $genre = null;
     #[Assert\NotBlank]
     public $lastname;
     #[Assert\NotBlank]

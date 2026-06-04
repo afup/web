@@ -11,6 +11,7 @@ use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
+use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Ticket;
 use DateTime;
@@ -41,6 +42,7 @@ class SpeakerRegisterAction extends AbstractController
                 continue;
             }
 
+            /** @var array<Speaker> $speakers */
             $speakers = $this->speakerRepository->getSpeakersByTalk($talkAggregate->talk);
 
             foreach ($speakers as $speaker) {
@@ -57,7 +59,7 @@ class SpeakerRegisterAction extends AbstractController
                 $ticket->setForumId($event->getId());
                 $ticket->setReference($reference);
                 $ticket->setTicketTypeId(Ticket::TYPE_SPEAKER);
-                $ticket->setCivility($speaker->getCivility());
+                $ticket->setGenre($speaker->getGenre());
                 $ticket->setLastname($speaker->getLastname());
                 $ticket->setFirstname($speaker->getFirstname());
                 $ticket->setEmail($speaker->getEmail());

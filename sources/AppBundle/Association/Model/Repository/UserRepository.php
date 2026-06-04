@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Model\Repository;
 
+use AppBundle\Association\Genre;
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\User;
@@ -15,6 +16,7 @@ use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
+use CCMBenchmark\Ting\Serializer\BackedEnum;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 use Exception;
 use InvalidArgumentException;
@@ -375,7 +377,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->getQueryBuilderWithSubscriptions()
             ->cols([
                 'app.`id`', 'app.`id_personne_morale`', 'app.`login`', 'app.`mot_de_passe`', 'app.`niveau`',
-                'app.`niveau_modules`', 'app.`roles`', 'app.`civilite`', 'app.`nom`', 'app.`prenom`', 'app.`email`',
+                'app.`niveau_modules`', 'app.`roles`', 'app.`genre`', 'app.`nom`', 'app.`prenom`', 'app.`email`',
                 'app.`adresse`', 'app.`code_postal`', 'app.`ville`', 'app.`id_pays`', 'app.`telephone_fixe`',
                 'app.`telephone_portable`', 'app.`etat`', 'app.`date_relance`', 'app.`compte_svn`',
                 'app.`slack_invite_status`', 'app.`slack_alternate_email`', 'app.`needs_up_to_date_membership`',
@@ -508,9 +510,13 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'type' => 'string',
             ])
             ->addField([
-                'columnName' => 'civilite',
-                'fieldName' => 'civility',
-                'type' => 'string',
+                'columnName' => 'genre',
+                'fieldName' => 'genre',
+                'type' => 'enum',
+                'serializer' => BackedEnum::class,
+                'serializer_options' => [
+                    'unserialize' => ['enum' => Genre::class],
+                ],
             ])
             ->addField([
                 'columnName' => 'prenom',

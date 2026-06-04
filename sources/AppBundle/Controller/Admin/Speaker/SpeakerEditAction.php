@@ -59,7 +59,7 @@ class SpeakerEditAction extends AbstractController
         }
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $speaker->setCivility($data->civility);
+            $speaker->setGenre($data->genre);
             $speaker->setFirstname($data->firstname);
             $speaker->setLastname($data->lastname);
             $speaker->setBiography($data->biography);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model\Repository;
 
+use AppBundle\Association\Genre;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
@@ -29,7 +30,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
      */
     public function getSpeakersByTalk(Talk $talk)
     {
-        $query = $this->getPreparedQuery('SELECT c.conferencier_id, c.id_forum, c.civilite, c.nom, c.prenom, c.email,c.societe,
+        $query = $this->getPreparedQuery('SELECT c.conferencier_id, c.id_forum, c.genre, c.nom, c.prenom, c.email,c.societe,
         c.biographie, c.twitter, c.user_github, c.photo, c.bluesky, c.mastodon, c.linkedin
         FROM afup_conferenciers c
         LEFT JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = c.conferencier_id
@@ -54,7 +55,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
             $publishedAtFilter = '(1 = 1)';
         }
 
-        $query = $this->getPreparedQuery('SELECT speaker.conferencier_id, speaker.id_forum, speaker.civilite, speaker.nom, speaker.prenom, speaker.email, speaker.societe,
+        $query = $this->getPreparedQuery('SELECT speaker.conferencier_id, speaker.id_forum, speaker.genre, speaker.nom, speaker.prenom, speaker.email, speaker.societe,
         speaker.biographie, speaker.twitter, speaker.mastodon, speaker.bluesky, speaker.user_github, speaker.photo, talk.titre, talk.session_id,
         speaker.will_attend_speakers_diner,
         speaker.has_special_diet,
@@ -204,9 +205,13 @@ SQL
                 'type' => 'int',
             ])
             ->addField([
-                'columnName' => 'civilite',
-                'fieldName' => 'civility',
-                'type' => 'string',
+                'columnName' => 'genre',
+                'fieldName' => 'genre',
+                'type' => 'enum',
+                'serializer' => BackedEnum::class,
+                'serializer_options' => [
+                    'unserialize' => ['enum' => Genre::class],
+                ],
             ])
             ->addField([
                 'columnName' => 'nom',
