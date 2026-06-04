@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Invoice;
 
+use AppBundle\Afup;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class EventInvoiceMailer
 {
@@ -18,16 +20,18 @@ class EventInvoiceMailer
         private readonly InvoiceRepository $invoiceRepository,
         private readonly Mailer $mailer,
         private readonly InvoiceService $invoiceService,
+        #[Autowire('%kernel.project_dir%/../htdocs/cache/')]
+        private readonly string $publicCacheDir,
     ) {}
 
-    public function send(string $reference, bool $copyTresorier = true, bool $facturer = true): bool
+    public function send(string $reference): bool
     {
         $invoice = $this->invoiceRepository->getByReference($reference);
         if ($invoice === null) {
             return false;
         }
 
-        $cheminFacture = AFUP_CHEMIN_RACINE . 'cache' . DIRECTORY_SEPARATOR . 'fact' . $reference . '.pdf';
+        $cheminFacture = $this->publicCacheDir . 'fact' . $reference . '.pdf';
         $this->pdfGenerator->generateInvoice($reference, $cheminFacture);
 
         $message = new Message(
@@ -37,9 +41,9 @@ class EventInvoiceMailer
         );
 
         $this->mailer->renderTemplate($message, 'mail_templates/facture-forum.html.twig', [
-            'raison_sociale' => AFUP_RAISON_SOCIALE,
-            'adresse' => AFUP_ADRESSE,
-            'ville' => AFUP_CODE_POSTAL . ' ' . AFUP_VILLE,
+            'raison_sociale' => Afup::RAISON_SOCIALE,
+            'adresse' => Afup::ADRESSE,
+            'ville' => Afup::CODE_POSTAL . ' ' . Afup::VILLE,
         ]);
 
         $message->addAttachment(new Attachment(
@@ -48,15 +52,12 @@ class EventInvoiceMailer
             'base64',
             'application/pdf',
         ));
-
-        if ($copyTresorier) {
-            $message->addBcc(MailUserFactory::tresorier());
-        }
+        $message->addBcc(MailUserFactory::tresorier());
 
         $ok = $this->mailer->send($message);
         @unlink($cheminFacture);
 
-        if ($ok && $facturer) {
+        if ($ok) {
             $this->invoiceService->markAsInvoiced($invoice);
         }
 

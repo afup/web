@@ -202,9 +202,9 @@ class EventInvoicePdfGenerator
         $pdf->Ln(15);
         if ($facture['etat'] == 4) {
             $type = match ($facture['type_reglement']) {
-                0 => 'par CB',
-                1 => 'par chèque',
-                2 => 'par virement',
+                Ticket::PAYMENT_CREDIT_CARD => 'par CB',
+                Ticket::PAYMENT_CHEQUE => 'par chèque',
+                Ticket::PAYMENT_BANKWIRE => 'par virement',
                 default => '',
             };
             $pdf->SetTextColor(255, 0, 0);

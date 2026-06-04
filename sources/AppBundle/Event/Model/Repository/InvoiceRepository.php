@@ -77,11 +77,8 @@ class InvoiceRepository extends Repository implements MetadataInitializer
             WHERE aff.reference = :reference',
         );
         $query->setParams(['reference' => $reference]);
-        foreach ($query->query($this->getCollection(new HydratorArray())) as $row) {
-            return $row;
-        }
 
-        return null;
+        return $query->query($this->getCollection(new HydratorArray()))->first();
     }
 
     public function getPendingBankwires(Event $event)

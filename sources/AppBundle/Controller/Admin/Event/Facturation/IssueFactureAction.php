@@ -29,13 +29,14 @@ class IssueFactureAction extends AbstractController
             throw new NotFoundHttpException("Cette facture n'existe pas");
         }
 
-        if ($this->invoiceService->markAsInvoiced($facture)) {
-            $this->audit->log('Facturation => facture n°' . $reference);
-            $this->addFlash('notice', 'La facture est prise en compte');
-            return $this->redirectToRoute('admin_event_factures');
+        try {
+            $this->invoiceService->markAsInvoiced($facture);
+        } catch (\Exception $e) {
+            $this->addFlash('error', "La facture n'a pas pu être prise en compte");
         }
 
-        $this->addFlash('error', "La facture n'a pas pu être prise en compte");
+        $this->audit->log('Facturation => facture n°' . $reference);
+        $this->addFlash('notice', 'La facture est prise en compte');
         return $this->redirectToRoute('admin_event_factures');
     }
 }

@@ -81,10 +81,10 @@ class InvoiceService
         }
     }
 
-    public function markAsInvoiced(Invoice $invoice): bool
+    public function markAsInvoiced(Invoice $invoice): void
     {
         if ($invoice->getInvoice()) {
-            return true;
+            return;
         }
 
         $tickets = $this->ticketRepository->getByReference($invoice->getReference());
@@ -95,8 +95,6 @@ class InvoiceService
 
         $invoice->setInvoice(true)->setInvoiceDate(new DateTime());
         $this->invoiceRepository->save($invoice);
-
-        return true;
     }
 
     public function deleteInvoice(Invoice $invoice): void
