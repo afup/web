@@ -23,8 +23,8 @@ class CompanyReminderFactory
     {
         $instance = new $class(
             $this->mailer,
-            AFUP_COTISATION_PERSONNE_MORALE,
-            AFUP_PERSONNE_MORALE_SEUIL,
+            SubscriptionManagement::AFUP_COTISATION_PERSONNE_MORALE,
+            SubscriptionManagement::AFUP_PERSONNE_MORALE_SEUIL,
             $this->subscriptionReminderLogRepository,
         );
         if (!$instance instanceof AbstractCompanyReminder) {

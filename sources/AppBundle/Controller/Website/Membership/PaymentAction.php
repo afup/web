@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Membership;
 
+use AppBundle\Afup;
 use AppBundle\MembershipFee\MembershipFeeService;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
@@ -51,10 +52,10 @@ final class PaymentAction extends AbstractController
             'invoice' => $invoice,
             'bankAccount' => $bankAccountFactory->createApplyableAt(new \DateTimeImmutable('@' . $invoice->getStartDate()->getTimestamp())),
             'afup' => [
-                'raison_sociale' => AFUP_RAISON_SOCIALE,
-                'adresse' => AFUP_ADRESSE,
-                'code_postal' => AFUP_CODE_POSTAL,
-                'ville' => AFUP_VILLE,
+                'raison_sociale' => Afup::RAISON_SOCIALE,
+                'adresse' => Afup::ADRESSE,
+                'code_postal' => Afup::CODE_POSTAL,
+                'ville' => Afup::VILLE,
             ],
         ]);
     }

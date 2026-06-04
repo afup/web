@@ -9,6 +9,7 @@ use Afup\Site\Utils\Mailing;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
 use Afup\Site\Utils\Vat;
+use AppBundle\Afup;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\MailUser;
@@ -720,9 +721,9 @@ Pas d'escompte en cas de paiement anticipé.
         $corps .= "Veuillez trouver ci-joint la facture correspondant à la participation au forum organisé par l'AFUP.\n";
         $corps .= "Nous restons à votre disposition pour toute demande complémentaire.\n\n";
         $corps .= "Le bureau\n\n";
-        $corps .= AFUP_RAISON_SOCIALE . "\n";
-        $corps .= AFUP_ADRESSE . "\n";
-        $corps .= AFUP_CODE_POSTAL . " " . AFUP_VILLE . "\n";
+        $corps .= Afup::RAISON_SOCIALE . "\n";
+        $corps .= Afup::ADRESSE . "\n";
+        $corps .= Afup::CODE_POSTAL . " " . Afup::VILLE . "\n";
 
         $chemin_facture = AFUP_CHEMIN_RACINE . 'cache' . DIRECTORY_SEPARATOR . 'fact' . $reference . '.pdf';
         $this->genererFacture($reference, $chemin_facture);

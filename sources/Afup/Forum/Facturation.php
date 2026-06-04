@@ -10,6 +10,7 @@ use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
 use Afup\Site\Utils\Utils;
 use Afup\Site\Utils\Vat;
+use AppBundle\Afup;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\MailUser;
@@ -414,9 +415,9 @@ class Facturation
         );
         $mailer = Mail::createMailer();
         $mailer->renderTemplate($message,'mail_templates/facture-forum.html.twig', [
-            'raison_sociale' => AFUP_RAISON_SOCIALE,
-            'adresse' => AFUP_ADRESSE,
-            'ville' => AFUP_CODE_POSTAL . ' ' . AFUP_VILLE,
+            'raison_sociale' => Afup::RAISON_SOCIALE,
+            'adresse' => Afup::ADRESSE,
+            'ville' => Afup::CODE_POSTAL . ' ' . Afup::VILLE,
         ]);
         $message->addAttachment(new Attachment(
             $cheminFacture,

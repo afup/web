@@ -12,6 +12,10 @@ use AppBundle\MembershipFee\Model\MembershipFee;
 
 final readonly class SubscriptionManagement
 {
+    public const AFUP_COTISATION_PERSONNE_MORALE = 150;
+    public const AFUP_COTISATION_PERSONNE_PHYSIQUE = 30;
+    public const AFUP_PERSONNE_MORALE_SEUIL = 3;
+
     public function __construct(private MembershipFeeService $membershipFeeService) {}
 
     public function createInvoiceForInscription(CompanyMember $company, int $numberOfMembers): array
@@ -22,7 +26,7 @@ final readonly class SubscriptionManagement
         $this->membershipFeeService->ajouter(
             MemberType::MemberCompany,
             $company->getId(),
-            ceil($numberOfMembers / AFUP_PERSONNE_MORALE_SEUIL) * AFUP_COTISATION_PERSONNE_MORALE * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE),
+            ceil($numberOfMembers / self::AFUP_PERSONNE_MORALE_SEUIL) * self::AFUP_COTISATION_PERSONNE_MORALE * (1 + Utils::MEMBERSHIP_FEE_VAT_RATE),
             null,
             null,
             (new \DateTime())->getTimestamp(),

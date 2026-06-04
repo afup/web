@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Membership\Fee;
 
+use AppBundle\Association\CompanyMembership\SubscriptionManagement;
 use AppBundle\MembershipFee\MembershipFeeService;
 use Afup\Site\Droits;
 use Afup\Site\Utils\Utils;
@@ -86,7 +87,7 @@ final class IndexAction extends AbstractController
             $id_personne = $identifiant;
             $type_personne = MemberType::MemberPhysical;
             $prefixe = 'Personne physique';
-            $montant = AFUP_COTISATION_PERSONNE_PHYSIQUE;
+            $montant = SubscriptionManagement::AFUP_COTISATION_PERSONNE_PHYSIQUE;
         }
 
         $formattedMontant = number_format($montant, 2, ',', ' ');

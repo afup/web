@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Form;
 
+use AppBundle\Association\CompanyMembership\SubscriptionManagement;
 use AppBundle\Association\Model\CompanyMember;
 use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
 use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaIsValid;
@@ -24,8 +25,8 @@ class CompanyMemberType extends AbstractType
     {
         $choices = [];
         for ($i = 1; $i <= 10; $i++) {
-            $j = $i * AFUP_PERSONNE_MORALE_SEUIL;
-            $choices[$j . ' (' . $i * AFUP_COTISATION_PERSONNE_MORALE . '€)'] = $j;
+            $j = $i * SubscriptionManagement::AFUP_PERSONNE_MORALE_SEUIL;
+            $choices[$j . ' (' . $i * SubscriptionManagement::AFUP_COTISATION_PERSONNE_MORALE . '€)'] = $j;
         }
 
         $builder
