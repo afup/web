@@ -34,6 +34,7 @@ class TicketStatsNotificationCommand extends Command
         $this
             ->setName('ticket-stats-notification')
             ->addOption('display-diff', null, InputOption::VALUE_NONE)
+            ->addOption('dry-run', null, InputOption::VALUE_NONE, "Affiche les messages sans les envoyer à Slack")
         ;
     }
 
@@ -49,6 +50,8 @@ class TicketStatsNotificationCommand extends Command
             $date->modify('- 1 day');
         }
 
+        $dryRun = (bool) $input->getOption('dry-run');
+
         /** @var Event $event */
         foreach ($this->eventRepository->getNextEvents() as $event) {
             $message = $this->messageFactory->createMessageForTicketStats(
@@ -57,6 +60,17 @@ class TicketStatsNotificationCommand extends Command
                 $this->ticketTypeRepository,
                 $date,
             );
+
+            if ($dryRun) {
+                $output->writeln(sprintf('<info>[%s] %s</info>', $message->getChannel(), $message->getUsername()));
+                foreach ($message->getAttachments() as $attachment) {
+                    $output->writeln(sprintf('  %s', $attachment->getTitle()));
+                    foreach ($attachment->getFields() as $field) {
+                        $output->writeln(sprintf('    - %s : %s', $field->getTitle(), $field->getValue()));
+                    }
+                }
+                continue;
+            }
 
             $this->slackNotifier->sendMessage($message);
         }
