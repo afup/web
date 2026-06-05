@@ -6,6 +6,7 @@ namespace AppBundle\Slack;
 
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\EventStats\SalesPilotage;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
@@ -180,7 +181,6 @@ class MessageFactory
 
     public function createMessageForTicketStats(Event $event, EventStatsRepository $eventStatsRepository, TicketTypeRepository $ticketRepository, ?\DateTime $date = null): Message
     {
-        $eventStats = $eventStatsRepository->getStats((int) $event->getId());
         $message = new Message();
         $message
             ->setChannel($event->isAfupDay() ? 'afupday' : 'pole-forum')
@@ -205,33 +205,60 @@ class MessageFactory
             $message->addAttachment($attachment);
         }
 
+        $pilotage = $eventStatsRepository->getSalesPilotage($event);
+
         $attachment = new Attachment();
         $attachment
-            ->setTitle('Total des inscriptions')
-            ->setTitleLink($this->urlGenerator->generate('admin_event_ticket_list', ['id' => $event->getId()],UrlGeneratorInterface::ABSOLUTE_URL))
+            ->setTitle('Pilotage des ventes')
+            ->setTitleLink($this->urlGenerator->generate('admin_event_ticket_list', ['id' => $event->getId()], UrlGeneratorInterface::ABSOLUTE_URL))
+            ->addField((new Field())->setShort(true)->setTitle('Billets vendus (payants)')
+                ->setValue((string) $pilotage->paidTickets))
+            ->addField((new Field())->setShort(true)->setTitle('Jours de vente restants')
+                ->setValue((string) $pilotage->daysToEndOfSales))
+            ->addField((new Field())->setShort(true)->setTitle('Taux de remplissage')
+                ->setValue($this->formatFillRate($pilotage)))
+            ->addField((new Field())->setShort(true)->setTitle('Comparaison N-1')
+                ->setValue($this->formatPilotageComparison($pilotage)))
         ;
-
-        if ($event->lastsOneDay()) {
-            $tickets = $eventStats->firstDay->paid;
-            if ($event->getSeats()) {
-                $percentage = floor(($tickets * 100) / $event->getSeats());
-                $tickets = $tickets . ' / ' . $event->getSeats() . " ($percentage%)";
-            }
-
-            $attachment->addField((new Field())->setShort(true)->setTitle('Journée unique')
-                ->setValue($tickets));
-        } else {
-            $attachment
-                ->addField((new Field())->setShort(true)->setTitle('Premier jour')
-                    ->setValue($eventStats->firstDay->paid))
-                ->addField((new Field())->setShort(true)->setTitle('Deuxième jour')
-                    ->setValue($eventStats->secondDay->paid))
-            ;
-        }
 
         $message->addAttachment($attachment);
 
         return $message;
+    }
+
+    private function formatFillRate(SalesPilotage $pilotage): string
+    {
+        $fillRate = $pilotage->getFillRate();
+        if ($fillRate === null) {
+            return '—';
+        }
+
+        return sprintf('%d %% (%d / %d)', $fillRate, $pilotage->paidTickets, $pilotage->seats);
+    }
+
+    private function formatPilotageComparison(SalesPilotage $pilotage): string
+    {
+        if ($pilotage->previousPaidTicketsAtSameStage === null) {
+            return '—';
+        }
+
+        $detail = sprintf(
+            '%d à ce stade · %d au total',
+            $pilotage->previousPaidTicketsAtSameStage,
+            $pilotage->previousPaidTicketsTotal,
+        );
+        if ($pilotage->previousEditionTitle !== null) {
+            $detail .= sprintf(' (%s)', $pilotage->previousEditionTitle);
+        }
+
+        $evolution = $pilotage->getEvolutionRate();
+        if ($evolution === null) {
+            return $detail;
+        }
+
+        $trend = $evolution > 0 ? ':chart_with_upwards_trend:' : ($evolution < 0 ? ':chart_with_downwards_trend:' : ':arrow_right:');
+
+        return sprintf('%s %+d %% — %s', $trend, $evolution, $detail);
     }
 
 

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model\Repository;
 
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\EventStats\CFPStats;
+use AppBundle\Event\Model\EventStats\SalesPilotage;
 use AppBundle\Event\Model\EventStats\TicketTypeStats;
 use AppBundle\Event\Model\EventStats;
 use AppBundle\Event\Model\EventStats\DailyStats;
@@ -214,6 +216,72 @@ class EventStatsRepository
             'max' => $i,
             'daysToEndOfSales' => $daysToEndOfSales,
         ];
+    }
+
+    /**
+     * Instrument de pilotage des ventes : billets payants vendus, jours de vente
+     * restants, taux de remplissage et comparaison avec l'édition N-1 prise au
+     * même stade de son cycle de vente.
+     */
+    public function getSalesPilotage(Event $event): SalesPilotage
+    {
+        $eventId = (int) $event->getId();
+
+        $now = new DateTimeImmutable();
+        $endOfSales = DateTimeImmutable::createFromInterface($event->getDateEndSales());
+        $daysToEndOfSales = $endOfSales >= $now ? (int) $now->diff($endOfSales)->format('%a') : 0;
+
+        $paidTickets = $this->countPaidTickets($eventId);
+
+        $previousAtSameStage = null;
+        $previousTotal = null;
+        $previousTitle = null;
+
+        $previousEvent = $this->eventRepository->getLastYearEvent($event);
+        if ((int) $previousEvent->getId() !== $eventId) {
+            $previousEventId = (int) $previousEvent->getId();
+            $previousTitle = $previousEvent->getTitle();
+            // On compte les billets de l'édition N-1 vendus alors qu'il lui restait
+            // au moins autant de jours de vente qu'aujourd'hui (même stade du cycle).
+            $previousAtSameStage = $this->countPaidTickets($previousEventId, -$daysToEndOfSales);
+            $previousTotal = $this->countPaidTickets($previousEventId);
+        }
+
+        return new SalesPilotage(
+            $paidTickets,
+            $event->getSeats(),
+            $daysToEndOfSales,
+            $previousAtSameStage,
+            $previousTotal,
+            $previousTitle,
+        );
+    }
+
+    /**
+     * Nombre de billets payés (etat = PAID) sur un type de tarif payant
+     * (default_price > 0). Si $maxDayOffset est fourni, seuls les billets vendus
+     * alors qu'il restait au moins ce nombre de jours avant la fin des ventes sont
+     * comptés (offset négatif, relatif à la date de fin de vente de l'événement).
+     */
+    private function countPaidTickets(int $eventId, ?int $maxDayOffset = null): int
+    {
+        $queryBuilder = $this->connection->createQueryBuilder()
+            ->select('COUNT(*)')
+            ->from('afup_inscription_forum', 'i')
+            ->innerJoin('i', 'afup_forum_tarif', 'aft', 'aft.id = i.type_inscription AND aft.default_price > 0')
+            ->where('i.id_forum = :eventId')
+            ->andWhere('i.etat = :paid')
+            ->setParameter('eventId', $eventId)
+            ->setParameter('paid', Ticket::STATUS_PAID);
+
+        if ($maxDayOffset !== null) {
+            $queryBuilder
+                ->innerJoin('i', 'afup_forum', 'af', 'af.id = i.id_forum')
+                ->andWhere("DATEDIFF(FROM_UNIXTIME(i.date), FROM_UNIXTIME(af.date_fin_vente)) <= :maxDayOffset")
+                ->setParameter('maxDayOffset', $maxDayOffset);
+        }
+
+        return (int) $queryBuilder->executeQuery()->fetchOne();
     }
 
     public function getCFPStats(int $eventId): CFPStats
