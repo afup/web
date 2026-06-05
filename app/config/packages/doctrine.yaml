@@ -51,6 +51,11 @@ doctrine:
         is_bundle: false
         dir: '%kernel.project_dir%/../sources/AppBundle/Veille/Entity'
         prefix: 'AppBundle\Veille\Entity'
+      ActionThrottling:
+        type: attribute
+        is_bundle: false
+        dir: '%kernel.project_dir%/../sources/AppBundle/Security/ActionThrottling/Entity'
+        prefix: 'AppBundle\Security\ActionThrottling\Entity'
 when@test:
   doctrine:
     dbal:

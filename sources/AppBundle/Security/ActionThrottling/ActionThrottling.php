@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Security\ActionThrottling;
 
+use AppBundle\Security\ActionThrottling\Entity\Log;
+use AppBundle\Security\ActionThrottling\Entity\Repository\LogRepository;
+
 final readonly class ActionThrottling
 {
     public function __construct(private LogRepository $logRepository) {}
@@ -22,7 +25,7 @@ final readonly class ActionThrottling
         return $logs['ip'] > $limitations[$action]['limit'] || $logs['object'] > $limitations[$action]['limit'];
     }
 
-    public function clearLogsForIp($action, $ip): void
+    public function clearLogsForIp(string $action, string $ip): void
     {
         $this->logRepository->removeLogs($action, $ip);
     }
@@ -30,12 +33,10 @@ final readonly class ActionThrottling
     public function log(string $action, ?string $ip = null, ?int $objectId = null): void
     {
         $log = new Log();
-        $log
-            ->setCreatedOn(new \DateTime())
-            ->setAction($action)
-            ->setIp($ip)
-            ->setObjectId($objectId)
-        ;
+        $log->dateCreation = new \DateTime();
+        $log->action = $action;
+        $log->ip = $ip !== null ? ip2long($ip) : null;
+        $log->idObjet = $objectId;
         $this->logRepository->save($log);
     }
 
