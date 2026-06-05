@@ -23,6 +23,8 @@ doctrine:
     dql:
       datetime_functions:
         UNIX_TIMESTAMP: DoctrineExtensions\Query\Mysql\UnixTimestamp
+        YEAR: DoctrineExtensions\Query\Mysql\Year
+        FROM_UNIXTIME: DoctrineExtensions\Query\Mysql\FromUnixtime
     mappings:
       Association:
         type: attribute

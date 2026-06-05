@@ -1,17 +1,17 @@
 {% extends 'site/base.html.twig' %}
 
-{% block title %}{{ article.getTitle }} - AFUP{% endblock %}
+{% block title %}{{ article.titre }} - AFUP{% endblock %}
 
 {% block metas %}
     {{ parent() }}
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="AFUP - {{ article.getTitle }}">
-    <meta name="twitter:description" content="{{ article.textTeaser }}">
+    <meta name="twitter:title" content="AFUP - {{ article.titre }}">
+    <meta name="twitter:description" content="{{ article.resumeTexte }}">
     <meta name="twitter:domain" content="afup.org">
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="AFUP - {{ article.getTitle }}" />
-    <meta property="og:url" content="{{ url('news_display', {code: article.getSlug }) }}" />
-    <meta property="og:description" content="{{ article.textTeaser }}" />
+    <meta property="og:title" content="AFUP - {{ article.titre }}" />
+    <meta property="og:url" content="{{ url('news_display', {code: article.slug }) }}" />
+    <meta property="og:description" content="{{ article.resumeTexte }}" />
     <meta property="og:site_name" content="AFUP" />
 {% endblock %}
 
@@ -32,47 +32,47 @@
                 </div>
                 <div class="col-md-10">
 
-                    {% if article.state == -1 %}
+                    {% if article.etat == enum('AppBundle\\Site\\Enum\\ArticleEtat').HorsLigne %}
                         <div class="flash flash-error"><strong>Hors ligne</strong> : article supprimé</div>
-                    {% elseif article.state == 0 %}
+                    {% elseif article.etat == enum('AppBundle\\Site\\Enum\\ArticleEtat').EnAttente %}
                         <div class="flash flash-notice"><strong>En attente</strong> : article non publié</div>
                     {% endif %}
 
-                    <h1>{{ article.getTitle }}</h1>
+                    <h1>{{ article.titre }}</h1>
 
-                    <h4>{{ article.publishedAt|format_date('long') }}</h4>
+                    <h4>{{ article.datePublication|format_date('long') }}</h4>
 
                     <blockquote>
-                        {{ article.formatedLeadParagraph|raw }}
+                        {{ article.chapeauFormate|raw }}
                     </blockquote>
 
-                    {{ article.formatedContent|raw }}
+                    {{ article.contenuFormate|raw }}
 
                     <hr />
 
                     <p>
                         {% if article.theme %}
-                        Thème : <a href="{{ path('news_list', { news_filters : { theme : [article.themeEnum.value]} }) }}">{{ article.themeEnum.label }}</a> /
+                        Thème : <a href="{{ path('news_list', { news_filters : { theme : [article.theme.value]} }) }}">{{ article.theme.label }}</a> /
                         {% endif %}
                         {% if related_event %}
                         Cycle de conférences : <a href="{{ path('news_list', { news_filters : { event : [related_event.id]} }) }}">{{ related_event.title }}</a> /
                         {% endif %}
-                        {% set year = article.publishedAt|date('Y') %}
+                        {% set year = article.datePublication|date('Y') %}
                         Année : <a href="{{ path('news_list', { news_filters : { year : [year]} }) }}">{{ year }}</a>
                     </p>
 
                     {% if previous or next %}
                     <div class="prev-next-links">
                         {% if previous %}
-                        <a class="prev-next-link" href="{{ url('news_display', {code: previous.getSlug }) }}">
+                        <a class="prev-next-link" href="{{ url('news_display', {code: previous.slug }) }}">
                             <span class="prev-next-link__prev"><i class="fa fa-backward"></i>&nbsp;Article précédent</span>
-                            <span class="prev-next-link__title">{{ previous.getTitle }}</span>
+                            <span class="prev-next-link__title">{{ previous.titre }}</span>
                         </a>
                         {% endif %}
                         {% if next %}
-                        <a class="prev-next-link" href="{{ url('news_display', {code: next.getSlug }) }}">
+                        <a class="prev-next-link" href="{{ url('news_display', {code: next.slug }) }}">
                             <span class="prev-next-link__next">Article suivant&nbsp;<i class="fa fa-forward"></i></span>
-                            <span class="prev-next-link__title">{{ next.getTitle }}</span>
+                            <span class="prev-next-link__title">{{ next.titre }}</span>
                         </a>
                         {% endif %}
                     </div>

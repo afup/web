@@ -58,17 +58,17 @@
                         {% for actualite in actualites %}
                             <li class="{% if loop.first %} home-list-item_first {% endif %}">
                                 <a href="{{ path('news_display', {code: actualite.slug}) }}">
-                                    <span class="home-list-date">{{ actualite.publishedAt|date('d/m') }}</span>
+                                    <span class="home-list-date">{{ actualite.datePublication|date('d/m') }}</span>
                                     {% if loop.first  %}
-                                        <span class="home-actualite-title">{{ actualite.title }}</span>
+                                        <span class="home-actualite-title">{{ actualite.titre }}</span>
                                         <div class="home-list-chapeau-container">
                                             <p>
-                                                {{ actualite.leadParagraph|raw }}
+                                                {{ actualite.chapeau|raw }}
                                                 <span class="home-read-more">Lire plus <i class="fa fa-arrow-right"></i></span>
                                             </p>
                                         </div>
                                     {% else %}
-                                        {{ actualite.title }}
+                                        {{ actualite.titre }}
                                     {% endif %}
                                 </a>
                             </li>

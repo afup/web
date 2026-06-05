@@ -29,4 +29,9 @@ abstract class EntityRepository extends ServiceEntityRepository
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
     }
+
+    final protected function hasColumn(string $column): bool
+    {
+        return in_array($column, $this->getClassMetadata()->getColumnNames(), true);
+    }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Site\Article;
 
 use AppBundle\AuditLog\Audit;
-use AppBundle\Site\Model\Repository\ArticleRepository;
+use AppBundle\Site\Entity\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -25,11 +25,15 @@ class DeleteArticleAction extends AbstractController
             $this->addFlash('error', 'Token invalide');
             return $this->redirectToRoute('admin_site_articles_list');
         }
-        $article = $this->articleRepository->get($id);
-        $name = $article->getTitle();
+
+        $article = $this->articleRepository->find($id);
+        if ($article === null) {
+            throw $this->createNotFoundException();
+        }
+
         $this->articleRepository->delete($article);
-        $this->audit->log('Suppression de l\'article ' . $name);
-        $this->addFlash('notice', 'L\'article ' . $name . ' a été supprimé');
+        $this->audit->log('Suppression de l\'article ' . $article->titre);
+        $this->addFlash('notice', 'L\'article ' . $article->titre . ' a été supprimé');
         return $this->redirectToRoute('admin_site_articles_list');
     }
 }

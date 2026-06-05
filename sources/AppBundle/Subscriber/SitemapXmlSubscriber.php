@@ -15,8 +15,7 @@ use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Entity\Repository\FeuilleRepository;
-use AppBundle\Site\Model\Article;
-use AppBundle\Site\Model\Repository\ArticleRepository;
+use AppBundle\Site\Entity\Repository\ArticleRepository;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
 use Presta\SitemapBundle\Service\UrlContainerInterface;
 use Presta\SitemapBundle\Sitemap\Url\GoogleVideo;
@@ -125,8 +124,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
 
     public function registerNewsUrls(UrlContainerInterface $urls): void
     {
-        /** @var Article[] $news */
-        $news = $this->articleRepository->findAllPublishedNews();
+        $news = $this->articleRepository->findAllPublishedArticles();
 
         foreach ($news as $article) {
             $urls->addUrl(
@@ -136,7 +134,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                         ['code' => $article->getSlug()],
                         UrlGeneratorInterface::ABSOLUTE_URL,
                     ),
-                    $article->getPublishedAt(),
+                    $article->datePublication,
                     UrlConcrete::CHANGEFREQ_DAILY,
                     1,
                 ),
@@ -144,7 +142,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
             );
         }
 
-        $total = $this->articleRepository->countPublishedNews([]);
+        $total = $this->articleRepository->countPublishedArticles([]);
         $byPage = ListAction::ARTICLES_PER_PAGE;
         $lastPage = ceil($total / $byPage);
 
