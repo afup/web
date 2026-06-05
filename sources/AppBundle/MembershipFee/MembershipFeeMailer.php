@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\MembershipFee;
 
+use AppBundle\Afup;
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
@@ -58,9 +59,9 @@ final readonly class MembershipFeeMailer
         $corps .= "<p>Veuillez trouver ci-joint la facture correspondant à votre adhésion à l'AFUP.</p>";
         $corps .= "<p>Nous restons à votre disposition pour toute demande complémentaire.</p>";
         $corps .= "<p>Le bureau</p>";
-        $corps .= AFUP_RAISON_SOCIALE . "<br />";
-        $corps .= AFUP_ADRESSE . "<br />";
-        $corps .= AFUP_CODE_POSTAL . " " . AFUP_VILLE . "<br />";
+        $corps .= Afup::RAISON_SOCIALE . "<br />";
+        $corps .= Afup::ADRESSE . "<br />";
+        $corps .= Afup::CODE_POSTAL . " " . Afup::VILLE . "<br />";
 
         $cheminFacture = AFUP_CHEMIN_RACINE . 'cache/fact' . $idCotisation . '.pdf';
         $numeroFacture = $this->pdfGenerator->genererFacture($idCotisation, $cheminFacture);

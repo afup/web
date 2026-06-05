@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\Association\Model;
 
+use AppBundle\Association\CompanyMembership\SubscriptionManagement;
 use AppBundle\Association\Model\CompanyMember;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -19,11 +20,15 @@ class CompanyMemberTest extends TestCase
     public static function companies(): array
     {
         return [
-            'null' => [(new CompanyMember()), AFUP_COTISATION_PERSONNE_MORALE],
-            'under' => [(new CompanyMember())->setMaxMembers(2), AFUP_COTISATION_PERSONNE_MORALE],
-            'equal' => [(new CompanyMember())->setMaxMembers(3), AFUP_COTISATION_PERSONNE_MORALE],
-            'just over' => [(new CompanyMember())->setMaxMembers(4), 2 * AFUP_COTISATION_PERSONNE_MORALE],
-            'over' => [(new CompanyMember())->setMaxMembers(6), 2 * AFUP_COTISATION_PERSONNE_MORALE],
+            'null' => [(new CompanyMember()), SubscriptionManagement::AFUP_COTISATION_PERSONNE_MORALE],
+            'under' => [(new CompanyMember())->setMaxMembers(2),
+                SubscriptionManagement::AFUP_COTISATION_PERSONNE_MORALE,
+            ],
+            'equal' => [(new CompanyMember())->setMaxMembers(3),
+                SubscriptionManagement::AFUP_COTISATION_PERSONNE_MORALE,
+            ],
+            'just over' => [(new CompanyMember())->setMaxMembers(4), 2 * SubscriptionManagement::AFUP_COTISATION_PERSONNE_MORALE],
+            'over' => [(new CompanyMember())->setMaxMembers(6), 2 * SubscriptionManagement::AFUP_COTISATION_PERSONNE_MORALE],
         ];
     }
 

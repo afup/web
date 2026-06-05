@@ -15,27 +15,48 @@ class Ticket implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
+    // Ticket transport mode
+    public const AFUP_TRANSPORT_MODE_SEUL_THERMIQUE = 10;
+    public const AFUP_TRANSPORT_MODE_SEUL_ELECTRIQUE = 20;
+    public const AFUP_TRANSPORT_MODE_SEUL_HYBRIDE = 30;
+    public const AFUP_TRANSPORT_MODE_PASSAGERS_THERMIQUE = 40;
+    public const AFUP_TRANSPORT_MODE_PASSAGERS_ELECTRIQUE = 50;
+    public const AFUP_TRANSPORT_MODE_PASSAGERS_HYBRIDE = 60;
+    public const AFUP_TRANSPORT_MODE_BUS = 70;
+    public const AFUP_TRANSPORT_MODE_TRAIN = 80;
+    public const AFUP_TRANSPORT_MODE_AVION_ECO = 90;
+    public const AFUP_TRANSPORT_MODE_AVION_BUSINESS = 100;
+    public const AFUP_TRANSPORT_MODE_COMMUN = 110;
+
+    // Ticket transport distance
+    public const AFUP_TRANSPORT_DISTANCE_0 = 0;
+    public const AFUP_TRANSPORT_DISTANCE_25_50 = 25;
+    public const AFUP_TRANSPORT_DISTANCE_50_100 = 50;
+    public const AFUP_TRANSPORT_DISTANCE_100_500 = 100;
+    public const AFUP_TRANSPORT_DISTANCE_500_1000 = 500;
+    public const AFUP_TRANSPORT_DISTANCE_1000 = 1000;
+
     public const TRANSPORT_MODES = [
-        AFUP_TRANSPORT_MODE_SEUL_THERMIQUE => 'Voiture seul·e',
-        AFUP_TRANSPORT_MODE_SEUL_ELECTRIQUE => 'Voiture seul·e électrique',
-        AFUP_TRANSPORT_MODE_SEUL_HYBRIDE => 'Voiture seul·e hybride',
-        AFUP_TRANSPORT_MODE_PASSAGERS_THERMIQUE => 'Voiture avec passagers·ères',
-        AFUP_TRANSPORT_MODE_PASSAGERS_ELECTRIQUE => 'Voiture avec passagers·ères électrique',
-        AFUP_TRANSPORT_MODE_PASSAGERS_HYBRIDE => 'Voiture avec passagers·ères hybride',
-        AFUP_TRANSPORT_MODE_BUS => 'Bus',
-        AFUP_TRANSPORT_MODE_TRAIN => 'Train',
-        AFUP_TRANSPORT_MODE_AVION_ECO => 'Avion classe économique',
-        AFUP_TRANSPORT_MODE_AVION_BUSINESS => 'Avion classe business',
-        AFUP_TRANSPORT_MODE_COMMUN => 'Transports en commun',
+        self::AFUP_TRANSPORT_MODE_SEUL_THERMIQUE => 'Voiture seul·e',
+        self::AFUP_TRANSPORT_MODE_SEUL_ELECTRIQUE => 'Voiture seul·e électrique',
+        self::AFUP_TRANSPORT_MODE_SEUL_HYBRIDE => 'Voiture seul·e hybride',
+        self::AFUP_TRANSPORT_MODE_PASSAGERS_THERMIQUE => 'Voiture avec passagers·ères',
+        self::AFUP_TRANSPORT_MODE_PASSAGERS_ELECTRIQUE => 'Voiture avec passagers·ères électrique',
+        self::AFUP_TRANSPORT_MODE_PASSAGERS_HYBRIDE => 'Voiture avec passagers·ères hybride',
+        self::AFUP_TRANSPORT_MODE_BUS => 'Bus',
+        self::AFUP_TRANSPORT_MODE_TRAIN => 'Train',
+        self::AFUP_TRANSPORT_MODE_AVION_ECO => 'Avion classe économique',
+        self::AFUP_TRANSPORT_MODE_AVION_BUSINESS => 'Avion classe business',
+        self::AFUP_TRANSPORT_MODE_COMMUN => 'Transports en commun',
     ];
 
     public const TRANSPORT_DISTANCES = [
-        AFUP_TRANSPORT_DISTANCE_0 => '< 25 km',
-        AFUP_TRANSPORT_DISTANCE_25_50 => 'entre 25 et 50 km',
-        AFUP_TRANSPORT_DISTANCE_50_100 => 'entre 50 et 100 km',
-        AFUP_TRANSPORT_DISTANCE_100_500 => 'entre 100 et 500 km',
-        AFUP_TRANSPORT_DISTANCE_500_1000 => 'entre 500 et 1000 km',
-        AFUP_TRANSPORT_DISTANCE_1000 => '> 1000 km',
+        self::AFUP_TRANSPORT_DISTANCE_0 => '< 25 km',
+        self::AFUP_TRANSPORT_DISTANCE_25_50 => 'entre 25 et 50 km',
+        self::AFUP_TRANSPORT_DISTANCE_50_100 => 'entre 50 et 100 km',
+        self::AFUP_TRANSPORT_DISTANCE_100_500 => 'entre 100 et 500 km',
+        self::AFUP_TRANSPORT_DISTANCE_500_1000 => 'entre 500 et 1000 km',
+        self::AFUP_TRANSPORT_DISTANCE_1000 => '> 1000 km',
     ];
 
     public const STATUS_CREATED = 0;

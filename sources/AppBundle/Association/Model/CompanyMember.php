@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Model;
 
+use AppBundle\Association\CompanyMembership\SubscriptionManagement;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use Cocur\Slugify\Slugify;
@@ -674,10 +675,11 @@ class CompanyMember implements NotifyPropertyInterface
         $this->cellphone = $cellphone;
     }
 
-    public function getMembershipFee(int $default = AFUP_PERSONNE_MORALE_SEUIL): float
+    public function getMembershipFee(int $default = SubscriptionManagement::AFUP_PERSONNE_MORALE_SEUIL): float
     {
         $max = max($this->getMaxMembers(), $default);
 
-        return ceil($max / AFUP_PERSONNE_MORALE_SEUIL) * AFUP_COTISATION_PERSONNE_MORALE;
+        return ceil($max / SubscriptionManagement::AFUP_PERSONNE_MORALE_SEUIL,
+            ) * SubscriptionManagement::AFUP_COTISATION_PERSONNE_MORALE;
     }
 }
