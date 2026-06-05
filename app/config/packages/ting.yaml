@@ -52,10 +52,3 @@ ting:
                 default:
                     connection: main
                     database: '%database_name%'
-        techletter:
-            namespace: AppBundle\TechLetter\Model\Repository
-            directory: "@AppBundle/TechLetter/Model/Repository"
-            options:
-                default:
-                    connection: main
-                    database: "%database_name%"

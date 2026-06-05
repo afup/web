@@ -5,27 +5,27 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\TechLetter;
 
 use AppBundle\TechLetter\Model\News;
-use AppBundle\TechLetter\Model\Repository\SendingRepository;
 use AppBundle\TechLetter\Model\TechLetterFactory;
+use AppBundle\Veille\Entity\Repository\EnvoiRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 final class HistoryAction extends AbstractController
 {
     public function __construct(
-        private readonly SendingRepository $sendingRepository,
+        private readonly EnvoiRepository $envoiRepository,
         private readonly TechLetterFactory $techLetterFactory,
     ) {}
 
     public function __invoke(): Response
     {
         $history = [];
-        foreach ($this->sendingRepository->getAll() as $sending) {
+        foreach ($this->envoiRepository->findAll() as $envoi) {
             $defaultColumns = [
-                'date' => $sending->getSendingDate(),
+                'date' => $envoi->dateEnvoi,
             ];
 
-            $techLetter = $this->techLetterFactory->createTechLetterFromJson($sending->getTechletter());
+            $techLetter = $this->techLetterFactory->createTechLetterFromJson($envoi->contenu);
 
             if (($firstNews = $techLetter->getFirstNews()) instanceof News) {
                 $url = $firstNews->getUrl();

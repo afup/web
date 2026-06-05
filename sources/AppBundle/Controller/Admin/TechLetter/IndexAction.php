@@ -5,33 +5,33 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\TechLetter;
 
 use AppBundle\TechLetter\Form\SendingType;
-use AppBundle\TechLetter\Model\Repository\SendingRepository;
+use AppBundle\Veille\Entity\Repository\EnvoiRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class IndexAction extends AbstractController
 {
-    public function __construct(private readonly SendingRepository $sendingRepository) {}
+    public function __construct(private readonly EnvoiRepository $envoiRepository) {}
 
     public function __invoke(Request $request): Response
     {
-        $techLetters = $this->sendingRepository->getAllOrderedByDateDesc();
+        $envois = $this->envoiRepository->getAllOrderedByDateDesc();
         $form = $this->createForm(SendingType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $techletter = $form->getData();
-            $this->sendingRepository->save($techletter);
+            $envoi = $form->getData();
+            $this->envoiRepository->save($envoi);
 
             return $this->redirectToRoute('admin_techletter_generate', [
-                'techletterId' => $techletter->getId(),
+                'techletterId' => $envoi->id,
             ]);
         }
 
         return $this->render('admin/techletter/index.html.twig', [
             'title' => "Veille de l'AFUP",
-            'techletters' => $techLetters,
+            'envois' => $envois,
             'form' => $form->createView(),
         ]);
     }

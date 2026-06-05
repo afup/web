@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\TechLetter\Form;
 
-use AppBundle\TechLetter\Model\Sending;
+use AppBundle\Veille\Entity\Envoi;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -16,7 +16,7 @@ class SendingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('sendingDate', DateType::class, ['label' => 'Date planifiée', 'data' => new \DateTime('next wednesday')])
+            ->add('dateEnvoi', DateType::class, ['label' => 'Date planifiée', 'data' => new \DateTime('next wednesday')])
             ->add('save', SubmitType::class, ['label' => 'Créer cette techletter'])
         ;
     }
@@ -24,7 +24,7 @@ class SendingType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Sending::class,
+            'data_class' => Envoi::class,
         ]);
     }
 }

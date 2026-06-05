@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\TechLetter;
 
 use AppBundle\Mailchimp\Mailchimp;
-use AppBundle\TechLetter\Model\Repository\SendingRepository;
 use AppBundle\TechLetter\Model\TechLetterFactory;
+use AppBundle\Veille\Entity\Repository\EnvoiRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class GenerateAction extends AbstractController
 {
     public function __construct(
-        private readonly SendingRepository $sendingRepository,
+        private readonly EnvoiRepository $envoiRepository,
         #[Autowire('@app.mailchimp_techletter_api')]
         private readonly Mailchimp $mailchimp,
         private readonly TechLetterFactory $techLetterFactory,
@@ -25,21 +25,21 @@ final class GenerateAction extends AbstractController
 
     public function __invoke($techletterId, Request $request): Response
     {
-        $sending = $this->sendingRepository->get($techletterId);
-        if ($sending === null) {
+        $envoi = $this->envoiRepository->find($techletterId);
+        if ($envoi === null) {
             throw $this->createNotFoundException('Could not find this techletter');
         }
-        if ($sending->getSentToMailchimp() === true) {
+        if ($envoi->envoyeMailchimp === true) {
             throw $this->createAccessDeniedException('You cannot edit a sent techletter');
         }
 
-        $techLetter = $this->techLetterFactory->createTechLetterFromJson($sending->getTechletter());
+        $techLetter = $this->techLetterFactory->createTechLetterFromJson($envoi->contenu);
 
         // Save the date
         if ($request->getMethod() === Request::METHOD_POST
             && $this->isCsrfTokenValid('techletterDate', $request->request->get('_csrf_token'))) {
-            $sending->setSendingDate(new \DateTime($request->request->get('sendingDate')));
-            $this->sendingRepository->save($sending);
+            $envoi->dateEnvoi = new \DateTime($request->request->get('sendingDate'));
+            $this->envoiRepository->save($envoi);
             $this->addFlash('notice', 'Date mise à jour');
 
             return $this->redirectToRoute('admin_techletter_generate', ['techletterId' => $techletterId]);
@@ -52,8 +52,8 @@ final class GenerateAction extends AbstractController
         ) {
             // Ne pas planifier l'envoi dans le passé
             $limitDatetime = new \DateTime('+5 min');
-            if ($sending->getSendingDate() < $limitDatetime) {
-                $sending->setSendingDate($limitDatetime);
+            if ($envoi->dateEnvoi < $limitDatetime) {
+                $envoi->dateEnvoi = $limitDatetime;
             }
 
             $mailContent = $this
@@ -66,7 +66,7 @@ final class GenerateAction extends AbstractController
                 )
                 ->getContent();
 
-            $subject = sprintf("Veille de l'AFUP du %s", $sending->getSendingDate()->format('d/m/Y'));
+            $subject = sprintf("Veille de l'AFUP du %s", $envoi->dateEnvoi->format('d/m/Y'));
 
             $template = $this->mailchimp->createTemplate($subject . ' - Template', $mailContent);
 
@@ -82,10 +82,10 @@ final class GenerateAction extends AbstractController
 
             if ($this->isCsrfTokenValid('sendToMailchimpAndSchedule', $request->request->get('_csrf_token'))) {
                 try {
-                    $this->mailchimp->scheduleCampaign($response['id'], $sending->getSendingDate());
+                    $this->mailchimp->scheduleCampaign($response['id'], $envoi->dateEnvoi);
                     $message = sprintf("Newsletter envoyée, verrouillée et planifiée pour être envoyée à %s (%s) sur Mailchimp",
-                        $sending->getSendingDate()->format('d/m/Y H:i'),
-                        $sending->getSendingDate()->getTimezone()->getName(),
+                        $envoi->dateEnvoi->format('d/m/Y H:i'),
+                        $envoi->dateEnvoi->getTimezone()->getName(),
                     );
                     $this->addFlash('notice', $message);
                 } catch (\Exception $exception) {
@@ -98,9 +98,9 @@ final class GenerateAction extends AbstractController
                 $this->addFlash('notice', $message);
             }
 
-            $sending->setArchiveUrl($response['long_archive_url']);
-            $sending->setSentToMailchimp(true);
-            $this->sendingRepository->save($sending);
+            $envoi->urlArchive = $response['long_archive_url'];
+            $envoi->envoyeMailchimp = true;
+            $this->envoiRepository->save($envoi);
 
             return $this->redirectToRoute('admin_techletter_index');
         }
@@ -109,7 +109,7 @@ final class GenerateAction extends AbstractController
             'admin/techletter/generate.html.twig',
             [
                 'title' => "Veille de l'AFUP",
-                'sending' => $sending,
+                'envoi' => $envoi,
                 'tech_letter' => $techLetter,
             ],
         );

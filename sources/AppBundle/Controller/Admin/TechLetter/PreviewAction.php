@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\TechLetter;
 
-use AppBundle\TechLetter\Model\Repository\SendingRepository;
 use AppBundle\TechLetter\Model\TechLetterFactory;
+use AppBundle\Veille\Entity\Repository\EnvoiRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,19 +13,19 @@ use Symfony\Component\HttpFoundation\Response;
 final class PreviewAction extends AbstractController
 {
     public function __construct(
-        private readonly SendingRepository $sendingRepository,
+        private readonly EnvoiRepository $envoiRepository,
         private readonly TechLetterFactory $techLetterFactory,
     ) {}
 
     public function __invoke(Request $request): Response
     {
         $sendingId = $request->request->getInt('techletterId');
-        $sending = $this->sendingRepository->get($sendingId);
+        $envoi = $this->envoiRepository->find($sendingId);
 
-        if ($sending === null) {
+        if ($envoi === null) {
             throw $this->createNotFoundException('Could not find this techletter');
         }
-        if ($sending->getSentToMailchimp() === true) {
+        if ($envoi->envoyeMailchimp === true) {
             throw $this->createAccessDeniedException('You cannot edit a sent techletter');
         }
         if ($this->isCsrfTokenValid('techletterPreview', $request->request->get('_csrf_token')) === false) {
@@ -34,8 +34,8 @@ final class PreviewAction extends AbstractController
 
         $techletter = $this->techLetterFactory->createTechLetterFromJson($request->request->get('techletter'));
         // @todo could be better elsewhere
-        $sending->setTechletter(json_encode($techletter->jsonSerialize()));
-        $this->sendingRepository->save($sending);
+        $envoi->contenu = json_encode($techletter->jsonSerialize());
+        $this->envoiRepository->save($envoi);
 
         return $this->render('admin/techletter/mail_template.html.twig', [
             'preview' => true,
