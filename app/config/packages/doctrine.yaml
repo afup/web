@@ -24,6 +24,11 @@ doctrine:
       datetime_functions:
         UNIX_TIMESTAMP: DoctrineExtensions\Query\Mysql\UnixTimestamp
     mappings:
+      Association:
+        type: attribute
+        is_bundle: false
+        dir: '%kernel.project_dir%/../sources/AppBundle/Association/Entity'
+        prefix: 'AppBundle\Association\Entity'
       Accounting:
         type: attribute
         is_bundle: false
@@ -39,7 +44,11 @@ doctrine:
         is_bundle: false
         dir: '%kernel.project_dir%/../sources/AppBundle/SuperApero/Entity'
         prefix: 'AppBundle\SuperApero\Entity'
-
+      Veille:
+        type: attribute
+        is_bundle: false
+        dir: '%kernel.project_dir%/../sources/AppBundle/Veille/Entity'
+        prefix: 'AppBundle\Veille\Entity'
 when@test:
   doctrine:
     dbal:

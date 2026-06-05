@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Association\Model\Repository\TechletterSubscriptionsRepository;
+use AppBundle\Veille\Entity\Repository\NewsletterInscriptionRepository;
 use AppBundle\Association\UserMembership\StatisticsComputer;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
@@ -23,7 +23,7 @@ class HomeAction extends AbstractController
         private readonly EventRepository $eventRepository,
         private readonly EventStatsRepository $eventStatsRepository,
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
-        private readonly TechletterSubscriptionsRepository $techletterSubscriptionsRepository,
+        private readonly NewsletterInscriptionRepository $newsletterInscriptionRepository,
         private readonly GeneralMeetingRepository $generalMeetingRepository,
         private readonly StatisticsComputer $statisticsComputer,
         private readonly ClockInterface $clock,
@@ -101,7 +101,7 @@ class HomeAction extends AbstractController
         if ($this->isGranted(('ROLE_ADMIN'))) {
             $cards[] = [
                 'title' => 'Abonnements à la veille',
-                'statistics' => ['Abonnements' => $this->techletterSubscriptionsRepository->countAllSubscriptionsWithUser()],
+                'statistics' => ['Abonnements' => $this->newsletterInscriptionRepository->countAllSubscriptionsWithUser()],
                 'url' => $this->generateUrl('admin_techletter_members'),
             ];
 
