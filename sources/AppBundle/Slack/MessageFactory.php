@@ -211,13 +211,13 @@ class MessageFactory
         $attachment
             ->setTitle('Pilotage des ventes')
             ->setTitleLink($this->urlGenerator->generate('admin_event_ticket_list', ['id' => $event->getId()], UrlGeneratorInterface::ABSOLUTE_URL))
-            ->addField((new Field())->setShort(true)->setTitle('Billets vendus (payants)')
+            ->addField(new Field()->setShort(true)->setTitle('Billets vendus (payants)')
                 ->setValue((string) $pilotage->paidTickets))
-            ->addField((new Field())->setShort(true)->setTitle('Jours de vente restants')
+            ->addField(new Field()->setShort(true)->setTitle('Jours de vente restants')
                 ->setValue((string) $pilotage->daysToEndOfSales))
-            ->addField((new Field())->setShort(true)->setTitle('Taux de remplissage')
+            ->addField(new Field()->setShort(true)->setTitle('Taux de remplissage')
                 ->setValue($this->formatFillRate($pilotage)))
-            ->addField((new Field())->setShort(true)->setTitle('Comparaison N-1')
+            ->addField(new Field()->setShort(true)->setTitle('Comparaison N-1')
                 ->setValue($this->formatPilotageComparison($pilotage)))
         ;
 

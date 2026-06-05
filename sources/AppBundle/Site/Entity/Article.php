@@ -64,12 +64,12 @@ class Article
 
     public function getContenuFormate(): string
     {
-        return (new \Parsedown())->text((string) $this->contenu);
+        return new \Parsedown()->text((string) $this->contenu);
     }
 
     public function getChapeauFormate(): string
     {
-        return (new \Parsedown())->text((string) $this->chapeau);
+        return new \Parsedown()->text((string) $this->chapeau);
     }
 
     public function getResume(): string

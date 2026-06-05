@@ -67,7 +67,7 @@ final class IndexAction extends AbstractController
         /** @var array<int, MembershipFee> $liste_cotisations */
         $liste_cotisations = array_merge(iterator_to_array($cotisations_physique), iterator_to_array($cotisations_morale));
 
-        foreach ($liste_cotisations as $k => $cotisation) {
+        foreach ($liste_cotisations as $cotisation) {
             $cotisation->setDownloadInvoice($this->isGranted(MembershipFeeVoter::READ_INVOICE, (string) $cotisation->getId()));
         }
 

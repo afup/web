@@ -197,7 +197,7 @@ final class ArticleRepository extends EntityRepository
 
         if (!empty($filtres['year'])) {
             $qb->andWhere($qb->expr()->in('YEAR(FROM_UNIXTIME(a.datePublication))', ':years'))
-                ->setParameter('years', array_map(fn($year) => (int) $year, $filtres['year']));
+                ->setParameter('years', array_map(fn($year): int => (int) $year, $filtres['year']));
         }
 
         if (!empty($filtres['theme'])) {

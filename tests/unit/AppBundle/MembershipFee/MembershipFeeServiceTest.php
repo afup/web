@@ -72,9 +72,9 @@ final class MembershipFeeServiceTest extends TestCase
 
         $membershipFeeService = new MembershipFeeService($membershipFeeRepository);
 
-        $actual = (new OnlinePaymentHandler(
+        $actual = new OnlinePaymentHandler(
             $membershipFeeService,
-        ))->getAccountFromCmd($cmd);
+        )->getAccountFromCmd($cmd);
 
         self::assertEquals($expected, $actual);
     }

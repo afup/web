@@ -12,9 +12,9 @@ use AppBundle\MembershipFee\Model\MembershipFee;
 
 final readonly class SubscriptionManagement
 {
-    public const AFUP_COTISATION_PERSONNE_MORALE = 150;
-    public const AFUP_COTISATION_PERSONNE_PHYSIQUE = 30;
-    public const AFUP_PERSONNE_MORALE_SEUIL = 3;
+    public const int AFUP_COTISATION_PERSONNE_MORALE = 150;
+    public const int AFUP_COTISATION_PERSONNE_PHYSIQUE = 30;
+    public const int AFUP_PERSONNE_MORALE_SEUIL = 3;
 
     public function __construct(private MembershipFeeService $membershipFeeService) {}
 

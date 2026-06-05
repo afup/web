@@ -126,13 +126,13 @@ class ArticleType extends AbstractType
                 'label' => 'Etat',
                 'required' => false,
                 'class' => ArticleEtat::class,
-                'choice_label' => fn(ArticleEtat $etat) => $etat->label(),
+                'choice_label' => fn(ArticleEtat $etat): string => $etat->label(),
             ])
             ->add('theme', EnumType::class, [
                 'label' => 'Thème',
                 'required' => false,
                 'class' => ArticleTheme::class,
-                'choice_label' => fn(ArticleTheme $theme) => $theme->label(),
+                'choice_label' => fn(ArticleTheme $theme): string => $theme->label(),
             ])
             ->add('idEvent', ChoiceType::class, [
                 'label' => 'Événement',

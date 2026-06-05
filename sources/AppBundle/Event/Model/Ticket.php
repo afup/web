@@ -36,7 +36,7 @@ class Ticket implements NotifyPropertyInterface
     public const int AFUP_TRANSPORT_DISTANCE_500_1000 = 500;
     public const int AFUP_TRANSPORT_DISTANCE_1000 = 1000;
 
-    public const TRANSPORT_MODES = [
+    public const array TRANSPORT_MODES = [
         self::AFUP_TRANSPORT_MODE_SEUL_THERMIQUE => 'Voiture seul·e',
         self::AFUP_TRANSPORT_MODE_SEUL_ELECTRIQUE => 'Voiture seul·e électrique',
         self::AFUP_TRANSPORT_MODE_SEUL_HYBRIDE => 'Voiture seul·e hybride',
@@ -50,7 +50,7 @@ class Ticket implements NotifyPropertyInterface
         self::AFUP_TRANSPORT_MODE_COMMUN => 'Transports en commun',
     ];
 
-    public const TRANSPORT_DISTANCES = [
+    public const array TRANSPORT_DISTANCES = [
         self::AFUP_TRANSPORT_DISTANCE_0 => '< 25 km',
         self::AFUP_TRANSPORT_DISTANCE_25_50 => 'entre 25 et 50 km',
         self::AFUP_TRANSPORT_DISTANCE_50_100 => 'entre 50 et 100 km',
