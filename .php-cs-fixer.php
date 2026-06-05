@@ -11,8 +11,8 @@ $finder = new PhpCsFixer\Finder()
         __DIR__ . '/sources',
         __DIR__ . '/tests',
     ])
-    ->exclude([
-        'app/config/reference.php',
+    ->notPath([
+        'config/reference.php',
     ])
 ;
 
