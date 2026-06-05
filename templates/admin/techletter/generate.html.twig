@@ -1,7 +1,7 @@
 {% extends 'admin/base_with_header.html.twig' %}
 
 {% block content %}
-    <h2>Veille de l'AFUP du {{ sending.sendingDate|date("d/m/Y") }}</h2>
+    <h2>Veille de l'AFUP du {{ envoi.dateEnvoi|date("d/m/Y") }}</h2>
 
     <link rel="stylesheet" href="{{ asset('assets/techletter/notyf.min.css') }}"/>
     <script src="{{ asset('assets/techletter/notyf.min.js') }}"></script>
@@ -10,7 +10,7 @@
         <div class="right menu">
             <div class="item">
                 <form class="afup--form" action="{{ path('admin_techletter_send_test') }}" method="get">
-                    <input type="hidden" name="techletterId" value="{{ sending.id }}"/>
+                    <input type="hidden" name="techletterId" value="{{ envoi.id }}"/>
                     <input type="submit" class="ui button" value="Envoyer une newsletter de test au Pôle"/>
                 </form>
             </div>
@@ -46,7 +46,7 @@
                     <label for="sendingDate">Date planifiée</label>
                     <div>
                         <input name="sendingDate" type="datetime-local"
-                               value="{{ sending.sendingDate|date("Y-m-d H:i:s") }}" id="sendingDate"/>
+                               value="{{ envoi.dateEnvoi|date("Y-m-d H:i:s") }}" id="sendingDate"/>
                     </div>
                 </div>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('techletterDate') }}"/>
@@ -78,7 +78,7 @@
     </form>
 
     <form method="post" action="{{ url('admin_techletter_preview') }}" target="preview-techletter" id="form-update">
-        <input type="hidden" name="techletterId" value="{{ sending.id }}"/>
+        <input type="hidden" name="techletterId" value="{{ envoi.id }}"/>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('techletterPreview') }}"/>
         <input name="techletter" id="textarea" type="hidden" value=""/>
     </form>

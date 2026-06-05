@@ -57,13 +57,13 @@
             </tr>
             </thead>
             <tbody>
-                {% for techletter in techletter_history %}
+                {% for envoi in techletter_history %}
                 <tr>
                     <td>
-                        Veille du {{ techletter.sendingDate|date('d/m/Y') }}
+                        Veille du {{ envoi.dateEnvoi|date('d/m/Y') }}
                     </td>
                     <td>
-                        <a class="button button-inverted button__medium" target="afup-veille" href="{{ techletter.archiveUrl }}">
+                        <a class="button button-inverted button__medium" target="afup-veille" href="{{ envoi.urlArchive }}">
                             Consulter
                         </a>
                     </td>

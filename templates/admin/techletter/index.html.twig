@@ -9,9 +9,9 @@
         <div class="ui form">
             <div class="inline fields">
                 <div class="field">
-                    {{ form_label(form.sendingDate) }}
-                    {{ form_widget(form.sendingDate, {"attr": { "class": "inline fields"} }) }}
-                    {{ form_errors(form.sendingDate) }}
+                    {{ form_label(form.dateEnvoi) }}
+                    {{ form_widget(form.dateEnvoi, {"attr": { "class": "inline fields"} }) }}
+                    {{ form_errors(form.dateEnvoi) }}
 
                     {{ form_row(form.save, { attr: { class : "ui blue button" }}) }}
                 </div>
@@ -31,20 +31,20 @@
             </tr>
         </thead>
         <tbody>
-            {% for techletter in techletters %}
+            {% for envoi in envois %}
                 <tr>
-                    <td>{{ techletter.id }}</td>
+                    <td>{{ envoi.id }}</td>
                     <td>
-                        {% if techletter.sentToMailchimp %}
-                            {{ techletter.sendingDate|date('d/m/Y') }}
+                        {% if envoi.envoyeMailchimp %}
+                            {{ envoi.dateEnvoi|date('d/m/Y') }}
                         {% else %}
-                            <a href="{{ url('admin_techletter_generate', {techletterId: techletter.id}) }}">
-                                {{ techletter.sendingDate|date('d/m/Y') }}
+                            <a href="{{ url('admin_techletter_generate', {techletterId: envoi.id}) }}">
+                                {{ envoi.dateEnvoi|date('d/m/Y') }}
                             </a>
                         {% endif %}
                     </td>
                     <td class="center aligned">
-                        {% if techletter.sentToMailchimp %}
+                        {% if envoi.envoyeMailchimp %}
                             <span class="ui green label">oui</span>
                         {% else %}
                             <span class="ui red label">non</span>

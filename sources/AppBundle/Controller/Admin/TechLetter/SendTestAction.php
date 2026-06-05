@@ -7,8 +7,8 @@ namespace AppBundle\Controller\Admin\TechLetter;
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\Message;
-use AppBundle\TechLetter\Model\Repository\SendingRepository;
 use AppBundle\TechLetter\Model\TechLetterFactory;
+use AppBundle\Veille\Entity\Repository\EnvoiRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 final class SendTestAction extends AbstractController
 {
     public function __construct(
-        private readonly SendingRepository $sendingRepository,
+        private readonly EnvoiRepository $envoiRepository,
         private readonly Mailer $mailer,
         private readonly TechLetterFactory $techLetterFactory,
         #[Autowire('%techletter_test_email_address%')]
@@ -27,19 +27,19 @@ final class SendTestAction extends AbstractController
     public function __invoke(Request $request): RedirectResponse
     {
         $sendingId = $request->query->getInt('techletterId');
-        $sending = $this->sendingRepository->get($sendingId);
+        $envoi = $this->envoiRepository->find($sendingId);
 
-        if ($sending === null) {
+        if ($envoi === null) {
             throw $this->createNotFoundException('Could not find this techletter');
         }
 
-        if ($sending->getSentToMailchimp() === true) {
+        if ($envoi->envoyeMailchimp === true) {
             throw $this->createAccessDeniedException('You send a test on a sent techletter');
         }
 
-        $subject = sprintf("[Test] Veille de l'AFUP du %s", $sending->getSendingDate()->format('d/m/Y'));
+        $subject = sprintf("[Test] Veille de l'AFUP du %s", $envoi->dateEnvoi->format('d/m/Y'));
 
-        $techLetter = $this->techLetterFactory->createTechLetterFromJson($sending->getTechletter());
+        $techLetter = $this->techLetterFactory->createTechLetterFromJson($envoi->contenu);
 
         $message = new Message($subject, null, new MailUser($this->techletterTestEmailAddress));
         $this->mailer->renderTemplate($message,'admin/techletter/mail_template.html.twig', [

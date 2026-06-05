@@ -11,7 +11,7 @@ Feature: Administration - Veille - Campagnes
     And I should see "Date d'envoi planifiée" in the "thead > tr:first-child > th:nth-child(2)" element
     And I should see "Envoyée à mailchimp ?" in the "thead > tr:first-child > th:nth-child(3)" element
 
-    When I fill in "sending_sendingDate" with "2023-02-01"
+    When I fill in "sending[dateEnvoi]" with "2023-02-01"
     And I press "sending_save"
     Then the ".content h2" element should contain "Veille de l'AFUP du 01/02/2023"
 
