@@ -15,7 +15,7 @@ class InvoicingPdfGenerator
 {
     public function __construct(private readonly Pays $pays) {}
 
-    public function generateInvoice(Invoicing $invoicing, ?string $path = null): void
+    public function generateInvoice(Invoicing $invoicing, ?string $path = null): string
     {
         $date = $invoicing->getInvoiceDate() !== null
             ? \DateTimeImmutable::createFromMutable($invoicing->getInvoiceDate())
@@ -61,10 +61,10 @@ class InvoicingPdfGenerator
             $pdf->MultiCell(130, 5, $invoicing->getObservation());
         }
 
-        $this->output($pdf, $path, 'Facture - ' . $invoicing->getCompany() . ' - ' . ($invoicing->getInvoiceDate() ? $invoicing->getInvoiceDate()->format('Y-m-d') : '') . '.pdf');
+        return $this->output($pdf, $path, $this->getInvoiceFilename($invoicing));
     }
 
-    public function generateQuotation(Invoicing $invoicing, ?string $path = null): void
+    public function generateQuotation(Invoicing $invoicing, ?string $path = null): string
     {
         $date = $invoicing->getQuotationDate() !== null
             ? \DateTimeImmutable::createFromMutable($invoicing->getQuotationDate())
@@ -100,7 +100,17 @@ class InvoicingPdfGenerator
         $pdf->SetFont('Arial', '', 8);
         $pdf->MultiCell(130, 5, $invoicing->getObservation());
 
-        $this->output($pdf, $path, 'Devis - ' . $invoicing->getCompany() . ' - ' . ($invoicing->getQuotationDate() ? $invoicing->getQuotationDate()->format('Y-m-d') : '') . '.pdf');
+        return $this->output($pdf, $path, $this->getQuotationFilename($invoicing));
+    }
+
+    public function getInvoiceFilename(Invoicing $invoicing): string
+    {
+        return 'Facture - ' . $invoicing->getCompany() . ' - ' . ($invoicing->getInvoiceDate() ? $invoicing->getInvoiceDate()->format('Y-m-d') : '') . '.pdf';
+    }
+
+    public function getQuotationFilename(Invoicing $invoicing): string
+    {
+        return 'Devis - ' . $invoicing->getCompany() . ' - ' . ($invoicing->getQuotationDate() ? $invoicing->getQuotationDate()->format('Y-m-d') : '') . '.pdf';
     }
 
     private function buildPdf(\DateTimeImmutable $date, bool $isSubjectedToVat): PDF_Facture
@@ -287,13 +297,13 @@ class InvoicingPdfGenerator
         return $invoicing->getCurrency() === InvoicingCurrency::Dollar ? ' $' : ' €';
     }
 
-    private function output(PDF_Facture $pdf, ?string $path, string $filename): void
+    private function output(PDF_Facture $pdf, ?string $path, string $filename): string
     {
         if ($path === null) {
-            $pdf->Output($filename, 'D', true);
-            exit(0);
+            return $pdf->Output('S', $filename, true);
         }
 
         $pdf->Output($path, 'F', true);
+        return '';
     }
 }

@@ -27,12 +27,10 @@ class DownloadInvoiceAction extends AbstractController
             throw new NotFoundHttpException("Cette facture n'existe pas");
         }
 
-        ob_start();
-        $this->pdfGenerator->generateInvoice($invoice);
-        $pdf = ob_get_clean();
-
+        $pdf = $this->pdfGenerator->generateInvoice($invoice);
         $response = new Response($pdf);
         $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-Disposition', $response->headers->makeDisposition('attachment', $this->pdfGenerator->getInvoiceFilename($invoice)));
 
         return $response;
     }

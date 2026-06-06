@@ -26,12 +26,10 @@ class DownloadQuotationAction extends AbstractController
             throw new NotFoundHttpException("Ce devis n'existe pas");
         }
 
-        ob_start();
-        $this->pdfGenerator->generateQuotation($quotation);
-        $pdf = ob_get_clean();
-
+        $pdf = $this->pdfGenerator->generateQuotation($quotation);
         $response = new Response($pdf);
         $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-Disposition', $response->headers->makeDisposition('attachment', $this->pdfGenerator->getQuotationFilename($quotation)));
 
         return $response;
     }
