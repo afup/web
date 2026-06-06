@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UsersChecker
 {
-    public const SUBSCRIPTION_DELAY = '+15 days';
+    public const string SUBSCRIPTION_DELAY = '+15 days';
 
     public function __construct(
         private readonly UsersClient $usersClient,

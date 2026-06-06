@@ -297,7 +297,7 @@ class Facture
         // on va chercher l'index de l'année dernière
         if (null === $index) {
             $index = $this->_bdd->obtenirUn($sql . ($year - 1));
-            $index = (int) (is_null($index) ? 1 : $index);
+            $index = (int) ($index ?? 1);
         }
 
         return "$year-$index";
@@ -313,7 +313,7 @@ class Facture
         $requete .= '  LEFT(numero_devis, 4)=' . $this->_bdd->echapper(date('Y'));
 
         $index = $this->_bdd->obtenirUn($requete);
-        return date('Y') . '-' . sprintf('%02d', (is_null($index) ? 1 : $index));
+        return date('Y') . '-' . sprintf('%02d', ($index ?? 1));
     }
 
 

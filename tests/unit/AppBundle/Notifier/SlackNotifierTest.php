@@ -38,7 +38,7 @@ final class SlackNotifierTest extends TestCase
         $message->setUsername("m3");
         $message->setIconUrl("m4");
         $message->addAttachment(
-            (new Attachment())
+            new Attachment()
                 ->setText("a1")
                 ->setTitle("a2")
                 ->setColor("a3")
@@ -50,7 +50,7 @@ final class SlackNotifierTest extends TestCase
                 ->setPretext("a9")
                 ->setTitleLink("a10")
                 ->addField(
-                    (new Field())
+                    new Field()
                         ->setTitle("f1")
                         ->setValue("f2")
                         ->setShort(true),

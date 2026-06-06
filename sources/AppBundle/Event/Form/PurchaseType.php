@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints\Length;
 
 class PurchaseType extends AbstractType
 {
-    public const MAX_NB_PERSONNES = 15;
+    public const int MAX_NB_PERSONNES = 15;
 
     public function __construct(
         private readonly Pays $country,

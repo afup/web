@@ -11,12 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'afup_site_rubrique')]
 class Rubrique
 {
-    public const ID_RUBRIQUE_ACTUALITES = 9;
-    public const ID_RUBRIQUE_FORUM = 52;
-    public const ID_RUBRIQUE_ASSOCIATION = 85;
-    public const ID_RUBRIQUE_ANTENNES = 84;
-    public const ID_RUBRIQUE_INFORMATIONS_PRATIQUES = 86;
-    public const ID_RUBRIQUE_NOS_ACTIONS = 88;
+    public const int ID_RUBRIQUE_ACTUALITES = 9;
+    public const int ID_RUBRIQUE_FORUM = 52;
+    public const int ID_RUBRIQUE_ASSOCIATION = 85;
+    public const int ID_RUBRIQUE_ANTENNES = 84;
+    public const int ID_RUBRIQUE_INFORMATIONS_PRATIQUES = 86;
+    public const int ID_RUBRIQUE_NOS_ACTIONS = 88;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

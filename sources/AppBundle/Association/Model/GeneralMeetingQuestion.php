@@ -11,9 +11,9 @@ class GeneralMeetingQuestion implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    public const STATUS_WAITING = 'waiting';
-    public const STATUS_OPENED = 'opened';
-    public const STATUS_CLOSED = 'closed';
+    public const string STATUS_WAITING = 'waiting';
+    public const string STATUS_OPENED = 'opened';
+    public const string STATUS_CLOSED = 'closed';
 
     /**
      * @var int

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\StaticAnalysis\Rule;
 
+use PhpParser\Node\Identifier;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
@@ -33,7 +34,7 @@ final readonly class DoctrineDisableDQLRule implements Rule
 
     public function processNode(Node $node, Scope $scope): array
     {
-        if (!$node->name instanceof Node\Identifier) {
+        if (!$node->name instanceof Identifier) {
             return [];
         }
 
@@ -56,15 +57,7 @@ final readonly class DoctrineDisableDQLRule implements Rule
 
     private function isEntityManager(Type $type): bool
     {
-        foreach ($type->getObjectClassNames() as $className) {
-            if (
-                $className === $this->entityManagerClass->getName()
-                || $this->reflectionProvider->getClass($className)->isSubclassOfClass($this->entityManagerClass)
-            ) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($type->getObjectClassNames(), fn($className): bool => $className === $this->entityManagerClass->getName()
+        || $this->reflectionProvider->getClass($className)->isSubclassOfClass($this->entityManagerClass));
     }
 }

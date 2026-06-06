@@ -21,14 +21,14 @@ class CompanyMemberTest extends TestCase
     {
         return [
             'null' => [(new CompanyMember()), SubscriptionManagement::AFUP_COTISATION_PERSONNE_MORALE],
-            'under' => [(new CompanyMember())->setMaxMembers(2),
+            'under' => [new CompanyMember()->setMaxMembers(2),
                 SubscriptionManagement::AFUP_COTISATION_PERSONNE_MORALE,
             ],
-            'equal' => [(new CompanyMember())->setMaxMembers(3),
+            'equal' => [new CompanyMember()->setMaxMembers(3),
                 SubscriptionManagement::AFUP_COTISATION_PERSONNE_MORALE,
             ],
-            'just over' => [(new CompanyMember())->setMaxMembers(4), 2 * SubscriptionManagement::AFUP_COTISATION_PERSONNE_MORALE],
-            'over' => [(new CompanyMember())->setMaxMembers(6), 2 * SubscriptionManagement::AFUP_COTISATION_PERSONNE_MORALE],
+            'just over' => [new CompanyMember()->setMaxMembers(4), 2 * SubscriptionManagement::AFUP_COTISATION_PERSONNE_MORALE],
+            'over' => [new CompanyMember()->setMaxMembers(6), 2 * SubscriptionManagement::AFUP_COTISATION_PERSONNE_MORALE],
         ];
     }
 

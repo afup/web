@@ -62,7 +62,7 @@ final class SuggestionAction extends AbstractController
 
     private function createSpeakerSuggestion(Event $event, array $data): SpeakerSuggestion
     {
-        return (new SpeakerSuggestion())
+        return new SpeakerSuggestion()
             ->setEventId($event->getId())
             ->setSuggesterEmail($data['suggester_email'])
             ->setSuggesterName($data['suggester_name'])

@@ -10,10 +10,10 @@ use AppBundle\Model\ComptaModeReglement;
 
 class AutoQualifier
 {
-    public const DEFAULT_CATEGORIE = 26; // "A déterminer"
-    public const DEFAULT_EVENEMENT = 8; // "A déterminer"
-    public const DEFAULT_REGLEMENT = 9;
-    public const DEFAULT_ATTACHMENT = 0;
+    public const int DEFAULT_CATEGORIE = 26; // "A déterminer"
+    public const int DEFAULT_EVENEMENT = 8; // "A déterminer"
+    public const int DEFAULT_REGLEMENT = 9;
+    public const int DEFAULT_ATTACHMENT = 0;
 
     /**
      * @param array<Rule> $rules

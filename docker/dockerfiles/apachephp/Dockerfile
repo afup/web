@@ -1,4 +1,4 @@
-FROM php:8.2-apache AS base
+FROM php:8.5-apache AS base
 
 ARG ENABLE_XDEBUG=false
 ARG uid=1008

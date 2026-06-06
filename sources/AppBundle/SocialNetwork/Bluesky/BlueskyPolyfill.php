@@ -86,7 +86,7 @@ final readonly class BlueskyPolyfill
             while (null !== $start = $text->indexOf($match, min($length, $end + 1))) {
                 $output[] = [
                     'start' => $start,
-                    'end' => $end = $start + (new ByteString($match))->length(),
+                    'end' => $end = $start + new ByteString($match)->length(),
                     'match' => $match,
                 ];
             }

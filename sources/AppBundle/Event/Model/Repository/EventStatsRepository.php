@@ -19,9 +19,9 @@ use DateTimeImmutable;
 
 class EventStatsRepository
 {
-    private const DAY_ONE = 'one';
-    private const DAY_TWO = 'two';
-    private const DAYS = [self::DAY_ONE, self::DAY_TWO];
+    private const string DAY_ONE = 'one';
+    private const string DAY_TWO = 'two';
+    private const array DAYS = [self::DAY_ONE, self::DAY_TWO];
 
     public function __construct(
         private readonly Connection $connection,

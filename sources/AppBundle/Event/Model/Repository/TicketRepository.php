@@ -107,7 +107,7 @@ class TicketRepository extends Repository implements MetadataInitializer
             ',
         )->setParams(['ref' => $invoice->getReference()])->query(
             $this->getCollection(
-                (new HydratorSingleObject())
+                new HydratorSingleObject()
                 ->mapObjectTo('tarif', 'tarif_event', 'setTicketType')
                 ->mapObjectTo('tarif_event', 'inscriptions', 'setTicketEventType'),
             ),

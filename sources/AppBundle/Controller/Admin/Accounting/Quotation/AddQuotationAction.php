@@ -41,7 +41,7 @@ class AddQuotationAction extends AbstractController
                 $this->invoicingRepository->commit();
                 $this->addFlash('success',  'L\'écriture a été ajoutée');
                 return $this->redirectToRoute('admin_accounting_quotations_list');
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 $this->invoicingRepository->rollback();
                 $this->addFlash('error',  'L\'écriture n\'a pas pu être enregistrée');
             }

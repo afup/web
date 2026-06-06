@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class IndexAction extends AbstractController
 {
-    public const MAX_EVENTS_HISTORY = 50;
+    public const int MAX_EVENTS_HISTORY = 50;
 
     public function __construct(
         private readonly EventActionHelper $eventActionHelper,
@@ -50,7 +50,7 @@ class IndexAction extends AbstractController
         }
         /** @var Talk $talk */
         foreach ($this->talkRepository->getPreviousTalksBySpeaker($event, $speaker) as $talk) {
-            if (array_key_exists($talk->getForumId(), $previousEventTalkLists)) {
+            if (array_key_exists((string) $talk->getForumId(), $previousEventTalkLists)) {
                 $previousEventTalkLists[$talk->getForumId()]->addTalk($talk);
             }
         }

@@ -11,7 +11,7 @@ use AppBundle\Site\Entity\Repository\CountryRepository;
  */
 class Pays
 {
-    public const DEFAULT_ID = 'FR';
+    public const string DEFAULT_ID = 'FR';
 
     public function __construct(private readonly CountryRepository $countryRepository) {}
 

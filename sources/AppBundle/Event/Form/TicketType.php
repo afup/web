@@ -25,9 +25,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TicketType extends AbstractType
 {
-    public const MEMBER_NOT = 0;
-    public const MEMBER_PERSONAL = 1;
-    public const MEMBER_CORPORATE = 2;
+    public const int MEMBER_NOT = 0;
+    public const int MEMBER_PERSONAL = 1;
+    public const int MEMBER_CORPORATE = 2;
 
     public function __construct(
         private readonly EventRepository $eventRepository,

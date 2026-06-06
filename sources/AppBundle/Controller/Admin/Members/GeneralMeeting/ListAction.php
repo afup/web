@@ -13,8 +13,8 @@ use Webmozart\Assert\Assert;
 
 class ListAction
 {
-    public const VALID_SORTS = ['nom', 'date_consultation', 'presence', 'personnes_avec_pouvoir_nom'];
-    public const VALID_DIRECTIONS = ['asc', 'desc'];
+    public const array VALID_SORTS = ['nom', 'date_consultation', 'presence', 'personnes_avec_pouvoir_nom'];
+    public const array VALID_DIRECTIONS = ['asc', 'desc'];
 
     public function __construct(
         private readonly UserRepository $userRepository,

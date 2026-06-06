@@ -15,8 +15,8 @@ class HtmlParser
 
     private readonly \DOMXPath $xpath;
 
-    public const OPEN_GRAPH_PREFIX = 'og';
-    public const TWITTER_PREFIX = 'twitter';
+    public const string OPEN_GRAPH_PREFIX = 'og';
+    public const string TWITTER_PREFIX = 'twitter';
 
     public function __construct($html)
     {

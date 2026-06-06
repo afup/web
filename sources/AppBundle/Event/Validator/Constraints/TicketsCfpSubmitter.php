@@ -11,6 +11,7 @@ class TicketsCfpSubmitter extends Constraint
 {
     public string $messageTooMuchCfpSubmitterTickets = 'You can only order one ticket "{{ ticket_pretty_name }}".';
 
+    #[\Override]
     public function getTargets(): string
     {
         return self::PROPERTY_CONSTRAINT;

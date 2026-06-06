@@ -33,7 +33,7 @@ final class CompanyAction extends AbstractController
     {
         $data = new CompanyMember();
         $data->setInvitations([
-            (new CompanyMemberInvitation())->setManager(true),
+            new CompanyMemberInvitation()->setManager(true),
         ]);
 
         $subscribeForm = $this->createForm(CompanyMemberType::class, $data);

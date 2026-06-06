@@ -12,6 +12,7 @@ class OfficesExtension extends AbstractExtension
 {
     public function __construct(private readonly AntenneRepository $antennesRepository) {}
 
+    #[\Override]
     public function getFunctions(): array
     {
         return [

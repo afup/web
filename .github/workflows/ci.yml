@@ -1,12 +1,11 @@
 name: CI
 
-on: [ push, pull_request ]
+on: [push, pull_request]
 
 env:
-  php_version: '8.2'
+  php_version: "8.5"
 
 jobs:
-
   unit:
     name: "Unit tests"
     runs-on: ubuntu-22.04

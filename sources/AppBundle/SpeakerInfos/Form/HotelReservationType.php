@@ -18,8 +18,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class HotelReservationType extends AbstractType
 {
-    public const NIGHT_NONE = 'none';
-    public const NIGHT_TRAVEL_SPONSOR = 'hosting_sponsor';
+    public const string NIGHT_NONE = 'none';
+    public const string NIGHT_TRAVEL_SPONSOR = 'hosting_sponsor';
 
     public function __construct(private readonly TranslatorInterface $translator) {}
 
