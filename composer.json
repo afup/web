@@ -168,6 +168,7 @@
     "robertfausk/behat-panther-extension": "^1.2",
     "smalot/pdfparser": "^2.0",
     "symfony/debug-bundle": "7.4.*",
+    "symfony/dom-crawler": "^7.4",
     "symfony/json-path": "7.4.*",
     "symfony/web-profiler-bundle": "7.4.*",
     "symplify/vendor-patches": "^11.5",
