@@ -14,7 +14,7 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class PostCompilationCopyHandler implements PublicAssetsFilesystemInterface
 {
-    private Filesystem $filesystem;
+    private readonly Filesystem $filesystem;
 
     /**
      * @param string[] $extensionsToCompress

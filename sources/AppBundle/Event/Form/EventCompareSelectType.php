@@ -56,6 +56,7 @@ class EventCompareSelectType extends AbstractType
         $resolver->setAllowedTypes('events', [Collection::class]);
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return '';

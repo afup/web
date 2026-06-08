@@ -9,8 +9,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final readonly class TimeMocker
 {
-    private const MOCK_DIR_PATH = __DIR__ . '/../../var/cache/test/afup/';
-    private const MOCK_FILE_PATH = self::MOCK_DIR_PATH . 'current-date-mock';
+    private const string MOCK_DIR_PATH = __DIR__ . '/../../var/cache/test/afup/';
+    private const string MOCK_FILE_PATH = self::MOCK_DIR_PATH . 'current-date-mock';
 
     private Filesystem $filesystem;
 

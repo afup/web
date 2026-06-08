@@ -13,8 +13,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class TravelSponsorType extends AbstractType
 {
-    public const OPTION_SPONSORED = 'sponsored';
-    public const OPTION_NOT_NEEDED = 'not_needed';
+    public const string OPTION_SPONSORED = 'sponsored';
+    public const string OPTION_NOT_NEEDED = 'not_needed';
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

@@ -42,7 +42,7 @@ class NewsFiltersType extends AbstractType
                 'label' => 'Thème',
                 'multiple' => true,
                 'expanded' => true,
-                'choice_label' => fn(ArticleTheme $theme) => $theme->label(),
+                'choice_label' => fn(ArticleTheme $theme): string => $theme->label(),
             ])
             ->add(
                 'event',

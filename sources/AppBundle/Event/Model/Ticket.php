@@ -16,27 +16,27 @@ class Ticket implements NotifyPropertyInterface
     use NotifyProperty;
 
     // Ticket transport mode
-    public const AFUP_TRANSPORT_MODE_SEUL_THERMIQUE = 10;
-    public const AFUP_TRANSPORT_MODE_SEUL_ELECTRIQUE = 20;
-    public const AFUP_TRANSPORT_MODE_SEUL_HYBRIDE = 30;
-    public const AFUP_TRANSPORT_MODE_PASSAGERS_THERMIQUE = 40;
-    public const AFUP_TRANSPORT_MODE_PASSAGERS_ELECTRIQUE = 50;
-    public const AFUP_TRANSPORT_MODE_PASSAGERS_HYBRIDE = 60;
-    public const AFUP_TRANSPORT_MODE_BUS = 70;
-    public const AFUP_TRANSPORT_MODE_TRAIN = 80;
-    public const AFUP_TRANSPORT_MODE_AVION_ECO = 90;
-    public const AFUP_TRANSPORT_MODE_AVION_BUSINESS = 100;
-    public const AFUP_TRANSPORT_MODE_COMMUN = 110;
+    public const int AFUP_TRANSPORT_MODE_SEUL_THERMIQUE = 10;
+    public const int AFUP_TRANSPORT_MODE_SEUL_ELECTRIQUE = 20;
+    public const int AFUP_TRANSPORT_MODE_SEUL_HYBRIDE = 30;
+    public const int AFUP_TRANSPORT_MODE_PASSAGERS_THERMIQUE = 40;
+    public const int AFUP_TRANSPORT_MODE_PASSAGERS_ELECTRIQUE = 50;
+    public const int AFUP_TRANSPORT_MODE_PASSAGERS_HYBRIDE = 60;
+    public const int AFUP_TRANSPORT_MODE_BUS = 70;
+    public const int AFUP_TRANSPORT_MODE_TRAIN = 80;
+    public const int AFUP_TRANSPORT_MODE_AVION_ECO = 90;
+    public const int AFUP_TRANSPORT_MODE_AVION_BUSINESS = 100;
+    public const int AFUP_TRANSPORT_MODE_COMMUN = 110;
 
     // Ticket transport distance
-    public const AFUP_TRANSPORT_DISTANCE_0 = 0;
-    public const AFUP_TRANSPORT_DISTANCE_25_50 = 25;
-    public const AFUP_TRANSPORT_DISTANCE_50_100 = 50;
-    public const AFUP_TRANSPORT_DISTANCE_100_500 = 100;
-    public const AFUP_TRANSPORT_DISTANCE_500_1000 = 500;
-    public const AFUP_TRANSPORT_DISTANCE_1000 = 1000;
+    public const int AFUP_TRANSPORT_DISTANCE_0 = 0;
+    public const int AFUP_TRANSPORT_DISTANCE_25_50 = 25;
+    public const int AFUP_TRANSPORT_DISTANCE_50_100 = 50;
+    public const int AFUP_TRANSPORT_DISTANCE_100_500 = 100;
+    public const int AFUP_TRANSPORT_DISTANCE_500_1000 = 500;
+    public const int AFUP_TRANSPORT_DISTANCE_1000 = 1000;
 
-    public const TRANSPORT_MODES = [
+    public const array TRANSPORT_MODES = [
         self::AFUP_TRANSPORT_MODE_SEUL_THERMIQUE => 'Voiture seul·e',
         self::AFUP_TRANSPORT_MODE_SEUL_ELECTRIQUE => 'Voiture seul·e électrique',
         self::AFUP_TRANSPORT_MODE_SEUL_HYBRIDE => 'Voiture seul·e hybride',
@@ -50,7 +50,7 @@ class Ticket implements NotifyPropertyInterface
         self::AFUP_TRANSPORT_MODE_COMMUN => 'Transports en commun',
     ];
 
-    public const TRANSPORT_DISTANCES = [
+    public const array TRANSPORT_DISTANCES = [
         self::AFUP_TRANSPORT_DISTANCE_0 => '< 25 km',
         self::AFUP_TRANSPORT_DISTANCE_25_50 => 'entre 25 et 50 km',
         self::AFUP_TRANSPORT_DISTANCE_50_100 => 'entre 50 et 100 km',
@@ -59,33 +59,33 @@ class Ticket implements NotifyPropertyInterface
         self::AFUP_TRANSPORT_DISTANCE_1000 => '> 1000 km',
     ];
 
-    public const STATUS_CREATED = 0;
-    public const STATUS_CANCELLED = 1;
-    public const STATUS_ERROR = 2;
-    public const STATUS_DECLINED = 3;
-    public const STATUS_PAID = 4;
-    public const STATUS_GUEST = 5;
-    public const STATUS_WAITING = 6;
-    public const STATUS_CONFIRMED = 7;
-    public const STATUS_PAID_AFTER = 8;
+    public const int STATUS_CREATED = 0;
+    public const int STATUS_CANCELLED = 1;
+    public const int STATUS_ERROR = 2;
+    public const int STATUS_DECLINED = 3;
+    public const int STATUS_PAID = 4;
+    public const int STATUS_GUEST = 5;
+    public const int STATUS_WAITING = 6;
+    public const int STATUS_CONFIRMED = 7;
+    public const int STATUS_PAID_AFTER = 8;
 
-    public const INVOICE_TODO = 0;
-    public const INVOICE_SENT = 1;
-    public const INVOICE_RECEIVED = 2;
+    public const int INVOICE_TODO = 0;
+    public const int INVOICE_SENT = 1;
+    public const int INVOICE_RECEIVED = 2;
 
-    public const TYPE_ORGANIZATION = 9;
-    public const TYPE_SPONSOR = 10;
-    public const TYPE_PRESS = 11;
-    public const TYPE_SPEAKER = 12;
-    public const TYPE_SPECIAL_PRICE = 108;
+    public const int TYPE_ORGANIZATION = 9;
+    public const int TYPE_SPONSOR = 10;
+    public const int TYPE_PRESS = 11;
+    public const int TYPE_SPEAKER = 12;
+    public const int TYPE_SPECIAL_PRICE = 108;
 
-    public const PAYMENT_CREDIT_CARD = 0;
-    public const PAYMENT_CHEQUE = 1;
-    public const PAYMENT_BANKWIRE = 2;
-    public const PAYMENT_NONE = 3;
+    public const int PAYMENT_CREDIT_CARD = 0;
+    public const int PAYMENT_CHEQUE = 1;
+    public const int PAYMENT_BANKWIRE = 2;
+    public const int PAYMENT_NONE = 3;
 
-    public const DAY_ONE = 'one';
-    public const DAY_TWO = 'two';
+    public const string DAY_ONE = 'one';
+    public const string DAY_TWO = 'two';
 
     private ?int $id = null;
 

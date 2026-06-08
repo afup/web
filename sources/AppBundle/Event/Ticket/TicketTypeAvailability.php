@@ -11,9 +11,9 @@ use AppBundle\Event\Model\TicketType;
 
 class TicketTypeAvailability
 {
-    public const DAY_ONE = 'one';
-    public const DAY_TWO = 'two';
-    public const DAY_BOTH = 'both';
+    public const string DAY_ONE = 'one';
+    public const string DAY_TWO = 'two';
+    public const string DAY_BOTH = 'both';
 
     public function __construct(private readonly TicketRepository $ticketRepository) {}
 

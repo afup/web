@@ -2,7 +2,7 @@
 
 use PhpCsFixerCustomFixers\Fixer\MultilinePromotedPropertiesFixer;
 
-$finder = (new PhpCsFixer\Finder())
+$finder = new PhpCsFixer\Finder()
     ->name('*.php')
     ->in([
         __DIR__ . '/app',
@@ -11,12 +11,12 @@ $finder = (new PhpCsFixer\Finder())
         __DIR__ . '/sources',
         __DIR__ . '/tests',
     ])
-    ->exclude([
-        __DIR__ . '/app/config/reference.php',
+    ->notPath([
+        'config/reference.php',
     ])
 ;
 
-return (new PhpCsFixer\Config())
+return new PhpCsFixer\Config()
     ->registerCustomFixers(new PhpCsFixerCustomFixers\Fixers())
     ->setRiskyAllowed(true)
     ->setRules([

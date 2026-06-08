@@ -20,19 +20,19 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
 {
     use NotifyProperty;
 
-    public const LEVEL_MEMBER = 0;
-    public const LEVEL_WRITER = 1;
-    public const LEVEL_ADMIN = 2;
+    public const int LEVEL_MEMBER = 0;
+    public const int LEVEL_WRITER = 1;
+    public const int LEVEL_ADMIN = 2;
 
-    public const STATUS_PENDING = -1;
-    public const STATUS_ACTIVE = 1;
-    public const STATUS_INACTIVE = 0;
+    public const int STATUS_PENDING = -1;
+    public const int STATUS_ACTIVE = 1;
+    public const int STATUS_INACTIVE = 0;
 
-    public const SLACK_INVITE_STATUS_NONE = 0;
-    public const SLACK_INVITE_STATUS_REQUESTED = 1;
+    public const int SLACK_INVITE_STATUS_NONE = 0;
+    public const int SLACK_INVITE_STATUS_REQUESTED = 1;
 
-    public const CIVILITE_M = 0;
-    public const CIVILITE_MME = 1;
+    public const int CIVILITE_M = 0;
+    public const int CIVILITE_MME = 1;
 
     /**
      * @var int
@@ -707,15 +707,6 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         }
 
         return $this;
-    }
-
-    /**
-     * @deprecated
-     * This method can be removed in Symfony 6.0 - is not needed for apps that do not check user passwords.
-     */
-    public function getSalt(): null
-    {
-        return null;
     }
 
     public function eraseCredentials(): void {}

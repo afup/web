@@ -33,7 +33,7 @@ class UserExportAction
                 $user->getEmail(),
                 $user->getLastName(),
                 $user->getFirstName(),
-            ]);
+            ], escape: '\\');
         }
         $response = new BinaryFileResponse($file);
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $baseName . '.csv');

@@ -24,6 +24,7 @@ class TwigExtension extends AbstractExtension implements GlobalsInterface
         private readonly string $googleAnalyticsId,
     ) {}
 
+    #[\Override]
     public function getFunctions(): array
     {
         return [
@@ -44,6 +45,7 @@ class TwigExtension extends AbstractExtension implements GlobalsInterface
         ];
     }
 
+    #[\Override]
     public function getFilters(): array
     {
         return [

@@ -58,7 +58,7 @@ class EditAction extends AbstractController
         if ($request->get('mode') === 'add') {
             $planning->getStart()?->setTime(9, 0);
             $planning->getEnd()?->setTime(9, 40);
-            $planning->setRoomId($roomChoices[array_key_first($roomChoices)]);
+            $planning->setRoomId(array_first($roomChoices));
 
             $this->planningRepository->save($planning);
 

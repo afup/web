@@ -41,7 +41,7 @@ readonly class RegistrationsExportGenerator
             'office',
         ];
 
-        $toFile->fputcsv($columns);
+        $toFile->fputcsv($columns, escape: '\\');
 
         foreach ($this->getFromRegistrationsOnEvent($event) as $row) {
             $preparedRow = [];
@@ -51,7 +51,7 @@ readonly class RegistrationsExportGenerator
                 }
                 $preparedRow[] = $row[$column];
             }
-            $toFile->fputcsv($preparedRow);
+            $toFile->fputcsv($preparedRow, escape: '\\');
         }
     }
 

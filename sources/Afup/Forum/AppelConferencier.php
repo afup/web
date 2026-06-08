@@ -9,7 +9,7 @@ use AppBundle\Event\Model\Talk;
 
 class AppelConferencier
 {
-    public const DEFAULT_JOURNEE = 0;
+    public const int DEFAULT_JOURNEE = 0;
 
     public function __construct(private readonly Base_De_Donnees $_bdd) {}
 

@@ -6,13 +6,13 @@ namespace AppBundle\Payment;
 
 class PayboxResponse
 {
-    public const STATUS_SUCCESS = '00000';
+    public const string STATUS_SUCCESS = '00000';
 
-    public const STATUS_CANCELED = '';
+    public const string STATUS_CANCELED = '';
 
-    public const STATUS_ERROR = '';
+    public const string STATUS_ERROR = '';
 
-    public const STATUS_DUPLICATE = '00015';
+    public const string STATUS_DUPLICATE = '00015';
 
     /**
      * @param string $cmd

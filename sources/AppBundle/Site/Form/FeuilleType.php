@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class FeuilleType extends AbstractType
 {
-    public const POSITIONS_RUBRIQUES = 9;
+    public const int POSITIONS_RUBRIQUES = 9;
 
     public function __construct(private readonly FeuilleRepository $feuilleRepository) {}
 

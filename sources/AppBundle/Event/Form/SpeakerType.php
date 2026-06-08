@@ -27,8 +27,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class SpeakerType extends AbstractType
 {
-    public const OPT_PHOTO_REQUIRED = 'photo_required';
-    public const OPT_USER_GITHUB = 'user_github';
+    public const string OPT_PHOTO_REQUIRED = 'photo_required';
+    public const string OPT_USER_GITHUB = 'user_github';
 
     public function __construct(
         private readonly GithubUserRepository $githubUserRepository,

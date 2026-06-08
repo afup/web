@@ -67,7 +67,7 @@ final class IndexAction extends AbstractController
         /** @var array<int, MembershipFee> $liste_cotisations */
         $liste_cotisations = array_merge(iterator_to_array($cotisations_physique), iterator_to_array($cotisations_morale));
 
-        foreach ($liste_cotisations as $k => $cotisation) {
+        foreach ($liste_cotisations as $cotisation) {
             $cotisation->setDownloadInvoice($this->isGranted(MembershipFeeVoter::READ_INVOICE, (string) $cotisation->getId()));
         }
 
@@ -93,7 +93,7 @@ final class IndexAction extends AbstractController
         $formattedMontant = number_format($montant, 2, ',', ' ');
         $libelle = sprintf("%s : <strong>%s€</strong>", $prefixe, $formattedMontant);
 
-        $reference = (new MembershipFeeReferenceGenerator())->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $user->getLastName());
+        $reference = new MembershipFeeReferenceGenerator()->generate(new \DateTimeImmutable('now'), $type_personne, $id_personne, $user->getLastName());
 
         $payboxBilling = new PayboxBilling($user->getFirstName(), $user->getLastName(), $user->getAddress(), $user->getZipCode(), $user->getCity(), $user->getCountry());
 

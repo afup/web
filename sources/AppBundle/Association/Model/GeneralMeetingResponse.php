@@ -11,9 +11,9 @@ class GeneralMeetingResponse implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    public const STATUS_PENDING = 0;
-    public const STATUS_PRESENT = 1;
-    public const STATUS_NON_PRESENT = 2;
+    public const int STATUS_PENDING = 0;
+    public const int STATUS_PRESENT = 1;
+    public const int STATUS_NON_PRESENT = 2;
 
     /**
      * @var int

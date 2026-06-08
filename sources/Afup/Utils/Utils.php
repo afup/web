@@ -13,8 +13,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class Utils
 {
-    public const TICKETING_VAT_RATE = 0.1;
-    public const MEMBERSHIP_FEE_VAT_RATE = 0.2;
+    public const float TICKETING_VAT_RATE = 0.1;
+    public const float MEMBERSHIP_FEE_VAT_RATE = 0.2;
 
     public static function fabriqueDroits(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker): Droits
     {

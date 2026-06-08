@@ -16,8 +16,7 @@ parameters:
       return: 71
       param: 71
       property: 45
-      # since PHP 8.3
-      # constant: 30
+      constant: 100
     doctrine:
         ormRepositoryClass: AppBundle\Doctrine\EntityRepository
 

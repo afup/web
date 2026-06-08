@@ -21,7 +21,7 @@ class AllocateAction extends AbstractController
         $totalAmount = 0;
 
         $lastId = null;
-        foreach (explode(';', $amountToallocate) as $amount) {
+        foreach (explode(';', (string) $amountToallocate) as $amount) {
             $amount = (float) $amount;
 
             $newTransaction = new Transaction();

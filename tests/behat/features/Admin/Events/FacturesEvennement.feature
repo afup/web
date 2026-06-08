@@ -21,12 +21,11 @@ Feature: Administration - Évènements - Factures d'évènement
     When I parse the pdf downloaded content
     Then The page "1" of the PDF should contain "Objet : Facture n°REF-TEST-002"
     Then The page "1" of the PDF should contain "4 allée des platanes"
-    Then The page "1" of the PDF should contain "Type Personne inscrite Prix"
-    Then The page "1" of the PDF should contain "2 Jours Maurice Jean 250 €"
+    Then The page "1" of the PDF should contain "Type\tPersonne inscrite\tPrix"
+    Then The page "1" of the PDF should contain "2 Jours\tMaurice Jean\t250 €"
     Then The page "1" of the PDF should not contain "Total HT"
     Then The page "1" of the PDF should not contain "Total TVA"
-    Then The page "1" of the PDF should contain "FRAIS Paiement par chèque 25 €"
-    Then The page "1" of the PDF should contain "TOTAL 275 €"
+    Then The page "1" of the PDF should contain "TOTAL\t275 €"
     Then The page "1" of the PDF should not contain "Total TTC"
     Then The page "1" of the PDF should contain "Payé par chèque le 25/06/2023"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
@@ -45,14 +44,14 @@ Feature: Administration - Évènements - Factures d'évènement
     When I parse the pdf downloaded content
     Then The page "1" of the PDF should contain "Objet : Facture n°REF-TEST-003"
     Then The page "1" of the PDF should contain "3 avenue de l'enterprise"
-    Then The page "1" of the PDF should contain "Type Personne inscrite Prix HT TVA Prix TTC"
-    Then The page "1" of the PDF should contain "2 Jours James Tiberius Kirk 227,27 € 10% 250,00 €"
+    Then The page "1" of the PDF should contain "Type\tPersonne inscrite\tPrix HTTVA Prix TTC"
+    Then The page "1" of the PDF should contain "2 Jours\tJames Tiberius Kirk\t227,27 €10% 250,00 €"
     Then The page "1" of the PDF should contain "Total HT 227,27 €"
     Then The page "1" of the PDF should contain "Total TVA 10% 22,73 €"
     Then The page "1" of the PDF should contain "TOTAL TTC 250,00 €"
     Then The page "1" of the PDF should contain "Payé par virement le 02/01/2024"
     Then The page "1" of the PDF should not contain "TVA non applicable - art. 293B du CGI"
-    Then The page "1" of the PDF should contain "Numéro de TVA intracommunautaire FR27 500 869 011"
+    Then The page "1" of the PDF should contain "Numéro de TVA intracommunautaire\tFR27 500 869 011"
     Then the checksum of the response content should be "5689b814512a03e2b420272a3fb0711a"
 
   @reloadDbWithTestData

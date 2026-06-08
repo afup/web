@@ -11,6 +11,7 @@ class EarlyBirdTicket extends Constraint
 {
     public string $message = 'You can only order one early bird ticket "{{ ticket_pretty_name }}".';
 
+    #[\Override]
     public function getTargets(): string
     {
         return self::PROPERTY_CONSTRAINT;

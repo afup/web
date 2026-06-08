@@ -21,6 +21,7 @@ class TalkAdminType extends TalkType
 {
     public function __construct(private readonly SpeakerRepository $speakerRepository) {}
 
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
@@ -94,8 +95,8 @@ class TalkAdminType extends TalkType
                 'choices' => $allSpeakers,
                 'required' => false,
                 'data' => $speakers,
-                'choice_label' => fn(Speaker $speaker) => $speaker->getLabel(),
-                'choice_value' => fn(?Speaker $speaker) => $speaker?->getId(),
+                'choice_label' => fn(Speaker $speaker): string => $speaker->getLabel(),
+                'choice_value' => fn(?Speaker $speaker): ?int => $speaker?->getId(),
                 'choice_name' => 'id',
             ])
             ->add('verbatim', TextareaType::class, [
@@ -110,6 +111,7 @@ class TalkAdminType extends TalkType
         ;
     }
 
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('data_class', Talk::class);

@@ -44,18 +44,18 @@ class StatusGeneratorTest extends TestCase
     {
         yield [
             SocialNetwork::Bluesky,
-            (new Talk())->setTitle(self::faker()->realText(SocialNetwork::Bluesky->statusMaxLength() * 2)),
+            new Talk()->setTitle(self::faker()->realText(SocialNetwork::Bluesky->statusMaxLength() * 2)),
             [
-                (new Speaker())->setBluesky(self::faker()->domainName()),
+                new Speaker()->setBluesky(self::faker()->domainName()),
             ],
             'Statut généré pour bluesky trop long',
         ];
 
         yield [
             SocialNetwork::Mastodon,
-            (new Talk())->setTitle(self::faker()->realText(SocialNetwork::Mastodon->statusMaxLength() * 2)),
+            new Talk()->setTitle(self::faker()->realText(SocialNetwork::Mastodon->statusMaxLength() * 2)),
             [
-                (new Speaker())->setMastodon(self::faker()->domainName()),
+                new Speaker()->setMastodon(self::faker()->domainName()),
             ],
             'Statut généré pour mastodon trop long',
         ];
@@ -79,17 +79,17 @@ class StatusGeneratorTest extends TestCase
     {
         yield 'mastodon full case' => [
             SocialNetwork::Mastodon,
-            (new Talk())
+            new Talk()
                 ->setId(123)
                 ->setTitle('Lorem ipsum dolor si amet')
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                (new Speaker())->setMastodon('foo'),
-                (new Speaker())->setFirstname('John')->setLastname('Smith'),
-                (new Speaker())->setMastodon('bar'),
-                (new Speaker())->setFirstname('Jane')->setLastname('Doe'),
-                (new Speaker())->setMastodon('fiz'),
+                new Speaker()->setMastodon('foo'),
+                new Speaker()->setFirstname('John')->setLastname('Smith'),
+                new Speaker()->setMastodon('bar'),
+                new Speaker()->setFirstname('Jane')->setLastname('Doe'),
+                new Speaker()->setMastodon('fiz'),
             ],
             new Status(
                 "« Lorem ipsum dolor si amet », la conférence de @foo, John SMITH, @bar, Jane DOE et @fiz à revoir sur le site de l'AFUP",
@@ -104,13 +104,13 @@ class StatusGeneratorTest extends TestCase
 
         yield '1 speaker with username' => [
             SocialNetwork::Bluesky,
-            (new Talk())
+            new Talk()
                 ->setId(123)
                 ->setTitle('Lorem ipsum dolor si amet')
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                (new Speaker())->setBluesky('example.bsky.social'),
+                new Speaker()->setBluesky('example.bsky.social'),
             ],
             new Status(
                 "« Lorem ipsum dolor si amet », la conférence de @example.bsky.social à revoir sur le site de l'AFUP",
@@ -125,13 +125,13 @@ class StatusGeneratorTest extends TestCase
 
         yield '1 speaker without username' => [
             SocialNetwork::Bluesky,
-            (new Talk())
+            new Talk()
                 ->setId(123)
                 ->setTitle('Lorem ipsum dolor si amet')
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                (new Speaker())->setFirstname('Jane')->setLastname('Doe'),
+                new Speaker()->setFirstname('Jane')->setLastname('Doe'),
             ],
             new Status(
                 "« Lorem ipsum dolor si amet », la conférence de Jane DOE à revoir sur le site de l'AFUP",
@@ -146,14 +146,14 @@ class StatusGeneratorTest extends TestCase
 
         yield '2 speakers' => [
             SocialNetwork::Bluesky,
-            (new Talk())
+            new Talk()
                 ->setId(123)
                 ->setTitle('Lorem ipsum dolor si amet')
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                (new Speaker())->setBluesky('foo'),
-                (new Speaker())->setBluesky('bar'),
+                new Speaker()->setBluesky('foo'),
+                new Speaker()->setBluesky('bar'),
             ],
             new Status(
                 "« Lorem ipsum dolor si amet », la conférence de @foo et @bar à revoir sur le site de l'AFUP",
@@ -168,15 +168,15 @@ class StatusGeneratorTest extends TestCase
 
         yield '3+ speakers' => [
             SocialNetwork::Bluesky,
-            (new Talk())
+            new Talk()
                 ->setId(123)
                 ->setTitle('Lorem ipsum dolor si amet')
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                (new Speaker())->setBluesky('foo'),
-                (new Speaker())->setBluesky('bar'),
-                (new Speaker())->setBluesky('fiz'),
+                new Speaker()->setBluesky('foo'),
+                new Speaker()->setBluesky('bar'),
+                new Speaker()->setBluesky('fiz'),
             ],
             new Status(
                 "« Lorem ipsum dolor si amet », la conférence de @foo, @bar et @fiz à revoir sur le site de l'AFUP",
@@ -191,13 +191,13 @@ class StatusGeneratorTest extends TestCase
 
         yield 'title a bit too long 1' => [
             SocialNetwork::Bluesky,
-            (new Talk())
+            new Talk()
                 ->setId(123)
                 ->setTitle('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium architecto assumenda consequuntur corporis dolorem doloremque eaque magnam mollitia necessitatibus neque nesciunt, obcaecati odio odit quam, repellat repellendus.')
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                (new Speaker())->setBluesky('example.bsky.social'),
+                new Speaker()->setBluesky('example.bsky.social'),
             ],
             new Status(
                 "« Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium architecto assumenda consequuntur corporis dolorem doloremque eaque magnam mollitia necessitatibus neque nesciunt, obcaecati odio odit quam, repellat repellendus. », par @example.bsky.social à revoir sur le site de l'AFUP",
@@ -212,13 +212,13 @@ class StatusGeneratorTest extends TestCase
 
         yield 'title a bit too long 2' => [
             SocialNetwork::Bluesky,
-            (new Talk())
+            new Talk()
                 ->setId(123)
                 ->setTitle('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium architecto assumenda consequuntur corporis dolorem doloremque eaque magnam mollitia necessitatibus neque nesciunt, obcaecati odio odit quam, repellat repellendus magnam.')
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                (new Speaker())->setBluesky('example.bsky.social'),
+                new Speaker()->setBluesky('example.bsky.social'),
             ],
             new Status(
                 "« Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium architecto assumenda consequuntur corporis dolorem doloremque eaque magnam mollitia necessitatibus neque nesciunt, obcaecati odio odit quam, repellat repellendus magnam. », par @example.bsky.social à revoir sur l'AFUP",
@@ -233,13 +233,13 @@ class StatusGeneratorTest extends TestCase
 
         yield 'title with consecutive spaces' => [
             SocialNetwork::Bluesky,
-            (new Talk())
+            new Talk()
                 ->setId(123)
                 ->setTitle('  Lorem    ipsum ')
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                (new Speaker())->setBluesky('example.bsky.social'),
+                new Speaker()->setBluesky('example.bsky.social'),
             ],
             new Status(
                 "« Lorem ipsum », la conférence de @example.bsky.social à revoir sur le site de l'AFUP",

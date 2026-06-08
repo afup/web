@@ -23,7 +23,7 @@ final readonly class ReportListBuilder
             return [];
         }
 
-        $files = (new Finder())->name("*.pdf")->in($this->storageDir);
+        $files = new Finder()->name("*.pdf")->in($this->storageDir);
 
         $reports = [];
         foreach ($files as $file) {

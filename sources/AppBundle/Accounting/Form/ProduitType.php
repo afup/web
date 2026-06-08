@@ -54,7 +54,7 @@ class ProduitType extends AbstractType
             'required' => true,
             'expanded' => true,
             'multiple' => false,
-            'choice_label' => fn(TvaTaux $taux) => $taux->label(),
+            'choice_label' => fn(TvaTaux $taux): string => $taux->label(),
         ]);
     }
 }

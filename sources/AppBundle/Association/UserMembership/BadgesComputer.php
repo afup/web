@@ -12,7 +12,7 @@ use AppBundle\Event\Model\Repository\UserBadgeRepository;
 
 class BadgesComputer
 {
-    private const MAX_BADGES_SENIORITY = 29;
+    private const int MAX_BADGES_SENIORITY = 29;
 
     public function __construct(
         private readonly SeniorityComputer $seniorityComputer,
@@ -228,7 +228,7 @@ class BadgesComputer
     private function getGeneralMeetingYears(User $user): array
     {
         $responses = $this->generalMeetingResponseRepository->getByUser($user);
-        $currentTimestamp = (new \DateTime())->format('U');
+        $currentTimestamp = new \DateTime()->format('U');
 
         $dates = [];
         foreach ($responses as $response) {

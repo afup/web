@@ -93,7 +93,7 @@ final class HtmlSitemapAction extends AbstractController
     private function talks(): array
     {
         $talks = [];
-        $talkList = $this->talkRepository->getAllPastTalks((new \DateTime())->setTime(29, 59, 59));
+        $talkList = $this->talkRepository->getAllPastTalks(new \DateTime()->setTime(29, 59, 59));
 
         /** @var Talk $talk */
         foreach ($talkList as $talk) {
