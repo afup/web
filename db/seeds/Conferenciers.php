@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use AppBundle\Association\Genre;
 use Phinx\Seed\AbstractSeed;
 
 class Conferenciers extends AbstractSeed
@@ -14,7 +15,7 @@ class Conferenciers extends AbstractSeed
             [
                 'conferencier_id' => self::ID_CONFERENCIER,
                 'id_forum' => Event::ID_FORUM,
-                'civilite' => 'M.',
+                'genre' => Genre::Homme->value,
                 'nom' => 'Bachelet',
                 'prenom' => 'Geoffrey',
                 'email' => 'foo@bar.baz',
@@ -34,7 +35,7 @@ class Conferenciers extends AbstractSeed
             [
                 'conferencier_id' => 2,
                 'id_forum' => Event::ID_FORUM,
-                'civilite' => 'M.',
+                'genre' => Genre::Homme->value,
                 'nom' => 'Gallou',
                 'prenom' => 'Adrien',
                 'email' => 'foo@bar.baz',
@@ -54,7 +55,7 @@ class Conferenciers extends AbstractSeed
             [
                 'conferencier_id' => 3,
                 'id_forum' => Event::ID_FORUM,
-                'civilite' => 'M.',
+                'genre' => Genre::Homme->value,
                 'nom' => 'Doe',
                 'prenom' => 'John',
                 'email' => 'john.do@bar.baz',

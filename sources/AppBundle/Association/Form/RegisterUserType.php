@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Form;
 
+use AppBundle\Association\Genre;
 use AppBundle\Association\Model\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,9 +34,11 @@ class RegisterUserType extends AbstractType
             ->add('nearestOffice', NearestOfficeChoiceType::class, [
                 'required' => false,
             ])
-            ->add('civility', ChoiceType::class, [
-                'choices' => ['M.' => User::CIVILITE_M, 'Mme' => User::CIVILITE_MME],
-                'required' => true,
+            ->add('genre', EnumType::class, [
+                'required' => false,
+                'class' => Genre::class,
+                'label' => 'Genre',
+                'placeholder' => 'Ne se prononce pas',
             ])
         ;
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model\Repository;
 
+use AppBundle\Association\Genre;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Ticket;
@@ -17,6 +18,7 @@ use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
+use CCMBenchmark\Ting\Serializer\BackedEnum;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
 
 /**
@@ -94,7 +96,7 @@ class TicketRepository extends Repository implements MetadataInitializer
         return $this->getPreparedQuery(
             'SELECT
             inscriptions.id, inscriptions.date, inscriptions.reference, inscriptions.coupon, inscriptions.type_inscription,
-            inscriptions.montant, inscriptions.informations_reglement, inscriptions.civilite, inscriptions.nom, inscriptions.prenom,
+            inscriptions.montant, inscriptions.informations_reglement, inscriptions.genre, inscriptions.nom, inscriptions.prenom,
             inscriptions.email, inscriptions.telephone, inscriptions.citer_societe, inscriptions.newsletter_afup, inscriptions.newsletter_nexen,
             inscriptions.commentaires, inscriptions.etat, inscriptions.facturation, inscriptions.id_forum,
             inscriptions.mail_partenaire, inscriptions.presence_day1, inscriptions.presence_day2,
@@ -267,7 +269,7 @@ class TicketRepository extends Repository implements MetadataInitializer
             $this
                 ->getPreparedQuery(
                     'SELECT inscriptions.id, inscriptions.date, inscriptions.reference, inscriptions.coupon, inscriptions.type_inscription,
-                    inscriptions.montant, inscriptions.informations_reglement, inscriptions.civilite, inscriptions.nom, inscriptions.prenom,
+                    inscriptions.montant, inscriptions.informations_reglement, inscriptions.genre, inscriptions.nom, inscriptions.prenom,
                     inscriptions.email, inscriptions.id_forum
                     FROM afup_inscription_forum inscriptions
                     WHERE inscriptions.etat = :state
@@ -350,9 +352,13 @@ class TicketRepository extends Repository implements MetadataInitializer
                 'type' => 'string',
             ])
             ->addField([
-                'columnName' => 'civilite',
-                'fieldName' => 'civility',
-                'type' => 'string',
+                'columnName' => 'genre',
+                'fieldName' => 'genre',
+                'type' => 'enum',
+                'serializer' => BackedEnum::class,
+                'serializer_options' => [
+                    'unserialize' => ['enum' => Genre::class],
+                ],
             ])
             ->addField([
                 'columnName' => 'nom',

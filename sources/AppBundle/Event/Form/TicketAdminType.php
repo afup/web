@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Form;
 
+use AppBundle\Association\Genre;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Model\TicketOffer;
@@ -12,6 +13,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -44,12 +46,11 @@ class TicketAdminType extends AbstractType
         usort($ticketOffers, static fn(TicketOffer $a, TicketOffer $b): int => $a->name > $b->name ? 1 : -1);
 
         $builder
-            ->add('civility', ChoiceType::class, [
-                'label' => 'Civilité',
-                'choices' => [
-                    'M.' => 'M.',
-                    'Mme' => 'Mme',
-                ],
+            ->add('genre', EnumType::class, [
+                'required' => false,
+                'class' => Genre::class,
+                'label' => 'Genre',
+                'placeholder' => 'Ne se prononce pas',
             ])
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom',

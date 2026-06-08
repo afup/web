@@ -11,7 +11,7 @@ class SpeakerFormDataFactory
     public function fromSpeaker(Speaker $speaker): SpeakerFormData
     {
         $data = new SpeakerFormData();
-        $data->civility = $speaker->getCivility();
+        $data->genre = $speaker->getGenre();
         $data->firstname = $speaker->getFirstname();
         $data->lastname = $speaker->getLastname();
         $data->email = $speaker->getEmail();

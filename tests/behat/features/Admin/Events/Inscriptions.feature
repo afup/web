@@ -46,7 +46,7 @@ Feature: Administration - Évènements - Inscriptions
     Then the ".content h2" element should contain "Inscriptions"
     When I follow "Ajouter"
     Then I should see "Ajouter une inscription pour le forum"
-    Then The "ticket_admin_with_invoice[ticket][civility]" field should only contain the follow values '["M.", "Mme"]'
+    Then The "ticket_admin_with_invoice[ticket][genre]" field should only contain the follow values '["Ne se prononce pas", "Femme", "Homme", "Non-binaire"]'
     When I select "2" from "ticket_admin_with_invoice[ticket][ticketTypeId]"
     And I fill in "ticket_admin_with_invoice[ticket][lastname]" with "Nom participant"
     And I fill in "ticket_admin_with_invoice[ticket][firstname]" with "Prénom participant"

@@ -14,7 +14,6 @@ class UserFactory
 
         return
             $user
-                ->setCivility(User::CIVILITE_M)
                 ->setCountry('FR')
                 ->setLevel(User::LEVEL_MEMBER)
                 ->setStatus(User::STATUS_ACTIVE)

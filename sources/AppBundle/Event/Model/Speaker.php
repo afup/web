@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model;
 
+use AppBundle\Association\Genre;
 use AppBundle\Event\Speaker\MicrophoneType;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
@@ -37,11 +38,7 @@ class Speaker implements NotifyPropertyInterface
     #[Assert\GreaterThan(0)]
     private $user;
 
-    /**
-     * @var string
-     */
-    #[Assert\NotBlank]
-    private $civility;
+    private ?Genre $genre = null;
 
     /**
      * @var string
@@ -186,21 +183,15 @@ class Speaker implements NotifyPropertyInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getCivility()
+    public function getGenre(): ?Genre
     {
-        return $this->civility;
+        return $this->genre;
     }
 
-    /**
-     * @param string $civility
-     */
-    public function setCivility($civility): self
+    public function setGenre(?Genre $genre): self
     {
-        $this->propertyChanged('civility', $this->civility, $civility);
-        $this->civility = $civility;
+        $this->propertyChanged('genre', $this->genre, $genre);
+        $this->genre = $genre;
         return $this;
     }
 

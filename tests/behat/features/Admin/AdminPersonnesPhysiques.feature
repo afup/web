@@ -8,7 +8,7 @@ Feature: Administration - Partie Personnes physiques
     # ajout d'une personne physique
     When I follow "Ajouter"
     Then I should see "Ajouter une personne physique"
-    Then The "user_edit[civility]" field should only contain the follow values '["M.", "Mme"]'
+    Then The "user_edit[genre]" field should only contain the follow values '["Ne se prononce pas", "Femme", "Homme", "Non-binaire"]'
     When I press "Ajouter"
     Then I should see "Cette valeur ne doit pas être vide"
     When I fill in "user_edit[lastname]" with "Mon nom"

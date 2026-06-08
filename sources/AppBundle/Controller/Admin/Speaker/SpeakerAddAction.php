@@ -37,7 +37,7 @@ class SpeakerAddAction extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $speaker = new Speaker();
             $speaker->setEventId($event->getId());
-            $speaker->setCivility($data->civility);
+            $speaker->setGenre($data->genre);
             $speaker->setFirstname($data->firstname);
             $speaker->setLastname($data->lastname);
             $speaker->setBiography($data->biography);

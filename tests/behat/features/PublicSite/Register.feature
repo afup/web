@@ -28,7 +28,7 @@ Feature: Site Public - Register
     Then I should see "Devenir membre de l'AFUP"
     When I follow "Adhérer en tant que particulier"
     Then I should see "Formulaire d'inscription à l'AFUP"
-    Then The "register_user_civility" field should only contain the follow values '["M.", "Mme"]'
+    Then The "register_user_genre" field should only contain the follow values '["Ne se prononce pas", "Femme", "Homme", "Non-binaire"]'
     When I fill in "register_user_userCommonInfo_lastName" with "Mon nom"
     And I fill in "register_user_userCommonInfo_firstName" with "Mon prénom"
     And I fill in "register_user_userCommonInfo_username" with "lelogin"

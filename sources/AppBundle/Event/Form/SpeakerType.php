@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Form;
 
+use AppBundle\Association\Genre;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\GithubUserRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
@@ -12,6 +13,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -39,7 +41,12 @@ class SpeakerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('civility', ChoiceType::class, ['choices' => ['M' => 'M', 'Mme' => 'Mme']])
+            ->add('genre', EnumType::class, [
+                'required' => false,
+                'class' => Genre::class,
+                'label' => 'Genre',
+                'placeholder' => 'Ne se prononce pas',
+            ])
             ->add('firstname', TextType::class)
             ->add('lastname', TextType::class)
             ->add('email', EmailType::class)
@@ -93,7 +100,7 @@ class SpeakerType extends AbstractType
             if ($user instanceof GithubUser && $speaker instanceof Speaker && $speaker->getId() === null) {
                 $previousSpeakerInfos = $this->speakerRepository->getFromLastEventAndUserId($speaker->getEventId(), $user->getId());
                 if ($previousSpeakerInfos instanceof Speaker) {
-                    $speaker->setCivility($previousSpeakerInfos->getCivility());
+                    $speaker->setGenre($previousSpeakerInfos->getGenre());
                     $speaker->setFirstname($previousSpeakerInfos->getFirstname());
                     $speaker->setLastname($previousSpeakerInfos->getLastname());
                     $speaker->setEmail($previousSpeakerInfos->getEmail());

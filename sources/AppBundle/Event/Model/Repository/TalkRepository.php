@@ -82,7 +82,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     public function getTalksBySpeakerWithVotes(Event $event, Speaker $speaker)
     {
         $query = $this->getPreparedQuery(
-            'SELECT sessions.session_id, titre, abstract, id_forum, sessions.plannifie, skill, genre, votes.*
+            'SELECT sessions.session_id, titre, abstract, id_forum, sessions.plannifie, skill, sessions.genre, votes.*
             FROM afup_sessions sessions
             LEFT JOIN afup_conferenciers_sessions cs ON cs.session_id = sessions.session_id
             LEFT JOIN afup_sessions_vote_github votes ON votes.session_id = sessions.session_id
@@ -138,7 +138,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     public function getAllTalksAndRatingsForUser(Event $event, GithubUser $user, $randomSeed, $page = 1, $limit = 10)
     {
         $query = $this->getPreparedQuery(
-            'SELECT sessions.session_id, titre, abstract, skill, genre, id_forum, asvg.id, asvg.comment, asvg.vote
+            'SELECT sessions.session_id, titre, abstract, skill, sessions.genre, id_forum, asvg.id, asvg.comment, asvg.vote
             FROM afup_sessions sessions
             LEFT JOIN afup_sessions_vote_github asvg ON (asvg.session_id = sessions.session_id AND asvg.user = :user)
             WHERE plannifie = 0 AND id_forum = :event
@@ -181,7 +181,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     public function getNewTalksToRate(Event $event, GithubUser $user, $randomSeed, $page = 1, $limit = 10)
     {
         $query = $this->getPreparedQuery(
-            'SELECT sessions.session_id, titre, skill, genre, abstract, id_forum
+            'SELECT sessions.session_id, titre, skill, sessions.genre, abstract, id_forum
             FROM afup_sessions sessions
             LEFT JOIN afup_sessions_vote_github asvg ON (asvg.session_id = sessions.session_id AND asvg.user = :user)
             WHERE plannifie = 0 AND id_forum = :event
@@ -213,7 +213,7 @@ class TalkRepository extends Repository implements MetadataInitializer
         $hydrator->aggregateOn('talk', 'speaker', 'getId');
 
         $query = $this->getPreparedQuery(
-            'SELECT talk.session_id, talk.titre, skill, genre, abstract, talk.plannifie,
+            'SELECT talk.session_id, talk.titre, skill, talk.genre, abstract, talk.plannifie,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe, speaker.biographie,
             planning.debut, planning.fin, room.id, room.nom, event.date_annonce_planning
             FROM afup_sessions AS talk
@@ -271,7 +271,7 @@ class TalkRepository extends Repository implements MetadataInitializer
         $inEvents = implode(',', $inEventsKeys);
 
         $query = $this->getPreparedQuery(
-            sprintf('SELECT talk.id_forum, talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code,
+            sprintf('SELECT talk.id_forum, talk.session_id, titre, skill, talk.genre, abstract, talk.plannifie, talk.language_code,
             talk.joindin,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe,
             planning.id, planning.debut, planning.fin, room.id, room.nom
@@ -306,7 +306,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     public function getByEventWithSpeakersAndVotes(Event $event, string $search = '', string $orderBy = 'talk.date_soumission ASC', bool $planned = false, bool $needMentoring = false): array
     {
         $sql = <<<SQL
-            SELECT talk.id_forum, talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code,
+            SELECT talk.id_forum, talk.session_id, titre, skill, talk.genre, abstract, talk.plannifie, talk.language_code,
             talk.joindin, talk.youtube_id, talk.slides_url, talk.interview_url, talk.blog_post_url, talk.needs_mentoring,
             talk.date_soumission,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe,
@@ -371,7 +371,7 @@ SQL;
         $hydrator->aggregateOn('talk', 'speaker', 'getId');
 
         $query = $this->getPreparedQuery(
-            'SELECT talk.session_id, titre, skill, genre, abstract, talk.plannifie, talk.language_code, talk.needs_mentoring, talk.staff_notes, talk.youtube_id,
+            'SELECT talk.session_id, titre, skill, talk.genre, abstract, talk.plannifie, talk.language_code, talk.needs_mentoring, talk.staff_notes, talk.youtube_id,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.ville, speaker.societe, speaker.email, speaker.conferencier_id
             FROM afup_sessions AS talk
             LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id

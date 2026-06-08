@@ -28,7 +28,7 @@ Feature: Administration - Évènements - Tokens Sponsors
     # Vérifie le markdown depuis sponsor_management_
     And the response should contain "<strong>Sponsors</strong>, venez, vous serez très visible !"
     # Ajout d'une invitation
-    And The "sponsor_ticket[civility]" field should only contain the follow values '["M.", "Mme"]'
+    And The "sponsor_ticket[genre]" field should only contain the follow values '["Ne se prononce pas", "Femme", "Homme", "Non-binaire"]'
     When I fill in "sponsor_ticket[firstname]" with "Nom personne invitée"
     And I fill in "sponsor_ticket[lastname]" with "Prénom personne invitée"
     And I fill in "sponsor_ticket[email]" with "personneinvitee@masociete.com"

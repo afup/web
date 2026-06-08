@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Association\Form;
 
 use Afup\Site\Utils\Pays;
+use AppBundle\Association\Genre;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\User;
 use Symfony\Component\Form\AbstractType;
@@ -12,6 +13,7 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -32,17 +34,17 @@ class UserEditType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $civilities = ['M.', 'Mme'];
         $builder
             ->add('companyId', ChoiceType::class, [
                 'label' => 'Personne morale',
                 'required' => false,
                 'choices' => array_flip($this->companyMemberRepository->getList()),
             ])
-            ->add('civility', ChoiceType::class, [
-                'label' => 'Civilité',
-                'required' => true,
-                'choices' => array_combine($civilities, $civilities),
+            ->add('genre', EnumType::class, [
+                'required' => false,
+                'class' => Genre::class,
+                'label' => 'Genre',
+                'placeholder' => 'Ne se prononce pas',
             ])
             ->add('lastname', TextType::class, [
                 'label' => 'Nom',

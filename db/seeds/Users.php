@@ -24,7 +24,6 @@ class Users extends AbstractSeed
         $data = [
             [
                 'id'    => self::ID_PERSONNE_MORALE_MY_CORP,
-                'civilite' => '1',
                 'nom' => 'Dupont',
                 'prenom' => 'Raoul',
                 'email' => 'raoul.dupont@mycorp.fr',
@@ -40,7 +39,6 @@ class Users extends AbstractSeed
             ],
             [
                 'id'    => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
-                'civilite' => '1',
                 'nom' => 'Ayesa',
                 'prenom' => 'Dev',
                 'email' => 'dev.ayesa@helios-aerospace.com',

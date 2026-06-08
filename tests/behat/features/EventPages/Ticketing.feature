@@ -8,7 +8,7 @@ Feature: Event pages - Ticketing
     And I should see "Si vous rencontrez le moindre problème, n'hésitez pas à nous contacter à l'adresse bonjour [@] afup.org."
     # Choix du règlement par CB
     And I select "0" from "purchase[paymentType]"
-    Then The "purchase[tickets][0][civility]" field should only contain the follow values '["M.", "Mme"]'
+    Then The "purchase[tickets][0][genre]" field should only contain the follow values '["Ne se prononce pas", "Femme", "Homme", "Non-binaire"]'
     When I fill in "purchase[tickets][0][firstname]" with "Prénom personne 1"
     And I fill in "purchase[tickets][0][lastname]" with "Nom personne 1"
     And I fill in "purchase[tickets][0][email]" with "personne1@yahoo.fr"
@@ -54,7 +54,7 @@ Feature: Event pages - Ticketing
     And I should see "Si vous rencontrez le moindre problème, n'hésitez pas à nous contacter à l'adresse bonjour [@] afup.org."
     # Choix du règlement par virement
     And I select "2" from "purchase[paymentType]"
-    Then The "purchase[tickets][0][civility]" field should only contain the follow values '["M.", "Mme"]'
+    Then The "purchase[tickets][0][genre]" field should only contain the follow values '["Ne se prononce pas", "Femme", "Homme", "Non-binaire"]'
     When I fill in "purchase[tickets][0][firstname]" with "Prénom personne 1"
     And I fill in "purchase[tickets][0][lastname]" with "Nom personne 1"
     And I fill in "purchase[tickets][0][email]" with "personne1@yahoo.fr"
@@ -80,7 +80,7 @@ Feature: Event pages - Ticketing
     Then I should see "Billetterie: forum"
     # Formule Tarif membre
     And I select "0" from "purchase[tickets][0][ticketEventType]"
-    Then The "purchase[tickets][0][civility]" field should only contain the follow values '["M.", "Mme"]'
+    Then The "purchase[tickets][0][genre]" field should only contain the follow values '["Ne se prononce pas", "Femme", "Homme", "Non-binaire"]'
     When I fill in "purchase[tickets][0][firstname]" with "Prénom personne 1"
     And I fill in "purchase[tickets][0][lastname]" with "Nom personne 1"
     And I fill in "purchase[tickets][0][email]" with "paul.personne@mycorp.fr"

@@ -49,7 +49,6 @@ final class MemberInvitationAction extends AbstractController
              * @var User $user
              */
             $user = $userForm->getData();
-            $user->setCivility('');
             $hash = $this->passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hash);
             $user
