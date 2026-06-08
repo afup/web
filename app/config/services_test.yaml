@@ -3,3 +3,6 @@ services:
         autowire: true
         tags:
             - { name: kernel.event_listener, priority: 1000 }
+
+    http_client.bluesky_embed:
+        class: Symfony\Component\HttpClient\MockHttpClient
