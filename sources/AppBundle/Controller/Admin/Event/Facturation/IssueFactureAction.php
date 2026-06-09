@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event\Facturation;
 
-use Afup\Site\Forum\Facturation;
 use AppBundle\AuditLog\Audit;
+use AppBundle\Event\Invoice\InvoiceService;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +17,7 @@ class IssueFactureAction extends AbstractController
 {
     public function __construct(
         private readonly InvoiceRepository $invoiceRepository,
-        private readonly Facturation $facturation,
+        private readonly InvoiceService $invoiceService,
         private readonly Audit $audit,
     ) {}
 
@@ -29,13 +29,14 @@ class IssueFactureAction extends AbstractController
             throw new NotFoundHttpException("Cette facture n'existe pas");
         }
 
-        if ($this->facturation->estFacture($reference)) {
-            $this->audit->log('Facturation => facture n°' . $reference);
-            $this->addFlash('notice', 'La facture est prise en compte');
-            return $this->redirectToRoute('admin_event_factures');
+        try {
+            $this->invoiceService->markAsInvoiced($facture);
+        } catch (\Exception $e) {
+            $this->addFlash('error', "La facture n'a pas pu être prise en compte");
         }
 
-        $this->addFlash('error', "La facture n'a pas pu être prise en compte");
+        $this->audit->log('Facturation => facture n°' . $reference);
+        $this->addFlash('notice', 'La facture est prise en compte');
         return $this->redirectToRoute('admin_event_factures');
     }
 }

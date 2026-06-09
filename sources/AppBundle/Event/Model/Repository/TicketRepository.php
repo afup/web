@@ -91,6 +91,23 @@ class TicketRepository extends Repository implements MetadataInitializer
        ;
     }
 
+    public function getWithTicketTypeByReference(string $reference): array
+    {
+        $query = $this->getQuery(
+            'SELECT aif.*, aft.pretty_name
+            FROM afup_inscription_forum aif
+            LEFT JOIN afup_forum_tarif aft ON aft.id = aif.type_inscription
+            WHERE aif.reference = :reference',
+        );
+        $query->setParams(['reference' => $reference]);
+        $results = [];
+        foreach ($query->query($this->getCollection(new HydratorArray())) as $row) {
+            $results[] = $row;
+        }
+
+        return $results;
+    }
+
     public function getByInvoiceWithDetail(Invoice $invoice)
     {
         return $this->getPreparedQuery(

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event\Ticket;
 
-use Afup\Site\Forum\Facturation;
 use AppBundle\AuditLog\Audit;
+use AppBundle\Event\Invoice\EventInvoiceReferenceGenerator;
 use AppBundle\Event\Form\TicketAdminWithInvoiceType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
@@ -27,7 +27,7 @@ final class AddAction extends AbstractController
         private readonly EventRepository $eventRepository,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly Audit $audit,
-        private readonly Facturation $facturation,
+        private readonly EventInvoiceReferenceGenerator $referenceGenerator,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -63,7 +63,7 @@ final class AddAction extends AbstractController
                 throw $this->createNotFoundException(sprintf('Offer not found with ticketTypeId "%s"', $ticketTypeId));
             }
 
-            $reference = $this->facturation->creerReference($event->getId(), $ticket->getLabel());
+            $reference = $this->referenceGenerator->generate($event->getId(), $ticket->getLabel());
             if ($offer->ticketEventType) {
                 $ticket->setTicketEventType($offer->ticketEventType);
             }

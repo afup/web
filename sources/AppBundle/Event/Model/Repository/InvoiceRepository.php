@@ -7,6 +7,7 @@ namespace AppBundle\Event\Model\Repository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Ticket;
+use AppBundle\Ting\DateTimeWithTimeZoneSerializer;
 use AppBundle\Ting\JoinHydrator;
 use Aura\SqlQuery\Mysql\Select;
 use CCMBenchmark\Ting\Driver\Exception;
@@ -65,6 +66,19 @@ class InvoiceRepository extends Repository implements MetadataInitializer
     public function getByReference(mixed $reference): ?Invoice
     {
         return $this->getOneBy(['reference' => $reference]);
+    }
+
+    public function getWithEventDataByReference(string $reference): ?array
+    {
+        $query = $this->getQuery(
+            'SELECT aff.*, af.titre AS event_name, af.has_prices_defined_with_vat AS event_has_prices_defined_with_vat
+            FROM afup_facturation_forum aff
+            LEFT JOIN afup_forum af ON af.id = aff.id_forum
+            WHERE aff.reference = :reference',
+        );
+        $query->setParams(['reference' => $reference]);
+
+        return $query->query($this->getCollection(new HydratorArray()))->first();
     }
 
     public function getPendingBankwires(Event $event)
@@ -212,6 +226,7 @@ class InvoiceRepository extends Repository implements MetadataInitializer
                 'columnName' => 'date_reglement',
                 'fieldName' => 'paymentDate',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTimeZoneSerializer::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['format' => 'U'],
@@ -221,6 +236,7 @@ class InvoiceRepository extends Repository implements MetadataInitializer
                 'columnName' => 'date_facture',
                 'fieldName' => 'invoiceDate',
                 'type' => 'datetime',
+                'serializer' => DateTimeWithTimeZoneSerializer::class,
                 'serializer_options' => [
                     'unserialize' => ['unSerializeUseFormat' => true, 'format' => 'U'],
                     'serialize' => ['format' => 'U'],
