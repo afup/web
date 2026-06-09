@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Planete;
 
-use PlanetePHP\DisplayableFeedArticle;
-use PlanetePHP\FeedArticleRepository;
+use PlanetePHP\Article;
+use PlanetePHP\ArticleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final readonly class ArticlesController
 {
-    public function __construct(private FeedArticleRepository $feedArticleRepository) {}
+    public function __construct(private ArticleRepository $articleRepository) {}
 
     public function __invoke(Request $request): Response
     {
@@ -22,8 +22,8 @@ final readonly class ArticlesController
             $page = 1;
         }
 
-        $totalCount = $this->feedArticleRepository->countRelevant();
-        $articles = $this->feedArticleRepository->findLatest($page - 1, DATE_RSS, $perPage);
+        $totalCount = $this->articleRepository->countRelevant();
+        $articles = $this->articleRepository->findLatest($page - 1, $perPage);
 
         $data = [];
 
@@ -31,12 +31,12 @@ final readonly class ArticlesController
             $data[] = [
                 'title' => $article->title,
                 'url' => $this->getArticleUrl($article),
-                'date' => $article->update,
+                'date' => $article->updatedAt?->format(DATE_RSS),
                 'author' => $article->author,
                 'content' => $article->content,
                 'feed' => [
-                    'name' => $article->feedName,
-                    'url' => $article->feedUrl,
+                    'name' => $article->feed?->name,
+                    'url' => $article->feed?->url,
                 ],
             ];
         }
@@ -53,7 +53,7 @@ final readonly class ArticlesController
         );
     }
 
-    private function getArticleUrl(DisplayableFeedArticle $article): string
+    private function getArticleUrl(Article $article): string
     {
         $url = $article->url;
 
@@ -62,7 +62,7 @@ final readonly class ArticlesController
         }
 
         if (!str_starts_with($url, 'http')) {
-            $feedUrl = rtrim((string) $article->feedUrl, '/');
+            $feedUrl = rtrim((string) $article->feed?->url, '/');
             $articleUrl = ltrim($url, '/');
 
             return implode('/', [$feedUrl, $articleUrl]);
