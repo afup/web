@@ -1,8 +1,9 @@
 includes:
+    - phpstan-baseline.php
     - vendor/cuyz/valinor/qa/PHPStan/valinor-phpstan-configuration.php
 
 parameters:
-    level: 5
+    level: 10
     paths:
         - sources
     stubFiles:
