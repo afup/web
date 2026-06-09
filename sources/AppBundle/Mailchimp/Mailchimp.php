@@ -124,7 +124,7 @@ class Mailchimp
         ]);
     }
 
-    public function scheduleCampaign(string $campaignId, \DateTime $datetime): bool|array
+    public function scheduleCampaign(string $campaignId, \DateTimeInterface $datetime): bool|array
     {
         return $this->client->post('campaigns/' . $campaignId . '/actions/schedule', [
             'schedule_time' => $datetime->format('c'),
