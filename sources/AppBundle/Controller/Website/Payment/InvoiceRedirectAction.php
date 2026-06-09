@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Payment;
 
-use Afup\Site\Comptabilite\Facture;
 use Afup\Site\Utils\Utils;
+use AppBundle\Accounting\Model\Repository\InvoicingRepository;
 use AppBundle\Payment\PayboxResponseFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class InvoiceRedirectAction extends AbstractController
 {
-    public function __construct(private readonly Facture $facture) {}
+    public function __construct(private readonly InvoicingRepository $invoicingRepository) {}
 
     public function __invoke(Request $request, string $type = 'success'): RedirectResponse
     {
@@ -21,8 +21,12 @@ class InvoiceRedirectAction extends AbstractController
         if (!$invoiceRef) {
             throw $this->createNotFoundException('Facture inexistante, ref manquant');
         }
-        $invoice = $this->facture->obtenirParNumeroFacture($invoiceRef);
-        $cryptRef = urlencode(Utils::cryptFromText($invoice['id']));
+        // getOneBy() intentionally used here: only getId() is needed, no details required
+        $invoice = $this->invoicingRepository->getOneBy(['invoiceNumber' => $invoiceRef]);
+        if ($invoice === null) {
+            throw $this->createNotFoundException('Facture inexistante');
+        }
+        $cryptRef = urlencode(Utils::cryptFromText($invoice->getId()));
 
         $payboxResponse = PayboxResponseFactory::createFromRequest($request);
         if ($payboxResponse->isSuccessful()) {

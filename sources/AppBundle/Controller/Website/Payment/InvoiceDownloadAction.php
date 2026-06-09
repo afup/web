@@ -4,33 +4,35 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Payment;
 
-use Afup\Site\Comptabilite\Facture;
 use Afup\Site\Utils\Utils;
+use AppBundle\Accounting\InvoicingPdfGenerator;
+use AppBundle\Accounting\Model\Repository\InvoicingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class InvoiceDownloadAction extends AbstractController
 {
-    public function __construct(private readonly Facture $facture) {}
+    public function __construct(
+        private readonly InvoicingPdfGenerator $pdfGenerator,
+        private readonly InvoicingRepository $invoicingRepository,
+    ) {}
 
     public function __invoke(Request $request): Response
     {
-        $invoiceRef = Utils::decryptFromText(urldecode($request->query->get('ref', '')));
-        if (!$invoiceRef) {
+        $invoiceId = Utils::decryptFromText(urldecode($request->query->get('ref', '')));
+        if (!$invoiceId) {
             throw $this->createNotFoundException('Facture inexistante, ref manquant');
         }
-        $invoice = $this->facture->obtenir($invoiceRef);
+        $invoice = $this->invoicingRepository->getById((int) $invoiceId);
         if (!$invoice) {
             throw $this->createNotFoundException('Facture inexistante');
         }
 
-        ob_start();
-        $this->facture->genererFacture($invoice['numero_facture']);
-        $pdf = ob_get_clean();
-
+        $pdf = $this->pdfGenerator->generateInvoice($invoice);
         $response = new Response($pdf);
         $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-Disposition', $response->headers->makeDisposition('attachment', $this->pdfGenerator->getInvoiceFilename($invoice)));
 
         return $response;
     }
