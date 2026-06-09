@@ -26,10 +26,10 @@
         </thead>
         <tbody>
         {% for article in articles %}
-        <tr class="{{ article.status == 1 ? 'actif' : 'inactif' }}">
+        <tr class="{{ article.isRelevant ? 'actif' : 'inactif' }}">
             <td>{{ article.title }}</td>
             <td>{{ article.content|striptags }}</td>
-            <td style="text-align: center">{{ article.status == 1 ? 'Actif' : 'Inactif (non lié à PHP)' }}</td>
+            <td style="text-align: center">{{ article.isRelevant ? 'Actif' : 'Inactif (non lié à PHP)' }}</td>
         </tr>
         {% else %}
         <tr>

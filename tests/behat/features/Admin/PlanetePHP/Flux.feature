@@ -33,12 +33,12 @@ Feature: Administration - Planète PHP - Flux
     And I press "Ajouter"
     Then the ".content .message" element should contain "Le flux a été ajouté"
     # Liste des flux
-    And I should see "les-tilleuls.coop https://les-tilleuls.coop Actif Oui non testé"
-    And I should see "Mon super site https://fake.afup Actif Oui non testé"
+    And I should see "les-tilleuls.coop https://les-tilleuls.coop Actif non testé"
+    And I should see "Mon super site https://fake.afup Actif non testé"
     # Test de validité
     When I follow "Test validité"
-    And I should see "les-tilleuls.coop https://les-tilleuls.coop Actif Oui validé"
-    And I should see "Mon super site https://fake.afup Actif Oui erreur"
+    And I should see "les-tilleuls.coop https://les-tilleuls.coop Actif validé"
+    And I should see "Mon super site https://fake.afup Actif erreur"
     # Modification + désactivation d'un flux
     When I follow the button of tooltip "Modifier la fiche de Site web les-tilleuls.coop"
     Then the ".content h2" element should contain "Modifier un flux"

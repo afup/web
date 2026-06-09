@@ -23,7 +23,7 @@ final readonly class FeedListAction
     public function __invoke(Request $request): Response
     {
         $testFeeds = $request->query->getBoolean('testFeeds');
-        $feeds = $this->feedRepository->find();
+        $feeds = $this->feedRepository->findAllOrderedByName();
 
         return new Response($this->twig->render('admin/planete/feed_list.html.twig', [
             'feeds' => $feeds,
