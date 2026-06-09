@@ -14,6 +14,7 @@ use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
 use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Webmozart\Assert\Assert;
 
 final readonly class MembershipFeeMailer
@@ -24,12 +25,13 @@ final readonly class MembershipFeeMailer
         private CompanyMemberRepository $companyMemberRepository,
         private Mailer $mailer,
         private MembershipFeeInvoicePdfGenerator $pdfGenerator,
+        #[Autowire('%kernel.project_dir%/../htdocs/cache/')]
+        private string $publicCacheDir,
     ) {}
 
     /**
      * Envoi par mail d'une facture au format PDF
      *
-     * @param $idCotisation Identifiant de la cotisation
      * @return bool Succès de l'envoi
      */
     public function envoyerFacture(int $idCotisation): bool
@@ -63,7 +65,7 @@ final readonly class MembershipFeeMailer
         $corps .= Afup::ADRESSE . "<br />";
         $corps .= Afup::CODE_POSTAL . " " . Afup::VILLE . "<br />";
 
-        $cheminFacture = AFUP_CHEMIN_RACINE . 'cache/fact' . $idCotisation . '.pdf';
+        $cheminFacture = $this->publicCacheDir . 'fact' . $idCotisation . '.pdf';
         $numeroFacture = $this->pdfGenerator->genererFacture($idCotisation, $cheminFacture);
         $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', $membership->getStartDate()->getTimestamp()) . '.pdf';
 
