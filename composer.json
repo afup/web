@@ -59,6 +59,7 @@
     "symfony/mailer": "^7.4",
     "symfony/mime": "7.4.*",
     "symfony/monolog-bundle": "^3.11",
+    "symfony/rate-limiter": "^8.1",
     "symfony/runtime": "7.4.*",
     "symfony/security-bundle": "7.4.*",
     "symfony/string": "7.4.*",
