@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use AppBundle\Site\Model\Rubrique;
+use AppBundle\Site\Entity\Rubrique;
 use Phinx\Seed\AbstractSeed;
 
 class SiteRubrique extends AbstractSeed
