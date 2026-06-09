@@ -36,7 +36,7 @@ class InvoicingPdfGenerator
 
         $pdf->MultiCell(180, 5, 'Comme convenu, nous vous prions de trouver votre facture');
 
-        $devise = $this->currencySymbol($invoicing);
+        $devise = ' ' . ($invoicing->getCurrency()?->symbol() ?? '€');
         [$totalHt, $totalTtc, $vatAmounts] = $this->renderLineItems($pdf, $invoicing->getDetails(), $isSubjectedToVat, $devise, true);
 
         $this->renderTotals($pdf, $isSubjectedToVat, $totalHt, $totalTtc, $vatAmounts, $devise);
@@ -85,7 +85,7 @@ class InvoicingPdfGenerator
 
         $pdf->MultiCell(180, 5, 'Comme convenu, nous vous prions de trouver votre devis');
 
-        $devise = $this->currencySymbol($invoicing);
+        $devise = ' ' . ($invoicing->getCurrency()?->symbol() ?? '€');
         [$totalHt, $totalTtc, $vatAmounts] = $this->renderLineItems($pdf, $invoicing->getDetails(), $isSubjectedToVat, $devise, false);
 
         $this->renderTotals($pdf, $isSubjectedToVat, $totalHt, $totalTtc, $vatAmounts, $devise);
@@ -290,11 +290,6 @@ class InvoicingPdfGenerator
         }
 
         return number_format($value, 2, ',', ' ');
-    }
-
-    private function currencySymbol(Invoicing $invoicing): string
-    {
-        return $invoicing->getCurrency() === InvoicingCurrency::Dollar ? ' $' : ' €';
     }
 
     private function output(PDF_Facture $pdf, ?string $path, string $filename): string
