@@ -25,7 +25,7 @@ readonly class InvoicingMailer
     {
         $invoiceNumber = $invoicing->getInvoiceNumber();
 
-        $sujet = "Facture AFUP\n";
+        $sujet = "Facture AFUP";
 
         $corps = "Bonjour, \n\n";
         $corps .= "Veuillez trouver ci-joint la facture correspondant à la participation au forum organisé par l'AFUP.\n";
