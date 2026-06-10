@@ -143,6 +143,10 @@ test-integration-ci:
 phpstan:
 	$(PHP_CONT) ./bin/phpstan --memory-limit=-1
 
+### Mise à jour de la baseline PHPStan
+phpstan-update-baseline:
+	$(PHP_CONT) ./bin/phpstan analyse --memory-limit=-1 --generate-baseline phpstan-baseline.php
+
 ##@ Frontend
 
 ### Compiler les assets pour la production
