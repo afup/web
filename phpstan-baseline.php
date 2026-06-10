@@ -11654,12 +11654,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Site/Entity/Repository/ArticleRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Site\\\\Entity\\\\Repository\\\\ArticleRepository\\:\\:findAllPublishedArticles\\(\\) should return array\\<AppBundle\\\\Site\\\\Entity\\\\Article\\> but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Site/Entity/Repository/ArticleRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Site\\\\Entity\\\\Repository\\\\ArticleRepository\\:\\:findArticleBySlug\\(\\) should return AppBundle\\\\Site\\\\Entity\\\\Article\\|null but returns mixed\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
@@ -11667,12 +11661,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Site\\\\Entity\\\\Repository\\\\ArticleRepository\\:\\:findBySlug\\(\\) should return AppBundle\\\\Site\\\\Entity\\\\Article\\|null but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Site/Entity/Repository/ArticleRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Site\\\\Entity\\\\Repository\\\\ArticleRepository\\:\\:findListForHome\\(\\) should return array\\<AppBundle\\\\Site\\\\Entity\\\\Article\\> but returns mixed\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Site/Entity/Repository/ArticleRepository.php',
@@ -11692,12 +11680,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Site\\\\Entity\\\\Repository\\\\ArticleRepository\\:\\:findPublishedArticles\\(\\) has parameter \\$filtres with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Site/Entity/Repository/ArticleRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Site\\\\Entity\\\\Repository\\\\ArticleRepository\\:\\:findPublishedArticles\\(\\) should return array\\<AppBundle\\\\Site\\\\Entity\\\\Article\\> but returns mixed\\.$#',
-	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Site/Entity/Repository/ArticleRepository.php',
 ];
@@ -11724,24 +11706,6 @@ $ignoreErrors[] = [
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Site/Entity/Repository/CountryRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Site\\\\Entity\\\\Repository\\\\FeuilleRepository\\:\\:getAllFeuilles\\(\\) should return array\\<AppBundle\\\\Site\\\\Entity\\\\Feuille\\> but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Site/Entity/Repository/FeuilleRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Site\\\\Entity\\\\Repository\\\\FeuilleRepository\\:\\:getFeuillesEnfant\\(\\) should return array\\<AppBundle\\\\Site\\\\Entity\\\\Feuille\\> but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Site/Entity/Repository/FeuilleRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Site\\\\Entity\\\\Repository\\\\RubriqueRepository\\:\\:getAllRubriques\\(\\) should return array\\<AppBundle\\\\Site\\\\Entity\\\\Rubrique\\> but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Site/Entity/Repository/RubriqueRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Class AppBundle\\\\Site\\\\Form\\\\ArticleType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
@@ -12594,18 +12558,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.templateType',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Validator/Constraints/UniqueEntityValidator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Veille\\\\Entity\\\\Repository\\\\EnvoiRepository\\:\\:getAllOrderedByDateDesc\\(\\) should return list\\<AppBundle\\\\Veille\\\\Entity\\\\Envoi\\> but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Veille/Entity/Repository/EnvoiRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Veille\\\\Entity\\\\Repository\\\\EnvoiRepository\\:\\:getAllPreviouslySent\\(\\) should return list\\<AppBundle\\\\Veille\\\\Entity\\\\Envoi\\> but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Veille/Entity/Repository/EnvoiRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Veille\\\\Entity\\\\Repository\\\\NewsletterDesinscriptionRepository\\:\\:createFromWebhookData\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#',

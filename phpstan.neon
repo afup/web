@@ -19,6 +19,8 @@ parameters:
       property: 45
       constant: 100
     doctrine:
+        objectManagerLoader: tests/object-manager.php
+        reportDynamicQueryBuilders: true
         ormRepositoryClass: AppBundle\Doctrine\EntityRepository
 
 rules:
