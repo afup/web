@@ -35,7 +35,6 @@
     "league/oauth2-github": "^3.1",
     "nyholm/psr7": "^1.8",
     "pear/pear": "^1.10",
-    "phpmailer/phpmailer": "^6.12",
     "phpoffice/phpspreadsheet": "^5.7.0",
     "pimple/pimple": "^3.6",
     "presta/sitemap-bundle": "^4.3",
