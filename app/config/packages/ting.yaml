@@ -17,13 +17,6 @@ ting:
                 default:
                     connection: main
                     database: '%database_name%'
-        site:
-            namespace : AppBundle\Site\Model\Repository
-            directory : "@AppBundle/Site/Model/Repository"
-            options:
-                default:
-                    connection: main
-                    database: '%database_name%'
         accounting:
             namespace: AppBundle\Accounting\Model\Repository
             directory: "@AppBundle/Accounting/Model/Repository"

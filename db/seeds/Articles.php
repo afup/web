@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use AppBundle\Site\Model\Rubrique;
+use AppBundle\Site\Entity\Rubrique;
 use Cocur\Slugify\Slugify;
 use Faker\Factory;
 use Phinx\Seed\AbstractSeed;
