@@ -7,10 +7,14 @@ namespace AppBundle\Controller\Website;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Extra\Markdown\MarkdownInterface;
 
 class RssFeedController extends AbstractController
 {
-    public function __construct(private readonly ArticleRepository $articleRepository) {}
+    public function __construct(
+        private readonly ArticleRepository $articleRepository,
+        private readonly MarkdownInterface $markdown,
+    ) {}
 
     public function __invoke(): Response
     {
@@ -19,7 +23,7 @@ class RssFeedController extends AbstractController
         foreach ($articles as $article) {
             $derniersArticles[] = [
                 'titre'   => $article->titre,
-                'contenu' => $article->getContenuFormate(),
+                'contenu' => $this->markdown->convert($article->contenu),
                 'url'     => $article->getSlug(),
                 'maj'     => $article->datePublication->format(DATE_RSS),
             ];
