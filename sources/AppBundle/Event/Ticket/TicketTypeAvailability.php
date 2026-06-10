@@ -17,7 +17,7 @@ class TicketTypeAvailability
 
     public function __construct(private readonly TicketRepository $ticketRepository) {}
 
-    public function getStock(TicketEventType $ticketEventType, Event $event)
+    public function getStock(TicketEventType $ticketEventType, Event $event): int
     {
         // Les tickets depuis les tokens doivent fonctionner même après le sold out
         if ($ticketEventType->getTicketType()->getTechnicalName() == TicketType::SPECIAL_PRICE_TECHNICAL_NAME) {

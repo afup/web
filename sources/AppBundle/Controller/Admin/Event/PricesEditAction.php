@@ -11,6 +11,7 @@ use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PricesEditAction extends AbstractController
 {
@@ -21,7 +22,7 @@ class PricesEditAction extends AbstractController
         private readonly EventSelectFactory $eventSelectFactory,
     ) {}
 
-    public function __invoke(Request $request, int $event, int $id)
+    public function __invoke(Request $request, int $event, int $id): Response
     {
         $event = $this->eventActionHelper->getEventById($event);
         $ticketType = $this->ticketTypeRepository->get($id);

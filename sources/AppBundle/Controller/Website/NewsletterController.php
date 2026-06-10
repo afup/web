@@ -30,7 +30,7 @@ class NewsletterController extends AbstractController
         ]);
     }
 
-    public function subscribe(Request $request)
+    public function subscribe(Request $request): Response
     {
         $subscribeForm = $this->getSubscriberType();
         $subscribeForm->handleRequest($request);
