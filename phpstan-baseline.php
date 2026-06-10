@@ -1490,38 +1490,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/Afup/Utils/PDF_AG.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between mixed and \' \\- Page \' results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/PDF_AG.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between non\\-falsy\\-string and mixed results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 7,
 	'path' => __DIR__ . '/sources/Afup/Utils/PDF_AG.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method Afup\\\\Site\\\\Utils\\\\PDF_AG\\:\\:getFooterTitle\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/PDF_AG.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Afup\\\\Site\\\\Utils\\\\PDF_AG\\:\\:setFooterTitle\\(\\) has parameter \\$footerTitle with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/PDF_AG.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method Afup\\\\Site\\\\Utils\\\\PDF_AG\\:\\:writeRow\\(\\) has parameter \\$row with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/PDF_AG.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property Afup\\\\Site\\\\Utils\\\\PDF_AG\\:\\:\\$footerTitle has no type specified\\.$#',
-	'identifier' => 'missingType.property',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/Afup/Utils/PDF_AG.php',
 ];
@@ -2084,12 +2060,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/TransactionRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\SearchResultProvider\\:\\:getResultsForQuery\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/SearchResultProvider.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot cast mixed to int\\.$#',
 	'identifier' => 'cast.int',
 	'count' => 3,
@@ -2100,24 +2070,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Accounting/TransactionModification.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\CompanyMembership\\\\AbstractCompanyReminder\\:\\:getKey\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\CompanyMembership\\\\AbstractCompanyReminder\\:\\:getSubject\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\CompanyMembership\\\\AbstractCompanyReminder\\:\\:getText\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$email of class AppBundle\\\\Email\\\\Mailer\\\\MailUser constructor expects string, mixed given\\.$#',
@@ -2132,25 +2084,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$reminderKey of method AppBundle\\\\Association\\\\Model\\\\SubscriptionReminderLog\\:\\:setReminderKey\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$subject of class AppBundle\\\\Email\\\\Mailer\\\\Message constructor expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$userId of method AppBundle\\\\Association\\\\Model\\\\SubscriptionReminderLog\\:\\:setUserId\\(\\) expects int, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$content of method AppBundle\\\\Email\\\\Mailer\\\\Mailer\\:\\:sendTransactional\\(\\) expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
@@ -2442,12 +2376,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\MembershipReminderInterface\\:\\:sendReminder\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/MembershipReminderInterface.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\CompanyMember\\:\\:getFormattedRelatedAfupOffices\\(\\) return type has no value type specified in iterable type array\\.$#',
@@ -3356,24 +3284,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/NotifiableInterface.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\UserMembership\\\\AbstractUserReminder\\:\\:getKey\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\UserMembership\\\\AbstractUserReminder\\:\\:getSubject\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\UserMembership\\\\AbstractUserReminder\\:\\:getText\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$email of class AppBundle\\\\Email\\\\Mailer\\\\MailUser constructor expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -3386,25 +3296,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$reminderKey of method AppBundle\\\\Association\\\\Model\\\\SubscriptionReminderLog\\:\\:setReminderKey\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$subject of class AppBundle\\\\Email\\\\Mailer\\\\Message constructor expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$userId of method AppBundle\\\\Association\\\\Model\\\\SubscriptionReminderLog\\:\\:setUserId\\(\\) expects int, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$content of method AppBundle\\\\Email\\\\Mailer\\\\Mailer\\:\\:sendTransactional\\(\\) expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
@@ -3413,18 +3305,6 @@ $ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
 	'identifier' => 'foreach.nonIterable',
 	'count' => 4,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\+" between mixed and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between \'Membre depuis \' and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
 ];
 $ignoreErrors[] = [
@@ -3467,12 +3347,6 @@ $ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between mixed and \'\\-01\\-01\' results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between mixed and \'ans\' results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
 ];
 $ignoreErrors[] = [
@@ -3554,12 +3428,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot use \\-\\- on mixed\\.$#',
-	'identifier' => 'postDec.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Association\\\\UserMembership\\\\BadgesComputer\\:\\:filterExistingBadges\\(\\) has parameter \\$badgesInfos with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -3616,30 +3484,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
 	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/SeniorityComputer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\UserMembership\\\\SeniorityComputer\\:\\:compute\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/SeniorityComputer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\UserMembership\\\\SeniorityComputer\\:\\:computeAndReturnInfos\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/SeniorityComputer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\UserMembership\\\\SeniorityComputer\\:\\:computeCompanyAndReturnInfos\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/SeniorityComputer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\UserMembership\\\\SeniorityComputer\\:\\:computeFromCotisationsAndReturnInfos\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/SeniorityComputer.php',
 ];
@@ -4778,12 +4622,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/PricesEditAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Event\\\\PricesEditAction\\:\\:__invoke\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/PricesEditAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$ticketEventType of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketEventTypeRepository\\:\\:update\\(\\) expects AppBundle\\\\Event\\\\Model\\\\TicketEventType, AppBundle\\\\Event\\\\Model\\\\TicketEventType\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -4998,12 +4836,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/IndexAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Event\\\\SpeakerInfosAction\\:\\:__invoke\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SpeakerInfosAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$speaker of method AppBundle\\\\Event\\\\Speaker\\\\SpeakerPage\\:\\:handleRequest\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Speaker, AppBundle\\\\Event\\\\Model\\\\Speaker\\|null given\\.$#',
@@ -6440,12 +6272,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/FilesAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Event\\\\Speaker\\\\PageAction\\:\\:__invoke\\(\\) should return Symfony\\\\Component\\\\HttpFoundation\\\\Response but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/PageAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$eventSlug of method AppBundle\\\\Controller\\\\Event\\\\EventActionHelper\\:\\:getEvent\\(\\) expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -7324,12 +7150,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Controller\\\\Website\\\\NewsletterController\\:\\:getSubscriberType\\(\\) return type with generic interface Symfony\\\\Component\\\\Form\\\\FormInterface does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/NewsletterController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Website\\\\NewsletterController\\:\\:subscribe\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/NewsletterController.php',
 ];
@@ -9824,12 +9644,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/SpeakerPage.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Speaker\\\\SpeakerPage\\:\\:handleRequest\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/SpeakerPage.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$file of method AppBundle\\\\SpeakerInfos\\\\SpeakersExpensesStorage\\:\\:store\\(\\) expects Symfony\\\\Component\\\\HttpFoundation\\\\File\\\\UploadedFile, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -10028,12 +9842,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/PurchaseTypeFactory.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Ticket\\\\RegistrationsExportGenerator\\:\\:computeSeniority\\(\\) should return int but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/RegistrationsExportGenerator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$array of function array_key_exists expects array, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -10082,12 +9890,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/TicketOffers.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#4 \\$availableTickets of class AppBundle\\\\Event\\\\Model\\\\TicketOffer constructor expects int, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/TicketOffers.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Binary operation "\\-" between int and mixed results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 1,
@@ -10114,12 +9916,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method getTechnicalName\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
 	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/TicketTypeAvailability.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Ticket\\\\TicketTypeAvailability\\:\\:getStock\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/TicketTypeAvailability.php',
 ];
@@ -11336,12 +11132,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Payment/PayboxBilling.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Payment\\\\PayboxBilling\\:\\:getCountryCodeIso3166Numeric\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Payment/PayboxBilling.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$alpha2 of method League\\\\ISO3166\\\\ISO3166\\:\\:alpha2\\(\\) expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -12280,7 +12070,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot cast mixed to string\\.$#',
 	'identifier' => 'cast.string',
-	'count' => 4,
+	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/TechLetter/DataExtractor.php',
 ];
 $ignoreErrors[] = [
@@ -12322,12 +12112,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\TechLetter\\\\HtmlParser\\:\\:getStandardMeta\\(\\) has parameter \\$name with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/TechLetter/HtmlParser.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\TechLetter\\\\HtmlParser\\:\\:getTitle\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/TechLetter/HtmlParser.php',
 ];

@@ -66,7 +66,7 @@ class PayboxBilling
         return $this->countryCode;
     }
 
-    public function getCountryCodeIso3166Numeric()
+    public function getCountryCodeIso3166Numeric(): ?string
     {
         $country = $this->getCountryCode();
 

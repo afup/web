@@ -6,5 +6,5 @@ namespace AppBundle\Association;
 
 interface MembershipReminderInterface
 {
-    public function sendReminder(NotifiableInterface $user);
+    public function sendReminder(NotifiableInterface $user): void;
 }
