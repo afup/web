@@ -161,9 +161,6 @@ services:
     Afup\Site\Forum\AppelConferencier:
         autowire: true
 
-    Afup\Site\Forum\Forum:
-        autowire: true
-
     Afup\Site\Utils\Pays:
         autowire: true
 
