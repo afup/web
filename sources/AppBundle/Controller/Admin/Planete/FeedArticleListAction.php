@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Planete;
 
-use PlanetePHP\FeedArticleRepository;
+use PlanetePHP\ArticleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -12,7 +12,7 @@ use Twig\Environment;
 final readonly class FeedArticleListAction
 {
     public function __construct(
-        private FeedArticleRepository $feedArticleRepository,
+        private ArticleRepository $articleRepository,
         private Environment $twig,
     ) {}
 
@@ -22,7 +22,7 @@ final readonly class FeedArticleListAction
         $direction = $request->query->getString('direction', 'asc');
 
         return new Response($this->twig->render('admin/planete/feed_article_list.html.twig', [
-            'articles' => $this->feedArticleRepository->search($sort, $direction, 20),
+            'articles' => $this->articleRepository->search($sort, $direction, 20),
             'sort' => $sort,
             'direction' => $direction,
         ]));

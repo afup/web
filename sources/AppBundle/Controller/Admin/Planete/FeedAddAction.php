@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Planete;
 
 use AppBundle\AuditLog\Audit;
-use AppBundle\Planete\FeedFormData;
 use AppBundle\Planete\FeedFormType;
 use Exception;
+use PlanetePHP\Feed;
 use PlanetePHP\FeedRepository;
+use PlanetePHP\FeedStatus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,20 +23,17 @@ class FeedAddAction extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $data = new FeedFormData();
-        $form = $this->createForm(FeedFormType::class, $data);
+        $feed = new Feed();
+        $feed->url = 'https://';
+        $feed->feed = 'https://';
+        $feed->status = FeedStatus::Active;
+        $form = $this->createForm(FeedFormType::class, $feed);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $this->feedRepository->insert(
-                    $data->name,
-                    $data->url,
-                    $data->feed,
-                    $data->status,
-                    $data->userId,
-                );
+                $this->feedRepository->save($feed);
 
-                $this->audit->log('Ajout du flux ' . $data->name);
+                $this->audit->log('Ajout du flux ' . $feed->name);
                 $this->addFlash('notice', 'Le flux a été ajouté');
 
                 return $this->redirectToRoute('admin_planete_feed_list');
