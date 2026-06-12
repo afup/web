@@ -158,9 +158,6 @@ services:
     Afup\Site\Utils\Base_De_Donnees:
         factory: '@Afup\Site\Utils\LegacyConnectionFactory'
 
-    Afup\Site\Forum\AppelConferencier:
-        autowire: true
-
     Afup\Site\Forum\Forum:
         autowire: true
 
