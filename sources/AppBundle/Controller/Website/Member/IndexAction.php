@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\Member;
 
 use AppBundle\Antennes\AntenneRepository;
-use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
-use AppBundle\Veille\Entity\Repository\NewsletterInscriptionRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\AssembleeGeneraleRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\QuestionRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\MembershipFee\Model\MembershipFee;
 use AppBundle\Security\Authentication;
+use AppBundle\Veille\Entity\Repository\NewsletterInscriptionRepository;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,9 +23,10 @@ final class IndexAction extends AbstractController
 
     public function __construct(
         private readonly ViewRenderer $view,
+        private readonly AssembleeGeneraleRepository $assembleGeneraleRepository,
         private readonly GeneralMeetingRepository $generalMeetingRepository,
         private readonly UserService $userService,
-        private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
+        private readonly QuestionRepository $questionRepository,
         private readonly BadgesComputer $badgesComputer,
         private readonly NewsletterInscriptionRepository $newsletterInscriptionRepository,
         private readonly Authentication $authentication,
@@ -34,7 +36,6 @@ final class IndexAction extends AbstractController
     public function __invoke(): Response
     {
         $user = $this->authentication->getAfupUser();
-        $generalMeetingFactory = $this->generalMeetingRepository;
         $userService = $this->userService;
         $cotisation = $userService->getLastSubscription($user);
 
@@ -45,18 +46,15 @@ final class IndexAction extends AbstractController
 
         $daysBeforeMembershipExpiration = $user->getDaysBeforeMembershipExpiration();
 
-        $generalMeetingRepository = $this->generalMeetingRepository;
-        $generalMeetingQuestionRepository = $this->generalMeetingQuestionRepository;
-
-        $latestDate = $generalMeetingRepository->getLatestGeneralAssemblyDate();
-        $hasGeneralMeetingPlanned = $generalMeetingFactory->hasGeneralMeetingPlanned();
+        $latestDate = $this->assembleGeneraleRepository->getLatestDate();
+        $hasGeneralMeetingPlanned = $this->assembleGeneraleRepository->hasPlanned();
 
         $displayLinkToGeneralMeetingVote = false;
 
         if ($hasGeneralMeetingPlanned
             && null !== $latestDate
             && ($latestDate->format('Y-m-d') === new \DateTime('-1 day')->format('Y-m-d'))
-            && count($generalMeetingQuestionRepository->loadByDate($latestDate)) > 0
+            && count($this->questionRepository->loadByDate($latestDate)) > 0
         ) {
             $displayLinkToGeneralMeetingVote = true;
         }
@@ -69,7 +67,7 @@ final class IndexAction extends AbstractController
             'has_up_to_date_membership_fee' => $user->hasUpToDateMembershipFee(),
             'office_label' => $user->getNearestOfficeLabel($this->antenneRepository),
             'has_general_meeting_planned' => $hasGeneralMeetingPlanned,
-            'has_user_rspved_to_next_general_meeting' => $generalMeetingFactory->hasUserRspvedToLastGeneralMeeting($user),
+            'has_user_rspved_to_next_general_meeting' => $this->generalMeetingRepository->hasUserRspvedToLastGeneralMeeting($user),
             'membershipfee_end_date' => $dateFinCotisation,
             'display_link_to_general_meeting_vote' => $displayLinkToGeneralMeetingVote,
         ]);

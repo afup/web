@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\GeneralMeeting;
+namespace AppBundle\AssembleeGenerale\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;

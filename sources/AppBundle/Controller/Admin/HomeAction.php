@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Veille\Entity\Repository\NewsletterInscriptionRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\AssembleeGeneraleRepository;
 use AppBundle\Association\UserMembership\StatisticsComputer;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
@@ -12,6 +12,7 @@ use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\Security\Authentication;
+use AppBundle\Veille\Entity\Repository\NewsletterInscriptionRepository;
 use Psr\Clock\ClockInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +25,7 @@ class HomeAction extends AbstractController
         private readonly EventStatsRepository $eventStatsRepository,
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
         private readonly NewsletterInscriptionRepository $newsletterInscriptionRepository,
+        private readonly AssembleeGeneraleRepository $assembleGeneraleRepository,
         private readonly GeneralMeetingRepository $generalMeetingRepository,
         private readonly StatisticsComputer $statisticsComputer,
         private readonly ClockInterface $clock,
@@ -119,8 +121,8 @@ class HomeAction extends AbstractController
                 'url' => $this->generateUrl('admin_members_reporting'),
             ];
 
-            $latestDate = $this->generalMeetingRepository->getLatestGeneralAssemblyDate();
-            if ($this->generalMeetingRepository->hasGeneralMeetingPlanned()) {
+            $latestDate = $this->assembleGeneraleRepository->getLatestDate();
+            if ($this->assembleGeneraleRepository->hasPlanned()) {
                 $cards[] = [
                     'title' => 'Assemblée générale',
                     'statistics' => [

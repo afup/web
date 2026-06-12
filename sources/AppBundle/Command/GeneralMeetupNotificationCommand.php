@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Command;
 
+use AppBundle\AssembleeGenerale\Entity\Repository\AssembleeGeneraleRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\GeneralMeeting\GeneralMeetingRepository;
 use AppBundle\Notifier\SlackNotifier;
@@ -17,6 +18,7 @@ class GeneralMeetupNotificationCommand extends Command
 {
     public function __construct(
         private readonly UserRepository $userRepository,
+        private readonly AssembleeGeneraleRepository $assembleGeneraleRepository,
         private readonly GeneralMeetingRepository $generalMeetingRepository,
         private readonly MessageFactory $messageFactory,
         private readonly SlackNotifier $slackNotifier,
@@ -32,7 +34,7 @@ class GeneralMeetupNotificationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if ($this->generalMeetingRepository->hasGeneralMeetingPlanned()) {
+        if ($this->assembleGeneraleRepository->hasPlanned()) {
             $this->slackNotifier->sendMessage($this->messageFactory->createMessageForGeneralMeeting(
                 $this->generalMeetingRepository,
                 $this->userRepository,

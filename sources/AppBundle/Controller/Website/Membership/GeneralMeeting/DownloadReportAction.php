@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Membership\GeneralMeeting;
 
-use AppBundle\GeneralMeeting\ReportListBuilder;
+use AppBundle\AssembleeGenerale\ReportListBuilder;
 use AppBundle\Security\Authentication;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
