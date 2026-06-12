@@ -18,8 +18,8 @@ class SearchResultProvider
         private readonly InvoiceRepository $invoiceRepository,
     ) {}
 
-
-    public function getResultsForQuery(string $query)
+    /** @return array<string, mixed> */
+    public function getResultsForQuery(string $query): array
     {
         if ($query === '') {
             return [];
