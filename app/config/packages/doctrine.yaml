@@ -31,6 +31,11 @@ doctrine:
         is_bundle: false
         dir: '%kernel.project_dir%/../sources/AppBundle/Association/Entity'
         prefix: 'AppBundle\Association\Entity'
+      AssembleeGenerale:
+        type: attribute
+        is_bundle: false
+        dir: '%kernel.project_dir%/../sources/AppBundle/AssembleeGenerale/Entity'
+        prefix: 'AppBundle\AssembleeGenerale\Entity'
       Accounting:
         type: attribute
         is_bundle: false
