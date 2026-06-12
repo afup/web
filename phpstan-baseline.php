@@ -11432,66 +11432,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Routing/LegacyRouter.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Security\\\\ActionThrottling\\\\ActionThrottling\\:\\:clearLogsForIp\\(\\) has parameter \\$action with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/ActionThrottling/ActionThrottling.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Security\\\\ActionThrottling\\\\ActionThrottling\\:\\:clearLogsForIp\\(\\) has parameter \\$ip with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/ActionThrottling/ActionThrottling.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$action of method AppBundle\\\\Security\\\\ActionThrottling\\\\LogRepository\\:\\:removeLogs\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/ActionThrottling/ActionThrottling.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$ip of method AppBundle\\\\Security\\\\ActionThrottling\\\\Log\\:\\:setIp\\(\\) expects string, string\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/ActionThrottling/ActionThrottling.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$objectId of method AppBundle\\\\Security\\\\ActionThrottling\\\\Log\\:\\:setObjectId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/ActionThrottling/ActionThrottling.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$ip of method AppBundle\\\\Security\\\\ActionThrottling\\\\LogRepository\\:\\:removeLogs\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/ActionThrottling/ActionThrottling.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Security\\\\ActionThrottling\\\\LogRepository\\:\\:getApplicableLogs\\(\\) should return array\\{ip\\: int, object\\: int\\} but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/ActionThrottling/LogRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Security\\\\ActionThrottling\\\\LogRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/ActionThrottling/LogRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Security\\\\ActionThrottling\\\\LogRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/ActionThrottling/LogRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/ActionThrottling/LogRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Security\\\\GithubAuthenticator\\:\\:onAuthenticationSuccess\\(\\) has parameter \\$firewallName with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
 	'count' => 1,
