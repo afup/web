@@ -1466,24 +1466,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/Afup/Utils/LegacyConnectionFactory.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getEmail\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/Mailing.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$array of function reset expects array\\|object, array\\<AppBundle\\\\Email\\\\Mailer\\\\MailUser\\>\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/Mailing.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$replace of function str_replace expects array\\<string\\>\\|string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/Mailing.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between mixed and \' \' results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 6,
@@ -7470,36 +7452,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Email/Mailer/Adapter/MailerAdapter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type array\\<AppBundle\\\\Email\\\\Mailer\\\\MailUser\\>\\|null supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Email/Mailer/Adapter/PhpMailerAdapter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to string\\.$#',
-	'identifier' => 'cast.string',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Email/Mailer/Adapter/PhpMailerAdapter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$smtpServer of class AppBundle\\\\Email\\\\Mailer\\\\Adapter\\\\PhpMailerAdapter constructor expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Email/Mailer/Adapter/PhpMailerAdapter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$username of class AppBundle\\\\Email\\\\Mailer\\\\Adapter\\\\PhpMailerAdapter constructor expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Email/Mailer/Adapter/PhpMailerAdapter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#4 \\$password of class AppBundle\\\\Email\\\\Mailer\\\\Adapter\\\\PhpMailerAdapter constructor expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Email/Mailer/Adapter/PhpMailerAdapter.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type array\\<AppBundle\\\\Email\\\\Mailer\\\\MailUser\\>\\|null supplied for foreach, only iterables are supported\\.$#',
