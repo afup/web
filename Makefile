@@ -106,6 +106,7 @@ test-functional: data config htdocs/uploads tmp
 	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
 	$(DOCKER_COMP) up -d dbtest apachephptest mailcatcher
 	make clean-test-deprecated-log
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/console cache:warmup --env=test
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/bdi detect drivers
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/behat
 	make var/logs/test.deprecations_grouped.log
@@ -116,6 +117,7 @@ test-functional-no-js: data config htdocs/uploads tmp
 	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
 	$(DOCKER_COMP) up -d dbtest apachephptest mailcatcher
 	make clean-test-deprecated-log
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/console cache:warmup --env=test
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/bdi detect drivers
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/behat --suite=web_features_no_js
 	make var/logs/test.deprecations_grouped.log
@@ -126,6 +128,7 @@ test-functional-js: data config htdocs/uploads tmp
 	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
 	$(DOCKER_COMP) up -d dbtest apachephptest mailcatcher
 	make clean-test-deprecated-log
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/console cache:warmup --env=test
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/bdi detect drivers
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/behat --suite=web_features_js
 	make var/logs/test.deprecations_grouped.log
