@@ -98,11 +98,13 @@ jobs:
         run: make test-functional-no-js
 
       - uses: actions/upload-artifact@v7
+        if: always()
         with:
           name: Functional tests (no JS) - deprecated log - full
           path: var/logs/test.deprecations.log
 
       - uses: actions/upload-artifact@v7
+        if: always()
         with:
           name: Functional tests (no JS) - deprecated log - report
           path: var/logs/test.deprecations_grouped.log
