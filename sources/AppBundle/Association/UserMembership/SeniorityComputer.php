@@ -15,6 +15,7 @@ class SeniorityComputer
 {
     public function __construct(private readonly MembershipFeeRepository $membershipFeeRepository) {}
 
+    /** @return array{years: int, first_year: int|null} */
     public function computeCompanyAndReturnInfos(CompanyMember $companyMember): array
     {
         $cotis = $this->membershipFeeRepository->getListByUserTypeAndId(MemberType::MemberCompany, $companyMember->getId());
@@ -22,13 +23,14 @@ class SeniorityComputer
         return $this->computeFromCotisationsAndReturnInfos($cotis);
     }
 
-    public function compute(User $user)
+    public function compute(User $user): int
     {
         $infos = $this->computeAndReturnInfos($user);
 
         return $infos['years'];
     }
 
+    /** @return array{years: int, first_year: int|null} */
     public function computeAndReturnInfos(User $user): array
     {
         $cotis = $this->membershipFeeRepository->getListByUserTypeAndId(MemberType::MemberPhysical, $user->getId());
@@ -38,6 +40,7 @@ class SeniorityComputer
 
     /**
      * @param Collection<MembershipFee> $cotisations
+     * @return array{years: int, first_year: int|null}
      */
     private function computeFromCotisationsAndReturnInfos(Collection $cotisations): array
     {
@@ -64,7 +67,7 @@ class SeniorityComputer
         $firstYear = null;
 
         if ($years !== []) {
-            $firstYear = min($years);
+            $firstYear = (int) min($years);
         }
 
         return [

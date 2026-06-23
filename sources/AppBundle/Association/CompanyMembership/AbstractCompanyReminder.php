@@ -24,9 +24,9 @@ abstract class AbstractCompanyReminder implements MembershipReminderInterface
         private readonly SubscriptionReminderLogRepository $subscriptionReminderLogRepository,
     ) {}
 
-    abstract protected function getText();
-    abstract protected function getSubject();
-    abstract protected function getKey();
+    abstract protected function getText(): string;
+    abstract protected function getSubject(): string;
+    abstract protected function getKey(): string;
 
     public function sendReminder(NotifiableInterface $user): void
     {

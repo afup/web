@@ -90,7 +90,7 @@ class HtmlParser
         return $value;
     }
 
-    public function getTitle()
+    public function getTitle(): ?string
     {
         $item = $this->dom->getElementsByTagName('title')->item(0);
         if ($item === null) {

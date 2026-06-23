@@ -10,7 +10,7 @@ use AppBundle\GeneralMeeting\Attendee;
 class PDF_AG extends PDF
 {
     public const int CELL_HEIGHT = 7;
-    private $footerTitle = '';
+    private string $footerTitle = '';
 
     /**
      * @param Attendee[] $attendees
@@ -85,12 +85,12 @@ class PDF_AG extends PDF
         $this->Cell(0, 10, $this->getFooterTitle() . ' - Page ' . $this->PageNo(), 0, 0, 'C');
     }
 
-    public function getFooterTitle()
+    public function getFooterTitle(): string
     {
         return $this->footerTitle;
     }
 
-    public function setFooterTitle($footerTitle): void
+    public function setFooterTitle(string $footerTitle): void
     {
         $this->footerTitle = $footerTitle;
     }

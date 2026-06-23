@@ -23,6 +23,7 @@ use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SpeakerPage extends AbstractController
 {
@@ -32,7 +33,7 @@ class SpeakerPage extends AbstractController
         private readonly SpeakersExpensesStorage $speakersExpensesStorage,
     ) {}
 
-    public function handleRequest(Request $request, Event $event, Speaker $speaker)
+    public function handleRequest(Request $request, Event $event, Speaker $speaker): Response
     {
         $talks = array_filter(
             iterator_to_array($this->talkRepository->getTalksBySpeaker($event, $speaker)),
