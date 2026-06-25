@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members\GeneralMeetingQuestion;
 
-use AppBundle\Association\Model\GeneralMeetingQuestion;
-use AppBundle\Association\Model\Repository\GeneralMeetingQuestionRepository;
-use AppBundle\GeneralMeeting\GeneralMeetingQuestionFormType;
-use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\AssembleeGenerale\Entity\Question;
+use AppBundle\AssembleeGenerale\Entity\Repository\AssembleeGeneraleRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\QuestionRepository;
+use AppBundle\AssembleeGenerale\Form\GeneralMeetingQuestionFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,30 +15,34 @@ use Symfony\Component\HttpFoundation\Response;
 class AddAction extends AbstractController
 {
     public function __construct(
-        private readonly GeneralMeetingQuestionRepository $generalMeetingQuestionRepository,
-        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly QuestionRepository $questionRepository,
+        private readonly AssembleeGeneraleRepository $assembleGeneraleRepository,
     ) {}
 
-    public function __invoke(Request $request, $date): Response
+    public function __invoke(Request $request, string $date): Response
     {
-        $date = \DateTimeImmutable::createFromFormat('U', $date);
-        $generalMeeting = $this->generalMeetingRepository->findOneByDate($date);
-        if (!$generalMeeting) {
-            throw $this->createNotFoundException(sprintf('L\'assemblée générale en date du %s n\'a pas été trouvée', $date->format('d/m/Y')));
+        $generalMeetingDate = \DateTimeImmutable::createFromFormat('U', $date);
+        if (false === $generalMeetingDate) {
+            throw $this->createNotFoundException(sprintf('Date d\'assemblée générale invalide : %s', $date));
         }
 
-        $question = new GeneralMeetingQuestion();
-        $question->setDate($generalMeeting['date']);
-        $question->setCreatedAt(new \DateTime());
+        $generalMeeting = $this->assembleGeneraleRepository->findOneByDate($generalMeetingDate);
+        if (!$generalMeeting) {
+            throw $this->createNotFoundException(sprintf('L\'assemblée générale en date du %s n\'a pas été trouvée', $generalMeetingDate->format('d/m/Y')));
+        }
+
+        $question = new Question();
+        $question->date = \DateTime::createFromInterface($generalMeetingDate);
+        $question->dateCreation = new \DateTime();
 
         $form = $this->createForm(GeneralMeetingQuestionFormType::class, $question);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->generalMeetingQuestionRepository->save($question);
+            $this->questionRepository->save($question);
             $this->addFlash('notice', 'La question a été ajoutée');
 
             return $this->redirectToRoute('admin_members_general_vote_list', [
-                'date' =>  $question->getDate()->format('U'),
+                'date' =>  $question->date->format('U'),
             ]);
         }
 

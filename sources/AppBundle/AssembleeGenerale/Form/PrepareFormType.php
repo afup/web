@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\GeneralMeeting;
+namespace AppBundle\AssembleeGenerale\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -11,6 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<array<string, mixed>>
+ */
 class PrepareFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\UserMembership;
 
+use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
+use AppBundle\AssembleeGenerale\Enum\PresenceEtat;
 use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\Repository\GeneralMeetingResponseRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\UserBadgeRepository;
@@ -18,7 +19,7 @@ class BadgesComputer
         private readonly SeniorityComputer $seniorityComputer,
         private readonly EventRepository $eventRepository,
         private readonly UserBadgeRepository $userBadgeRepository,
-        private readonly GeneralMeetingResponseRepository $generalMeetingResponseRepository,
+        private readonly PresenceRepository $reponseRepository,
     ) {}
 
     public function getBadges(User $user): array
@@ -223,20 +224,20 @@ class BadgesComputer
     }
 
     /**
-     * @return mixed[]
+     * @return \DateTime[]
      */
     private function getGeneralMeetingYears(User $user): array
     {
-        $responses = $this->generalMeetingResponseRepository->getByUser($user);
+        $responses = $this->reponseRepository->getByUser($user);
         $currentTimestamp = new \DateTime()->format('U');
 
         $dates = [];
         foreach ($responses as $response) {
-            if (false === $response->isPresent()) {
+            if ($response->presence !== PresenceEtat::Present) {
                 continue;
             }
 
-            $date = $response->getDate();
+            $date = $response->date;
 
             if ($date->format('U') > $currentTimestamp) {
                 continue;

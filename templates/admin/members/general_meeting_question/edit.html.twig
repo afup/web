@@ -8,9 +8,9 @@
         {{ form_start(form) }}
         <div class="ui form">
             <div class="field wide column">
-                {{ form_label(form.label) }}
-                {{ form_widget(form.label, {attr: {class: 'inline fields'} }) }}
-                {{ form_errors(form.label) }}
+                {{ form_label(form.texte) }}
+                {{ form_widget(form.texte, {attr: {class: 'inline fields'} }) }}
+                {{ form_errors(form.texte) }}
             </div>
             <div class="field wide column inline fields">
                 <a href="{{ path('admin_members_general_vote_list', {

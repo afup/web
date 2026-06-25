@@ -2026,23 +2026,17 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
 	'identifier' => 'foreach.nonIterable',
-	'count' => 4,
+	'count' => 3,
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between \'Participation à l…\' and mixed results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between \'Speaker de l\\\\\'année \' and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between \'ag\\-\' and mixed results in an error\\.$#',
+	'message' => '#^Binary operation "\\." between \'Speaker de l\\\\\'année \' and mixed results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
@@ -2086,19 +2080,13 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on mixed\\.$#',
 	'identifier' => 'method.nonObject',
-	'count' => 7,
+	'count' => 3,
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method getBadge\\(\\) on mixed\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getDate\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
 ];
 $ignoreErrors[] = [
@@ -2133,12 +2121,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method getTitle\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method isPresent\\(\\) on mixed\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
@@ -4058,24 +4040,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/CompanyListAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'description\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeeting/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$date of method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:save\\(\\) expects DateTimeInterface, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeeting/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$description of method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:save\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeeting/EditAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$datetime of static method DateTimeImmutable\\:\\:createFromFormat\\(\\) expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -4092,18 +4056,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeeting/ListingAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'date\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeeting/PrepareAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'description\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeeting/PrepareAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$date of method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:prepare\\(\\) expects DateTimeInterface, mixed given\\.$#',
@@ -4178,106 +4130,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeeting/ReportsAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method format\\(\\) on DateTimeImmutable\\|false\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingQuestion/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method format\\(\\) on DateTimeInterface\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingQuestion/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Members\\\\GeneralMeetingQuestion\\\\AddAction\\:\\:__invoke\\(\\) has parameter \\$date with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingQuestion/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$date of method AppBundle\\\\Association\\\\Model\\\\GeneralMeetingQuestion\\:\\:setDate\\(\\) expects DateTimeInterface, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingQuestion/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$date of method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:findOneByDate\\(\\) expects DateTimeInterface, DateTimeImmutable\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingQuestion/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$datetime of static method DateTimeImmutable\\:\\:createFromFormat\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingQuestion/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method format\\(\\) on DateTimeInterface\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingQuestion/DeleteAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Members\\\\GeneralMeetingQuestion\\\\DeleteAction\\:\\:__invoke\\(\\) has parameter \\$id with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingQuestion/DeleteAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingQuestion/DeleteAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method format\\(\\) on DateTimeInterface\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingQuestion/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Members\\\\GeneralMeetingQuestion\\\\EditAction\\:\\:__invoke\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingQuestion/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Members\\\\GeneralMeetingQuestion\\\\EditAction\\:\\:__invoke\\(\\) has parameter \\$id with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingQuestion/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingQuestion/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method format\\(\\) on DateTimeInterface\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingVote/CloseAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$generalMeetingDate of method AppBundle\\\\Association\\\\Model\\\\Repository\\\\GeneralMeetingQuestionRepository\\:\\:loadByDate\\(\\) expects DateTimeInterface, DateTimeImmutable\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingVote/ListAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$datetime of static method DateTimeImmutable\\:\\:createFromFormat\\(\\) expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingVote/ListAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method format\\(\\) on DateTimeInterface\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingVote/OpenAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\UserBadge\\>\\:\\:delete\\(\\) expects AppBundle\\\\Event\\\\Model\\\\UserBadge, AppBundle\\\\Event\\\\Model\\\\UserBadge\\|null given\\.$#',
@@ -5600,12 +5456,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Member/CompanyPublicProfileAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$value of function count expects array\\|Countable, iterable\\<AppBundle\\\\Association\\\\Model\\\\GeneralMeetingQuestion\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Member/IndexAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Binary operation "\\+" between int\\<0, max\\> and mixed results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 1,
@@ -5762,12 +5612,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/GeneralMeeting/IndexAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/GeneralMeeting/IndexAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getTimestamp\\(\\) on DateTime\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -5790,18 +5634,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/GeneralMeeting/IndexAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$date of method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:getAttendees\\(\\) expects DateTimeInterface, DateTimeInterface\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/GeneralMeeting/VoteAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$userId of method AppBundle\\\\Association\\\\Model\\\\GeneralMeetingVote\\:\\:setUserId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/GeneralMeeting/VoteAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$content of class Symfony\\\\Component\\\\HttpFoundation\\\\Response constructor expects string\\|null, string\\|false given\\.$#',
@@ -8774,12 +8606,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeeting.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class AppBundle\\\\GeneralMeeting\\\\GeneralMeetingQuestionFormType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingQuestionFormType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between \'@\' and mixed results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 9,
@@ -8806,12 +8632,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:findOneByDate\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:getAttendees\\(\\) has parameter \\$direction with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
 ];
@@ -8852,12 +8672,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$order of method Doctrine\\\\DBAL\\\\Query\\\\QueryBuilder\\:\\:orderBy\\(\\) expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$login of class AppBundle\\\\GeneralMeeting\\\\Attendee constructor expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 2,
@@ -8886,12 +8700,6 @@ $ignoreErrors[] = [
 	'identifier' => 'offsetAccess.invalidOffset',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class AppBundle\\\\GeneralMeeting\\\\PrepareFormType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/PrepareFormType.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Github\\\\Exception\\\\UnableToFindGithubUserException\\:\\:__construct\\(\\) has parameter \\$username with no type specified\\.$#',
