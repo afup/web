@@ -146,9 +146,6 @@ services:
         autowire: true
         arguments: ["%qr_code_salt%"]
 
-    Afup\Site\Utils\Configuration:
-        autowire: true
-
     Afup\Site\Utils\Pays:
         autowire: true
 
