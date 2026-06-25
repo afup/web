@@ -206,66 +206,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/Afup/Pagination.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between literal\\-string&non\\-falsy\\-string and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/Configuration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'database_host\'\\|\'database_name\'\\|\'database_password\'\\|\'database_port\'\\|\'database_user\'\\|\'smtp_host\'\\|\'smtp_password\'\\|\'smtp_port\'\\|\'smtp_tls\'\\|\'smtp_username\' on 0\\|0\\.0\\|\'\'\\|\'0\'\\|array\\{\\}\\|array\\{database_host\\?\\: mixed, database_name\\?\\: mixed, database_password\\?\\: mixed, database_port\\?\\: mixed, database_user\\?\\: mixed, smtp_host\\?\\: mixed, smtp_password\\?\\: string, smtp_port\\?\\: mixed, \\.\\.\\.\\}\\|false\\|null\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/Configuration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'database_host\'\\|\'database_name\'\\|\'database_password\'\\|\'database_port\'\\|\'database_user\'\\|\'smtp_host\'\\|\'smtp_password\'\\|\'smtp_port\'\\|\'smtp_tls\'\\|\'smtp_username\' on 0\\|0\\.0\\|\'\'\\|\'0\'\\|array\\{\\}\\|array\\{database_host\\?\\: mixed, database_name\\?\\: mixed, database_user\\?\\: mixed, database_password\\?\\: mixed, database_port\\?\\: mixed, smtp_host\\?\\: mixed, smtp_port\\?\\: mixed, smtp_tls\\?\\: mixed, \\.\\.\\.\\}\\|false\\|null\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/Configuration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'parameters\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/Configuration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset mixed on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/Configuration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Afup\\\\Site\\\\Utils\\\\Configuration\\:\\:loadSymfonyParameters\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/Configuration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Afup\\\\Site\\\\Utils\\\\Configuration\\:\\:obtenir\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/Configuration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Afup\\\\Site\\\\Utils\\\\Configuration\\:\\:obtenir\\(\\) has parameter \\$cle with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/Configuration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\.\\.\\.\\$arrays of function array_merge expects array, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/Configuration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property Afup\\\\Site\\\\Utils\\\\Configuration\\:\\:\\$values has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/Configuration.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between mixed and \' \' results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 6,
