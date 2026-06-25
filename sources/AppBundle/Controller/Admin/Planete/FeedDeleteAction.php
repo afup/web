@@ -22,7 +22,10 @@ class FeedDeleteAction extends AbstractController
         $id = $request->query->getInt('id');
 
         try {
-            $this->feedRepository->delete($id);
+            $feed = $this->feedRepository->find($id);
+            if ($feed !== null) {
+                $this->feedRepository->delete($feed);
+            }
 
             $this->audit->log('Suppression du flux ' . $id);
             $this->addFlash('notice', 'Le flux a été supprimé');

@@ -32,7 +32,7 @@
             </thead>
             <tbody>
             {% for feed in feeds %}
-            <tr class="{{ feed.status == 1 ? 'actif' : 'inactif' }}">
+            <tr class="{{ feed.status == enum('PlanetePHP\\FeedStatus').Active ? 'actif' : 'inactif' }}">
                 <td>{{ feed.name }}</td>
                 <td>
                     <a href="{{ feed.feed }}"
