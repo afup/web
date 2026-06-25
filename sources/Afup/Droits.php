@@ -9,14 +9,6 @@ use AppBundle\Event\Model\GithubUser;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-define('AFUP_DROITS_NIVEAU_MEMBRE', 0);
-define('AFUP_DROITS_NIVEAU_REDACTEUR', 1);
-define('AFUP_DROITS_NIVEAU_ADMINISTRATEUR', 2);
-
-define('AFUP_DROITS_ETAT_NON_FINALISE', -1);
-define('AFUP_DROITS_ETAT_INACTIF', 0);
-define('AFUP_DROITS_ETAT_ACTIF', 1);
-
 /**
  * Classe de gestion des droits
  */
