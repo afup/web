@@ -116,6 +116,10 @@ class EventType extends AbstractType
                 'label' => 'Date annonce planning',
                 'required' => false,
             ])
+            ->add('hasThemes', CheckboxType::class, [
+                'label' => 'Activer le support des thèmes',
+                'required' => false,
+            ])
             ->add('dateEndSalesSponsorToken', DateTimeType::class, [
                 'widget' => 'single_text',
                 'label' => 'Date fin saisie token sponsor',

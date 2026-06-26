@@ -108,7 +108,7 @@ test-functional: data config htdocs/uploads tmp
 	make clean-test-deprecated-log
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/console cache:warmup --env=test
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/bdi detect drivers
-	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/behat
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/behat --colors
 	make var/logs/test.deprecations_grouped.log
 	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
 
