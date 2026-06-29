@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace AppBundle\Site\Entity;
 
+use AppBundle\Doctrine\Entity;
 use AppBundle\Doctrine\Type\UnixTimestampType;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'afup_site_rubrique')]
-class Rubrique
+class Rubrique extends Entity
 {
     public const int ID_RUBRIQUE_ACTUALITES = 9;
     public const int ID_RUBRIQUE_FORUM = 52;
@@ -17,11 +18,6 @@ class Rubrique
     public const int ID_RUBRIQUE_ANTENNES = 84;
     public const int ID_RUBRIQUE_INFORMATIONS_PRATIQUES = 86;
     public const int ID_RUBRIQUE_NOS_ACTIONS = 88;
-
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    public ?int $id = null;
 
     #[ORM\Column(nullable: true)]
     public ?int $idParent = null;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Site\Entity;
 
+use AppBundle\Doctrine\Entity;
 use AppBundle\Doctrine\Type\UnixTimestampType;
 use AppBundle\Site\Enum\ArticleTheme;
 use AppBundle\Site\Enum\ArticleEtat;
@@ -11,13 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'afup_site_article')]
-class Article
+class Article extends Entity
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    public ?int $id = null;
-
     #[ORM\ManyToOne(targetEntity: Rubrique::class)]
     #[ORM\JoinColumn(name: 'id_site_rubrique', referencedColumnName: 'id', nullable: true)]
     public ?Rubrique $rubrique = null;

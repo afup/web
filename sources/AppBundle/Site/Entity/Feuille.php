@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace AppBundle\Site\Entity;
 
+use AppBundle\Doctrine\Entity;
 use AppBundle\Doctrine\Type\UnixTimestampType;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'afup_site_feuille')]
-class Feuille
+class Feuille extends Entity
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    public ?int $id = null;
-
     #[ORM\Column(nullable: true)]
     public ?int $idParent = null;
 

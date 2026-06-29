@@ -6,18 +6,14 @@ namespace AppBundle\AssembleeGenerale\Entity;
 
 use AppBundle\AssembleeGenerale\Enum\QuestionEtat;
 use AppBundle\AssembleeGenerale\Enum\VoteValeur;
+use AppBundle\Doctrine\Entity;
 use AppBundle\Doctrine\Type\UnixTimestampType;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'afup_assemblee_generale_question')]
-class Question
+class Question extends Entity
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    public ?int $id = null;
-
     #[ORM\Column(type: UnixTimestampType::NAME, nullable: true)]
     public ?\DateTime $date = null;
 

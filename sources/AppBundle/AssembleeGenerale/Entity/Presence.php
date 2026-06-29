@@ -6,18 +6,14 @@ namespace AppBundle\AssembleeGenerale\Entity;
 
 use AppBundle\AssembleeGenerale\Enum\PresenceEtat;
 use AppBundle\Association\Entity\Utilisateur;
+use AppBundle\Doctrine\Entity;
 use AppBundle\Doctrine\Type\UnixTimestampType;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'afup_presences_assemblee_generale')]
-class Presence
+class Presence extends Entity
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    public ?int $id = null;
-
     #[ORM\Column(type: UnixTimestampType::NAME, nullable: false)]
     public \DateTime $date;
 

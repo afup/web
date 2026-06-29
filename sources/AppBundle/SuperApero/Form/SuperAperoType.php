@@ -57,23 +57,33 @@ final class SuperAperoType extends AbstractType
             }
         });
 
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
+            /** @var SuperApero $superApero */
+            $superApero = $event->getData();
+
+            if (!isset($superApero->date)) {
+                return;
+            }
+
+            $year = $superApero->annee();
+            $existing = $this->superAperoRepository->findOneByYear($year);
+
+            if ($existing === null) {
+                return;
+            }
+
+            if (!$superApero->isPersisted() || $existing->id !== $superApero->id) {
+                $event->getForm()->get('date')->addError(
+                    new FormError("Un Super Apéro existe déjà pour l'année {$year}."),
+                );
+            }
+        });
+
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($antennes): void {
             /** @var SuperApero $superApero */
             $superApero = $event->getData();
-            $form = $event->getForm();
 
-            if (isset($superApero->date)) {
-                $year = $superApero->annee();
-                $existing = $this->superAperoRepository->findOneByYear($year);
-
-                if ($existing !== null && $existing->id !== $superApero->id) {
-                    $form->get('date')->addError(
-                        new FormError("Un Super Apéro existe déjà pour l'année {$year}."),
-                    );
-                }
-            }
-
-            $meetupsForm = $form->get('meetups');
+            $meetupsForm = $event->getForm()->get('meetups');
 
             $submittedAntennes = [];
             foreach ($antennes as $antenne) {
