@@ -332,7 +332,7 @@ SQL;
             $params["search"] = "%{$search}%";
         }
         if ($planned) {
-            $where .= ' AND talk.plannifie = 1 AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)';
+            $where .= ' AND talk.plannifie = 1';
         }
         if ($needMentoring) {
             $where .= ' AND talk.needs_mentoring = 1';
