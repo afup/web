@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace AppBundle\Veille\Entity;
 
+use AppBundle\Doctrine\Entity;
 use AppBundle\Veille\Entity\Repository\EnvoiRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EnvoiRepository::class)]
 #[ORM\Table(name: 'afup_techletter')]
-class Envoi
+class Envoi extends Entity
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    public ?int $id = null;
-
     #[ORM\Column(name: 'sending_date', type: 'datetime')]
     public \DateTimeInterface $dateEnvoi;
 

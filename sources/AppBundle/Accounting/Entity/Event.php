@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace AppBundle\Accounting\Entity;
 
+use AppBundle\Doctrine\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'compta_evenement')]
-class Event
+class Event extends Entity
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    public ?int $id = null;
-
     #[ORM\Column(name: 'evenement', length: 50, nullable: false)]
     public string $name;
 

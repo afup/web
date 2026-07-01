@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\SuperApero\Entity;
 
+use AppBundle\Doctrine\Entity;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,13 +13,8 @@ use Symfony\Component\Clock\Clock;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'super_apero')]
-class SuperApero
+class SuperApero extends Entity
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    public ?int $id = null;
-
     #[ORM\Column(type: 'date_immutable', nullable: false)]
     public DateTimeImmutable $date;
 

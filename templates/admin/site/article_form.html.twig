@@ -5,7 +5,7 @@
 {% block content %}
     <h2>{{ formTitle }}</h2>
 
-    {% if article.slug != '-' %}
+    {% if article.persisted %}
     <div class="ui menu">
         <div class="ui simple dropdown item" tabindex="0">
             <i class="icon linkify"></i>
