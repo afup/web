@@ -16,7 +16,7 @@
         <div class="afup-form">
             <form>
                 <fieldset>
-                    <legend>{{ question.label }}</legend>
+                    <legend>{{ question.texte }}</legend>
                     <div class="afup-form-container">
                         {% if not vote_for_current_question %}
                         <div class="container">
@@ -54,7 +54,7 @@
             {% for question_result in question_results %}
                 <tr>
                     <td class="general-meeeting-vote-results__column--question">
-                        {{ question_result.question.label }}
+                        {{ question_result.question.texte }}
                     </td>
                     <td class="general-meeeting-vote-results__column--result">
                         <span class="general-meeeting-vote-results__responsive-label">Oui</span>

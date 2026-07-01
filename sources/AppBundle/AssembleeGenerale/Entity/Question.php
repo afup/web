@@ -16,10 +16,10 @@ class Question
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
-    #[ORM\Column(type: UnixTimestampType::NAME, nullable: true)]
-    public ?\DateTime $date = null;
+    #[ORM\Column(type: UnixTimestampType::NAME)]
+    public \DateTime $date;
 
     #[ORM\Column(name: 'label', length: 255, nullable: true)]
     public ?string $texte = null;
@@ -30,7 +30,6 @@ class Question
             $this->dateOuverture = $dateOuverture;
             if ($dateOuverture !== null) {
                 $this->dateCreation ??= $dateOuverture;
-                $this->etat = QuestionEtat::Ouverte;
             }
         }
     }
@@ -41,7 +40,6 @@ class Question
             $this->dateCloture = $dateCloture;
             if ($dateCloture !== null) {
                 $this->dateCreation ??= $dateCloture;
-                $this->etat = QuestionEtat::Fermee;
             }
         }
     }
@@ -49,7 +47,17 @@ class Question
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
     public ?\DateTime $dateCreation = null;
 
-    public QuestionEtat $etat = QuestionEtat::EnAttente;
+    /**
+     * État calculé à partir de dateOuverture/dateCloture (et non stocké) : il doit
+     * rester correct après hydratation Doctrine, qui ne déclenche pas les hooks `set`.
+     */
+    public QuestionEtat $etat {
+        get => match (true) {
+            ($this->dateCloture ?? null) !== null => QuestionEtat::Fermee,
+            ($this->dateOuverture ?? null) !== null => QuestionEtat::Ouverte,
+            default => QuestionEtat::EnAttente,
+        };
+    }
 
     /**
      * @param array<string, int> $results
@@ -57,5 +65,20 @@ class Question
     public function hasVotes(array $results): bool
     {
         return 0 < $results[VoteValeur::Oui->value] + $results[VoteValeur::Non->value] + $results[VoteValeur::Abstention->value];
+    }
+
+    public function hasStatusWaiting(): bool
+    {
+        return $this->etat === QuestionEtat::EnAttente;
+    }
+
+    public function hasStatusOpened(): bool
+    {
+        return $this->etat === QuestionEtat::Ouverte;
+    }
+
+    public function hasStatusClosed(): bool
+    {
+        return $this->etat === QuestionEtat::Fermee;
     }
 }
