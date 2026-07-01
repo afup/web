@@ -17,7 +17,7 @@
         <h1>{{ rubrique.nom }}</h1>
         <h2>{{ article.titre }}</h2>
 
-        {{ article.contenu|markdown|raw }}
+        {{ article.contenu|markdown_to_html }}
     </div>
 </div>
 {% endblock %}
