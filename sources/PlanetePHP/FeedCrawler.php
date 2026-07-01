@@ -17,7 +17,7 @@ final readonly class FeedCrawler
         private ClockInterface $clock,
         private SymfonyFeedClient $httpClient,
         private FeedRepository $feedRepository,
-        private FeedArticleRepository $feedArticleRepository,
+        private ArticleRepository $articleRepository,
         private LoggerInterface $logger,
     ) {
         Reader::setHttpClient($this->httpClient);
@@ -62,20 +62,23 @@ final readonly class FeedCrawler
                     $author = $author['name'] ?? null;
                 }
 
-                $article = new FeedArticle(
-                    null,
-                    $feed->id,
-                    $item->getId(),
-                    $item->getTitle(),
-                    $item->getLink(),
-                    $date->getTimestamp(),
-                    $author,
-                    $item->getDescription(),
-                    $item->getContent(),
-                    $this->feedArticleRepository->isRelevant($item->getTitle() . ' ' . $item->getContent()),
-                );
+                // On normalise la date dans le fuseau horaire de l'application
+                // pour que l'affichage reste cohérent quel que soit le fuseau du flux
+                $updatedAt = \DateTime::createFromInterface($date);
+                $updatedAt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
 
-                $this->feedArticleRepository->save($article);
+                $article = new Article();
+                $article->feed = $feed;
+                $article->key = $item->getId();
+                $article->title = $item->getTitle();
+                $article->url = $item->getLink();
+                $article->updatedAt = $updatedAt;
+                $article->author = $author;
+                $article->summary = $item->getDescription();
+                $article->content = $item->getContent();
+                $article->isRelevant = $this->articleRepository->isRelevant($item->getTitle() . ' ' . $item->getContent());
+
+                $this->articleRepository->saveByKey($article);
 
                 $saved++;
             }
