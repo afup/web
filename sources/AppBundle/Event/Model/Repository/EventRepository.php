@@ -8,10 +8,12 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Ting\DateTimeWithTimeZoneSerializer;
+use Aura\SqlQuery\Mysql\Select;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Exception;
 use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
+use CCMBenchmark\Ting\Repository\Hydrator;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -287,6 +289,26 @@ SQL;
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
+    public function getBySlugWithThemes(string $slug): ?Event
+    {
+        /**
+         * @var Select $queryBuilder
+         */
+        $queryBuilder = $this->getQueryBuilder(Select::class);
+        $queryBuilder
+            ->cols(['*'])
+            ->from('afup_forum')
+            ->leftJoin('afup_conference_theme', 'afup_conference_theme.id_forum = afup_forum.id')
+            ->where('path = :path')
+            ->orderBy(['afup_conference_theme.name'])
+        ;
+        $query = $this->getPreparedQuery($queryBuilder->getStatement());
+        $query->setParams(['path' => $slug]);
+        /** @var ?Event $result */
+        $result = $query->query($this->getCollection(new Hydrator()))->first();
+        return $result;
+    }
+
     public function getAllSortedByTitre(): CollectionInterface
     {
         $query = $this->getQuery('SELECT * FROM afup_forum ORDER BY titre ASC');
@@ -308,6 +330,7 @@ SQL;
         $metadata->setConnectionName('main');
         $metadata->setDatabase($options['database']);
         $metadata->setTable('afup_forum');
+        $metadata->setRepository(self::class); // @phpstan-ignore argument.type
 
         $metadata
             ->addField([
@@ -517,6 +540,12 @@ SQL;
                 'columnName' => 'archived_at',
                 'fieldName' => 'archivedAt',
                 'type' => 'datetime',
+            ])
+            ->addField([
+                'columnName' => 'has_themes',
+                'fieldName' => 'hasThemes',
+                'type' => 'bool',
+                'serializer' => Boolean::class,
             ])
         ;
 
