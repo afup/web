@@ -93,7 +93,8 @@ class MembershipFeeService
 
     public function getNextSubscriptionExpiration(?MembershipFee $cotisation = null): DateTime
     {
-        $endSubscription = $cotisation ? $cotisation->getEndDate() : new DateTime();
+        $endDate = $cotisation?->getEndDate();
+        $endSubscription = $endDate !== null ? (clone $endDate)->setTime(23, 59, 59) : new DateTime();
         $base = $now = new DateTime();
 
         $year = new DateInterval('P1Y');
@@ -108,9 +109,6 @@ class MembershipFeeService
 
     /**
      * Renvoit la cotisation demandée
-     *
-     * @param $invoiceId Identifiant de la facture
-     * @param $token Token de la facture. Si null, pas de vérification
      */
     public function getByInvoice(string $invoiceId, ?string $token = null): ?MembershipFee
     {
