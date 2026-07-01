@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Afup\Site\Utils;
 
-use Afup\Site\Droits;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-
 /**
  * Diverses méthodes permettant de se simplifier la vie
  */
@@ -15,11 +11,6 @@ class Utils
 {
     public const float TICKETING_VAT_RATE = 0.1;
     public const float MEMBERSHIP_FEE_VAT_RATE = 0.2;
-
-    public static function fabriqueDroits(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker): Droits
-    {
-        return new Droits($tokenStorage, $authorizationChecker);
-    }
 
     /**
      * Get either a Gravatar URL or complete image tag for a specified email address.

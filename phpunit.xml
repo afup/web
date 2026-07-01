@@ -17,5 +17,6 @@
     </testsuites>
     <php>
         <env name="KERNEL_CLASS" value="\AppBundle\AppKernel"/>
+        <ini name="date.timezone" value="Europe/Paris"/>
     </php>
 </phpunit>
