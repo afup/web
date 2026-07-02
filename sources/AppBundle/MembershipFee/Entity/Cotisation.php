@@ -17,7 +17,7 @@ class Cotisation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(nullable: true, enumType: MemberType::class)]
     public ?MemberType $typePersonne = null;

@@ -15,7 +15,7 @@ class Room
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'smallint')]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(name: 'nom', length: 255, nullable: true)]
     public ?string $name = null;

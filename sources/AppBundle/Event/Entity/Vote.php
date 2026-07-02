@@ -16,7 +16,7 @@ class Vote
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id')]
-    public ?int $id = null;
+    public int $id;
 
     #[Assert\NotBlank]
     #[Assert\GreaterThan(0)]

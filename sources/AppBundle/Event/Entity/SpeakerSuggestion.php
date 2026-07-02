@@ -15,7 +15,7 @@ class SpeakerSuggestion
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(name: 'event_id', nullable: false)]
     public int $eventId;

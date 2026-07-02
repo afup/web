@@ -66,7 +66,7 @@ final class SpeakerSuggestionRepositoryTest extends IntegrationTestCase
         $repository->delete($suggestion);
 
         // Doctrine remet l'identifiant à null après la suppression
-        self::assertNull($suggestion->id);
+        self::assertFalse(isset($suggestion->id));
         self::assertNull($repository->find($id));
         self::assertSame(
             0,

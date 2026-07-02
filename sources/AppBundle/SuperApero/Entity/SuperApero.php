@@ -17,7 +17,7 @@ class SuperApero
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(type: 'date_immutable', nullable: false)]
     public DateTimeImmutable $date;

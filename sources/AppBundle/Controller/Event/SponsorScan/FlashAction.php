@@ -66,14 +66,13 @@ final class FlashAction extends SponsorScanController
 
     private function createSponsorScan(SponsorTicket $sponsorTicket, Ticket $ticket): SponsorScan
     {
-        $sponsorTicketId = $sponsorTicket->id;
         $ticketId = $ticket->getId();
-        if ($sponsorTicketId === null || $ticketId === null) {
+        if (!isset($sponsorTicket->id) || $ticketId === null) {
             throw new \InvalidArgumentException('Le ticket sponsor et le billet doivent être enregistrés');
         }
 
         $scan = new SponsorScan();
-        $scan->sponsorTicketId = $sponsorTicketId;
+        $scan->sponsorTicketId = $sponsorTicket->id;
         $scan->ticketId = $ticketId;
 
         return $scan;

@@ -25,3 +25,4 @@ rules:
     - AppBundle\StaticAnalysis\Rule\AdminControllerIsGrantedRule
     - AppBundle\StaticAnalysis\Rule\DoctrineRepositoryRule
     - AppBundle\StaticAnalysis\Rule\DoctrineDisableDQLRule
+    - AppBundle\StaticAnalysis\Rule\DoctrineAutoIncrementIdNonNullable

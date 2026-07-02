@@ -20,7 +20,7 @@ final readonly class MainFooter
     {
         $footerColumns = [];
         foreach ($this->feuilleRepository->getFeuillesEnfant(Feuille::ID_FEUILLE_FOOTER) as $feuilleColonne) {
-            if ($feuilleColonne->nom === null || $feuilleColonne->id === null) {
+            if ($feuilleColonne->nom === null || !isset($feuilleColonne->id)) {
                 continue;
             }
 

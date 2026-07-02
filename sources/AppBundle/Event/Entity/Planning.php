@@ -16,7 +16,7 @@ class Planning
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[Assert\NotBlank]
     #[Assert\GreaterThan(0)]

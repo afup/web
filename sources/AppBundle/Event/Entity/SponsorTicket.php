@@ -16,7 +16,7 @@ class SponsorTicket
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(name: 'company', nullable: false)]
     #[Assert\NotBlank]

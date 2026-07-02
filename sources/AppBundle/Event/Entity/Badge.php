@@ -14,7 +14,7 @@ class Badge
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(length: 255, nullable: false)]
     public string $label;

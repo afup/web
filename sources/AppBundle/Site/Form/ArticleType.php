@@ -155,7 +155,7 @@ class ArticleType extends AbstractType
         $builder->get('datePublication')->addModelTransformer(new DateTimeToTimestampTransformer());
 
         $raccourciOption = [
-            'required' => $article->id !== null,
+            'required' => isset($article->id),
             'label' => 'Raccourci',
             'attr' => [
                 'maxlength' => 255,
@@ -168,7 +168,7 @@ class ArticleType extends AbstractType
             ],
         ];
 
-        if ($article->id === null) {
+        if (!isset($article->id)) {
             $raccourciOption['help'] = 'Si ce champ est vide, la valeur sera générée automatiquement';
         } else {
             $raccourciOption['constraints'][] = new Assert\NotBlank();

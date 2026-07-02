@@ -13,7 +13,7 @@ class Event
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(name: 'evenement', length: 50, nullable: false)]
     public string $name;

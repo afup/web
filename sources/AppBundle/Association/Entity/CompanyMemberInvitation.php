@@ -16,7 +16,7 @@ class CompanyMemberInvitation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(name: 'company_id', nullable: false)]
     public int $companyId;

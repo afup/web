@@ -16,7 +16,7 @@ class GithubUser implements UserInterface, EquatableInterface, \Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(options: ['unsigned' => true])]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(name: 'github_id', options: ['unsigned' => true])]
     private int $githubId = 0;
@@ -188,7 +188,7 @@ class GithubUser implements UserInterface, EquatableInterface, \Stringable
     /**
      * Seuls l'id et le login sont stockés en session : le user provider recharge l'entité complète.
      *
-     * @return array{id: ?int, login: string}
+     * @return array{id: int, login: string}
      */
     public function __serialize(): array
     {
@@ -199,7 +199,7 @@ class GithubUser implements UserInterface, EquatableInterface, \Stringable
     }
 
     /**
-     * @param array{id: ?int, login: string} $data
+     * @param array{id: int, login: string} $data
      */
     public function __unserialize(array $data): void
     {

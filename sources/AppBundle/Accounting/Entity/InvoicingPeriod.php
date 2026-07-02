@@ -14,7 +14,7 @@ class InvoicingPeriod
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(name: 'date_debut', nullable: true)]
     public ?\DateTime $dateDebut = null;
