@@ -5,9 +5,9 @@ ting:
             charset: utf8mb4
             master:
                 host:     "%database_host%"
-                port:     "%database_port%"
-                user:     "%database_user%"
-                password: "%database_password%"
+                port:     "%env(int:DATABASE_PORT)%"
+                user:     "%env(DATABASE_USER)%"
+                password: "%env(DATABASE_PASSWORD)%"
 
     repositories:
         event:
