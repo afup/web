@@ -10,11 +10,16 @@
 {%- block form_row -%}
     <div class="inline fields ui grid">
         {{ form_label(form) }}
-        <div class="field nine wide column">
+        <div class="field nine wide column"{% if help is not empty %} style="flex-wrap: wrap;"{% endif %}>
             <div class="ui input">
                 {{ form_widget(form) }}
                 {{ form_errors(form) }}
             </div>
+            {% if help is not empty %}
+                <div style="flex-basis: 100%;">
+                    <i>{{ form_help(form) }}</i>
+                </div>
+            {% endif %}
         </div>
     </div>
 {%- endblock form_row -%}
