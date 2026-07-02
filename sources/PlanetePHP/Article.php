@@ -14,7 +14,7 @@ class Article
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\ManyToOne(targetEntity: Feed::class)]
     #[ORM\JoinColumn(name: 'afup_planete_flux_id', nullable: true)]

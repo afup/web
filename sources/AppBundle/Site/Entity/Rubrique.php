@@ -21,7 +21,7 @@ class Rubrique
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(nullable: true)]
     public ?int $idParent = null;
