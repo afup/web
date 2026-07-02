@@ -136,7 +136,7 @@ final class TicketSpecialPriceRepository extends EntityRepository
         ;
         $creatorsById = [];
         foreach ($creators as $creator) {
-            if ($creator->id !== null) {
+            if (isset($creator->id)) {
                 $creatorsById[$creator->id] = $creator;
             }
         }

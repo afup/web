@@ -15,7 +15,7 @@ class SubscriptionReminderLog
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column]
     public int $userId;

@@ -26,8 +26,7 @@ final class SponsorScanRepository extends EntityRepository
      */
     public function getBySponsorTicket(SponsorTicket $sponsorTicket): array
     {
-        $sponsorTicketId = $sponsorTicket->id;
-        if ($sponsorTicketId === null) {
+        if (!isset($sponsorTicket->id)) {
             throw new \InvalidArgumentException('Le ticket sponsor doit être enregistré');
         }
 
@@ -38,7 +37,7 @@ final class SponsorScanRepository extends EntityRepository
             ->where('scan.sponsor_ticket_id = :sponsorTicketId')
             ->andWhere('scan.deleted_on IS NULL')
             ->orderBy('scan.created_on', 'DESC')
-            ->setParameter('sponsorTicketId', $sponsorTicketId);
+            ->setParameter('sponsorTicketId', $sponsorTicket->id);
 
         /** @var list<array<string, mixed>> $scans */
         $scans = $queryBuilder->executeQuery()->fetchAllAssociative();

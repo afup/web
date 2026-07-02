@@ -114,8 +114,11 @@ final class TransformerTest extends TestCase
     {
         $transformer = new Transformer();
 
+        $planning = new Planning();
+        $planning->id = 123;
+
         $result = $transformer->transform(
-            new Planning(),
+            $planning,
             new Talk()->setLanguageCode('fr'),
             new Event(),
             new \ArrayObject([new Speaker()]),

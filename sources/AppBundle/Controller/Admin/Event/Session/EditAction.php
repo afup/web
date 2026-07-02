@@ -72,11 +72,9 @@ class EditAction extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $isNew = $planning->id === null;
-
             $this->planningRepository->save($planning);
 
-            if ($isNew) {
+            if (!isset($planning->id)) {
                 $log = 'Ajout du planning de la session de ' . $talk->getTitle();
                 $this->addFlash('notice', 'Le planning de la session a été créé');
             } else {

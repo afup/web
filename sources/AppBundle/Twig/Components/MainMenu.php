@@ -50,7 +50,7 @@ final class MainMenu
         $feuilles = [];
 
         foreach ($feuillesEnfants as $feuille) {
-            if ($feuille->lien === null || $feuille->nom === null || $feuille->id === null) {
+            if ($feuille->lien === null || $feuille->nom === null || !isset($feuille->id)) {
                 continue;
             }
 
@@ -75,7 +75,7 @@ final class MainMenu
             if (false === $isCurrent) {
                 $enfants = $this->feuilleRepository->getFeuillesEnfant($feuille->id);
                 foreach ($enfants as $feuilleEnfant) {
-                    if ($feuilleEnfant->id === null) {
+                    if (!isset($feuilleEnfant->id)) {
                         continue;
                     }
 

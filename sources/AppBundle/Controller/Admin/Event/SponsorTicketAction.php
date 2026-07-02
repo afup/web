@@ -48,7 +48,7 @@ class SponsorTicketAction extends AbstractController
         $form = $this->createForm(SponsorTokenType::class, $newToken);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($newToken->id === null) {
+            if (!isset($newToken->id)) {
                 $this->sponsorTokenMail->sendNotification($newToken);
             }
             $this->sponsorTicketRepository->save($newToken);

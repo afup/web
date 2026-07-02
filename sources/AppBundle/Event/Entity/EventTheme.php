@@ -14,7 +14,7 @@ class EventTheme
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(name: 'id_forum', nullable: false)]
     public int $eventId;

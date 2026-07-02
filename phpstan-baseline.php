@@ -86,18 +86,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/Afup/Corporate/Page.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$parentId of method AppBundle\\\\Site\\\\Entity\\\\Repository\\\\FeuilleRepository\\:\\:getFeuillesEnfant\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/Afup/Corporate/Page.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Possibly invalid array key type int\\|null\\.$#',
-	'identifier' => 'offsetAccess.invalidOffset',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Corporate/Page.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between non\\-falsy\\-string and mixed results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 1,
@@ -701,12 +689,6 @@ $ignoreErrors[] = [
 	'message' => '#^Class AppBundle\\\\Association\\\\Form\\\\UserBadgeType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserBadgeType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Possibly invalid array key type int\\|null\\.$#',
-	'identifier' => 'offsetAccess.invalidOffset',
-	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserBadgeType.php',
 ];
 $ignoreErrors[] = [
@@ -2012,12 +1994,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/EditTransactionAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$transactionId of method AppBundle\\\\Accounting\\\\Entity\\\\Repository\\\\TransactionRepository\\:\\:getNextTransaction\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/EditTransactionAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 2,
@@ -2348,28 +2324,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Event\\\\Session\\\\EditAction\\:\\:roomChoices\\(\\) should return array\\<string, int\\> but returns array\\<string, int\\|null\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Possibly invalid array key type string\\|null\\.$#',
 	'identifier' => 'offsetAccess.invalidOffset',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$id of class AppBundle\\\\Event\\\\Model\\\\Session\\\\CalendarEvent constructor expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/IndexAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$id of class AppBundle\\\\Event\\\\Model\\\\Session\\\\CalendarResource constructor expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/IndexAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$title of class AppBundle\\\\Event\\\\Model\\\\Session\\\\CalendarResource constructor expects string, string\\|null given\\.$#',
@@ -4058,12 +4016,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/InvoiceAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$idCotisation of method AppBundle\\\\MembershipFee\\\\MembershipFeeInvoicePdfGenerator\\:\\:genererFacture\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/InvoiceAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$plainPassword of method Symfony\\\\Component\\\\PasswordHasher\\\\Hasher\\\\UserPasswordHasherInterface\\:\\:hashPassword\\(\\) expects string, string\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -4498,6 +4450,12 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Class AppBundle\\\\Event\\\\Form\\\\TicketType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#1 \\$event of method AppBundle\\\\Event\\\\Entity\\\\Repository\\\\TicketEventTypeRepository\\:\\:getTicketsByEvent\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Event, AppBundle\\\\Event\\\\Model\\\\Event\\|null given\\.$#',
+	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
 ];
@@ -5448,6 +5406,12 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketEventTypeHydrationRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
+	'identifier' => 'return.type',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketEventTypeHydrationRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between \'@\' and mixed results in an error\\.$#',
@@ -6706,12 +6670,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method getTimestamp\\(\\) on DateTime\\|null\\.$#',
 	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/OnlinePaymentHandler.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$id of method AppBundle\\\\MembershipFee\\\\MembershipFeeService\\:\\:updatePayment\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/OnlinePaymentHandler.php',
 ];
@@ -8106,18 +8064,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/VideoNotifier/StatusGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$event of method AppBundle\\\\Event\\\\Entity\\\\Repository\\\\TicketEventTypeRepository\\:\\:getTicketsByEvent\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Event, AppBundle\\\\Event\\\\Model\\\\Event\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketEventTypeHydrationRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketEventTypeHydrationRepository.php',
 ];
 
 return ['parameters' => ['ignoreErrors' => $ignoreErrors]];
