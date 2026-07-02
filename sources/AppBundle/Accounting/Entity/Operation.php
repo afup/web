@@ -13,7 +13,7 @@ class Operation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(name: 'operation', length: 255, nullable: false)]
     public string $name;

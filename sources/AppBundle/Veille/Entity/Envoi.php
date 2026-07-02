@@ -14,7 +14,7 @@ class Envoi
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(name: 'sending_date', type: 'datetime')]
     public \DateTimeInterface $dateEnvoi;

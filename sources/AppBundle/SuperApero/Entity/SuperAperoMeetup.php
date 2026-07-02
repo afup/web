@@ -13,7 +13,7 @@ class SuperAperoMeetup
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\ManyToOne(targetEntity: SuperApero::class, inversedBy: 'meetups')]
     #[ORM\JoinColumn(nullable: false)]

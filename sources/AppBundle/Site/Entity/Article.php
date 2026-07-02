@@ -16,7 +16,7 @@ class Article
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\ManyToOne(targetEntity: Rubrique::class)]
     #[ORM\JoinColumn(name: 'id_site_rubrique', referencedColumnName: 'id', nullable: true)]
