@@ -189,6 +189,12 @@ parameters:
                         - admin_event_themes_list
                         - admin_event_themes_add
                         - admin_event_themes_edit
+                admin_event_editorialization:
+                    nom: 'Éditorialisation'
+                    niveau: 'ROLE_FORUM'
+                    url: '/admin/event/editorialization'
+                    extra_routes:
+                        - admin_event_editorialization
                 forum_vote_github:
                     nom: 'Votes visiteurs'
                     niveau: 'ROLE_FORUM'

@@ -7,7 +7,6 @@ namespace AppBundle\Controller\Admin\Event;
 use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventThemeRepository;
-use AppBundle\Event\Model\Repository\TalkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EventThemeAction extends AbstractController
 {
-    public function __construct(
-        private readonly EventThemeRepository $eventThemeRepository,
-        private readonly TalkRepository $talkRepository,
-    ) {}
+    public function __construct(private readonly EventThemeRepository $eventThemeRepository) {}
 
     public function __invoke(Request $request, AdminEventSelection $eventSelection): Response
     {
@@ -42,11 +38,9 @@ class EventThemeAction extends AbstractController
 
         $eventId = $event->getId() ?? 0;
         $themes = $this->eventThemeRepository->getByThemesOrderedByPriority($eventId);
-        $scheduledTalks = $this->talkRepository->getScheduledTalksByEvent($eventId);
 
         return $this->render('admin/event/theme_list.html.twig', [
             'themes' => $themes,
-            'scheduled_talks' => $scheduledTalks,
             'event' => $event,
             'event_select_form' => $eventSelection->selectForm(),
         ]);
@@ -58,7 +52,6 @@ class EventThemeAction extends AbstractController
 
         return match ($action) {
             'update_theme_priority' => $this->updateThemePriority($request),
-            'update_talk_theme' => $this->updateTalkTheme($request),
             default => new JsonResponse(['error' => 'Action non reconnue'], 400),
         };
     }
@@ -75,22 +68,6 @@ class EventThemeAction extends AbstractController
 
         $theme->setPriority($priority);
         $this->eventThemeRepository->save($theme);
-
-        return new JsonResponse(['success' => true]);
-    }
-
-    private function updateTalkTheme(Request $request): JsonResponse
-    {
-        $talkId = $request->request->getInt('talk_id');
-        $themeId = $request->request->get('theme_id');
-
-        $talk = $this->talkRepository->get($talkId);
-        if (!$talk) {
-            return new JsonResponse(['error' => 'Conférence non trouvée'], 404);
-        }
-
-        $talk->setTheme($themeId ? (int) $themeId : null);
-        $this->talkRepository->save($talk);
 
         return new JsonResponse(['success' => true]);
     }
