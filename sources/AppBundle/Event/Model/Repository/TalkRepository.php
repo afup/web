@@ -279,7 +279,7 @@ class TalkRepository extends Repository implements MetadataInitializer
 
         $query = $this->getPreparedQuery(
             sprintf('SELECT talk.id_forum, talk.session_id, titre, skill, talk.genre, abstract, talk.plannifie, talk.language_code,
-            talk.joindin, talk.theme,
+            talk.joindin, talk.theme, talk.position,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe,
             planning.id, planning.debut, planning.fin, room.id, room.nom
             FROM afup_sessions AS talk
@@ -289,7 +289,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
             LEFT JOIN afup_conference_theme ON afup_conference_theme.id = talk.theme
             WHERE talk.id_forum IN(%s) AND plannifie = 1 %s %s
-            ORDER BY %s ', $inEvents, $publicationdateFilters, $themeFilters, $orderByTheme ? 'afup_conference_theme.priority ASC, afup_conference_theme.name ASC' : 'planning.debut ASC, room.id ASC, talk.date_publication DESC, talk.session_id ASC '),
+            ORDER BY %s ', $inEvents, $publicationdateFilters, $themeFilters, $orderByTheme ? 'afup_conference_theme.priority ASC, afup_conference_theme.name ASC, talk.position IS NULL, talk.position ASC, talk.date_publication DESC, talk.session_id ASC' : 'talk.position IS NULL, talk.position ASC, planning.debut ASC, room.id ASC, talk.date_publication DESC, talk.session_id ASC '),
         )->setParams($params);
 
         $result = $query->query($this->getCollection($hydrator));
@@ -619,6 +619,11 @@ SQL;
             ->addField([
                 'columnName' => 'theme',
                 'fieldName' => 'theme',
+                'type' => 'int',
+            ])
+            ->addField([
+                'columnName' => 'position',
+                'fieldName' => 'position',
                 'type' => 'int',
             ])
         ;
