@@ -1,0 +1,188 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Éditorialisation du programme</h2>
+
+    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
+
+    <div class="ui menu">
+        <div class="item">
+            <button id="save-positions" class="ui green button">
+                <i class="save icon"></i>
+                Sauvegarder les positions
+            </button>
+        </div>
+    </div>
+
+    <h3>Position des conférences <span id="editorialization-success-message" class="ui green label" style="display: none;"><i class="check icon"></i>Sauvegardé</span></h3>
+
+    {% for group in talk_groups %}
+        <h4>{{ group.theme ? group.theme.name : 'Sans thème' }}</h4>
+        {% if group.talks|length %}
+            <table class="ui table striped celled form">
+                <thead>
+                <tr>
+                    <th style="width: 20%;">Conférence</th>
+                    <th style="width: {% if has_themes %}50%{% else %}70%{% endif %};">Résumé</th>
+                    {% if has_themes %}
+                        <th>Thème</th>
+                    {% endif %}
+                    <th>Position</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for talk in group.talks %}
+                    <tr data-talk-id="{{ talk.id }}">
+                        <td>
+                            <strong>{{ talk.title }}</strong>
+                        </td>
+                        <td>
+                            {% set abstract = talk.abstract %}
+                            {% if abstract|length > 400 %}
+                                <div class="abstract-content">
+                                    <span class="abstract-short">{{ abstract|slice(0, 400) }}...</span>
+                                    <span class="abstract-full" style="display: none;">{{ abstract|raw|markdown }}</span>
+                                    <br>
+                                    <a href="#" class="toggle-abstract">Voir plus</a>
+                                </div>
+                            {% else %}
+                                <div class="abstract-content">
+                                    <span class="abstract-full">{{ abstract|raw|markdown }}</span>
+                                </div>
+                            {% endif %}
+                        </td>
+                        {% if has_themes %}
+                            <td>
+                                <div class="inline fields">
+                                    <select class="theme-select ui" data-talk-id="{{ talk.id }}">
+                                        <option value="">Aucun thème</option>
+                                        {% for theme in themes %}
+                                            <option value="{{ theme.id }}"
+                                                    {% if talk.theme == theme.id %}selected{% endif %}>
+                                                {{ theme.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </td>
+                        {% endif %}
+                        <td>
+                            <input type="number"
+                                   class="position-input"
+                                   value="{{ talk.position }}"
+                                   min="0"
+                                   step="1"
+                                   data-talk-id="{{ talk.id }}"
+                                   style="width: 80px;">
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucune conférence.
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="ui icon header">
+            <i class="meh outline icon"></i>
+            Aucune conférence planifiée pour cet événement.
+        </div>
+    {% endfor %}
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Wait for jQuery to be available
+        function waitForJQuery(callback) {
+            if (typeof $ !== 'undefined') {
+                callback();
+            } else {
+                setTimeout(function() { waitForJQuery(callback); }, 100);
+            }
+        }
+
+        waitForJQuery(function() {
+            // Handle theme selection for talks with native selects
+            $('.theme-select').on('change', function() {
+                var talkId = $(this).data('talk-id');
+                var themeId = $(this).val();
+
+                $.ajax({
+                    url: '{{ path('admin_event_editorialization', {'id': event.id}) }}',
+                    method: 'POST',
+                    data: {
+                        action: 'update_talk_theme',
+                        talk_id: talkId,
+                        theme_id: themeId
+                    },
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            location.reload();
+                        }
+                    },
+                    error: function() {
+                        alert('Erreur lors de la mise à jour du thème');
+                    }
+                });
+            });
+
+            // Handle position updates
+            $('#save-positions').click(function() {
+                var positions = [];
+                $('.position-input').each(function() {
+                    positions.push({
+                        talk_id: $(this).data('talk-id'),
+                        position: $(this).val()
+                    });
+                });
+
+                var promises = positions.map(function(item) {
+                    return $.ajax({
+                        url: '{{ path('admin_event_editorialization', {'id': event.id}) }}',
+                        method: 'POST',
+                        data: {
+                            action: 'update_talk_position',
+                            talk_id: item.talk_id,
+                            position: item.position
+                        },
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                });
+
+                Promise.all(promises).then(function() {
+                    alert('Positions sauvegardées avec succès');
+                    location.reload();
+                }).catch(function() {
+                    alert('Erreur lors de la sauvegarde');
+                });
+            });
+
+            // Handle abstract toggle
+            $('.toggle-abstract').click(function(e) {
+                e.preventDefault();
+                var container = $(this).closest('.abstract-content');
+                var shortVersion = container.find('.abstract-short');
+                var fullVersion = container.find('.abstract-full');
+
+                if (fullVersion.is(':visible')) {
+                    fullVersion.hide();
+                    shortVersion.show();
+                    $(this).text('Voir plus');
+                } else {
+                    shortVersion.hide();
+                    fullVersion.show();
+                    $(this).text('Voir moins');
+                }
+            });
+        });
+    });
+    </script>
+
+{% endblock %}
