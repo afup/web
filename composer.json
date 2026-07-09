@@ -42,7 +42,6 @@
     "robmorgan/phinx": "0.16.*",
     "sabre/vobject": "^4.6",
     "setasign/tfpdf": "^1.33",
-    "smarty/smarty": "^5.8",
     "symfony/asset": "7.4.*",
     "symfony/asset-mapper": "7.4.*",
     "symfony/clock": "7.4.*",
@@ -73,9 +72,7 @@
     "twig/intl-extra": "^3.26",
     "twig/string-extra": "^3.24",
     "twig/twig": "^3.27",
-    "webmozart/assert": "^2.4",
-    "znk3r/html_common": "*",
-    "znk3r/html_quickform": "4.0.2"
+    "webmozart/assert": "^2.4"
   },
   "scripts": {
     "post-install-cmd": [
@@ -104,10 +101,6 @@
     "patches": {
       "setasign/tfpdf": [
         "patches/setasign-tfpdf-tfpdf-php.patch"
-      ],
-      "znk3r/html_quickform": [
-        "patches/znk3r-html-quickform-html-quickform-date-php.patch",
-        "patches/znk3r-html-quickform-html-quickform-php.patch"
       ]
     },
     "symfony-app-dir": "app",
@@ -124,11 +117,7 @@
       "Afup\\Site\\": "sources/Afup/",
       "AppBundle\\": "sources/AppBundle/",
       "PlanetePHP\\": "sources/PlanetePHP/"
-    },
-    "files": [
-      "sources/Afup/Bootstrap/_Common.php",
-      "sources/Afup/Bootstrap/commonStart.php"
-    ]
+    }
   },
   "autoload-dev": {
     "psr-4": {
@@ -176,38 +165,6 @@
     "tomasvotruba/type-coverage": "^2.2"
   },
   "repositories": [
-    {
-      "type": "package",
-      "package": {
-        "name": "znk3r/html_quickform",
-        "version": "4.0.2",
-        "dist": {
-          "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/v4.0.2.zip",
-          "type": "zip"
-        },
-        "autoload": {
-          "classmap": [
-            "HTML/"
-          ]
-        }
-      }
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "znk3r/html_common",
-        "version": "v2.0.1",
-        "dist": {
-          "url": "https://github.com/znk3r/HTML_Common/archive/v2.0.1.zip",
-          "type": "zip"
-        },
-        "autoload": {
-          "classmap": [
-            "HTML/"
-          ]
-        }
-      }
-    },
     {
       "type": "package",
       "package": {

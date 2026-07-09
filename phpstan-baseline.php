@@ -2,36 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between \'https\\://\' and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Bootstrap/Http.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to string\\.$#',
-	'identifier' => 'cast.string',
-	'count' => 5,
-	'path' => __DIR__ . '/sources/Afup/Bootstrap/Http.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$length of function substr expects int\\|null, int\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Bootstrap/Http.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method register_modifier\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Bootstrap/commonStart.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$locale of class Symfony\\\\Component\\\\Translation\\\\Translator constructor expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Bootstrap/commonStart.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
 	'identifier' => 'foreach.nonIterable',
 	'count' => 1,
@@ -128,84 +98,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/Afup/Corporate/Page.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'elements\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Droits.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'niveau\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/Afup/Droits.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getUser\\(\\) on Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\TokenInterface\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/Afup/Droits.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Afup\\\\Site\\\\Droits\\:\\:chargerToutesLesPages\\(\\) has parameter \\$pages with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Droits.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property Afup\\\\Site\\\\Droits\\:\\:\\$_pages type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Droits.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "/" between mixed and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Pagination.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method assign\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/Afup/Pagination.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method display\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Pagination.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method register_function\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Pagination.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Afup\\\\Site\\\\Pagination\\:\\:__construct\\(\\) has parameter \\$genere_route with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Pagination.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Afup\\\\Site\\\\Pagination\\:\\:__construct\\(\\) has parameter \\$nombre_elements_par_page with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Pagination.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Afup\\\\Site\\\\Pagination\\:\\:__construct\\(\\) has parameter \\$nombre_elements_total with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Pagination.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Afup\\\\Site\\\\Pagination\\:\\:__construct\\(\\) has parameter \\$page_courante with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Pagination.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between mixed and \' \' results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 6,
@@ -228,18 +120,6 @@ $ignoreErrors[] = [
 	'identifier' => 'property.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/Afup/Utils/Pays.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Afup\\\\Site\\\\Utils\\\\SymfonyKernel\\:\\:getResponse\\(\\) should return Symfony\\\\Component\\\\HttpFoundation\\\\Response but returns Symfony\\\\Component\\\\HttpFoundation\\\\Response\\|null\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/SymfonyKernel.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$request of method Symfony\\\\Component\\\\HttpKernel\\\\Kernel\\:\\:handle\\(\\) expects Symfony\\\\Component\\\\HttpFoundation\\\\Request, Symfony\\\\Component\\\\HttpFoundation\\\\Request\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Utils/SymfonyKernel.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between non\\-falsy\\-string and mixed results in an error\\.$#',
@@ -324,108 +204,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.parameter',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/Afup/Utils/Vat.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'class\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'elements\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'erreur\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'event_selector_current_id\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'message\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'nom\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'path\' on array\\{scheme\\?\\: string, host\\?\\: string, port\\?\\: int\\<0, 65535\\>, user\\?\\: string, pass\\?\\: string, path\\?\\: string, query\\?\\: string, fragment\\?\\: string\\}\\|false\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getAttributes\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setAttributes\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to string\\.$#',
-	'identifier' => 'cast.string',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Function genererFormulaire\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Function obtenirTitre\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Function obtenirTitre\\(\\) has parameter \\$page with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Function obtenirTitre\\(\\) has parameter \\$pages with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Function verifierAction\\(\\) should return string but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$action of class AppBundle\\\\Association\\\\Form\\\\HTML_QuickForm constructor expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/fonctions.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Accounting\\\\Entity\\\\Repository\\\\AccountRepository\\:\\:getAllSortedByName\\(\\) should return array\\<AppBundle\\\\Accounting\\\\Entity\\\\Account\\> but returns mixed\\.$#',
@@ -870,12 +648,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/Form/ContactDetailsType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Form\\\\HTML_QuickForm\\:\\:getElements\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/HTML_QuickForm.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Class AppBundle\\\\Association\\\\Form\\\\NearestOfficeChoiceType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
@@ -5280,72 +5052,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Vote/VoteController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between literal\\-string&non\\-falsy\\-string and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/LegacyController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between mixed and \'\\.html\' results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/LegacyController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between mixed and \'\\.js\\.html\' results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/LegacyController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'erreur\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/LegacyController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'message\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/LegacyController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method fetch\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/LegacyController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method templateExists\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/LegacyController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\LegacyController\\:\\:__construct\\(\\) has parameter \\$backOfficePages with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/LegacyController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\LegacyController\\:\\:backOffice\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/LegacyController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\LegacyController\\:\\:void\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/LegacyController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$page of method Afup\\\\Site\\\\Droits\\:\\:verifierDroitSurLaPage\\(\\) expects int\\|string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/LegacyController.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$content of class Symfony\\\\Component\\\\HttpFoundation\\\\Response constructor expects string\\|null, string\\|false given\\.$#',
