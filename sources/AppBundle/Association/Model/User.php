@@ -47,7 +47,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
     private $username;
 
     /**
-     * @var string
+     * @var ?string
      */
     private $password;
 
@@ -266,7 +266,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
     }
 
     /**
-     * @param string $password
+     * @param ?string $password
      */
     public function setPassword($password): self
     {
@@ -707,6 +707,9 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         ];
     }
 
+    /**
+     * @param array{id: int, username: string, password: ?string} $serialized
+     */
     public function __unserialize($serialized): void
     {
         $this->id = $serialized['id'];

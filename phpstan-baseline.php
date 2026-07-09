@@ -1808,30 +1808,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/UserRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'id\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'password\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'username\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:__unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:getAlternateEmail\\(\\) has no return type specified\\.$#',
 	'identifier' => 'missingType.return',
 	'count' => 1,
@@ -1958,12 +1934,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Model\\\\User\\:\\:\\$id \\(int\\) does not accept mixed\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property AppBundle\\\\Association\\\\Model\\\\User\\:\\:\\$lastSubscription \\(DateTimeImmutable\\|null\\) does not accept DateTimeImmutable\\|false\\.$#',
 	'identifier' => 'assign.propertyType',
 	'count' => 1,
@@ -1976,20 +1946,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Model\\\\User\\:\\:\\$password \\(string\\) does not accept mixed\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property AppBundle\\\\Association\\\\Model\\\\User\\:\\:\\$roles type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Model\\\\User\\:\\:\\$username \\(string\\) does not accept mixed\\.$#',
-	'identifier' => 'assign.propertyType',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
 ];
