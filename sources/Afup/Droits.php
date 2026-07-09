@@ -14,11 +14,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class Droits
 {
-    /**
-     * Liste structurée avec toutes les pages référencées dans l'application
-     */
-    private array $_pages = [];
-
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
@@ -29,7 +24,7 @@ class Droits
      */
     public function obtenirIdentifiant(): ?int
     {
-        $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()?->getUser();
 
         if ($user instanceof User || $user instanceof GithubUser) {
             return $user->getId();
@@ -38,43 +33,12 @@ class Droits
         return null;
     }
 
-    public function chargerToutesLesPages($pages): void
-    {
-        if (is_array($pages)) {
-            $this->_pages = $pages;
-        }
-    }
-
-    /**
-     * @param int|string $page
-     */
-    public function verifierDroitSurLaPage($page): bool
-    {
-        if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
-            return true;
-        }
-        foreach ($this->_pages as $_page => $_page_details) {
-            if ($page == $_page && (isset($_page_details['niveau']) && $this->authorizationChecker->isGranted($_page_details['niveau']))) {
-                return true;
-            }
-            if (isset($_page_details['elements']) && is_array($_page_details['elements'])) {
-                foreach ($_page_details['elements'] as $_element => $_element_details) {
-                    if ($page == $_element && (isset($_element_details['niveau']) && $this->authorizationChecker->isGranted($_element_details['niveau']))) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
     /**
      * @param int $compagnyId
      */
     public function verifierDroitManagerPersonneMorale($compagnyId): bool
     {
-        $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()?->getUser();
         if ($user instanceof User) {
             return $user->getCompanyId() == $compagnyId && $this->authorizationChecker->isGranted('ROLE_COMPANY_MANAGER');
         }

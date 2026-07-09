@@ -64,28 +64,6 @@ services:
         autoconfigure: true
         public: false
 
-    ### Pages legacy - DEBUT
-    # Les anciennes pages ont besoin que certains services soient publics,
-    # car récupérés via `$container->get()`. Ils sont listés ici :
-
-    AppBundle\Event\Ticket\TicketTypeAvailability:
-        autowire: true
-
-    AppBundle\Event\Invoice\InvoiceService:
-        autowire: true
-
-    AppBundle\Event\Model\Repository\EventStatsRepository:
-        autowire: true
-
-    ### Pages legacy - FIN
-
-    AppBundle\Controller\LegacyController:
-        autowire: true
-        autoconfigure: true
-        public: false
-        arguments:
-            $backOfficePages: '%app.pages_backoffice%'
-
     AppBundle\Payment\PayboxFactory:
         autowire: true
         arguments: ["@router", "%env(PAYBOX_DOMAIN_SERVER)%", "%env(PAYBOX_SECRET_KEY)%", "%env(PAYBOX_SITE)%", "%env(PAYBOX_RANG)%", "%env(PAYBOX_IDENTIFIANT)%"]
