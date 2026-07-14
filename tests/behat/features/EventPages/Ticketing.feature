@@ -32,6 +32,7 @@ Feature: Event pages - Ticketing
     When I press "Régler par carte"
     # Pour suivre la redirection POST de Paybox
     And I submit the form with name "PAYBOX"
+    And I submit the form with id "payment_page_redirect_form"
     When I fill in "NUMERO_CARTE" with "1111222233334444"
     And I select "12" from "MOIS_VALIDITE"
     And I select "26" from "AN_VALIDITE"
