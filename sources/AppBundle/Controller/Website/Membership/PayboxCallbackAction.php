@@ -48,8 +48,17 @@ final readonly class PayboxCallbackAction
             $etat = MembershipFeePaymentStatus::Rejected;
         }
 
+        $cmd = $payboxResponse->getCmd();
+
+        $cleanedCmd = $cmd;
+        // cf payboxfactory, on a un suffixe pour gérer l'unicité et éviter une erreur "An error occurred while creating or updating row in fappel"
+        $suffixPos = strpos($cleanedCmd, '__');
+        if (false !== $suffixPos) {
+            $cleanedCmd = substr($cleanedCmd, 0, $suffixPos);
+        }
+
         if ($etat == MembershipFeePaymentStatus::Paid) {
-            $account = $this->onlinePaymentHandler->getAccountFromCmd($payboxResponse->getCmd());
+            $account = $this->onlinePaymentHandler->getAccountFromCmd($cleanedCmd);
             $lastCotisation = $this->membershipFeeService->getLatestByUserTypeAndId(MemberType::from($account['type']), $account['id']);
 
             if (!$lastCotisation instanceof MembershipFee && $account['type'] == MemberType::MemberPhysical->value) {
@@ -57,9 +66,9 @@ final readonly class PayboxCallbackAction
                 $this->eventDispatcher->dispatch(new NewMemberEvent($user));
             }
 
-            $this->onlinePaymentHandler->validerReglementEnLigne($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId());
-            $this->membershipFeeMailer->notifierReglementEnLigneAuTresorier($payboxResponse->getCmd(), round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId());
-            $this->audit->log("Ajout de la cotisation " . $payboxResponse->getCmd() . " via Paybox.");
+            $this->onlinePaymentHandler->validerReglementEnLigne($cleanedCmd, round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId());
+            $this->membershipFeeMailer->notifierReglementEnLigneAuTresorier($cleanedCmd, round($payboxResponse->getTotal() / 100, 2), $payboxResponse->getAuthorizationId(), $payboxResponse->getTransactionId());
+            $this->audit->log("Ajout de la cotisation " . $cleanedCmd . " via Paybox.");
         }
         return new Response();
     }

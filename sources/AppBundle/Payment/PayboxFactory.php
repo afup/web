@@ -34,7 +34,7 @@ class PayboxFactory
 
         $paybox
             ->setTotal((int) $montant * 100) // Total de la commande, en centimes d'euros
-            ->setCmd($facture) // Référence de la commande
+            ->setCmd($facture . '__' . uniqid()) // Référence de la commande + un suffixe pour gérer l'unicité et éviter une erreur "An error occurred while creating or updating row in fappel" sur paybox notamment en environnement de test
             ->setPorteur($email) // Email du client final (Le porteur de la carte)
             ->setUrlRetourEffectue($this->router->generate('membership_payment_redirect', ['type' => 'success'], RouterInterface::ABSOLUTE_URL))
             ->setUrlRetourRefuse($this->router->generate('membership_payment_redirect', ['type' => 'refused'], RouterInterface::ABSOLUTE_URL))

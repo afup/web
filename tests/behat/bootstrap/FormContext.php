@@ -25,6 +25,21 @@ trait FormContext
         $form->submit();
     }
 
+    #[Then('I submit the form with id :formId')]
+    public function submitFormWithId(string $formId): void
+    {
+        $form = $this->minkContext->getSession()->getPage()->find('xpath', "//form[@id='$formId']");
+
+        if (null === $form) {
+            throw new ExpectationException(
+                sprintf('The form of id "%s" not found', $formId),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+
+        $form->submit();
+    }
+
     #[Then('The :field field should only contain the follow values :expectedValuesJson')]
     public function selectHasValues(string $field, string $expectedValuesJson): void
     {
