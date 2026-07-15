@@ -3524,34 +3524,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SpeakerInfosAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'hasExpensesFiles\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SpeakersExpensesAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'speaker\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SpeakersExpensesAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$speaker of method AppBundle\\\\SpeakerInfos\\\\SpeakersExpensesStorage\\:\\:getFiles\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Speaker, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SpeakersExpensesAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'hasExpensesFiles\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SpeakersManagementAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'speaker\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SpeakersManagementAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$speaker of method AppBundle\\\\SpeakerInfos\\\\SpeakersExpensesStorage\\:\\:getFiles\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Speaker, mixed given\\.$#',
@@ -4760,32 +4736,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Blog/TalkWidgetAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'\\.aggregation\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Blog/TalkWidgetAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'speaker\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Blog/TalkWidgetAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Blog/TalkWidgetAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to string\\.$#',
-	'identifier' => 'cast.string',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Blog/TalkWidgetAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Possibly invalid array key type mixed\\.$#',
-	'identifier' => 'offsetAccess.invalidOffset',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Blog/TalkWidgetAction.php',
 ];
@@ -7318,12 +7270,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerRepository\\:\\:getFromLastEventAndUserId\\(\\) has parameter \\$githubUserId with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerRepository\\:\\:getScheduledSpeakersByEvent\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
 ];

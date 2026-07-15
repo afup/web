@@ -6,3 +6,6 @@ services:
 
     http_client.bluesky_embed:
         class: Symfony\Component\HttpClient\MockHttpClient
+
+    Afup\Tests\Support\Wordpress\FakeWordpressClient: ~
+    AppBundle\Event\Wordpress\WordpressClient: '@Afup\Tests\Support\Wordpress\FakeWordpressClient'

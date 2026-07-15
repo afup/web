@@ -13,3 +13,16 @@ framework:
                 base_uri: 'https://bsky.social'
             http_client.bluesky_embed:
                 base_uri: 'https://embed.bsky.app'
+            http_client.wordpress:
+                base_uri: '%env(WORDPRESS_BASE_URI)%'
+                auth_basic: '%env(WORDPRESS_AUTH)%'
+                headers:
+                    Accept: 'application/json'
+
+when@dev:
+    framework:
+        http_client:
+            scoped_clients:
+                http_client.wordpress:
+                    verify_peer: false
+                    verify_host: false

@@ -53,6 +53,26 @@ admin_event_speakers_management:
   path: /speakers-management
   defaults: {_controller: AppBundle\Controller\Admin\Event\SpeakersManagementAction}
 
+admin_event_interview_list:
+  path: /interviews
+  defaults: {_controller: AppBundle\Controller\Admin\Event\Interview\ListAction}
+
+admin_event_interview_add:
+  path: /interviews/add
+  defaults: {_controller: AppBundle\Controller\Admin\Event\Interview\AddOrEditAction}
+
+admin_event_interview_edit:
+  path: /interviews/{interviewId}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\Interview\AddOrEditAction}
+  requirements:
+    interviewId: \d+
+
+admin_event_interview_config:
+  path: /interviews/{eventId}/config
+  defaults: {_controller: AppBundle\Controller\Admin\Event\Interview\ConfigAction}
+  requirements:
+    eventId: \d+
+
 admin_event_speakers_expenses:
   path: /speakers-expenses
   defaults: {_controller: AppBundle\Controller\Admin\Event\SpeakersExpensesAction}
