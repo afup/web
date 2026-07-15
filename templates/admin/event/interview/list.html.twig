@@ -1,0 +1,96 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Interviews</h2>
+    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
+
+    {% if interviews|length == 0 and speakersWithoutInterview|length == 0 %}
+        <div class="ui message">
+            <p>Il n'y a aucun speaker planifié pour cet évènement.</p>
+        </div>
+    {% else %}
+
+        {% if event.hasAllWordpressConfig() %}
+            <div class="ui menu">
+                    <a href="{{ path('admin_event_interview_add', { id: event.id }) }}" class="item">
+                        <div data-tooltip="Créer une nouvelle interview"
+                             data-position="bottom left">
+                            <i class="icon plus"></i>
+                            Nouvelle interview
+                        </div>
+                    </a>
+                <a href="{{ path('admin_event_interview_config', { eventId: event.id }) }}" class="item">
+                    <div data-tooltip="Configurer la catégorie WordPress"
+                         data-position="bottom left">
+                        <i class="icon cog"></i>
+                        Configuration WordPress
+                    </div>
+                </a>
+            </div>
+
+            <table class="ui table striped compact celled">
+                <thead>
+                <tr>
+                    <th>Speaker(s)</th>
+                    <th class="center aligned">Date de publication</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for row in interviews %}
+                    <tr>
+                        <td>{{ row.speakers|map(s => s.label)|join(', ') }}</td>
+                        <td class="center aligned">
+                            {{ row.interview.datePublication|date('d/m/Y H:i') }}
+                        </td>
+                        <td>
+                            <a href="{{ path('admin_event_interview_edit', {interviewId: row.interview.id, id: event.id}) }}"
+                               data-position="left center"
+                               data-tooltip="Gérer l'interview"
+                               class="compact ui icon button">
+                                <i class="pencil icon"></i>
+                            </a>
+                            {% if row.interview.wordpressPostId is not null %}
+                                <a href="{{ wordpressBaseUri }}?page_id={{ row.interview.wordpressPostId }}"
+                                   data-position="left center"
+                                   data-tooltip="Voir sur le site"
+                                   class="compact ui icon button">
+                                    <i class="linkify icon"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="center aligned">Aucune interview pour le moment.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% if speakersWithoutInterview|length > 0 %}
+                <div class="ui info message">
+                    <div class="header">Speakers sans interview</div>
+                    <p>{{ speakersWithoutInterview|map(s => s.label)|join(', ') }}</p>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="ui warning icon message">
+                <i class="exclamation circle icon"></i>
+                <div class="content">
+                    <div class="header">
+                        Configuration WordPress manquante
+                    </div>
+                    <p>
+                        Sans cette configuration les interviews programmées ne seront pas postées.
+                    </p>
+                    <a class="ui labeled icon button" href="{{ path('admin_event_interview_config', { eventId: event.id }) }}">
+                        <i class="cog icon"></i>
+                        Configurer
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+
+    {% endif %}
+{% endblock %}

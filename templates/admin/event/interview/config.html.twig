@@ -1,0 +1,24 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Configuration des interview {{ event.title }}</h2>
+
+    {% form_theme form 'form_theme_admin.html.twig' %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="ui segment">
+        <div class="ui form">
+            {{ form_row(form.interviewsWordpressCategoryId) }}
+            {{ form_row(form.interviewsIntro) }}
+            {{ form_row(form.interviewsCtaText) }}
+        </div>
+    </div>
+
+    <div class="ui segment">
+        <input type="submit" value="Enregistrer" class="ui primary button" />
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

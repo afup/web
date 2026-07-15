@@ -43,7 +43,7 @@ class SpeakerRepository extends Repository implements MetadataInitializer
     /**
      * Retrieve speakers with a scheduled talk for a given event
      * @param bool $returnTalksThatWillBePublished
-     * @return CollectionInterface
+     * @return CollectionInterface<array<mixed>>&iterable<array<mixed>>
      */
     public function getScheduledSpeakersByEvent(Event $event, $returnTalksThatWillBePublished = false): CollectionInterface
     {

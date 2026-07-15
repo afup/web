@@ -23,6 +23,18 @@
     {% endfor %}
 {% endif %}
 
+{% if widget_type == 'interview' or widget_type == 'all' %}
+    {% for question in questions %}
+        <!-- wp:heading {"level":3} -->
+        <h3>{{ question.question }}</h3>
+        <!-- /wp:heading -->
+
+        <!-- wp:paragraph -->
+        <p>{{ question.reponse }}</p>
+        <!-- /wp:paragraph -->
+    {% endfor %}
+{% endif %}
+
 {% if widget_type == 'speaker' or widget_type == 'all' %}
     <h3>{% if talks_infos|length > 1 %}Des conférences présentées par{% else %}Une conférence présentée par{% endif %}</h3>
     {% for speaker in speakers %}

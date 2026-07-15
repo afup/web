@@ -1,0 +1,52 @@
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    function addFormToCollection(e) {
+      const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+      const item = document.createElement('div');
+      item.classList.add('interview_question_item');
+      item.id = 'interview_question_' + collectionHolder.dataset.index;
+
+      item.innerHTML = collectionHolder
+          .dataset
+          .prototype
+          .replace(
+              /__name__/g,
+              collectionHolder.dataset.index,
+          );
+
+      collectionHolder.appendChild(item);
+
+      addDeletionButton(item, collectionHolder.dataset.index);
+      collectionHolder.dataset.index++;
+    }
+
+    function addDeletionButton(item, index = 0) {
+      const removeItemButton = document.createElement('a');
+      removeItemButton.innerText = 'Supprimer la question';
+      removeItemButton.classList.add('ui', 'red', 'button');
+      removeItemButton.id = 'remove_question_' + index;
+
+      const container = item.querySelector('div.action_container');
+      if (container !== null) {
+        container.append(removeItemButton);
+      }
+
+      removeItemButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        item.remove();
+      });
+    }
+
+    const addLink = document.querySelector('a.add_item_link');
+    if (addLink !== null) {
+      addLink.addEventListener('click', addFormToCollection);
+    }
+
+    document
+        .querySelectorAll('div.interview_question_container > div.interview_question_item')
+        .forEach((row, index) => {
+          addDeletionButton(row, index);
+        });
+  });
+</script>

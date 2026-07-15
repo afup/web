@@ -101,6 +101,12 @@ class Event implements NotifyPropertyInterface
 
     private bool $hasThemes = false;
 
+    private ?int $interviewsWordpressCategoryId = null;
+
+    private ?string $interviewsIntro = null;
+
+    private ?string $interviewsCtaText = null;
+
     /**
      * @return int
      */
@@ -725,6 +731,46 @@ class Event implements NotifyPropertyInterface
         $this->archivedAt = $archivedAt;
 
         return $this;
+    }
+
+    public function getInterviewsWordpressCategoryId(): ?int
+    {
+        return $this->interviewsWordpressCategoryId;
+    }
+
+    public function setInterviewsWordpressCategoryId(?int $interviewsWordpressCategoryId): void
+    {
+        $this->propertyChanged('interviewsWordpressCategoryId', $this->interviewsWordpressCategoryId, $interviewsWordpressCategoryId);
+        $this->interviewsWordpressCategoryId = $interviewsWordpressCategoryId;
+    }
+
+    public function getInterviewsIntro(): ?string
+    {
+        return $this->interviewsIntro;
+    }
+
+    public function setInterviewsIntro(?string $interviewsIntro): void
+    {
+        $this->propertyChanged('interviewsIntro', $this->interviewsIntro, $interviewsIntro);
+        $this->interviewsIntro = $interviewsIntro;
+    }
+
+    public function getInterviewsCtaText(): ?string
+    {
+        return $this->interviewsCtaText;
+    }
+
+    public function setInterviewsCtaText(?string $interviewsCtaText): void
+    {
+        $this->propertyChanged('interviewsCtaText', $this->interviewsCtaText, $interviewsCtaText);
+        $this->interviewsCtaText = $interviewsCtaText;
+    }
+
+    public function hasAllWordpressConfig(): bool
+    {
+        return $this->interviewsWordpressCategoryId !== null
+            && $this->interviewsIntro !== null
+            && $this->interviewsCtaText !== null;
     }
 
     public function isOnline(): bool
