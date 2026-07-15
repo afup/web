@@ -146,7 +146,7 @@
                     {% for bag in ['notice', 'success', 'error'] %}
                         {% for flash_message in app.session.flashBag.get(bag)%}
                             {% if bag == 'error'%}
-                                {% set messageclass = 'nagative' %}
+                                {% set messageclass = 'negative' %}
                             {% elseif bag == 'success' %}
                                 {% set messageclass = 'success' %}
                             {% else %}
