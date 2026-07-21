@@ -6,10 +6,11 @@ namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Association\Form\TicketEventType;
 use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Event\Form\Support\EventSelectFactory;
+use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,7 +20,7 @@ class PricesEditAction extends AbstractController
         private readonly EventActionHelper $eventActionHelper,
         private readonly TicketTypeRepository $ticketTypeRepository,
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
-        private readonly EventSelectFactory $eventSelectFactory,
+        private readonly FormFactoryInterface $formFactory,
     ) {}
 
     public function __invoke(Request $request, int $event, int $id): Response
@@ -57,7 +58,9 @@ class PricesEditAction extends AbstractController
             'event' => $event,
             'title' => 'Tarifications - Modifier',
             'button_text' => 'Modifier',
-            'event_select_form' => $this->eventSelectFactory->create($event, $request)->createView(),
+            'event_select_form' => $this->formFactory->create(EventSelectType::class, $event, [
+                'data' => $event,
+            ])->createView(),
         ]);
     }
 }
