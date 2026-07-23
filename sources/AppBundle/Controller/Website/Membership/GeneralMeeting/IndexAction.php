@@ -30,7 +30,7 @@ final class IndexAction extends AbstractController
         private readonly ViewRenderer $view,
         private readonly UserService $userService,
         private readonly AssembleeGeneraleRepository $assembleGeneraleRepository,
-        private readonly PresenceRepository $generalMeetingRepository,
+        private readonly PresenceRepository $presenceRepository,
         private readonly QuestionRepository $questionRepository,
         private readonly VoteRepository $voteRepository,
         private readonly ReportListBuilder $reportListBuilder,
@@ -43,7 +43,7 @@ final class IndexAction extends AbstractController
         $userService = $this->userService;
         $user = $this->authentication->getAfupUser();
         $title = 'Présence prochaine AG';
-        $latestDate = $this->generalMeetingRepository->getLatestAttendanceDate();
+        $latestDate = $this->presenceRepository->getLatestAttendanceDate();
         Assert::notNull($latestDate);
         $generalMeetingPlanned = $this->assembleGeneraleRepository->hasPlanned();
 
@@ -57,7 +57,7 @@ final class IndexAction extends AbstractController
             ]);
         }
 
-        $attendee = $this->generalMeetingRepository->getAttendee($user->getUsername(), $latestDate);
+        $attendee = $this->presenceRepository->getAttendee($user->getUsername(), $latestDate);
         $lastGeneralMeetingDescription = $this->assembleGeneraleRepository->findOneByDate($latestDate)?->description;
 
         $data = [
@@ -91,7 +91,7 @@ final class IndexAction extends AbstractController
                 ],
             ])
             ->add('id_personne_avec_pouvoir', ChoiceType::class, [
-                'choices' => array_flip($this->generalMeetingRepository->getPowerSelectionList($latestDate, $user->getUsername())),
+                'choices' => array_flip($this->presenceRepository->getPowerSelectionList($latestDate, $user->getUsername())),
                 'label' => 'Je donne mon pouvoir à',
                 'required' => false,
             ])
@@ -105,14 +105,14 @@ final class IndexAction extends AbstractController
             $data = $form->getData();
 
             if ($attendee instanceof Attendee) {
-                $ok = $this->generalMeetingRepository->editAttendee(
+                $ok = $this->presenceRepository->editAttendee(
                     $user->getUsername(),
                     $latestDate,
                     $data['presence'],
                     (int) $data['id_personne_avec_pouvoir'],
                 );
             } else {
-                $ok = $this->generalMeetingRepository->addAttendee(
+                $ok = $this->presenceRepository->addAttendee(
                     $user->getId(),
                     $latestDate,
                     $data['presence'],
@@ -129,7 +129,7 @@ final class IndexAction extends AbstractController
             $this->addFlash('error', 'Une erreur est survenue lors de la modification de la présence et du pouvoir');
         }
 
-        $attendeesWithPower = $this->generalMeetingRepository->getAttendees($latestDate, 'nom', 'asc', $user->getId());
+        $attendeesWithPower = $this->presenceRepository->getAttendees($latestDate, 'nom', 'asc', $user->getId());
 
         $currentQuestion = $this->questionRepository->loadNextOpenedQuestion($latestDate);
 

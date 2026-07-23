@@ -26,7 +26,7 @@ class HomeAction extends AbstractController
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
         private readonly NewsletterInscriptionRepository $newsletterInscriptionRepository,
         private readonly AssembleeGeneraleRepository $assembleGeneraleRepository,
-        private readonly PresenceRepository $generalMeetingRepository,
+        private readonly PresenceRepository $presenceRepository,
         private readonly StatisticsComputer $statisticsComputer,
         private readonly ClockInterface $clock,
         private readonly Authentication $authentication,
@@ -126,12 +126,12 @@ class HomeAction extends AbstractController
                 $cards[] = [
                     'title' => 'Assemblée générale',
                     'statistics' => [
-                        'Votes et pouvoirs' => $this->generalMeetingRepository->countAttendeesAndPowers($latestDate),
-                        'Présences' => $this->generalMeetingRepository->countAttendees($latestDate),
+                        'Votes et pouvoirs' => $this->presenceRepository->countAttendeesAndPowers($latestDate),
+                        'Présences' => $this->presenceRepository->countAttendees($latestDate),
                     ],
                     'main_statistic' => [
                         'label' => 'Quorum',
-                        'value' => $this->generalMeetingRepository->obtenirEcartQuorum($latestDate, $statistics->usersCount),
+                        'value' => $this->presenceRepository->obtenirEcartQuorum($latestDate, $statistics->usersCount),
                     ],
                     'url' => $this->generateUrl('admin_members_general_meeting'),
                 ];

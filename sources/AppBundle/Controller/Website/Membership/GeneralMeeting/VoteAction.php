@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 final class VoteAction extends AbstractController
 {
     public function __construct(
-        private readonly PresenceRepository $generalMeetingRepository,
+        private readonly PresenceRepository $presenceRepository,
         private readonly QuestionRepository $questionRepository,
         private readonly VoteRepository $voteRepository,
         private readonly Droits $droits,
@@ -55,7 +55,7 @@ final class VoteAction extends AbstractController
             return $redirection;
         }
 
-        $weight = 1 + count($this->generalMeetingRepository->getAttendees($question->date, 'nom', 'asc', $userId));
+        $weight = 1 + count($this->presenceRepository->getAttendees($question->date, 'nom', 'asc', $userId));
 
         $generalMeetingVote = $this->voteRepository->buildVote($question->id, $userId, $weight, $vote);
 

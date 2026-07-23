@@ -149,9 +149,9 @@ class MessageFactory
         return $message;
     }
 
-    public function createMessageForGeneralMeeting(PresenceRepository $generalMeetingRepository, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator): Message
+    public function createMessageForGeneralMeeting(PresenceRepository $presenceRepository, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator): Message
     {
-        $latestDate = $generalMeetingRepository->getLatestAttendanceDate();
+        $latestDate = $presenceRepository->getLatestAttendanceDate();
         Assert::notNull($latestDate);
         $nombrePersonnesAJourDeCotisation = count($userRepository->getActiveMembers());
 
@@ -168,11 +168,11 @@ class MessageFactory
             ->addField(new Field()->setShort(true)->setTitle('Membres à jour de cotisation')
                 ->setValue($nombrePersonnesAJourDeCotisation))
             ->addField(new Field()->setShort(true)->setTitle('Présences et pouvoirs')
-                ->setValue($generalMeetingRepository->countAttendeesAndPowers($latestDate)))
+                ->setValue($presenceRepository->countAttendeesAndPowers($latestDate)))
             ->addField(new Field()->setShort(true)->setTitle('Présences')
-                ->setValue($generalMeetingRepository->countAttendees($latestDate)))
+                ->setValue($presenceRepository->countAttendees($latestDate)))
             ->addField(new Field()->setShort(true)->setTitle('Quorum')
-                ->setValue($generalMeetingRepository->obtenirEcartQuorum($latestDate, $nombrePersonnesAJourDeCotisation)))
+                ->setValue($presenceRepository->obtenirEcartQuorum($latestDate, $nombrePersonnesAJourDeCotisation)))
         ;
         $message->addAttachment($attachment);
 

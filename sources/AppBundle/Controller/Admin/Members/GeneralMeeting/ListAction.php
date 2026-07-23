@@ -18,32 +18,32 @@ class ListAction
 
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly PresenceRepository $generalMeetingRepository,
+        private readonly PresenceRepository $presenceRepository,
         private readonly Environment $twig,
     ) {}
 
     public function __invoke(Request $request): Response
     {
-        $latestDate = $this->generalMeetingRepository->getLatestAttendanceDate();
+        $latestDate = $this->presenceRepository->getLatestAttendanceDate();
         $sort = $request->query->get('sort', 'nom');
         $direction = $request->query->get('direction', 'asc');
         Assert::inArray($sort, self::VALID_SORTS);
         Assert::inArray($direction, self::VALID_DIRECTIONS);
-        $dates = $this->generalMeetingRepository->getAllDates();
+        $dates = $this->presenceRepository->getAllDates();
 
         $convocations = count($this->userRepository->getActiveMembers());
         $nbAttendeesAndPowers = $nbAttendees = $quorum = $validAttendeeIds = null;
         if (null !== $latestDate) {
-            $nbAttendeesAndPowers = $this->generalMeetingRepository->countAttendeesAndPowers($latestDate);
-            $nbAttendees = $this->generalMeetingRepository->countAttendees($latestDate);
-            $quorum = $this->generalMeetingRepository->obtenirEcartQuorum($latestDate, $convocations);
-            $validAttendeeIds = $this->generalMeetingRepository->getValidAttendeeIds($latestDate);
+            $nbAttendeesAndPowers = $this->presenceRepository->countAttendeesAndPowers($latestDate);
+            $nbAttendees = $this->presenceRepository->countAttendees($latestDate);
+            $quorum = $this->presenceRepository->obtenirEcartQuorum($latestDate, $convocations);
+            $validAttendeeIds = $this->presenceRepository->getValidAttendeeIds($latestDate);
         }
         $selectedDate = $latestDate;
         if ($request->query->has('date')) {
             $selectedDate = \DateTimeImmutable::createFromFormat('U', $request->get('date')) ?: null;
         }
-        $attendees = null !== $selectedDate ? $this->generalMeetingRepository->getAttendees($selectedDate, $sort, $direction) : [];
+        $attendees = null !== $selectedDate ? $this->presenceRepository->getAttendees($selectedDate, $sort, $direction) : [];
 
         return new Response($this->twig->render('admin/members/general_meeting/list.html.twig', [
             'convocations' => $convocations,
