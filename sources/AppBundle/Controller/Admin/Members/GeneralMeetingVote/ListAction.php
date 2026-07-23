@@ -6,7 +6,7 @@ namespace AppBundle\Controller\Admin\Members\GeneralMeetingVote;
 
 use AppBundle\AssembleeGenerale\Entity\Repository\QuestionRepository;
 use AppBundle\AssembleeGenerale\Entity\Repository\VoteRepository;
-use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Twig\Environment;
 class ListAction
 {
     public function __construct(
-        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly PresenceRepository $presenceRepository,
         private readonly QuestionRepository $questionRepository,
         private readonly VoteRepository $voteRepository,
         private readonly Environment $twig,
@@ -23,8 +23,8 @@ class ListAction
 
     public function __invoke(Request $request): Response
     {
-        $dates = $this->generalMeetingRepository->getAllDates();
-        $latestDate = $this->generalMeetingRepository->getLatestAttendanceDate();
+        $dates = $this->presenceRepository->getAllDates();
+        $latestDate = $this->presenceRepository->getLatestAttendanceDate();
 
         $selectedDate = $latestDate;
         if ($request->query->has('date')) {

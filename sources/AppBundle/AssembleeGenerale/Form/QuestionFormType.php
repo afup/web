@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 /**
  * @extends AbstractType<Question>
  */
-class GeneralMeetingQuestionFormType extends AbstractType
+class QuestionFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

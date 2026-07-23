@@ -20,9 +20,9 @@
                     <div class="afup-form-container">
                         {% if not vote_for_current_question %}
                         <div class="container">
-                            {% for value, label in vote_labels_by_values %}
+                            {% for voteValeur in vote_valeurs %}
                                 <div class="col-md-4 txtcenter general-meeeting-vote-action__button-container">
-                                    <a href="{{ url('member_general_meeting_vote', {questionId: question.id, vote: value}) }}" class="button button--call-to-action general-meeeting-vote-action__button">{{ label }}</a>
+                                    <a href="{{ url('member_general_meeting_vote', {questionId: question.id, vote: voteValeur.value}) }}" class="button button--call-to-action general-meeeting-vote-action__button">{{ voteValeur.label() }}</a>
                                 </div>
                             {% endfor %}
                         </div>

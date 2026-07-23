@@ -9,7 +9,7 @@ use AppBundle\AssembleeGenerale\Entity\Repository\AssembleeGeneraleRepository;
 use AppBundle\AssembleeGenerale\Entity\Repository\QuestionRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Association\UserMembership\UserService;
-use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use AppBundle\MembershipFee\Model\MembershipFee;
 use AppBundle\Security\Authentication;
 use AppBundle\Veille\Entity\Repository\NewsletterInscriptionRepository;
@@ -24,7 +24,7 @@ final class IndexAction extends AbstractController
     public function __construct(
         private readonly ViewRenderer $view,
         private readonly AssembleeGeneraleRepository $assembleGeneraleRepository,
-        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly PresenceRepository $presenceRepository,
         private readonly UserService $userService,
         private readonly QuestionRepository $questionRepository,
         private readonly BadgesComputer $badgesComputer,
@@ -67,7 +67,7 @@ final class IndexAction extends AbstractController
             'has_up_to_date_membership_fee' => $user->hasUpToDateMembershipFee(),
             'office_label' => $user->getNearestOfficeLabel($this->antenneRepository),
             'has_general_meeting_planned' => $hasGeneralMeetingPlanned,
-            'has_user_rspved_to_next_general_meeting' => $this->generalMeetingRepository->hasUserRspvedToLastGeneralMeeting($user),
+            'has_user_rspved_to_next_general_meeting' => $this->presenceRepository->hasUserRspvedToLastGeneralMeeting($user),
             'membershipfee_end_date' => $dateFinCotisation,
             'display_link_to_general_meeting_vote' => $displayLinkToGeneralMeetingVote,
         ]);

@@ -13,7 +13,7 @@ use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
-use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
@@ -149,9 +149,9 @@ class MessageFactory
         return $message;
     }
 
-    public function createMessageForGeneralMeeting(GeneralMeetingRepository $generalMeetingRepository, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator): Message
+    public function createMessageForGeneralMeeting(PresenceRepository $presenceRepository, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator): Message
     {
-        $latestDate = $generalMeetingRepository->getLatestAttendanceDate();
+        $latestDate = $presenceRepository->getLatestAttendanceDate();
         Assert::notNull($latestDate);
         $nombrePersonnesAJourDeCotisation = count($userRepository->getActiveMembers());
 
@@ -168,11 +168,11 @@ class MessageFactory
             ->addField(new Field()->setShort(true)->setTitle('Membres à jour de cotisation')
                 ->setValue($nombrePersonnesAJourDeCotisation))
             ->addField(new Field()->setShort(true)->setTitle('Présences et pouvoirs')
-                ->setValue($generalMeetingRepository->countAttendeesAndPowers($latestDate)))
+                ->setValue($presenceRepository->countAttendeesAndPowers($latestDate)))
             ->addField(new Field()->setShort(true)->setTitle('Présences')
-                ->setValue($generalMeetingRepository->countAttendees($latestDate)))
+                ->setValue($presenceRepository->countAttendees($latestDate)))
             ->addField(new Field()->setShort(true)->setTitle('Quorum')
-                ->setValue($generalMeetingRepository->obtenirEcartQuorum($latestDate, $nombrePersonnesAJourDeCotisation)))
+                ->setValue($presenceRepository->obtenirEcartQuorum($latestDate, $nombrePersonnesAJourDeCotisation)))
         ;
         $message->addAttachment($attachment);
 

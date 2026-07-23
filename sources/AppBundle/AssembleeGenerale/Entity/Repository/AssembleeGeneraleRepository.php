@@ -56,4 +56,37 @@ class AssembleeGeneraleRepository extends EntityRepository
         $assemblee->description = $description;
         $this->save($assemblee);
     }
+
+    public function prepare(\DateTimeInterface $date, string $description): bool
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $members = $conn->executeQuery('SELECT id FROM afup_personnes_physiques WHERE etat = 1')->fetchAllAssociative();
+        $insertQuery = $conn->prepare('INSERT INTO afup_presences_assemblee_generale (id_personne_physique, date) VALUES (:id, :date)');
+        $insertQuery->bindValue('date', $date->getTimestamp());
+
+        $success = 0;
+        foreach ($members as $row) {
+            $alreadyExists = $conn->prepare('SELECT id FROM afup_presences_assemblee_generale WHERE id_personne_physique = :id AND date = :date');
+            $alreadyExists->bindValue('id', $row['id']);
+            $alreadyExists->bindValue('date', $date->getTimestamp());
+
+            if (!is_array($alreadyExists->executeQuery()->fetchAssociative())) {
+                $insertQuery->bindValue('id', $row['id']);
+                if ($insertQuery->executeStatement()) {
+                    $success++;
+                }
+            }
+        }
+
+        if (0 === $success) {
+            return false;
+        }
+
+        $replaceQuery = $conn->prepare('REPLACE INTO afup_assemblee_generale (`date`, `description`) VALUES (:date, :description)');
+        $replaceQuery->bindValue('date', $date->getTimestamp());
+        $replaceQuery->bindValue('description', $description);
+
+        return $replaceQuery->executeStatement() > 0;
+    }
 }

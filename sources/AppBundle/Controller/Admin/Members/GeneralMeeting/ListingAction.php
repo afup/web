@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Members\GeneralMeeting;
 
 use Afup\Site\Utils\PDF_AG;
-use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,17 +14,17 @@ use Webmozart\Assert\Assert;
 
 class ListingAction
 {
-    public function __construct(private readonly GeneralMeetingRepository $generalMeetingRepository) {}
+    public function __construct(private readonly PresenceRepository $presenceRepository) {}
 
     public function __invoke(Request $request): BinaryFileResponse
     {
-        $latestDate = $this->generalMeetingRepository->getLatestAttendanceDate();
+        $latestDate = $this->presenceRepository->getLatestAttendanceDate();
         Assert::notNull($latestDate);
         $selectedDate = $latestDate;
         if ($request->query->has('date')) {
             $selectedDate = DateTimeImmutable::createFromFormat('d/m/Y', (string) $request->query->get('date'));
         }
-        $attendees = $this->generalMeetingRepository->getAttendees($selectedDate);
+        $attendees = $this->presenceRepository->getAttendees($selectedDate);
         $filename = tempnam(sys_get_temp_dir(), 'assemblee_generale');
         $pdf = new PDF_AG();
         $pdf->setFooterTitle('Assemblée générale ' . $selectedDate->format('d/m/Y'));
