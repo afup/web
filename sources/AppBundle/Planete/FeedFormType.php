@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class FeedFormType extends AbstractType
 {
@@ -32,6 +33,9 @@ class FeedFormType extends AbstractType
                     'size' => 30,
                     'maxlength' => 40,
                 ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
             ])
             ->add('url', UrlType::class, [
                 'label' => 'URL',
@@ -40,6 +44,10 @@ class FeedFormType extends AbstractType
                     'size' => 50,
                     'maxlength' => 200,
                 ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Url(),
+                ],
             ])
             ->add('feed', UrlType::class, [
                 'label' => 'Flux',
@@ -47,6 +55,10 @@ class FeedFormType extends AbstractType
                 'attr' => [
                     'size' => 50,
                     'maxlength' => 200,
+                ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Url(),
                 ],
             ])
             ->add('userId', ChoiceType::class, [
@@ -58,6 +70,9 @@ class FeedFormType extends AbstractType
                 'label' => 'État',
                 'required' => true,
                 'class' => FeedStatus::class,
+                'constraints' => [
+                    new Assert\NotNull(),
+                ],
             ])
             ->add('save', SubmitType::class, ['label' => 'Ajouter']);
     }
