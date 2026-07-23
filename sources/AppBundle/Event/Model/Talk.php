@@ -101,6 +101,8 @@ class Talk implements NotifyPropertyInterface
 
     private ?int $theme = null;
 
+    private ?int $position = null;
+
     public function __construct()
     {
         $this->submittedOn = new \DateTime();
@@ -686,5 +688,16 @@ class Talk implements NotifyPropertyInterface
     {
         $this->propertyChanged('theme', $this->theme, $theme);
         $this->theme = $theme;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): void
+    {
+        $this->propertyChanged('position', $this->position, $position);
+        $this->position = $position;
     }
 }

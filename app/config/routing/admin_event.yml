@@ -186,5 +186,10 @@ admin_event_themes_list:
   defaults:
     _controller: AppBundle\Controller\Admin\Event\EventThemeAction
 
+admin_event_editorialization:
+  path: /editorialization/
+  defaults:
+    _controller: AppBundle\Controller\Admin\Event\EventEditorializationAction
+
 admin_event_ticket:
   resource: "admin_event_ticket.yml"
