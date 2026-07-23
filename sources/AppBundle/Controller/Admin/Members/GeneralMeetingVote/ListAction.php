@@ -15,7 +15,7 @@ use Twig\Environment;
 class ListAction
 {
     public function __construct(
-        private readonly PresenceRepository $generalMeetingRepository,
+        private readonly PresenceRepository $presenceRepository,
         private readonly QuestionRepository $questionRepository,
         private readonly VoteRepository $voteRepository,
         private readonly Environment $twig,
@@ -23,8 +23,8 @@ class ListAction
 
     public function __invoke(Request $request): Response
     {
-        $dates = $this->generalMeetingRepository->getAllDates();
-        $latestDate = $this->generalMeetingRepository->getLatestAttendanceDate();
+        $dates = $this->presenceRepository->getAllDates();
+        $latestDate = $this->presenceRepository->getLatestAttendanceDate();
 
         $selectedDate = $latestDate;
         if ($request->query->has('date')) {
