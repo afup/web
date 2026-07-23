@@ -9,7 +9,7 @@ use AppBundle\AssembleeGenerale\Entity\Repository\AssembleeGeneraleRepository;
 use AppBundle\AssembleeGenerale\Entity\Repository\QuestionRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Association\UserMembership\UserService;
-use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use AppBundle\MembershipFee\Model\MembershipFee;
 use AppBundle\Security\Authentication;
 use AppBundle\Veille\Entity\Repository\NewsletterInscriptionRepository;
@@ -24,7 +24,7 @@ final class IndexAction extends AbstractController
     public function __construct(
         private readonly ViewRenderer $view,
         private readonly AssembleeGeneraleRepository $assembleGeneraleRepository,
-        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly PresenceRepository $generalMeetingRepository,
         private readonly UserService $userService,
         private readonly QuestionRepository $questionRepository,
         private readonly BadgesComputer $badgesComputer,

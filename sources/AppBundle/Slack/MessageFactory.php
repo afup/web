@@ -13,7 +13,7 @@ use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
-use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
@@ -149,7 +149,7 @@ class MessageFactory
         return $message;
     }
 
-    public function createMessageForGeneralMeeting(GeneralMeetingRepository $generalMeetingRepository, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator): Message
+    public function createMessageForGeneralMeeting(PresenceRepository $generalMeetingRepository, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator): Message
     {
         $latestDate = $generalMeetingRepository->getLatestAttendanceDate();
         Assert::notNull($latestDate);
