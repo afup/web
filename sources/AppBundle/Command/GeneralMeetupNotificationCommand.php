@@ -6,7 +6,7 @@ namespace AppBundle\Command;
 
 use AppBundle\AssembleeGenerale\Entity\Repository\AssembleeGeneraleRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
-use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use AppBundle\Notifier\SlackNotifier;
 use AppBundle\Slack\MessageFactory;
 use Symfony\Component\Console\Command\Command;
@@ -19,7 +19,7 @@ class GeneralMeetupNotificationCommand extends Command
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly AssembleeGeneraleRepository $assembleGeneraleRepository,
-        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly PresenceRepository $presenceRepository,
         private readonly MessageFactory $messageFactory,
         private readonly SlackNotifier $slackNotifier,
         private readonly UrlGeneratorInterface $urlGenerator,
@@ -36,7 +36,7 @@ class GeneralMeetupNotificationCommand extends Command
     {
         if ($this->assembleGeneraleRepository->hasPlanned()) {
             $this->slackNotifier->sendMessage($this->messageFactory->createMessageForGeneralMeeting(
-                $this->generalMeetingRepository,
+                $this->presenceRepository,
                 $this->userRepository,
                 $this->urlGenerator,
             ));
