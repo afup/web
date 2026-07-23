@@ -28,3 +28,4 @@ rules:
     - AppBundle\StaticAnalysis\Rule\NoGetUserMethodRule
     - AppBundle\StaticAnalysis\Rule\DoctrineRepositoryRule
     - AppBundle\StaticAnalysis\Rule\DoctrineDisableDQLRule
+    - AppBundle\StaticAnalysis\Rule\DoctrineAutoIncrementIdNonNullable
