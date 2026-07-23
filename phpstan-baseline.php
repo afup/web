@@ -206,15 +206,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/Afup/Pagination.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between mixed and \' \' results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 6,
-	'path' => __DIR__ . '/sources/Afup/Utils/PDF_AG.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between non\\-falsy\\-string and mixed results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
-	'count' => 7,
+	'count' => 1,
 	'path' => __DIR__ . '/sources/Afup/Utils/PDF_AG.php',
 ];
 $ignoreErrors[] = [
@@ -794,6 +788,90 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Accounting/TransactionModification.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Binary operation "\\." between \'@\' and mixed results in an error\\.$#',
+	'identifier' => 'binaryOp.invalid',
+	'count' => 4,
+	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Binary operation "\\." between mixed and \' \' results in an error\\.$#',
+	'identifier' => 'binaryOp.invalid',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Binary operation "\\." between non\\-falsy\\-string and mixed results in an error\\.$#',
+	'identifier' => 'binaryOp.invalid',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot cast mixed to int\\.$#',
+	'identifier' => 'cast.int',
+	'count' => 9,
+	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method AppBundle\\\\AssembleeGenerale\\\\Entity\\\\Repository\\\\PresenceRepository\\:\\:getPowerSelectionList\\(\\) should return array\\<int, string\\> but returns array\\<string\\>\\.$#',
+	'identifier' => 'return.type',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method AppBundle\\\\AssembleeGenerale\\\\Entity\\\\Repository\\\\PresenceRepository\\:\\:getValidAttendeeIds\\(\\) return type has no value type specified in iterable type array\\.$#',
+	'identifier' => 'missingType.iterableValue',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#10 \\$powerLastname of class AppBundle\\\\AssembleeGenerale\\\\Dto\\\\Attendee constructor expects string\\|null, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#11 \\$powerFirstname of class AppBundle\\\\AssembleeGenerale\\\\Dto\\\\Attendee constructor expects string\\|null, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#2 \\$email of class AppBundle\\\\AssembleeGenerale\\\\Dto\\\\Attendee constructor expects string, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#3 \\$login of class AppBundle\\\\AssembleeGenerale\\\\Dto\\\\Attendee constructor expects string, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#4 \\$lastname of class AppBundle\\\\AssembleeGenerale\\\\Dto\\\\Attendee constructor expects string, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#5 \\$firstname of class AppBundle\\\\AssembleeGenerale\\\\Dto\\\\Attendee constructor expects string, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#6 \\$nearestOffice of class AppBundle\\\\AssembleeGenerale\\\\Dto\\\\Attendee constructor expects string, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Possibly invalid array key type mixed\\.$#',
+	'identifier' => 'offsetAccess.invalidOffset',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$email of class AppBundle\\\\Email\\\\Mailer\\\\MailUser constructor expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -1118,36 +1196,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/CompanyMember.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\GeneralMeetingVote\\:\\:getAllValues\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/GeneralMeetingVote.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\GeneralMeetingVote\\:\\:getValueLabel\\(\\) should return string\\|null but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/GeneralMeetingVote.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\GeneralMeetingVote\\:\\:getVoteLabelsByValue\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/GeneralMeetingVote.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\GeneralMeetingVote\\:\\:isValueAllowed\\(\\) has parameter \\$value with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/GeneralMeetingVote.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$haystack of function in_array expects array, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/GeneralMeetingVote.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\CompanyMemberInvitationRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -1368,114 +1416,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.templateType',
 	'count' => 5,
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\GeneralMeetingQuestionRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingQuestionRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\GeneralMeetingQuestionRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingQuestionRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\GeneralMeetingQuestionRepository\\:\\:loadNextOpenedQuestion\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingQuestionRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingQuestionRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\GeneralMeetingResponseRepository\\:\\:getByUser\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingResponseRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\GeneralMeetingResponseRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingResponseRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\GeneralMeetingResponseRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingResponseRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingResponseRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'value\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingVoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'weight_sum\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingVoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\GeneralMeetingVoteRepository\\:\\:getResultsForQuestionId\\(\\) should return array\\<string, int\\> but returns array\\<mixed\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingVoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\GeneralMeetingVoteRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingVoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\GeneralMeetingVoteRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingVoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\GeneralMeetingVoteRepository\\:\\:loadByQuestionIdAndUserId\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingVoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\GeneralMeetingVoteRepository\\:\\:loadByQuestionIdAndUserId\\(\\) has parameter \\$questionId with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingVoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\GeneralMeetingVoteRepository\\:\\:loadByQuestionIdAndUserId\\(\\) has parameter \\$userId with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingVoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingVoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Possibly invalid array key type mixed\\.$#',
-	'identifier' => 'offsetAccess.invalidOffset',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/GeneralMeetingVoteRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Binary operation "\\*" between int and mixed results in an error\\.$#',
@@ -3944,19 +3884,19 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/HomeAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$date of method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:countAttendees\\(\\) expects DateTimeInterface, DateTimeImmutable\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$date of method AppBundle\\\\AssembleeGenerale\\\\Entity\\\\Repository\\\\PresenceRepository\\:\\:countAttendees\\(\\) expects DateTimeInterface, DateTimeImmutable\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/HomeAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$date of method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:countAttendeesAndPowers\\(\\) expects DateTimeInterface, DateTimeImmutable\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$date of method AppBundle\\\\AssembleeGenerale\\\\Entity\\\\Repository\\\\PresenceRepository\\:\\:countAttendeesAndPowers\\(\\) expects DateTimeInterface, DateTimeImmutable\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/HomeAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$date of method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:obtenirEcartQuorum\\(\\) expects DateTimeInterface, DateTimeImmutable\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$date of method AppBundle\\\\AssembleeGenerale\\\\Entity\\\\Repository\\\\PresenceRepository\\:\\:obtenirEcartQuorum\\(\\) expects DateTimeInterface, DateTimeImmutable\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/HomeAction.php',
@@ -4010,19 +3950,19 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeeting/ListingAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$date of method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:getAttendees\\(\\) expects DateTimeInterface, DateTimeImmutable\\|false given\\.$#',
+	'message' => '#^Parameter \\#1 \\$date of method AppBundle\\\\AssembleeGenerale\\\\Entity\\\\Repository\\\\PresenceRepository\\:\\:getAttendees\\(\\) expects DateTimeInterface, DateTimeImmutable\\|false given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeeting/ListingAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$date of method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:prepare\\(\\) expects DateTimeInterface, mixed given\\.$#',
+	'message' => '#^Parameter \\#1 \\$date of method AppBundle\\\\AssembleeGenerale\\\\Entity\\\\Repository\\\\AssembleeGeneraleRepository\\:\\:prepare\\(\\) expects DateTimeInterface, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeeting/PrepareAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$description of method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:prepare\\(\\) expects string, mixed given\\.$#',
+	'message' => '#^Parameter \\#2 \\$description of method AppBundle\\\\AssembleeGenerale\\\\Entity\\\\Repository\\\\AssembleeGeneraleRepository\\:\\:prepare\\(\\) expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeeting/PrepareAction.php',
@@ -5582,13 +5522,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/GeneralMeeting/IndexAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$presence of method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:addAttendee\\(\\) expects int, mixed given\\.$#',
+	'message' => '#^Parameter \\#3 \\$presence of method AppBundle\\\\AssembleeGenerale\\\\Entity\\\\Repository\\\\PresenceRepository\\:\\:addAttendee\\(\\) expects int, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/GeneralMeeting/IndexAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$presence of method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:editAttendee\\(\\) expects int, mixed given\\.$#',
+	'message' => '#^Parameter \\#3 \\$presence of method AppBundle\\\\AssembleeGenerale\\\\Entity\\\\Repository\\\\PresenceRepository\\:\\:editAttendee\\(\\) expects int, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/GeneralMeeting/IndexAction.php',
@@ -8472,192 +8412,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Form/BooleanType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\Attendee\\:\\:getConsultationDate\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/Attendee.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\Attendee\\:\\:getEmail\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/Attendee.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\Attendee\\:\\:getFirstname\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/Attendee.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\Attendee\\:\\:getId\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/Attendee.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\Attendee\\:\\:getLastname\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/Attendee.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\Attendee\\:\\:getLogin\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/Attendee.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\Attendee\\:\\:getNearestOffice\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/Attendee.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\Attendee\\:\\:getPowerFirstname\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/Attendee.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\Attendee\\:\\:getPowerId\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/Attendee.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\Attendee\\:\\:getPowerLastname\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/Attendee.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\Attendee\\:\\:getPresence\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/Attendee.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\GeneralMeeting\\:\\:getId\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeeting.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\GeneralMeeting\\:\\:getPersonneAvecPouvoirId\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeeting.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\GeneralMeeting\\:\\:getPersonnePhysiqueId\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeeting.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\GeneralMeeting\\:\\:getPresence\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeeting.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between \'@\' and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 9,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between mixed and \' \' results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between non\\-falsy\\-string and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to int\\.$#',
-	'identifier' => 'cast.int',
-	'count' => 13,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:findOneByDate\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:getPowerSelectionList\\(\\) should return array\\<int, string\\> but returns array\\<string\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:getValidAttendeeIds\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\GeneralMeeting\\\\GeneralMeetingRepository\\:\\:obtenirDescription\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#10 \\$powerLastname of class AppBundle\\\\GeneralMeeting\\\\Attendee constructor expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#11 \\$powerFirstname of class AppBundle\\\\GeneralMeeting\\\\Attendee constructor expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$email of class AppBundle\\\\GeneralMeeting\\\\Attendee constructor expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$login of class AppBundle\\\\GeneralMeeting\\\\Attendee constructor expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#4 \\$lastname of class AppBundle\\\\GeneralMeeting\\\\Attendee constructor expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#5 \\$firstname of class AppBundle\\\\GeneralMeeting\\\\Attendee constructor expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#6 \\$nearestOffice of class AppBundle\\\\GeneralMeeting\\\\Attendee constructor expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Possibly invalid array key type mixed\\.$#',
-	'identifier' => 'offsetAccess.invalidOffset',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/GeneralMeeting/GeneralMeetingRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Github\\\\Exception\\\\UnableToFindGithubUserException\\:\\:__construct\\(\\) has parameter \\$username with no type specified\\.$#',
