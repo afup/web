@@ -17,7 +17,7 @@ Feature: Administration - Partie Assemblée Générale Questions
     And I follow "afup-main-menu-item--assemblee_generale_votes"
     When I follow "Ajouter"
     Then the ".content h2" element should contain "Assemblée générale - questions"
-    And I fill in "general_meeting_question_form[texte]" with "Une super question"
+    And I fill in "question_form[texte]" with "Une super question"
     And I press "Ajouter cette question"
     Then I should see "La question a été ajoutée"
 
@@ -26,7 +26,7 @@ Feature: Administration - Partie Assemblée Générale Questions
     And I follow "afup-main-menu-item--assemblee_generale_votes"
     When I follow "question-1-edit"
     Then the ".content h2" element should contain "Modifier la question"
-    And I fill in "general_meeting_question_form[texte]" with "Une super question modifié"
+    And I fill in "question_form[texte]" with "Une super question modifié"
     And I press "Modifier cette question"
     Then I should see "La question a été modifiée"
     And I should see "Une super question modifié"

@@ -860,7 +860,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#6 \\$nearestOffice of class AppBundle\\\\AssembleeGenerale\\\\Dto\\\\Attendee constructor expects string, mixed given\\.$#',
+	'message' => '#^Parameter \\#6 \\$nearestOffice of class AppBundle\\\\AssembleeGenerale\\\\Dto\\\\Attendee constructor expects string\\|null, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',

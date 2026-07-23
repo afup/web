@@ -15,7 +15,7 @@ class Attendee
         private string $login,
         private string $lastname,
         private string $firstname,
-        private string $nearestOffice,
+        private ?string $nearestOffice,
         private ?DateTimeImmutable $consultationDate,
         private int $presence,
         private ?int $powerId,
@@ -48,7 +48,7 @@ class Attendee
         return $this->firstname;
     }
 
-    public function getNearestOffice(): string
+    public function getNearestOffice(): ?string
     {
         return $this->nearestOffice;
     }

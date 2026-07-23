@@ -234,7 +234,7 @@ AND type_personne = 0
 AND etat = 1
 UNION SELECT app.id
 FROM afup_cotisations ac
-INNER JOIN afup_personnes_physiques app ON app.id = ac.id_personne_morale
+INNER JOIN afup_personnes_physiques app ON app.id_personne_morale = ac.id_personne
 WHERE date_fin >= :date
 AND type_personne = 1
 AND etat = 1
