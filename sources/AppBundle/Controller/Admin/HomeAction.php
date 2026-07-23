@@ -10,7 +10,7 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
-use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use AppBundle\Security\Authentication;
 use AppBundle\Veille\Entity\Repository\NewsletterInscriptionRepository;
 use Psr\Clock\ClockInterface;
@@ -26,7 +26,7 @@ class HomeAction extends AbstractController
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
         private readonly NewsletterInscriptionRepository $newsletterInscriptionRepository,
         private readonly AssembleeGeneraleRepository $assembleGeneraleRepository,
-        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly PresenceRepository $generalMeetingRepository,
         private readonly StatisticsComputer $statisticsComputer,
         private readonly ClockInterface $clock,
         private readonly Authentication $authentication,

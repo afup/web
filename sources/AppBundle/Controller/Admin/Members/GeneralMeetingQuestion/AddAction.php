@@ -7,7 +7,7 @@ namespace AppBundle\Controller\Admin\Members\GeneralMeetingQuestion;
 use AppBundle\AssembleeGenerale\Entity\Question;
 use AppBundle\AssembleeGenerale\Entity\Repository\AssembleeGeneraleRepository;
 use AppBundle\AssembleeGenerale\Entity\Repository\QuestionRepository;
-use AppBundle\AssembleeGenerale\Form\GeneralMeetingQuestionFormType;
+use AppBundle\AssembleeGenerale\Form\QuestionFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +35,7 @@ class AddAction extends AbstractController
         $question->date = \DateTime::createFromInterface($generalMeetingDate);
         $question->dateCreation = new \DateTime();
 
-        $form = $this->createForm(GeneralMeetingQuestionFormType::class, $question);
+        $form = $this->createForm(QuestionFormType::class, $question);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->questionRepository->save($question);

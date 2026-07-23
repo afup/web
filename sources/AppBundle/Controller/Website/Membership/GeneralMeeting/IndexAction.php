@@ -8,12 +8,12 @@ use Symfony\Component\Validator\Constraints\Callback;
 use AppBundle\AssembleeGenerale\Entity\Repository\AssembleeGeneraleRepository;
 use AppBundle\AssembleeGenerale\Entity\Repository\QuestionRepository;
 use AppBundle\AssembleeGenerale\Entity\Repository\VoteRepository;
+use AppBundle\AssembleeGenerale\Enum\VoteValeur;
 use AppBundle\AssembleeGenerale\ReportListBuilder;
-use AppBundle\Association\Model\GeneralMeetingVote;
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\AuditLog\Audit;
-use AppBundle\GeneralMeeting\Attendee;
-use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\AssembleeGenerale\Dto\Attendee;
+use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use AppBundle\Security\Authentication;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,7 +30,7 @@ final class IndexAction extends AbstractController
         private readonly ViewRenderer $view,
         private readonly UserService $userService,
         private readonly AssembleeGeneraleRepository $assembleGeneraleRepository,
-        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly PresenceRepository $generalMeetingRepository,
         private readonly QuestionRepository $questionRepository,
         private readonly VoteRepository $voteRepository,
         private readonly ReportListBuilder $reportListBuilder,
@@ -144,9 +144,9 @@ final class IndexAction extends AbstractController
 
             $questionResults[] = [
                 'question' => $question,
-                'count_oui' => $results[GeneralMeetingVote::VALUE_YES],
-                'count_non' => $results[GeneralMeetingVote::VALUE_NO],
-                'count_abstention' => $results[GeneralMeetingVote::VALUE_ABSTENTION],
+                'count_oui' => $results[VoteValeur::Oui->value],
+                'count_non' => $results[VoteValeur::Non->value],
+                'count_abstention' => $results[VoteValeur::Abstention->value],
             ];
         }
 
@@ -154,7 +154,7 @@ final class IndexAction extends AbstractController
             'question_results' => $questionResults,
             'question' => $currentQuestion,
             'vote_for_current_question' => $voteForCurrentQuestion,
-            'vote_labels_by_values' => GeneralMeetingVote::getVoteLabelsByValue(),
+            'vote_valeurs' => VoteValeur::cases(),
             'title' => $title,
             'latest_date' => $latestDate,
             'form' => $form->createView(),

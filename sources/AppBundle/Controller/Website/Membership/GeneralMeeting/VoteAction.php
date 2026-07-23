@@ -7,8 +7,8 @@ namespace AppBundle\Controller\Website\Membership\GeneralMeeting;
 use Afup\Site\Droits;
 use AppBundle\AssembleeGenerale\Entity\Repository\QuestionRepository;
 use AppBundle\AssembleeGenerale\Entity\Repository\VoteRepository;
-use AppBundle\Association\Model\GeneralMeetingVote;
-use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\AssembleeGenerale\Enum\VoteValeur;
+use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 final class VoteAction extends AbstractController
 {
     public function __construct(
-        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly PresenceRepository $generalMeetingRepository,
         private readonly QuestionRepository $questionRepository,
         private readonly VoteRepository $voteRepository,
         private readonly Droits $droits,
@@ -28,7 +28,7 @@ final class VoteAction extends AbstractController
             throw $this->createNotFoundException('QuestionId manquant');
         }
 
-        if (false === GeneralMeetingVote::isValueAllowed($vote = $request->query->getAlpha('vote'))) {
+        if (null === VoteValeur::tryFrom($vote = $request->query->getAlpha('vote'))) {
             throw $this->createNotFoundException('Vote manquant');
         }
 

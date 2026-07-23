@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Members\GeneralMeeting;
 
 use AppBundle\Association\Model\Repository\UserRepository;
-use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -18,7 +18,7 @@ class ListAction
 
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly PresenceRepository $generalMeetingRepository,
         private readonly Environment $twig,
     ) {}
 

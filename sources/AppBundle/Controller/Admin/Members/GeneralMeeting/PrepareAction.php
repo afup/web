@@ -6,7 +6,7 @@ namespace AppBundle\Controller\Admin\Members\GeneralMeeting;
 
 use AppBundle\AssembleeGenerale\Form\PrepareFormType;
 use AppBundle\AuditLog\Audit;
-use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\AssembleeGeneraleRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 class PrepareAction extends AbstractController
 {
     public function __construct(
-        private readonly GeneralMeetingRepository $generalMeetingRepository,
+        private readonly AssembleeGeneraleRepository $assembleGeneraleRepository,
         private readonly Audit $audit,
     ) {}
 
@@ -26,7 +26,7 @@ class PrepareAction extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            if ($this->generalMeetingRepository->prepare($data['date'], $data['description'])) {
+            if ($this->assembleGeneraleRepository->prepare($data['date'], $data['description'])) {
                 $this->audit->log('Ajout de la préparation des personnes physiques à l\'assemblée générale');
                 $this->addFlash('notice', 'La préparation des personnes physiques a été ajoutée');
 

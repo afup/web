@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Afup\Site\Utils;
 
 use Afup\Site\Comptabilite\PDF;
-use AppBundle\GeneralMeeting\Attendee;
+use AppBundle\AssembleeGenerale\Dto\Attendee;
 
 class PDF_AG extends PDF
 {

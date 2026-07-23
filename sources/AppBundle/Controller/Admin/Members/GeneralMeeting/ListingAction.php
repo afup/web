@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Members\GeneralMeeting;
 
 use Afup\Site\Utils\PDF_AG;
-use AppBundle\GeneralMeeting\GeneralMeetingRepository;
+use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +14,7 @@ use Webmozart\Assert\Assert;
 
 class ListingAction
 {
-    public function __construct(private readonly GeneralMeetingRepository $generalMeetingRepository) {}
+    public function __construct(private readonly PresenceRepository $generalMeetingRepository) {}
 
     public function __invoke(Request $request): BinaryFileResponse
     {
