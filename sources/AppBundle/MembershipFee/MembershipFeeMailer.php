@@ -13,14 +13,14 @@ use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
-use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
+use AppBundle\MembershipFee\Entity\Repository\CotisationRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Webmozart\Assert\Assert;
 
 final readonly class MembershipFeeMailer
 {
     public function __construct(
-        private MembershipFeeRepository $membershipFeeRepository,
+        private CotisationRepository $membershipFeeRepository,
         private UserRepository $userRepository,
         private CompanyMemberRepository $companyMemberRepository,
         private Mailer $mailer,
@@ -36,10 +36,10 @@ final readonly class MembershipFeeMailer
      */
     public function envoyerFacture(int $idCotisation): bool
     {
-        $membership = $this->membershipFeeRepository->get($idCotisation);
+        $membership = $this->membershipFeeRepository->find($idCotisation);
 
-        if ($membership->getUserType() === MemberType::MemberCompany) {
-            $company = $this->companyMemberRepository->get($membership->getUserId());
+        if ($membership->typePersonne === MemberType::MemberCompany) {
+            $company = $this->companyMemberRepository->get($membership->idPersonne);
             Assert::notNull($company);
             $contactPhysique = [
                 'nom' => $company->getLastName(),
@@ -47,7 +47,7 @@ final readonly class MembershipFeeMailer
                 'email' => $company->getEmail(),
             ];
         } else {
-            $user = $this->userRepository->get($membership->getUserId());
+            $user = $this->userRepository->get($membership->idPersonne);
             Assert::notNull($user);
             $contactPhysique = [
                 'nom' => $user->getLastName(),
@@ -67,7 +67,7 @@ final readonly class MembershipFeeMailer
 
         $cheminFacture = $this->publicCacheDir . 'fact' . $idCotisation . '.pdf';
         $numeroFacture = $this->pdfGenerator->genererFacture($idCotisation, $cheminFacture);
-        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', $membership->getStartDate()->getTimestamp()) . '.pdf';
+        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', $membership->dateDebut->getTimestamp()) . '.pdf';
 
         $message = new Message('Facture AFUP', null, new MailUser(
             $contactPhysique['email'],
@@ -90,9 +90,9 @@ final readonly class MembershipFeeMailer
         if (str_starts_with($cmd, 'F')) {
             // Facture
             $invoiceNumber = substr($cmd, 1);
-            $cotisation = $this->membershipFeeRepository->getOneBy(['invoiceNumber' => $invoiceNumber]);
-            $typePersonne = $cotisation->getUserType()->value;
-            $idPersonne = $cotisation->getUserId();
+            $cotisation = $this->membershipFeeRepository->findOneBy(['numeroFacture' => $invoiceNumber]);
+            $typePersonne = $cotisation->typePersonne->value;
+            $idPersonne = $cotisation->idPersonne;
         } else {
             // Cotisation
             [$ref, $date, $typePersonne, $idPersonne, $reste] = explode('-', $cmd, 5);

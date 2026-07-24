@@ -8,9 +8,9 @@ use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\AuditLog\Audit;
+use AppBundle\MembershipFee\Entity\Cotisation;
+use AppBundle\MembershipFee\Entity\Repository\CotisationRepository;
 use AppBundle\MembershipFee\Form\MembershipFeeType;
-use AppBundle\MembershipFee\Model\MembershipFee;
-use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
 use Psr\Clock\ClockInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,14 +21,14 @@ class AddMembershipFeeAction extends AbstractController
     public function __construct(
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly UserRepository $userRepository,
-        private readonly MembershipFeeRepository $membershipFeeRepository,
+        private readonly CotisationRepository $membershipFeeRepository,
         private readonly ClockInterface $clock,
         private readonly Audit $audit,
     ) {}
 
     public function __invoke(MemberType $memberType, int $memberId, Request $request): Response
     {
-        $membershipFee = new MembershipFee();
+        $membershipFee = new Cotisation();
         $member = match ($memberType) {
             MemberType::MemberCompany => $this->companyMemberRepository->get($memberId),
             MemberType::MemberPhysical => $this->userRepository->get($memberId),
@@ -37,13 +37,12 @@ class AddMembershipFeeAction extends AbstractController
         $startDate = $this->membershipFeeRepository->getMembershipStartingDate($memberType, $member->getId());
         $endDate = clone $startDate;
         $endDate->modify('+1 year');
-        $membershipFee->setStartDate($startDate)
-                      ->setEndDate($endDate)
-                      ->setUserType($memberType)
-                      ->setUserId($member->getId())
-                      ->setToken(base64_encode(random_bytes(30)))
-                      ->setInvoiceDate($this->clock->now())
-        ;
+        $membershipFee->dateDebut = $startDate;
+        $membershipFee->dateFin = $endDate;
+        $membershipFee->typePersonne = $memberType;
+        $membershipFee->idPersonne = $member->getId();
+        $membershipFee->token = base64_encode(random_bytes(30));
+        $membershipFee->dateFacture = $this->clock->now();
 
         $form = $this->createForm(MembershipFeeType::class, $membershipFee);
         $form->handleRequest($request);
@@ -58,12 +57,12 @@ class AddMembershipFeeAction extends AbstractController
             $name = $memberType->value === MemberType::MemberCompany->value ? $member->getCompanyName() : $member->getFirstName() . ' ' . $member->getLastName();
 
             try {
-                $membershipFee->setInvoiceNumber($this->membershipFeeRepository->generateInvoiceNumber());
+                $membershipFee->numeroFacture = $this->membershipFeeRepository->generateInvoiceNumber();
                 $this->membershipFeeRepository->save($membershipFee);
-                $this->audit->log("Ajout de la cotisation jusqu'au " . $fmt->format($membershipFee->getEndDate()) . ' pour ' . $name);
-                $this->addFlash('notice', "La cotisation jusqu'au " . $fmt->format($membershipFee->getEndDate()) . ' pour ' . $name . ' a bien été ajoutée');
+                $this->audit->log("Ajout de la cotisation jusqu'au " . $fmt->format($membershipFee->dateFin) . ' pour ' . $name);
+                $this->addFlash('notice', "La cotisation jusqu'au " . $fmt->format($membershipFee->dateFin) . ' pour ' . $name . ' a bien été ajoutée');
             } catch (\Exception) {
-                $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout de la cotisation jusqu\'au ' . $fmt->format($membershipFee->getEndDate()) . ' pour ' . $name);
+                $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout de la cotisation jusqu\'au ' . $fmt->format($membershipFee->dateFin) . ' pour ' . $name);
             }
             return $this->redirectToRoute('admin_membership_fee_list', ['memberType' => $memberType->value, 'memberId' => $member->getId()]);
         }

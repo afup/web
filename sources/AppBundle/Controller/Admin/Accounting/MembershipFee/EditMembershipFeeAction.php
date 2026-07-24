@@ -8,8 +8,8 @@ use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\AuditLog\Audit;
+use AppBundle\MembershipFee\Entity\Repository\CotisationRepository;
 use AppBundle\MembershipFee\Form\MembershipFeeType;
-use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,13 +19,13 @@ class EditMembershipFeeAction extends AbstractController
     public function __construct(
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly UserRepository $userRepository,
-        private readonly MembershipFeeRepository $membershipFeeRepository,
+        private readonly CotisationRepository $membershipFeeRepository,
         private readonly Audit $audit,
     ) {}
 
     public function __invoke(MemberType $memberType, int $memberId, int $membershipFeeId, Request $request): Response
     {
-        $membershipFee = $this->membershipFeeRepository->get($membershipFeeId);
+        $membershipFee = $this->membershipFeeRepository->find($membershipFeeId);
         $member = match ($memberType) {
             MemberType::MemberCompany => $this->companyMemberRepository->get($memberId),
             MemberType::MemberPhysical => $this->userRepository->get($memberId),

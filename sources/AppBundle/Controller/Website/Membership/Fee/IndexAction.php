@@ -15,8 +15,8 @@ use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\UserMembership\UserService;
-use AppBundle\MembershipFee\Model\MembershipFee;
-use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
+use AppBundle\MembershipFee\Entity\Cotisation;
+use AppBundle\MembershipFee\Entity\Repository\CotisationRepository;
 use AppBundle\Payment\PayboxBilling;
 use AppBundle\Payment\PayboxFactory;
 use AppBundle\Twig\ViewRenderer;
@@ -33,7 +33,7 @@ final class IndexAction extends AbstractController
         private readonly UserService $userService,
         private readonly PayboxFactory $payboxFactory,
         private readonly MembershipFeeService $membershipFeeService,
-        private readonly MembershipFeeRepository $membershipFeeRepository,
+        private readonly CotisationRepository $membershipFeeRepository,
         private readonly Droits $droits,
     ) {}
 
@@ -48,15 +48,15 @@ final class IndexAction extends AbstractController
         $now = new \DateTime('now');
         $isSubjectedToVat = Vat::isSubjectedToVat($now);
 
-        if (!$cotisation instanceof MembershipFee) {
+        if (!$cotisation instanceof Cotisation) {
             $message = '';
         } else {
             $endSubscription = $this->membershipFeeService->getNextSubscriptionExpiration($cotisation);
             $message = sprintf(
                 'Votre dernière cotisation -- %s € -- est valable jusqu\'au %s. <br />
         Si vous renouvelez votre cotisation maintenant, celle-ci sera valable jusqu\'au %s.',
-                number_format((float) $cotisation->getAmount(), 2, ',', ' '),
-                $cotisation->getEndDate()->format('d/m/Y'),
+                number_format((float) $cotisation->montant, 2, ',', ' '),
+                $cotisation->dateFin->format('d/m/Y'),
                 $endSubscription->format('d/m/Y'),
             );
         }
@@ -64,11 +64,11 @@ final class IndexAction extends AbstractController
         $cotisations_physique = $this->membershipFeeRepository->getListByUserTypeAndId(MemberType::MemberPhysical, $user->getId());
         $cotisations_morale = $this->membershipFeeRepository->getListByUserTypeAndId(MemberType::MemberCompany, $user->getCompanyId());
 
-        /** @var array<int, MembershipFee> $liste_cotisations */
-        $liste_cotisations = array_merge(iterator_to_array($cotisations_physique), iterator_to_array($cotisations_morale));
+        /** @var array<int, Cotisation> $liste_cotisations */
+        $liste_cotisations = array_merge($cotisations_physique, $cotisations_morale);
 
         foreach ($liste_cotisations as $cotisation) {
-            $cotisation->setDownloadInvoice($this->isGranted(MembershipFeeVoter::READ_INVOICE, (string) $cotisation->getId()));
+            $cotisation->telechargerFacture = $this->isGranted(MembershipFeeVoter::READ_INVOICE, (string) $cotisation->id);
         }
 
         if ($user->getCompanyId() > 0) {

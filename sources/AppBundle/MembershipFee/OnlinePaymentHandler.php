@@ -6,7 +6,7 @@ namespace AppBundle\MembershipFee;
 
 use AppBundle\Association\MemberType;
 use AppBundle\Controller\Admin\Membership\MembershipFeePayment;
-use AppBundle\MembershipFee\Model\MembershipFee;
+use AppBundle\MembershipFee\Entity\Cotisation;
 
 class OnlinePaymentHandler
 {
@@ -40,8 +40,8 @@ class OnlinePaymentHandler
             $cotisation = $this->membershipFeeService->getByInvoice($invoiceNumber);
 
             $this->membershipFeeService->updatePayment(
-                $cotisation->getId(),
-                MembershipFeePayment::OnlinePayment->value,
+                $cotisation->id,
+                MembershipFeePayment::OnlinePayment,
                 "autorisation : " . $autorisation . " / transaction : " . $transaction,
             );
         } elseif (substr(md5($reference), -3) === strtolower($verif) && !$this->membershipFeeService->isAlreadyPaid($cmd)) {
@@ -49,7 +49,7 @@ class OnlinePaymentHandler
             $dateDebut = mktime(0, 0, 0, (int) substr($date, 2, 2), (int) substr($date, 0, 2), (int) substr($date, 4, 4));
 
             $cotisation = $this->membershipFeeService->getLatestByUserTypeAndId(MemberType::from((int) $typePersonne), (int) $idPersonne);
-            $dateFinPrecedente = !$cotisation instanceof MembershipFee ? 0 : $cotisation->getEndDate()->getTimestamp();
+            $dateFinPrecedente = !$cotisation instanceof Cotisation ? 0 : $cotisation->dateFin->getTimestamp();
 
             if ($dateFinPrecedente > 0) {
                 $dateDebut = strtotime('+1day', $dateFinPrecedente);

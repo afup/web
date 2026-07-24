@@ -6,8 +6,8 @@ namespace AppBundle\Security;
 
 use Afup\Site\Droits;
 use AppBundle\Association\MemberType;
-use AppBundle\MembershipFee\Model\MembershipFee;
-use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
+use AppBundle\MembershipFee\Entity\Cotisation;
+use AppBundle\MembershipFee\Entity\Repository\CotisationRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -18,7 +18,7 @@ class MembershipFeeVoter extends Voter
 
     public function __construct(
         private readonly Droits $droits,
-        private readonly MembershipFeeRepository $membershipFeeRepository,
+        private readonly CotisationRepository $membershipFeeRepository,
     ) {}
 
     protected function supports(string $attribute, mixed $subject): bool
@@ -28,17 +28,17 @@ class MembershipFeeVoter extends Voter
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
-        $cotisation = $this->membershipFeeRepository->get((int) $subject);
-        if (!$cotisation instanceof MembershipFee) {
+        $cotisation = $this->membershipFeeRepository->find((int) $subject);
+        if (!$cotisation instanceof Cotisation) {
             return false;
         }
 
-        if ($cotisation->getUserType() === MemberType::MemberPhysical) {
-            return $cotisation->getUserId() === $this->droits->obtenirIdentifiant();
+        if ($cotisation->typePersonne === MemberType::MemberPhysical) {
+            return $cotisation->idPersonne === $this->droits->obtenirIdentifiant();
         }
 
-        if ($cotisation->getUserType() === MemberType::MemberCompany) {
-            return $this->droits->verifierDroitManagerPersonneMorale($cotisation->getUserId());
+        if ($cotisation->typePersonne === MemberType::MemberCompany) {
+            return $this->droits->verifierDroitManagerPersonneMorale($cotisation->idPersonne);
         }
 
         return false;

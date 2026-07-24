@@ -14,12 +14,12 @@ use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
-use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
+use AppBundle\MembershipFee\Entity\Repository\CotisationRepository;
 
 final readonly class MembershipFeeInvoicePdfGenerator
 {
     public function __construct(
-        private MembershipFeeRepository $membershipFeeRepository,
+        private CotisationRepository $membershipFeeRepository,
         private UserRepository $userRepository,
         private CompanyMemberRepository $companyMemberRepository,
         private InvoiceGenerator $invoiceGenerator,
@@ -35,19 +35,19 @@ final readonly class MembershipFeeInvoicePdfGenerator
      */
     public function genererFacture(int $idCotisation, ?string $chemin = null): ?string
     {
-        $cotisation = $this->membershipFeeRepository->get($idCotisation);
+        $cotisation = $this->membershipFeeRepository->find($idCotisation);
 
-        $userRepository = match ($cotisation->getUserType()) {
+        $userRepository = match ($cotisation->typePersonne) {
             MemberType::MemberCompany => $this->companyMemberRepository,
             default => $this->userRepository,
         };
 
         /** @var User|CompanyMember $user */
-        $user = $userRepository->get($cotisation->getUserId());
+        $user = $userRepository->get($cotisation->idPersonne);
         $invoiceData = $this->invoiceGenerator->getInvoiceData($user);
 
-        $dateFacture = $cotisation->getInvoiceDate()
-            ?? \DateTimeImmutable::createFromFormat('U', (string) $cotisation->getStartDate()->getTimestamp());
+        $dateFacture = $cotisation->dateFacture
+            ?? \DateTimeImmutable::createFromFormat('U', (string) $cotisation->dateDebut->getTimestamp());
 
         $isSubjectedToVat = Vat::isSubjectedToVat($dateFacture);
         $pdf = new PDF_Facture($this->bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
@@ -61,25 +61,25 @@ final readonly class MembershipFeeInvoicePdfGenerator
         $pdf->Ln();
 
         $pdf->SetFont('Arial', 'BU', 10);
-        $pdf->Cell(130, 5, 'Objet : Facture n°' . $cotisation->getInvoiceNumber());
+        $pdf->Cell(130, 5, 'Objet : Facture n°' . $cotisation->numeroFacture);
         $pdf->SetFont('Arial', '', 10);
 
         $pdf->Ln(10);
         $pdf->MultiCell(130, 5, $invoiceData->recipient . "\n" . $invoiceData->address . "\n" . $invoiceData->zipcode . "\n" . $invoiceData->city);
 
-        if ($cotisation->getClientReference() !== null) {
+        if ($cotisation->referenceClient !== null) {
             $pdf->Ln(10);
             $pdf->MultiCell(180, 5, sprintf(
                 "Référence client : %s",
-                $cotisation->getClientReference(),
+                $cotisation->referenceClient,
             ));
         }
 
         $pdf->Ln(15);
         $pdf->MultiCell(180, 5, "Facture concernant votre adhésion à l'Association Française des Utilisateurs de PHP (AFUP).");
 
-        $dateFin = $cotisation->getEndDate()->getTimestamp();
-        $montant = $cotisation->getAmount();
+        $dateFin = $cotisation->dateFin->getTimestamp();
+        $montant = $cotisation->montant;
 
         if (false === $isSubjectedToVat) {
             $pdf->Ln(10);
@@ -98,7 +98,7 @@ final readonly class MembershipFeeInvoicePdfGenerator
             $pdf->Cell(10, 5, 'TVA non applicable - art. 293B du CGI');
         } else {
             // On stocke le montant de la cotisation TTC. Pour les personnes morales, on extrait le HT pour éviter d'appliquer deux fois la TVA.
-            if ($cotisation->getUserType() === MemberType::MemberCompany) {
+            if ($cotisation->typePersonne === MemberType::MemberCompany) {
                 $montant = Vat::getRoundedWithoutVatPriceFromPriceWithVat($montant, Utils::MEMBERSHIP_FEE_VAT_RATE);
             }
 
@@ -110,7 +110,7 @@ final readonly class MembershipFeeInvoicePdfGenerator
             $pdf->Cell(25, 5, 'Taux TVA', 1, 0, 'R', 1);
             $pdf->Cell(25, 5, 'Prix TTC', 1, 0, 'R', 1);
 
-            if ($cotisation->getUserType() === MemberType::MemberCompany) {
+            if ($cotisation->typePersonne === MemberType::MemberCompany) {
                 [$totalHt, $total] = $this->buildDetailsPersonneMorale($pdf, $montant, $dateFin);
             } else {
                 [$totalHt, $total] = $this->buildDetailsPersonnePhysique($pdf, $montant, $dateFin);
@@ -133,16 +133,16 @@ final readonly class MembershipFeeInvoicePdfGenerator
         }
 
         $pdf->Ln(15);
-        $pdf->Cell(10, 5, 'Lors de votre règlement, merci de préciser la mention : "Facture n°' . $cotisation->getInvoiceNumber() . '"');
+        $pdf->Cell(10, 5, 'Lors de votre règlement, merci de préciser la mention : "Facture n°' . $cotisation->numeroFacture . '"');
 
         if (is_null($chemin)) {
-            $pattern = str_replace(' ', '', $invoiceData->patternPrefix) . '_' . $cotisation->getInvoiceNumber() . '_' . date('dmY', $cotisation->getStartDate()->getTimestamp()) . '.pdf';
+            $pattern = str_replace(' ', '', $invoiceData->patternPrefix) . '_' . $cotisation->numeroFacture . '_' . date('dmY', $cotisation->dateDebut->getTimestamp()) . '.pdf';
             $pdf->Output($pattern, 'D', true);
         } else {
             $pdf->Output($chemin, 'F', true);
         }
 
-        return $cotisation->getInvoiceNumber();
+        return $cotisation->numeroFacture;
     }
 
     private function buildDetailsPersonneMorale(PDF_Facture $pdf, float $montant, int $dateFin): array

@@ -8,7 +8,7 @@ use AppBundle\MembershipFee\MembershipFeeService;
 use Afup\Site\Utils\Utils;
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\CompanyMember;
-use AppBundle\MembershipFee\Model\MembershipFee;
+use AppBundle\MembershipFee\Entity\Cotisation;
 
 final readonly class SubscriptionManagement
 {
@@ -35,10 +35,10 @@ final readonly class SubscriptionManagement
         );
         $subscription = $this->membershipFeeService->getLatestByUserTypeAndId(MemberType::MemberCompany, $company->getId());
 
-        if (!$subscription instanceof MembershipFee) {
+        if (!$subscription instanceof Cotisation) {
             throw new \RuntimeException('An error occured');
         }
 
-        return ['invoice' => $subscription->getInvoiceNumber(), 'token' => $subscription->getToken()];
+        return ['invoice' => $subscription->numeroFacture, 'token' => $subscription->token];
     }
 }

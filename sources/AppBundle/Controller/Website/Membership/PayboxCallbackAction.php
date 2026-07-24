@@ -12,7 +12,7 @@ use AppBundle\Association\Event\NewMemberEvent;
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\AuditLog\Audit;
-use AppBundle\MembershipFee\Model\MembershipFee;
+use AppBundle\MembershipFee\Entity\Cotisation;
 use AppBundle\Payment\PayboxResponseFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,7 +61,7 @@ final readonly class PayboxCallbackAction
             $account = $this->onlinePaymentHandler->getAccountFromCmd($cleanedCmd);
             $lastCotisation = $this->membershipFeeService->getLatestByUserTypeAndId(MemberType::from($account['type']), $account['id']);
 
-            if (!$lastCotisation instanceof MembershipFee && $account['type'] == MemberType::MemberPhysical->value) {
+            if (!$lastCotisation instanceof Cotisation && $account['type'] == MemberType::MemberPhysical->value) {
                 $user = $this->userRepository->get($account['id']);
                 $this->eventDispatcher->dispatch(new NewMemberEvent($user));
             }

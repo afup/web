@@ -12,7 +12,7 @@ use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\AuditLog\Audit;
-use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
+use AppBundle\MembershipFee\Entity\Repository\CotisationRepository;
 use AppBundle\Security\MembershipFeeVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -25,7 +25,7 @@ final class DownloadAction extends AbstractController
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly CompanyMemberRepository $companyMemberRepository,
-        private readonly MembershipFeeRepository $membershipFeeRepository,
+        private readonly CotisationRepository $membershipFeeRepository,
         private readonly MembershipFeeInvoicePdfGenerator $pdfGenerator,
         private readonly Droits $droits,
         private readonly Audit $audit,
@@ -43,19 +43,19 @@ final class DownloadAction extends AbstractController
 
         $tempfile = tempnam(sys_get_temp_dir(), 'membership_fee_download');
         $numeroFacture = $this->pdfGenerator->genererFacture($id, $tempfile);
-        $membershipFee = $this->membershipFeeRepository->get($id);
+        $membershipFee = $this->membershipFeeRepository->find($id);
 
-        if ($membershipFee->getUserType() === MemberType::MemberCompany) {
-            $company = $this->companyMemberRepository->get($membershipFee->getUserId());
+        if ($membershipFee->typePersonne === MemberType::MemberCompany) {
+            $company = $this->companyMemberRepository->get($membershipFee->idPersonne);
             Assert::isInstanceOf($company, CompanyMember::class);
             $patternPrefix = $company->getCompanyName();
         } else {
-            $user = $this->userRepository->get($membershipFee->getUserId());
+            $user = $this->userRepository->get($membershipFee->idPersonne);
             Assert::isInstanceOf($user, User::class);
             $patternPrefix = $user->getLastName();
         }
 
-        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . $membershipFee->getStartDate()->format('dmY') . '.pdf';
+        $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . $membershipFee->dateDebut->format('dmY') . '.pdf';
 
         $response = new BinaryFileResponse($tempfile, Response::HTTP_OK, [], false);
         $response->deleteFileAfterSend(true);

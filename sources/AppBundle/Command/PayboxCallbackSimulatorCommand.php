@@ -115,7 +115,7 @@ class PayboxCallbackSimulatorCommand extends Command
         }
         $url = $this->urlGenerator->generate('membership_payment');
 
-        return $this->buildUrl($url, $cotisation->getAmount(), $cmd, $status);
+        return $this->buildUrl($url, $cotisation->montant, $cmd, $status);
     }
 
     private function callInvoice(string $cmd, string $status): string

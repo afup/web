@@ -6,8 +6,8 @@ namespace AppBundle\MembershipFee;
 
 use AppBundle\Association\MemberType;
 use AppBundle\Controller\Admin\Membership\MembershipFeePayment;
-use AppBundle\MembershipFee\Model\MembershipFee;
-use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
+use AppBundle\MembershipFee\Entity\Cotisation;
+use AppBundle\MembershipFee\Entity\Repository\CotisationRepository;
 use DateInterval;
 use DateTime;
 use Psr\Clock\ClockInterface;
@@ -15,7 +15,7 @@ use Psr\Clock\ClockInterface;
 readonly class MembershipFeeService
 {
     public function __construct(
-        private MembershipFeeRepository $membershipFeeRepository,
+        private CotisationRepository $membershipFeeRepository,
         private ClockInterface $clock,
     ) {}
 
@@ -38,51 +38,42 @@ readonly class MembershipFeeService
         // Référence client à mentionner sur la facture
         ?string $referenceClient = null,
     ): void {
-        $membershipFee = new MembershipFee();
-        $membershipFee
-            ->setUserType($typePersonne)
-            ->setUserId($idPersonne)
-            ->setAmount($montant)
-            ->setPaymentType($typeReglement !== null ? MembershipFeePayment::from($typeReglement) : null)
-            ->setPaymentDetails($informationsReglement)
-            ->setStartDate(new DateTime('@' . $dateDebut))
-            ->setEndDate(new DateTime('@' . $dateFin))
-            ->setInvoiceNumber($this->membershipFeeRepository->generateInvoiceNumber())
-            ->setToken(base64_encode(random_bytes(30)))
-            ->setComments($commentaires)
-            ->setClientReference($referenceClient)
-            ->setInvoiceDate(new \DateTimeImmutable())
-        ;
-        $this->membershipFeeRepository->save($membershipFee);
+        $cotisation = new Cotisation();
+        $cotisation->typePersonne = $typePersonne;
+        $cotisation->idPersonne = $idPersonne;
+        $cotisation->montant = $montant;
+        $cotisation->typeReglement = $typeReglement !== null ? MembershipFeePayment::from($typeReglement) : null;
+        $cotisation->informationsReglement = $informationsReglement;
+        $cotisation->dateDebut = new DateTime('@' . $dateDebut);
+        $cotisation->dateFin = new DateTime('@' . $dateFin);
+        $cotisation->numeroFacture = $this->membershipFeeRepository->generateInvoiceNumber();
+        $cotisation->token = base64_encode(random_bytes(30));
+        $cotisation->commentaires = $commentaires;
+        $cotisation->referenceClient = $referenceClient;
+        $cotisation->dateFacture = new \DateTimeImmutable();
+
+        $this->membershipFeeRepository->save($cotisation);
     }
 
     public function isAlreadyPaid(string $cmd): bool
     {
-        return $this->membershipFeeRepository->getOneBy(['paymentDetails' => $cmd]) instanceof MembershipFee;
+        return $this->membershipFeeRepository->findOneBy(['informationsReglement' => $cmd]) instanceof Cotisation;
     }
 
     /**
      * Supprime une cotisation
-     *
-     * @param $id Identifiant de la cotisation à supprimer
-     * @return bool Succès de la suppression
      */
     public function supprimer(int $id): bool
     {
-        $cotisation = $this->membershipFeeRepository->get($id);
+        $cotisation = $this->membershipFeeRepository->find($id);
         $this->membershipFeeRepository->delete($cotisation);
         return true;
     }
 
     /**
      * Modifie une cotisation
-     *
-     * @param $id Identifiant de la cotisation à modifier
-     * @param $typeReglement Type de règlement (espèces, chèque, virement)
-     * @param $informationsReglement Informations concernant le règlement (numéro de chèque, de virement etc.)
-     * @return bool Succès de la modification
      */
-    public function updatePayment(int $id, int $typeReglement, string $informationsReglement): bool
+    public function updatePayment(int $id, MembershipFeePayment $typeReglement, string $informationsReglement): bool
     {
         return $this->membershipFeeRepository->updatePayment($id, $typeReglement, $informationsReglement) !== false;
     }
@@ -90,16 +81,16 @@ readonly class MembershipFeeService
     /**
      * Retourne la dernière cotisation d'une personne
      */
-    public function getLatestByUserTypeAndId(MemberType $typePersonne, int $idPersonne): ?MembershipFee
+    public function getLatestByUserTypeAndId(MemberType $typePersonne, int $idPersonne): ?Cotisation
     {
         return $this->membershipFeeRepository->getLatestByUserTypeAndId($typePersonne, $idPersonne);
     }
 
-    public function getNextSubscriptionExpiration(?MembershipFee $cotisation = null): DateTime
+    public function getNextSubscriptionExpiration(?Cotisation $cotisation = null): DateTime
     {
         $now = $this->clock->now();
         $base = clone $now;
-        $endDate = $cotisation?->getEndDate();
+        $endDate = $cotisation?->dateFin;
 
         if ($endDate !== null) {
             // La date de fin est stockée en UTC.
@@ -122,12 +113,12 @@ readonly class MembershipFeeService
     /**
      * Renvoit la cotisation demandée
      */
-    public function getByInvoice(string $invoiceId, ?string $token = null): ?MembershipFee
+    public function getByInvoice(string $invoiceId, ?string $token = null): ?Cotisation
     {
-        $criterias = ['invoiceNumber' => $invoiceId];
+        $criterias = ['numeroFacture' => $invoiceId];
         if ($token !== null) {
             $criterias['token'] = $token;
         }
-        return $this->membershipFeeRepository->getOneBy($criterias);
+        return $this->membershipFeeRepository->findOneBy($criterias);
     }
 }

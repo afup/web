@@ -6,7 +6,7 @@ namespace AppBundle\Controller\Admin\Accounting\MembershipFee;
 
 use AppBundle\Association\MemberType;
 use AppBundle\AuditLog\Audit;
-use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
+use AppBundle\MembershipFee\Entity\Repository\CotisationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 class DeleteMembershipFeeAction extends AbstractController
 {
     public function __construct(
-        private readonly MembershipFeeRepository $membershipFeeRepository,
+        private readonly CotisationRepository $membershipFeeRepository,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly Audit $audit,
     ) {}
@@ -29,7 +29,7 @@ class DeleteMembershipFeeAction extends AbstractController
         }
 
         try {
-            $membershipFee = $this->membershipFeeRepository->get($membershipFeeId);
+            $membershipFee = $this->membershipFeeRepository->find($membershipFeeId);
             $this->membershipFeeRepository->delete($membershipFee);
 
             $this->audit->log('Suppression de la cotisation ' . $membershipFeeId);

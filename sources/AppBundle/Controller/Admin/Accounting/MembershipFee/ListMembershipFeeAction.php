@@ -7,7 +7,7 @@ namespace AppBundle\Controller\Admin\Accounting\MembershipFee;
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
-use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
+use AppBundle\MembershipFee\Entity\Repository\CotisationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -18,7 +18,7 @@ class ListMembershipFeeAction extends AbstractController
     public function __construct(
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly UserRepository $userRepository,
-        private readonly MembershipFeeRepository $membershipFeeRepository,
+        private readonly CotisationRepository $membershipFeeRepository,
     ) {}
 
     public function __invoke(#[CurrentUser] UserInterface $user, MemberType $memberType, int $memberId): Response
@@ -28,7 +28,7 @@ class ListMembershipFeeAction extends AbstractController
             MemberType::MemberPhysical => $this->userRepository->get($memberId),
         };
 
-        $memberships = $this->membershipFeeRepository->getBy(['userType' => $memberType->value, 'userId' => $memberId]);
+        $memberships = $this->membershipFeeRepository->findBy(['typePersonne' => $memberType, 'idPersonne' => $memberId]);
 
         return $this->render('admin/accounting/membership/list.html.twig', [
             'memberType' => $memberType,
