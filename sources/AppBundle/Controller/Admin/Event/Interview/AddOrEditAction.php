@@ -17,6 +17,7 @@ use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Speaker as TingSpeaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Wordpress\WordpressClient;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +30,7 @@ use Symfony\Component\HttpFoundation\Response;
         private readonly InterviewRepository $interviewRepository,
         private readonly TalkRepository $talkRepository,
         private readonly WordpressClient $wordpressClient,
+        private readonly LoggerInterface $logger,
     ) {}
 
     public function __invoke(Request $request, AdminEventSelection $eventSelection, ?int $interviewId = null): Response
@@ -134,6 +136,8 @@ use Symfony\Component\HttpFoundation\Response;
             return true;
         } catch (\Exception $e) {
             $this->addFlash('error', 'Erreur WordPress : ' . $e->getMessage());
+            $this->logger->error('Erreur WordPress : ' . $e->getMessage());
+
             return false;
         }
     }
