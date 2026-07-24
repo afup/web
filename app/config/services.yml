@@ -221,3 +221,5 @@ services:
         class: Symfony\Component\AssetMapper\CompiledAssetMapperConfigReader
         arguments:
             $directory: '%kernel.project_dir%/../htdocs/dist'
+
+    AppBundle\Event\Wordpress\WordpressClient: '@AppBundle\Event\Wordpress\HttpWordpressClient'

@@ -61,8 +61,12 @@ class TalkRepository extends Repository implements MetadataInitializer
     /**
      * @return CollectionInterface&iterable<Talk>
      */
-    public function getTalksBySpeaker(Event $event, Speaker $speaker)
+    public function getTalksBySpeaker(Event $event, Speaker|int $speakerOrSpeakerId)
     {
+        if ($speakerOrSpeakerId instanceof Speaker) {
+            $speakerOrSpeakerId = $speakerOrSpeakerId->getId();
+        }
+
         $query = $this->getPreparedQuery(
             'SELECT sessions.session_id, titre, abstract, id_forum, sessions.plannifie, skill, genre
             FROM afup_sessions sessions
@@ -71,7 +75,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             ORDER BY titre
             LIMIT 0, 20
             ',
-        )->setParams(['event' => $event->getId(), 'speaker' => $speaker->getId()]);
+        )->setParams(['event' => $event->getId(), 'speaker' => $speakerOrSpeakerId]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
@@ -205,7 +209,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @return CollectionInterface
+     * @return CollectionInterface&iterable<array<mixed>>
      */
     public function getByTalkWithSpeakers(Talk $talk)
     {

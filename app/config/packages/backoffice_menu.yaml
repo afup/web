@@ -209,6 +209,15 @@ parameters:
                     url: '/admin/event/speakers-management'
                     extra_routes:
                         - admin_event_speakers_management
+                admin_event_interview_list:
+                    nom: 'Interviews'
+                    niveau: 'ROLE_FORUM'
+                    url: '/admin/event/interviews'
+                    extra_routes:
+                        - admin_event_interview_list
+                        - admin_event_interview_add
+                        - admin_event_interview_edit
+                        - admin_event_interview_config
                 admin_event_speakers_expenses:
                     nom: 'Justificatifs speakers'
                     niveau: 'ROLE_FORUM'

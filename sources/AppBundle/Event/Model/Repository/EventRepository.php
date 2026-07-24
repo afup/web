@@ -547,6 +547,21 @@ SQL;
                 'type' => 'bool',
                 'serializer' => Boolean::class,
             ])
+            ->addField([
+                'columnName' => 'interviews_wp_category_id',
+                'fieldName' => 'interviewsWordpressCategoryId',
+                'type' => 'int',
+            ])
+            ->addField([
+                'columnName' => 'interviews_intro',
+                'fieldName' => 'interviewsIntro',
+                'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'interviews_cta_text',
+                'fieldName' => 'interviewsCtaText',
+                'type' => 'string',
+            ])
         ;
 
         return $metadata;

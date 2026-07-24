@@ -1,0 +1,25 @@
+<!-- wp:paragraph -->
+<p>{{ event.interviewsIntro }}</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:shortcode -->
+[afup_website path="/blog/talk_widget?ids={{ talkIds }}&amp;type=all"]
+<!-- /wp:shortcode -->
+
+<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
+<div class="wp-block-buttons">
+    <!-- wp:button {"backgroundColor":"header-gradient"} -->
+    <div class="wp-block-button">
+        <a class="wp-block-button__link has-header-gradient-background-color has-background" href="https://afup.org/event/{{ event.path }}/tickets">{{ event.interviewsCtaText }}</a>
+    </div>
+    <!-- /wp:button -->
+</div>
+<!-- /wp:buttons -->
+
+<!-- wp:heading -->
+<h2>Autres interviews</h2>
+<!-- /wp:heading -->
+
+<!-- wp:shortcode -->
+[display-posts category_display=false category="{{ category.slug }}" posts_per_page=50 exclude_current=true tag="interview-speaker"]
+<!-- /wp:shortcode -->
