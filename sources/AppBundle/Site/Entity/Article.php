@@ -62,16 +62,6 @@ class Article
         return $this->id . '-' . $this->raccourci;
     }
 
-    public function getContenuFormate(): string
-    {
-        return new \Parsedown()->text((string) $this->contenu);
-    }
-
-    public function getChapeauFormate(): string
-    {
-        return new \Parsedown()->text((string) $this->chapeau);
-    }
-
     public function getResume(): string
     {
         if (strlen((string) $this->chapeau) !== 0) {
