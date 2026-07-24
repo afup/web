@@ -34,8 +34,9 @@ final class CreateInterviewTables extends AbstractMigration
             ->addForeignKey('interview_id', 'interview', 'id', ['delete' => 'CASCADE', 'update' => 'NO_ACTION'])
             ->create();
 
-        // One interview can group several speakers, and a speaker belongs to at most one
-        // interview (enforced by the unique index on speaker_id).
+        // Une interview peut avoir un ou plusieurs speakers, mais un speaker ne peut avoir
+        // qu'une seule interview par event. Vu que pour chaque event, les speakers sont uniques,
+        // une unicité sur speaker_id suffit, et permet de rechercher rapidement par speaker.
         $this->table('interview_speaker')
             ->addColumn('interview_id', 'integer', [
                 'null' => false,
