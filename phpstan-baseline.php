@@ -7982,30 +7982,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/TicketType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to int\\.$#',
-	'identifier' => 'cast.int',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Tweet.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to string\\.$#',
-	'identifier' => 'cast.string',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Tweet.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Tweet\\:\\:setId\\(\\) has parameter \\$id with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Tweet.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Tweet\\:\\:setTalkId\\(\\) has parameter \\$talkId with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Tweet.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Vote\\:\\:getId\\(\\) should return int but returns int\\|null\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
