@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace AppBundle\Tests\MembershipFee;
 
 use AppBundle\Association\MemberType;
+use AppBundle\MembershipFee\Entity\Cotisation;
+use AppBundle\MembershipFee\Entity\Repository\CotisationRepository;
 use AppBundle\MembershipFee\MembershipFeeService;
-use AppBundle\MembershipFee\Model\MembershipFee;
-use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
 use AppBundle\MembershipFee\OnlinePaymentHandler;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -50,12 +50,12 @@ final class MembershipFeeServiceTest extends TestCase
     #[DataProvider('generateCotisationProvider')]
     public function testFinProchaineCotisation(\DateTimeInterface $dateFin, \DateTimeInterface $expected, ?\DateTimeImmutable $now = null): void
     {
-        $membershipFeeRepository = $this->createStub(MembershipFeeRepository::class);
+        $membershipFeeRepository = $this->createStub(CotisationRepository::class);
 
         $membershipFeeService = new MembershipFeeService($membershipFeeRepository, new MockClock($now ?? new \DateTimeImmutable()));
 
-        $membershipFee = new MembershipFee();
-        $membershipFee->setEndDate(new \DateTime('@' . $dateFin->format('U')));
+        $membershipFee = new Cotisation();
+        $membershipFee->dateFin = new \DateTime('@' . $dateFin->format('U'));
 
         $actual = $membershipFeeService->getNextSubscriptionExpiration($membershipFee);
 
@@ -79,7 +79,7 @@ final class MembershipFeeServiceTest extends TestCase
     #[DataProvider('accountCmdProvider')]
     public function testGetAccountFromCmd(string $cmd, array $expected): void
     {
-        $membershipFeeRepository = $this->createStub(MembershipFeeRepository::class);
+        $membershipFeeRepository = $this->createStub(CotisationRepository::class);
 
         $membershipFeeService = new MembershipFeeService($membershipFeeRepository, new MockClock());
 

@@ -18,7 +18,7 @@ class MembershipFeeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('amount', NumberType::class, [
+        $builder->add('montant', NumberType::class, [
             'label' => 'Montant',
             'required' => true,
             'scale' => 2,
@@ -27,7 +27,7 @@ class MembershipFeeType extends AbstractType
                 new Assert\GreaterThanOrEqual(0),
             ],
         ])
-        ->add('paymentType', EnumType::class, [
+        ->add('typeReglement', EnumType::class, [
             'class' => MembershipFeePayment::class,
             'label' => 'Type de réglement',
             'required' => true,
@@ -37,25 +37,25 @@ class MembershipFeeType extends AbstractType
             ],
             'choice_label' => fn(MembershipFeePayment $choice, string $key, mixed $value): string => $choice->label(),
         ])
-        ->add('paymentDetails', TextType::class, [
+        ->add('informationsReglement', TextType::class, [
             'label' => 'Informations',
             'required' => false,
         ])
-        ->add('clientReference', TextType::class, [
+        ->add('referenceClient', TextType::class, [
             'label' => 'Référence client',
             'required' => false,
         ])
-        ->add('startDate', DateType::class, [
+        ->add('dateDebut', DateType::class, [
             'required' => false,
             'widget' => 'single_text',
             'label' => 'Date début',
         ])
-        ->add('endDate', DateType::class, [
+        ->add('dateFin', DateType::class, [
             'required' => false,
             'widget' => 'single_text',
             'label' => 'Date fin',
         ])
-        ->add('comments', TextareaType::class, [
+        ->add('commentaires', TextareaType::class, [
             'required' => false,
             'label' => 'Commentaires',
         ]);

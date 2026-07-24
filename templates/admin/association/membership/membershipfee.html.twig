@@ -38,18 +38,18 @@
             {% for cotisation in cotisations %}
                 <tr>
                     <td>
-                        {{ cotisation.startDate|date('d/m/Y') }}
+                        {{ cotisation.dateDebut|date('d/m/Y') }}
                     </td>
                     <td>
-                        {{ cotisation.endDate|date('d/m/Y') }}
-                        {% if cotisation.startDate < time and cotisation.endDate > time %}
+                        {{ cotisation.dateFin|date('d/m/Y') }}
+                        {% if cotisation.dateDebut < time and cotisation.dateFin > time %}
                             (toujours valide)
                         {% endif %}
                     </td>
-                    <td class="txtright">{{ cotisation.amount|number_format(2, ',') }} &euro;</td>
+                    <td class="txtright">{{ cotisation.montant|number_format(2, ',') }} &euro;</td>
                     <td style="text-align: right; white-space: nowrap">
-                        {% if cotisation.canDownloadInvoice %}
-                        <a class="button button-inverted button__medium" href="{{ path('member_membership_fee_download', {id: cotisation.id}) }}" title="Télécharger la facture pour la cotisation {{ cotisation.invoiceNumber }}">
+                        {% if cotisation.telechargerFacture %}
+                        <a class="button button-inverted button__medium" href="{{ path('member_membership_fee_download', {id: cotisation.id}) }}" title="Télécharger la facture pour la cotisation {{ cotisation.numeroFacture }}">
                             <i class="fa fa-file"></i>
                             Télécharger la facture
                         </a>

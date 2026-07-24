@@ -10,7 +10,7 @@ use AppBundle\AssembleeGenerale\Entity\Repository\QuestionRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
-use AppBundle\MembershipFee\Model\MembershipFee;
+use AppBundle\MembershipFee\Entity\Cotisation;
 use AppBundle\Security\Authentication;
 use AppBundle\Veille\Entity\Repository\NewsletterInscriptionRepository;
 use AppBundle\Twig\ViewRenderer;
@@ -40,8 +40,8 @@ final class IndexAction extends AbstractController
         $cotisation = $userService->getLastSubscription($user);
 
         $dateFinCotisation = null;
-        if ($cotisation instanceof MembershipFee) {
-            $dateFinCotisation = $cotisation->getEndDate();
+        if ($cotisation instanceof Cotisation) {
+            $dateFinCotisation = $cotisation->dateFin;
         }
 
         $daysBeforeMembershipExpiration = $user->getDaysBeforeMembershipExpiration();

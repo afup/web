@@ -8,7 +8,7 @@ use AppBundle\Afup;
 use AppBundle\MembershipFee\MembershipFeeService;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
-use AppBundle\MembershipFee\Model\MembershipFee;
+use AppBundle\MembershipFee\Entity\Cotisation;
 use AppBundle\Payment\PayboxBilling;
 use AppBundle\Payment\PayboxFactory;
 use AppBundle\Twig\ViewRenderer;
@@ -28,8 +28,8 @@ final class PaymentAction extends AbstractController
     {
         $invoice = $this->membershipFeeService->getByInvoice($invoiceNumber, $token);
         $company = null;
-        if ($invoice instanceof MembershipFee) {
-            $company = $this->companyMemberRepository->get($invoice->getUserId());
+        if ($invoice instanceof Cotisation) {
+            $company = $this->companyMemberRepository->get($invoice->idPersonne);
         }
 
         if (!$invoice || $company === null) {
@@ -40,7 +40,7 @@ final class PaymentAction extends AbstractController
 
         $paybox = $this->payboxFactory->createPayboxForSubscription(
             'F' . $invoiceNumber,
-            (float) $invoice->getAmount(),
+            (float) $invoice->montant,
             $company->getEmail(),
             $payboxBilling,
         );
@@ -50,7 +50,7 @@ final class PaymentAction extends AbstractController
         return $this->view->render('site/company_membership/payment.html.twig', [
             'paybox' => $paybox,
             'invoice' => $invoice,
-            'bankAccount' => $bankAccountFactory->createApplyableAt(new \DateTimeImmutable('@' . $invoice->getStartDate()->getTimestamp())),
+            'bankAccount' => $bankAccountFactory->createApplyableAt(new \DateTimeImmutable('@' . $invoice->dateDebut->getTimestamp())),
             'afup' => [
                 'raison_sociale' => Afup::RAISON_SOCIALE,
                 'adresse' => Afup::ADRESSE,

@@ -7,13 +7,12 @@ namespace AppBundle\Association\UserMembership;
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\User;
-use AppBundle\MembershipFee\Model\MembershipFee;
-use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
-use CCMBenchmark\Ting\Repository\Collection;
+use AppBundle\MembershipFee\Entity\Cotisation;
+use AppBundle\MembershipFee\Entity\Repository\CotisationRepository;
 
 class SeniorityComputer
 {
-    public function __construct(private readonly MembershipFeeRepository $membershipFeeRepository) {}
+    public function __construct(private readonly CotisationRepository $membershipFeeRepository) {}
 
     /** @return array{years: int, first_year: int|null} */
     public function computeCompanyAndReturnInfos(CompanyMember $companyMember): array
@@ -39,18 +38,18 @@ class SeniorityComputer
     }
 
     /**
-     * @param Collection<MembershipFee> $cotisations
+     * @param Cotisation[] $cotisations
      * @return array{years: int, first_year: int|null}
      */
-    private function computeFromCotisationsAndReturnInfos(Collection $cotisations): array
+    private function computeFromCotisationsAndReturnInfos(array $cotisations): array
     {
         $now = new \DateTime();
         $diffs = [];
 
         $years = [];
         foreach ($cotisations as $coti) {
-            $from = $coti->getStartDate();
-            $to = $coti->getEndDate();
+            $from = $coti->dateDebut;
+            $to = $coti->dateFin;
             $to = min($now, $to);
             $diffs[] = $from->diff($to);
             $years[] = $from->format('Y');

@@ -43,17 +43,17 @@
         {% if memberships|length > 0 %}
             {% for membership in memberships %}
             <tr>
-                <td>{{ membership.startDate|format_date('short') }}</td>
-                <td>{{ membership.endDate|format_date('short') }}</td>
-                <td class="right aligned">{{ membership.amount|number_format(2, '.', ' ') }} &euro;</td>
+                <td>{{ membership.dateDebut|format_date('short') }}</td>
+                <td>{{ membership.dateFin|format_date('short') }}</td>
+                <td class="right aligned">{{ membership.montant|number_format(2, '.', ' ') }} &euro;</td>
                 <td>
-                    {% if membership.paymentType == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').Cash %}
+                    {% if membership.typeReglement == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').Cash %}
                     en espèces
-                    {% elseif membership.paymentType == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').Check %}
-                    par chèque n° {{ membership.paymentDetails }}
-                    {% elseif membership.paymentType == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').BankTransfert %}
-                    par virement n° {{ membership.paymentDetails }}
-                    {% elseif membership.paymentType == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').OnlinePayment %}
+                    {% elseif membership.typeReglement == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').Check %}
+                    par chèque n° {{ membership.informationsReglement }}
+                    {% elseif membership.typeReglement == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').BankTransfert %}
+                    par virement n° {{ membership.informationsReglement }}
+                    {% elseif membership.typeReglement == enum('AppBundle\\Controller\\Admin\\Membership\\MembershipFeePayment').OnlinePayment %}
                     en ligne
                     {% endif %}
                 </td>

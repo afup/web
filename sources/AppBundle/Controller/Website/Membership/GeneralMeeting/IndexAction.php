@@ -48,7 +48,7 @@ final class IndexAction extends AbstractController
         $generalMeetingPlanned = $this->assembleGeneraleRepository->hasPlanned();
 
         $cotisation = $userService->getLastSubscription($user);
-        $needsMembersheepFeePayment = $latestDate->getTimestamp() > strtotime("+14 day", $cotisation->getEndDate()->getTimestamp());
+        $needsMembersheepFeePayment = $latestDate->getTimestamp() > strtotime("+14 day", $cotisation->dateFin->getTimestamp());
 
         if ($needsMembersheepFeePayment) {
             return $this->view->render('admin/association/membership/generalmeeting_membersheepfee.html.twig', [

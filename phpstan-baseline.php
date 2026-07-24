@@ -2798,7 +2798,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/MembershipFee/AddMembershipFeeAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\>\\:\\:delete\\(\\) expects AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee, AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$entity of method AppBundle\\\\Doctrine\\\\EntityRepository\\<AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\>\\:\\:delete\\(\\) expects AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation, AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/MembershipFee/DeleteMembershipFeeAction.php',
@@ -2834,7 +2834,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/MembershipFee/EditMembershipFeeAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\>\\:\\:save\\(\\) expects AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee, AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$entity of method AppBundle\\\\Doctrine\\\\EntityRepository\\<AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\>\\:\\:save\\(\\) expects AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation, AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/MembershipFee/EditMembershipFeeAction.php',
@@ -5096,25 +5096,25 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/ContactDetailsAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
-	'identifier' => 'method.nonObject',
+	'message' => '#^Cannot access property \\$dateDebut on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
+	'identifier' => 'property.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/Fee/DownloadAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getStartDate\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/Fee/DownloadAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getUserId\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
-	'identifier' => 'method.nonObject',
+	'message' => '#^Cannot access property \\$idPersonne on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
+	'identifier' => 'property.nonObject',
 	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/Fee/DownloadAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getUserType\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
+	'message' => '#^Cannot access property \\$typePersonne on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
+	'identifier' => 'property.nonObject',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/Fee/DownloadAction.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/Fee/DownloadAction.php',
@@ -5162,8 +5162,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/GeneralMeeting/IndexAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getEndDate\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
-	'identifier' => 'method.nonObject',
+	'message' => '#^Cannot access property \\$dateFin on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
+	'identifier' => 'property.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/GeneralMeeting/IndexAction.php',
 ];
@@ -8462,61 +8462,55 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Cannot access property \\$dateDebut on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
+	'identifier' => 'property.nonObject',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot access property \\$dateFin on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
+	'identifier' => 'property.nonObject',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot access property \\$idPersonne on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
+	'identifier' => 'property.nonObject',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot access property \\$montant on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
+	'identifier' => 'property.nonObject',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot access property \\$numeroFacture on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
+	'identifier' => 'property.nonObject',
+	'count' => 4,
+	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot access property \\$referenceClient on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
+	'identifier' => 'property.nonObject',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot access property \\$typePersonne on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
+	'identifier' => 'property.nonObject',
+	'count' => 3,
+	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on DateTimeImmutable\\|false\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getAmount\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getClientReference\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getEndDate\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getInvoiceDate\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getInvoiceNumber\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 4,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getStartDate\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getTimestamp\\(\\) on DateTime\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getUserId\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getUserType\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 3,
 	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
@@ -8570,14 +8564,26 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeInvoicePdfGenerator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access property \\$value on AppBundle\\\\Association\\\\MemberType\\|null\\.$#',
+	'message' => '#^Cannot access property \\$dateDebut on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
 	'identifier' => 'property.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeMailer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getStartDate\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
-	'identifier' => 'method.nonObject',
+	'message' => '#^Cannot access property \\$idPersonne on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
+	'identifier' => 'property.nonObject',
+	'count' => 3,
+	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeMailer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot access property \\$typePersonne on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
+	'identifier' => 'property.nonObject',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeMailer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot access property \\$value on AppBundle\\\\Association\\\\MemberType\\|null\\.$#',
+	'identifier' => 'property.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeMailer.php',
 ];
@@ -8588,98 +8594,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeMailer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getUserId\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeMailer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getUserType\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeMailer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\>\\:\\:delete\\(\\) expects AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee, AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$entity of method AppBundle\\\\Doctrine\\\\EntityRepository\\<AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\>\\:\\:delete\\(\\) expects AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation, AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeService.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between \'@\' and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/Model/Repository/MembershipFeeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between non\\-falsy\\-string and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/Model/Repository/MembershipFeeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'date_fin\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/Model/Repository/MembershipFeeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset 0 on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/Model/Repository/MembershipFeeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access property \\$number on mixed\\.$#',
+	'message' => '#^Cannot access property \\$id on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
 	'identifier' => 'property.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/Model/Repository/MembershipFeeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\MembershipFee\\\\Model\\\\Repository\\\\MembershipFeeRepository\\:\\:getLatestByUserTypeAndId\\(\\) should return AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/Model/Repository/MembershipFeeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\MembershipFee\\\\Model\\\\Repository\\\\MembershipFeeRepository\\:\\:getListByUserTypeAndId\\(\\) should return CCMBenchmark\\\\Ting\\\\Repository\\\\Collection\\<AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\> but returns CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/Model/Repository/MembershipFeeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\MembershipFee\\\\Model\\\\Repository\\\\MembershipFeeRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/Model/Repository/MembershipFeeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\MembershipFee\\\\Model\\\\Repository\\\\MembershipFeeRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/Model/Repository/MembershipFeeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\MembershipFee\\\\Model\\\\Repository\\\\MembershipFeeRepository\\:\\:updatePayment\\(\\) should return bool but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/Model/Repository/MembershipFeeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/Model/Repository/MembershipFeeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Unable to resolve the template type U in call to method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\>\\:\\:getCollection\\(\\)$#',
-	'identifier' => 'argument.templateType',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/Model/Repository/MembershipFeeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\MembershipFee\\\\Model\\\\MembershipFee\\|null\\.$#',
-	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/OnlinePaymentHandler.php',
 ];
