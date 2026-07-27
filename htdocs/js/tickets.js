@@ -526,6 +526,9 @@ $(document).ready(function() {
                 if (storedTickets !== null) {
                     const tickets = JSON.parse(storedTickets);
                     for (const field in tickets) {
+                        // Ne jamais restaurer le token CSRF : sinon on écrase celui,
+                        // valide, généré par le serveur pour la session en cours.
+                        if (field.endsWith('[_token]')) continue;
                         const value = tickets[field];
                         if (value !== '') {
                             $(`input[type!=radio][name="${field}"],select[name="${field}"],textarea[name="${field}"]`).val(value);
@@ -631,6 +634,8 @@ $(document).ready(function() {
                 const data = {};
 
                 for (const [key, value] of formData.entries()) {
+                    // Ne jamais persister le token CSRF en localStorage.
+                    if (key.endsWith('[_token]')) continue;
                     data[key] = value;
                 }
 
