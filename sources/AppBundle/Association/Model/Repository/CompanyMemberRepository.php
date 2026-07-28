@@ -156,7 +156,7 @@ class CompanyMemberRepository extends Repository implements MetadataInitializer
      */
     public function countByStatus($status)
     {
-        return (int) $this->getQuery('SELECT COUNT(id) AS nb FROM afup_personnes_physiques WHERE etat = :status')
+        return (int) $this->getQuery('SELECT COUNT(id) AS nb FROM afup_personnes_morales WHERE etat = :status')
             ->setParams(['status' => $status])
             ->query($this->getCollection())->first()[0]->nb;
     }
