@@ -30,7 +30,7 @@
         <!-- /wp:heading -->
 
         <!-- wp:paragraph -->
-        <p>{{ question.reponse }}</p>
+        <p>{{ question.reponse|markdown_to_html }}</p>
         <!-- /wp:paragraph -->
     {% endfor %}
 {% endif %}
