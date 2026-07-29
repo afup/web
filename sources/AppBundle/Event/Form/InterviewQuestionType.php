@@ -31,7 +31,11 @@ class InterviewQuestionType extends AbstractType
             ])
             ->add('reponse', TextareaType::class, [
                 'label' => 'Réponse',
-                'attr' => ['rows' => 10],
+                'attr' => [
+                    'cols' => 42,
+                    'rows' => 10,
+                    'class' => 'easymde',
+                ],
                 'required' => true,
                 'empty_data' => '',
                 'constraints' => [
