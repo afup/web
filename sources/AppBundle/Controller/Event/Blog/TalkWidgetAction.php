@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Event\Blog;
 
 use AppBundle\Event\Entity\Repository\InterviewRepository;
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Speaker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,10 +24,15 @@ final class TalkWidgetAction extends AbstractController
         $widgetType = $request->query->get('type', 'all');
         $talks = $this->talkRepository->getBy(['id' => explode(',', (string) $request->query->get('ids'))]);
 
+        $event = null;
         $speakers = [];
         $talksInfos = [];
         foreach ($talks as $talk) {
             foreach ($this->talkRepository->getByTalkWithSpeakers($talk) as $row) {
+                if (($row['event'] ?? null) instanceof Event) {
+                    $event = $row['event'];
+                }
+
                 $talksInfos[] = $row;
                 /** @var Speaker $speaker */
                 foreach ($row['.aggregation']['speaker'] as $speaker) {
@@ -39,10 +45,11 @@ final class TalkWidgetAction extends AbstractController
             'talks_infos' => $talksInfos,
             'speakers' => $speakers,
             'widget_type' => $widgetType,
+            'event' => $event,
             'questions' => [],
         ];
 
-        if ($widgetType === 'interview' || $widgetType === 'all' && count($speakers) > 0) {
+        if ($widgetType === 'full' && count($speakers) > 0) {
             $firstSpeakerId = array_key_first($speakers);
 
             if (is_int($firstSpeakerId)) {
