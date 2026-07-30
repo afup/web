@@ -34,7 +34,7 @@ Feature: Administration - Évènements - Interviews
     And the ".content table" element should contain "Geoffrey BACHELET"
     And I should see "01/06/2026"
 
-    Given I am on "/blog/talk_widget?ids=1&type=interview"
+    Given I am on "/blog/talk_widget?ids=1&type=full"
     Then the response should contain "Quelle est la différence entre un pigeon ?"
     And the response should contain "Aucune. Les deux pattes ont la même taille, surtout la gauche."
 
