@@ -50,13 +50,9 @@ final class TalkWidgetAction extends AbstractController
         ];
 
         if ($widgetType === 'full' && count($speakers) > 0) {
-            $firstSpeakerId = array_key_first($speakers);
-
-            if (is_int($firstSpeakerId)) {
-                $data['questions'] = $this->interviewRepository
-                    ->findOneBySpeakerId($firstSpeakerId)
-                    ->questions ?? [];
-            }
+            $data['questions'] = $this->interviewRepository
+                ->findOneBySpeakerId(array_key_first($speakers))
+                ->questions ?? [];
         }
 
         return $this->render('blog/talk.html.twig', $data);
