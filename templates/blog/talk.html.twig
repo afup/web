@@ -1,4 +1,10 @@
-{% if widget_type == 'talk' or widget_type == 'all' %}
+{% if widget_type == 'full' and event is not null %}
+    <!-- wp:paragraph -->
+    <p>{{ event.interviewsIntro }}</p>
+    <!-- /wp:paragraph -->
+{% endif %}
+
+{% if widget_type == 'talk' or widget_type == 'all' or widget_type == 'full' %}
     <h3>{% if talks_infos|length > 1 %}Les conférences{% else %}La conférence{% endif %}</h3>
     {% for talks_info in talks_infos %}
     <table class="talk-widget">
@@ -23,7 +29,7 @@
     {% endfor %}
 {% endif %}
 
-{% if widget_type == 'interview' or widget_type == 'all' %}
+{% if widget_type == 'full' %}
     {% for question in questions %}
         <!-- wp:heading {"level":3} -->
         <h3>{{ question.question }}</h3>
@@ -35,7 +41,7 @@
     {% endfor %}
 {% endif %}
 
-{% if widget_type == 'speaker' or widget_type == 'all' %}
+{% if widget_type == 'speaker' or widget_type == 'all' or widget_type == 'full' %}
     <h3>{% if talks_infos|length > 1 %}Des conférences présentées par{% else %}Une conférence présentée par{% endif %}</h3>
     {% for speaker in speakers %}
     <table class="speaker-widget">
@@ -50,4 +56,16 @@
         </tr>
     </table>
     {% endfor %}
+{% endif %}
+
+{% if widget_type == 'full' and event is not null %}
+    <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
+    <div class="wp-block-buttons">
+        <!-- wp:button {"backgroundColor":"header-gradient"} -->
+        <div class="wp-block-button">
+            <a class="wp-block-button__link has-header-gradient-background-color has-background" href="https://afup.org/event/{{ event.path }}/tickets">{{ event.interviewsCtaText }}</a>
+        </div>
+        <!-- /wp:button -->
+    </div>
+    <!-- /wp:buttons -->
 {% endif %}
