@@ -1,0 +1,28 @@
+{% use 'form_theme_admin.html.twig' %}
+
+{%- block form_row -%}
+    <div class="inline fields ui grid">
+        {{ form_label(form) }}
+        <div class="field nine wide column" style="flex-wrap: wrap;">
+            <div class="ui input" style="max-width: none; width: 100%;">
+                {{ form_widget(form) }}
+            </div>
+            {{ form_errors(form) }}
+            {% if help is not empty %}
+                <div style="flex-basis: 100%;">
+                    <i>{{ form_help(form) }}</i>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{%- endblock form_row -%}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <div class="ui pointing red basic label" style="flex-basis: 100%; margin-top: 0.5em;">
+            {%- for error in errors -%}
+                {{ error.message }}{% if not loop.last %}<br>{% endif %}
+            {%- endfor -%}
+        </div>
+    {%- endif -%}
+{%- endblock form_errors -%}

@@ -6,6 +6,7 @@ namespace AppBundle\Accounting\Model;
 
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class InvoicingDetail implements NotifyPropertyInterface
 {
@@ -13,10 +14,22 @@ class InvoicingDetail implements NotifyPropertyInterface
 
     private ?int $id = null;
     private ?int $invoicingId = null;
+
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 20)]
     private ?string $reference = null;
+
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     private ?string $designation = null;
+
+    #[Assert\NotBlank]
     private ?float $quantity = null;
+
+    #[Assert\NotBlank]
     private ?float $unitPrice = null;
+
+    #[Assert\NotBlank]
     private ?float $tva = null;
 
     public function getId(): ?int
