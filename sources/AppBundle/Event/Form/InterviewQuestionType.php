@@ -36,7 +36,7 @@ class InterviewQuestionType extends AbstractType
                     'rows' => 10,
                     'class' => 'easymde',
                 ],
-                'required' => true,
+                'required' => false,
                 'empty_data' => '',
                 'constraints' => [
                     new Assert\NotBlank(),

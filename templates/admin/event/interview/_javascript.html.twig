@@ -17,6 +17,11 @@
 
       collectionHolder.appendChild(item);
 
+      const textarea = item.querySelector('.easymde');
+      if (textarea) {
+        window.initEasyMDE(textarea);
+      }
+
       addDeletionButton(item, collectionHolder.dataset.index);
       collectionHolder.dataset.index++;
     }

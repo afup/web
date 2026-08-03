@@ -197,13 +197,19 @@
                     });
                 });
 
+                window.initEasyMDE = function(element) {
+                    if (element && !element.easymde) {
+                        element.easymde = new EasyMDE({
+                            element: element,
+                            spellChecker: false,
+                            hideIcons: ['side-by-side', 'fullscreen', 'check-list']
+                        });
+                    }
+                };
+
                 var easyMdeList = document.getElementsByClassName('easymde');
                 for (var i = 0; i < easyMdeList.length; i++) {
-                    var easymde = new EasyMDE({
-                        element:easyMdeList[i],
-                        spellChecker: false,
-                        hideIcons: ['side-by-side', 'fullscreen', 'check-list']
-                    });
+                    window.initEasyMDE(easyMdeList[i]);
                 }
 
             </script>
