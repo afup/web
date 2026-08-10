@@ -1,0 +1,8 @@
+{# @block content Contenu de la carte #}
+{%- set style = html_cva(
+    base: "border-2 border-neutre-300 p-5 rounded-2xl",
+) -%}
+<div
+class="{{ style.apply({}, attributes.render('class'))|tailwind_merge }}" {{ attributes }}>
+{%- block content %}{% endblock -%}
+</div>

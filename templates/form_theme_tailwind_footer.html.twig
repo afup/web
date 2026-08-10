@@ -1,0 +1,26 @@
+{% use 'form_div_layout.html.twig' %}
+
+{% block form_start %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' flex flex-row')|trim}) %}
+    {{ parent() }}
+{% endblock form_start %}
+
+{% block form_widget_compound -%}
+    {%- if form is rootform %}{{ form_errors(form) }}{% endif -%}
+    {{- block('form_rows') -}}
+    {{- form_rest(form) -}}
+{%- endblock form_widget_compound %}
+
+{% block form_row %}{{ form_widget(form) }}{% endblock form_row %}
+
+{% block button_row %}{{ form_widget(form) }}{% endblock button_row %}
+
+{% block email_widget %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' bg-white text-neutre-400 py-2 px-4 rounded-l-lg')|trim}) %}
+    {{ parent() }}
+{% endblock email_widget %}
+
+{% block submit_widget %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' bg-ruby-400 text-white py-2 px-4 rounded-r-lg hover:bg-ruby-700 cursor-pointer')|trim}) %}
+    {{ parent() }}
+{% endblock submit_widget %}

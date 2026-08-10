@@ -8,7 +8,8 @@ Feature: Site Public - News
     And I should see "Les vidéos des talks du Forum PHP 2018 sont disponibles"
     And I follow "Lire l'article: Les vidéos des talks du Forum PHP 2018 sont disponibles"
     Then I should see "Les vidéos des talks du Forum PHP 2018 sont disponibles"
-    Then I should see "Cycle de conférences : forum / Année : 2018"
+    Then I should see "forum"
+    Then I should see "2018"
 
   @reloadDbWithTestData
   Scenario: Filtre sur les actualités

@@ -1,9 +1,6 @@
-{% extends 'site/base.html.twig' %}
-
-{% block title %}{{ article.titre }} - AFUP{% endblock %}
+{% extends 'site/base_tailwind.html.twig' %}
 
 {% block metas %}
-    {{ parent() }}
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="AFUP - {{ article.titre }}">
     <meta name="twitter:description" content="{{ article.resumeTexte }}">
@@ -15,71 +12,128 @@
     <meta property="og:site_name" content="AFUP" />
 {% endblock %}
 
-{% block body_css %}migrated-page{% endblock %}
+{% block title %}{{ article.titre }} - AFUP{% endblock %}
 
 {% block content %}
 
-    {% if header_image %}
-    <div class="article-header">
-        <img src="{{ header_image }}" alt="" />
-    </div>
-    {% endif %}
-
-    <div class="mw1400p center" id="container">
-        <div class="line" id="main">
-            <div class="container">
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-10">
-
-                    {% if article.etat == enum('AppBundle\\Site\\Enum\\ArticleEtat').HorsLigne %}
-                        <div class="flash flash-error"><strong>Hors ligne</strong> : article supprimé</div>
-                    {% elseif article.etat == enum('AppBundle\\Site\\Enum\\ArticleEtat').EnAttente %}
-                        <div class="flash flash-notice"><strong>En attente</strong> : article non publié</div>
-                    {% endif %}
-
-                    <h1>{{ article.titre }}</h1>
-
-                    <h4>{{ article.datePublication|format_date('long') }}</h4>
-
-                    <blockquote>
-                        {{ article.chapeau|markdown_to_html }}
-                    </blockquote>
-
-                    {{ article.contenu|markdown_to_html }}
-
-                    <hr />
-
-                    <p>
-                        {% if article.theme %}
-                        Thème : <a href="{{ path('news_list', { news_filters : { theme : [article.theme.value]} }) }}">{{ article.theme.label }}</a> /
-                        {% endif %}
-                        {% if related_event %}
-                        Cycle de conférences : <a href="{{ path('news_list', { news_filters : { event : [related_event.id]} }) }}">{{ related_event.title }}</a> /
-                        {% endif %}
-                        {% set year = article.datePublication|date('Y') %}
-                        Année : <a href="{{ path('news_list', { news_filters : { year : [year]} }) }}">{{ year }}</a>
-                    </p>
-
-                    {% if previous or next %}
-                    <div class="prev-next-links">
-                        {% if previous %}
-                        <a class="prev-next-link" href="{{ url('news_display', {code: previous.slug }) }}">
-                            <span class="prev-next-link__prev"><i class="fa fa-backward"></i>&nbsp;Article précédent</span>
-                            <span class="prev-next-link__title">{{ previous.titre }}</span>
-                        </a>
-                        {% endif %}
-                        {% if next %}
-                        <a class="prev-next-link" href="{{ url('news_display', {code: next.slug }) }}">
-                            <span class="prev-next-link__next">Article suivant&nbsp;<i class="fa fa-forward"></i></span>
-                            <span class="prev-next-link__title">{{ next.titre }}</span>
-                        </a>
-                        {% endif %}
-                    </div>
-                    {% endif %}
-
-                </div>
+    <div class="container mx-auto sm:pt-10 flex flex-col sm:flex-row gap-5">
+        <div class="sm:max-w-4xl">
+            <div>
+                {% if article.etat == enum('AppBundle\\Site\\Enum\\ArticleEtat').HorsLigne %}
+                    <twig:Alert type="error" class="mb-10">
+                        <strong>Hors ligne</strong> : article supprimé
+                    </twig:Alert>
+                {% elseif article.etat == enum('AppBundle\\Site\\Enum\\ArticleEtat').EnAttente %}
+                    <twig:Alert type="warning" class="mb-10">
+                        <strong>En attente</strong> : article non publié
+                    </twig:Alert>
+                {% endif %}
             </div>
+
+            <article class="p-3 sm:p-0">
+                <header class="font-titre">
+                    <h1 class="text-afup-800 text-2xl sm:text-4xl">{{ article.titre }}</h1>
+                    <div class="flex mt-2">
+                        <small class="text-2xl flex-grow">
+                            {{ article.datePublication|format_date('long') }}
+                        </small>
+                        <small class="hidden sm:flex gap-2">
+                            {% if article.theme %}
+                                <twig:Button class="text-xs" variant="secondary" as="a" href="{{ path('news_list', { news_filters : { theme : [article.theme.value]} }) }}">
+                                    {{ article.theme.label }}
+                                </twig:Button>
+                            {% endif %}
+
+                            {% if related_event %}
+                                <twig:Button class="text-xs" variant="secondary" as="a" href="{{ path('news_list', { news_filters : { event : [related_event.id]} }) }}">
+                                    {{ related_event.title }}
+                                </twig:Button>
+                            {% endif %}
+
+                            {% set year = article.datePublication|date('Y') %}
+                            <twig:Button class="text-xs" variant="secondary" as="a" href="{{ path('news_list', { news_filters : { year : [year]} }) }}">
+                                {% if not article.theme and not related_event %}
+                                    Publié en
+                                {% endif %}
+                                {{ year }}
+                            </twig:Button>
+                        </small>
+                    </div>
+                </header>
+
+                <main class="pt-5">
+                    <div class="prose max-w-none border-l-8 border-afup-300 bg-afup-100 px-3 py-2 sm:text-justify rounded-lg">
+                        {{ article.chapeau|markdown_to_html }}
+                    </div>
+
+                    <div class="prose prose-lg max-w-none sm:my-10 mt-10 sm:text-justify">
+                        {{ article.contenu|markdown_to_html }}
+                    </div>
+                </main>
+
+                <footer class="block sm:hidden pt-3">
+                    <hr class="text-neutre-300"/>
+
+                    <div class="flex sm:hidden flex-col gap-2 pt-5">
+                        {% if article.theme %}
+                            <twig:Button class="text-xs" variant="secondary" as="a" href="{{ path('news_list', { news_filters : { theme : [article.theme.value]} }) }}">
+                                {{ article.theme.label }}
+                            </twig:Button>
+                        {% endif %}
+
+                        {% if related_event %}
+                            <twig:Button class="text-xs" variant="secondary" as="a" href="{{ path('news_list', { news_filters : { event : [related_event.id]} }) }}">
+                                {{ related_event.title }}
+                            </twig:Button>
+                        {% endif %}
+
+                        {% set year = article.datePublication|date('Y') %}
+                        <twig:Button class="text-xs" variant="secondary" as="a" href="{{ path('news_list', { news_filters : { year : [year]} }) }}">
+                            {% if not article.theme and not related_event %}
+                                Publié en
+                            {% endif %}
+                            {{ year }}
+                        </twig:Button>
+                    </div>
+                </footer>
+            </article>
         </div>
+
+        {% if previous or next %}
+            <div class="flex-grow mx-3 mb-3 sm:m-0 2xl:max-w-sm">
+                <twig:Card>
+                    <twig:Card:Title>À lire aussi</twig:Card:Title>
+
+                    <div class="flex flex-col gap-5">
+                        {% if previous %}
+                            <div class="flex flex-row gap-2 items-center">
+                                <div class="flex bg-afup-700 text-white p-2 rounded-lg font-light items-center font-mono">
+                                    {{ previous.datePublication|date('d/m') }}
+                                </div>
+                                <a class="tracking-tight" href="{{ url('news_display', {code: previous.slug }) }}">
+                                    {{ previous.titre }}
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if next %}
+                            <div class="flex flex-row gap-2 items-center">
+                                <div class="flex bg-afup-700 text-white p-2 rounded-lg font-light items-center font-mono">
+                                    {{ next.datePublication|date('d/m') }}
+                                </div>
+                                <a class="tracking-tight" href="{{ url('news_display', {code: next.slug }) }}">
+                                    {{ next.titre }}
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        <twig:Button variant="tertiary" as="a" href="{{ url('news_list') }}" class="flex items-center gap-2">
+                            Voir toutes les actualités <twig:ux:icon name="mingcute:arrow-right-fill" class="h-5" />
+                        </twig:Button>
+                    </div>
+                </twig:Card>
+            </div>
+        {% endif %}
     </div>
+
 {% endblock %}

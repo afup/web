@@ -11,7 +11,6 @@ use AppBundle\Site\Entity\Repository\ArticleRepository;
 use AppBundle\Site\Enum\ArticleEtat;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -22,8 +21,6 @@ final class DisplayAction extends AbstractController
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly EventRepository $eventRepository,
         private readonly ArticleRepository $articleRepository,
-        #[Autowire('%kernel.project_dir%')]
-        private readonly string $projectDir,
     ) {}
 
     public function __invoke(string $code): Response
@@ -39,7 +36,6 @@ final class DisplayAction extends AbstractController
 
         return $this->view->render('site/news/display.html.twig', [
             'article' => $article,
-            'header_image' => $this->getHeaderImageUrl($article),
             'previous' => $this->articleRepository->findPrevious($article),
             'next' => $this->articleRepository->findNext($article),
             'related_event' => $this->getRelatedEvent($article),
@@ -53,22 +49,5 @@ final class DisplayAction extends AbstractController
         }
 
         return $this->eventRepository->get($article->idEvent);
-    }
-
-    private function getHeaderImageUrl(Article $article): ?string
-    {
-        if (null === $article->theme) {
-            return null;
-        }
-
-        $image = '/images/news/' . $article->theme->value . '.png';
-
-        $url = $this->projectDir . '/htdocs' . $image ;
-
-        if (false === is_file($url)) {
-            return null;
-        }
-
-        return $image;
     }
 }

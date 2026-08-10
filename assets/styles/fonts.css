@@ -1,0 +1,23 @@
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("../fonts/inter-latin-standard-normal.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Glegoo";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("../fonts/glegoo-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Glegoo";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("../fonts/glegoo-latin-700-normal.woff2") format("woff2");
+}

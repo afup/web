@@ -1,0 +1,16 @@
+{# @prop type 'error'|'warning'|'sucess' Le type d'alerte #}
+{# @block content Contenu de l'alerte #}
+{%- props type = 'success' -%}
+{%- set style = html_cva(
+    base: "border-l-4 p-4",
+    variants: {
+        type: {
+            error: 'bg-red-100 border-red-500 text-red-700',
+            warning: 'bg-yellow-100 border-yellow-500 text-yellow-700',
+            success: 'bg-green-100 border-green-500 text-green-700',
+        },
+    },
+) -%}
+<div class="{{ style.apply({type}, attributes.render('class'))|tailwind_merge }}" {{ attributes }}>
+    {%- block content %}{% endblock -%}
+</div>

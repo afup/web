@@ -1,7 +1,36 @@
-body {
-    background-color: #ddd;
-    color: #3e3d40;
-    font-family: helvetica,arial,sans-serif;
-    font-size: 1.3em;
-    line-height: 1.54;
+@import "./fonts.css";
+@import "tailwindcss" source(none);
+@source "../../templates";
+
+@plugin "@tailwindcss/typography";
+
+@theme {
+    --color-afup-100: #E6F3F9;
+    --color-afup-300: #36A7DF;
+    --color-afup-500: #007BBA;
+    --color-afup-700: #2B3E74;
+    --color-afup-800: #1D2241;
+    --color-afup-900: #181C33;
+
+    --color-neutre-200: #F4F5F8;
+    --color-neutre-300: #E5E7EB;
+    --color-neutre-400: #929292;
+    --color-neutre-700: #3E3D40;
+
+    --color-ruby-400: #ed0678;
+    --color-ruby-500: #D50068;
+    --color-ruby-700: #B30057;
+
+    /* Surcharge de la police par défaut des pages */
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+    /* Police utilisée pour les titres */
+    --font-titre: "Glegoo", ui-serif, Georgia, serif;
+}
+
+@layer base {
+    body {
+        /* Désactive les effets (italic, gras, etc) automatiques des polices pour prioriser les version contenues dans les polices */
+        font-synthesis: none;
+    }
 }

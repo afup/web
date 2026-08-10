@@ -26,6 +26,8 @@
                 {% include 'google_analytics.html.twig' %}
             {% endif %}
         {% endblock %}
+
+        {% block importmap '' %}
     </head>
     <body id="body" class="{% block body_css %}{% endblock %}">
         <a class="evitement" href="#contenu">Aller au contenu</a>
@@ -58,6 +60,5 @@
 
         {% block footer '' %}
         {% block javascripts '' %}
-        {% block importmap '' %}
     </body>
 </html>

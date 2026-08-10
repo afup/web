@@ -1,0 +1,22 @@
+{# @prop variant 'primary'|'secondary'|'tertiary' Quel genre de bouton #}
+{# @block content Contenu du bouton #}
+{# @prop as 'button'|'a' Tag HTML #}
+{%- props variant = 'primary', as = 'button' -%}
+{%- set style = html_cva(
+    base: "items-center justify-center rounded-lg border border-transparent bg-clip-border text-sm font-medium whitespace-nowrap px-3 py-2",
+    variants: {
+        variant: {
+            primary: 'bg-ruby-500 text-white hover:bg-ruby-700',
+            secondary: 'bg-white text-neutre-700 border-neutre-300 hover:bg-afup-700 hover:text-white hover:border-afup-700',
+            tertiary: 'bg-afup-100 text-afup-500 hover:bg-afup-500 hover:text-white',
+        },
+    },
+) -%}
+<{{ as }}
+    class="{{ style.apply({variant}, attributes.render('class'))|tailwind_merge }}"
+    {{ attributes.defaults({
+        type: 'button',
+    }) }}
+>
+    {%- block content %}{% endblock -%}
+</{{ as }}>

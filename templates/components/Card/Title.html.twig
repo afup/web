@@ -1,0 +1,7 @@
+{# @block content Contenu du titre #}
+{%- set style = html_cva(
+    base: "text-afup-800 font-titre font-light text-lg mb-5",
+) -%}
+<h2 class="{{ style.apply({}, attributes.render('class'))|tailwind_merge }}" {{ attributes }}>
+    {%- block content %}{% endblock -%}
+</h2>
