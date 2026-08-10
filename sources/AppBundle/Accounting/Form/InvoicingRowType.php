@@ -24,7 +24,7 @@ class InvoicingRowType extends AbstractType
             'constraints' => [
                 new Assert\NotBlank(),
                 new Assert\Type(type: 'string'),
-                new Assert\Length(max: 20),
+                new Assert\Length(max: 50),
             ],
         ])->add('designation', TextareaType::class, [
             'label' => 'Désignation',
