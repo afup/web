@@ -13,7 +13,7 @@ class Account
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(name: 'nom_compte', length: 45, nullable: false)]
     public string $name;

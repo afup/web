@@ -16,7 +16,7 @@ class Presence
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(type: UnixTimestampType::NAME, nullable: false)]
     public \DateTime $date;

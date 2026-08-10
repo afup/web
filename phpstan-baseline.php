@@ -116,18 +116,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/Afup/Corporate/Page.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$parentId of method AppBundle\\\\Site\\\\Entity\\\\Repository\\\\FeuilleRepository\\:\\:getFeuillesEnfant\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/Afup/Corporate/Page.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Possibly invalid array key type int\\|null\\.$#',
-	'identifier' => 'offsetAccess.invalidOffset',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/Afup/Corporate/Page.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'elements\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
 	'count' => 1,
