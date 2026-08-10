@@ -1,4 +1,12 @@
 # version 1.1
+x-apachephp-build: &apachephp-build
+  context: ./docker/dockerfiles/apachephp
+  target: ${APACHEPHP_TARGET:-full}
+  args:
+    uid: ${CURRENT_UID:-1001}
+    gid: "1001"
+    ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
+
 services:
   db:
     build: ./docker/dockerfiles/mysql
@@ -25,13 +33,7 @@ services:
       retries: 10
 
   apachephp:
-    build:
-      context: ./docker/dockerfiles/apachephp
-      target: ${APACHEPHP_TARGET:-full}
-      args:
-        uid: ${CURRENT_UID:-1001}
-        gid: "1001"
-        ENABLE_XDEBUG: ${ENABLE_XDEBUG:-false}
+    build: *apachephp-build
     environment:
       APP_ENV: "dev"
       HOST_PWD: ${PWD}
@@ -45,6 +47,21 @@ services:
     links:
       - db
       - mailcatcher
+
+  # Watcher Tailwind : recompile le CSS à chaque modification des templates
+  tailwind:
+    build: *apachephp-build
+    user: localUser
+    working_dir: /var/www/html
+    init: true
+    restart: unless-stopped
+    command: php bin/console tailwind:build --watch
+    environment:
+      APP_ENV: "dev"
+    env_file:
+      .env
+    volumes:
+      - ./:/var/www/html
 
   apachephptest:
     build:

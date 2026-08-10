@@ -23,10 +23,11 @@ class NewsletterController extends AbstractController
         private readonly string $mailchimpSubscribersList,
     ) {}
 
-    public function subscribeForm(): Response
+    public function subscribeForm(?string $formTheme = null): Response
     {
         return $this->render('site/newsletter/subscribe.html.twig', [
             'form' => $this->getSubscriberType()->createView(),
+            'formTheme' => $formTheme,
         ]);
     }
 

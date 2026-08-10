@@ -1,0 +1,66 @@
+<footer>
+    <div class="bg-afup-700 text-white">
+        <div class="container mx-auto flex flex-col sm:flex-row gap-8 2xl:gap-16 py-5 px-10 sm:px-0">
+            <div class="hidden sm:flex flex-row items-center gap-5 flex-grow">
+                <img src="{{ asset('templates/site/img/logo-afup-light.svg') }}" alt="" />
+
+                <div>
+                    <h3 class="font-titre text-2xl">Inscription à la newsletter</h3>
+                    <p>Tous les trois mois, des nouvelles de l'AFUP</p>
+                </div>
+
+                <div>
+                    {{ render(controller('AppBundle\\Controller\\Website\\NewsletterController::subscribeForm', {
+                        formTheme: 'form_theme_tailwind_footer.html.twig'
+                    })) }}
+                </div>
+            </div>
+
+            <div class="flex flex-row gap-10 items-center">
+                <a href="https://www.linkedin.com/company/afup" class="hover:text-ruby-400">
+                    <twig:ux:icon name="mdi:linkedin" class="h-6 sm:h-18" />
+                </a>
+                <a href="https://mastodon.online/@afup" class="hover:text-ruby-400">
+                    <twig:ux:icon name="mdi:mastodon" class="h-6 sm:h-18" />
+                </a>
+                <a href="https://bsky.app/profile/afup.org" class="hover:text-ruby-400">
+                    <twig:ux:icon name="simple-icons:bluesky" class="h-6 sm:h-18" />
+                </a>
+                <a href="https://www.instagram.com/afup_php/" class="hover:text-ruby-400">
+                    <twig:ux:icon name="mdi:instagram" class="h-6 sm:h-18" />
+                </a>
+                <a href="{{ path('feed_rss') }}" class="hover:text-ruby-400">
+                    <twig:ux:icon name="mdi:rss" class="h-6 sm:h-18" />
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-afup-800 text-white">
+        <div class="container mx-auto flex flex-col sm:flex-row gap-16 sm:gap-32 py-10 px-10 sm:px-0">
+            {% for column in this.columns %}
+                <div class="">
+                    <h2 class="font-bold text-xl mb-5">{{ column.nom }}</h2>
+
+                    <div class="flex flex-col gap-4">
+                        {% for item in column.items %}
+                            <a class="hover:underline cursor-pointer" href="{{ item.lien }}">{{ item.nom }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="p-3 bg-afup-900 text-neutre-400 font-light text-sm">
+        <div class="container mx-auto flex">
+            <p class="grow">
+                Hébergé sur <a href="https://www.clever-cloud.com" class="text-afup-500 hover:underline">Clever Cloud</a>,
+                code source sur <a href="https://github.com/afup/web" class="text-afup-500 hover:underline">GitHub</a>
+            </p>
+            <p>
+                &copy; AFUP 2000-{{ "now"|date('Y') }}
+            </p>
+        </div>
+    </div>
+</footer>

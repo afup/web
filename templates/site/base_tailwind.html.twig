@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    {% block metas %}{% endblock %}
+
+    <title>{% block title %}AFUP{% endblock %}</title>
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('/images/favicon.ico') }}"/>
+    <link rel="icon" type="image/png" sizes="64x64" href="{{ asset('/images/favicon.png') }}">
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('/images/apple-touch-icon.png') }}">
+
+    <link rel="alternate" type="application/rss+xml" title="Le flux RSS de l'AFUP" href="{{ path('feed_rss') }}"/>
+
+    {# Préchargement des polices pour éviter l'effet d'apparition #}
+    <link rel="preload" href="{{ asset('fonts/inter-latin-standard-normal.woff2') }}"
+          as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ asset('fonts/glegoo-latin-400-normal.woff2') }}"
+          as="font" type="font/woff2" crossorigin>
+
+    {% block canonical %}
+        {% if app.request.attributes.get('_route') %}
+            <link rel="canonical" href="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}"/>
+        {% endif %}
+    {% endblock %}
+
+    {% block head %}
+    {% endblock %}
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+    {% endblock %}
+
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+
+    {% block google_analytics %}
+        {% if google_analytics_enabled %}
+            {% include 'google_analytics.html.twig' %}
+        {% endif %}
+    {% endblock %}
+</head>
+
+<body class="flex flex-col h-screen justify-between">
+<div>
+    <div class="hidden sm:block bg-afup-800">
+        <nav class="container mx-auto flex text-white justify-center p-1 gap-2">
+            <a href="https://afup.org" class="px-5 py-1 text-sm hover:bg-afup-700 bg-afup-700 rounded">AFUP</a>
+            <a href="https://event.afup.org" class="px-5 py-1 text-sm hover:bg-afup-700 rounded">{{ global_menu_event_label ?? 'Event' }}</a>
+            <a href="https://barometre.afup.org" class="px-5 py-1 text-sm hover:bg-afup-700 rounded">Baromètre</a>
+            <a href="https://planete-php.fr" class="px-5 py-1 text-sm hover:bg-afup-700 rounded">Planète PHP</a>
+            <a href="https://pufa.afup.org" class="px-5 py-1 text-sm hover:bg-afup-700 rounded">PUFA</a>
+        </nav>
+    </div>
+
+    <div class="bg-ruby-400 text-white text-center p-1 text-lg font-bold">
+        L'AFUP est en difficulté,
+        <a href="/news/1256-des-nouvelles-situation-afup-mai2026" tabindex="-1" class="underline cursor-pointer">découvrez comment aider l'association</a>.
+    </div>
+
+    {% set account_buttons %}
+        {% if app.user %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <twig:Button variant="secondary" as="a" href="{{ path('admin_home') }}">Administration</twig:Button>
+            {% endif %}
+            <twig:Button variant="secondary" as="a" href="{{ path('app_logout') }}">Se déconnecter</twig:Button>
+        {% else %}
+            <twig:Button variant="secondary" as="a" href="{{ path('app_login') }}">Se connecter</twig:Button>
+            <twig:Button variant="primary" as="a" href="{{ path('become_member') }}">Adhérer</twig:Button>
+        {% endif %}
+    {% endset %}
+
+    <header>
+        <main class="bg-afup-300">
+            <div class="container mx-auto py-5 px-5 sm:px-0 flex items-center">
+                <div class="grow">
+                    <a href="{{ path('home') }}">
+                        <img src="{{ asset('templates/site/img/logo-afup.svg') }}" alt="AFUP: Association française des utilisateurs de PHP" class="hidden sm:block" />
+                        <img src="{{ asset('templates/site/img/logo-afup-mobile.svg') }}" alt="AFUP: Association française des utilisateurs de PHP" class="block sm:hidden max-w-32" />
+                    </a>
+                </div>
+
+                <input type="checkbox" id="menu-toggle" class="peer sr-only">
+                <label for="menu-toggle"
+                       class="sm:hidden cursor-pointer p-2 -mr-2 rounded text-white
+                              peer-focus-visible:ring-2 peer-focus-visible:ring-white
+                              peer-checked:[&_.icon-burger]:hidden peer-checked:[&_.icon-close]:block">
+                    <twig:ux:icon name="mdi:hamburger" class="size-7 icon-burger" />
+                    <twig:ux:icon name="mingcute:close-fill" class="icon-close hidden size-7" />
+                    <span class="sr-only">Ouvrir le menu</span>
+                </label>
+
+                <div class="hidden sm:block">
+                    {{ account_buttons }}
+                </div>
+            </div>
+        </main>
+
+        <twig:MainMenu>
+            <twig:block name="account">{{ account_buttons }}</twig:block>
+        </twig:MainMenu>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</div>
+
+<twig:MainFooter/>
+</body>
+
+</html>

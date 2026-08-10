@@ -1,0 +1,11 @@
+<nav class="bg-afup-500 hidden sm:block [body:has(#menu-toggle:checked)_&]:block">
+    <div class="container mx-auto flex flex-col sm:flex-row sm:items-center sm:gap-8 text-white font-bold uppercase">
+        {% for feuille in this.feuilles %}
+            <twig:MainMenu:Item href="{{ feuille.lien }}" :variant="feuille.isCurrent ? 'active' : null">{{ feuille.nom }}</twig:MainMenu:Item>
+        {% endfor %}
+
+        <div class="sm:hidden flex flex-col gap-2 px-4 py-4 border-t border-white/20 text-center">
+            {% block account %}{% endblock %}
+        </div>
+    </div>
+</nav>

@@ -156,6 +156,7 @@ phpstan-update-baseline:
 assets:
 	./node_modules/.bin/webpack -p
 	php bin/console importmap:install
+	php bin/console tailwind:build --minify
 
 ### Lancer le watcher pour les assets
 watch:

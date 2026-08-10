@@ -1,3 +1,7 @@
+{% if formTheme is defined and formTheme is not null %}
+    {% form_theme form formTheme %}
+{% endif %}
+
 {{ form_start(form) }}
 {{ form_row(form.email) }}
 {{ form_widget(form) }}
