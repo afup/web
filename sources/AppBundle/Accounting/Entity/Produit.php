@@ -16,7 +16,7 @@ class Produit
     #[ORM\Column]
     public ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: false)]
+    #[ORM\Column(length: 50, nullable: false)]
     public string $reference;
 
     #[ORM\Column(length: 255, nullable: false)]
