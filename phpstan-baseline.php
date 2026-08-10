@@ -98,12 +98,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/Afup/Corporate/Page.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between mixed and \' \' results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 6,
-	'path' => __DIR__ . '/sources/Afup/Utils/PDF_AG.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between non\\-falsy\\-string and mixed results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 1,
