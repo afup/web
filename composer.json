@@ -70,6 +70,7 @@
     "symfony/yaml": "7.4.*",
     "symfonycasts/tailwind-bundle": "^1.0",
     "tales-from-a-dev/twig-tailwind-extra": "^1.2",
+    "tempest/highlight": "^2.27",
     "tiime/newrelic-bundle": "^1.0",
     "twig/extra-bundle": "^3.24",
     "twig/html-extra": "^3.28",

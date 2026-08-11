@@ -1,3 +1,4 @@
+@import "../../vendor/tempest/highlight/src/Themes/Css/catppuccin-latte.css";
 @import "./fonts.css";
 @import "tailwindcss" source(none);
 @source "../../templates";
@@ -32,5 +33,11 @@
     body {
         /* Désactive les effets (italic, gras, etc) automatiques des polices pour prioriser les version contenues dans les polices */
         font-synthesis: none;
+    }
+
+    /* Pour les balises de code "inline" dans les articles (les blocs de code ont déjà un padding et un arrondi de base) */
+    .prose code {
+        @apply px-2 py-1;
+        @apply rounded-lg;
     }
 }
