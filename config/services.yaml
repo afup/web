@@ -150,6 +150,11 @@ services:
 
     Twig\Extra\Markdown\MarkdownInterface: '@twig.markdown.default'
 
+    League\CommonMark\Extension\Autolink\AutolinkExtension:
+        tags: [ 'twig.markdown.league_extension' ]
+    Tempest\Highlight\CommonMark\HighlightExtension:
+        tags: [ 'twig.markdown.league_extension' ]
+
     geocoder:
         class: Geocoder\StatefulGeocoder
         arguments: ['@geocoder_provider_google_maps']
