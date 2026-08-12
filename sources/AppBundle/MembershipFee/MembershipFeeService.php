@@ -10,10 +10,14 @@ use AppBundle\MembershipFee\Model\MembershipFee;
 use AppBundle\MembershipFee\Model\Repository\MembershipFeeRepository;
 use DateInterval;
 use DateTime;
+use Psr\Clock\ClockInterface;
 
-class MembershipFeeService
+readonly class MembershipFeeService
 {
-    public function __construct(private readonly MembershipFeeRepository $membershipFeeRepository) {}
+    public function __construct(
+        private MembershipFeeRepository $membershipFeeRepository,
+        private ClockInterface $clock,
+    ) {}
 
     public function ajouter(
         MemberType $typePersonne,
@@ -93,18 +97,26 @@ class MembershipFeeService
 
     public function getNextSubscriptionExpiration(?MembershipFee $cotisation = null): DateTime
     {
+        $now = $this->clock->now();
+        $base = clone $now;
         $endDate = $cotisation?->getEndDate();
-        $endSubscription = $endDate !== null ? (clone $endDate)->setTime(23, 59, 59) : new DateTime();
-        $base = $now = new DateTime();
 
-        $year = new DateInterval('P1Y');
+        if ($endDate !== null) {
+            // La date de fin est stockée en UTC.
+            // On la ramène dans le bon fuseau horaire avant de la modifier.
+            $endSubscription = (clone $endDate)
+                ->setTimezone($now->getTimezone())
+                ->setTime(23, 59, 59);
 
-        if ($endSubscription > $now) {
-            $base = $endSubscription;
+            if ($endSubscription > $now) {
+                $base = $endSubscription;
+            }
         }
 
-        $base->add($year);
-        return $base;
+        $result = $base->add(new DateInterval('P1Y'));
+
+        return new \DateTime(timezone: $result->getTimezone())
+            ->setTimestamp($result->getTimestamp());
     }
 
     /**
