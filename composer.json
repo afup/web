@@ -105,7 +105,6 @@
         "patches/setasign-tfpdf-tfpdf-php.patch"
       ]
     },
-    "symfony-app-dir": "app",
     "symfony-web-dir": "htdocs",
     "symfony-bin-dir": "bin",
     "symfony-var-dir": "var",

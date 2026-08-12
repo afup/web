@@ -16,7 +16,7 @@ class DownloadAttachmentAction extends AbstractController
 {
     public function __construct(
         private readonly TransactionRepository $accountingRepository,
-        #[Autowire('%kernel.project_dir%/../htdocs/uploads/')]
+        #[Autowire('%kernel.project_dir%/htdocs/uploads/')]
         private readonly string $uploadDir,
     ) {}
 

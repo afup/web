@@ -25,7 +25,7 @@ final readonly class MembershipFeeMailer
         private CompanyMemberRepository $companyMemberRepository,
         private Mailer $mailer,
         private MembershipFeeInvoicePdfGenerator $pdfGenerator,
-        #[Autowire('%kernel.project_dir%/../htdocs/cache/')]
+        #[Autowire('%kernel.project_dir%/htdocs/cache/')]
         private string $publicCacheDir,
     ) {}
 

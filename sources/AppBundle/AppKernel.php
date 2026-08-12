@@ -7,7 +7,6 @@ namespace AppBundle;
 use AppBundle\DependencyInjection\ControllersWithEventSelectorPass;
 use AppBundle\DependencyInjection\TingRepositoryPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -18,24 +17,19 @@ class AppKernel extends Kernel
     #[\Override]
     public function getProjectDir(): string
     {
-        return __DIR__ . '/../../app';
+        return __DIR__ . '/../..';
     }
 
     #[\Override]
     public function getCacheDir(): string
     {
-        return __DIR__ . '/../../var/cache/' . $this->getEnvironment();
+        return $this->getProjectDir() . '/var/cache/' . $this->getEnvironment();
     }
 
     #[\Override]
     public function getLogDir(): string
     {
-        return __DIR__ . '/../../var/logs';
-    }
-
-    public function registerContainerConfiguration(LoaderInterface $loader): void
-    {
-        $loader->load(__DIR__ . '/../../app/config/config_' . $this->getEnvironment() . '.yml');
+        return $this->getProjectDir() . '/var/logs';
     }
 
     protected function build(ContainerBuilder $container): void

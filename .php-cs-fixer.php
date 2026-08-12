@@ -5,14 +5,14 @@ use PhpCsFixerCustomFixers\Fixer\MultilinePromotedPropertiesFixer;
 $finder = new PhpCsFixer\Finder()
     ->name('*.php')
     ->in([
-        __DIR__ . '/app',
+        __DIR__ . '/config',
         __DIR__ . '/db',
         __DIR__ . '/htdocs/pages',
         __DIR__ . '/sources',
         __DIR__ . '/tests',
     ])
     ->notPath([
-        'config/reference.php',
+        'reference.php',
     ])
 ;
 

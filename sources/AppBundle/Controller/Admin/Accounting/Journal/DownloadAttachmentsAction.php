@@ -19,7 +19,7 @@ class DownloadAttachmentsAction extends AbstractController
 {
     public function __construct(
         private readonly InvoicingPeriodRepository $invoicingPeriodRepository,
-        #[Autowire('%kernel.project_dir%/../htdocs/uploads/')] private readonly string $uploadDir,
+        #[Autowire('%kernel.project_dir%/htdocs/uploads/')] private readonly string $uploadDir,
     ) {}
 
     public function __invoke(Request $request): Response

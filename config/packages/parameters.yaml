@@ -1,5 +1,6 @@
 parameters:
     locale: fr
+    database_host: "%env(DATABASE_HOST)%"
     github_authenticator: "AppBundle\\Security\\GithubAuthenticator"
     paybox_ips:
         - '194.2.122.158'
@@ -20,3 +21,11 @@ parameters:
         - '195.25.7.157'
         - '195.25.7.159'
         - '195.25.7.166'
+
+when@dev:
+    parameters:
+        paybox_ips: [127.0.0.1, 192.168.42.1]
+        database_host: "db"
+
+# Les paramètres de l'environnement de test sont dans config/services_test.yaml : ce fichier est
+# chargé après config/services.yaml, qui redéfinit database_name/user/password/port.

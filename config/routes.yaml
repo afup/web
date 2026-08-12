@@ -86,3 +86,18 @@ global:
 
 auth:
     resource: "routing/auth.yml"
+
+when@dev: &profiler_routes
+    _wdt:
+        resource: "@WebProfilerBundle/Resources/config/routing/wdt.php"
+        prefix: /_wdt
+
+    _profiler:
+        resource: "@WebProfilerBundle/Resources/config/routing/profiler.php"
+        prefix: /_profiler
+
+    _errors:
+        resource: "@FrameworkBundle/Resources/config/routing/errors.php"
+        prefix: /_error
+
+when@test: *profiler_routes

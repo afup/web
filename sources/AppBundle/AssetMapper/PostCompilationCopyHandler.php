@@ -20,7 +20,7 @@ class PostCompilationCopyHandler implements PublicAssetsFilesystemInterface
      * @param string[] $extensionsToCompress
      */
     public function __construct(
-        #[Autowire('%kernel.project_dir%/../htdocs')]
+        #[Autowire('%kernel.project_dir%/htdocs')]
         private readonly string $publicDir,
         private readonly ?CompressorInterface $compressor = null,
         private readonly array $extensionsToCompress = [],

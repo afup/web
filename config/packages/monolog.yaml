@@ -1,0 +1,49 @@
+when@dev:
+    monolog:
+        handlers:
+            main:
+                type: stream
+                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                level: debug
+                channels: ["!event"]
+            console:
+                type:   console
+                channels: ["!event", "!doctrine"]
+
+when@test:
+    monolog:
+        handlers:
+            main:
+                type: stream
+                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                level: debug
+                channels: ["!event"]
+            console:
+                type:   console
+                channels: ["!event", "!doctrine"]
+            deprecation_stream:
+                type: stream
+                path: "%kernel.logs_dir%/%kernel.environment%.deprecations.log"
+            deprecation_filter:
+                type: filter
+                handler: deprecation_stream
+                max_level: info
+                channels: ["php"]
+
+when@prod:
+    monolog:
+        handlers:
+            main:
+                type:         fingers_crossed
+                excluded_http_codes: [404]
+                action_level: error
+                handler:      nested
+            nested:
+                type:  stream
+                path:  "%kernel.logs_dir%/%kernel.environment%.log"
+                level: debug
+            syslog_handler:
+                type: syslog
+                level: error
+            console:
+                type:  console

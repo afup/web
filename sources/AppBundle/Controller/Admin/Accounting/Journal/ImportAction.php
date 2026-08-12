@@ -20,7 +20,7 @@ class ImportAction extends AbstractController
         private readonly Audit $audit,
         private readonly Factory $importerFactory,
         private readonly CsvExtractor $csvExtractor,
-        #[Autowire('%kernel.project_dir%/../tmp/')]
+        #[Autowire('%kernel.project_dir%/tmp/')]
         private readonly string $uploadDir,
     ) {}
 

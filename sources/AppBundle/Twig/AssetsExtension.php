@@ -20,7 +20,7 @@ class AssetsExtension extends AbstractExtension
     {
         return [
             new TwigFunction('asset_md5_start', function (string $url) {
-                $path = $this->kernelProjectDir . '/../htdocs/' . $url;
+                $path = $this->kernelProjectDir . '/htdocs/' . $url;
 
                 return substr(md5_file($path), 0, 8);
             }, ['is_safe' => ['html']]),

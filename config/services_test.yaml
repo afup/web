@@ -1,17 +1,5 @@
-imports:
-    - { resource: config_dev.yml }
-    - { resource: services_test.yaml }
-
-framework:
-    test: ~
-    profiler:
-        collect: false
-
-web_profiler:
-    toolbar: false
-    intercept_redirects: false
-
 parameters:
+    paybox_ips: [127.0.0.1, 192.168.42.1]
     database_host: dbtest
     database_port: 3306
     database_name: web
@@ -27,6 +15,17 @@ parameters:
     smtp_port: 1025
 
 services:
+    AppBundle\Listener\DetectClockMockingListener:
+        autowire: true
+        tags:
+            - { name: kernel.event_listener, priority: 1000 }
+
+    http_client.bluesky_embed:
+        class: Symfony\Component\HttpClient\MockHttpClient
+
+    Afup\Tests\Support\Wordpress\FakeWordpressClient: ~
+    AppBundle\Event\Wordpress\WordpressClient: '@Afup\Tests\Support\Wordpress\FakeWordpressClient'
+
     AppBundle\Offices\OfficeFinder:
         class: AppBundle\Offices\NullOfficeFinder
         autowire: true
@@ -40,19 +39,3 @@ services:
     PlanetePHP\SymfonyFeedClient:
         arguments:
             $httpClient: '@planetephp.http_client'
-
-ewz_recaptcha:
-    enabled: false
-
-
-monolog:
-    handlers:
-        deprecation_stream:
-            type: stream
-            path: "%kernel.logs_dir%/%kernel.environment%.deprecations.log"
-
-        deprecation_filter:
-            type: filter
-            handler: deprecation_stream
-            max_level: info
-            channels: ["php"]
