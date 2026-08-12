@@ -16,7 +16,7 @@ final class EditRubriqueAction extends AbstractController
 {
     public function __construct(
         private readonly RubriqueRepository $rubriqueRepository,
-        #[Autowire('%kernel.project_dir%/../htdocs/templates/site/images')]
+        #[Autowire('%kernel.project_dir%/htdocs/templates/site/images')]
         private readonly string $storageDir,
         private readonly Audit $audit,
     ) {}

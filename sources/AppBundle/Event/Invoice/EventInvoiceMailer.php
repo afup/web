@@ -20,7 +20,7 @@ class EventInvoiceMailer
         private readonly InvoiceRepository $invoiceRepository,
         private readonly Mailer $mailer,
         private readonly InvoiceService $invoiceService,
-        #[Autowire('%kernel.project_dir%/../htdocs/cache/')]
+        #[Autowire('%kernel.project_dir%/htdocs/cache/')]
         private readonly string $publicCacheDir,
     ) {}
 

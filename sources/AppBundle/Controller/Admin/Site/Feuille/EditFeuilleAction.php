@@ -18,7 +18,7 @@ final class EditFeuilleAction extends AbstractController
     public function __construct(
         private readonly FeuilleRepository $feuilleRepository,
         private readonly Audit $audit,
-        #[Autowire('%kernel.project_dir%/../htdocs/templates/site/images')]
+        #[Autowire('%kernel.project_dir%/htdocs/templates/site/images')]
         private readonly string $storageDir,
     ) {}
 

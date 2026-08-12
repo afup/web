@@ -27,9 +27,9 @@ final readonly class PhotoStorage
     ];
 
     public function __construct(
-        #[Autowire('%kernel.project_dir%/../htdocs/uploads/speakers')]
+        #[Autowire('%kernel.project_dir%/htdocs/uploads/speakers')]
         private string $basePath,
-        #[Autowire('%kernel.project_dir%/../htdocs')]
+        #[Autowire('%kernel.project_dir%/htdocs')]
         private string $legacyBasePath,
     ) {
         $this->filesystem = new Filesystem();

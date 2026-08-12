@@ -19,7 +19,7 @@ final readonly class SpeakersExpensesStorage
     private Filesystem $filesystem;
 
     public function __construct(
-        #[Autowire('%kernel.project_dir%/../htdocs/uploads/speaker_expenses')]
+        #[Autowire('%kernel.project_dir%/htdocs/uploads/speaker_expenses')]
         private string $basePath,
         private EventRepository $eventRepository,
         private LoggerInterface $logger,

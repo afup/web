@@ -17,7 +17,7 @@ readonly class InvoicingMailer
     public function __construct(
         private InvoicingPdfGenerator $pdfGenerator,
         private Mailer $mailer,
-        #[Autowire('%kernel.project_dir%/../htdocs/cache/')]
+        #[Autowire('%kernel.project_dir%/htdocs/cache/')]
         private string $publicCacheDir,
     ) {}
 
