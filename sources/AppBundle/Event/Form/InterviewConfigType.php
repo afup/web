@@ -39,7 +39,7 @@ final class InterviewConfigType extends AbstractType
                 'required' => true,
                 'choices' => $choices,
                 'placeholder' => '-- Choisir --',
-                'help' => 'La catégorie doit être créée <a href="' . $this->wordpressBaseUri . '/wp-admin/edit-tags.php?taxonomy=category">côté WordPress</a>',
+                'help' => 'La liste ci-dessous correspond aux catégories déjà existantes sur WordPress : si votre catégorie y figure, sélectionnez-la. Sinon, <a href="' . $this->wordpressBaseUri . '/wp-admin/edit-tags.php?taxonomy=category">créez-la d\'abord dans WordPress</a>.',
                 'help_html' => true,
             ])
             ->add('interviewsIntro', TextareaType::class, [
