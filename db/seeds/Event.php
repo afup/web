@@ -11,13 +11,12 @@ class Event extends AbstractSeed
 
     public function run(): void
     {
-        $now = time();
+        $now = new DateTime('now')->getTimestamp();
         $oneDayInSeconds = 60 * 60 * 24;
         $oneMonthInSeconds = $oneDayInSeconds * 30;
 
-        $event = new DateTime('@' . ($now + $oneMonthInSeconds * 5));
-        $event->setTime(0, 0, 0);
-        $event = $event->getTimestamp();
+        $eventDate = new DateTime('now')->modify(sprintf('+%d seconds', $oneMonthInSeconds * 5))->setTime(0, 0, 0);
+        $event = $eventDate->getTimestamp();
 
         $data = [
             [
