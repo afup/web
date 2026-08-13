@@ -5,6 +5,7 @@ Feature: Administration - Évènements - Interviews
     And I follow "afup-main-menu-item--admin_event_interview_list"
     Then the ".content h2" element should contain "Interviews"
     And I follow "Configurer"
+    Then I should see "La liste ci-dessous correspond aux catégories déjà existantes sur WordPress"
     When I select "1" from "interview_config[interviewsWordpressCategoryId]"
     And I fill in "interview_config[interviewsIntro]" with "Les super interviews"
     And I fill in "interview_config[interviewsCtaText]" with "Le bouton"
@@ -50,6 +51,33 @@ Feature: Administration - Évènements - Interviews
     And I press "Enregistrer"
     Then I should see "L'interview a été enregistrée"
     And the ".content table" element should contain "Adrien GALLOU, Geoffrey BACHELET"
+
+  @reloadDbWithTestData
+  Scenario: La liste des interviews est triée par date de publication (la plus ancienne en premier)
+    And I follow "afup-main-menu-item--admin_event_interview_list"
+    And I follow "Nouvelle interview"
+    And I fill in "interview[datePublication]" with "2026-06-01T10:00:00"
+    When I select "Geoffrey BACHELET" from "interview[speakers][]"
+    And I fill in "interview[questions][0][question]" with "Question récente"
+    And I fill in "interview[questions][0][reponse]" with "Réponse récente"
+    And I press "Enregistrer"
+    Then I should see "L'interview a été enregistrée"
+
+    Given I follow "afup-main-menu-item--admin_event_interview_list"
+    And I follow "Nouvelle interview"
+    And I fill in "interview[datePublication]" with "2026-05-01T10:00:00"
+    When I select "Adrien GALLOU" from "interview[speakers][]"
+    And I fill in "interview[questions][0][question]" with "Question ancienne"
+    And I fill in "interview[questions][0][reponse]" with "Réponse ancienne"
+    And I press "Enregistrer"
+    Then I should see "L'interview a été enregistrée"
+
+    Given I follow "afup-main-menu-item--admin_event_interview_list"
+    Then the rows of table ".content table" should be in the following order:
+      """
+      Adrien GALLOU
+      Geoffrey BACHELET
+      """
 
   @reloadDbWithTestData
   Scenario: Acces refusé pour un membre simple

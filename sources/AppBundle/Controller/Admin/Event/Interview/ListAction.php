@@ -50,7 +50,8 @@ class ListAction extends AbstractController
 
         usort(
             $interviewsWithSpeakers,
-            fn(array $a, array $b) => $this->firstSpeakerLabel($a['speakers']) <=> $this->firstSpeakerLabel($b['speakers']),
+            fn(array $a, array $b): int => $a['interview']->datePublication <=> $b['interview']->datePublication
+                ?: $this->firstSpeakerLabel($a['speakers']) <=> $this->firstSpeakerLabel($b['speakers']),
         );
 
         $speakersWithoutInterview = array_values(array_filter(

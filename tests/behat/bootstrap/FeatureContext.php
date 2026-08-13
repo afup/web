@@ -110,6 +110,30 @@ class FeatureContext implements Context
         $link->click();
     }
 
+    #[Then('/^the rows of table "(?P<selector>[^"]+)" should be in the following order:$/')]
+    public function assertTableRowsInOrder(string $selector, PyStringNode $expectedRows): void
+    {
+        $expected = array_values(array_filter(array_map('trim', $expectedRows->getStrings())));
+        $rows = $this->minkContext->getSession()->getPage()->findAll('css', $selector . ' tbody tr');
+
+        if (count($expected) !== count($rows)) {
+            throw new ExpectationException(
+                sprintf('Expected %d rows but found %d in "%s"', count($expected), count($rows), $selector),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+
+        foreach ($expected as $index => $expectedText) {
+            $actualText = $rows[$index]->getText();
+            if (!str_contains($actualText, $expectedText)) {
+                throw new ExpectationException(
+                    sprintf('Row %d of "%s" should contain "%s" but contains "%s"', $index + 1, $selector, $expectedText, $actualText),
+                    $this->minkContext->getSession()->getDriver(),
+                );
+            }
+        }
+    }
+
     #[Then('the checksum of the response content should be :md5')]
     public function checksumOfTheResponseContentShouldBe(string $expectedChecksum): void
     {
