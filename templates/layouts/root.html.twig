@@ -61,55 +61,11 @@
         <a href="/news/1256-des-nouvelles-situation-afup-mai2026" tabindex="-1" class="underline cursor-pointer">découvrez comment aider l'association</a>.
     </div>
 
-    {% set account_buttons %}
-        {% if app.user %}
-            {% if is_granted('ROLE_ADMIN') %}
-                <twig:Button variant="secondary" as="a" href="{{ path('admin_home') }}">Administration</twig:Button>
-            {% endif %}
-            <twig:Button variant="secondary" as="a" href="{{ path('app_logout') }}">Se déconnecter</twig:Button>
-        {% else %}
-            <twig:Button variant="secondary" as="a" href="{{ path('app_login') }}">Se connecter</twig:Button>
-            <twig:Button variant="primary" as="a" href="{{ path('become_member') }}">Adhérer</twig:Button>
-        {% endif %}
-    {% endset %}
+    {% block root %}{% endblock %}
 
-    <header>
-        <main class="bg-afup-300">
-            <div class="container mx-auto py-5 px-5 sm:px-0 flex items-center">
-                <div class="grow">
-                    <a href="{{ path('home') }}">
-                        <img src="{{ asset('templates/site/img/logo-afup.svg') }}" alt="AFUP: Association française des utilisateurs de PHP" class="hidden sm:block" />
-                        <img src="{{ asset('templates/site/img/logo-afup-mobile.svg') }}" alt="AFUP: Association française des utilisateurs de PHP" class="block sm:hidden max-w-32" />
-                    </a>
-                </div>
-
-                <input type="checkbox" id="menu-toggle" class="peer sr-only">
-                <label for="menu-toggle"
-                       class="sm:hidden cursor-pointer p-2 -mr-2 rounded text-white
-                              peer-focus-visible:ring-2 peer-focus-visible:ring-white
-                              peer-checked:[&_.icon-burger]:hidden peer-checked:[&_.icon-close]:block">
-                    <twig:ux:icon name="mdi:hamburger" class="size-7 icon-burger" />
-                    <twig:ux:icon name="mingcute:close-fill" class="icon-close hidden size-7" />
-                    <span class="sr-only">Ouvrir le menu</span>
-                </label>
-
-                <div class="hidden sm:block">
-                    {{ account_buttons }}
-                </div>
-            </div>
-        </main>
-
-        <twig:MainMenu>
-            <twig:block name="account">{{ account_buttons }}</twig:block>
-        </twig:MainMenu>
-    </header>
-
-    <main>
-        {% block content %}{% endblock %}
-    </main>
 </div>
 
-<twig:MainFooter/>
+{% block footer %}{% endblock %}
 </body>
 
 </html>
