@@ -50,7 +50,7 @@ final class MembershipFeeServiceTest extends TestCase
     #[DataProvider('generateCotisationProvider')]
     public function testFinProchaineCotisation(\DateTimeInterface $dateFin, \DateTimeInterface $expected, ?\DateTimeImmutable $now = null): void
     {
-        $membershipFeeRepository = $this->createMock(MembershipFeeRepository::class);
+        $membershipFeeRepository = $this->createStub(MembershipFeeRepository::class);
 
         $membershipFeeService = new MembershipFeeService($membershipFeeRepository, new MockClock($now ?? new \DateTimeImmutable()));
 
@@ -79,7 +79,7 @@ final class MembershipFeeServiceTest extends TestCase
     #[DataProvider('accountCmdProvider')]
     public function testGetAccountFromCmd(string $cmd, array $expected): void
     {
-        $membershipFeeRepository = $this->createMock(MembershipFeeRepository::class);
+        $membershipFeeRepository = $this->createStub(MembershipFeeRepository::class);
 
         $membershipFeeService = new MembershipFeeService($membershipFeeRepository, new MockClock());
 
