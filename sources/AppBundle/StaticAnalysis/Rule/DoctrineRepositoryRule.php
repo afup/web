@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\StaticAnalysis\Rule;
 
 use PhpParser\Node\Identifier;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityRepository;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
@@ -30,11 +31,13 @@ final readonly class DoctrineRepositoryRule implements Rule
     ];
 
     private ClassReflection $repositoryClassReflection;
+    private ClassReflection $serviceRepositoryClassReflection;
     private ClassReflection $formClassReflection;
 
     public function __construct(private ReflectionProvider $reflectionProvider)
     {
         $this->repositoryClassReflection = $this->reflectionProvider->getClass(EntityRepository::class);
+        $this->serviceRepositoryClassReflection = $this->reflectionProvider->getClass(ServiceEntityRepository::class);
         $this->formClassReflection = $this->reflectionProvider->getClass(AbstractType::class);
     }
 
@@ -135,6 +138,12 @@ final readonly class DoctrineRepositoryRule implements Rule
             return false;
         }
 
+        // Certaines méthodes à vérifier sont surchargées dans une sous-classe du bundle Doctrine.
+        $repositoryClassNames = [
+            $this->repositoryClassReflection->getName(),
+            $this->serviceRepositoryClassReflection->getName(),
+        ];
+
         foreach ($type->getObjectClassNames() as $objectClassName) {
             $classReflection = $this->reflectionProvider->getClass($objectClassName);
 
@@ -144,7 +153,7 @@ final readonly class DoctrineRepositoryRule implements Rule
 
             $declaringClass = $classReflection->getNativeMethod($methodName)->getDeclaringClass();
 
-            if ($declaringClass->getName() === $this->repositoryClassReflection->getName()) {
+            if (in_array($declaringClass->getName(), $repositoryClassNames, true)) {
                 return false;
             }
         }

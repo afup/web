@@ -16,16 +16,15 @@
     "beberlei/doctrineextensions": "^1.5",
     "captioning/captioning": "^2.6.3",
     "ccmbenchmark/ting_bundle": "^3.10",
-    "cocur/slugify": "^2.5",
+    "cocur/slugify": "^4.7",
     "cuyz/valinor-bundle": "^2.3",
     "cweagans/composer-patches": "^1.7",
     "doctrine/dbal": "^4.4",
-    "doctrine/doctrine-bundle": "^2.18",
+    "doctrine/doctrine-bundle": "^3.2",
     "doctrine/orm": "^3.6",
     "drewm/mailchimp-api": "^2.5",
     "erusev/parsedown": "^1.8",
     "excelwebzone/recaptcha-bundle": "^1.5",
-    "friendsofpear/pear_exception": "0.0.2",
     "geocoder-php/google-maps-provider": "^4.8",
     "jms/serializer-bundle": "^5.5",
     "knpuniversity/oauth2-client-bundle": "^2.20",
@@ -35,7 +34,6 @@
     "league/iso3166": "^4.4",
     "league/oauth2-github": "^3.1",
     "nyholm/psr7": "^1.8",
-    "pear/pear": "^1.10",
     "phpoffice/phpspreadsheet": "^5.7.0",
     "pimple/pimple": "^3.6",
     "presta/sitemap-bundle": "^4.3",
@@ -170,25 +168,6 @@
     "symplify/vendor-patches": "^11.5",
     "tomasvotruba/type-coverage": "^2.2"
   },
-  "repositories": [
-    {
-      "type": "package",
-      "package": {
-        "name": "pear/pear",
-        "version": "v1.10.18",
-        "dist": {
-          "url": "https://github.com/pear/pear-core/archive/v1.10.18.zip",
-          "type": "zip"
-        },
-        "autoload": {
-          "classmap": [
-            "PEAR.php",
-            "PEAR/"
-          ]
-        }
-      }
-    }
-  ],
   "replace": {
     "symfony/polyfill-php54": "*",
     "symfony/polyfill-php55": "*",
