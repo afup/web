@@ -25,7 +25,7 @@ final class ListAction extends AbstractController
         return $this->view->render('site/meetups/list.html.twig',[
             'algolia_app_id' => $this->algoliaAppId,
             'algolia_api_key' => $this->algoliaFrontendApikey,
-            'source' => $request->get('src'),
+            'source' => $request->query->get('src'),
         ]);
     }
 }

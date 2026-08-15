@@ -24,7 +24,7 @@ final readonly class Audit
             $userId = $user->getId();
         }
 
-        $route = $this->requestStack->getCurrentRequest()->get('_route');
+        $route = $this->requestStack->getCurrentRequest()?->attributes->get('_route');
 
         $this->repository->save($message, $userId, $route);
     }

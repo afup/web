@@ -24,10 +24,10 @@ final class PayboxRedirectAction extends AbstractController
     public function __invoke(string $eventSlug, Request $request): Response
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
-        $invoice = $this->invoiceRepository->getByReference($request->get('cmd'));
+        $invoice = $this->invoiceRepository->getByReference($request->query->get('cmd'));
 
         if ($invoice === null) {
-            throw $this->createNotFoundException(sprintf('No invoice with this reference: "%s"', $request->get('cmd')));
+            throw $this->createNotFoundException(sprintf('No invoice with this reference: "%s"', $request->query->get('cmd')));
         }
 
         $payboxResponse = PayboxResponseFactory::createFromRequest($request);
@@ -36,7 +36,7 @@ final class PayboxRedirectAction extends AbstractController
             'event' => $event,
             'invoice' => $invoice,
             'payboxResponse' => $payboxResponse,
-            'status' => $request->get('status'),
+            'status' => $request->query->get('status'),
         ]);
     }
 }

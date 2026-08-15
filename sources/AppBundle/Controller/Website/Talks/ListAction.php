@@ -27,15 +27,15 @@ final class ListAction extends AbstractController
     {
         $title = 'Historique des conférences de l\'AFUP';
         $canonical = $this->generateUrl('talks_list', referenceType: UrlGeneratorInterface::ABSOLUTE_URL);
-        if (isset($request->get('fR')['speakers.label'][0])) {
-            $label = $request->get('fR')['speakers.label'][0];
+        if (isset($request->query->all('fR')['speakers.label'][0])) {
+            $label = $request->query->all('fR')['speakers.label'][0];
             $title = 'Les vidéos de ' . $label;
             $canonical = $this->generateUrl('talks_list', [
                 'fR' => ['speakers.label' => [$label]],
             ], UrlGeneratorInterface::ABSOLUTE_URL);
-        } elseif (isset($request->get('fR')['event.title'][0])) {
-            $label = $request->get('fR')['event.title'][0];
-            $title = $request->get('fR')['event.title'][0] . ' les vidéos';
+        } elseif (isset($request->query->all('fR')['event.title'][0])) {
+            $label = $request->query->all('fR')['event.title'][0];
+            $title = $request->query->all('fR')['event.title'][0] . ' les vidéos';
             $canonical = $this->generateUrl('talks_list', [
                 'fR' => ['event.title' => [$label]],
             ], UrlGeneratorInterface::ABSOLUTE_URL);

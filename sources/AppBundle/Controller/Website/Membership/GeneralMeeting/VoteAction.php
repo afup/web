@@ -24,7 +24,7 @@ final class VoteAction extends AbstractController
 
     public function __invoke(Request $request): RedirectResponse
     {
-        if (null === ($questionId = $request->get('questionId'))) {
+        if (null === ($questionId = $request->request->get('questionId'))) {
             throw $this->createNotFoundException('QuestionId manquant');
         }
 

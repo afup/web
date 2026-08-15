@@ -28,7 +28,7 @@ class ListAction
 
         $selectedDate = $latestDate;
         if ($request->query->has('date')) {
-            $selectedDate = DateTimeImmutable::createFromFormat('U', $request->get('date')) ?: null;
+            $selectedDate = DateTimeImmutable::createFromFormat('U', $request->query->getString('date')) ?: null;
         }
 
         $rows = [];

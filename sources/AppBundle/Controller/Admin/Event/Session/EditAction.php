@@ -32,7 +32,7 @@ class EditAction extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $talk = $this->talkRepository->get($request->get('talkId'));
+        $talk = $this->talkRepository->get($request->attributes->get('talkId'));
         if (!$talk) {
             throw $this->createNotFoundException('Talk not found');
         }
@@ -42,8 +42,8 @@ class EditAction extends AbstractController
         }
         $roomChoices = $this->roomChoices($event);
 
-        if ($request->get('sessionId')) {
-            $planning = $this->planningRepository->get($request->get('sessionId'));
+        if ($request->attributes->get('sessionId')) {
+            $planning = $this->planningRepository->get($request->attributes->get('sessionId'));
         } else {
             $planning = new Planning();
             $planning->setTalkId($talk->getId());
@@ -52,10 +52,9 @@ class EditAction extends AbstractController
             $planning->setEnd(clone $event->getDateStart());
         }
 
-
         $form = $this->getForm($planning, $roomChoices);
 
-        if ($request->get('mode') === 'add') {
+        if ($request->query->get('mode') === 'add') {
             $planning->getStart()?->setTime(9, 0);
             $planning->getEnd()?->setTime(9, 40);
             $planning->setRoomId(array_first($roomChoices));

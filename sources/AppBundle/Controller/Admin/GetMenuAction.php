@@ -25,7 +25,7 @@ class GetMenuAction
         $masterRequest = $this->requestStack->getMainRequest();
         Assert::notNull($masterRequest);
         $page = $masterRequest->query->get('page');
-        $route = $masterRequest->get('_route');
+        $route = $masterRequest->attributes->get('_route');
 
         $currentGroupKey = null;
         $currentElementKey = null;

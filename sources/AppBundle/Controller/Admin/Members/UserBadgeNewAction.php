@@ -22,7 +22,7 @@ class UserBadgeNewAction
 
     public function __invoke(Request $request): RedirectResponse
     {
-        $user = $this->userRepository->get($request->get('user_id'));
+        $user = $this->userRepository->get($request->query->get('user_id'));
         $userBadgeForm = $this->formFactory->create(UserBadgeType::class, [], ['user' => $user]);
         $userBadgeForm->handleRequest($request);
         $data = $userBadgeForm->getData();

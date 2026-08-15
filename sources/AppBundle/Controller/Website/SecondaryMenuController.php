@@ -20,7 +20,7 @@ class SecondaryMenuController extends AbstractController
 
     public function display(Request $request): Response
     {
-        $menu = $this->feuilleRepository->getFeuillesEnfant($request->get('feuille_id'));
+        $menu = $this->feuilleRepository->getFeuillesEnfant($request->attributes->get('feuille_id'));
 
         return $this->render(
             'site/secondary_menu.html.twig',

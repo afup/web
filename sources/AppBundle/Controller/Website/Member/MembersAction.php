@@ -43,7 +43,7 @@ final class MembersAction extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $id = $request->get('id');
+        $id = $request->attributes->get('id');
         if ($id && $this->isGranted('ROLE_SUPER_ADMIN')) {
             $companyId = $id;
         } else {

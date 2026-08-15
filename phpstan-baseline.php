@@ -1880,12 +1880,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/UserService.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method get\\(\\) on Symfony\\\\Component\\\\HttpFoundation\\\\Request\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/AuditLog/Audit.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$route of method AppBundle\\\\AuditLog\\\\AuditLogRepository\\:\\:save\\(\\) expects string\\|null, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -3686,12 +3680,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/CompanyListAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$datetime of static method DateTimeImmutable\\:\\:createFromFormat\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeeting/ListAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on DateTimeImmutable\\|false\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -3774,12 +3762,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeeting/ReportsAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$datetime of static method DateTimeImmutable\\:\\:createFromFormat\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeetingVote/ListAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\UserBadge\\>\\:\\:delete\\(\\) expects AppBundle\\\\Event\\\\Model\\\\UserBadge, AppBundle\\\\Event\\\\Model\\\\UserBadge\\|null given\\.$#',
@@ -4574,18 +4556,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/SponsorScan/NewAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Ticket/PayboxCallbackAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Ticket/PayboxRedirectAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
 	'identifier' => 'foreach.nonIterable',
 	'count' => 1,
@@ -4601,18 +4571,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$eventSlug of method AppBundle\\\\Controller\\\\Event\\\\EventActionHelper\\:\\:getEvent\\(\\) expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Ticket/PaymentAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$reference of method AppBundle\\\\Event\\\\Invoice\\\\EventInvoiceMailer\\:\\:send\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Ticket/PaymentAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Ticket/PaymentAction.php',
 ];
 $ignoreErrors[] = [
@@ -5282,12 +5240,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/PagerController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Website\\\\Paybox\\\\RedirectAction\\:\\:__invoke\\(\\) has parameter \\$type with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Paybox/RedirectAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -5330,18 +5282,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Talks/ListAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'event\\.title\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Talks/ListAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'speakers\\.label\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Talks/ListAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset 0 on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
 	'count' => 2,
@@ -5352,12 +5292,6 @@ $ignoreErrors[] = [
 	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Talks/ShowAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$data of method AppBundle\\\\Veille\\\\Entity\\\\Repository\\\\NewsletterDesinscriptionRepository\\:\\:createFromWebhookData\\(\\) expects array, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Techletter/WebhookAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$objectOrClass of class ReflectionClass constructor expects class\\-string\\<T of object\\>\\|T of object, string given\\.$#',
@@ -9095,18 +9029,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$url of class Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse constructor expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/TestGithubAuthenticator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$userIdentifier of class Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\UserBadge constructor expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/TestGithubAuthenticator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Possibly invalid array key type mixed\\.$#',
-	'identifier' => 'offsetAccess.invalidOffset',
-	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Security/TestGithubAuthenticator.php',
 ];
 $ignoreErrors[] = [
