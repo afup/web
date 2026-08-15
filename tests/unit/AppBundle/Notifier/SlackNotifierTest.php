@@ -23,7 +23,7 @@ final class SlackNotifierTest extends TestCase
         $mockResponse = new MockResponse();
         $client = new MockHttpClient([$mockResponse]);
 
-        $messageFactory = new MessageFactory(new Translator('fr'), $this->createMock(UrlGeneratorInterface::class));
+        $messageFactory = new MessageFactory(new Translator('fr'), $this->createStub(UrlGeneratorInterface::class));
 
         $notifier = new SlackNotifier(
             'http://fake-slack-endpoint',
