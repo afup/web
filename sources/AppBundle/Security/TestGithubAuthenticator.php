@@ -24,7 +24,7 @@ class TestGithubAuthenticator extends OAuth2Authenticator implements Authenticat
     public function authenticate(Request $request): SelfValidatingPassport
     {
         $githubUsers = $this->getTestUsersDetails();
-        $userTest = $request->get('github_test_user');
+        $userTest = $request->query->getString('github_test_user');
         if (!isset($githubUsers[$userTest])) {
             throw new \RuntimeException('Test user not found');
         }
@@ -94,6 +94,6 @@ class TestGithubAuthenticator extends OAuth2Authenticator implements Authenticat
 
     public function supports(Request $request): bool
     {
-        return (bool) $request->get('github_test_user');
+        return $request->query->has('github_test_user');
     }
 }

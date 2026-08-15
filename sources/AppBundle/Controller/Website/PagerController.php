@@ -14,9 +14,9 @@ class PagerController extends AbstractController
 
     public function display(Request $request): Response
     {
-        $totalItems = $request->get('total_items');
-        $currentPage = $request->get('current_page');
-        $itemsPerPage = $request->get('items_per_page');
+        $totalItems = $request->attributes->get('total_items');
+        $currentPage = $request->attributes->get('current_page');
+        $itemsPerPage = $request->attributes->get('items_per_page');
 
         $nbPages = floor($totalItems / $itemsPerPage);
 
@@ -36,7 +36,7 @@ class PagerController extends AbstractController
                 'nb_pages' => $nbPages,
                 'displayed_pages' => $displayedPages,
                 'current_page' => $currentPage,
-                'extra_parameters' => $request->get('extra_parameters', []),
+                'extra_parameters' => $request->attributes->get('extra_parameters', []),
             ],
         );
     }

@@ -14,13 +14,13 @@ final class RedirectAction extends AbstractController
 {
     public function __construct(private readonly ViewRenderer $view) {}
 
-    public function __invoke(Request $request, $type = 'success'): Response
+    public function __invoke(Request $request, string $type = 'success'): Response
     {
         $payboxResponse = PayboxResponseFactory::createFromRequest($request);
 
         return $this->view->render('site/company_membership/paybox_redirect.html.twig', [
             'payboxResponse' => $payboxResponse,
-            'status' => $request->get('status'),
+            'status' => $request->query->get('status'),
             'return_type' => $type,
         ]);
     }

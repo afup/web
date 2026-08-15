@@ -22,7 +22,7 @@ class SpeakerInfosAction
     public function __invoke(Request $request): RedirectResponse|Response
     {
         $event = $this->eventActionHelper->getFromRequest('id', false)->event;
-        $speaker = $this->speakerRepository->get($request->get('speaker_id'));
+        $speaker = $this->speakerRepository->get($request->query->get('speaker_id'));
 
         return $this->speakerPage->handleRequest($request, $event, $speaker);
     }

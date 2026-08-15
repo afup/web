@@ -40,7 +40,7 @@ final class PaymentAction extends AbstractController
         $event = $this->eventActionHelper->getEvent($eventSlug);
         $invoiceRepository = $this->invoiceRepository;
 
-        $invoiceRef = $request->get('invoiceRef', $request->query->get('invoiceRef', null));
+        $invoiceRef = (string) $request->request->get('invoiceRef', $request->query->get('invoiceRef'));
 
         $invoice = $invoiceRepository->getByReference($invoiceRef);
 

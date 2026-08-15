@@ -22,7 +22,7 @@ final readonly class FilesAction
     public function __invoke(Request $request): BinaryFileResponse
     {
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
-        $speaker = $this->speakerRepository->get($request->get('speakerId'));
+        $speaker = $this->speakerRepository->get($request->attributes->get('speakerId'));
         if ($speaker->getEventId() !== $event->getId()) {
             throw new NotFoundHttpException(sprintf('Event id (%d) not found', $event->getId()));
         }

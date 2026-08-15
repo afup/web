@@ -19,7 +19,7 @@ final readonly class WebhookAction
 
     public function __invoke(Request $request): Response
     {
-        if ($request->get('webhook_key') !== $this->mailchimpTechletterWebhookKey) {
+        if ($request->request->get('webhook_key') !== $this->mailchimpTechletterWebhookKey) {
             return new Response('ko', Response::HTTP_UNAUTHORIZED);
         }
 
@@ -27,8 +27,8 @@ final readonly class WebhookAction
             return new Response('ok');
         }
 
-        if ($request->get('type') === 'unsubscribe') {
-            $techletterUnsubscription = $this->newsletterDesinscriptionRepository->createFromWebhookData($request->get('data', []));
+        if ($request->request->get('type') === 'unsubscribe') {
+            $techletterUnsubscription = $this->newsletterDesinscriptionRepository->createFromWebhookData($request->request->all('data'));
             $this->newsletterDesinscriptionRepository->save($techletterUnsubscription);
         }
 

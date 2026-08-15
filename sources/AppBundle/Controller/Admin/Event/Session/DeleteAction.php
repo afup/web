@@ -20,7 +20,7 @@ class DeleteAction extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $id = $request->get('id');
+        $id = $request->attributes->get('id');
         $planning = $this->planningRepository->get($id);
         if (!$planning instanceof Planning) {
             throw $this->createNotFoundException(sprintf('Planning not found with id "%s".', $id));
