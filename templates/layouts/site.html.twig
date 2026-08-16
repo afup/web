@@ -40,7 +40,9 @@
             </div>
         </main>
 
-        <twig:MainMenu>
+        {% set menu_current_feuille_id = menu_current_feuille_id|default(null) %}
+
+        <twig:MainMenu currentFeuilleId="{{ menu_current_feuille_id }}">
             <twig:block name="account">{{ account_buttons }}</twig:block>
         </twig:MainMenu>
     </header>

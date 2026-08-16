@@ -1,23 +1,14 @@
-{% extends 'site/base.html.twig' %}
+{% extends 'layouts/site.html.twig' %}
+{% set menu_current_feuille_id = rubrique.feuilleAssociee %}
 
 {% block title %}{{ article.titre }} - AFUP{% endblock %}
 
-{% block header %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />
-{% endblock %}
-
 {% block content %}
-{{ render(controller(
-    'AppBundle\\Controller\\Website\\SecondaryMenuController::display',
-    { 'feuille_id': rubrique.feuilleAssociee }
-)) }}
-<div class="mw1400p center" id="container">
-    <div class="line" id="main">
-        <h1>{{ rubrique.nom }}</h1>
-        <h2>{{ article.titre }}</h2>
+<article class="container mx-auto sm:pt-10 flex flex-col gap-5">
+    <h1 class="text-afup-800 text-2xl sm:text-4xl">{{ article.titre }}</h1>
 
+    <div class="prose prose-lg max-w-none sm:my-10 mt-10 sm:text-justify">
         {{ article.contenu|markdown_to_html }}
     </div>
-</div>
+</article>
 {% endblock %}
