@@ -1,21 +1,42 @@
-{% extends 'event/sponsorship_file/base.html.twig' %}
+{% extends 'layouts/event.html.twig' %}
 
-{% set menu = {'main': {'route' : 'ticket', 'title': 'Become a sponsor'}} %}
+{% block title %}{{ 'Merci'|trans }} - {{ 'Dossier sponsor'|trans }} - AFUP{% endblock %}
+{% block header_title %}{{ 'Devenir sponsor'|trans }}{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('/css/tickets.css') }}" />
+{% block metas %}
+    <meta name="robots" content="noindex, nofollow">
 {% endblock %}
 
 {% block content %}
-    <div class="col-md-8">
-        <h2>{{ 'Devenir sponsor'|trans }}</h2>
-        <div class="sponsor--become-talk">
-            <h3>{{ 'Merci'|trans }}</h3>
-            <p>
-                {{ "Vous allez recevoir le dossier par mail dans quelques minutes."|trans }}
-            </p>
-        </div>
+    <div class="container mx-auto px-5 sm:px-0 grow flex">
+        <div class="flex flex-col items-center justify-center text-center grow gap-6 py-10">
+            <span class="flex items-center justify-center rounded-full bg-afup-100 text-afup-500 p-6">
+                <twig:ux:icon name="mdi:email-fast-outline" class="size-12" />
+            </span>
 
+            <h2 class="font-titre text-5xl sm:text-8xl text-afup-700">{{ 'Merci'|trans }}</h2>
+
+            <p class="text-xl sm:text-2xl max-w-2xl text-neutre-700">
+                {{ "Vous allez recevoir le dossier par mail dans quelques minutes."|trans }}
+                {% for email in app.flashes('lead_email') %}
+                    <span class="block mt-2 font-medium">{{ 'Un email a été envoyé à %email%'|trans({'%email%': email}) }}</span>
+                {% endfor %}
+            </p>
+
+            <p class="text-sm text-neutre-400 max-w-xl">
+                {{ "Pensez à vérifier vos spams si vous ne le recevez pas."|trans }}
+                {{ 'Une question ?'|trans }}
+                <a href="mailto:sponsors@afup.org" class="text-afup-500 hover:underline">sponsors@afup.org</a>
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 mt-4">
+                <twig:Button as="a" variant="primary" href="https://event.afup.org" class="px-8 py-3 text-base">
+                    {{ "Découvrir l'événement"|trans }}
+                </twig:Button>
+                <twig:Button as="a" variant="secondary" href="{{ path('home') }}" class="px-8 py-3 text-base">
+                    {{ "Retour à l'accueil"|trans }}
+                </twig:Button>
+            </div>
+        </div>
     </div>
 {% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'layouts/root.html.twig' %}
+
+{% block root %}
+
+    <header class="bg-afup-300">
+        <div class="container mx-auto py-5 px-5 sm:px-0 flex items-center">
+            <div class="grow flex items-center gap-5">
+                <h1 class="text-white text-4xl font-titre">{% block header_title %}{% endblock %}</h1>
+                {% set locale = 'fr' %}
+                {% if app.request.locale == 'fr' %}
+                    {% set locale = 'en' %}
+                {% endif %}
+                {% set parameters = app.request.attributes.get('_route_params')|merge({'_locale': locale}) %}
+                <a href="{{ url(app.request.attributes.get('_route'), parameters) }}" class="text-white text-xl">
+                    [{{ locale }}]
+                </a>
+            </div>
+            <div>
+                <a href="{{ path('home') }}">
+                    <img src="{{ asset('templates/site/img/logo-afup.svg') }}" alt="AFUP: Association française des utilisateurs de PHP" class="hidden sm:block" />
+                    <img src="{{ asset('templates/site/img/logo-afup-mobile.svg') }}" alt="AFUP: Association française des utilisateurs de PHP" class="block sm:hidden max-w-32" />
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="grow flex flex-col">
+        {% block content %}{% endblock %}
+    </main>
+{% endblock %}

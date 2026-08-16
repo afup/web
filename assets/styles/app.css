@@ -22,6 +22,11 @@
     --color-ruby-500: #D50068;
     --color-ruby-700: #B30057;
 
+    /* Bordure d'un champ de formulaire en erreur */
+    --color-erreur-500: #C10825;
+    /* Texte d'un message d'erreur */
+    --color-erreur-700: #960018;
+
     /* Surcharge de la police par défaut des pages */
     --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 

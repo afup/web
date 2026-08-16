@@ -4,7 +4,7 @@ Feature: Site Public - Devenir sponsor
   Scenario: Redirection depuis /become-sponsor vers la page de sponsoring du dernier évènement
     Given I go to "/become-sponsor"
     Then the url should match "/event/forum/sponsor/become-sponsor"
-    And the ".container h1" element should contain "Devenir sponsor"
+    And the "h1" element should contain "Devenir sponsor"
 
   @reloadDbWithTestData
   @clearEmails

@@ -1,0 +1,12 @@
+{# @prop title Le titre de la section #}
+{# @block content Les champs de la section #}
+{%- props title -%}
+{%- set style = html_cva(
+    base: "flex flex-col gap-5 w-full",
+) -%}
+<div class="{{ style.apply({}, attributes.render('class'))|tailwind_merge }}" {{ attributes }}>
+    <h3 class="flex items-center gap-3 text-sm font-medium leading-5 uppercase text-neutre-700">
+        <span class="w-1 h-4 rounded-full bg-afup-300 shrink-0" aria-hidden="true"></span>{{ title }}
+    </h3>
+    {%- block content %}{% endblock -%}
+</div>

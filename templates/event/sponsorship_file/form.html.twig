@@ -1,40 +1,52 @@
-{% extends 'event/sponsorship_file/base.html.twig' %}
+{% extends 'layouts/event.html.twig' %}
+{% form_theme leadForm 'form_themes/tailwind.html.twig' %}
 
-{% set menu = {'main': {'route' : 'ticket', 'title': 'Become a sponsor'}} %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('/css/tickets.css') }}" />
-{% endblock %}
+{% block title %}{{ 'Dossier sponsor'|trans }} - AFUP{% endblock %}
+{% block header_title %}{{ 'Devenir sponsor'|trans }}{% endblock %}
 
 {% block content %}
-    <div class="col-md-8">
-        <h1>{{ 'Devenir sponsor'|trans }}</h1>
-        <div class="sponsor--become-talk">
-            {{ event.getBecomeSponsorText|markdown }}
-        </div>
 
-    </div>
-    <div class="sponsor--become-form col-md-4">
-        {{ form_start(leadForm) }}
-        <fieldset>
-            <legend>{{ 'Recevoir notre dossier'|trans }}</legend>
-            <div class="fieldset--inner">
-                {{ form_row(leadForm.firstname) }}
-                {{ form_row(leadForm.lastname) }}
-                {{ form_row(leadForm.email) }}
-                {{ form_row(leadForm.phone) }}
-                {{ form_row(leadForm.company) }}
-                {{ form_row(leadForm.poste) }}
-                {{ form_row(leadForm.website) }}
-                {{ form_row(leadForm.language) }}
-                {{ form_row(leadForm.recaptcha) }}
-                {{ form_errors(leadForm) }}
-                <div class="sponsor--become-submit">
-                    <input type="submit" value="{{ 'Recevoir le dossier'|trans }}" />
+    <main>
+        <div class="container mx-auto px-5 sm:px-0 items-center">
+            {% if event.becomeSponsorText is not empty %}
+                <div class="flex">
+                    <div class="prose prose-lg max-w-none sm:my-5 mt-5 sm:text-justify">
+                        {{ event.becomeSponsorText|markdown_to_html }}
+                    </div>
                 </div>
-            </div>
-        </fieldset>
-        {{ form_end(leadForm) }}
-    </div>
+            {% endif %}
+
+            {{ form_start(leadForm) }}
+            <twig:Card class="flex flex-col gap-8 p-6 sm:p-10 my-5 sm:mb-10">
+                <twig:Card:Title type="form" class="text-2xl mb-0">{{ 'Recevoir notre dossier'|trans }}</twig:Card:Title>
+
+                {{ form_errors(leadForm) }}
+
+                <twig:Form:Section title="{{ 'Vos coordonnées'|trans }}">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
+                        {{ form_row(leadForm.firstname) }}
+                        {{ form_row(leadForm.lastname) }}
+                        {{ form_row(leadForm.email) }}
+                        {{ form_row(leadForm.phone) }}
+                        {{ form_row(leadForm.language) }}
+                    </div>
+                </twig:Form:Section>
+
+                <twig:Form:Section title="{{ 'Votre entreprise'|trans }}">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
+                        {{ form_row(leadForm.company) }}
+                        {{ form_row(leadForm.poste) }}
+                        {{ form_row(leadForm.website) }}
+                    </div>
+                </twig:Form:Section>
+
+                {{ form_row(leadForm.recaptcha) }}
+
+                <div class="flex items-center justify-end border-t-2 border-neutre-300 pt-5">
+                    <twig:Button type="submit" class="px-8 py-3 text-base font-semibold">{{ 'Recevoir le dossier'|trans }}</twig:Button>
+                </div>
+            </twig:Card>
+            {{ form_end(leadForm) }}
+        </div>
+    </main>
 {% endblock %}

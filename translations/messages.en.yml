@@ -65,6 +65,11 @@ Company: Company
 Locality: Locality
 Biography: Biography
 Twitter: Twitter
+Vos coordonnées: 'Your contact details'
+Votre entreprise: 'Your company'
+Poste: 'Job title'
+Site web: 'Website'
+Vérification: 'Verification'
 'Thème:': 'Theme:'
 'Proposition enregistrée !': 'Talk saved!'
 'Vous devez remplir votre profil conférencier afin de pouvoir soumettre un sujet.': 'Please fill out your speaker profile to submit a talk.'
@@ -143,6 +148,11 @@ Billetterie: Ticketing
   <p><a href="https://afup.org">afup.org</a>
 'Merci': 'Thank you'
 "Vous allez recevoir le dossier par mail dans quelques minutes.": "You will receive the file by mail in a few minutes."
+'Un email a été envoyé à %email%': 'An email has been sent to %email%'
+"Pensez à vérifier vos spams si vous ne le recevez pas.": "Remember to check your spam folder if you haven't received it."
+'Une question ?': 'Any question?'
+"Découvrir l'événement": 'Discover the event'
+"Retour à l'accueil": 'Back to home'
 "Ces notes facultatives peuvent contenir des informations sur votre conférence que vous ne voudriez pas voir apparaitre sur le système de vote et dans le programme": "These optional notes can contain informations about your talk that you does not want to be displayed in the voting system or the schedule."
 Votre conférence: "Your talk"
 "Vos conférences": "Your talks"

@@ -26,8 +26,7 @@
         {% endif %}
     {% endblock %}
 
-    {% block head %}
-    {% endblock %}
+    {% block head %}{% endblock %}
 
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
@@ -45,7 +44,7 @@
 </head>
 
 <body class="flex flex-col h-screen justify-between">
-<div>
+<div class="flex flex-col grow">
     <div class="hidden sm:block bg-afup-800">
         <nav class="container mx-auto flex text-white justify-center p-1 gap-2">
             <a href="https://afup.org" class="px-5 py-1 text-sm hover:bg-afup-700 bg-afup-700 rounded">AFUP</a>
