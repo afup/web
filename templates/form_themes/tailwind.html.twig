@@ -1,0 +1,158 @@
+{% use 'form_div_layout.html.twig' %}
+
+{# ----- Support ----- #}
+
+{# Classes communes à tous les champs (input, textarea, select). #}
+{%- block afup_field_class -%}
+    w-full rounded-lg border-2 bg-white px-3 text-sm text-gray-700 placeholder:text-neutre-400 focus:border-afup-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutre-200 disabled:text-neutre-400 {{ (valid ?? true) ? 'border-neutre-300' : 'border-erreur-500' }}
+{%- endblock afup_field_class -%}
+
+{# Classes communes aux cases à cocher et boutons radio. #}
+{%- block afup_toggle_class -%}
+    size-4 shrink-0 border-2 border-neutre-300 accent-ruby-500 focus:outline-afup-500 disabled:cursor-not-allowed
+{%- endblock afup_toggle_class -%}
+
+{# ----- Lignes ----- #}
+
+{%- block form_row_render -%}
+    {%- set row_attr = row_attr|merge({class: ('flex w-full flex-col gap-1.5 ' ~ row_attr.class|default(''))|tailwind_merge}) -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_label(form) -}}
+        {{- form_widget(form, widget_attr|default({})) -}}
+        {{- form_errors(form) -}}
+        {{- form_help(form) -}}
+    </div>
+{%- endblock form_row_render -%}
+
+{# Une case à cocher / un bouton radio se lit à côté de son libellé, pas en dessous. #}
+{%- block checkbox_row -%}
+    {%- set row_attr = row_attr|merge({class: ('flex w-full flex-wrap items-center gap-x-2 gap-y-1.5 ' ~ row_attr.class|default(''))|tailwind_merge}) -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_widget(form, widget_attr|default({})) -}}
+        {{- form_label(form, null, {label_attr: {class: 'items-center text-sm font-normal'}}) -}}
+        <div class="w-full">
+            {{- form_errors(form) -}}
+            {{- form_help(form) -}}
+        </div>
+    </div>
+{%- endblock checkbox_row -%}
+
+{%- block radio_row -%}{{ block('checkbox_row') }}{%- endblock radio_row -%}
+
+{%- block button_row -%}
+    {%- set row_attr = row_attr|merge({class: ('flex w-full items-center justify-end ' ~ row_attr.class|default(''))|tailwind_merge}) -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_widget(form) -}}
+    </div>
+{%- endblock button_row -%}
+
+{# ----- Libellés et aides ----- #}
+
+{%- block form_label -%}
+    {%- if label is not same as(false) -%}
+        {%- if not compound -%}
+            {%- set label_attr = label_attr|merge({for: id}) -%}
+        {%- endif -%}
+        {%- set label_attr = label_attr|merge({class: ('flex items-start gap-1 text-sm leading-4 font-medium text-neutre-700 ' ~ label_attr.class|default(''))|tailwind_merge}) -%}
+        <{{ element|default('label') }}{% with {attr: label_attr} %}{{ block('attributes') }}{% endwith %}>
+            {{- block('form_label_content') -}}
+            {#- On affiche les champs facultatifs plutôt que les champs requis. -#}
+            {%- if not required and 'checkbox' not in block_prefixes and 'radio' not in block_prefixes -%}
+                <span class="flex items-center gap-1 font-normal text-neutre-400">-<em>{{ 'Facultatif'|trans }}</em></span>
+            {%- endif -%}
+        </{{ element|default('label') }}>
+    {%- endif -%}
+{%- endblock form_label -%}
+
+{% block form_help -%}
+    {%- if help -%}
+        {%- set help_attr = help_attr|merge({class: ('text-xs leading-4 text-neutre-400 ' ~ help_attr.class|default(''))|tailwind_merge}) -%}
+        <p id="{{ id }}_help"{% with {attr: help_attr} %}{{ block('attributes') }}{% endwith %}>
+            {{- block('form_help_content') -}}
+        </p>
+    {%- endif -%}
+{%- endblock form_help %}
+
+{%- block form_errors -%}
+    {%- for error in errors -%}
+        <p id="{{ id ~ '_error' ~ loop.index }}" class="text-xs leading-4 text-erreur-700">{{ error.message }}</p>
+    {%- endfor -%}
+{%- endblock form_errors -%}
+
+{# ----- Champs texte ----- #}
+
+{%- block form_widget_simple -%}
+    {%- if type|default('text') != 'hidden' -%}
+        {%- set attr = attr|merge({class: (block('afup_field_class')|trim ~ ' h-10 ' ~ attr.class|default(''))|tailwind_merge}) -%}
+    {%- endif -%}
+    {{- parent() -}}
+{%- endblock form_widget_simple -%}
+
+{%- block textarea_widget -%}
+    {%- set attr = attr|merge({class: (block('afup_field_class')|trim ~ ' min-h-24 py-3 ' ~ attr.class|default(''))|tailwind_merge}) -%}
+    {{- parent() -}}
+{%- endblock textarea_widget -%}
+
+{%- block file_widget -%}
+    {%- set type = type|default('file') -%}
+    {%- set attr = attr|merge({class: ('py-2 file:mr-3 file:rounded-md file:border-0 file:bg-afup-100 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-afup-500 hover:file:bg-afup-500 hover:file:text-white ' ~ attr.class|default(''))|tailwind_merge}) -%}
+    {{- block('form_widget_simple') -}}
+{%- endblock file_widget -%}
+
+{# ----- Choix ----- #}
+
+{%- block choice_widget_collapsed -%}
+    {%- set attr = attr|merge({class: (
+        block('afup_field_class')|trim
+        ~ (multiple or attr.size|default(1) > 1 ? ' min-h-10 py-2' : ' h-10 appearance-none pr-9')
+        ~ ' ' ~ attr.class|default('')
+    )|tailwind_merge}) -%}
+    {%- if multiple or attr.size|default(1) > 1 -%}
+        {{- parent() -}}
+    {%- else -%}
+        <div class="relative w-full">
+            {{- parent() -}}
+            <twig:ux:icon name="mingcute:down-fill" class="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-neutre-700" />
+        </div>
+    {%- endif -%}
+{%- endblock choice_widget_collapsed -%}
+
+{%- block choice_widget_expanded -%}
+    {%- set attr = attr|merge({class: ('flex flex-col gap-2 ' ~ attr.class|default(''))|tailwind_merge}) -%}
+    <div {{ block('widget_container_attributes') }}>
+        {%- for child in form -%}
+            <div class="flex items-center gap-2">
+                {{- form_widget(child) -}}
+                {{- form_label(child, null, {translation_domain: choice_translation_domain, label_attr: {class: 'text-sm font-normal'}}) -}}
+            </div>
+        {%- endfor -%}
+    </div>
+{%- endblock choice_widget_expanded -%}
+
+{%- block checkbox_widget -%}
+    {%- set attr = attr|merge({class: (block('afup_toggle_class')|trim ~ ' rounded ' ~ attr.class|default(''))|tailwind_merge}) -%}
+    {{- parent() -}}
+{%- endblock checkbox_widget -%}
+
+{%- block radio_widget -%}
+    {%- set attr = attr|merge({class: (block('afup_toggle_class')|trim ~ ' rounded-full ' ~ attr.class|default(''))|tailwind_merge}) -%}
+    {{- parent() -}}
+{%- endblock radio_widget -%}
+
+{# ----- Boutons ----- #}
+
+{%- block button_widget -%}
+    {%- set button_type = type|default('button') -%}
+    {%- set button_content = block('form_label_content') -%}
+    {%- set attr = attr|merge({class: ('rounded-lg px-8 py-3 text-base font-semibold ' ~ attr.class|default(''))|tailwind_merge}) -%}
+    {% component 'Button' with attr|merge({
+        as: 'button',
+        variant: button_type == 'reset' ? 'secondary' : 'primary',
+        type: button_type,
+        id: id,
+        name: full_name,
+        disabled: disabled,
+    }) %}
+        {%- block content -%}{{ button_content }}{%- endblock -%}
+    {% endcomponent %}
+{%- endblock button_widget -%}

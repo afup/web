@@ -1,7 +1,15 @@
+{# @prop variant 'default'|'form' Quel genre de titre #}
 {# @block content Contenu du titre #}
+{%- props type = 'default' -%}
 {%- set style = html_cva(
-    base: "text-afup-800 font-titre font-light text-lg mb-5",
+    base: "font-titre font-light text-lg mb-5",
+    variants: {
+        type: {
+            default: "text-afup-800",
+            form: "text-afup-500",
+        }
+    }
 ) -%}
-<h2 class="{{ style.apply({}, attributes.render('class'))|tailwind_merge }}" {{ attributes }}>
+<h2 class="{{ style.apply({type}, attributes.render('class'))|tailwind_merge }}" {{ attributes }}>
     {%- block content %}{% endblock -%}
 </h2>

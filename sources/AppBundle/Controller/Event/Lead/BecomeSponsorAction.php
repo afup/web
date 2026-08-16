@@ -47,6 +47,8 @@ final class BecomeSponsorAction extends AbstractController
 
             $this->sendMailToTeamSponsor($event, $lead);
 
+            $this->addFlash('lead_email', $lead->getEmail());
+
             return $this->redirectToRoute('sponsor_leads_post', ['eventSlug' => $eventSlug]);
         }
 
