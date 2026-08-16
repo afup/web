@@ -24,10 +24,10 @@ class InvoiceType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('invoiceDate', DateType::class, [
+        $builder->add('dateFacture', DateType::class, [
             'label' => 'Date facture',
             'widget' => 'single_text',
-        ])->add('company', TextType::class, [
+        ])->add('societe', TextType::class, [
             'label' => 'Société',
             'constraints' => [
                 new Assert\NotBlank(),
@@ -40,38 +40,38 @@ class InvoiceType extends AbstractType
             'constraints' => [
                 new Assert\Length(max: 50),
             ],
-        ])->add('address', TextareaType::class, [
+        ])->add('adresse', TextareaType::class, [
             'label' => 'Adresse',
-        ])->add('zipcode', TextType::class, [
+        ])->add('codePostal', TextType::class, [
             'label' => 'Code postal',
             'constraints' => [
                 new Assert\NotBlank(),
                 new Assert\Length(max: 10),
             ],
-        ])->add('city', TextType::class, [
+        ])->add('ville', TextType::class, [
             'label' => 'Ville',
             'constraints' => [
                 new Assert\NotBlank(),
                 new Assert\Length(max: 50),
             ],
-        ])->add('countryId', ChoiceType::class, [
+        ])->add('idPays', ChoiceType::class, [
             'label' => 'Pays',
             'choices' => array_flip($this->pays->obtenirPays()),
-        ])->add('lastname', TextType::class, [
+        ])->add('nom', TextType::class, [
             'label' => 'Nom',
             'required' => false,
             'empty_data' => '',
             'constraints' => [
                 new Assert\Length(max: 50),
             ],
-        ])->add('firstname', TextType::class, [
+        ])->add('prenom', TextType::class, [
             'label' => 'Prénom',
             'required' => false,
             'empty_data' => '',
             'constraints' => [
                 new Assert\Length(max: 50),
             ],
-        ])->add('phone', TextType::class, [
+        ])->add('telephone', TextType::class, [
             'label' => 'Tel',
             'required' => false,
             'empty_data' => '',
@@ -90,21 +90,21 @@ class InvoiceType extends AbstractType
             'constraints' => [
                 new Assert\Length(max: 20),
             ],
-        ])->add('refClt1', TextType::class, [
+        ])->add('referenceClient1', TextType::class, [
             'label' => 'Référence client',
             'required' => false,
             'empty_data' => '',
             'constraints' => [
                 new Assert\Length(max: 50),
             ],
-        ])->add('refClt2', TextType::class, [
+        ])->add('referenceClient2', TextType::class, [
             'label' => 'Référence client 2',
             'required' => false,
             'empty_data' => '',
             'constraints' => [
                 new Assert\Length(max: 50),
             ],
-        ])->add('refClt3', TextType::class, [
+        ])->add('referenceClient3', TextType::class, [
             'label' => 'Référence client 3',
             'required' => false,
             'empty_data' => '',
@@ -115,7 +115,7 @@ class InvoiceType extends AbstractType
             'required' => false,
             'empty_data' => '',
             'label' => 'Observation',
-        ])->add('currency', EnumType::class, [
+        ])->add('deviseFacture', EnumType::class, [
             'required' => false,
             'class' => InvoicingCurrency::class,
             'attr' => ['size' => count(InvoicingCurrency::cases())],
@@ -127,21 +127,21 @@ class InvoiceType extends AbstractType
             'allow_add' => false,
             'allow_delete' => false,
             'entry_options' => ['disabled' => true],
-        ])->add('quotationNumber', TextType::class, [
+        ])->add('numeroDevis', TextType::class, [
             'label' => 'Numéro de devis',
             'required' => false,
             'attr' => ['readonly' => 'readonly'],
             'constraints' => [
                 new Assert\Length(max: 50),
             ],
-        ])->add('invoiceNumber', TextType::class, [
+        ])->add('numeroFacture', TextType::class, [
             'label' => 'Numéro facture',
             'required' => false,
             'attr' => ['readonly' => 'readonly'],
             'constraints' => [
                 new Assert\Length(max: 50),
             ],
-        ])->add('paymentStatus', EnumType::class, [
+        ])->add('etatPaiement', EnumType::class, [
             'required' => false,
             'class' => InvoicingPaymentStatus::class,
             'attr' => ['size' => count(InvoicingPaymentStatus::cases())],
@@ -149,7 +149,7 @@ class InvoiceType extends AbstractType
             'placeholder' => false,
             'choice_label' => fn(InvoicingPaymentStatus $choice, string $key, mixed $value): string => $choice->label(),
         ])
-        ->add('paymentDate', DateType::class, [
+        ->add('datePaiement', DateType::class, [
             'label' => 'Date de paiement',
             'required' => false,
             'widget' => 'single_text',

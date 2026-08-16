@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Accounting\Form;
 
 use Afup\Site\Utils\Pays;
+use AppBundle\Accounting\Entity\Invoicing;
 use AppBundle\Accounting\InvoicingCurrency;
-use AppBundle\Accounting\Model\Invoicing;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -27,11 +27,11 @@ class QuotationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('quotationDate', DateType::class, [
+        $builder->add('dateDevis', DateType::class, [
             'label' => 'Date devis',
             'required' => true,
             'widget' => 'single_text',
-        ])->add('company', TextType::class, [
+        ])->add('societe', TextType::class, [
             'label' => 'Société',
             'empty_data' => '',
             'constraints' => [
@@ -47,13 +47,13 @@ class QuotationType extends AbstractType
                 new Assert\Type('string'),
                 new Assert\Length(max: 50),
             ],
-        ])->add('address', TextareaType::class, [
+        ])->add('adresse', TextareaType::class, [
             'label' => 'Adresse',
             'empty_data' => '',
             'constraints' => [
                 new Assert\Type('string'),
             ],
-        ])->add('zipcode', TextType::class, [
+        ])->add('codePostal', TextType::class, [
             'label' => 'Code postal',
             'empty_data' => '',
             'constraints' => [
@@ -61,7 +61,7 @@ class QuotationType extends AbstractType
                 new Assert\Type('string'),
                 new Assert\Length(max: 10),
             ],
-        ])->add('city', TextType::class, [
+        ])->add('ville', TextType::class, [
             'label' => 'Ville',
             'empty_data' => '',
             'constraints' => [
@@ -69,10 +69,10 @@ class QuotationType extends AbstractType
                 new Assert\Type('string'),
                 new Assert\Length(max: 50),
             ],
-        ])->add('countryId', ChoiceType::class, [
+        ])->add('idPays', ChoiceType::class, [
             'label' => 'Pays',
             'choices' => array_flip($this->pays->obtenirPays()),
-        ])->add('lastname', TextType::class, [
+        ])->add('nom', TextType::class, [
             'label' => 'Nom',
             'required' => false,
             'empty_data' => '',
@@ -80,7 +80,7 @@ class QuotationType extends AbstractType
                 new Assert\Type('string'),
                 new Assert\Length(max: 50),
             ],
-        ])->add('firstname', TextType::class, [
+        ])->add('prenom', TextType::class, [
             'label' => 'Prénom',
             'required' => false,
             'empty_data' => '',
@@ -88,7 +88,7 @@ class QuotationType extends AbstractType
                 new Assert\Type('string'),
                 new Assert\Length(max: 50),
             ],
-        ])->add('phone', TextType::class, [
+        ])->add('telephone', TextType::class, [
             'label' => 'Tel',
             'required' => false,
             'empty_data' => '',
@@ -112,7 +112,7 @@ class QuotationType extends AbstractType
                 new Assert\Type('string'),
                 new Assert\Length(max: 20),
             ],
-        ])->add('refClt1', TextType::class, [
+        ])->add('referenceClient1', TextType::class, [
             'label' => 'Référence client',
             'required' => false,
             'empty_data' => '',
@@ -120,7 +120,7 @@ class QuotationType extends AbstractType
                 new Assert\Type('string'),
                 new Assert\Length(max: 50),
             ],
-        ])->add('refClt2', TextType::class, [
+        ])->add('referenceClient2', TextType::class, [
             'label' => 'Référence client 2',
             'required' => false,
             'empty_data' => '',
@@ -128,7 +128,7 @@ class QuotationType extends AbstractType
                 new Assert\Type('string'),
                 new Assert\Length(max: 50),
             ],
-        ])->add('refClt3', TextType::class, [
+        ])->add('referenceClient3', TextType::class, [
             'label' => 'Référence client 3',
             'required' => false,
             'empty_data' => '',
@@ -140,7 +140,7 @@ class QuotationType extends AbstractType
             'required' => false,
             'empty_data' => '',
             'label' => 'Observation',
-        ])->add('currency', EnumType::class, [
+        ])->add('deviseFacture', EnumType::class, [
             'required' => false,
             'class' => InvoicingCurrency::class,
             'attr' => ['size' => count(InvoicingCurrency::cases())],
@@ -154,7 +154,7 @@ class QuotationType extends AbstractType
         ]);
 
         if ($options['actionType'] === 'edit') {
-            $builder->add('quotationNumber', TextType::class, [
+            $builder->add('numeroDevis', TextType::class, [
                 'label' => 'Numéro de devis',
                 'required' => false,
                 'constraints' => [

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Journal;
 
-use AppBundle\Accounting\Model\Repository\InvoicingPeriodRepository;
+use AppBundle\Accounting\Entity\Repository\InvoicingPeriodRepository;
 use DateInterval;
 use DatePeriod;
 use RuntimeException;
@@ -26,7 +26,7 @@ class DownloadAttachmentsAction extends AbstractController
     {
         $periodId = $request->query->has('periodId') && $request->query->get('periodId') ? (int) $request->query->get('periodId') : null;
         $period = $this->invoicingPeriodRepository->getCurrentPeriod($periodId);
-        $year = $period->getStartDate()->format('Y');
+        $year = $period->dateDebut->format('Y');
 
         // Create the zip
         $zipFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'afup_justificatifs-' . $year . '.zip';
@@ -36,7 +36,7 @@ class DownloadAttachmentsAction extends AbstractController
             throw new RuntimeException("Impossible to open the Zip archive.");
         }
 
-        $datePeriod = new DatePeriod($period->getStartDate(), new DateInterval('P1M'), $period->getEndDate());
+        $datePeriod = new DatePeriod($period->dateDebut, new DateInterval('P1M'), $period->dateFin);
         /** @var \DateTime $month */
         foreach ($datePeriod as $month) {
             $directory = $year . $month->format('m');

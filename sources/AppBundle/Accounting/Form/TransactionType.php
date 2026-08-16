@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace AppBundle\Accounting\Form;
 
+use AppBundle\Accounting\Entity\Account;
+use AppBundle\Accounting\Entity\Category;
 use AppBundle\Accounting\Entity\Event;
+use AppBundle\Accounting\Entity\Operation;
+use AppBundle\Accounting\Entity\Payment;
 use AppBundle\Accounting\Entity\Repository\AccountRepository;
 use AppBundle\Accounting\Entity\Repository\CategoryRepository;
 use AppBundle\Accounting\Entity\Repository\EventRepository;
 use AppBundle\Accounting\Entity\Repository\OperationRepository;
 use AppBundle\Accounting\Entity\Repository\PaymentRepository;
-use AppBundle\Accounting\Model\Transaction;
+use AppBundle\Accounting\Entity\Transaction;
 use AppBundle\Accounting\TvaZone;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -37,44 +41,52 @@ class TransactionType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('operationId', ChoiceType::class, [
+        $builder->add('operation', EntityType::class, [
             'label' => 'Type d\'opération',
-            'choices' => $this->buildOperationTypeChoice(),
+            'class' => Operation::class,
+            'choices' => $this->operationRepository->findAll(),
+            'choice_label' => 'name',
             'placeholder' => '',
             'constraints' => [
                 new Assert\NotBlank(message: "Type d'opération manquant"),
             ],
         ])
-        ->add('accountId', ChoiceType::class, [
+        ->add('compte', EntityType::class, [
             'label' => 'Compte',
-            'choices' => $this->buildAccountChoice(),
+            'class' => Account::class,
+            'choices' => $this->accountRepository->getAllSortedByName(),
+            'choice_label' => 'name',
             'placeholder' => '',
             'constraints' => [
                 new Assert\NotBlank(),
             ],
         ])
-        ->add('eventId', ChoiceType::class, [
+        ->add('evenement', EntityType::class, [
             'label' => 'Évènement',
-            'choices' => $this->buildEventChoice(),
+            'class' => Event::class,
+            'choices' => $this->eventRepository->getAllSortedByName(),
+            'choice_label' => 'name',
             'placeholder' => '',
             'constraints' => [
                 new Assert\NotBlank(message: "Évènement manquant"),
             ],
         ])
-        ->add('accountingDate', DateType::class, [
+        ->add('dateEcriture', DateType::class, [
             'label' => 'Date saisie',
             'widget' => 'single_text',
             'required' => false,
         ])
-        ->add('categoryId', ChoiceType::class, [
+        ->add('categorie', EntityType::class, [
             'label' => 'categorie',
+            'class' => Category::class,
             'placeholder' => '',
-            'choices' => $this->buildCategoryChoice(),
+            'choices' => $this->categoryRepository->getAllSortedByName(),
+            'choice_label' => 'name',
             'constraints' => [
                 new Assert\NotBlank(message: "Catégorie manquante"),
             ],
         ])
-        ->add('vendorName', TextType::class, [
+        ->add('nomFournisseur', TextType::class, [
             'label' => 'Nom fournisseurs ',
             'required' => false,
             'empty_data' => '',
@@ -83,7 +95,7 @@ class TransactionType extends AbstractType
             'label' => 'TVA intracommunautaire (facture)',
             'required' => false,
         ])
-        ->add('number', TextType::class, [
+        ->add('numero', TextType::class, [
             'label' => 'Numero facture',
             'required' => false,
             'empty_data' => '',
@@ -93,7 +105,7 @@ class TransactionType extends AbstractType
             'required' => false,
             'empty_data' => '',
         ])
-        ->add('amount', MoneyType::class, [
+        ->add('montant', MoneyType::class, [
             'label' => 'Montant',
             'currency' => '',
             'constraints' => [
@@ -101,26 +113,26 @@ class TransactionType extends AbstractType
                 new Assert\NotEqualTo(value: 0, message: "Montant manquant"),
             ],
         ])
-        ->add('comment', TextType::class, [
+        ->add('commentaire', TextType::class, [
             'label' => 'Commentaire',
             'required' => false,
         ])
-        ->add('amountTva5_5', MoneyType::class, [
+        ->add('montantTva5_5', MoneyType::class, [
             'label' => 'Montant HT soumis à TVA 5.5%',
             'required' => false,
             'currency' => '',
         ])
-        ->add('amountTva10', MoneyType::class, [
+        ->add('montantTva10', MoneyType::class, [
             'label' => 'Montant HT soumis à TVA 10%',
             'required' => false,
             'currency' => '',
         ])
-        ->add('amountTva20', MoneyType::class, [
+        ->add('montantTva20', MoneyType::class, [
             'label' => 'Montant HT soumis à TVA 20%',
             'required' => false,
             'currency' => '',
         ])
-        ->add('amountTva0', MoneyType::class, [
+        ->add('montantTva0', MoneyType::class, [
             'label' => 'Montant HT non soumis à TVA',
             'required' => false,
             'currency' => '',
@@ -134,17 +146,20 @@ class TransactionType extends AbstractType
             'choice_label' => fn(TvaZone $choice, string $key, mixed $value): string => $choice->getLabel(),
 
         ])
-        ->add('paymentTypeId', ChoiceType::class, [
+        ->add('modeReglement', EntityType::class, [
             'label' => 'Réglement',
+            'class' => Payment::class,
             'required' => false,
-            'choices' => $this->buildPaymentTypeChoice(),
+            'placeholder' => '',
+            'choices' => $this->paymentRepository->getAllSortedByName(),
+            'choice_label' => 'name',
         ])
-        ->add('paymentDate', DateType::class, [
+        ->add('dateReglement', DateType::class, [
             'label' => 'Date',
             'widget' => 'single_text',
             'required' => false,
         ])
-        ->add('paymentComment', TextType::class, [
+        ->add('commentaireReglement', TextType::class, [
             'label' => 'Info réglement',
             'required' => false,
             'empty_data' => '',
@@ -171,24 +186,24 @@ class TransactionType extends AbstractType
             ]);
         }
 
-        $builder->get('amount')->resetViewTransformers();
-        $builder->get('amount')->addViewTransformer(
+        $builder->get('montant')->resetViewTransformers();
+        $builder->get('montant')->addViewTransformer(
             new MoneyToLocalizedStringTransformer(2, false, null, null, 'en'),
         );
-        $builder->get('amountTva0')->resetViewTransformers();
-        $builder->get('amountTva0')->addViewTransformer(
+        $builder->get('montantTva0')->resetViewTransformers();
+        $builder->get('montantTva0')->addViewTransformer(
             new MoneyToLocalizedStringTransformer(2, false, null, null, 'en'),
         );
-        $builder->get('amountTva5_5')->resetViewTransformers();
-        $builder->get('amountTva5_5')->addViewTransformer(
+        $builder->get('montantTva5_5')->resetViewTransformers();
+        $builder->get('montantTva5_5')->addViewTransformer(
             new MoneyToLocalizedStringTransformer(2, false, null, null, 'en'),
         );
-        $builder->get('amountTva10')->resetViewTransformers();
-        $builder->get('amountTva10')->addViewTransformer(
+        $builder->get('montantTva10')->resetViewTransformers();
+        $builder->get('montantTva10')->addViewTransformer(
             new MoneyToLocalizedStringTransformer(2, false, null, null, 'en'),
         );
-        $builder->get('amountTva20')->resetViewTransformers();
-        $builder->get('amountTva20')->addViewTransformer(
+        $builder->get('montantTva20')->resetViewTransformers();
+        $builder->get('montantTva20')->addViewTransformer(
             new MoneyToLocalizedStringTransformer(2, false, null, null, 'en'),
         );
     }
@@ -203,57 +218,5 @@ class TransactionType extends AbstractType
             ],
             'nextTransaction' => null,
         ]);
-    }
-
-    private function buildOperationTypeChoice(): array
-    {
-        $choices = [];
-        foreach ($this->operationRepository->findAll() as $operation) {
-            $choices[$operation->name] = $operation->id;
-        }
-
-        return $choices;
-    }
-
-    private function buildAccountChoice(): array
-    {
-        $choices = [];
-        foreach ($this->accountRepository->getAllSortedByName() as $account) {
-            $choices[$account->name] = $account->id;
-        }
-
-        return $choices;
-    }
-
-    private function buildEventChoice(): array
-    {
-        $choices = [];
-        /** @var Event $event */
-        foreach ($this->eventRepository->getAllSortedByName() as $event) {
-            $choices[$event->name] = $event->id;
-        }
-
-        return $choices;
-    }
-
-    private function buildCategoryChoice(): array
-    {
-        $choices = [];
-        foreach ($this->categoryRepository->getAllSortedByName() as $category) {
-            $choices[$category->name] = $category->id;
-        }
-
-        return $choices;
-    }
-
-    private function buildPaymentTypeChoice(): array
-    {
-        $choices = [];
-        $choices[''] = 0;
-        foreach ($this->paymentRepository->getAllSortedByName() as $paymentType) {
-            $choices[$paymentType->name] = $paymentType->id;
-        }
-
-        return $choices;
     }
 }

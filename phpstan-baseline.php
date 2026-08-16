@@ -200,6 +200,30 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/Afup/Utils/Vat.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\InvoicingDetail\\:\\:\\$designation type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#',
+	'identifier' => 'doctrine.columnType',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/InvoicingDetail.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\InvoicingDetail\\:\\:\\$prixUnitaire type mapping mismatch\\: property can contain float\\|null but database expects float\\|int\\.$#',
+	'identifier' => 'doctrine.columnType',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/InvoicingDetail.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\InvoicingDetail\\:\\:\\$quantite type mapping mismatch\\: property can contain float\\|null but database expects float\\|int\\.$#',
+	'identifier' => 'doctrine.columnType',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/InvoicingDetail.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\InvoicingDetail\\:\\:\\$reference type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#',
+	'identifier' => 'doctrine.columnType',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/InvoicingDetail.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Accounting\\\\Entity\\\\Repository\\\\AccountRepository\\:\\:getAllSortedByName\\(\\) should return array\\<AppBundle\\\\Accounting\\\\Entity\\\\Account\\> but returns mixed\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
@@ -218,6 +242,30 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/EventRepository.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Method AppBundle\\\\Accounting\\\\Entity\\\\Repository\\\\InvoicingPeriodRepository\\:\\:getCurrentPeriod\\(\\) should return AppBundle\\\\Accounting\\\\Entity\\\\InvoicingPeriod but returns AppBundle\\\\Accounting\\\\Entity\\\\InvoicingPeriod\\|null\\.$#',
+	'identifier' => 'return.type',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/InvoicingPeriodRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot access property \\$dateDebut on AppBundle\\\\Accounting\\\\Entity\\\\InvoicingPeriod\\|null\\.$#',
+	'identifier' => 'property.nonObject',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/InvoicingRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot access property \\$dateFin on AppBundle\\\\Accounting\\\\Entity\\\\InvoicingPeriod\\|null\\.$#',
+	'identifier' => 'property.nonObject',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/InvoicingRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot cast mixed to int\\.$#',
+	'identifier' => 'cast.int',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/InvoicingRepository.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Accounting\\\\Entity\\\\Repository\\\\PaymentRepository\\:\\:getAllSortedByName\\(\\) should return array\\<AppBundle\\\\Accounting\\\\Entity\\\\Payment\\> but returns mixed\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
@@ -234,6 +282,18 @@ $ignoreErrors[] = [
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/RuleRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
+	'identifier' => 'method.nonObject',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/TransactionRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method AppBundle\\\\Accounting\\\\Entity\\\\Repository\\\\TransactionRepository\\:\\:getNextTransaction\\(\\) should return AppBundle\\\\Accounting\\\\Entity\\\\Transaction\\|null but returns mixed\\.$#',
+	'identifier' => 'return.type',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/TransactionRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Class AppBundle\\\\Accounting\\\\Form\\\\AccountType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
@@ -326,36 +386,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Accounting/Form/TransactionType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Form\\\\TransactionType\\:\\:buildAccountChoice\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Form/TransactionType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Form\\\\TransactionType\\:\\:buildCategoryChoice\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Form/TransactionType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Form\\\\TransactionType\\:\\:buildEventChoice\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Form/TransactionType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Form\\\\TransactionType\\:\\:buildOperationTypeChoice\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Form/TransactionType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Form\\\\TransactionType\\:\\:buildPaymentTypeChoice\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Form/TransactionType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Class AppBundle\\\\Accounting\\\\Form\\\\TransactionsImportType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
@@ -392,12 +422,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Accounting/InvoicingPdfGenerator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$id of method Afup\\\\Site\\\\Utils\\\\Pays\\:\\:obtenirNom\\(\\) expects string, string\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/InvoicingPdfGenerator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$num of function number_format expects float, float\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 2,
@@ -410,158 +434,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Accounting/InvoicingPdfGenerator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Accounting\\\\Model\\\\Invoicing\\:\\:\\$countryId \\(string\\) does not accept string\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Invoicing.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'id\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingDetailRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingDetailRepository\\:\\:getRowsIdsPerInvoicingId\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingDetailRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingDetailRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingDetailRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingDetailRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingDetailRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingDetailRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingPeriodRepository\\:\\:getCurrentPeriod\\(\\) should return AppBundle\\\\Accounting\\\\Model\\\\InvoicingPeriod but returns AppBundle\\\\Accounting\\\\Model\\\\InvoicingPeriod\\|null\\.$#',
-	'identifier' => 'return.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingPeriodRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingPeriodRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingPeriodRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingPeriodRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingPeriodRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingPeriodRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'next_index\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to int\\.$#',
-	'identifier' => 'cast.int',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingRepository\\:\\:findOneWithDetails\\(\\) has parameter \\$params with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingRepository\\:\\:getInvoicesByPeriodId\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingRepository\\:\\:getQuotationsByPeriodId\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/InvoicingRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/TransactionRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\TransactionRepository\\:\\:getEntriesPerInvoicingPeriod\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/TransactionRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\TransactionRepository\\:\\:getNextTransaction\\(\\) should return AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/TransactionRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\TransactionRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/TransactionRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\TransactionRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/TransactionRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Model/Repository/TransactionRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot cast mixed to int\\.$#',
 	'identifier' => 'cast.int',
 	'count' => 3,
 	'path' => __DIR__ . '/sources/AppBundle/Accounting/TransactionModification.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$comment of method AppBundle\\\\Accounting\\\\Model\\\\Transaction\\:\\:setComment\\(\\) expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\Transaction\\:\\:\\$commentaire \\(string\\|null\\) does not accept mixed\\.$#',
+	'identifier' => 'assign.propertyType',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Accounting/TransactionModification.php',
 ];
@@ -2270,74 +2150,50 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Command/VideosDataCommand.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$amount of method AppBundle\\\\Accounting\\\\Model\\\\Transaction\\:\\:setAmount\\(\\) expects float, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Compta/CsvExtractor.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$amountTva0 of method AppBundle\\\\Accounting\\\\Model\\\\Transaction\\:\\:setAmountTva0\\(\\) expects float\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Compta/CsvExtractor.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$amountTva10 of method AppBundle\\\\Accounting\\\\Model\\\\Transaction\\:\\:setAmountTva10\\(\\) expects float\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Compta/CsvExtractor.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$amountTva20 of method AppBundle\\\\Accounting\\\\Model\\\\Transaction\\:\\:setAmountTva20\\(\\) expects float\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Compta/CsvExtractor.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$amountTva5_5 of method AppBundle\\\\Accounting\\\\Model\\\\Transaction\\:\\:setAmountTva55\\(\\) expects float\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Compta/CsvExtractor.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$attachmentRequired of method AppBundle\\\\Accounting\\\\Model\\\\Transaction\\:\\:setAttachmentRequired\\(\\) expects bool, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Compta/CsvExtractor.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$categoryId of method AppBundle\\\\Accounting\\\\Model\\\\Transaction\\:\\:setCategoryId\\(\\) expects int\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Compta/CsvExtractor.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$datetime of class DateTime constructor expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Compta/CsvExtractor.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$description of method AppBundle\\\\Accounting\\\\Model\\\\Transaction\\:\\:setDescription\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\Transaction\\:\\:\\$description \\(string\\) does not accept mixed\\.$#',
+	'identifier' => 'assign.propertyType',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Compta/CsvExtractor.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$eventId of method AppBundle\\\\Accounting\\\\Model\\\\Transaction\\:\\:setEventId\\(\\) expects int\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\Transaction\\:\\:\\$justificatifRequis \\(bool\\) does not accept mixed\\.$#',
+	'identifier' => 'assign.propertyType',
 	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Compta/CsvExtractor.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$operationId of method AppBundle\\\\Accounting\\\\Model\\\\Transaction\\:\\:setOperationId\\(\\) expects int\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\Transaction\\:\\:\\$montant \\(float\\) does not accept mixed\\.$#',
+	'identifier' => 'assign.propertyType',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Compta/CsvExtractor.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$paymentTypeId of method AppBundle\\\\Accounting\\\\Model\\\\Transaction\\:\\:setPaymentTypeId\\(\\) expects int\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\Transaction\\:\\:\\$montantTva0 \\(float\\|null\\) does not accept mixed\\.$#',
+	'identifier' => 'assign.propertyType',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Compta/CsvExtractor.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\Transaction\\:\\:\\$montantTva10 \\(float\\|null\\) does not accept mixed\\.$#',
+	'identifier' => 'assign.propertyType',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Compta/CsvExtractor.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\Transaction\\:\\:\\$montantTva20 \\(float\\|null\\) does not accept mixed\\.$#',
+	'identifier' => 'assign.propertyType',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Compta/CsvExtractor.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\Transaction\\:\\:\\$montantTva5_5 \\(float\\|null\\) does not accept mixed\\.$#',
+	'identifier' => 'assign.propertyType',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Compta/CsvExtractor.php',
 ];
@@ -2462,7 +2318,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Configuration/EditRuleAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$number of method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingRepository\\:\\:getOneByInvoiceNumber\\(\\) expects string, string\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$number of method AppBundle\\\\Accounting\\\\Entity\\\\Repository\\\\InvoicingRepository\\:\\:getOneByInvoiceNumber\\(\\) expects string, string\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Invoice/DownloadInvoiceAction.php',
@@ -2474,94 +2330,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Invoice/ListInvoiceAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$number of method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingRepository\\:\\:getOneByInvoiceNumber\\(\\) expects string, string\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$number of method AppBundle\\\\Accounting\\\\Entity\\\\Repository\\\\InvoicingRepository\\:\\:getOneByInvoiceNumber\\(\\) expects string, string\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Invoice/SendInvoiceEmailAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getAccountId\\(\\) on AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/AllocateAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getAccountingDate\\(\\) on AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/AllocateAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getAmount\\(\\) on AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/AllocateAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getComment\\(\\) on AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/AllocateAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getDescription\\(\\) on AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/AllocateAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getNumber\\(\\) on AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/AllocateAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getOperationId\\(\\) on AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/AllocateAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getOperationNumber\\(\\) on AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/AllocateAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getPaymentDate\\(\\) on AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/AllocateAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getPaymentTypeId\\(\\) on AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/AllocateAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getTvaIntra\\(\\) on AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/AllocateAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getVendorName\\(\\) on AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/AllocateAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setAmount\\(\\) on AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/AllocateAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Accounting\\\\Model\\\\Transaction\\>\\:\\:save\\(\\) expects AppBundle\\\\Accounting\\\\Model\\\\Transaction, AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/AllocateAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
@@ -2582,148 +2354,16 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/DownloadAttachmentsAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Accounting\\\\Model\\\\Transaction\\|null\\.$#',
-	'identifier' => 'method.nonObject',
+	'message' => '#^Cannot access property \\$id on AppBundle\\\\Accounting\\\\Entity\\\\Transaction\\|null\\.$#',
+	'identifier' => 'property.nonObject',
 	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/EditTransactionAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$transactionId of method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\TransactionRepository\\:\\:getNextTransaction\\(\\) expects int, int\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$transactionId of method AppBundle\\\\Accounting\\\\Entity\\\\Repository\\\\TransactionRepository\\:\\:getNextTransaction\\(\\) expects int, int\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/EditTransactionAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'attachment_filename\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'attachment_required\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'categorie\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'comment\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'date_ecriture\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'description\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'evenement\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'idoperation\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'montant\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'montant_ht\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'montant_ht_0\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'montant_ht_10\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'montant_ht_20\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'montant_ht_5_5\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'montant_tva\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'montant_tva_10\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'montant_tva_20\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'montant_tva_5_5\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'nom_compte\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'reglement\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'tva_zone\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/ExportAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
@@ -2840,28 +2480,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/MembershipFee/EditMembershipFeeAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$number of method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingRepository\\:\\:getOneByQuotationNumber\\(\\) expects string, string\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$number of method AppBundle\\\\Accounting\\\\Entity\\\\Repository\\\\InvoicingRepository\\:\\:getOneByQuotationNumber\\(\\) expects string, string\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Quotation/DownloadQuotationAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$array of function array_diff expects an array of values castable to string, array given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Quotation/EditQuotationAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$ids of method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingDetailRepository\\:\\:removeRowsPerIds\\(\\) expects array\\<int\\>, array given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Quotation/EditQuotationAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$invoicingId of method AppBundle\\\\Accounting\\\\Model\\\\Repository\\\\InvoicingDetailRepository\\:\\:getRowsIdsPerInvoicingId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Quotation/EditQuotationAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$date of static method Afup\\\\Site\\\\Utils\\\\Vat\\:\\:isSubjectedToVat\\(\\) expects DateTimeInterface, DateTime\\|null given\\.$#',
