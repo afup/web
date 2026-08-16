@@ -1,0 +1,21 @@
+/*
+    Ce fichier contient des surcharges pour le HTML généré à partir de markdown
+    Tailwind fournit une lib pour styliser ce genre de HTML : https://github.com/tailwindlabs/tailwindcss-typography
+*/
+
+@layer base {
+    /* Pour les balises de code "inline" dans les articles (les blocs de code ont déjà un padding et un arrondi de base) */
+    .prose code {
+        @apply px-2 py-1;
+        @apply rounded-lg;
+    }
+
+    /* Gestion de certaines pages CMS avec des boutons */
+    /* Les classes sont les mêmes que pour le composant Button */
+    /* @see templates/components/Button.html.twig */
+    .prose a.button.button--call-to-action {
+        @apply items-center! justify-center! rounded-lg! border! border-transparent! bg-clip-border! text-sm! font-medium! whitespace-nowrap! px-3! py-2!;
+        @apply bg-ruby-500! text-white! hover:bg-ruby-700!;
+        @apply no-underline!;
+    }
+}

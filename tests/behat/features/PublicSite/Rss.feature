@@ -9,6 +9,9 @@ Feature: Site Public - Flux RSS
     And the response should contain "<rss version=\"2.0\">"
     And the response should contain "<title><![CDATA[Les vidéos des talks du Forum PHP 2018 sont disponibles]]></title>"
     And the response should contain "<guid>https://apachephptest:80/news/1-les-videos-du-forum-2018-en-ligne</guid>"
-    And the response should contain "<h3>Un premier titre !</h3>"
+    And the response should contain the html
+    """
+    <h3 id="content-un-premier-titre">Un premier titre !</h3>
+    """
     And the response should contain "Et un peu <em>de texte en italic</em>"
     And the response should contain "</rss>"

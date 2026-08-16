@@ -32,7 +32,10 @@ Feature: Site Public - News
     When I follow "Actualités"
     And I follow "Lire l'article: Un article en Markdown"
     Then I should not see "### Un premier titre !"
-    And the response should contain the html "<h3>Un premier titre !</h3>"
+    And the response should contain the html
+    """
+    <h3 id="content-un-premier-titre">Un premier titre !</h3>
+    """
     And I should not see "**de texte en gras**"
     And the response should contain the html "<strong>de texte en gras</strong>"
     And I should not see "*de texte en italic*"

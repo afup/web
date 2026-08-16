@@ -8,25 +8,29 @@ use Afup\Site\Corporate\Feuille;
 use AppBundle\Security\Authentication;
 use AppBundle\Site\Entity\Feuille as FeuilleEntity;
 use AppBundle\Site\Entity\Repository\FeuilleRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent]
-final readonly class MainMenu
+final class MainMenu
 {
+    public ?int $currentFeuilleId = null;
+
     public function __construct(
-        private RequestStack $requestStack,
-        private FeuilleRepository $feuilleRepository,
-        private Authentication $authentication,
+        private readonly RequestStack $requestStack,
+        private readonly FeuilleRepository $feuilleRepository,
+        private readonly Authentication $authentication,
     ) {}
 
     /**
-     * @return array<array{isCurrent: boolean, lien: string, nom: string}>
+     * @return array{main: array<array{isCurrent: boolean, feuille: FeuilleEntity}>, sub: array<array{feuille: FeuilleEntity, is_active: boolean}>}
      */
-    public function getFeuilles(): array
+    public function getEntries(): array
     {
         $feuillesEnfants = $this->feuilleRepository->getFeuillesEnfant(Feuille::ID_FEUILLE_HEADER);
+        $request = $this->requestStack->getMainRequest();
 
         if ($this->authentication->getAfupUserOrNull() instanceof UserInterface) {
             $feuilleLogin = new FeuilleEntity();
@@ -42,7 +46,7 @@ final readonly class MainMenu
             $feuillesEnfants[] = $feuilleLogin;
         }
 
-        $currentUri = $this->requestStack->getCurrentRequest()?->getRequestUri() ?? '';
+        $currentUri = $request?->getRequestUri() ?? '';
         $feuilles = [];
 
         foreach ($feuillesEnfants as $feuille) {
@@ -85,11 +89,51 @@ final readonly class MainMenu
 
             $feuilles[] = [
                 'isCurrent' => $isCurrent,
-                'lien' => $feuille->lien,
-                'nom' => $feuille->nom,
+                'feuille' => $feuille,
             ];
         }
 
-        return $feuilles;
+        $subEntries = [];
+        if ($this->currentFeuilleId !== null && $request !== null) {
+            $menu = $this->feuilleRepository->getFeuillesEnfant($this->currentFeuilleId);
+
+            foreach ($menu as $feuille) {
+                $subEntries[] = [
+                    'feuille' => $feuille,
+                    'is_active' => $this->isSubEntryActive($request, $feuille),
+                ];
+            }
+        }
+
+        return [
+            'main' => $feuilles,
+            'sub' => $subEntries,
+        ];
+    }
+
+    private function isSubEntryActive(Request $request, FeuilleEntity $feuille): bool
+    {
+        $url = $request->getUri();
+
+        $pattern = '/' . preg_quote((string) $feuille->lien, '/') . '/';
+
+        if (preg_match($pattern, $url)) {
+            return true;
+        }
+
+        if ($feuille->patterns) {
+            foreach (explode(PHP_EOL, $feuille->patterns) as $pattern) {
+                $pattern = trim($pattern);
+                if ($pattern === '') {
+                    continue;
+                }
+
+                if (preg_match($pattern, $url)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

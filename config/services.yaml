@@ -148,12 +148,10 @@ services:
         class: Parsedown
         autowire: true
 
-    Twig\Extra\Markdown\MarkdownInterface: '@twig.markdown.default'
+    twig.markdown.default:
+        alias: AppBundle\Markdown\Markdown
 
-    League\CommonMark\Extension\Autolink\AutolinkExtension:
-        tags: [ 'twig.markdown.league_extension' ]
-    Tempest\Highlight\CommonMark\HighlightExtension:
-        tags: [ 'twig.markdown.league_extension' ]
+    Twig\Extra\Markdown\MarkdownInterface: '@twig.markdown.default'
 
     geocoder:
         class: Geocoder\StatefulGeocoder

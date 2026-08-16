@@ -1,7 +1,12 @@
+/* Vendors */
 @import "../../vendor/tempest/highlight/src/Themes/Css/catppuccin-latte.css";
+
+/* Tailwind */
+@import "tailwindcss";
+
+/* AFUP */
 @import "./fonts.css";
-@import "tailwindcss" source(none);
-@source "../../templates";
+@import "./prose.css";
 
 @plugin "@tailwindcss/typography";
 
@@ -26,23 +31,11 @@
     --color-erreur-500: #C10825;
     /* Texte d'un message d'erreur */
     --color-erreur-700: #960018;
-
-    /* Surcharge de la police par défaut des pages */
-    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-
-    /* Police utilisée pour les titres */
-    --font-titre: "Glegoo", ui-serif, Georgia, serif;
 }
 
 @layer base {
     body {
         /* Désactive les effets (italic, gras, etc) automatiques des polices pour prioriser les version contenues dans les polices */
         font-synthesis: none;
-    }
-
-    /* Pour les balises de code "inline" dans les articles (les blocs de code ont déjà un padding et un arrondi de base) */
-    .prose code {
-        @apply px-2 py-1;
-        @apply rounded-lg;
     }
 }

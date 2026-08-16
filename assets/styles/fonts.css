@@ -21,3 +21,11 @@
     font-display: swap;
     src: url("../fonts/glegoo-latin-700-normal.woff2") format("woff2");
 }
+
+@theme {
+    /* Surcharge de la police par défaut des pages */
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+    /* Police utilisée pour les titres */
+    --font-titre: "Glegoo", ui-serif, Georgia, serif;
+}
