@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Invoice;
 
+use AppBundle\Accounting\Entity\Invoicing;
+use AppBundle\Accounting\Entity\Repository\InvoicingRepository;
 use AppBundle\Accounting\Form\InvoiceType;
-use AppBundle\Accounting\Model\Invoicing;
-use AppBundle\Accounting\Model\Repository\InvoicingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +31,6 @@ class EditInvoiceAction extends AbstractController
                 $this->addFlash('success', 'L\'écriture a été modifiée');
                 return $this->redirectToRoute('admin_accounting_invoices_list');
             } catch (\Exception) {
-                $this->invoicingRepository->rollback();
                 $this->addFlash('error', 'L\'écriture n\'a pas pu être enregistrée');
             }
         }

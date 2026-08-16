@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace AppBundle\Accounting;
 
-use AppBundle\Accounting\Model\Transaction;
+use AppBundle\Accounting\Entity\Repository\CategoryRepository;
+use AppBundle\Accounting\Entity\Repository\EventRepository;
+use AppBundle\Accounting\Entity\Repository\PaymentRepository;
+use AppBundle\Accounting\Entity\Transaction;
 
 enum TransactionModification: string
 {
@@ -14,14 +17,19 @@ enum TransactionModification: string
     case Comment = 'comment';
     case RequiredAttachment = 'requiredAttachment';
 
-    public function setValue(Transaction $transaction, mixed $value): void
-    {
+    public function setValue(
+        Transaction $transaction,
+        mixed $value,
+        CategoryRepository $categoryRepository,
+        PaymentRepository $paymentRepository,
+        EventRepository $eventRepository,
+    ): void {
         match ($this) {
-            self::Category => $transaction->setCategoryId((int) $value),
-            self::PaymentType => $transaction->setPaymentTypeId((int) $value),
-            self::Event => $transaction->setEventId((int) $value),
-            self::Comment => $transaction->setComment($value),
-            self::RequiredAttachment => $transaction->setAttachmentRequired((bool) $value),
+            self::Category => $transaction->categorie = $categoryRepository->find((int) $value),
+            self::PaymentType => $transaction->modeReglement = $paymentRepository->find((int) $value),
+            self::Event => $transaction->evenement = $eventRepository->find((int) $value),
+            self::Comment => $transaction->commentaire = $value,
+            self::RequiredAttachment => $transaction->justificatifRequis = (bool) $value,
         };
     }
 

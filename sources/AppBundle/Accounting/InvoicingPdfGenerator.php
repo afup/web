@@ -7,8 +7,8 @@ namespace AppBundle\Accounting;
 use Afup\Site\Utils\Pays;
 use Afup\Site\Utils\PDF_Facture;
 use Afup\Site\Utils\Vat;
-use AppBundle\Accounting\Model\Invoicing;
-use AppBundle\Accounting\Model\InvoicingDetail;
+use AppBundle\Accounting\Entity\Invoicing;
+use AppBundle\Accounting\Entity\InvoicingDetail;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
@@ -18,8 +18,8 @@ class InvoicingPdfGenerator
 
     public function generateInvoice(Invoicing $invoicing, ?string $path = null): string
     {
-        $date = $invoicing->getInvoiceDate() !== null
-            ? \DateTimeImmutable::createFromMutable($invoicing->getInvoiceDate())
+        $date = $invoicing->dateFacture !== null
+            ? \DateTimeImmutable::createFromMutable($invoicing->dateFacture)
             : new \DateTimeImmutable();
 
         $isSubjectedToVat = Vat::isSubjectedToVat($date);
@@ -30,15 +30,15 @@ class InvoicingPdfGenerator
         $this->renderRecipient($pdf, $invoicing);
 
         $pdf->SetFont('Arial', 'BU', 10);
-        $pdf->Cell(0, 5, 'Facture n° ' . $invoicing->getInvoiceNumber(), 0, 0, 'C');
+        $pdf->Cell(0, 5, 'Facture n° ' . $invoicing->numeroFacture, 0, 0, 'C');
         $pdf->SetFont('Arial', '', 10);
 
         $this->renderClientReferences($pdf, $invoicing);
 
         $pdf->MultiCell(180, 5, 'Comme convenu, nous vous prions de trouver votre facture');
 
-        $devise = ' ' . ($invoicing->getCurrency()?->symbol() ?? '€');
-        [$totalHt, $totalTtc, $vatAmounts] = $this->renderLineItems($pdf, $invoicing->getDetails(), $isSubjectedToVat, $devise, true);
+        $devise = ' ' . ($invoicing->deviseFacture?->symbol() ?? '€');
+        [$totalHt, $totalTtc, $vatAmounts] = $this->renderLineItems($pdf, $invoicing->details, $isSubjectedToVat, $devise, true);
 
         $this->renderTotals($pdf, $isSubjectedToVat, $totalHt, $totalTtc, $vatAmounts, $devise);
 
@@ -55,11 +55,11 @@ class InvoicingPdfGenerator
         }
 
         $pdf->Ln(10);
-        if ($invoicing->getObservation() !== '') {
+        if ($invoicing->observation !== '') {
             $pdf->Cell(10, 5, 'Observations : ');
             $pdf->Ln(5);
             $pdf->SetFont('Arial', '', 8);
-            $pdf->MultiCell(130, 5, $invoicing->getObservation());
+            $pdf->MultiCell(130, 5, $invoicing->observation);
         }
 
         return $this->output($pdf, $path, $this->getInvoiceFilename($invoicing));
@@ -67,8 +67,8 @@ class InvoicingPdfGenerator
 
     public function generateQuotation(Invoicing $invoicing, ?string $path = null): string
     {
-        $date = $invoicing->getQuotationDate() !== null
-            ? \DateTimeImmutable::createFromMutable($invoicing->getQuotationDate())
+        $date = $invoicing->dateDevis !== null
+            ? \DateTimeImmutable::createFromMutable($invoicing->dateDevis)
             : new \DateTimeImmutable();
 
         $isSubjectedToVat = Vat::isSubjectedToVat($date);
@@ -79,15 +79,15 @@ class InvoicingPdfGenerator
         $this->renderRecipient($pdf, $invoicing);
 
         $pdf->SetFont('Arial', 'BU', 10);
-        $pdf->Cell(0, 5, 'Devis n° ' . $invoicing->getQuotationNumber(), 0, 0, 'C');
+        $pdf->Cell(0, 5, 'Devis n° ' . $invoicing->numeroDevis, 0, 0, 'C');
         $pdf->SetFont('Arial', '', 10);
 
         $this->renderClientReferences($pdf, $invoicing);
 
         $pdf->MultiCell(180, 5, 'Comme convenu, nous vous prions de trouver votre devis');
 
-        $devise = ' ' . ($invoicing->getCurrency()?->symbol() ?? '€');
-        [$totalHt, $totalTtc, $vatAmounts] = $this->renderLineItems($pdf, $invoicing->getDetails(), $isSubjectedToVat, $devise, false);
+        $devise = ' ' . ($invoicing->deviseFacture?->symbol() ?? '€');
+        [$totalHt, $totalTtc, $vatAmounts] = $this->renderLineItems($pdf, $invoicing->details, $isSubjectedToVat, $devise, false);
 
         $this->renderTotals($pdf, $isSubjectedToVat, $totalHt, $totalTtc, $vatAmounts, $devise);
 
@@ -99,7 +99,7 @@ class InvoicingPdfGenerator
         $pdf->Cell(10, 5, 'Observations : ');
         $pdf->Ln(5);
         $pdf->SetFont('Arial', '', 8);
-        $pdf->MultiCell(130, 5, $invoicing->getObservation());
+        $pdf->MultiCell(130, 5, $invoicing->observation);
 
         return $this->output($pdf, $path, $this->getQuotationFilename($invoicing));
     }
@@ -108,14 +108,14 @@ class InvoicingPdfGenerator
     {
         $slugger = new AsciiSlugger();
 
-        return 'Facture - ' . $slugger->slug($invoicing->getCompany()) . ' - ' . ($invoicing->getInvoiceDate() ? $invoicing->getInvoiceDate()->format('Y-m-d') : '') . '.pdf';
+        return 'Facture - ' . $slugger->slug($invoicing->societe) . ' - ' . ($invoicing->dateFacture ? $invoicing->dateFacture->format('Y-m-d') : '') . '.pdf';
     }
 
     public function getQuotationFilename(Invoicing $invoicing): string
     {
         $slugger = new AsciiSlugger();
 
-        return 'Devis - ' . $slugger->slug($invoicing->getCompany()) . ' - ' . ($invoicing->getQuotationDate() ? $invoicing->getQuotationDate()->format('Y-m-d') : '') . '.pdf';
+        return 'Devis - ' . $slugger->slug($invoicing->societe) . ' - ' . ($invoicing->dateDevis ? $invoicing->dateDevis->format('Y-m-d') : '') . '.pdf';
     }
 
     private function buildPdf(\DateTimeImmutable $date, bool $isSubjectedToVat): PDF_Facture
@@ -139,24 +139,24 @@ class InvoicingPdfGenerator
         $pdf->Ln(10);
         $pdf->setx(120);
         $pdf->MultiCell(130, 5,
-            $invoicing->getCompany() . "\n"
-            . $invoicing->getService() . "\n"
-            . $invoicing->getAddress() . "\n"
-            . $invoicing->getZipcode() . ' '
-            . $invoicing->getCity() . "\n"
-            . $this->pays->obtenirNom($invoicing->getCountryId())
-            . ($invoicing->getTvaIntra() ? ("\nN° TVA Intracommunautaire : " . $invoicing->getTvaIntra()) : ''),
+            $invoicing->societe . "\n"
+            . $invoicing->service . "\n"
+            . $invoicing->adresse . "\n"
+            . $invoicing->codePostal . ' '
+            . $invoicing->ville . "\n"
+            . $this->pays->obtenirNom($invoicing->idPays)
+            . ($invoicing->tvaIntra ? ("\nN° TVA Intracommunautaire : " . $invoicing->tvaIntra) : ''),
         );
         $pdf->Ln(10);
     }
 
     private function renderClientReferences(PDF_Facture $pdf, Invoicing $invoicing): void
     {
-        if ($invoicing->getRefClt1() !== '' || $invoicing->getRefClt2() !== '' || $invoicing->getRefClt3() !== '') {
+        if ($invoicing->referenceClient1 !== '' || $invoicing->referenceClient2 !== '' || $invoicing->referenceClient3 !== '') {
             $pdf->Ln(15);
             $pdf->Cell(40, 5, 'Repère(s) : ');
         }
-        foreach ([$invoicing->getRefClt1(), $invoicing->getRefClt2(), $invoicing->getRefClt3()] as $ref) {
+        foreach ([$invoicing->referenceClient1, $invoicing->referenceClient2, $invoicing->referenceClient3] as $ref) {
             if ($ref !== '') {
                 $pdf->setx(30);
                 $pdf->Cell(100, 5, $ref);
@@ -169,10 +169,10 @@ class InvoicingPdfGenerator
     /**
      * Renders the line-items table and returns [totalHt, totalTtc, vatAmounts].
      *
-     * @param InvoicingDetail[] $details
+     * @param iterable<InvoicingDetail> $details
      * @return array{float, float, array<string, float>}
      */
-    private function renderLineItems(PDF_Facture $pdf, array $details, bool $isSubjectedToVat, string $devise, bool $drawColumnLines): array
+    private function renderLineItems(PDF_Facture $pdf, iterable $details, bool $isSubjectedToVat, string $devise, bool $drawColumnLines): array
     {
         $pdf->Ln(5);
         $pdf->SetFillColor(200, 200, 200);
@@ -192,41 +192,41 @@ class InvoicingPdfGenerator
         $columns = $isSubjectedToVat ? [0, 30, 90, 110, 130, 160, 190] : [0, 30, 110, 130, 160, 190];
 
         foreach ($details as $detail) {
-            if ((float) $detail->getQuantity() === 0.0) {
+            if ((float) $detail->quantite === 0.0) {
                 continue;
             }
 
-            $montantHt = $detail->getQuantity() * $detail->getUnitPrice();
+            $montantHt = $detail->quantite * $detail->prixUnitaire;
             $montantTtc = $montantHt;
 
             $pdf->Ln();
             $pdf->SetFillColor(255, 255, 255);
 
             if (!$drawColumnLines && !$isSubjectedToVat) {
-                $pdf->Cell(30, 5, $detail->getReference(), 1);
-                $pdf->Cell(80, 5, $detail->getDesignation(), 1);
-                $pdf->Cell(20, 5, number_format((float) $detail->getQuantity(), 2, '.', ''), 1, 0, 'C');
-                $pdf->Cell(30, 5, number_format($detail->getUnitPrice(), 2, '.', '') . $devise, 1, 0, 'R');
+                $pdf->Cell(30, 5, $detail->reference, 1);
+                $pdf->Cell(80, 5, $detail->designation, 1);
+                $pdf->Cell(20, 5, number_format((float) $detail->quantite, 2, '.', ''), 1, 0, 'C');
+                $pdf->Cell(30, 5, number_format($detail->prixUnitaire, 2, '.', '') . $devise, 1, 0, 'R');
                 $pdf->Cell(30, 5, $this->formatValue($montantHt, false) . $devise, 1, 0, 'R');
             } else {
                 $y = $pdf->GetY();
                 $x = $pdf->GetX();
 
-                $pdf->MultiCell(30, 5, $detail->getReference(), 'T');
+                $pdf->MultiCell(30, 5, $detail->reference, 'T');
                 $x += 30;
                 $pdf->SetXY($x, $y);
 
                 $designationLength = $isSubjectedToVat ? 60 : 80;
-                $pdf->MultiCell($designationLength, 5, $detail->getDesignation(), 'T');
+                $pdf->MultiCell($designationLength, 5, $detail->designation, 'T');
                 $x += $designationLength;
                 $pdf->SetXY($x, $y);
 
-                $pdf->MultiCell(20, 5, number_format((float) $detail->getQuantity(), 2, '.', ''), 'T', 0, 'C');
+                $pdf->MultiCell(20, 5, number_format((float) $detail->quantite, 2, '.', ''), 'T', 0, 'C');
                 $x += 20;
 
                 if ($isSubjectedToVat) {
                     $pdf->SetXY($x, $y);
-                    $tva = (float) $detail->getTva();
+                    $tva = (float) $detail->tva;
                     $pdf->MultiCell(20, 5, number_format($tva, 2, '.', '') . '%', 'T', 'C', 'C');
                     $tvaKey = (string) $tva;
                     $vatAmounts[$tvaKey] = ($vatAmounts[$tvaKey] ?? 0.0) + ($tva / 100) * $montantTtc;
@@ -236,8 +236,8 @@ class InvoicingPdfGenerator
 
                 $pdf->SetXY($x, $y);
                 $unitPrice = $isSubjectedToVat
-                    ? $this->formatValue($detail->getUnitPrice(), true)
-                    : number_format($detail->getUnitPrice(), 2, '.', '');
+                    ? $this->formatValue($detail->prixUnitaire, true)
+                    : number_format($detail->prixUnitaire, 2, '.', '');
                 $pdf->MultiCell(30, 5, $unitPrice . $devise, 'T', 0, 'R');
                 $x += 30;
                 $pdf->SetXY($x, $y);

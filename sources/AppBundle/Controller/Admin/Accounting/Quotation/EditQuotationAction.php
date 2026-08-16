@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Quotation;
 
+use AppBundle\Accounting\Entity\Repository\InvoicingRepository;
 use AppBundle\Accounting\Entity\Repository\ProduitRepository;
 use AppBundle\Accounting\Form\QuotationType;
-use AppBundle\Accounting\Model\Repository\InvoicingDetailRepository;
-use AppBundle\Accounting\Model\Repository\InvoicingRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +16,6 @@ class EditQuotationAction extends AbstractController
 {
     public function __construct(
         private readonly InvoicingRepository $invoicingRepository,
-        private readonly InvoicingDetailRepository $invoicingDetailRepository,
         private readonly ProduitRepository $produitRepository,
         private readonly LoggerInterface $logger,
     ) {}
@@ -34,27 +32,13 @@ class EditQuotationAction extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $idsToRemove = $this->invoicingDetailRepository->getRowsIdsPerInvoicingId($quotation->getId());
-                $existingIds = [];
-                $this->invoicingRepository->startTransaction();
+                foreach ($quotation->details as $detail) {
+                    $detail->facture = $quotation;
+                }
                 $this->invoicingRepository->save($quotation);
-                foreach ($quotation->getDetails() as $detail) {
-                    if ($detail->getId() !== null) {
-                        $existingIds[] = $detail->getId();
-                    }
-                    $detail->setInvoicingId($quotation->getId());
-                    $this->invoicingDetailRepository->save($detail);
-                }
-
-                $idsToRemove = array_diff($idsToRemove, $existingIds);
-                if ($idsToRemove) {
-                    $this->invoicingDetailRepository->removeRowsPerIds($idsToRemove);
-                }
-                $this->invoicingRepository->commit();
                 $this->addFlash('success',  'L\'écriture a été modifiée');
                 return $this->redirectToRoute('admin_accounting_quotations_list');
             } catch (\Exception $e) {
-                $this->invoicingRepository->rollback();
                 $this->logger->error('Échec de la modification d\'un devis : ' . $e->getMessage(), ['exception' => $e]);
                 $this->addFlash('error',  'L\'écriture n\'a pas pu être enregistrée');
             }

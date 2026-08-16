@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Accounting;
 
 use AppBundle\Afup;
-use AppBundle\Accounting\Model\Invoicing;
+use AppBundle\Accounting\Entity\Invoicing;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
@@ -23,7 +23,7 @@ readonly class InvoicingMailer
 
     public function sendInvoice(Invoicing $invoicing): bool
     {
-        $invoiceNumber = $invoicing->getInvoiceNumber();
+        $invoiceNumber = $invoicing->numeroFacture;
 
         $sujet = "Facture AFUP";
 
@@ -41,7 +41,7 @@ readonly class InvoicingMailer
         $message = new Message(
             $sujet,
             new MailUser(MailUser::DEFAULT_SENDER_EMAIL, MailUser::DEFAULT_SENDER_NAME),
-            new MailUser($invoicing->getEmail(), $invoicing->getLastname()),
+            new MailUser($invoicing->email, $invoicing->nom),
         );
         $message->addAttachment(new Attachment(
             $cheminFacture,

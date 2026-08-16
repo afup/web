@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Accounting;
 
-use AppBundle\Accounting\Model\Repository\InvoicingRepository;
+use AppBundle\Accounting\Entity\Repository\InvoicingRepository;
 
 class InvoicingNumberGenerator
 {

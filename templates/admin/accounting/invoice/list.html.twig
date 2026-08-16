@@ -13,7 +13,7 @@
 
     {% include 'admin/accounting/invoicing-period.form.html.twig' with {form: formPeriod, url: path('admin_accounting_invoices_list')} %}
 
-    {% if lines.count > 0 %}
+    {% if lines|length > 0 %}
         <table class="ui table striped compact celled afup-tab-filterable">
             <thead>
             <tr>
@@ -40,39 +40,39 @@
             <tbody>
             {% for line in lines %}
                 <tr class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
-                    <td nowrap="nowrap">{{ line.invoiceDate|format_date('short') }}</td>
-                    <td>{{ line.company }}</td>
-                    <td>{{ line.city }}</td>
-                    <td class="right aligned">{{ line.invoiceNumber }}</td>
-                    <td>{{ line.refClt1 }}</td>
+                    <td nowrap="nowrap">{{ line.dateFacture|format_date('short') }}</td>
+                    <td>{{ line.societe }}</td>
+                    <td>{{ line.ville }}</td>
+                    <td class="right aligned">{{ line.numeroFacture }}</td>
+                    <td>{{ line.referenceClient1 }}</td>
                     <td class="center aligned">
-                        {% if line.paymentStatus == enum('AppBundle\\Accounting\\InvoicingPaymentStatus').Cancelled %}
+                        {% if line.etatPaiement == enum('AppBundle\\Accounting\\InvoicingPaymentStatus').Cancelled %}
                             <span class="ui label">Annulé</span>
-                        {% elseif line.paymentStatus == enum('AppBundle\\Accounting\\InvoicingPaymentStatus').Payed %}
+                        {% elseif line.etatPaiement == enum('AppBundle\\Accounting\\InvoicingPaymentStatus').Payed %}
                             <span class="ui green label">Payé</span>
                         {% else %}
                             <span class="ui yellow label">En attente</span>
                         {% endif %}
                     </td>
-                    <td class="right aligned">{{ line.price|number_format(2, ',', ' ') }}</td>
+                    <td class="right aligned">{{ line.prix|number_format(2, ',', ' ') }}</td>
                     <td class="right aligned single line">
                         <a href="{{ path('admin_accounting_invoices_edit', {'invoiceId': line.id}) }}"
                            data-position="left center"
-                           data-tooltip="Modifier la ligne {{ line.company }}"
+                           data-tooltip="Modifier la ligne {{ line.societe }}"
                            class="compact ui icon button"
                         >
                             <i class="pencil alternate icon"></i>
                         </a>
-                        <a href="{{ url('admin_accounting_invoices_download', {'ref': line.invoiceNumber}) }}"
+                        <a href="{{ url('admin_accounting_invoices_download', {'ref': line.numeroFacture}) }}"
                            data-position="left center"
-                           data-tooltip="Télécharger la facture {{ line.invoiceNumber }}"
+                           data-tooltip="Télécharger la facture {{ line.numeroFacture }}"
                            class="compact ui icon button"
                         >
                             <i class="file pdf icon"></i>
                         </a>
-                        <a href="{{ url('admin_accounting_invoices_send_email', {'ref': line.invoiceNumber}) }}"
+                        <a href="{{ url('admin_accounting_invoices_send_email', {'ref': line.numeroFacture}) }}"
                            data-position="left center"
-                           data-tooltip="Envoyer la facture {{ line.invoiceNumber }} par mail"
+                           data-tooltip="Envoyer la facture {{ line.numeroFacture }} par mail"
                            class="compact ui icon button"
                         >
                             <i class="paper plane icon"></i>

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Accounting\Form;
 
-use AppBundle\Accounting\Model\InvoicingDetail;
+use AppBundle\Accounting\Entity\InvoicingDetail;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -33,14 +33,14 @@ class InvoicingRowType extends AbstractType
                 new Assert\Type('string'),
                 new Assert\Length(max: 100),
             ],
-        ])->add('quantity', NumberType::class, [
+        ])->add('quantite', NumberType::class, [
             'label' => 'Quantité',
             'scale' => 2,
             'constraints' => [
                 new Assert\NotBlank(),
                 new Assert\Type(type: 'numeric'),
             ],
-        ])->add('unitPrice', NumberType::class, [
+        ])->add('prixUnitaire', NumberType::class, [
             'label' => 'Prix unitaire HT',
             'scale' => 2,
             'constraints' => [
@@ -56,8 +56,8 @@ class InvoicingRowType extends AbstractType
                 new Assert\NotBlank(),
             ],
         ]);
-        $builder->get('unitPrice')->resetViewTransformers();
-        $builder->get('unitPrice')->addViewTransformer(
+        $builder->get('prixUnitaire')->resetViewTransformers();
+        $builder->get('prixUnitaire')->addViewTransformer(
             new MoneyToLocalizedStringTransformer(2, false, null, null, 'en'),
         );
     }

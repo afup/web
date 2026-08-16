@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Invoice;
 
+use AppBundle\Accounting\Entity\Repository\InvoicingRepository;
 use AppBundle\Accounting\InvoicingMailer;
-use AppBundle\Accounting\Model\Repository\InvoicingRepository;
 use AppBundle\AuditLog\Audit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

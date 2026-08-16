@@ -6,10 +6,10 @@ namespace AppBundle\Controller\Admin\Accounting\Journal;
 
 use AppBundle\Accounting\Entity\Repository\CategoryRepository;
 use AppBundle\Accounting\Entity\Repository\EventRepository;
+use AppBundle\Accounting\Entity\Repository\InvoicingPeriodRepository;
 use AppBundle\Accounting\Entity\Repository\PaymentRepository;
+use AppBundle\Accounting\Entity\Repository\TransactionRepository;
 use AppBundle\Accounting\Form\InvoicingPeriodType;
-use AppBundle\Accounting\Model\Repository\InvoicingPeriodRepository;
-use AppBundle\Accounting\Model\Repository\TransactionRepository;
 use AppBundle\Accounting\OperationType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +30,7 @@ class ListAction extends AbstractController
         $periodId = $request->query->has('periodId') ? $request->query->getInt('periodId') : null;
         $period = $this->invoicingPeriodRepository->getCurrentPeriod($periodId);
         $formPeriod = $this->createForm(InvoicingPeriodType::class, $period);
-        $periods = $this->invoicingPeriodRepository->getAll();
+        $periods = $this->invoicingPeriodRepository->findAll();
         $withReconciled = $request->query->getBoolean('with_reconciled');
         $type = OperationType::tryfrom($request->query->getInt('type'));
 
@@ -38,7 +38,7 @@ class ListAction extends AbstractController
 
         return $this->render('admin/accounting/journal/list.html.twig', [
             'periods' => $periods,
-            'periodId' => $period->getId(),
+            'periodId' => $period->id,
             'formPeriod' => $formPeriod->createView(),
             'withReconciled' => $withReconciled,
             'type' => $type,

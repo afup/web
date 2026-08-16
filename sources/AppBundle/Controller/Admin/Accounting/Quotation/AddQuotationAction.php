@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Quotation;
 
-use AppBundle\Accounting\InvoicingNumberGenerator;
+use AppBundle\Accounting\Entity\Invoicing;
+use AppBundle\Accounting\Entity\InvoicingDetail;
+use AppBundle\Accounting\Entity\Repository\InvoicingRepository;
 use AppBundle\Accounting\Entity\Repository\ProduitRepository;
 use AppBundle\Accounting\Form\QuotationType;
-use AppBundle\Accounting\Model\Invoicing;
-use AppBundle\Accounting\Model\InvoicingDetail;
-use AppBundle\Accounting\Model\Repository\InvoicingDetailRepository;
-use AppBundle\Accounting\Model\Repository\InvoicingRepository;
+use AppBundle\Accounting\InvoicingNumberGenerator;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +20,6 @@ class AddQuotationAction extends AbstractController
     public function __construct(
         private readonly InvoicingRepository $invoicingRepository,
         private readonly InvoicingNumberGenerator $numberGenerator,
-        private readonly InvoicingDetailRepository $invoicingDetailRepository,
         private readonly ProduitRepository $produitRepository,
         private readonly LoggerInterface $logger,
     ) {}
@@ -33,18 +31,14 @@ class AddQuotationAction extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $this->invoicingRepository->startTransaction();
-                $quotation->setQuotationNumber($this->numberGenerator->generateQuotationNumber());
-                $this->invoicingRepository->save($quotation);
-                foreach ($quotation->getDetails() as $detail) {
-                    $detail->setInvoicingId($quotation->getId());
-                    $this->invoicingDetailRepository->save($detail);
+                $quotation->numeroDevis = $this->numberGenerator->generateQuotationNumber();
+                foreach ($quotation->details as $detail) {
+                    $detail->facture = $quotation;
                 }
-                $this->invoicingRepository->commit();
+                $this->invoicingRepository->save($quotation);
                 $this->addFlash('success',  'L\'écriture a été ajoutée');
                 return $this->redirectToRoute('admin_accounting_quotations_list');
             } catch (\Exception $e) {
-                $this->invoicingRepository->rollback();
                 $this->logger->error('Échec de l\'ajout d\'un devis : ' . $e->getMessage(), ['exception' => $e]);
                 $this->addFlash('error',  'L\'écriture n\'a pas pu être enregistrée');
             }
@@ -62,42 +56,43 @@ class AddQuotationAction extends AbstractController
     {
         $baseQuotation = $this->invoicingRepository->getById($quotationId);
         if (!$baseQuotation instanceof Invoicing) {
-            $quotation =  new Invoicing();
-            $quotation->setQuotationDate(new \DateTime());
-            $quotation->setCountryId('FR');
+            $quotation = new Invoicing();
+            $quotation->dateDevis = new \DateTime();
+            $quotation->idPays = 'FR';
 
             return $quotation;
         }
 
         $quotation = new Invoicing();
-        $quotation->setQuotationDate(new \DateTime());
-        $quotation->setInvoiceDate($baseQuotation->getInvoiceDate());
-        $quotation->setCompany($baseQuotation->getCompany());
-        $quotation->setService($baseQuotation->getService());
-        $quotation->setAddress($baseQuotation->getAddress());
-        $quotation->setZipcode($baseQuotation->getZipcode());
-        $quotation->setCity($baseQuotation->getCity());
-        $quotation->setCountryId($baseQuotation->getCountryId());
-        $quotation->setEmail($baseQuotation->getEmail());
-        $quotation->setTvaIntra($baseQuotation->getTvaIntra());
-        $quotation->setObservation($baseQuotation->getObservation());
-        $quotation->setRefClt1($baseQuotation->getRefClt1());
-        $quotation->setRefClt2($baseQuotation->getRefClt2());
-        $quotation->setRefClt3($baseQuotation->getRefClt3());
-        $quotation->setLastname($baseQuotation->getLastname());
-        $quotation->setFirstname($baseQuotation->getFirstname());
-        $quotation->setPhone($baseQuotation->getPhone());
-        $quotation->setQuotationNumber('');
-        $quotation->setInvoiceNumber('');
-        $quotation->setDetails(array_map(static function (InvoicingDetail $detail) {
+        $quotation->dateDevis = new \DateTime();
+        $quotation->dateFacture = $baseQuotation->dateFacture;
+        $quotation->societe = $baseQuotation->societe;
+        $quotation->service = $baseQuotation->service;
+        $quotation->adresse = $baseQuotation->adresse;
+        $quotation->codePostal = $baseQuotation->codePostal;
+        $quotation->ville = $baseQuotation->ville;
+        $quotation->idPays = $baseQuotation->idPays;
+        $quotation->email = $baseQuotation->email;
+        $quotation->tvaIntra = $baseQuotation->tvaIntra;
+        $quotation->observation = $baseQuotation->observation;
+        $quotation->referenceClient1 = $baseQuotation->referenceClient1;
+        $quotation->referenceClient2 = $baseQuotation->referenceClient2;
+        $quotation->referenceClient3 = $baseQuotation->referenceClient3;
+        $quotation->nom = $baseQuotation->nom;
+        $quotation->prenom = $baseQuotation->prenom;
+        $quotation->telephone = $baseQuotation->telephone;
+        $quotation->numeroDevis = '';
+        $quotation->numeroFacture = '';
+
+        foreach ($baseQuotation->details as $detail) {
             $clone = new InvoicingDetail();
-            $clone->setReference($detail->getReference());
-            $clone->setDesignation($detail->getDesignation());
-            $clone->setQuantity($detail->getQuantity());
-            $clone->setUnitPrice($detail->getUnitPrice());
-            $clone->setTva($detail->getTva());
-            return $clone;
-        }, $baseQuotation->getDetails()));
+            $clone->reference = $detail->reference;
+            $clone->designation = $detail->designation;
+            $clone->quantite = $detail->quantite;
+            $clone->prixUnitaire = $detail->prixUnitaire;
+            $clone->tva = $detail->tva;
+            $quotation->addDetail($clone);
+        }
 
         return $quotation;
     }

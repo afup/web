@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Quotation;
 
+use AppBundle\Accounting\Entity\Repository\InvoicingRepository;
 use AppBundle\Accounting\InvoicingNumberGenerator;
-use AppBundle\Accounting\Model\Repository\InvoicingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +21,7 @@ class ConvertQuotationAction extends AbstractController
     public function __invoke(Request $request): Response
     {
         $quotationRef = $request->query->get('ref');
-        $quotation = $this->invoicingRepository->getOneBy(['quotationNumber' => $quotationRef]);
+        $quotation = $this->invoicingRepository->findOneBy(['numeroDevis' => $quotationRef]);
         if ($quotation === null) {
             throw new NotFoundHttpException("Ce devis n'existe pas");
         }
