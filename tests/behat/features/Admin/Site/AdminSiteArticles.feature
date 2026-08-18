@@ -54,7 +54,14 @@ Feature: Administration - Partie Site
     And I should see "Liste des article"
     Then the ".content table" element should contain "Le titre de l'article modifié"
 
+    # vérification que le raccourci n'a pas changé avec le titre
+    When I go to "/news/17-url-article"
+    Then I should see "Le titre de l'article"
+    Then I should see "Le chapeau de l'article"
+    Then I should see "Le contenu de l'article"
+
     # suppression d'un article
+    When I follow "Administration"
     When I follow "Articles"
     And I follow "supprimer_2"
     Then I should see "Liste des articles"
@@ -111,3 +118,29 @@ Feature: Administration - Partie Site
     And the "article[titre]" field should contain "Le titre markdown"
     And the "article[chapeau]" field should contain "Le *chapeau* markdown"
     And the "article[contenu]" field should contain "Un peu de **contenu** avec de la *mise* en page et un [lien](https://afup.org)."
+
+  @reloadDbWithTestData
+  Scenario: Génération du raccourci d'un article
+    Given I am logged in as admin and on the Administration
+    And I follow "Articles"
+    Then I should see "Liste des articles"
+    And I should see "Actualités"
+
+    # ajout d'un article
+    When I follow "Ajouter"
+    Then I should see "Ajouter un article"
+    And I fill in "article[titre]" with "Mon super 123 article !"
+    And I fill in "article[chapeau]" with "Le chapeau de l'article"
+    And I fill in "article[contenu]" with "Le contenu de l'article"
+    And I select "Actualités" from "article[rubrique]"
+    And I select "9" from "article[position]"
+    And I select "En ligne" from "article[etat]"
+    And I select "Associatif" from "article[theme]"
+    And I select "forum" from "article[idEvent]"
+    And I press "Ajouter"
+    When I should see "Liste des articles"
+    Then the ".content table" element should contain "Mon super 123 article !"
+
+    # vérification de l'article sur le site publique
+    When I go to "/news/17-mon-super-123-article"
+    Then I should see "Mon super 123 article !"
