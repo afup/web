@@ -44,7 +44,7 @@ class EventRepository extends Repository implements MetadataInitializer
     public function getNextEvents(): ?CollectionInterface
     {
         $query = $this
-            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_debut_appel_conferencier, date_fin_appel_conferencier, date_fin_vente, nb_places FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut')
+            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_debut_appel_conferencier, date_fin_appel_conferencier, date_fin_vente, nb_places, interviews_wp_category_id, interviews_intro, interviews_cta_text FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut')
         ;
 
         $events = $query->query($this->getCollection(new HydratorSingleObject()));
