@@ -28,6 +28,9 @@ class Interview
     #[ORM\Column(name: 'wordpress_post_id', nullable: true)]
     public ?int $wordpressPostId = null;
 
+    #[ORM\Column(name: 'wordpress_post_slug', nullable: true)]
+    public ?string $wordpressPostSlug = null;
+
     /** @var Collection<int, Speaker> */
     #[ORM\JoinTable(name: 'interview_speaker')]
     #[ORM\JoinColumn(name: 'interview_id', referencedColumnName: 'id')]

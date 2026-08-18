@@ -33,6 +33,7 @@
                 <tr>
                     <th>Speaker(s)</th>
                     <th class="center aligned">Date de publication</th>
+                    <th>URL</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -44,6 +45,16 @@
                             {{ row.interview.datePublication|date('d/m/Y H:i') }}
                         </td>
                         <td>
+                            {% if row.interview.wordpressPostSlug %}
+                                <a href="{{ wordpressBaseUri }}/{{ row.interview.wordpressPostSlug }}"
+                                   data-position="left center"
+                                   data-tooltip="{{ wordpressBaseUri }}/{{ row.interview.wordpressPostSlug }}"
+                                   class="compact ui icon button">
+                                    <i class="eye icon"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td>
                             <a href="{{ path('admin_event_interview_edit', {interviewId: row.interview.id, id: event.id}) }}"
                                data-position="left center"
                                data-tooltip="Gérer l'interview"
@@ -53,7 +64,7 @@
                             {% if row.interview.wordpressPostId is not null %}
                                 <a href="{{ wordpressBaseUri }}?p={{ row.interview.wordpressPostId }}"
                                    data-position="left center"
-                                   data-tooltip="Voir sur le site"
+                                   data-tooltip="Aperçu sur le site"
                                    class="compact ui icon button">
                                     <i class="linkify icon"></i>
                                 </a>

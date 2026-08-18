@@ -9,6 +9,7 @@ use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Wordpress\Dto\Category;
+use AppBundle\Event\Wordpress\Dto\PersistedInterview;
 use CuyZ\Valinor\Mapper\Source\Source;
 use CuyZ\Valinor\MapperBuilder;
 use LogicException;
@@ -38,7 +39,7 @@ final readonly class HttpWordpressClient implements WordpressClient
             ->map('array<' . Category::class . '>', Source::json($response->getContent()));
     }
 
-    public function persistInterview(Interview $interview, Event $event, array $speakers, array $talks): ?int
+    public function persistInterview(Interview $interview, Event $event, array $speakers, array $talks): PersistedInterview
     {
         $categoryId = $event->getInterviewsWordpressCategoryId();
         if ($categoryId === null) {
@@ -87,9 +88,10 @@ final readonly class HttpWordpressClient implements WordpressClient
             ],
         ]);
 
-        $id = $response->toArray()['id'] ?? null;
-
-        return is_int($id) ? $id : null;
+        return $this->mapperBuilder
+            ->allowSuperfluousKeys()
+            ->mapper()
+            ->map(PersistedInterview::class, Source::json($response->getContent()));
     }
 
     private function getCategory(int $id): ?Category
