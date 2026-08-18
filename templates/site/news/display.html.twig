@@ -34,9 +34,9 @@
                 <header class="font-titre">
                     <h1 class="text-afup-800 text-2xl sm:text-4xl">{{ article.titre }}</h1>
                     <div class="flex mt-2">
-                        <small class="text-2xl flex-grow">
+                        <time class="text-2xl flex-grow" datetime="{{ article.datePublication|date('Y-m-d H:i') }}">
                             {{ article.datePublication|format_date('long') }}
-                        </small>
+                        </time>
                         <small class="hidden sm:flex gap-2">
                             {% if article.theme %}
                                 <twig:Button class="text-xs" variant="secondary" as="a" href="{{ path('news_list', { news_filters : { theme : [article.theme.value]} }) }}">
