@@ -123,14 +123,15 @@ use Symfony\Component\HttpFoundation\Response;
         }
 
         try {
-            $wordpressPostId = $this->wordpressClient->persistInterview(
+            $persistedInterview = $this->wordpressClient->persistInterview(
                 $interview,
                 $event,
                 $interview->speakers->toArray(),
                 $plannedTalks,
             );
 
-            $interview->wordpressPostId = $wordpressPostId;
+            $interview->wordpressPostId = $persistedInterview->id;
+            $interview->wordpressPostSlug = $persistedInterview->slug;
             $this->interviewRepository->save($interview);
 
             return true;
