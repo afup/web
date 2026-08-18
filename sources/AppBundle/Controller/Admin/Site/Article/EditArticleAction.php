@@ -25,7 +25,7 @@ final class EditArticleAction extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(ArticleType::class, $article);
+        $form = $this->createForm(ArticleType::class, $article, ['is_new' => false]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->articleRepository->save($article);

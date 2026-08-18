@@ -11,6 +11,7 @@ use AppBundle\Site\Form\ArticleType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 final class AddArticleAction extends AbstractController
 {
@@ -27,6 +28,10 @@ final class AddArticleAction extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($article->titre && $article->raccourci === null) {
+                $article->raccourci = (new AsciiSlugger())->slug($article->titre)->lower()->toString();
+            }
+
             $this->articleRepository->save($article);
             $this->audit->log('Ajout de l\'article ' . $article->titre);
             $this->addFlash('notice', 'L\'article ' . $article->titre . ' a été ajouté');

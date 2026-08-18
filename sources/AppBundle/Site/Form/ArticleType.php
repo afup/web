@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ArticleType extends AbstractType
@@ -78,20 +79,6 @@ class ArticleType extends AbstractType
                     new Assert\Type('string'),
                 ],
             ])
-            ->add('raccourci', TextType::class, [
-                'required' => true,
-                'label' => 'Raccourci',
-                'attr' => [
-                    'maxlength' => 255,
-                    'size' => 60,
-                ],
-                'constraints' => [
-                    new Assert\Length(max: 255),
-                    new Assert\NotBlank(),
-                    new Assert\Type('string'),
-                    new Assert\Regex('/(\s)/', 'Ne doit pas contenir d\'espaces', null, false),
-                ],
-            ])
             ->add('rubrique', EntityType::class, [
                 'required' => true,
                 'label' => 'Rubrique',
@@ -144,5 +131,34 @@ class ArticleType extends AbstractType
             ])
         ;
         $builder->get('datePublication')->addModelTransformer(new DateTimeToTimestampTransformer());
+
+        $raccourciOption = [
+            'required' => $options['is_new'] === false,
+            'label' => 'Raccourci',
+            'attr' => [
+                'maxlength' => 255,
+                'size' => 60,
+            ],
+            'constraints' => [
+                new Assert\Length(max: 255),
+                new Assert\Type('string'),
+                new Assert\Regex('/(\s)/', 'Ne doit pas contenir d\'espaces', null, false),
+            ],
+        ];
+
+        if ($options['is_new'] === true) {
+            $raccourciOption['help'] = 'Si ce champ est vide, la valeur sera générée automatiquement';
+        } else {
+            $raccourciOption['constraints'][] = new Assert\NotBlank();
+        }
+
+        $builder->add('raccourci', TextType::class, $raccourciOption);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'is_new' => true,
+        ]);
     }
 }
