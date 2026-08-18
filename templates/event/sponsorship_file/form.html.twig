@@ -22,7 +22,7 @@
 
                 {{ form_errors(leadForm) }}
 
-                <twig:Form:Section title="{{ 'Vos coordonnées'|trans }}">
+                <twig:Card:Section title="{{ 'Vos coordonnées'|trans }}">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
                         {{ form_row(leadForm.firstname) }}
                         {{ form_row(leadForm.lastname) }}
@@ -30,15 +30,15 @@
                         {{ form_row(leadForm.phone) }}
                         {{ form_row(leadForm.language) }}
                     </div>
-                </twig:Form:Section>
+                </twig:Card:Section>
 
-                <twig:Form:Section title="{{ 'Votre entreprise'|trans }}">
+                <twig:Card:Section title="{{ 'Votre entreprise'|trans }}">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
                         {{ form_row(leadForm.company) }}
                         {{ form_row(leadForm.poste) }}
                         {{ form_row(leadForm.website) }}
                     </div>
-                </twig:Form:Section>
+                </twig:Card:Section>
 
                 {{ form_row(leadForm.recaptcha) }}
 

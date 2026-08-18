@@ -1,31 +1,61 @@
-<div id="pagination-container">
-    <div id="pagination">
-        <ul class="ais-pagination">
-            {% if current_page > 1 %}
-                <li class="ais-pagination--item ais-pagination--item__first">
-                    <a class="ais-pagination--link" href="{{ path('news_list', {page: 1}|merge(extra_parameters)) }}"><i class="fa fa-angle-double-left"></i></a>
-                </li>
-            {% endif %}
-            {% if current_page > 1 %}
-                <li class="ais-pagination--item ais-pagination--item__previous">
-                    <a rel="prev" class="ais-pagination--link" href="{{ path('news_list', {page: current_page - 1}|merge(extra_parameters)) }}"><i class="fa fa-angle-left"></i></a>
-                </li>
-            {% endif %}
-            {% for page in displayed_pages %}
-                <li class="ais-pagination--item ais-pagination--item__page{% if page == current_page %} ais-pagination--item__active{% endif %}">
-                    <a class="ais-pagination--link" href="{{ path('news_list', {page: page}|merge(extra_parameters)) }}">{{ page }}</a>
-                </li>
-            {% endfor %}
-            {% if current_page < nb_pages %}
-                <li class="ais-pagination--item ais-pagination--item__next">
-                    <a rel="next" class="ais-pagination--link" href="{{ path('news_list', {page: current_page + 1}|merge(extra_parameters)) }}"><i class="fa fa-angle-right"></i></a>
-                </li>
-            {% endif %}
-            {% if current_page < nb_pages %}
-                <li class="ais-pagination--item ais-pagination--item__last">
-                    <a class="ais-pagination--link" href="{{ path('news_list', {page: nb_pages}|merge(extra_parameters)) }}"><i class="fa fa-angle-double-right"></i></a>
-                </li>
-            {% endif %}
-        </ul>
-    </div>
-</div>
+<nav class="mx-auto flex w-full justify-center">
+    <ul class="flex flex-row gap-2 items-center">
+        {% if current_page > 1 %}
+            <li>
+                <twig:Button variant="secondary"
+                             as="a"
+                             href="{{ path('news_list', {page: 1}|merge(extra_parameters)) }}"
+                             aria-label="Première page"
+                             class="flex items-center gap-2">
+                    <twig:UX:Icon name="fa-solid:angle-double-left" class="h-4"/>
+                </twig:Button>
+            </li>
+        {% endif %}
+        {% if current_page > 1 %}
+            <li>
+                <twig:Button variant="secondary"
+                             as="a"
+                             rel="prev"
+                             href="{{ path('news_list', {page: current_page - 1}|merge(extra_parameters)) }}"
+                             aria-label="Page précédente"
+                             class="flex items-center gap-2">
+                    <twig:UX:Icon name="fa-solid:angle-left" class="h-4"/>
+                </twig:Button>
+            </li>
+        {% endif %}
+        {% for page in displayed_pages %}
+            <li>
+                <twig:Button :variant="page == current_page ? 'tertiary' : 'secondary'"
+                             as="a"
+                             href="{{ path('news_list', {page: page}|merge(extra_parameters)) }}"
+                             aria-label="Page {{ page }}"
+                             class="flex">
+                    {{ page }}
+                </twig:Button>
+            </li>
+        {% endfor %}
+        {% if current_page < nb_pages %}
+            <li>
+                <twig:Button variant="secondary"
+                             as="a"
+                             rel="next"
+                             href="{{ path('news_list', {page: current_page + 1}|merge(extra_parameters)) }}"
+                             aria-label="Page suivante"
+                             class="flex items-center gap-2">
+                    <twig:UX:Icon name="fa-solid:angle-right" class="h-4"/>
+                </twig:Button>
+            </li>
+        {% endif %}
+        {% if current_page < nb_pages %}
+            <li>
+                <twig:Button variant="secondary"
+                             as="a"
+                             href="{{ path('news_list', {page: nb_pages}|merge(extra_parameters)) }}"
+                             aria-label="Dernière page"
+                             class="flex items-center gap-2">
+                    <twig:UX:Icon name="fa-solid:angle-double-right" class="h-4"/>
+                </twig:Button>
+            </li>
+        {% endif %}
+    </ul>
+</nav>

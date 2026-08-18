@@ -1,0 +1,33 @@
+{# @prop field Le champ de formulaire (choice multiple + expanded) #}
+{# @prop title Le titre de la section #}
+{# @prop limit Le nombre de choix affichés avant repli #}
+{%- props field, title, limit = 5 -%}
+
+{# les choix cochés remontent, l'ordre d'origine est conservé pour le reste #}
+{%- set choices = field|sort((a, b) => (b.vars.checked ? 1 : 0) - (a.vars.checked ? 1 : 0)) -%}
+{%- set visible_count = max(limit, choices|filter(choice => choice.vars.checked)|length) -%}
+{%- set shown = choices|slice(0, visible_count) -%}
+{%- set folded = choices|slice(visible_count) -%}
+
+<twig:Card:Section title="{{ title }}" class="gap-2">
+    <div class="flex flex-col gap-1">
+        {% for choice in shown %}
+            <div class="flex items-center gap-2">{{ form_widget(choice) }}{{ form_label(choice) }}</div>
+        {% endfor %}
+    </div>
+
+    {% if folded|length %}
+        <details class="group">
+            <summary class="flex w-fit cursor-pointer items-center gap-1 text-sm text-ruby-700 list-none [&::-webkit-details-marker]:hidden">
+                <twig:ux:icon name="mingcute:down-fill" class="size-4 transition-transform group-open:rotate-180" />
+                <span class="group-open:hidden">Voir les {{ folded|length }} autres</span>
+                <span class="hidden group-open:inline">Voir moins</span>
+            </summary>
+            <div class="mt-1 flex flex-col gap-1">
+                {% for choice in folded %}
+                    <div class="flex items-center gap-2">{{ form_widget(choice) }}{{ form_label(choice) }}</div>
+                {% endfor %}
+            </div>
+        </details>
+    {% endif %}
+</twig:Card:Section>

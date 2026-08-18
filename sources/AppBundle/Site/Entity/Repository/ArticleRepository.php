@@ -49,7 +49,8 @@ final class ArticleRepository extends EntityRepository
             ->from('afup_site_article', 'a')
             ->innerJoin('a', 'afup_forum', 'e', 'a.id_forum = e.id')
             ->groupBy('e.id')
-            ->orderBy('e.date_debut', 'DESC')
+            ->addOrderBy('e.date_debut', 'DESC')
+            ->addOrderBy('e.titre', 'DESC')
             ->executeQuery()
             ->fetchAllAssociative();
 

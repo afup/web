@@ -1,12 +1,6 @@
-{% extends 'site/base.html.twig' %}
+{% extends 'layouts/site.html.twig' %}
 
 {% block title %}Les actualités de l'AFUP, page {{ current_page }}{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
-    <link rel="stylesheet" href="/css/talk/list.css">
-{% endblock %}
 
 {% block canonical %}
     {% if current_page == 1 %}
@@ -18,114 +12,74 @@
 
 {% block content %}
 
-    <div class="mw1400p center" id="container">
-        <div class="line" id="main">
-            <h1>Actualités</h1>
-            <div class="container">
-                <div class="col-md-9 col-sm-12">
+<div class="container mx-auto px-4 py-6 sm:px-0 sm:py-10 flex flex-row sm:flex-row gap-5">
+    <div class="flex flex-col gap-10 sm:gap-12 flex-grow">
+        {% for article in articles %}
+            <article>
+                <h2 class="text-afup-800 text-xl sm:text-2xl">{{ article.titre }}</h2>
 
-                    {% if articles|length %}
-                        {% for article in articles %}
-                            <a class="article article-teaser" href="{{ path('news_display', { code: article.slug}) }}"
-                               title="Lire l'article: {{ article.titre }}">
-                                <h2>{{ article.titre }}</h2>
-                                <div class="article-date"><i>{{ article.datePublication|format_date('long') }}</i></div>
-                                <p>{{ article.resume|raw }} <span class="home-read-more">Lire plus <i class="fa fa-arrow-right"></i></span></p>
-                            </a>
-                        {% endfor %}
-                    {% else %}
-                        Aucun article trouvé.
-                    {% endif %}
+                <time datetime="{{ article.datePublication|date('Y-m-d H:i') }}" class="text-lg text-neutre-400">
+                    {{ article.datePublication|format_date('long') }}
+                </time>
 
-                    {{ render(controller(
-                        'AppBundle\\Controller\\Website\\PagerController::display',
-                        {
-                            'total_items': total_items,
-                            'current_page': current_page,
-                            'extra_parameters': { news_filters: filters },
-                            'items_per_page' : articles_per_page,
-                        }
-                    )) }}
+                <p class="text-gray-700 mt-2">{{ article.resume|raw }}</p>
 
-                </div>
+                <a href="{{ path('news_display', { code: article.slug}) }}"
+                   title="Lire l'article: {{ article.titre }}"
+                   class="flex items-center gap-1 text-ruby-700 mt-2">
+                    Lire plus <twig:UX:Icon name="mingcute:arrow-right-fill" class="h-5" />
+                </a>
+            </article>
+        {% else %}
+            <h2 class="text-3xl">
+                Aucun article trouvé avec ces critères.
+            </h2>
+            <a href="{{ path('news_list') }}" class="flex items-center gap-1 text-ruby-700 text-2xl">
+                <twig:UX:Icon name="mingcute:arrow-left-fill" class="h-5" /> Revenir à la liste
+            </a>
+        {% endfor %}
 
-                <div class="col-md-3 col-sm-12 tablet-hidden">
-
-                    {{ form_start(form, { attr: { class: "news-filters"}, action: path('news_list') }) }}
-                    <div class="ais-root ais-refinement-list">
-                        <div class="ais-refinement-list--header ais-header">
-                            <h4>Année</h4>
-                        </div>
-
-                        <div class="ais-body ais-refinement-list--body">
-                            <div class="ais-refinement-list--list">
-                                <div class="ais-refinement-list--item">
-
-                                    {% for item in form.year %}
-                                        <div>
-                                            {{ form_widget(item) }}
-                                            {{ form_label(item) }}
-                                        </div>
-                                    {% endfor %}
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="ais-root ais-refinement-list">
-                        <div class="ais-refinement-list--header ais-header">
-                            <h4>Thème</h4>
-                        </div>
-
-                        <div class="ais-body ais-refinement-list--body">
-                            <div class="ais-refinement-list--list">
-                                <div class="ais-refinement-list--item">
-                                    {% for item in form.theme %}
-                                        <div>
-                                            {{ form_widget(item) }}
-                                            {{ form_label(item) }}
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="ais-root ais-refinement-list">
-                        <div class="ais-refinement-list--header ais-header">
-                            <h4>Cycle de conférences</h4>
-                        </div>
-
-                        <div class="ais-body ais-refinement-list--body">
-                            <div class="ais-refinement-list--list">
-                                <div class="ais-refinement-list--item">
-                                    {% for item in form.event %}
-                                        <div>
-                                            {{ form_widget(item) }}
-                                            {{ form_label(item) }}
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{ form_widget(form.submit, {attr: {style: "display:none "}}) }}
-
-                    {{ form_end(form) }}
-                </div>
-            </div>
-
-        </div>
+        {{ render(controller(
+            'AppBundle\\Controller\\Website\\PagerController::display',
+            {
+                'total_items': total_items,
+                'current_page': current_page,
+                'extra_parameters': { news_filters: filters },
+                'items_per_page' : articles_per_page,
+            }
+        )) }}
     </div>
+
+    <div class="min-w-fit max-w-100 hidden sm:block">
+        {{ form_start(form, { action: path('news_list') }) }}
+
+            <twig:Card class="flex flex-col gap-6">
+                <div class="flex flex-col gap-6">
+                    <twig:Form:FilterList :field="form.year" title="Année" />
+                    <twig:Form:FilterList :field="form.theme" title="Thème" />
+                    <twig:Form:FilterList :field="form.event" title="Cycle de conférences" />
+                </div>
+
+                {% if filters|filter(values => values is not empty)|length %}
+                    <a href="{{ path('news_list') }}" class="text-neutre-400">
+                        Effacer les filtres
+                    </a>
+                {% endif %}
+            </twig:Card>
+
+            {{ form_widget(form.submit, {attr: {style: "display:none "}}) }}
+
+        {{ form_end(form) }}
+    </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script>
-        $('form[name=news_filters]').on('change', function() {
-            $(this).submit();
-        })
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('form[name=news_filters]');
+            form?.addEventListener('change', () => form.requestSubmit());
+        });
     </script>
 {% endblock %}
