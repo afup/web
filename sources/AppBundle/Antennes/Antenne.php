@@ -19,6 +19,7 @@ final readonly class Antenne
         public ?Map $map,
         public ?array $departments = null,
         public ?array $pays = null,
+        public ?string $administrativeArea = null,
         public bool $hideOnOfficesPage = false,
     ) {}
 }

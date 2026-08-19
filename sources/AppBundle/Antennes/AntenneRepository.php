@@ -91,6 +91,7 @@ final class AntenneRepository
                 ),
             ),
             departments: ['33'],
+            administrativeArea: 'Nouvelle-Aquitaine',
         ));
 
         $this->add(new Antenne(
@@ -115,6 +116,7 @@ final class AntenneRepository
                 ),
             ),
             departments: ['87'],
+            administrativeArea: 'Nouvelle-Aquitaine',
         ));
 
         $this->add(new Antenne(
@@ -146,6 +148,7 @@ final class AntenneRepository
                 ),
             ),
             departments: ['59', '80'],
+            administrativeArea: 'Hauts-de-France',
         ));
 
         $this->add(new Antenne(
@@ -169,6 +172,7 @@ final class AntenneRepository
                 ),
             ),
             pays: ['lux'],
+            administrativeArea: 'Luxembourg',
         ));
 
         $this->add(new Antenne(
@@ -194,6 +198,7 @@ final class AntenneRepository
                 ),
             ),
             departments: ['69'],
+            administrativeArea: 'Auvergne-Rhône-Alpes',
         ));
 
         $this->add(new Antenne(
@@ -217,6 +222,7 @@ final class AntenneRepository
                 ),
             ),
             departments: ['13'],
+            administrativeArea: "Provence-Alpes-Côte d'Azur",
         ));
 
         $this->add(new Antenne(
@@ -242,6 +248,7 @@ final class AntenneRepository
                 ),
             ),
             departments: ['34'],
+            administrativeArea: 'Occitanie',
         ));
 
         $this->add(new Antenne(
@@ -267,6 +274,7 @@ final class AntenneRepository
                 ),
             ),
             departments: ['44'],
+            administrativeArea: 'Pays de la Loire',
         ));
 
         $this->add(new Antenne(
@@ -292,6 +300,7 @@ final class AntenneRepository
                 ),
             ),
             departments: ['75', '77', '78', '91', '92', '93', '94', '95'],
+            administrativeArea: 'Île-de-France',
         ));
 
         $this->add(new Antenne(
@@ -316,6 +325,7 @@ final class AntenneRepository
                 ),
             ),
             departments: ['86'],
+            administrativeArea: 'Nouvelle-Aquitaine',
         ));
 
         $this->add(new Antenne(
@@ -338,6 +348,7 @@ final class AntenneRepository
                 ),
             ),
             departments: ['51'],
+            administrativeArea: 'Grand Est',
         ));
 
         $this->add(new Antenne(
@@ -362,6 +373,7 @@ final class AntenneRepository
                 ),
             ),
             departments: ['35'],
+            administrativeArea: 'Bretagne',
         ));
 
         $this->add(new Antenne(
@@ -386,6 +398,7 @@ final class AntenneRepository
                 ),
             ),
             departments: ['31'],
+            administrativeArea: 'Occitanie',
         ));
 
         $this->add(new Antenne(
@@ -417,6 +430,7 @@ final class AntenneRepository
                 ),
             ),
             departments: ['54', '55', '57', '88'],
+            administrativeArea: 'Grand Est',
         ));
 
         $this->add(new Antenne(
@@ -451,6 +465,7 @@ final class AntenneRepository
                 ),
             ),
             departments: ['37'],
+            administrativeArea: 'Centre-Val de Loire',
         ));
     }
 }
