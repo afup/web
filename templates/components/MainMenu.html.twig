@@ -10,7 +10,7 @@
     </div>
     {% if this.entries.sub|length > 0 %}
         <div class="bg-white border-b-2 border-neutre-300">
-            <div class="container mx-auto flex flex-row gap-2">
+            <div class="container mx-auto flex flex-col sm:flex-row gap-2">
                 {% for entry in this.entries.sub %}
                     <div class="px-4 pt-3">
                         <a href="{{ entry.feuille.lien }}" class="block pb-2 text-gray-800 border-b-3 hover:border-neutre-400 uppercase text-sm {{ entry.is_active ? 'border-black' : 'border-transparent' }}">{{ entry.feuille.nom }}</a>
