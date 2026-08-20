@@ -49,4 +49,16 @@ final class MeetupRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return array<Meetup>
+     */
+    public function findNextEvents(int $quantity): array
+    {
+        return $this->createQueryBuilder('m')
+            ->orderBy('m.date', 'DESC')
+            ->setMaxResults($quantity)
+            ->getQuery()
+            ->getResult();
+    }
 }

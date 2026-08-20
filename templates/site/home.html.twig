@@ -1,4 +1,4 @@
-{% extends 'site/base.html.twig' %}
+{% extends 'layouts/site.html.twig' %}
 
 {% block metas %}
     {{ parent() }}
@@ -23,118 +23,204 @@
     </script>
 {% endblock %}
 
-{% import _self as home_macros %}
-
-{% macro home_feuille(feuille) %}
-    <h2>{{ feuille.nom }}</h2>
-    {% if feuille.image %}
-        <a href="{{ feuille.lien }}"><img alt="{{ feuille.imageAlt }}" src="/templates/site/images/{{ feuille.image }}" /></a>
-    {% endif %}
-    {% if feuille.alt %}
-        <p>{{ feuille.alt }}</p>
-    {% endif %}
-    <a href="{{ feuille.lien }}" title="Voir plus : {{ feuille.nom }}" class="home-view-more">Voir plus <i class="fa fa-arrow-right"></i></a>
-{% endmacro %}
-
 {% block content %}
-    <div class="mw1400p center home" id="container">
-        <div class="line" id="main">
+<div class="home-banner bg-afup-800 bg-cover bg-center">
+    <div class="container mx-auto flex flex-col gap-5 p-4 sm:py-15 sm:px-0 text-white">
+        <h1 class="font-titre text-6xl">
+            AFUP : Association Française<br/>des Utilisateurs de PHP
+        </h1>
 
-            <div class="container">
-                <div class="col-md-12">
-                    <h1>AFUP : Association Française des Utilisateurs de PHP</h1>
-                    <blockquote>
-                        Apéros, rendez-vous et cycle de conférences, l'<abbr title="Association Française des Utilisateurs de PHP">AFUP</abbr>
-                        est au cœur de la communauté PHP depuis 2000.
-                        L'AFUP vise à favoriser l’échange d’expertises et la diffusion des connaissances auprès de la communauté.
-                    </blockquote>
-                </div>
-            </div>
-
-            <div class="container">
-                <div class="col-md-6">
-                    <h2>Actualités</h2>
-                    <ul class="home-list home-list__actualites">
-                        {% for actualite in actualites %}
-                            <li class="{% if loop.first %} home-list-item_first {% endif %}">
-                                <a href="{{ path('news_display', {code: actualite.slug}) }}">
-                                    <span class="home-list-date">{{ actualite.datePublication|date('d/m') }}</span>
-                                    {% if loop.first  %}
-                                        <span class="home-actualite-title">{{ actualite.titre }}</span>
-                                        <div class="home-list-chapeau-container">
-                                            <p>
-                                                {{ actualite.chapeau|raw }}
-                                                <span class="home-read-more">Lire plus <i class="fa fa-arrow-right"></i></span>
-                                            </p>
-                                        </div>
-                                    {% else %}
-                                        {{ actualite.titre }}
-                                    {% endif %}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-
-                    <a href="{{ path('news_list')}}" class="home-view-more" title="Voir plus : d'autres actualités">Voir plus <i class="fa fa-arrow-right"></i></a>
-                </div>
-
-                <div class="col-md-6">
-                    {% if premiere_feuille %}
-                        {{ home_macros.home_feuille(premiere_feuille) }}
-                    {% endif %}
-                </div>
-            </div>
-
-            <div class="container">
-                <div class="col-md-6">
-                    <h2>Dans les antennes</h2>
-                    <ul class="home-list">
-                        {% for meetup in meetups %}
-                            <li>
-                                <a href="{{ meetup.event_url }}">
-                                    <span class="home-list-date">{{ meetup.timestamp|date('d/m') }}</span>
-                                    {{ meetup.office.label }} - {{ meetup.label }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-
-                    <a href="{{ path('meetups_list') }}" class="home-view-more" title="Voir plus : meetups dans les antennes">Voir plus <i class="fa fa-arrow-right"></i></a>
-                </div>
-
-                <div class="col-md-6">
-                    {% if deuxieme_feuille %}
-                        {{ home_macros.home_feuille(deuxieme_feuille) }}
-                    {% elseif talk %}
-                        <h2>Le talk du jour</h2>
-                        <a href="{{ path('talks_show', { id: talk.getId(), slug: talk.getSlug()}) }}" class="home-talk-of-the-day">
-                            <img class="" src="https://img.youtube.com/vi/{{ talk.youtubeId }}/hqdefault.jpg" title="{{ talk.getTitle }}" alt="" /><br />
-                            <span class="home-actualite-title">{{ talk.getTitle }}</span>
-                        </a>
-
-                    {% endif %}
-                </div>
-            </div>
-
-            {% set autres_feuilles_container_open = 0 %}
-            {% for feuille in autres_feuilles %}
-                {% if loop.index is odd %}
-                    {% set autres_feuilles_container_open = 1 %}
-                    <div class="container">
-                {% endif %}
-
-                <div class="col-md-6">
-                    {{ home_macros.home_feuille(feuille) }}
-                </div>
-
-                {% if loop.index is even %}
-                    </div>
-                {% endif %}
-            {% endfor %}
-            {% if autres_feuilles_container_open %}
-                </div>
-            {% endif %}
-
-        </div>
+        <p class="text-xl">
+            Apéros, rendez-vous et cycle de conférences, l'AFUP est au cœur de la communauté PHP depuis 2000.<br/>
+            L'AFUP vise à favoriser l'échange d'expertises et la diffusion des connaissances auprès de la communauté.
+        </p>
     </div>
+</div>
+
+<div class="container mx-auto p-4 sm:py-10 flex flex-col gap-10">
+    <section class="w-full">
+        <h1 class="text-afup-800 font-titre text-2xl sm:text-4xl border-b-2 border-neutre-300 pb-3 mb-5 hidden sm:block">
+            Actualités
+        </h1>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            <twig:Card class="col-span-2 p-0 flex-col overflow-hidden hidden sm:flex">
+                <a href="{{ path('news_display', {'code': articles[0].slug}) }}"
+                   class="block bg-cover bg-center grow"
+                   style="background-image: url({{ asset('images/article-default-image.svg') }})">
+                    {% if articles[0].theme %}
+                        <a href="{{ path('news_list', {'news_filters[theme][]': articles[0].theme.value}) }}" class="block absolute mt-5 ml-5 bg-ruby-400 pl-2 pr-4 py-1 rounded-full text-white uppercase flex gap-1 items-center">
+                            <twig:UX:Icon name="oui:dot" class="size-6 text-ruby-200" /> {{ articles[0].theme.label }}
+                        </a>
+                    {% endif %}
+                </a>
+
+                <article class="p-5 flex flex-col gap-5">
+                    <div class="self-start flex flex-row gap-2 items-center">
+                        <div class="bg-afup-100 rounded-xl p-2 flex items-center justify-center">
+                            <twig:UX:Icon name="uil:calendar" class="size-5" />
+                        </div>
+
+                        <time datetime="{{ articles[0].datePublication|date('Y-m-d') }}"
+                              class="font-medium">
+                            {{ articles[0].datePublication|format_date('long') }}
+                        </time>
+                    </div>
+
+                    <a href="{{ path('news_display', {'code': articles[0].slug}) }}"
+                       class="font-titre text-3xl">
+                        {{ articles[0].titre }}
+                    </a>
+
+                    {% if articles[0].chapeau %}
+                        <p>{{ articles[0].chapeau|markdown_to_html }}</p>
+                    {% endif %}
+
+                    <twig:Button variant="tertiary"
+                                 as="a"
+                                 href="{{ path('news_display', {'code': articles[0].slug}) }}"
+                                 class="self-start flex gap-2">
+                        Lire l'article complet <twig:UX:Icon name="mingcute:arrow-right-fill" class="size-5" />
+                    </twig:Button>
+                </article>
+            </twig:Card>
+
+            <twig:Card class="col-span-1">
+                <twig:Card:Title size="big">Dernières actualités</twig:Card:Title>
+
+                <div class="flex flex-col gap-6">
+                    {% for article in articles %}
+                        <article class="flex-col gap-2 {{ loop.first ? 'flex sm:hidden' : 'flex' }}">
+                            {% if article.theme %}
+                                <a href="{{ path('news_list', {'news_filters[theme][]': article.theme.value}) }}"
+                                   class="block uppercase border border-neutre-300 rounded-full w-fit px-2 py-1 text-xs font-bold">
+                                    {{ article.theme.label }}
+                                </a>
+                            {% endif %}
+
+                            <div class="flex flex-row gap-2 items-center">
+                                <twig:Time:DayAndMonth :date="article.datePublication" variant="dark" />
+
+                                <a href="{{ path('news_display', {code: article.slug}) }}"
+                                   class="text-titre font-light">
+                                    {{ article.titre }}
+                                </a>
+                            </div>
+                        </article>
+                    {% endfor %}
+
+                    <twig:Button variant="tertiary" as="a" href="{{ path('news_list') }}" class="flex gap-2">
+                        Voir toutes les actualités <twig:UX:Icon name="mingcute:arrow-right-fill" class="h-5" />
+                    </twig:Button>
+                </div>
+            </twig:Card>
+        </div>
+    </section>
+
+    <section class="w-full">
+        <h1 class="text-afup-800 font-titre text-2xl sm:text-4xl border-b-2 border-neutre-300 pb-3 mb-5 hidden sm:block">
+            {{ currentEvent.title }}
+        </h1>
+
+        <div class="flex flex-col sm:grid sm:grid-cols-2">
+            <div class="relative isolate bg-cover bg-center grow flex items-center justify-center rounded-t-xl rounded-bl-none sm:rounded-l-xl sm:rounded-tr-none
+            before:content-[''] before:absolute before:inset-0 before:bg-afup-800/70 before:-z-10 before:rounded-t-xl before:rounded-bl-none sm:before:rounded-l-xl sm:before:rounded-tr-none"
+                 style="background-image: url('{{ asset('images/home-banner.jpg') }}')">
+                <img src="{{ asset('images/forumphp-2026-vecto-light.svg') }}" class="min-h-30 sm:min-h-60 m-20" alt="Logo {{ currentEvent.title }}" />
+            </div>
+            <div class="rounded-b-xl rounded-tr-none sm:rounded-r-xl sm:rounded-bl-none p-4 sm:p-10 flex flex-col gap-10 bg-linear-to-b from-afup-700 to-afup-300 text-white">
+                <h1 class="font-titre text-4xl">
+                    Participez au {{ currentEvent.title }}
+                </h1>
+                <p>
+                    Le rendez-vous incontournable de la communauté PHP en France. Rejoignez-nous les 8 et 9 octobre 2026
+                    pour deux jours de conférences, d'ateliers et de networking.
+                </p>
+                <div class="flex flex-col gap-3">
+                    <div class="flex flex-row gap-3 items-center">
+                        <div class="border-neutre-200 bg-white/20 border-white/50 border p-3 rounded-xl">
+                            <twig:UX:Icon name="uil:calendar" class="size-6" />
+                        </div>
+                        <h2 class="font-titre text-xl sm:text-3xl">8 &amp; 9 octobre 2026</h2>
+                    </div>
+
+                    <div class="flex flex-row gap-3 items-center">
+                        <div class="border-neutre-200 bg-white/20 border-white/50 border p-3 rounded-xl">
+                            <twig:UX:Icon name="akar-icons:location" class="size-6" />
+                        </div>
+                        <h2 class="font-titre text-sm sm:text-lg leading-5">
+                            Hotel New York - The Art of Marvel,<br/>
+                            Disneyland Paris
+                        </h2>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-5">
+                    <twig:Button variant="secondary"
+                                 class="flex gap-2"
+                                 as="a"
+                                 href="{{ path('ticket', {eventSlug: currentEvent.path}) }}">
+                        Réserver ma place <twig:UX:Icon name="mingcute:arrow-right-fill" class="size-5" />
+                    </twig:Button>
+
+                    <twig:Button variant="secondary-outline"
+                                 class="flex gap-2"
+                                 as="a"
+                                 href="https://event.afup.org/forum-php-2026/programme/">
+                        Voir le programme
+                    </twig:Button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="flex flex-col sm:grid grid-flow-col grid-cols-2 gap-10">
+        <twig:Card class="row-span-1">
+            <twig:Card:Title size="big">Dans les antennes</twig:Card:Title>
+            <twig:Card:Subtitle>Meetups à travers la France</twig:Card:Subtitle>
+
+            <div class="flex flex-col gap-6">
+                {% for meetup in meetups %}
+                    <a href="https://www.meetup.com/fr-FR/{{ office_meetup_urlname(meetup.codeAntenne) }}/events/{{ meetup.id }}/">
+                        <article class="flex flex-row gap-2 items-center">
+                            <twig:Time:DayAndMonth :date="meetup.date" variant="light" />
+
+                            <div>
+                                <h2 class="flex items-center gap-1 uppercase font-bold text-sm">
+                                    <twig:UX:Icon name="akar-icons:location" class="size-4" /> {{ office_name(meetup.codeAntenne) }}
+                                </h2>
+                                <h1 class="text-titre font-light">
+                                    {{ meetup.titre }}
+                                </h1>
+                            </div>
+                        </article>
+                    </a>
+                {% endfor %}
+
+                <twig:Button variant="tertiary" as="a" href="{{ path('meetups_list') }}" class="flex gap-2">
+                    Voir touts les meetups <twig:UX:Icon name="mingcute:arrow-right-fill" class="h-5" />
+                </twig:Button>
+            </div>
+        </twig:Card>
+
+        <twig:Card class="row-span-1 flex flex-col">
+            <twig:Card:Title size="big">La veille de l'AFUP</twig:Card:Title>
+            <twig:Card:Subtitle>Newsletter technique pour les devs PHP</twig:Card:Subtitle>
+
+            <div class="grow p-0 flex flex-col gap-5">
+                <img src="{{ asset('images/veille.png') }}" alt="Veille" />
+
+                <p class="grow">
+                    Membres AFUP, profitez du meilleur de PHP et soyez à jour sur son actualité.<br/>
+                    <br/>
+                    Abonnez-vous à notre newsletter La Veille de l'AFUP. Progrès du langage, conseils de spécialistes,
+                    nouvelles versions, l'AFUP fait la veille pour vous et vous l'envoie par mail.
+                </p>
+
+                <twig:Button variant="tertiary" as="a" href="{{ path('techletter') }}" class="flex gap-2">
+                    En savoir plus <twig:UX:Icon name="mingcute:arrow-right-fill" class="h-5" />
+                </twig:Button>
+            </div>
+        </twig:Card>
+    </section>
+</div>
 {% endblock %}

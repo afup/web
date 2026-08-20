@@ -1,4 +1,4 @@
-{# @prop variant 'primary'|'secondary'|'tertiary' Quel genre de bouton #}
+{# @prop variant 'primary'|'secondary'|'secondary-outline'|'tertiary' Quel genre de bouton #}
 {# @block content Contenu du bouton #}
 {# @prop as 'button'|'a' Tag HTML #}
 {%- props variant = 'primary', as = 'button' -%}
@@ -8,6 +8,7 @@
         variant: {
             primary: 'bg-ruby-500 text-white hover:bg-ruby-700',
             secondary: 'bg-white text-neutre-700 border-neutre-300 hover:bg-afup-700 hover:text-white hover:border-afup-700',
+            'secondary-outline': 'bg-transparent text-white border-white border-2 hover:bg-afup-200',
             tertiary: 'bg-afup-100 text-afup-500 hover:bg-afup-500 hover:text-white',
         },
     },

@@ -4772,36 +4772,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/CompanyPublicProfile/ListAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'hits\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HomeAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method search\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HomeAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Website\\\\Global\\\\HomeAction\\:\\:doGetLatestMeetups\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HomeAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Website\\\\Global\\\\HomeAction\\:\\:getLatestMeetups\\(\\) should return array\\<AppBundle\\\\Event\\\\Entity\\\\Meetup\\> but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HomeAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Website\\\\Global\\\\HomeAction\\:\\:getTalkOfTheDay\\(\\) should return AppBundle\\\\Event\\\\Model\\\\Talk but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HomeAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
 	'identifier' => 'foreach.nonIterable',
 	'count' => 1,
