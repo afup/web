@@ -62,9 +62,11 @@
                 </header>
 
                 <main class="pt-5">
-                    <div class="prose max-w-none border-l-8 border-afup-300 bg-afup-100 px-3 py-2 sm:text-justify rounded-lg">
-                        {{ article.chapeau|markdown_to_html }}
-                    </div>
+                    {% if article.chapeau %}
+                        <div class="prose max-w-none border-l-8 border-afup-300 bg-afup-100 px-3 py-2 sm:text-justify rounded-lg">
+                            {{ article.chapeau|markdown_to_html }}
+                        </div>
+                    {% endif %}
 
                     <div class="prose prose-lg max-w-none sm:my-10 mt-10 sm:text-justify">
                         {{ article.contenu|markdown_to_html }}
