@@ -1,41 +1,58 @@
-{% extends 'admin/association/membership/_base.html.twig' %}
+{% extends 'layouts/site.html.twig' %}
+{% form_theme form 'form_themes/tailwind.html.twig' %}
 
 {% block page_title %}Formulaire d'inscription à l'AFUP{% endblock %}
 
-{% block submenu %}
-    {{ render(controller(
-        'AppBundle\\Controller\\Website\\SecondaryMenuController::display',
-        { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ASSOCIATION') }
-    )) }}
-{% endblock %}
+{% block content %}
+    <div class="container mx-auto flex flex-col items-center px-4 my-5 gap-4">
+        <h1 class="font-titre font-normal text-5xl text-afup-800 text-center">{{ "Formulaire d'inscription à l'AFUP"|trans }}</h1>
 
-{% block page_content %}
-<article id="company-membership">
-    {{ form_start(form) }}
-    <fieldset>
-        <legend>Information</legend>
-        <div>
+        {{ form_start(form, {attr: {class: 'self-stretch'}}) }}
+
+        <twig:Card class="flex flex-col gap-8 px-6 py-12 sm:px-28 sm:py-12 my-5 sm:mb-10">
+            <twig:Card:Title type="form" class="text-2xl mb-0">{{ 'Créer votre compte'|trans }}</twig:Card:Title>
             {{ form_errors(form) }}
-            {{ form_row(form.genre) }}
-            {{ form_row(form.userCommonInfo.lastName) }}
-            {{ form_row(form.userCommonInfo.firstName) }}
-            {{ form_row(form.userCommonInfo.username) }}
-            {{ form_row(form.userCommonInfo.email) }}
-            {{ form_row(form.userCommonInfo.address) }}
-            {{ form_row(form.userCommonInfo.zipcode) }}
-            {{ form_row(form.userCommonInfo.city) }}
-            {{ form_row(form.country) }}
-            {{ form_row(form.userCommonInfo.phone) }}
-            {{ form_row(form.mobilephone) }}
-            {{ form_row(form.nearestOffice) }}
-            <div>
-                {{ form_widget(form.userCommonInfo.password) }}
+
+            <twig:Card:Section title="{{ 'Informations personnelles'|trans }}">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
+                    {{ form_row(form.genre) }}
+                    {{ form_row(form.userCommonInfo.lastName) }}
+                    {{ form_row(form.userCommonInfo.firstName) }}
+                </div>
+                {{ form_row(form.userCommonInfo.username) }}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
+                    {{ form_row(form.userCommonInfo.email) }}
+                    {{ form_row(form.userCommonInfo.phone) }}
+                    {{ form_row(form.mobilephone) }}
+                </div>
+            </twig:Card:Section>
+
+            <twig:Card:Section title="{{ 'Addresse'|trans }}">
+                {{ form_row(form.userCommonInfo.address) }}
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-7">
+                    {{ form_row(form.userCommonInfo.zipcode) }}
+                    {{ form_row(form.userCommonInfo.city) }}
+                    {{ form_row(form.country) }}
+                    {{ form_row(form.nearestOffice) }}
+                </div>
+            </twig:Card:Section>
+
+            <twig:Card:Section title="{{ 'Sécurité'|trans }}">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+                    {{ form_row(form.userCommonInfo.password.first) }}
+                    {{ form_row(form.userCommonInfo.password.second) }}
+                </div>
+            </twig:Card:Section>
+
+
+            <div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 border-t-2 border-neutre-300 pt-5">
+                <p class="font-sans font-normal text-sm text-neutre-700">{{ 'Vous avez un compte ?'|trans }} <a href="{{ path('app_login') }}" class="text-afup-500 underline hover:no-underline">{{ 'Se connecter'|trans }}</a></p>
+                {{ form_widget(form.userCommonInfo.save, {attr: { "class": "flex flex-row justify-center items-center py-3 px-8 gap-2 bg-ruby-500 rounded-lg font-sans font-semibold text-base text-white text-center"}}) }}
             </div>
-        </div>
-    </fieldset>
-    <div class="right">
-        {{ form_widget(form.userCommonInfo.save, {attr: { "class": "button button--call-to-action"}}) }}
+
+        </twig:Card>
+        {{ form_end(form) }}
+
     </div>
-    {{ form_end(form) }}
-</article>
+
 {% endblock %}
