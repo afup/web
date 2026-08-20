@@ -3128,12 +3128,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot clone DateTime\\|null\\.$#',
-	'identifier' => 'clone.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Event\\\\Session\\\\EditAction\\:\\:getForm\\(\\) has parameter \\$roomChoices with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,

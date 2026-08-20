@@ -6,13 +6,13 @@ namespace AppBundle\Controller\Admin\Event\Session;
 
 use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\RoomRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Room;
 use AppBundle\Event\Model\Session\CalendarEvent;
 use AppBundle\Event\Model\Session\CalendarResource;
 use AppBundle\Event\Model\TalkAggregate;
-use DateTimeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,6 +38,7 @@ final class IndexAction extends AbstractController
                 'events' => $this->calendarEvents($sessions),
                 'resources' => $this->calendarResources($event),
             ],
+            'timezone' => Planning::TIMEZONE,
         ]);
     }
 
@@ -69,6 +70,8 @@ final class IndexAction extends AbstractController
      */
     private function calendarEvents(array $sessions): array
     {
+        $timezone = new \DateTimeZone(Planning::TIMEZONE);
+
         $events = [];
         foreach ($sessions as $session) {
             if (!$session->planning || !$session->room || !$session->planning->getStart() || !$session->planning->getEnd()) {
@@ -77,12 +80,23 @@ final class IndexAction extends AbstractController
             $events[] = new CalendarEvent(
                 $session->planning->getId(),
                 $session->talk->getTitle(),
-                $session->planning->getStart()->format(DateTimeInterface::ATOM),
-                $session->planning->getEnd()->format(DateTimeInterface::ATOM),
+                $this->formatForCalendar($session->planning->getStart(), $timezone),
+                $this->formatForCalendar($session->planning->getEnd(), $timezone),
                 $session->room->getId(),
             );
         }
 
         return $events;
+    }
+
+    /**
+     * Le calendrier ne gère pas les timezones : il interprète la date reçue telle
+     * qu'elle est écrite. On lui transmet donc l'heure locale de l'événement, sans décalage.
+     */
+    private function formatForCalendar(\DateTimeInterface $date, \DateTimeZone $timezone): string
+    {
+        return \DateTimeImmutable::createFromInterface($date)
+            ->setTimezone($timezone)
+            ->format('Y-m-d\TH:i:s');
     }
 }

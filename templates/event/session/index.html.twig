@@ -27,14 +27,24 @@
         const $el = $('#status');
         $el.hide();
 
+        // event-calendar 4.7.1 construit ses Date en UTC (Date.UTC(...)) à partir des
+        // chiffres affichés sur la grille : il faut donc relire ces chiffres via les
+        // getters UTC, pas les getters locaux qui dépendent de la timezone du navigateur.
+        function toLocalDateTime(date) {
+            const pad = (value) => String(value).padStart(2, '0');
+
+            return `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())}`
+                + `T${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())}:${pad(date.getUTCSeconds())}`;
+        }
+
         async function updateEvent(info) {
 
             const url = `/admin/event/sessions/${info.event.id}.json`;
             const response = await fetch(url, {
               method: "POST",
               body: JSON.stringify({
-                start: info.event.start,
-                end: info.event.end,
+                start: toLocalDateTime(info.event.start),
+                end: toLocalDateTime(info.event.end),
                 roomId: info.event.resourceIds[0],
               }),
             });
@@ -106,8 +116,8 @@
                             <br/>
 
                             {% if session.planning %}
-                                <em>{{ session.planning.start|date("d/m/Y") }}</em> /
-                                {{ session.planning.start|date("H:i") }} - {{ session.planning.end|date("H:i") }} / {{ session.room ? session.room.name }}
+                                <em>{{ session.planning.start|date("d/m/Y", timezone) }}</em> /
+                                {{ session.planning.start|date("H:i", timezone) }} - {{ session.planning.end|date("H:i", timezone) }} / {{ session.room ? session.room.name }}
                             {% else %}
                                 <span class="ui yellow label">non planifié</span>
                             {% endif %}

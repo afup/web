@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event\Session;
 
+use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\PlanningRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,8 +22,12 @@ class CalendarAjaxAction extends AbstractController
         }
         $data = $request->toArray();
 
-        $planning->setStart(new \DateTime($data['start']));
-        $planning->setEnd(new \DateTime($data['end']));
+        // Le calendrier envoie l'heure telle qu'affichée, sans décalage :
+        // c'est donc l'heure locale de l'événement, pas celle du navigateur.
+        $timezone = new \DateTimeZone(Planning::TIMEZONE);
+
+        $planning->setStart(new \DateTime($data['start'], $timezone));
+        $planning->setEnd(new \DateTime($data['end'], $timezone));
         $planning->setRoomId((int) $data['roomId']);
 
         $this->planningRepository->save($planning);
