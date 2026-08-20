@@ -31,10 +31,17 @@ final class CompanyAction extends AbstractController
 
     public function __invoke(Request $request): Response
     {
+        // On pré-remplit autant de lignes que le forfait par défaut en compte, pour que le
+        // formulaire reste utilisable sans JavaScript. Le script ne sert plus qu'à réagir aux
+        // changements du select « nombre de membres ».
+        $defaultMembers = SubscriptionManagement::AFUP_PERSONNE_MORALE_SEUIL;
+
         $data = new CompanyMember();
-        $data->setInvitations([
-            new CompanyMemberInvitation()->setManager(true),
-        ]);
+        $data->setMaxMembers($defaultMembers);
+        $data->setInvitations(array_map(
+            static fn(int $index): CompanyMemberInvitation => new CompanyMemberInvitation()->setManager(0 === $index),
+            range(0, $defaultMembers - 1),
+        ));
 
         $subscribeForm = $this->createForm(CompanyMemberType::class, $data);
         $subscribeForm->handleRequest($request);

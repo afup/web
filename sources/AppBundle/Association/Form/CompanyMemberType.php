@@ -6,6 +6,7 @@ namespace AppBundle\Association\Form;
 
 use AppBundle\Association\CompanyMembership\SubscriptionManagement;
 use AppBundle\Association\Model\CompanyMember;
+use AppBundle\Association\Model\CompanyMemberInvitation;
 use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
 use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaIsValid;
 use Symfony\Component\Form\AbstractType;
@@ -16,8 +17,12 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class CompanyMemberType extends AbstractType
 {
@@ -87,9 +92,26 @@ class CompanyMemberType extends AbstractType
                 'entry_type'   => CompanyMemberInvitationType::class,
                 'allow_add' => true,
                 'required' => false,
+                // Déclaré ici et non sur le modèle : CompanyMember::$invitations n'a pas
+                // d'Assert\Valid, la validation ne cascade donc pas vers les invitations.
+                'constraints' => [
+                    new Callback(static function (?array $invitations, ExecutionContextInterface $context): void {
+                        $first = $invitations[0] ?? null;
+
+                        if ($first instanceof CompanyMemberInvitation && '' !== trim($first->getEmail())) {
+                            return;
+                        }
+
+                        $context
+                            ->buildViolation("L'adresse email du premier membre est obligatoire.")
+                            ->atPath('[0].email')
+                            ->addViolation()
+                        ;
+                    }),
+                ],
             ])
             ->add('recaptcha', EWZRecaptchaType::class, [
-                'label' => 'Vérification',
+                'label' => false,
                 'mapped' => false,
                 'constraints' => [
                     new RecaptchaIsValid(),
@@ -97,6 +119,17 @@ class CompanyMemberType extends AbstractType
             ])
             ->add('save', SubmitType::class, ['label' => 'saveMembership'])
         ;
+
+        // Le premier membre est toujours gestionnaire. `entry_options` s'appliquant à toute
+        // la collection, on reconstruit l'enfant 0 ; priorité négative pour passer après
+        // ResizeFormListener, qui crée les enfants sur ce même évènement.
+        $builder->get('invitations')->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            static function (FormEvent $event): void {
+                $event->getForm()->add('0', CompanyMemberInvitationType::class, ['lock_manager' => true]);
+            },
+            -1,
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
