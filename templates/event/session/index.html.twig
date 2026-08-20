@@ -27,13 +27,14 @@
         const $el = $('#status');
         $el.hide();
 
-        // Le calendrier travaille sans timezone : on renvoie l'heure telle qu'elle est
-        // affichée, sans la convertir en UTC comme le ferait JSON.stringify sur une Date.
+        // event-calendar 4.7.1 construit ses Date en UTC (Date.UTC(...)) à partir des
+        // chiffres affichés sur la grille : il faut donc relire ces chiffres via les
+        // getters UTC, pas les getters locaux qui dépendent de la timezone du navigateur.
         function toLocalDateTime(date) {
             const pad = (value) => String(value).padStart(2, '0');
 
-            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
-                + `T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+            return `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())}`
+                + `T${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())}:${pad(date.getUTCSeconds())}`;
         }
 
         async function updateEvent(info) {
