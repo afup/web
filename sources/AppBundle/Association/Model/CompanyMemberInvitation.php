@@ -20,8 +20,10 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
 
     private int $companyId;
 
+    // Valeur par défaut : sans elle, getEmail() sur une invitation fraîchement instanciée
+    // (CompanyAction pré-remplit la collection) lève une erreur de propriété non initialisée.
     #[Assert\Email]
-    private string $email;
+    private string $email = '';
 
     private string $token;
 
@@ -65,7 +67,7 @@ class CompanyMemberInvitation implements NotifyPropertyInterface
 
     public function setEmail(string $email): self
     {
-        $this->propertyChanged('email', $this->email ?? null, $email);
+        $this->propertyChanged('email', $this->email, $email);
         $this->email = $email;
         return $this;
     }
