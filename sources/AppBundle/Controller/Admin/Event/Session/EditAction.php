@@ -48,8 +48,8 @@ class EditAction extends AbstractController
             $planning = new Planning();
             $planning->setTalkId($talk->getId());
             $planning->setEventId($event->getId());
-            $planning->setStart(clone $event->getDateStart());
-            $planning->setEnd(clone $event->getDateStart());
+            $planning->setStart($this->firstDayOfEvent($event));
+            $planning->setEnd($this->firstDayOfEvent($event));
         }
 
         $form = $this->getForm($planning, $roomChoices);
@@ -95,9 +95,11 @@ class EditAction extends AbstractController
         return $this->createFormBuilder($data)
             ->add('start', DateTimeType::class, [
                 'label' => 'Début',
+                'view_timezone' => Planning::TIMEZONE,
             ])
             ->add('end', DateTimeType::class, [
                 'label' => 'Fin',
+                'view_timezone' => Planning::TIMEZONE,
             ])
             ->add('roomId', ChoiceType::class, [
                 'label' => 'Salle',
@@ -109,6 +111,17 @@ class EditAction extends AbstractController
             ])
             ->getForm();
 
+    }
+
+    /**
+     * Minuit le premier jour de l'événement, dans la timezone où le planning est saisi.
+     */
+    private function firstDayOfEvent(Event $event): \DateTime
+    {
+        return new \DateTime(
+            $event->getDateStart()?->format('Y-m-d') ?? 'today',
+            new \DateTimeZone(Planning::TIMEZONE),
+        );
     }
 
     /**

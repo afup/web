@@ -27,14 +27,23 @@
         const $el = $('#status');
         $el.hide();
 
+        // Le calendrier travaille sans timezone : on renvoie l'heure telle qu'elle est
+        // affichée, sans la convertir en UTC comme le ferait JSON.stringify sur une Date.
+        function toLocalDateTime(date) {
+            const pad = (value) => String(value).padStart(2, '0');
+
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+                + `T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+        }
+
         async function updateEvent(info) {
 
             const url = `/admin/event/sessions/${info.event.id}.json`;
             const response = await fetch(url, {
               method: "POST",
               body: JSON.stringify({
-                start: info.event.start,
-                end: info.event.end,
+                start: toLocalDateTime(info.event.start),
+                end: toLocalDateTime(info.event.end),
                 roomId: info.event.resourceIds[0],
               }),
             });
@@ -106,8 +115,8 @@
                             <br/>
 
                             {% if session.planning %}
-                                <em>{{ session.planning.start|date("d/m/Y") }}</em> /
-                                {{ session.planning.start|date("H:i") }} - {{ session.planning.end|date("H:i") }} / {{ session.room ? session.room.name }}
+                                <em>{{ session.planning.start|date("d/m/Y", timezone) }}</em> /
+                                {{ session.planning.start|date("H:i", timezone) }} - {{ session.planning.end|date("H:i", timezone) }} / {{ session.room ? session.room.name }}
                             {% else %}
                                 <span class="ui yellow label">non planifié</span>
                             {% endif %}

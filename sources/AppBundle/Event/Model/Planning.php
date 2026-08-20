@@ -11,6 +11,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Planning implements NotifyPropertyInterface
 {
     use NotifyProperty;
+
+    /**
+     * Les horaires sont stockés en base sous forme de timestamp, donc absolus.
+     * Les événements de l'AFUP se déroulant en France, ils sont saisis et affichés
+     * dans cette timezone, quelle que soit celle du serveur ou du navigateur.
+     */
+    public const string TIMEZONE = 'Europe/Paris';
+
     private ?int $id = null;
 
     #[Assert\NotBlank]
