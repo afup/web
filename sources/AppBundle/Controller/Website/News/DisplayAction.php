@@ -6,6 +6,7 @@ namespace AppBundle\Controller\Website\News;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Site\ArticleImageStorage;
 use AppBundle\Site\Entity\Article;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
 use AppBundle\Site\Enum\ArticleEtat;
@@ -21,6 +22,7 @@ final class DisplayAction extends AbstractController
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly EventRepository $eventRepository,
         private readonly ArticleRepository $articleRepository,
+        private readonly ArticleImageStorage $articleImageStorage,
     ) {}
 
     public function __invoke(string $code): Response
@@ -39,6 +41,7 @@ final class DisplayAction extends AbstractController
             'previous' => $this->articleRepository->findPrevious($article),
             'next' => $this->articleRepository->findNext($article),
             'related_event' => $this->getRelatedEvent($article),
+            'image_url' => $this->articleImageStorage->getUrl($article),
         ]);
     }
 

@@ -5,19 +5,21 @@ declare(strict_types=1);
 namespace AppBundle\Site\Form;
 
 use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Site\Entity\Article;
 use AppBundle\Site\Entity\Rubrique;
 use AppBundle\Site\Enum\ArticleEtat;
 use AppBundle\Site\Enum\ArticleTheme;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToTimestampTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ArticleType extends AbstractType
@@ -28,6 +30,11 @@ class ArticleType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $article = $builder->getData();
+        if (!$article instanceof Article) {
+            throw new \LogicException();
+        }
+
         $positions = [];
         for ($i = self::POSITIONS_RUBRIQUES; $i >= -(self::POSITIONS_RUBRIQUES); $i--) {
             $positions[$i] = $i;
@@ -79,6 +86,22 @@ class ArticleType extends AbstractType
                     new Assert\Type('string'),
                 ],
             ])
+            ->add('image', FileType::class, [
+                'label' => 'Image de couverture',
+                'required' => false,
+                'mapped' => false,
+                'data_class' => null,
+                'help' => 'JPEG, PNG, WebP ou GIF — 2 Mo maximum',
+                'attr' => [
+                    'accept' => 'image/jpeg,image/png,image/webp,image/gif',
+                ],
+                'constraints' => [
+                    new Assert\Image(
+                        maxSize: '2M',
+                        mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
+                    ),
+                ],
+            ])
             ->add('rubrique', EntityType::class, [
                 'required' => true,
                 'label' => 'Rubrique',
@@ -128,12 +151,11 @@ class ArticleType extends AbstractType
                 'constraints' => [
                     new Assert\Type("integer"),
                 ],
-            ])
-        ;
+            ]);
         $builder->get('datePublication')->addModelTransformer(new DateTimeToTimestampTransformer());
 
         $raccourciOption = [
-            'required' => $options['is_new'] === false,
+            'required' => $article->id !== null,
             'label' => 'Raccourci',
             'attr' => [
                 'maxlength' => 255,
@@ -146,19 +168,20 @@ class ArticleType extends AbstractType
             ],
         ];
 
-        if ($options['is_new'] === true) {
+        if ($article->id === null) {
             $raccourciOption['help'] = 'Si ce champ est vide, la valeur sera générée automatiquement';
         } else {
             $raccourciOption['constraints'][] = new Assert\NotBlank();
         }
 
         $builder->add('raccourci', TextType::class, $raccourciOption);
-    }
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'is_new' => true,
-        ]);
+        if ($article->image !== null) {
+            $builder->add('supprimerImage', CheckboxType::class, [
+                'label' => 'Supprimer l\'image de couverture',
+                'required' => false,
+                'mapped' => false,
+            ]);
+        }
     }
 }
