@@ -1,0 +1,7 @@
+{# @block content Le libellé de la section #}
+{%- set style = html_cva(
+    base: "font-sans font-semibold text-base text-afup-800 border-b border-neutre-300 pb-2",
+) -%}
+<h2 class="{{ style.apply({}, attributes.render('class'))|tailwind_merge }}" {{ attributes }}>
+    {%- block content %}{% endblock -%}
+</h2>
