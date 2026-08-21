@@ -1,0 +1,16 @@
+{# @prop tone 'default'|'inverse' Sur fond clair, ou sur fond dégradé #}
+{# @block content Le libellé de l'avantage #}
+{%- props tone = 'default' -%}
+{%- set style = html_cva(
+    base: "flex items-start gap-3 font-sans font-normal text-base",
+    variants: {
+        tone: {
+            default: 'text-neutre-700',
+            inverse: 'text-white',
+        },
+    },
+) -%}
+<li class="{{ style.apply({tone}, attributes.render('class'))|tailwind_merge }}" {{ attributes }}>
+    <twig:ux:icon name="mingcute:check-fill" class="size-5 shrink-0 mt-0.5 {{ tone == 'inverse' ? 'text-white' : 'text-afup-500' }}" />
+    {%- block content %}{% endblock -%}
+</li>
