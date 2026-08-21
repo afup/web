@@ -144,3 +144,57 @@ Feature: Administration - Partie Site
     # vérification de l'article sur le site publique
     When I go to "/news/17-mon-super-123-article"
     Then I should see "Mon super 123 article !"
+
+  @reloadDbWithTestData
+  Scenario: Ajout puis suppression de l'image de couverture d'un article
+    Given I am logged in as admin and on the Administration
+    And I follow "Articles"
+    Then I should see "Liste des articles"
+
+    # ajout d'un article avec une image de couverture
+    When I follow "Ajouter"
+    Then I should see "Ajouter un article"
+    And I fill in "article[titre]" with "Un article illustré"
+    And I fill in "article[contenu]" with "Le contenu de l'article illustré"
+    And I fill in "article[raccourci]" with "url-article-illustre"
+    And I select "Actualités" from "article[rubrique]"
+    And I select "9" from "article[position]"
+    And I select "En ligne" from "article[etat]"
+    And I attach the file "avatar1.png" to "article[image]"
+    And I press "Ajouter"
+    Then I should see "Liste des articles"
+
+    # l'image est affichée sur la page publique
+    When I go to "/news/17-url-article-illustre"
+    Then I should see "Un article illustré"
+    And I should see a "article main figure img" element
+
+    # l'image existante est affichée dans le formulaire d'administration
+    When I follow "Administration"
+    And I follow "Articles"
+    Then I follow "modifier_17"
+    And I should see "Modifier un article"
+    And I should see "Supprimer l'image de couverture"
+    And I should see a "#article-image-preview" element
+
+    # Modifier l'article sans changer l'image la conserve
+    And I press "Modifier"
+    Then I should see "Liste des articles"
+    Then I follow "modifier_17"
+    And I should see "Modifier un article"
+    And I should see "Supprimer l'image de couverture"
+    And I should see a "#article-image-preview" element
+
+    # suppression de l'image de couverture
+    When I check "article[supprimerImage]"
+    And I press "Modifier"
+    Then I should see "Liste des articles"
+    When I follow "Articles"
+    And I follow "modifier_17"
+    And I should see "Modifier un article"
+    Then I should not see "Supprimer l'image de couverture"
+    And I should not see a "#article_supprimerImage" element
+
+    # l'image n'est plus affichée sur la page publique
+    When I go to "/news/17-url-article-illustre"
+    Then I should not see a "article main figure img" element

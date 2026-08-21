@@ -28,6 +28,20 @@
                     {{ form_row(form.titre) }}
                     {{ form_row(form.chapeau) }}
                     {{ form_row(form.contenu) }}
+                    {{ form_row(form.image) }}
+                    <div class="inline fields ui grid">
+                        <div class="three wide column"></div>
+                        <div class="field nine wide column">
+                            <img id="article-image-preview"
+                                 src="{{ imageUrl|default('') }}"
+                                 data-initial-src="{{ imageUrl|default('') }}"
+                                 alt="Image de couverture"
+                                 style="max-width: 320px;{% if imageUrl is null %} display: none;{% endif %}">
+                        </div>
+                    </div>
+                    {% if imageUrl is not null %}
+                        {{ form_row(form.supprimerImage) }}
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -68,4 +82,37 @@
 
     {{ form_end(form) }}
 
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script>
+        // Aperçu de l'image de couverture sélectionnée, avant envoi du formulaire.
+        (function () {
+            const input = document.getElementById('{{ form.image.vars.id }}');
+            const preview = document.getElementById('article-image-preview');
+            if (!input || !preview) {
+                return;
+            }
+
+            let objectUrl = null;
+            input.addEventListener('change', function () {
+                if (objectUrl) {
+                    URL.revokeObjectURL(objectUrl);
+                    objectUrl = null;
+                }
+
+                const file = input.files && input.files[0];
+                if (!file) {
+                    preview.src = preview.dataset.initialSrc;
+                    preview.style.display = preview.dataset.initialSrc ? '' : 'none';
+                    return;
+                }
+
+                objectUrl = URL.createObjectURL(file);
+                preview.src = objectUrl;
+                preview.style.display = '';
+            });
+        })();
+    </script>
 {% endblock %}

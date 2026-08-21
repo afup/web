@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Site\Article;
 
 use AppBundle\AuditLog\Audit;
+use AppBundle\Site\ArticleImageStorage;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,6 +18,7 @@ class DeleteArticleAction extends AbstractController
         private readonly ArticleRepository $articleRepository,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly Audit $audit,
+        private readonly ArticleImageStorage $articleImageStorage,
     ) {}
 
     public function __invoke(int $id, string $token): RedirectResponse
@@ -31,6 +33,7 @@ class DeleteArticleAction extends AbstractController
             throw $this->createNotFoundException();
         }
 
+        $this->articleImageStorage->remove($article);
         $this->articleRepository->delete($article);
         $this->audit->log('Suppression de l\'article ' . $article->titre);
         $this->addFlash('notice', 'L\'article ' . $article->titre . ' a été supprimé');

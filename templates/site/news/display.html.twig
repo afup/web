@@ -1,7 +1,7 @@
 {% extends 'layouts/site.html.twig' %}
 
 {% block metas %}
-    <meta name="twitter:card" content="summary">
+    <meta name="twitter:card" content="{{ image_url ? 'summary_large_image' : 'summary' }}">
     <meta name="twitter:title" content="AFUP - {{ article.titre }}">
     <meta name="twitter:description" content="{{ article.resumeTexte }}">
     <meta name="twitter:domain" content="afup.org">
@@ -10,6 +10,10 @@
     <meta property="og:url" content="{{ url('news_display', {code: article.slug }) }}" />
     <meta property="og:description" content="{{ article.resumeTexte }}" />
     <meta property="og:site_name" content="AFUP" />
+    {% if image_url %}
+        <meta name="twitter:image" content="{{ absolute_url(asset(image_url)) }}" />
+        <meta property="og:image" content="{{ absolute_url(asset(image_url)) }}" />
+    {% endif %}
 {% endblock %}
 
 {% block title %}{{ article.titre }} - AFUP{% endblock %}
@@ -62,6 +66,12 @@
                 </header>
 
                 <main class="pt-5">
+                    {% if image_url %}
+                        <figure class="mb-8">
+                            <img src="{{ asset(image_url) }}" alt="Illustration de l'article {{ article.titre }}" class="w-full rounded-lg" loading="lazy" />
+                        </figure>
+                    {% endif %}
+
                     {% if article.chapeau %}
                         <div class="prose max-w-none border-l-8 border-afup-300 bg-afup-100 px-3 py-2 sm:text-justify rounded-lg">
                             {{ article.chapeau|markdown_to_html }}
