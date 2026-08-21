@@ -6,8 +6,8 @@ namespace AppBundle\Controller\Api\Antennes;
 
 use AppBundle\Antennes\Antenne;
 use AppBundle\Antennes\AntenneRepository;
-use AppBundle\Event\Model\Meetup;
-use AppBundle\Event\Model\Repository\MeetupRepository;
+use AppBundle\Event\Entity\Meetup;
+use AppBundle\Event\Entity\Repository\MeetupRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -55,7 +55,7 @@ final readonly class GetOneAction
 
         $response['meetups'] = array_map(
             fn(Meetup $meetup): array => $this->transformMeetup($antenne, $meetup),
-            iterator_to_array($allMeetups->getIterator()),
+            $allMeetups,
         );
 
         return new JsonResponse($response);
@@ -73,12 +73,12 @@ final readonly class GetOneAction
     private function transformMeetup(Antenne $antenne, Meetup $meetup): array
     {
         return [
-            'title' => $meetup->getTitle(),
-            'date' => $meetup->getDate()->format('Y-m-d H:i:s'),
-            'location' => $meetup->getLocation(),
-            'description' => $meetup->getDescription(),
-            'url' => 'https://www.meetup.com/fr-FR/' . $antenne->meetup->urlName . '/events/' . $meetup->getId(),
-            'photo' => $meetup->getPhotoUrl(),
+            'title' => $meetup->titre,
+            'date' => $meetup->date->format('Y-m-d H:i:s'),
+            'location' => $meetup->lieu,
+            'description' => $meetup->description,
+            'url' => 'https://www.meetup.com/fr-FR/' . $antenne->meetup->urlName . '/events/' . $meetup->id,
+            'photo' => $meetup->photoUrl,
         ];
     }
 }

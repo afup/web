@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Tests\Indexation\Meetups;
 
 use AppBundle\Antennes\AntenneRepository;
-use AppBundle\Event\Model\Meetup;
+use AppBundle\Event\Entity\Meetup;
 use AppBundle\Indexation\Meetups\Transformer;
 use PHPUnit\Framework\TestCase;
 
@@ -15,12 +15,12 @@ final class TransformerTest extends TestCase
     {
         $transformer = new Transformer(new AntenneRepository());
 
-        $meetup = new Meetup()
-            ->setId('244992881')
-            ->setDate(new \DateTime('2050-12-14 17:30:00'))
-            ->setTitle('Apéro PHP')
-            ->setDescription("Nous vous invitons au Grand Comptoir à partir de 18h30 pour discuter de PHP autour d'un verre.")
-            ->setAntenneName('reims');
+        $meetup = new Meetup();
+        $meetup->id = 244992881;
+        $meetup->date = new \DateTimeImmutable('2050-12-14 17:30:00');
+        $meetup->titre = 'Apéro PHP';
+        $meetup->description = "Nous vous invitons au Grand Comptoir à partir de 18h30 pour discuter de PHP autour d'un verre.";
+        $meetup->codeAntenne = 'reims';
 
         $result = $transformer->transform($meetup);
 

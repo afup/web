@@ -125,37 +125,37 @@ final class MeetupClientTest extends TestCase
 
         self::assertCount(4, $antennes);
 
-        self::assertEquals(12, $antennes[0]->getId());
-        self::assertEquals('Upcoming 1', $antennes[0]->getTitle());
-        self::assertEquals('Desc 1', $antennes[0]->getDescription());
-        self::assertEquals(new \DateTime('2025-02-11T18:30:00+01:00'), $antennes[0]->getDate());
-        self::assertEquals('lyon', $antennes[0]->getAntenneName());
-        self::assertEquals('Lieu 1', $antennes[0]->getLocation());
-        self::assertEquals('https://example.com/1', $antennes[0]->getPhotoUrl());
+        self::assertEquals(12, $antennes[0]->id);
+        self::assertEquals('Upcoming 1', $antennes[0]->titre);
+        self::assertEquals('Desc 1', $antennes[0]->description);
+        self::assertEquals(new \DateTime('2025-02-11T18:30:00+01:00'), $antennes[0]->date);
+        self::assertEquals('lyon', $antennes[0]->codeAntenne);
+        self::assertEquals('Lieu 1', $antennes[0]->lieu);
+        self::assertEquals('https://example.com/1', $antennes[0]->photoUrl);
 
-        self::assertEquals(34, $antennes[1]->getId());
-        self::assertEquals('Upcoming 2', $antennes[1]->getTitle());
-        self::assertEquals('Desc 2', $antennes[1]->getDescription());
-        self::assertEquals(new \DateTime('2025-03-20T18:30:00+01:00'), $antennes[1]->getDate());
-        self::assertEquals('lyon', $antennes[1]->getAntenneName());
-        self::assertNull($antennes[1]->getLocation());
-        self::assertEquals('https://example.com/2', $antennes[1]->getPhotoUrl());
+        self::assertEquals(34, $antennes[1]->id);
+        self::assertEquals('Upcoming 2', $antennes[1]->titre);
+        self::assertEquals('Desc 2', $antennes[1]->description);
+        self::assertEquals(new \DateTime('2025-03-20T18:30:00+01:00'), $antennes[1]->date);
+        self::assertEquals('lyon', $antennes[1]->codeAntenne);
+        self::assertNull($antennes[1]->lieu);
+        self::assertEquals('https://example.com/2', $antennes[1]->photoUrl);
 
-        self::assertEquals(56, $antennes[2]->getId());
-        self::assertEquals('Past 1', $antennes[2]->getTitle());
-        self::assertEquals('Desc 3', $antennes[2]->getDescription());
-        self::assertEquals(new \DateTime('2019-04-08T18:30:00+01:00'), $antennes[2]->getDate());
-        self::assertEquals('lyon', $antennes[2]->getAntenneName());
-        self::assertNull($antennes[2]->getLocation());
-        self::assertEquals('https://example.com/3', $antennes[2]->getPhotoUrl());
+        self::assertEquals(56, $antennes[2]->id);
+        self::assertEquals('Past 1', $antennes[2]->titre);
+        self::assertEquals('Desc 3', $antennes[2]->description);
+        self::assertEquals(new \DateTime('2019-04-08T18:30:00+01:00'), $antennes[2]->date);
+        self::assertEquals('lyon', $antennes[2]->codeAntenne);
+        self::assertNull($antennes[2]->lieu);
+        self::assertEquals('https://example.com/3', $antennes[2]->photoUrl);
 
-        self::assertEquals(78, $antennes[3]->getId());
-        self::assertEquals('Past 2', $antennes[3]->getTitle());
-        self::assertEquals('Desc 4', $antennes[3]->getDescription());
-        self::assertEquals(new \DateTime('2020-10-17T18:30:00+01:00'), $antennes[3]->getDate());
-        self::assertEquals('lyon', $antennes[3]->getAntenneName());
-        self::assertEquals('Lieu 2', $antennes[3]->getLocation());
-        self::assertEquals('https://example.com/4', $antennes[3]->getPhotoUrl());
+        self::assertEquals(78, $antennes[3]->id);
+        self::assertEquals('Past 2', $antennes[3]->titre);
+        self::assertEquals('Desc 4', $antennes[3]->description);
+        self::assertEquals(new \DateTime('2020-10-17T18:30:00+01:00'), $antennes[3]->date);
+        self::assertEquals('lyon', $antennes[3]->codeAntenne);
+        self::assertEquals('Lieu 2', $antennes[3]->lieu);
+        self::assertEquals('https://example.com/4', $antennes[3]->photoUrl);
     }
 
     private function makeGuzzleMockClient(ResponseInterface $response): HttpClientInterface

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Indexation\Meetups;
 
 use AppBundle\Antennes\AntenneRepository;
-use AppBundle\Event\Model\Meetup;
+use AppBundle\Event\Entity\Meetup;
 use AppBundle\Indexation\Meetups\GraphQL\QueryGroupsResponse;
 use CuyZ\Valinor\Mapper\Source\Source;
 use CuyZ\Valinor\MapperBuilder;
@@ -46,18 +46,18 @@ final readonly class MeetupClient
 
         $meetups = [];
 
-        foreach ($groupResponse->data as $nameAntenne => $group) {
+        foreach ($groupResponse->data as $codeAntenne => $group) {
             $edges = array_merge($group->upcomingEvents->edges, $group->pastEvents->edges);
 
             foreach ($edges as $edge) {
                 $meetup = new Meetup();
-                $meetup->setId((int) $edge->node->id);
-                $meetup->setTitle($edge->node->title);
-                $meetup->setDescription($edge->node->description);
-                $meetup->setDate($edge->node->dateTime);
-                $meetup->setAntenneName($nameAntenne);
-                $meetup->setLocation($edge->node->venue->name);
-                $meetup->setPhotoUrl($edge->node->displayPhoto->standardUrl);
+                $meetup->id = (int) $edge->node->id;
+                $meetup->titre = $edge->node->title;
+                $meetup->description = $edge->node->description;
+                $meetup->date = $edge->node->dateTime;
+                $meetup->codeAntenne = $codeAntenne;
+                $meetup->lieu = $edge->node->venue->name;
+                $meetup->photoUrl = $edge->node->displayPhoto->standardUrl;
 
                 $meetups[] = $meetup;
             }

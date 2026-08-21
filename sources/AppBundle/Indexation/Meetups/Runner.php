@@ -7,9 +7,8 @@ namespace AppBundle\Indexation\Meetups;
 use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\AlgoliaSearch\SearchIndex;
 use AppBundle\Antennes\AntenneRepository;
-use AppBundle\Event\Model\Meetup;
-use AppBundle\Event\Model\Repository\MeetupRepository;
-use CCMBenchmark\Ting\Repository\CollectionInterface;
+use AppBundle\Event\Entity\Meetup;
+use AppBundle\Event\Entity\Repository\MeetupRepository;
 
 final readonly class Runner
 {
@@ -64,16 +63,16 @@ final readonly class Runner
 
     private function getTransformedMeetupsFromDatabase(): array
     {
-        $meetupsCollection = $this->meetupRepository->getAll();
+        $meetupsCollection = $this->meetupRepository->findAll();
 
         return $this->transformMeetupsForIndexation($meetupsCollection);
     }
 
     /**
-     * @param CollectionInterface<Meetup> $meetupsCollection
+     * @param array<Meetup> $meetupsCollection
      * @return list<array>
      */
-    public function transformMeetupsForIndexation(CollectionInterface $meetupsCollection): array
+    public function transformMeetupsForIndexation(array $meetupsCollection): array
     {
         $meetupsArray = [];
         foreach ($meetupsCollection as $meetup) {

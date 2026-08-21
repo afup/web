@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Indexation\Meetups\GraphQL;
 
-use DateTime;
+use DateTimeImmutable;
 
 final readonly class Node
 {
@@ -12,7 +12,7 @@ final readonly class Node
         public string $id,
         public string $title,
         public string $description,
-        public DateTime $dateTime,
+        public DateTimeImmutable $dateTime,
         public Venue $venue,
         public Photo $displayPhoto,
     ) {}
