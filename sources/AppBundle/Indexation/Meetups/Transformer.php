@@ -6,7 +6,7 @@ namespace AppBundle\Indexation\Meetups;
 
 use AppBundle\Antennes\Antenne;
 use AppBundle\Antennes\AntenneRepository;
-use AppBundle\Event\Model\Meetup;
+use AppBundle\Event\Entity\Meetup;
 
 class Transformer
 {
@@ -19,9 +19,9 @@ class Transformer
      */
     public function transform(Meetup $meetup): array
     {
-        $codeOffice = $meetup->getAntenneName();
+        $codeOffice = $meetup->codeAntenne;
         $antenne = $this->antennesCollection->findByCode($codeOffice);
-        $datetime = $meetup->getDate();
+        $datetime = $meetup->date;
 
         $isUpcoming = new \DateTime() < $datetime;
 
@@ -30,8 +30,8 @@ class Transformer
         $parseDown = new \Parsedown();
 
         $item = [
-            'meetup_id' => $meetup->getId(),
-            'label' => $meetup->getTitle(),
+            'meetup_id' => $meetup->id,
+            'label' => $meetup->titre,
             'event_url' => $eventUrl,
             'timestamp' => $datetime->format('U'),
             'year' => $datetime->format('Y'),
@@ -41,9 +41,9 @@ class Transformer
                 'label' => $antenne->label,
                 'logo_url' => $antenne->logoUrl,
             ],
-            'description' => $parseDown->parse($meetup->getDescription()),
+            'description' => $parseDown->parse($meetup->description),
             'is_upcoming' => $isUpcoming,
-            'custom_sort' => $isUpcoming ? PHP_INT_MAX - $meetup->getDate()->getTimestamp() : $meetup->getDate()->getTimestamp(),
+            'custom_sort' => $isUpcoming ? PHP_INT_MAX - $meetup->date->getTimestamp() : $meetup->date->getTimestamp(),
         ];
 
         if ($antenne->socials->twitter !== null) {
@@ -55,6 +55,6 @@ class Transformer
 
     private function getEventUrl(Antenne $antenne, Meetup $meetup): string
     {
-        return self::MEETUP_URL . $antenne->meetup->urlName . '/events/' . $meetup->getId();
+        return self::MEETUP_URL . $antenne->meetup->urlName . '/events/' . $meetup->id;
     }
 }

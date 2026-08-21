@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Command;
 
-use AppBundle\Event\Model\Repository\MeetupRepository;
+use AppBundle\Event\Entity\Repository\MeetupRepository;
 use AppBundle\Indexation\Meetups\MeetupClient;
 use CuyZ\Valinor\Mapper\MappingError;
 use Symfony\Component\Console\Command\Command;
@@ -56,16 +56,18 @@ class ScrappingMeetupEventsCommand extends Command
             foreach ($meetups as $meetup) {
                 $io->progressAdvance();
 
-                $id = $meetup->getId();
-                $existingMeetup = $this->meetupRepository->get($id);
+                $existingMeetup = null;
+                if (isset($meetup->id)) {
+                    $existingMeetup = $this->meetupRepository->find($meetup->id);
+                }
 
                 // Si le meetup est déjà présent en base, il est mis à jour.
                 if ($existingMeetup) {
-                    $existingMeetup->setTitle($meetup->getTitle());
-                    $existingMeetup->setDescription($meetup->getDescription());
-                    $existingMeetup->setLocation($meetup->getLocation());
-                    $existingMeetup->setDate($meetup->getDate());
-                    $existingMeetup->setPhotoUrl($meetup->getPhotoUrl());
+                    $existingMeetup->titre = $meetup->titre;
+                    $existingMeetup->description = $meetup->description;
+                    $existingMeetup->lieu = $meetup->lieu;
+                    $existingMeetup->date = $meetup->date;
+                    $existingMeetup->photoUrl = $meetup->photoUrl;
 
                     // On doit remplacer la variable, car l'ORM a une référence vers l'instance récupérée
                     // via le get et pas celle de la boucle.

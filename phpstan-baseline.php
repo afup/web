@@ -4190,20 +4190,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Api/Antennes/GetOneAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getIterator\\(\\) on CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Api/Antennes/GetOneAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Controller\\\\Api\\\\Antennes\\\\GetOneAction\\:\\:transformMeetup\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Api/Antennes/GetOneAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$callback of function array_map expects \\(callable\\(mixed\\)\\: mixed\\)\\|null, Closure\\(AppBundle\\\\Event\\\\Model\\\\Meetup\\)\\: array given\\.$#',
-	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Api/Antennes/GetOneAction.php',
 ];
@@ -4802,7 +4790,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HomeAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Website\\\\Global\\\\HomeAction\\:\\:getLatestMeetups\\(\\) should return array\\<AppBundle\\\\Event\\\\Model\\\\Meetup\\> but returns mixed\\.$#',
+	'message' => '#^Method AppBundle\\\\Controller\\\\Website\\\\Global\\\\HomeAction\\:\\:getLatestMeetups\\(\\) should return array\\<AppBundle\\\\Event\\\\Entity\\\\Meetup\\> but returns mixed\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HomeAction.php',
@@ -6128,12 +6116,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Lead.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Meetup\\:\\:getLocation\\(\\) should return string but returns string\\|null\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Meetup.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot cast mixed to int\\.$#',
 	'identifier' => 'cast.int',
 	'count' => 1,
@@ -6564,36 +6546,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/InvoiceRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\MeetupRepository\\:\\:findAllForAntenne\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/MeetupRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\MeetupRepository\\:\\:findNextForAntenne\\(\\) should return AppBundle\\\\Event\\\\Model\\\\Meetup\\|null but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/MeetupRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\MeetupRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/MeetupRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\MeetupRepository\\:\\:initMetadata\\(\\) return type with generic class CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/MeetupRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/MeetupRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\PlanningRepository\\:\\:getByTalk\\(\\) should return AppBundle\\\\Event\\\\Model\\\\Planning\\|null but returns mixed\\.$#',

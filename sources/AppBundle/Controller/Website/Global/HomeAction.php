@@ -7,7 +7,7 @@ namespace AppBundle\Controller\Website\Global;
 use Afup\Site\Corporate\Feuille;
 use Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
 use Algolia\AlgoliaSearch\SearchClient;
-use AppBundle\Event\Model\Meetup;
+use AppBundle\Event\Entity\Meetup;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
@@ -69,7 +69,7 @@ final class HomeAction extends AbstractController
             return [];
         }
 
-        $cacheKey = 'home_algolia_meetups';
+        $cacheKey = 'home_algolia_meetups_doctrine';
 
         try {
             $cacheItem = $this->cache->getItem($cacheKey);
