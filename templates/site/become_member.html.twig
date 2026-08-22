@@ -1,149 +1,147 @@
-{% extends 'site/base.html.twig' %}
+{% extends 'layouts/site.html.twig' %}
+{% set menu_current_feuille_id = constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ASSOCIATION') %}
 
 {% block title %}Devenir membre de l'AFUP{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}" media="all" />
-    <link rel="stylesheet" href="{{ asset('css/argument-list.css') }}" media="all" />
-{% endblock %}
+{# Étiquette de section soulignée d'un filet, comme « Actualités » / « AFUP Day 2026 » sur la maquette. #}
+{% macro sectionLabel(label) %}
+    <h2 class="font-sans font-semibold text-base text-afup-800 border-b border-neutre-300 pb-2">{{ label }}</h2>
+{% endmacro %}
 
 {% block content %}
-{{ render(controller(
-    'AppBundle\\Controller\\Website\\SecondaryMenuController::display',
-    { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ASSOCIATION') }
-)) }}
-<div class="mw1400p center" id="container">
-    <div class="line" id="main">
-        <h1>Association</h1>
-        <h2>Devenir membre de l'AFUP</h2>
 
-        <div class="row">
-            <div class="col-md-12">
-                <table class="reset-table-style argument-list">
-                    <thead>
-                    <tr>
-                        <td colspan="2">En adhérant vous soutenez les activités de l'association, et notamment :</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>Le fonctionnement de l'association tout au long de l'année</td>
-                        <td>L'organisation des Forum PHP et AFUP Day</td>
-                    </tr>
-                    <tr>
-                        <td>L'organisation annuelle du baromètre des salaires en PHP</td>
-                        <td>La mise en ligne gratuite des conférences captées au Forum PHP</td>
-                    </tr>
-                    <tr>
-                        <td>Le programme de mentorat</td>
-                        <td>La compilation d'articles de blog en français autour de PHP</td>
-                    </tr>
-                    <tr>
-                        <td>Le support des évènements locaux via les antennes</td>
-                        <td>Le programme d'accompagnement des speakers</td>
-                    </tr>
+    {% import _self as ui %}
 
-                    </tbody>
-                </table>
-            </div>
+    {% set membership_benefits = [
+        "Le fonctionnement de l'association tout au long de l'année",
+        "L'organisation des Forum PHP et AFUP Day",
+        "L'organisation annuelle du baromètre des salaires en PHP",
+        "La mise en ligne gratuite des conférences captées au Forum PHP",
+        'Le programme de mentorat',
+        "La compilation d'articles de blog en français autour de PHP",
+        'Le support des évènements locaux via les antennes',
+        "Le programme d'accompagnement des speakers",
+    ] %}
+
+    {# En-tête pleine largeur, sous la navigation, comme l'en-tête de la future page d'accueil.
+       Faute de photo d'illustration en dépôt, le voile bleu nuit est posé seul. #}
+    <div class="bg-gradient-to-br from-afup-900 via-afup-800 to-afup-700">
+        <div class="container mx-auto px-4 py-12 sm:px-28 sm:py-16 flex flex-col gap-4">
+            <h1 class="font-titre font-normal text-3xl sm:text-4xl leading-tight text-white">Devenir membre de l'AFUP</h1>
+            <p class="font-sans font-normal text-base text-white/90 max-w-3xl">
+                Adhérer à l'AFUP, c'est rejoindre la communauté PHP francophone et soutenir concrètement
+                les activités que l'association mène tout au long de l'année. Deux formules existent :
+                une adhésion particulier et une adhésion entreprise.
+            </p>
         </div>
+    </div>
 
-        <div class="row">
+    <div class="container mx-auto px-4 py-6 sm:px-28 sm:py-10 flex flex-col gap-5">
+        {{ ui.sectionLabel('Pourquoi adhérer ?') }}
 
-            <div class="col-md-6">
+        <div class="relative isolate flex flex-col gap-8 p-8 sm:p-12 bg-gradient-to-br from-afup-700 to-afup-300 rounded-2xl">
+            <h3 class="font-titre font-normal text-2xl sm:text-3xl leading-snug text-white">En adhérant, vous soutenez</h3>
 
-                <table class="reset-table-style argument-list argument-list--primary">
-                    <thead>
-                        <tr>
-                            <td>Particulier</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><img src="/images/badges/membrephysique-badges.png" alt="Membre AFUP" /></td>
-                        </tr>
-                        <tr>
-                            <td>Soutien des activités de l'association</td>
-                        </tr>
-                        <tr>
-                            <td>Abonnement à la newsletter Veille de l'AFUP</td>
-                        </tr>
-                        <tr>
-                            <td>Tarif préférentiel sur le ticket d’entrée au Forum PHP</td>
-                        </tr>
-                        <tr>
-                            <td>Accès au Slack Membres AFUP : channels des antennes locales, channel dédié à l’emploi, channel d’entraide</td>
-                        </tr>
-                        <tr>
-                            <td class="argument-list__strong">
-                                {{ membership_fee_natural_person }}€ TTC / an / pour une personne<br />
-                                <a href="{{ url('member_membership') }}" class="button button--call-to-action">Adhérer en tant que particulier</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            {# `columns` plutôt qu'une grille : les puces s'écoulent indépendamment, sinon une
+               puce sur plusieurs lignes ferait grandir toute la rangée et casserait le rythme. #}
+            <ul class="md:columns-2 gap-x-12">
+                {% for label in membership_benefits %}
+                    <twig:Benefit tone="inverse" class="mb-5 break-inside-avoid leading-relaxed">{{ label }}</twig:Benefit>
+                {% endfor %}
+            </ul>
 
-                <p class="txtcenter">
+            <div class="absolute w-64 h-64 top-0 right-0 translate-x-1/3 -translate-y-1/3 bg-white/5 blur-3xl rounded-full"></div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-6 sm:px-28 sm:py-10 flex flex-col gap-5">
+        {{ ui.sectionLabel('Nos formules') }}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8">
+
+            <twig:Card class="flex flex-col gap-5 p-6 sm:p-8">
+                <div class="size-16 shrink-0 flex items-center justify-center bg-afup-100 rounded-2xl">
+                    <twig:ux:icon name="mingcute:user-3-fill" class="size-8 text-afup-500" />
+                </div>
+                <h3 class="font-titre font-bold text-2xl text-afup-800">Particulier</h3>
+                <p class="flex flex-col gap-1">
+                    <span class="font-titre font-normal text-3xl text-afup-800">{{ membership_fee_natural_person }} €</span>
+                    <span class="font-sans font-normal text-sm text-neutre-400">TTC / an / pour une personne</span>
+                </p>
+                <ul class="flex flex-col gap-3">
+                    <twig:Benefit>Soutien des activités de l'association</twig:Benefit>
+                    <twig:Benefit>Abonnement à la newsletter Veille de l'AFUP</twig:Benefit>
+                    <twig:Benefit>Tarif préférentiel sur le ticket d'entrée au Forum PHP</twig:Benefit>
+                    <twig:Benefit>Accès au Slack Membres AFUP : channels des antennes locales, channel dédié à l'emploi, channel d'entraide</twig:Benefit>
+                </ul>
+                {# `mt-auto` sur la fine print : elle vient se coller au séparateur, juste
+                   au-dessus du CTA qu'elle qualifie, et le bouton reste aligné d'une carte à l'autre. #}
+                <p class="mt-auto font-sans font-normal text-sm text-neutre-400">
                     L'inscription se fait directement sur la page dédiée. Elle coûte {{ membership_fee_natural_person }} euros TTC pour 12 mois.
                 </p>
+                <div class="border-t-2 border-neutre-300 pt-5">
+                    <twig:Button variant="primary" as="a" href="{{ url('member_membership') }}" class="flex w-full px-8 py-3 text-base font-semibold">Adhérer en tant que particulier</twig:Button>
+                </div>
+            </twig:Card>
 
-            </div>
-            <div class="col-md-6">
-
-                <table class="reset-table-style argument-list argument-list--primary">
-                    <thead>
-                    <tr>
-                        <td>Entreprise</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td><img src="/images/badges/membremoral-badges.png" alt="" /></td>
-                    </tr>
-                    <tr>
-                        <td>Plus grand soutien des activités de l'association</td>
-                    </tr>
-                    <tr>
-                        <td>Tous les avantages de l’adhésion particuliers</td>
-                    </tr>
-                    <tr>
-                        <td>Possibilité de changer les personnes associées à la cotisation à n'importe quel moment</td>
-                    </tr>
-                    <tr>
-                        <td>Une page dédiée à votre entreprise dans notre annuaire des sociétés adhérentes sur le site de l’AFUP afin de montrer votre engagement et promouvoir vos offres</td>
-                    </tr>
-                    <tr>
-                        <td class="argument-list__strong">
-                            {{ membership_fee_legal_entity }}€ HT / an / 3 employé(e)s<br />
-                            <a href="{{ url('company_membership') }}" class="button button--call-to-action">Adhérer en tant qu'entreprise</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <p class="txtcenter">
+            <twig:Card class="flex flex-col gap-5 p-6 sm:p-8">
+                <div class="size-16 shrink-0 flex items-center justify-center bg-afup-100 rounded-2xl">
+                    <twig:ux:icon name="mingcute:building-1-fill" class="size-8 text-afup-500" />
+                </div>
+                <h3 class="font-titre font-bold text-2xl text-afup-800">Entreprise</h3>
+                <p class="flex flex-col gap-1">
+                    <span class="font-titre font-normal text-3xl text-afup-800">{{ membership_fee_legal_entity }} €</span>
+                    <span class="font-sans font-normal text-sm text-neutre-400">HT / an / par tranche de 3 employé(e)s</span>
+                </p>
+                <ul class="flex flex-col gap-3">
+                    <twig:Benefit>Plus grand soutien des activités de l'association</twig:Benefit>
+                    <twig:Benefit>Tous les avantages de l'adhésion particuliers</twig:Benefit>
+                    <twig:Benefit>Possibilité de changer les personnes associées à la cotisation à n'importe quel moment</twig:Benefit>
+                    <twig:Benefit>Une page dédiée à votre entreprise dans notre annuaire des sociétés adhérentes sur le site de l'AFUP afin de montrer votre engagement et promouvoir vos offres</twig:Benefit>
+                </ul>
+                <p class="mt-auto font-sans font-normal text-sm text-neutre-400">
                     Une préinscription est à réaliser en suivant le lien ci-dessus. L'équipe trésorerie vous recontactera pour finaliser ensuite l'inscription.
                     Le montant de la cotisation est de {{ membership_fee_legal_entity }} euros HT par tranche de 3 employés pour 12 mois.
                 </p>
+                <div class="border-t-2 border-neutre-300 pt-5">
+                    <twig:Button variant="primary" as="a" href="{{ url('company_membership') }}" class="flex w-full px-8 py-3 text-base font-semibold">Adhérer en tant qu'entreprise</twig:Button>
+                </div>
+            </twig:Card>
 
-            </div>
         </div>
-
-
-
-        <h2>Modes de paiement</h2>
-
-        <p>
-            Le paiement d'une adhésion professionnelle peut se faire soit par carte bancaire ou par virement. Pour les particuliers, seul le paiement par carte bancaire est disponible.<br />
-            L'adhésion nécessite l'acceptation pleine et sans réserve du <a href="{{ path('cms_page_display', {code: '21-reglement-interieur'}) }}">règlement intérieur</a> et du <a href="{{ path('cms_page_display', {code: '986-code-de-conduite'}) }}">code de conduite</a>.
-        </p>
-        
-        <h2>Questions</h2>
-
-        <p>
-            Pour toutes questions, notre <a href="{{ path('cms_page_display', {code: '1012-faq'}) }}" title="FAQ">FAQ</a> est disponible.
-        </p>
     </div>
-</div>
+
+    <div class="container mx-auto px-4 pb-6 sm:px-28 sm:py-10 flex flex-col gap-5">
+        {{ ui.sectionLabel('Bon à savoir') }}
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <twig:Card class="flex flex-col gap-2">
+                <h3 class="font-sans font-semibold text-base text-afup-800">Modes de paiement</h3>
+                <p class="font-sans font-normal text-sm text-neutre-700">
+                    Le paiement d'une adhésion professionnelle peut se faire soit par carte bancaire, soit par virement.
+                    Pour les particuliers, seul le paiement par carte bancaire est disponible.
+                </p>
+            </twig:Card>
+
+            <twig:Card class="flex flex-col gap-2">
+                <h3 class="font-sans font-semibold text-base text-afup-800">Règlement intérieur et code de conduite</h3>
+                <p class="font-sans font-normal text-sm text-neutre-700">
+                    L'adhésion nécessite l'acceptation pleine et sans réserve du
+                    <a href="{{ path('cms_page_display', {code: '21-reglement-interieur'}) }}" class="text-afup-500 underline hover:no-underline">règlement intérieur</a>
+                    et du
+                    <a href="{{ path('cms_page_display', {code: '986-code-de-conduite'}) }}" class="text-afup-500 underline hover:no-underline">code de conduite</a>.
+                </p>
+            </twig:Card>
+
+            <twig:Card class="flex flex-col gap-2">
+                <h3 class="font-sans font-semibold text-base text-afup-800">Une question ?</h3>
+                <p class="font-sans font-normal text-sm text-neutre-700">
+                    Pour toutes questions, notre
+                    <a href="{{ path('cms_page_display', {code: '1012-faq'}) }}" title="FAQ" class="text-afup-500 underline hover:no-underline">FAQ</a>
+                    est disponible.
+                </p>
+            </twig:Card>
+        </div>
+    </div>
+
 {% endblock %}
