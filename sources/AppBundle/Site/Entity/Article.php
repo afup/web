@@ -34,6 +34,9 @@ class Article
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $contenu = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    public ?string $image = null;
+
     #[ORM\Column(nullable: true, enumType: ArticleTheme::class)]
     public ?ArticleTheme $theme = null;
 
