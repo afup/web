@@ -89,7 +89,7 @@ class CompanyMemberType extends AbstractType
                 'required' => false,
             ])
             ->add('recaptcha', EWZRecaptchaType::class, [
-                'label' => 'Vérification',
+                'label' => 'captcha',
                 'mapped' => false,
                 'constraints' => [
                     new RecaptchaIsValid(),
