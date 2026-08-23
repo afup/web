@@ -1,3 +1,32 @@
+/* Classes reprises des composants Twig (Card, Card:Section, Button) et du thème de formulaire. */
+var FIELD_CLASS = 'w-full rounded-lg border-2 border-neutre-300 bg-white px-3 h-10 text-sm text-gray-700 '
+    + 'placeholder:text-neutre-400 focus:border-afup-500 focus:outline-none';
+var CHECKBOX_CLASS = 'size-4 shrink-0 rounded border-2 border-neutre-300 accent-ruby-500 focus:outline-afup-500 cursor-pointer';
+var LINK_CLASS = 'inline-flex items-center justify-center rounded-lg border whitespace-nowrap px-3 py-2 text-sm font-medium no-underline';
+
+var svg = function (path, cls) {
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="'
+        + cls + '" aria-hidden="true">' + path + '</svg>';
+};
+var CHEVRON = '<path fill="currentColor" d="M12 15.5a1 1 0 0 1-.7-.3l-5-5a1 1 0 0 1 1.4-1.4l4.3 4.3l4.3-4.3a1 1 0 1 1 1.4 1.4l-5 5a1 1 0 0 1-.7.3"/>';
+var ARROW = {
+    prev: '<path fill="currentColor" d="M15.5 4.5a1 1 0 0 1 0 1.4L9.4 12l6.1 6.1a1 1 0 1 1-1.4 1.4l-6.8-6.8a1 1 0 0 1 0-1.4l6.8-6.8a1 1 0 0 1 1.4 0"/>',
+    next: '<path fill="currentColor" d="M8.5 4.5a1 1 0 0 0 0 1.4l6.1 6.1l-6.1 6.1a1 1 0 1 0 1.4 1.4l6.8-6.8a1 1 0 0 0 0-1.4L9.9 4.5a1 1 0 0 0-1.4 0"/>',
+    first: '<path fill="currentColor" d="M12.7 4.5a1 1 0 0 1 0 1.4L6.6 12l6.1 6.1a1 1 0 1 1-1.4 1.4l-6.8-6.8a1 1 0 0 1 0-1.4l6.8-6.8a1 1 0 0 1 1.4 0m7 0a1 1 0 0 1 0 1.4L13.6 12l6.1 6.1a1 1 0 1 1-1.4 1.4l-6.8-6.8a1 1 0 0 1 0-1.4l6.8-6.8a1 1 0 0 1 1.4 0"/>',
+    last: '<path fill="currentColor" d="M11.3 4.5a1 1 0 0 0 0 1.4l6.1 6.1l-6.1 6.1a1 1 0 1 0 1.4 1.4l6.8-6.8a1 1 0 0 0 0-1.4l-6.8-6.8a1 1 0 0 0-1.4 0m-7 0a1 1 0 0 0 0 1.4l6.1 6.1l-6.1 6.1a1 1 0 1 0 1.4 1.4l6.8-6.8a1 1 0 0 0 0-1.4L5.7 4.5a1 1 0 0 0-1.4 0"/>'
+};
+
+/* instantsearch AJOUTE ces classes aux siennes (ais-*), il ne les remplace pas. */
+var REFINEMENT_CSS = { list: 'flex flex-col gap-1', item: 'cursor-pointer' };
+var SHOW_MORE = {
+    active: '<span class="cursor-pointer text-sm text-ruby-700">Voir moins</span>',
+    inactive: '<span class="cursor-pointer text-sm text-ruby-700">Voir plus</span>'
+};
+var sectionHeader = function (title) {
+    return '<h3 class="flex items-center gap-3 mb-2 text-sm font-medium leading-5 uppercase text-neutre-700">'
+        + '<span class="w-1 h-4 rounded-full bg-afup-300 shrink-0" aria-hidden="true"></span>' + title + '</h3>';
+};
+
 var search = instantsearch({
     appId: document.head.querySelector("[name=algolia_appid]").content,
     apiKey: document.head.querySelector("[name=algolia_apikey]").content,
@@ -9,8 +38,15 @@ search.addWidget(
     instantsearch.widgets.searchBox({
         container: '#search-box',
         placeholder: 'Rechercher un meetup...',
-        poweredBy: true
-
+        /* Attribution obligatoire sur l'offre gratuite d'Algolia. */
+        poweredBy: {
+            cssClasses: { root: 'mt-2 flex justify-end', link: 'inline-block' },
+            template: '<div class="{{cssClasses.root}}">'
+                + '<a class="{{cssClasses.link}}" href="{{url}}" target="_blank" rel="noopener">'
+                + '<img src="/images/search-by-algolia.svg" alt="Search by Algolia" width="130" height="18" class="h-4 w-auto" />'
+                + '</a></div>'
+        },
+        cssClasses: { root: 'w-full', input: FIELD_CLASS }
     })
 );
 
@@ -18,70 +54,60 @@ search.addWidget(
     instantsearch.widgets.hits({
         hitsPerPage: 14,
         container: '#hits-container',
+        cssClasses: { root: 'flex flex-col gap-4', empty: 'font-sans text-base text-neutre-700' },
         templates: {
-            empty: "Pas de résultat",
+            empty: 'Aucun meetup ne correspond à ces critères.',
             item: function(data) {
-                var content = ''
-                    + '<div class="container event-line">'
-                ;
+                var twitter = ('undefined' !== typeof data.twitter)
+                    ? '<a href="https://twitter.com/' + data.twitter + '" class="mt-2 inline-flex items-center gap-1.5 '
+                      + 'text-sm text-afup-500 underline hover:no-underline">@' + data.twitter + '</a>'
+                    : '';
 
-                content += `<div class="col-sm-6 col-md-1 meetups-office-logo"><img src="${ data.office.logo_url }" /></div>`;
-
-                content += `<div class="col-sm-6 col-md-2 meetups-meetup-date">
-                                ${data.office.label} <br />
-                                <span style="font-size: 1.2em">${data.day_month}<br />${data.year}</span>
-                            </div>`
-                ;
-
-                content += `<div class="col-md-${ data.is_upcoming ? '6' : '9' }">
-                    <div class="talk-list-title-container meetups-list-title-container"><a href="${data.event_url}"><h2>${data.label}</h2></a></div>`
-                ;
-
-                if ('undefined' !== typeof data.venue) {
-                    content += `${data.venue.name}<br />${data.venue.address_1 || ''}<br />${data.venue.city || ''}<br />`;
-                }
-                content += `<a href="#" class="description-toggler" data-toggled-html="Masquer la description">Voir la description</a>`;
-
-                content += `<div class="event-description" style="display:none">${data.description}`;
-                if ('undefined' !== typeof data.twitter) {
-                    content += `<div><i class="fa fa-twitter" aria-hidden="true"></i> <a href="http://twitter.com/${data.twitter}">@${data.twitter}</a></div>`
-                }
-                content += '</div>';
-
-
-                content += '</div>';
-
-                if (data.is_upcoming) {
-                    content += '<div class="col-sm-12 col-md-3 meetups-register">';
-                    content += `<a href="${data.event_url}" class="button">S'inscrire</a>`;
-                    content += '</div>';
-                }
-
-
-                content += '</div>';
-
-                return content;
+                return ''
+                    + '<article class="flex flex-col sm:flex-row gap-4 rounded-2xl border-2 border-neutre-300 p-4">'
+                    +   '<div class="flex flex-row sm:flex-col items-center gap-3 sm:w-24 sm:shrink-0">'
+                    +     '<div class="size-14 shrink-0 flex items-center justify-center rounded-2xl bg-neutre-200">'
+                    +       '<img src="' + data.office.logo_url + '" alt="" loading="lazy" class="w-full h-full object-contain p-1.5" />'
+                    +     '</div>'
+                    +     '<div class="flex flex-col sm:items-center sm:text-center">'
+                    +       '<span class="font-sans text-sm font-medium text-afup-800">' + data.office.label + '</span>'
+                    +       '<span class="font-sans text-xs text-neutre-400">' + data.day_month + ' ' + data.year + '</span>'
+                    +     '</div>'
+                    +   '</div>'
+                    +   '<div class="flex flex-col gap-2 grow min-w-0">'
+                    +     '<a href="' + data.event_url + '" class="font-titre text-lg leading-snug text-afup-800 hover:underline">' + data.label + '</a>'
+                    /* <details> natif : remplace le repli qui était géré en jQuery. */
+                    +     '<details class="group mt-1">'
+                    +       '<summary class="flex w-fit cursor-pointer items-center gap-1 text-sm text-ruby-700 list-none [&::-webkit-details-marker]:hidden">'
+                    +         svg(CHEVRON, 'size-4 transition-transform group-open:rotate-180')
+                    +         '<span class="group-open:hidden">Voir la description</span>'
+                    +         '<span class="hidden group-open:inline">Masquer la description</span>'
+                    +       '</summary>'
+                    /* `prose` : la description arrive en HTML libre de l'API Meetup, et le reset
+                       Tailwind a supprimé les marges de ses <p>. */
+                    +       '<div class="mt-2 prose prose-sm max-w-none text-neutre-700">' + data.description + '</div>'
+                    +       twitter
+                    +     '</details>'
+                    +   '</div>'
+                    +   (data.is_upcoming
+                        ? '<div class="sm:self-start sm:shrink-0">'
+                          + '<a href="' + data.event_url + '" class="' + LINK_CLASS + ' bg-ruby-500 border-transparent '
+                          + 'px-8 py-3 text-base font-semibold text-white hover:bg-ruby-700">S\'inscrire</a>'
+                          + '</div>'
+                        : '')
+                    + '</article>';
             }
         }
     })
 );
 
 
-var refinementItemTemplate = function(data) {
-    var content = "";
-    content += '<input type="checkbox" ';
-    if (data.isRefined) {
-        content += ' checked="checked" ';
-    }
-    content += " />";
-
-    content += '<label>' + data.name +'</label>';
-
-    if (data.count) {
-        content += ' <span class="talk-list-refinement-count-badge">' + data.count + "</span>";
-    }
-
-    return content;
+var refinementItemTemplate = function(data) {
+    return '<label class="flex items-center gap-2 cursor-pointer py-0.5">'
+        + '<input type="checkbox" class="' + CHECKBOX_CLASS + '"' + (data.isRefined ? ' checked="checked"' : '') + ' />'
+        + '<span class="text-sm font-normal text-neutre-700">' + data.name + '</span>'
+        + (data.count ? '<span class="ml-auto text-xs text-neutre-400">' + data.count + '</span>' : '')
+        + '</label>';
 };
 
 
@@ -90,16 +116,12 @@ search.addWidget(
         container: '#refinement-office',
         attributeName: 'office.label',
         operator: "or",
+        cssClasses: REFINEMENT_CSS,
         templates: {
-            header: "<h4>Antenne</h4>",
+            header: sectionHeader('Antenne'),
             item: refinementItemTemplate
         },
-        showMore: {
-            templates: {
-                active: '<a class="ais-show-more ais-show-more__inactive">Voir moins</a>',
-                inactive: '<a class="ais-show-more ais-show-more__inactive">Voir plus</a>'
-            }
-        }
+        showMore: { templates: SHOW_MORE }
     })
 );
 
@@ -112,6 +134,7 @@ search.addWidget(
             on: true
         },
         autoHideContainer: false,
+        cssClasses: REFINEMENT_CSS,
         templates: {
             item: refinementItemTemplate
         }
@@ -124,17 +147,12 @@ search.addWidget(
         container: '#refinement-year',
         attributeName: 'year',
         operator: "or",
+        cssClasses: REFINEMENT_CSS,
         templates: {
-            header: "<h4>Année</h4>",
+            header: sectionHeader('Année'),
             item: refinementItemTemplate
         },
-        showMore: {
-            limit: 20,
-            templates: {
-                active: '<a class="ais-show-more ais-show-more__inactive">Voir moins</a>',
-                inactive: '<a class="ais-show-more ais-show-more__inactive">Voir plus</a>'
-            }
-        }
+        showMore: { limit: 20, templates: SHOW_MORE }
     })
 );
 
@@ -142,7 +160,7 @@ search.addWidget(
     instantsearch.widgets.clearAll({
         container: '#refinement-clear',
         templates: {
-            link: 'Supprimer les filtres'
+            link: '<span class="cursor-pointer text-sm text-neutre-400 hover:text-neutre-700">Supprimer les filtres</span>'
         },
         autoHideContainer: true
     })
@@ -151,25 +169,20 @@ search.addWidget(
 search.addWidget(
     instantsearch.widgets.pagination({
         container: '#pagination',
+        cssClasses: {
+            root: 'mx-auto flex w-full justify-center',
+            list: 'flex flex-row flex-wrap gap-2 items-center',
+            item: 'list-none',
+            link: LINK_CLASS + ' bg-white text-neutre-700 border-neutre-300 hover:bg-afup-700 hover:text-white hover:border-afup-700',
+            active: '[&>*]:bg-afup-100 [&>*]:text-afup-500 [&>*]:border-transparent',
+            disabled: 'invisible'
+        },
         labels : {
-            first: '<i class="fa fa-angle-double-left"></i>',
-            previous: '<i class="fa fa-angle-left"></i>',
-            next: '<i class="fa fa-angle-right"></i>',
-            last: '<i class="fa fa-angle-double-right"></i>'
+            first: svg(ARROW.first, 'size-4'),
+            previous: svg(ARROW.prev, 'size-4'),
+            next: svg(ARROW.next, 'size-4'),
+            last: svg(ARROW.last, 'size-4')
         }
     })
 );
 search.start();
-
-$(document).ready(function() {
-    $('#hits-container').on('click', '.description-toggler', function(e) {
-        e.preventDefault();
-        var toggler = $(this);
-        var line = toggler.parents('.event-line');
-        var description = $('.event-description', line);
-        description.toggle();
-        var togglerHtml = toggler.html();
-        toggler.html(toggler.data('toggled-html'))
-        toggler.data('toggled-html', togglerHtml)
-    });
-});

@@ -1,21 +1,14 @@
-{% extends 'site/base.html.twig' %}
+{% extends 'layouts/site.html.twig' %}
+{% set menu_current_feuille_id = constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ANTENNES') %}
 
 {% block title %}Les meetups des antennes de l'AFUP{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/grid.css">
-    <link rel="stylesheet" href="/css/buttons.css">
-    <link rel="stylesheet" href="/css/talk/list.css">
-    <link rel="stylesheet" href="/css/meetups/list.css">
-{% endblock %}
-
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
-    <script src="/js/meetups/list.js"></script>
+    {# `defer` obligatoire : ce bloc est rendu dans le <head>, sans lui instantsearch
+       s'exécute avant l'existence de ses conteneurs. #}
+    <script defer src="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
+    <script defer src="/js/meetups/list.js"></script>
 {% endblock %}
 
 {% block metas %}
@@ -25,41 +18,40 @@
 {% endblock %}
 
 {% block content %}
-    {{ render(controller(
-        'AppBundle\\Controller\\Website\\SecondaryMenuController::display',
-        { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_ANTENNES') }
-    )) }}
 
-    <div class="mw1400p center" id="container">
-        <div class="line" id="main">
-            <h1>Meetups des antennes</h1>
-            <p>Retrouvez ici tous les meetups des antennes de l'AFUP.</p>
+    <div class="container mx-auto flex flex-col px-4 py-6 gap-6 sm:px-28 sm:py-10 sm:gap-10">
+
+        <div class="flex flex-col gap-5">
+            <h1 class="font-titre text-afup-800 text-2xl sm:text-4xl">Meetups des antennes</h1>
+            <p class="font-sans font-normal text-base text-neutre-700">
+                Retrouvez ici tous les meetups des antennes de l'AFUP.
+            </p>
 
             {% if source == 'aperophp.net' %}
-                <blockquote>
-                    <p>aperophp.net évolue et s'adapte aux nouvelles pratiques des antennes : retrouvez désormais l'ensemble des apéros PHP et meetups organisés par les antennes de l'AFUP sur cette page.</p>
-                </blockquote>
+                <twig:Alert type="warning">
+                    aperophp.net évolue et s'adapte aux nouvelles pratiques des antennes : retrouvez désormais
+                    l'ensemble des apéros PHP et meetups organisés par les antennes de l'AFUP sur cette page.
+                </twig:Alert>
             {% endif %}
 
-            <div class="container">
+            <div id="search-box"></div>
+        </div>
 
-                <div class="col-sm-12 col-md-12">
-                    <input type="text" id="search-box" />
-                </div>
-                <div class="col-md-10" id="hits-container"></div>
-                <div class="col-md-2" id="refinements-container">
+        <div class="flex flex-col sm:flex-row gap-5 sm:gap-8 items-start">
+            <div id="hits-container" class="grow w-full"></div>
+
+            <div class="w-full sm:w-72 sm:shrink-0">
+                <twig:Card class="flex flex-col gap-6">
                     <div id="refinement-is-upcoming"></div>
                     <div id="refinement-office"></div>
                     <div id="refinement-year"></div>
                     <div id="refinement-clear"></div>
-                </div>
-
+                </twig:Card>
             </div>
-
-            <div id="pagination-container">
-                <div id="pagination"></div>
-            </div>
-
         </div>
+
+        <nav id="pagination" aria-label="Pagination des meetups"></nav>
+
     </div>
+
 {% endblock %}
