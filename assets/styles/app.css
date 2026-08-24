@@ -43,6 +43,6 @@
     .home-banner {
         background-image:
                 linear-gradient(rgba(29, 34, 65, 0.85), rgba(29, 34, 65, 0.85)),
-                url('../images/home-banner.jpg');
+                url('../images/home-banner.webp');
     }
 }
