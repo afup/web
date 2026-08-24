@@ -47,7 +47,7 @@
             <twig:Card class="col-span-2 p-0 flex-col overflow-hidden hidden sm:flex">
                 <a href="{{ path('news_display', {'code': articles[0].slug}) }}"
                    class="block bg-cover bg-center grow"
-                   style="background-image: url({{ asset('images/article-default-image.svg') }})">
+                   style="background-image: url({{ asset(lastArticleImageUrl) }})">
                     {% if articles[0].theme %}
                         <a href="{{ path('news_list', {'news_filters[theme][]': articles[0].theme.value}) }}" class="block absolute mt-5 ml-5 bg-ruby-400 pl-2 pr-4 py-1 rounded-full text-white uppercase flex gap-1 items-center">
                             <twig:UX:Icon name="oui:dot" class="size-6 text-ruby-200" /> {{ articles[0].theme.label }}

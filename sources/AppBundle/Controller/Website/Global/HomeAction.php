@@ -6,6 +6,7 @@ namespace AppBundle\Controller\Website\Global;
 
 use AppBundle\Event\Entity\Repository\MeetupRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Site\ArticleImageStorage;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,6 +19,7 @@ final class HomeAction extends AbstractController
         private readonly ArticleRepository $articleRepository,
         private readonly MeetupRepository $meetupRepository,
         private readonly EventRepository $eventRepository,
+        private readonly ArticleImageStorage $articleImageStorage,
     ) {}
 
     public function __invoke(): Response
@@ -28,6 +30,7 @@ final class HomeAction extends AbstractController
         return $this->view->render('site/home.html.twig', [
             'articles' => $articles,
             'meetups' => $meetups,
+            'lastArticleImageUrl' => $this->articleImageStorage->getUrl($articles[0]) ?? 'images/article-default-image.svg',
             'currentEvent' => $this->eventRepository->getMostRecentEvent(),
         ]);
     }
