@@ -181,7 +181,7 @@ final class ArticleRepository extends EntityRepository
             ->andWhere('r.id <> ' . Rubrique::ID_RUBRIQUE_ANTENNES)
             ->andWhere('r.id <> ' . Rubrique::ID_RUBRIQUE_NOS_ACTIONS)
             ->orderBy('a.datePublication', 'DESC')
-            ->setMaxResults(5)
+            ->setMaxResults(6)
             ->getQuery()
             ->getResult();
     }

@@ -1,0 +1,15 @@
+{% props date, variant %}
+{# @prop variant 'dark'|'light' Le type d'alerte #}
+{%- set style = html_cva(
+    base: "text-white text-sm flex items-center px-2 py-4 rounded-lg",
+    variants: {
+        variant: {
+            dark: 'bg-afup-700',
+            light: 'bg-afup-500',
+        },
+    },
+) -%}
+<time class="{{ style.apply({variant}, attributes.render('class'))|tailwind_merge }}" {{ attributes }}
+      datetime="{{ date|date('Y-m-d H:i') }}">
+    {{ date|date('d/m') }}
+</time>

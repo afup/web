@@ -23,6 +23,7 @@
     --color-neutre-400: #929292;
     --color-neutre-700: #3E3D40;
 
+    --color-ruby-200: #ed95c0;
     --color-ruby-400: #ed0678;
     --color-ruby-500: #D50068;
     --color-ruby-700: #B30057;
@@ -37,5 +38,11 @@
     body {
         /* Désactive les effets (italic, gras, etc) automatiques des polices pour prioriser les version contenues dans les polices */
         font-synthesis: none;
+    }
+
+    .home-banner {
+        background-image:
+                linear-gradient(rgba(29, 34, 65, 0.85), rgba(29, 34, 65, 0.85)),
+                url('../images/home-banner.webp');
     }
 }

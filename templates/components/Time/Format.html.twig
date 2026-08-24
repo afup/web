@@ -1,0 +1,4 @@
+{% props date, format %}
+<time {{ attributes }} datetime="{{ date|date('Y-m-d H:i') }}">
+    {{ date|date(format) }}
+</time>
