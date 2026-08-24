@@ -185,4 +185,22 @@ search.addWidget(
         }
     })
 );
+
+/* instantsearch 1.x n'émet pas aria-current sur la page courante. */
+search.on('render', function () {
+    document.querySelectorAll('#pagination .ais-pagination--item__page').forEach(function (item) {
+        var link = item.querySelector('.ais-pagination--link');
+
+        if (!link) {
+            return;
+        }
+
+        if (item.classList.contains('ais-pagination--item__active')) {
+            link.setAttribute('aria-current', 'page');
+        } else {
+            link.removeAttribute('aria-current');
+        }
+    });
+});
+
 search.start();
