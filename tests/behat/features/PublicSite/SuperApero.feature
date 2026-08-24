@@ -39,6 +39,6 @@ Feature: Site Public - Super Apéro PHP
     # Affichage de la page du Super Apéro
     Given I am on "/super-apero"
     Then the current URL should match "#/association/super-apero$#"
-    And the "#main h1" element should contain "Super-apéro PHP"
+    And the "h1" element should contain "Super-apéro PHP"
     And the response should contain "Super Apéro PHP à Paris"
     And the response should contain "Super Apéro PHP à Bordeaux"
