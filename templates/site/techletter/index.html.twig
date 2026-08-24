@@ -1,61 +1,69 @@
-{% extends 'site/base.html.twig' %}
+{% extends 'layouts/site.html.twig' %}
+{% set menu_current_feuille_id = constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_NOS_ACTIONS') %}
 
 {% block title %}La veille de l'AFUP{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/glyphicons.css') }}" media="screen" />
-    <link rel="stylesheet" href="{{ asset('css/techletter.css') }}" media="screen" />
-{% endblock %}
-
 {% block content %}
-{{ render(controller(
-    'AppBundle\\Controller\\Website\\SecondaryMenuController::display',
-    { 'feuille_id': constant('Afup\\Site\\Corporate\\Feuille::ID_FEUILLE_NOS_ACTIONS') }
-)) }}
 
-<div class="techletter-subscription" id="container">
+    {# En-tête pleine largeur, sur le même voile bleu nuit que les autres pages refondues,
+       avec la capture d'un numéro à droite pour montrer le produit tout de suite. #}
+    <div class="bg-gradient-to-br from-afup-900 via-afup-800 to-afup-700">
+        <div class="container mx-auto px-4 py-12 sm:px-28 sm:py-16 relative isolate grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            <div class="flex flex-col items-start gap-6">
+                <p class="flex items-center gap-2 font-sans font-normal text-sm text-white py-1.5 px-3 bg-white/20 rounded-full">
+                    <twig:ux:icon name="mdi:email-fast-outline" class="size-4" />
+                    Tous les 15 jours
+                </p>
 
-    <div class="techletter-subscription--header">
-        <div class="techletter-subscription-capture">
-            <img src="{{ asset('images/techletter/sample.png') }}" alt="La veille de l'AFUP" />
-        </div>
-        <div class="techletter-subscription-header-content">
-            <h1>Simplifiez votre veille sur PHP.</h1>
-            <p>
-                Tous les 15 jours, recevez les infos à ne pas rater, sélectionnées par les experts de l'AFUP.<br />
-            </p>
-            <p>
-                <a class="banner-button" href="{{ path('member_techletter') }}">&gt;&gt; Je m'inscris &lt;&lt;</a>
-            </p>
-        </div>
-    </div>
+                <h1 class="font-titre font-normal text-3xl sm:text-4xl leading-tight text-white">Simplifiez votre veille sur PHP.</h1>
 
-    <div class="techletter-subscription-body">
-        <div class="techletter-subscription-argument">
-            <h2 class="h3-like">Le meilleur de PHP, directement par mail</h2>
-            <p>
-                Une sélection drastique est effectuée en amont, afin de vous permettre d'accéder aux meilleurs articles
-                du moment.<br />Ne perdez plus de temps à aller de lien en lien et concentrez-vous sur votre métier.
-            </p>
-        </div>
+                <p class="font-sans font-normal text-base text-white/90 max-w-xl">
+                    Tous les 15 jours, recevez les infos à ne pas rater, sélectionnées par les experts de l'AFUP.
+                </p>
 
-        <div class="techletter-subscription-argument">
-            <h2 class="h3-like">Un avantage exclusif pour nos membres</h2>
-            <p>
-                Seuls les membres AFUP peuvent accéder à ce concentré de veille qui couvre l'essentiel de
-                l'actualité de PHP et des technologies connexes.
-            </p>
-        </div>
+                <twig:Button variant="primary" as="a" href="{{ path('member_techletter') }}" class="px-8 py-3 text-base font-semibold">Je m'inscris</twig:Button>
+            </div>
 
-        <div class="techletter-subscription-argument">
-            <h2 class="h3-like">Prérequis</h2>
-            <p>
-                Pour recevoir cette veille il faut être membre à jour de cotisation et cliquer sur le <a href="{{ path('member_techletter') }}">bouton d'inscription</a>
-                dans l'espace membres.
-            </p>
+            <img src="{{ asset('images/techletter/sample.png') }}" alt="Aperçu d'un numéro de la veille de l'AFUP" width="480" height="320"
+                 class="w-full max-w-[480px] mx-auto rounded-2xl ring-1 ring-white/20 shadow-2xl" />
+
+            <div class="absolute w-64 h-64 top-0 right-0 translate-x-1/3 -translate-y-1/3 bg-white/5 blur-3xl rounded-full -z-10"></div>
         </div>
     </div>
 
-</div>
+    <div class="container mx-auto flex flex-col px-4 py-6 gap-6 sm:px-28 sm:py-10 sm:gap-10">
+        <div class="flex flex-col gap-5">
+            <twig:SectionTitle>Pourquoi s'y abonner ?</twig:SectionTitle>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8">
+
+                <twig:Card class="flex flex-col gap-3 p-6 sm:p-8">
+                    <h3 class="font-titre font-bold text-lg text-afup-800">Le meilleur de PHP, directement par mail</h3>
+                    <p class="font-sans font-normal text-base text-neutre-700">
+                        Une sélection drastique est effectuée en amont, afin de vous permettre d'accéder aux meilleurs articles
+                        du moment.<br />Ne perdez plus de temps à aller de lien en lien et concentrez-vous sur votre métier.
+                    </p>
+                </twig:Card>
+
+                <twig:Card class="flex flex-col gap-3 p-6 sm:p-8">
+                    <h3 class="font-titre font-bold text-lg text-afup-800">Un avantage exclusif pour nos membres</h3>
+                    <p class="font-sans font-normal text-base text-neutre-700">
+                        Seuls les membres AFUP peuvent accéder à ce concentré de veille qui couvre l'essentiel de
+                        l'actualité de PHP et des technologies connexes.
+                    </p>
+                </twig:Card>
+
+                <twig:Card class="flex flex-col gap-3 p-6 sm:p-8">
+                    <h3 class="font-titre font-bold text-lg text-afup-800">Prérequis</h3>
+                    <p class="font-sans font-normal text-base text-neutre-700">
+                        Pour recevoir cette veille il faut être membre à jour de cotisation et cliquer sur le
+                        <a href="{{ path('member_techletter') }}" class="text-afup-500 underline hover:no-underline">bouton d'inscription</a>
+                        dans l'espace membres.
+                    </p>
+                </twig:Card>
+
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
