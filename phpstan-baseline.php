@@ -9806,12 +9806,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Twig/AssetsExtension.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access property \\$urlName on AppBundle\\\\Antennes\\\\Meetup\\|null\\.$#',
-	'identifier' => 'property.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Twig/OfficesExtension.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$code of method AppBundle\\\\Antennes\\\\AntenneRepository\\:\\:findByCode\\(\\) expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 3,

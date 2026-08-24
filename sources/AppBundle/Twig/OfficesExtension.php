@@ -18,7 +18,8 @@ class OfficesExtension extends AbstractExtension
         return [
             new TwigFunction('office_name', fn($code): string => $this->antennesRepository->findByCode($code)->label),
             new TwigFunction('office_logo', fn($code): string => $this->antennesRepository->findByCode($code)->logoUrl),
-            new TwigFunction('office_meetup_urlname', fn($code) => $this->antennesRepository->findByCode($code)->meetup->urlName),
+            // Toutes les antennes n'ont pas de groupe Meetup (ex : Clermont), d'où le `?->`
+            new TwigFunction('office_meetup_urlname', fn($code) => $this->antennesRepository->findByCode($code)->meetup?->urlName),
         ];
     }
 }
