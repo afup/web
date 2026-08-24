@@ -10,6 +10,7 @@ use Afup\Site\Utils\Vat;
 use AppBundle\Accounting\Model\Invoicing;
 use AppBundle\Accounting\Model\InvoicingDetail;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class InvoicingPdfGenerator
 {
@@ -105,12 +106,16 @@ class InvoicingPdfGenerator
 
     public function getInvoiceFilename(Invoicing $invoicing): string
     {
-        return 'Facture - ' . $invoicing->getCompany() . ' - ' . ($invoicing->getInvoiceDate() ? $invoicing->getInvoiceDate()->format('Y-m-d') : '') . '.pdf';
+        $slugger = new AsciiSlugger();
+
+        return 'Facture - ' . $slugger->slug($invoicing->getCompany()) . ' - ' . ($invoicing->getInvoiceDate() ? $invoicing->getInvoiceDate()->format('Y-m-d') : '') . '.pdf';
     }
 
     public function getQuotationFilename(Invoicing $invoicing): string
     {
-        return 'Devis - ' . $invoicing->getCompany() . ' - ' . ($invoicing->getQuotationDate() ? $invoicing->getQuotationDate()->format('Y-m-d') : '') . '.pdf';
+        $slugger = new AsciiSlugger();
+
+        return 'Devis - ' . $slugger->slug($invoicing->getCompany()) . ' - ' . ($invoicing->getQuotationDate() ? $invoicing->getQuotationDate()->format('Y-m-d') : '') . '.pdf';
     }
 
     private function buildPdf(\DateTimeImmutable $date, bool $isSubjectedToVat): PDF_Facture
