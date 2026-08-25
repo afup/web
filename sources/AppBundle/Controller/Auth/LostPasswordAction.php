@@ -34,9 +34,6 @@ class LostPasswordAction extends AbstractController
 
         return $this->view->render('site/auth/lost_password.html.twig', [
             'form' => $form->createView(),
-            'title' => 'Mot de passe perdu',
-            'page' => 'motdepasse_perdu',
-            'class' => 'panel-page',
         ]);
     }
 }
