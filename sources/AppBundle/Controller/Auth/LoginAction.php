@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Auth;
 
+use AppBundle\Association\Form\LoginType;
 use AppBundle\Twig\ViewRenderer;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 final readonly class LoginAction
 {
     public function __construct(
         private AuthenticationUtils $authenticationUtils,
+        private FormFactoryInterface $formFactory,
+        private UrlGeneratorInterface $urlGenerator,
         private ViewRenderer $view,
     ) {}
 
@@ -29,13 +34,17 @@ final readonly class LoginAction
         $noDomain = parse_url($targetUri, PHP_URL_HOST) === null;
         $targetPath = $targetUri !== $actualUrl && $noDomain ? $targetUri : null;
 
+        // Le formulaire n'est pas soumis à Symfony : c'est le firewall qui intercepte le POST sur cette même URL.
+        $form = $this->formFactory->create(LoginType::class, [
+            'utilisateur' => $lastUsername,
+            '_target_path' => $targetPath,
+        ], [
+            'action' => $this->urlGenerator->generate('app_login'),
+        ]);
+
         return $this->view->render('site/auth/login.html.twig', [
-            'last_username' => $lastUsername,
+            'form' => $form->createView(),
             'error' => $error,
-            'target_path' => $targetPath,
-            'title' => 'Connexion',
-            'page' => 'connexion',
-            'class' => 'panel-page',
         ]);
     }
 }
