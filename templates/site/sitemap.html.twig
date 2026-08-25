@@ -1,44 +1,104 @@
-{% extends 'site/base.html.twig' %}
+{% extends 'layouts/site.html.twig' %}
 
 {% block title %}Plan du site de l'AFUP{% endblock %}
 
-{% macro list(items) %}
-    <ul>
+{# `columns` bascule les longues listes (entreprises, actualités, conférences) en multi-colonnes
+   CSS. Le style des entrées est porté par le `ul` via des variantes de descendance : avec
+   plusieurs centaines de liens, le répéter sur chaque `li` alourdirait inutilement le HTML. #}
+{% macro list(items, columns = false) %}
+    <ul class="{{ columns ? 'sm:columns-2 lg:columns-3 gap-x-8' : '' }} text-neutre-700
+               [&_li]:break-inside-avoid [&_li]:py-1
+               [&_a]:underline [&_a]:decoration-neutre-300 [&_a]:underline-offset-4
+               [&_a]:hover:text-afup-500 [&_a]:hover:decoration-afup-500">
         {% for item in items %}
             <li><a href="{{ item.url }}">{{ item.name }}</a></li>
+        {% else %}
+            <li class="text-neutre-400">Aucune page pour le moment.</li>
         {% endfor %}
     </ul>
 {% endmacro %}
 
+{% macro anchor(target, label) %}
+    <a href="#{{ target }}" class="text-sm text-white px-3 py-1.5 bg-white/20 rounded-full hover:bg-white/30">{{ label }}</a>
+{% endmacro %}
+
 {% block content %}
-    <div class="mw1400p center" id="container">
-        <div class="line" id="main">
-            <h1>Plan du site</h1>
-            <div class="row">
-                <div class="col-md-6">
-                    {{ _self.list(pages) }}
 
-                    <h2><a href="{{ path('become_member') }}">Adhérer à l'AFUP</a></h2>
-                    <ul>
-                        <li><a href="{{ path('member_membership') }}">Adhérer en tant que particulier</a></li>
-                        <li><a href="{{ path('company_membership') }}">Adhérer en tant qu'entreprise</a></li>
-                        <li><a href="{{ path('app_login') }}">Se connecter</a></li>
-                    </ul>
+    {# En-tête pleine largeur sur le voile bleu nuit des autres pages refondues, avec des
+       ancres vers les sections : la page est longue (conférences, actualités, entreprises). #}
+    <div class="bg-gradient-to-br from-afup-900 via-afup-800 to-afup-700">
+        <div class="container mx-auto px-4 py-12 sm:px-28 sm:py-16 relative isolate flex flex-col gap-4">
+            <h1 class="font-titre text-3xl sm:text-4xl leading-tight text-white">Plan du site</h1>
 
-                    <h2><a href="{{ path('talks_list') }}">Historique des conférences</a></h2>
-                    {{ _self.list(talks) }}
-                </div>
-                <div class="col-md-6">
-                    <h2>Association</h2>
-                    {{ _self.list(association) }}
+            <p class="text-white/90 max-w-3xl">
+                Toutes les pages du site de l'AFUP réunies au même endroit : l'association, l'adhésion,
+                les entreprises adhérentes, les actualités et l'historique de nos conférences.
+            </p>
 
-                    <h2><a href="{{ path('company_public_profile_list') }}">Entreprises adhérentes</a></h2>
-                    {{ _self.list(members) }}
+            <nav aria-label="Sections du plan du site" class="mt-2 flex flex-wrap gap-2">
+                {{ _self.anchor('pages', 'Le site') }}
+                {{ _self.anchor('adherer', 'Adhérer') }}
+                {{ _self.anchor('association', 'Association') }}
+                {{ _self.anchor('entreprises', 'Entreprises adhérentes') }}
+                {{ _self.anchor('actualites', 'Actualités') }}
+                {{ _self.anchor('conferences', 'Conférences') }}
+            </nav>
 
-                    <h2><a href="{{ path('news_list') }}">Actualités</a></h2>
-                    {{ _self.list(news) }}
-                </div>
-            </div>
+            <div class="absolute w-64 h-64 top-0 right-0 translate-x-1/3 -translate-y-1/3 bg-white/5 blur-3xl rounded-full -z-10"></div>
         </div>
     </div>
+
+    {# Les six sections partagent la même mise en page : elle est déclarée une fois ici. #}
+    <div class="container mx-auto flex flex-col px-4 py-6 gap-6 sm:px-28 sm:py-10 sm:gap-10
+                [&_section]:flex [&_section]:flex-col [&_section]:gap-5">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-start">
+            <section id="pages">
+                <twig:SectionTitle>Le site</twig:SectionTitle>
+                {{ _self.list(pages) }}
+            </section>
+
+            <section id="adherer">
+                <twig:SectionTitle>
+                    <a href="{{ path('become_member') }}">Adhérer à l'AFUP</a>
+                </twig:SectionTitle>
+                {{ _self.list([
+                    { name: 'Adhérer en tant que particulier', url: path('member_membership') },
+                    { name: 'Adhérer en tant qu\'entreprise', url: path('company_membership') },
+                    { name: 'Se connecter', url: path('app_login') },
+                ]) }}
+            </section>
+
+            <section id="association">
+                <twig:SectionTitle>Association</twig:SectionTitle>
+                {{ _self.list(association) }}
+            </section>
+        </div>
+
+        <section id="entreprises">
+            <twig:SectionTitle>
+                <a href="{{ path('company_public_profile_list') }}">Entreprises adhérentes</a>
+                <span>({{ members|length }})</span>
+            </twig:SectionTitle>
+            {{ _self.list(members, true) }}
+        </section>
+
+        <section id="actualites">
+            <twig:SectionTitle>
+                <a href="{{ path('news_list') }}">Actualités</a>
+                <span>({{ news|length }})</span>
+            </twig:SectionTitle>
+            {{ _self.list(news, true) }}
+        </section>
+
+        <section id="conferences">
+            <twig:SectionTitle>
+                <a href="{{ path('talks_list') }}">Historique des conférences</a>
+                <span>({{ talks|length }})</span>
+            </twig:SectionTitle>
+            {{ _self.list(talks, true) }}
+        </section>
+
+    </div>
+
 {% endblock %}
