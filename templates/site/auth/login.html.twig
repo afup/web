@@ -1,45 +1,40 @@
 {% extends 'layouts/site.html.twig' %}
+{% form_theme form 'form_themes/tailwind.html.twig' %}
+
+{% block title %}Connexion - AFUP{% endblock %}
 
 {% block content %}
 
-<div class="container mx-auto flex flex-col items-center px-4 my-5 gap-4">
-    <h1 class="font-titre font-normal text-5xl text-afup-800 text-center">{{ "Connexion"|trans }}</h1>
+    <div class="container mx-auto flex flex-col items-center px-4 my-5 gap-4">
+        <h1 class="font-titre text-5xl text-afup-800 text-center">{{ "Connexion"|trans }}</h1>
 
-    <form method="post" novalidate="novalidate">
+        {{ form_start(form, {attr: {class: 'w-full sm:w-200'}}) }}
 
-    <twig:Card class="flex flex-col gap-8 px-6 py-12 sm:px-28 sm:py-12 my-5 sm:mb-10 w-full sm:w-200">
+        <twig:Card class="flex flex-col gap-8 px-6 py-12 sm:px-28 sm:py-12 my-5 sm:mb-10 w-full">
 
+            {% if error is not null %}
+                <twig:Alert type="error" class="w-full">{{ error.messageKey|trans(error.messageData, 'security') }}</twig:Alert>
+            {% endif %}
 
-        {% if error is not null %}
-            <twig:Alert type="error" class="w-full">{{ error.messageKey|trans(error.messageData, 'security') }}</twig:Alert>
-        {% endif %}
-
-
-        <div class="flex w-full flex-col gap-1.5">
-            <label for="utilisateur" class="flex items-start gap-1 text-sm leading-4 font-medium text-neutre-700">Email ou nom d'utilisateur</label>
-            <input type="text" id="utilisateur" name="utilisateur" value="{{ last_username }}" required="required" class="w-full rounded-lg border-2 bg-white px-3 text-sm text-gray-700 placeholder:text-neutre-400 focus:border-afup-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutre-200 disabled:text-neutre-400 border-neutre-300 h-10">
-        </div>
-
-        <div class="flex w-full flex-col gap-1.5">
-            <div class="flex items-center justify-between">
-                <label for="mot_de_passe" class="flex items-start gap-1 text-sm leading-4 font-medium text-neutre-700">Mot de passe</label>
-                <a href="{{ url('app_password_reset') }}" class="text-xs text-afup-500 underline hover:no-underline">Mot de passe perdu ?</a>
+            {{ form_row(form.utilisateur) }}
+            
+            <div class="flex w-full flex-col gap-1.5">
+                <div class="flex items-center justify-between">
+                    {{ form_label(form.mot_de_passe) }}
+                    <a href="{{ path('app_password_reset') }}" class="text-xs text-afup-500 underline hover:no-underline">Mot de passe perdu ?</a>
+                </div>
+                {{ form_widget(form.mot_de_passe) }}
+                {{ form_errors(form.mot_de_passe) }}
             </div>
-            <input type="password" id="mot_de_passe" name="mot_de_passe" required="required" class="w-full rounded-lg border-2 bg-white px-3 text-sm text-gray-700 placeholder:text-neutre-400 focus:border-afup-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutre-200 disabled:text-neutre-400 border-neutre-300 h-10">
-        </div>
 
-        <input  type="hidden" name="connexion" value="1" />
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-        {% if target_path is not null %}
-            <input type="hidden" name="_target_path" value="{{ target_path }}" />
-        {% endif %}
+            <div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 border-t-2 border-neutre-300 pt-5">
+                <p class="text-sm text-neutre-700">Pas encore de compte ? <a href="{{ path('become_member') }}" class="text-afup-500 underline hover:no-underline">Adhésion à l'AFUP</a></p>
+                {{ form_widget(form.submit) }}
+            </div>
 
+        </twig:Card>
 
-        <div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 border-t-2 border-neutre-300 pt-5">
-            <p class="font-sans font-normal text-sm text-neutre-700">Pas encore de compte ? <a href="{{ url('become_member') }}" class="text-afup-500 underline hover:no-underline">Adhésion à l'AFUP</a></p>
-            <button class="items-center justify-center rounded-lg border border-transparent bg-clip-border whitespace-nowrap bg-ruby-500 text-white hover:bg-ruby-700 px-8 py-3 text-base font-semibold" type="submit" name="soumettre">Se connecter</button>
-        </div>
+        {{ form_end(form) }}
+    </div>
 
-    </twig:Card>
-    </form>
 {% endblock %}
