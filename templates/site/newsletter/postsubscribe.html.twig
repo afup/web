@@ -1,14 +1,48 @@
-{% extends 'site/base.html.twig' %}
-{% block inner_content %}
-    <article id="company-membership">
-        <h1>Inscription à la newsletter de l'AFUP</h1>
+{% extends 'layouts/site.html.twig' %}
+
+{% block title %}{{ success ? 'Merci de votre inscription' : 'Inscription impossible' }} - Newsletter - AFUP{% endblock %}
+
+{% block metas %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto px-4 sm:px-28 py-16 flex flex-col items-center text-center gap-6">
         {% if success %}
-            <p>Merci de votre inscription !</p>
-            <p style="font-weight: 800">Afin que l'inscription soit effective, merci de confirmer celle-ci dans l'email que vous allez recevoir.</p>
-            <p>La newsletter est envoyée à un rythme trimestriel, en janvier, mars, juillet et septembre.</p>
+            <span class="flex items-center justify-center rounded-full bg-afup-100 text-afup-500 p-6">
+                <twig:ux:icon name="mdi:email-fast-outline" class="size-12" />
+            </span>
+
+            <h1 class="font-titre font-normal text-4xl sm:text-5xl text-afup-800">Merci de votre inscription&nbsp;!</h1>
+
+            <p class="text-xl sm:text-2xl max-w-2xl text-neutre-700">
+                Pour qu'elle soit effective,
+                <span class="font-medium text-afup-800">confirmez-la dans l'email que vous allez recevoir</span>.
+            </p>
+
+            <p class="text-sm text-neutre-400 max-w-xl">
+                La newsletter est envoyée à un rythme trimestriel, en janvier, mars, juillet et septembre.
+                Pensez à vérifier vos spams si vous ne recevez rien.
+            </p>
         {% else %}
-            <p>Une erreur est survenue lors de l'enregistrement de votre adresse. Vous pouvez essayer un peu plus tard
-                ou nous avertir à bonjour [at] afup.org</p>
+            <span class="flex items-center justify-center rounded-full bg-erreur-500/10 text-erreur-700 p-6">
+                <twig:ux:icon name="mdi:alert-outline" class="size-12" />
+            </span>
+
+            <h1 class="font-titre font-normal text-4xl sm:text-5xl text-afup-800">Inscription impossible</h1>
+
+            <p class="text-xl sm:text-2xl max-w-2xl text-neutre-700">
+                Une erreur est survenue lors de l'enregistrement de votre adresse.
+            </p>
+
+            <p class="text-sm text-neutre-400 max-w-xl">
+                Vous pouvez réessayer un peu plus tard ou nous prévenir à
+                <a href="mailto:bonjour@afup.org" class="text-afup-500 underline hover:no-underline">bonjour (at) afup.org</a>.
+            </p>
         {% endif %}
-    </article>
+
+        <twig:Button as="a" variant="primary" href="{{ path('home') }}" class="px-8 py-3 text-base mt-4">
+            Retour à l'accueil
+        </twig:Button>
+    </div>
 {% endblock %}
