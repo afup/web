@@ -15,6 +15,7 @@ use AppBundle\Email\Mailer\Message;
 use AppBundle\MembershipFee\Entity\Cotisation;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UserService
 {
@@ -64,10 +65,15 @@ BODY
      */
     public function resetPasswordForEmail($email): void
     {
-        $user = $this->userRepository->loadUserByEmailOrAlternateEmail($email);
-        if (null !== $user) {
-            $this->resetPassword($user);
+        try {
+            $user = $this->userRepository->loadUserByEmailOrAlternateEmail($email);
+        } catch (UserNotFoundException) {
+            // Email inconnu : on s'arrête sans le signaler, pour ne pas révéler quels
+            // emails correspondent à un compte.
+            return;
         }
+
+        $this->resetPassword($user);
     }
 
     public function sendWelcomeEmail(User $user): bool
