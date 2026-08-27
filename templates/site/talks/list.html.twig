@@ -32,7 +32,7 @@
 
     <div class="container mx-auto px-4 py-6 sm:px-28 sm:py-10 flex flex-col gap-5">
         <h1 class="font-titre text-afup-800 text-2xl sm:text-4xl">{{ title }}</h1>
-        <p class="font-sans font-normal text-base text-neutre-700">
+        <p class="text-neutre-700">
             Retrouvez ici toutes les conférences passées de l'AFUP. Pour s'informer sur nos prochains
             évènements, rendez-vous sur <a href="https://event.afup.org" class="text-afup-500 underline hover:no-underline">event.afup.org</a>.
         </p>
@@ -69,10 +69,10 @@
     </div>
 
     <div class="container mx-auto px-4 py-6 sm:px-28 sm:py-10 flex flex-col gap-5">
-        <h2 class="font-sans font-semibold text-base text-afup-800 border-b border-neutre-300 pb-2">
+        <h2 class="font-semibold text-afup-800 border-b border-neutre-300 pb-2">
             Les vidéos captées par nos antennes
         </h2>
-        <p class="font-sans font-normal text-base text-neutre-700">
+        <p class="text-neutre-700">
             Certaines de nos antennes locales filment les conférences qu'elles organisent : leurs captations
             sont ensuite mises en ligne sur leur chaîne YouTube. Découvrez toutes leurs vidéos et pensez à
             vous abonner pour ne rien manquer de leurs futures publications !
@@ -85,7 +85,7 @@
                         <img src="{{ antenne.logoUrl }}" alt="" class="w-full h-full object-contain p-1.5" />
                     </div>
                     {# min-w-0 : sans lui le titre refuse de se compresser et pousse le bouton hors de la carte #}
-                    <h3 class="font-titre font-bold text-base text-afup-800 grow min-w-0">{{ antenne.label }}</h3>
+                    <h3 class="font-titre font-bold text-afup-800 grow min-w-0">{{ antenne.label }}</h3>
                     <twig:Button variant="secondary" as="a" href="{{ antenne.socials.youtube }}"
                                  class="flex items-center gap-2 shrink-0"
                                  aria-label="Chaîne YouTube de l'antenne {{ antenne.label }}">

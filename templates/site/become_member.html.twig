@@ -20,8 +20,8 @@
        Faute de photo d'illustration en dépôt, le voile bleu nuit est posé seul. #}
     <div class="bg-gradient-to-br from-afup-900 via-afup-800 to-afup-700">
         <div class="container mx-auto px-4 py-12 sm:px-28 sm:py-16 flex flex-col gap-4">
-            <h1 class="font-titre font-normal text-3xl sm:text-4xl leading-tight text-white">Devenir membre de l'AFUP</h1>
-            <p class="font-sans font-normal text-base text-white/90 max-w-3xl">
+            <h1 class="font-titre text-3xl sm:text-4xl leading-tight text-white">Devenir membre de l'AFUP</h1>
+            <p class="text-white/90 max-w-3xl">
                 Adhérer à l'AFUP, c'est rejoindre la communauté PHP francophone et soutenir concrètement
                 les activités que l'association mène tout au long de l'année. Deux formules existent :
                 une adhésion particulier et une adhésion entreprise.
@@ -34,7 +34,7 @@
             <twig:SectionTitle>Pourquoi adhérer ?</twig:SectionTitle>
 
             <div class="relative isolate flex flex-col gap-8 p-8 sm:p-12 bg-gradient-to-br from-afup-700 to-afup-300 rounded-2xl">
-                <h3 class="font-titre font-normal text-2xl sm:text-3xl leading-snug text-white">En adhérant, vous soutenez</h3>
+                <h3 class="font-titre text-2xl sm:text-3xl leading-snug text-white">En adhérant, vous soutenez</h3>
 
                 {# `columns` plutôt qu'une grille : les puces s'écoulent indépendamment, sinon une
                    puce sur plusieurs lignes ferait grandir toute la rangée et casserait le rythme. #}
@@ -56,8 +56,8 @@
                          class="size-24 shrink-0" />
                     <h3 class="font-titre font-bold text-2xl text-afup-800">Particulier</h3>
                     <p class="flex flex-col gap-1">
-                        <span class="font-titre font-normal text-3xl text-afup-800">{{ membership_fee_natural_person }} €</span>
-                        <span class="font-sans font-normal text-sm text-neutre-400">TTC / an / pour une personne</span>
+                        <span class="font-titre text-3xl text-afup-800">{{ membership_fee_natural_person }} €</span>
+                        <span class="text-sm text-neutre-400">TTC / an / pour une personne</span>
                     </p>
                     <ul class="flex flex-col gap-3">
                         <twig:Benefit>Soutien des activités de l'association</twig:Benefit>
@@ -67,7 +67,7 @@
                     </ul>
                     {# `mt-auto` sur la fine print : elle vient se coller au séparateur, juste
                        au-dessus du CTA qu'elle qualifie, et le bouton reste aligné d'une carte à l'autre. #}
-                    <p class="mt-auto font-sans font-normal text-sm text-neutre-400">
+                    <p class="mt-auto text-sm text-neutre-400">
                         L'inscription se fait directement sur la page dédiée. Elle coûte {{ membership_fee_natural_person }} euros TTC pour 12 mois.
                     </p>
                     <div class="border-t-2 border-neutre-300 pt-5">
@@ -80,8 +80,8 @@
                          class="size-24 shrink-0" />
                     <h3 class="font-titre font-bold text-2xl text-afup-800">Entreprise</h3>
                     <p class="flex flex-col gap-1">
-                        <span class="font-titre font-normal text-3xl text-afup-800">{{ membership_fee_legal_entity }} €</span>
-                        <span class="font-sans font-normal text-sm text-neutre-400">HT / an / par tranche de 3 employé(e)s</span>
+                        <span class="font-titre text-3xl text-afup-800">{{ membership_fee_legal_entity }} €</span>
+                        <span class="text-sm text-neutre-400">HT / an / par tranche de 3 employé(e)s</span>
                     </p>
                     <ul class="flex flex-col gap-3">
                         <twig:Benefit>Plus grand soutien des activités de l'association</twig:Benefit>
@@ -89,7 +89,7 @@
                         <twig:Benefit>Possibilité de changer les personnes associées à la cotisation à n'importe quel moment</twig:Benefit>
                         <twig:Benefit>Une page dédiée à votre entreprise dans notre annuaire des sociétés adhérentes sur le site de l'AFUP afin de montrer votre engagement et promouvoir vos offres</twig:Benefit>
                     </ul>
-                    <p class="mt-auto font-sans font-normal text-sm text-neutre-400">
+                    <p class="mt-auto text-sm text-neutre-400">
                         Une préinscription est à réaliser en suivant le lien ci-dessus. L'équipe trésorerie vous recontactera pour finaliser ensuite l'inscription.
                         Le montant de la cotisation est de {{ membership_fee_legal_entity }} euros HT par tranche de 3 employés pour 12 mois.
                     </p>
@@ -106,16 +106,16 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <twig:Card class="flex flex-col gap-2">
-                    <h3 class="font-sans font-semibold text-base text-afup-800">Modes de paiement</h3>
-                    <p class="font-sans font-normal text-sm text-neutre-700">
+                    <h3 class="font-semibold text-afup-800">Modes de paiement</h3>
+                    <p class="text-sm text-neutre-700">
                         Le paiement d'une adhésion professionnelle peut se faire soit par carte bancaire, soit par virement.
                         Pour les particuliers, seul le paiement par carte bancaire est disponible.
                     </p>
                 </twig:Card>
 
                 <twig:Card class="flex flex-col gap-2">
-                    <h3 class="font-sans font-semibold text-base text-afup-800">Règlement intérieur et code de conduite</h3>
-                    <p class="font-sans font-normal text-sm text-neutre-700">
+                    <h3 class="font-semibold text-afup-800">Règlement intérieur et code de conduite</h3>
+                    <p class="text-sm text-neutre-700">
                         L'adhésion nécessite l'acceptation pleine et sans réserve du
                         <a href="{{ path('cms_page_display', {code: '21-reglement-interieur'}) }}" class="text-afup-500 underline hover:no-underline">règlement intérieur</a>
                         et du
@@ -124,8 +124,8 @@
                 </twig:Card>
 
                 <twig:Card class="flex flex-col gap-2">
-                    <h3 class="font-sans font-semibold text-base text-afup-800">Une question ?</h3>
-                    <p class="font-sans font-normal text-sm text-neutre-700">
+                    <h3 class="font-semibold text-afup-800">Une question ?</h3>
+                    <p class="text-sm text-neutre-700">
                         Pour toutes questions, notre
                         <a href="{{ path('cms_page_display', {code: '1012-faq'}) }}" title="FAQ" class="text-afup-500 underline hover:no-underline">FAQ</a>
                         est disponible.
