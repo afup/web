@@ -245,12 +245,11 @@ search.addWidget(
     instantsearch.widgets.pagination({
         container: '#pagination',
         cssClasses: {
-            root: 'mx-auto flex w-full justify-center',
-            list: 'flex flex-row flex-wrap gap-2 items-center',
+            root: 'flex flex-row flex-wrap justify-center gap-2 items-center',
             item: 'list-none',
             link: PAGINATION_LINK + ' bg-white text-neutre-700 border-neutre-300 hover:bg-afup-700 hover:text-white hover:border-afup-700',
             active: '[&>*]:bg-afup-100 [&>*]:text-afup-500 [&>*]:border-transparent',
-            disabled: 'invisible'
+            disabled: 'invisible max-sm:hidden'
         },
         labels: {
             first: icon(ICONS.angleDoubleLeft),
