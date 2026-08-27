@@ -1,18 +1,37 @@
-{% extends 'site/base.html.twig' %}
+{% extends 'layouts/site.html.twig' %}
 
-{% block title %}Page 404{% endblock %}
+{% block title %}Page introuvable - AFUP{% endblock %}
 
-{% set header = "" %}
-{% set footer = "" %}
+{% block metas %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
 
 {% block content %}
-    <div class="mw1400p center" id="container">
-        <div class="line" id="main">
-            <h1>Page 404 ;-(</h1>
+    <div class="container mx-auto px-5 sm:px-0 flex">
+        <div class="flex flex-col items-center justify-center text-center grow gap-6 py-16 sm:py-24">
+            <span class="flex items-center justify-center rounded-full bg-afup-100 text-afup-500 p-6">
+                <twig:ux:icon name="mingcute:compass-fill" class="size-12" />
+            </span>
 
-            <p>
-                Vous pouvez <a href="{{ path('home') }}">retourner à l'accueil du site</a>.
+            <p class="font-titre text-5xl sm:text-8xl text-afup-700" aria-hidden="true">404</p>
+
+            <h1 class="text-xl sm:text-2xl max-w-2xl text-neutre-700">
+                Cette page n'existe pas, ou n'existe plus.
+            </h1>
+
+            <p class="text-sm text-neutre-400 max-w-xl">
+                L'adresse comporte peut-être une faute de frappe, ou la page a été déplacée depuis le lien
+                que vous avez suivi.
             </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 mt-4">
+                <twig:Button as="a" variant="primary" href="{{ path('home') }}" class="px-8 py-3 text-base">
+                    Retour à l'accueil
+                </twig:Button>
+                <twig:Button as="a" variant="secondary" href="{{ path('sitemap') }}" class="px-8 py-3 text-base">
+                    Consulter le plan du site
+                </twig:Button>
+            </div>
         </div>
     </div>
 {% endblock %}
