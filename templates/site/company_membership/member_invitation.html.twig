@@ -1,31 +1,60 @@
-{% extends 'site/base.html.twig' %}
-{% block inner_content %}
-    <article id="company-membership-invitation">
-        <h1>Adhésion professionnelle à l'AFUP</h1>
-        <p>
-            Votre entreprise {{ company.companyName }} est devenue membre de l’AFUP.
-            Elle vous invite à profiter des avantages liés à cette adhésion.
-            Pour cela, créez votre compte personnel affilié au compte de votre entreprise.
+{% extends 'layouts/site.html.twig' %}
+{% form_theme form 'form_themes/tailwind.html.twig' %}
+
+{% block title %}Rejoindre le compte membre de {{ company.companyName }} - AFUP{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto flex flex-col items-center px-4 my-5 gap-4">
+        <h1 class="font-titre text-5xl text-afup-800 text-center">{{ "Adhésion professionnelle à l'AFUP"|trans }}</h1>
+        <p class="text-neutre-700 text-center max-w-2xl">
+            Votre entreprise <span class="font-semibold text-afup-800">{{ company.companyName }}</span> est devenue membre de l'AFUP
+            et vous invite à profiter des avantages liés à cette adhésion.
+            Pour cela, créez votre compte personnel, rattaché au compte de votre entreprise.
         </p>
-        {{ form_start(form) }}
-            <fieldset>
-                <legend>Compte personnel</legend>
-                <div>
-                    {{ form_row(form.firstName) }}
+
+        {{ form_start(form, {attr: {class: 'self-stretch'}}) }}
+
+        <twig:Card class="flex flex-col gap-8 px-6 py-12 sm:px-28 sm:py-12 my-5 sm:mb-10">
+            <twig:Card:Title type="form" class="text-2xl mb-0">{{ 'Créer votre compte personnel'|trans }}</twig:Card:Title>
+            {{ form_errors(form) }}
+
+            <twig:Card:Section title="{{ 'Informations personnelles'|trans }}">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
                     {{ form_row(form.lastName) }}
-                    {{ form_row(form.email) }}
+                    {{ form_row(form.firstName) }}
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
                     {{ form_row(form.username) }}
-                    {{ form_row(form.password) }}
-                    {{ form_row(form.address) }}
-                    {{ form_row(form.zipcode) }}
-                    {{ form_row(form.city) }}
+                    {{ form_row(form.email) }}
                     {{ form_row(form.phone) }}
                 </div>
-            </fieldset>
+            </twig:Card:Section>
 
-        {{ form_widget(form) }}
+            <twig:Card:Section title="{{ 'Adresse'|trans }}">
+                {{ form_row(form.address) }}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+                    {{ form_row(form.zipcode) }}
+                    {{ form_row(form.city) }}
+                </div>
+            </twig:Card:Section>
+
+            <twig:Card:Section title="{{ 'Sécurité'|trans }}">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+                    {{ form_row(form.password.first) }}
+                    {{ form_row(form.password.second) }}
+                </div>
+            </twig:Card:Section>
+
+            <div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 border-t-2 border-neutre-300 pt-5">
+                <p class="text-sm text-neutre-700">
+                    Si vous rencontrez le moindre problème, n'hésitez pas à contacter l'AFUP par email&nbsp;:
+                    <a href="mailto:bonjour@afup.org" class="text-afup-500 underline hover:no-underline">bonjour (at) afup.org</a>.
+                </p>
+                {{ form_widget(form.save) }}
+            </div>
+
+        </twig:Card>
+
         {{ form_end(form) }}
-
-        <p>Si vous rencontrez le moindre problème, n'hésitez pas à contacter l'AFUP par email: bonjour (at) afup.org.</p>
-    </article>
+    </div>
 {% endblock %}
