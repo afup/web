@@ -1,16 +1,14 @@
-{% extends 'admin/association/membership/_base.html.twig' %}
+{% extends 'layouts/site.html.twig' %}
 
 {% block submenu %}
-    {% include 'site/_members_menu.html.twig' with {
-        current: "compagnies"
-    } only %}
+    {# `matches` : la fiche d'une entreprise garde cet onglet actif. #}
+    {% include 'site/partials/_submenu.html.twig' with { items: [
+        { label: 'Entreprises', route: 'company_public_profile_list',
+          matches: ['company_public_profile_list', 'company_public_profile'] },
+    ] } only %}
 {% endblock %}
 
-{% block page_title %}{{ company_member.companyName }}{% endblock %}
-
 {% block title %}{{ company_member.companyName }} est adhérente à l'AFUP{% endblock %}
-
-{% block body_css %}migrated-page{% endblock %}
 
 {% set logo_url = path('company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) %}
 
@@ -23,87 +21,87 @@
     <meta name="twitter:image" content="{{ app.request.getSchemeAndHttpHost() }}{{ logo_url }}" />
 {% endblock %}
 
-{% block page_content %}
+{% block content %}
 
-    <h2>L'entreprise</h2>
-    <div class="container">
-        <div class="col-md-4">
-            <img src="{{ logo_url }}" alt="" />
-        </div>
-        <div class="col-md-8">
-            {{ company_member.description|nl2br }}
-        </div>
-    </div>
+    {# Reprend la hiérarchie du legacy : la page de recrutement prime, puis le contact, puis le site. #}
+    {% set cta = company_member.careersPageUrl ? 'careers' : (company_member.contactPageUrl ? 'contact' : 'website') %}
 
-    <div class="container" style="margin-top: 30px;">
-        <div class="col-md-8">
-            <div class="txtcenter">
-                {% if company_member.websiteUrl %}
-                    <a class="button-inverted {% if not company_member.careersPageUrl and not company_member.contactPageUrl %}button--call-to-action{% endif %}"
-                       href="{{ company_member.websiteUrl }}"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                    >Site web</a>
-                {% endif %}
+    <div class="container mx-auto flex flex-col px-4 py-6 gap-6 sm:px-28 sm:py-10 sm:gap-10">
 
-                {% if company_member.careersPageUrl %}
-                    <a class="button-inverted button--call-to-action"
-                       href="{{ company_member.careersPageUrl }}"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                    >Page de recrutement</a>
-                {% endif %}
-
-                {% if company_member.contactPageUrl %}
-                <a class="button-inverted {% if not company_member.careersPageUrl %}button--call-to-action{% endif %}"
-                   href="{{ company_member.contactPageUrl }}"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                >Page de contact</a>
-                {% endif %}
+        <div class="flex flex-col sm:flex-row items-center gap-6">
+            <div class="size-32 shrink-0 flex items-center justify-center p-4 border-2 border-neutre-300 rounded-2xl">
+                <img src="{{ logo_url }}" alt="" class="max-h-full max-w-full object-contain" />
             </div>
+            <h1 class="font-titre text-afup-800 text-2xl sm:text-4xl text-center sm:text-left">{{ company_member.companyName }}</h1>
+        </div>
 
-            <h2>Présente dans les antennes</h2>
-            <div class="container">
-                {% for antenne in antennes %}
-                    <div class="col-md-3 col-sm-12 member-badge">
-                        <img src="{{ antenne.logoUrl }}" alt="" /><br />
-                        {{ antenne.label }}
-                    </div>
-                {% else %}
-                    <div class="col-md-12">
-                        {{ company_member.companyName }} n'a pas renseigné d'antenne à proximité.
-                    </div>
-                {% endfor %}
-            </div>
+        <section class="flex flex-col gap-4">
+            <twig:SectionTitle>L'entreprise</twig:SectionTitle>
+            <p class="text-neutre-700">{{ company_member.description|nl2br }}</p>
 
+            {% if company_member.websiteUrl or company_member.careersPageUrl or company_member.contactPageUrl or company_member.cleanedTwitterHandle %}
+                <div class="flex flex-col sm:flex-row flex-wrap gap-3">
+                    {% if company_member.websiteUrl %}
+                        <twig:Button as="a" variant="{{ cta == 'website' ? 'primary' : 'secondary' }}"
+                                     href="{{ company_member.websiteUrl }}"
+                                     target="_blank" rel="noopener noreferrer">Site web</twig:Button>
+                    {% endif %}
 
-            {% if badges|length > 0 %}
-            <h2>Badges</h2>
+                    {% if company_member.careersPageUrl %}
+                        <twig:Button as="a" variant="{{ cta == 'careers' ? 'primary' : 'secondary' }}"
+                                     href="{{ company_member.careersPageUrl }}"
+                                     target="_blank" rel="noopener noreferrer">Page de recrutement</twig:Button>
+                    {% endif %}
 
-            <div class="container">
-                {% for badge in badges %}
-                <div class="col-md-3 col-sm-12 member-badge">
-                    <img src="/images/badges/{{ badge }}.png" alt="Badge {{badge }}">
+                    {% if company_member.contactPageUrl %}
+                        <twig:Button as="a" variant="{{ cta == 'contact' ? 'primary' : 'secondary' }}"
+                                     href="{{ company_member.contactPageUrl }}"
+                                     target="_blank" rel="noopener noreferrer">Page de contact</twig:Button>
+                    {% endif %}
+
+                    {% if company_member.cleanedTwitterHandle %}
+                        <twig:Button as="a" variant="secondary"
+                                     class="flex gap-2"
+                                     href="https://twitter.com/{{ company_member.cleanedTwitterHandle }}"
+                                     target="_blank" rel="noopener noreferrer">
+                            <twig:ux:icon name="fa:twitter" class="size-5" />
+                            @{{ company_member.cleanedTwitterHandle }}
+                        </twig:Button>
+                    {% endif %}
                 </div>
-                {% endfor %}
-            </div>
             {% endif %}
+        </section>
 
-        </div>
-        {% if company_member.cleanedTwitterHandle %}
-        <div class="col-md-4">
-            <a class="twitter-timeline button-inverted button--call-to-action"
-               data-lang="fr"
-               data-chrome="noheader,nofooter,noborders"
-               data-height="800"
-               data-dnt="true"
-               data-theme="light"
-               href="https://twitter.com/{{ company_member.cleanedTwitterHandle }}"
-            ><i class="fa fa-twitter"></i> Voir @{{ company_member.cleanedTwitterHandle }}</a>
-            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-        </div>
+        <section class="flex flex-col gap-4">
+            <twig:SectionTitle>Présente dans les antennes</twig:SectionTitle>
+            {% if antennes is not empty %}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+                    {% for antenne in antennes %}
+                        <twig:Card class="flex items-center gap-4">
+                            <div class="bg-neutre-200 rounded-2xl size-12 shrink-0 flex items-center justify-center">
+                                <img src="{{ antenne.logoUrl }}" alt="" class="w-full h-full object-contain p-1.5" />
+                            </div>
+                            {# min-w-0 : sans lui un nom long refuse de se compresser et déborde de la carte. #}
+                            <h3 class="font-titre font-bold text-afup-800 grow min-w-0">{{ antenne.label }}</h3>
+                        </twig:Card>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-neutre-700">{{ company_member.companyName }} n'a pas renseigné d'antenne à proximité.</p>
+            {% endif %}
+        </section>
+
+        {% if badges|length > 0 %}
+            <section class="flex flex-col gap-4">
+                <twig:SectionTitle>Badges</twig:SectionTitle>
+                <div class="flex flex-wrap gap-4">
+                    {% for badge in badges %}
+                        <img src="/images/badges/{{ badge }}.png" alt="Badge {{ badge }}" class="size-24 object-contain" />
+                    {% endfor %}
+                </div>
+            </section>
         {% endif %}
+
     </div>
 
 {% endblock %}

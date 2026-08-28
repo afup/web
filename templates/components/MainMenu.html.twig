@@ -8,14 +8,19 @@
             {% block account %}{% endblock %}
         </div>
     </div>
-    {% if this.entries.sub|length > 0 %}
+    {# Une page sans feuille CMS peut fournir son propre sous-menu via le bloc `sub`. #}
+    {% set custom_sub %}{% block sub %}{% endblock %}{% endset %}
+
+    {% if custom_sub|trim is not empty or this.entries.sub|length > 0 %}
         <div class="bg-white border-b-2 border-neutre-300">
             <div class="container mx-auto flex flex-col sm:flex-row gap-2">
-                {% for entry in this.entries.sub %}
-                    <div class="px-4 pt-3">
-                        <a href="{{ entry.feuille.lien }}" class="block pb-2 text-gray-800 border-b-3 hover:border-neutre-400 uppercase text-sm {{ entry.is_active ? 'border-black' : 'border-transparent' }}">{{ entry.feuille.nom }}</a>
-                    </div>
-                {% endfor %}
+                {% if custom_sub|trim is not empty %}
+                    {{ custom_sub }}
+                {% else %}
+                    {% for entry in this.entries.sub %}
+                        <twig:MainMenu:SubItem href="{{ entry.feuille.lien }}" :variant="entry.is_active ? 'active' : null">{{ entry.feuille.nom }}</twig:MainMenu:SubItem>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
     {% endif %}
