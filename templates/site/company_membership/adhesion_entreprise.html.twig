@@ -5,8 +5,8 @@
 
 {% block content %}
     <div class="container mx-auto flex flex-col items-center px-4 my-5 gap-4">
-        <h1 class="font-titre font-normal text-5xl text-afup-800 text-center">{{ "Adhésion entreprise à l'AFUP"|trans }}</h1>
-        <p class="font-sans font-normal text-base text-neutre-700 text-center max-w-2xl">
+        <h1 class="font-titre text-5xl text-afup-800 text-center">{{ "Adhésion entreprise à l'AFUP"|trans }}</h1>
+        <p class="text-neutre-700 text-center max-w-2xl">
             {{ 'Ce formulaire est réservé aux entreprises. Vous êtes un particulier ou un indépendant ?'|trans }}
             <a href="{{ path('member_membership') }}" class="text-afup-500 underline hover:no-underline">{{ "Retrouvez le formulaire d'adhésion dédié"|trans }}</a>
         </p>
@@ -39,7 +39,7 @@
             </twig:Card:Section>
 
             <twig:Card:Section title="{{ 'Membres rattachés'|trans }}">
-                <p class="font-sans font-normal text-sm text-neutre-700">{{ 'Chaque membre va recevoir une invitation lui permettant de créer son compte, rattaché à votre compte entreprise.'|trans }}</p>
+                <p class="text-sm text-neutre-700">{{ 'Chaque membre va recevoir une invitation lui permettant de créer son compte, rattaché à votre compte entreprise.'|trans }}</p>
                 {{ form_row(form.maxMembers) }}
                 <div id="company_member_invitations" class="flex flex-col divide-y divide-neutre-300" data-prototype="{{ form_widget(form.invitations.vars.prototype)|e('html_attr') }}">
                     {% for invitation in form.invitations %}
@@ -57,41 +57,41 @@
             </twig:Card:Section>
 
             <div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 border-t-2 border-neutre-300 pt-5">
-                <p class="font-sans font-normal text-sm text-neutre-700">Si vous rencontrez le moindre problème, n'hésitez pas à contacter l'AFUP par email: bonjour (at) afup.org.</p>
-                {{ form_widget(form.save, {attr: { "class": "flex flex-row justify-center items-center py-3 px-8 gap-2 bg-ruby-500 rounded-lg font-sans font-semibold text-base text-white text-center"}}) }}
+                <p class="text-sm text-neutre-700">Si vous rencontrez le moindre problème, n'hésitez pas à contacter l'AFUP par email: bonjour (at) afup.org.</p>
+                {{ form_widget(form.save, {attr: { "class": "flex flex-row justify-center items-center py-3 px-8 gap-2 bg-ruby-500 rounded-lg font-semibold text-white text-center"}}) }}
             </div>
 
         </twig:Card>
         {{ form_end(form) }}
 
         <div class="w-full flex flex-col gap-5 my-5">
-            <h2 class="font-titre font-normal text-3xl text-afup-800 text-center">{{ 'Questions fréquentes'|trans }}</h2>
+            <h2 class="font-titre text-3xl text-afup-800 text-center">{{ 'Questions fréquentes'|trans }}</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <twig:Card class="flex flex-col gap-2">
-                    <h3 class="font-sans font-semibold text-base text-afup-800">{{ "Pourquoi adhérer à l'AFUP ?"|trans }}</h3>
-                    <p class="font-sans font-normal text-sm text-neutre-700">
+                    <h3 class="font-semibold text-afup-800">{{ "Pourquoi adhérer à l'AFUP ?"|trans }}</h3>
+                    <p class="text-sm text-neutre-700">
                         {{ "Adhérer à l'AFUP pour une entreprise du monde PHP, c'est soutenir la communauté du langage sur lequel reposent ses outils, assurant une dynamique positive à l'écosystème. C'est également la possibilité pour vos devs de bénéficier des mailing lists réservées aux membres et faire partie d'un réseau de professionnels."|trans }}
                     </p>
                 </twig:Card>
 
                 <twig:Card class="flex flex-col gap-2">
-                    <h3 class="font-sans font-semibold text-base text-afup-800">{{ "Comment régler l'adhésion ?"|trans }}</h3>
-                    <p class="font-sans font-normal text-sm text-neutre-700">
+                    <h3 class="font-semibold text-afup-800">{{ "Comment régler l'adhésion ?"|trans }}</h3>
+                    <p class="text-sm text-neutre-700">
                         {{ "L'adhésion peut être réglée par carte bancaire, virement ou chèque. Seule l'adhésion par carte bancaire permet une adhésion immédiate. Dans le cas des autres modes de paiement, l'adhésion est activée lors de la réception du paiement."|trans }}
                     </p>
                 </twig:Card>
 
                 <twig:Card class="flex flex-col gap-2">
-                    <h3 class="font-sans font-semibold text-base text-afup-800">{{ 'Comment gérer les membres rattachés à mon compte ?'|trans }}</h3>
-                    <p class="font-sans font-normal text-sm text-neutre-700">
+                    <h3 class="font-semibold text-afup-800">{{ 'Comment gérer les membres rattachés à mon compte ?'|trans }}</h3>
+                    <p class="text-sm text-neutre-700">
                         {{ 'Vous devez toujours avoir au moins un membre ayant les droits de gestion sur votre compte. Ce dernier pourra gérer les membres rattachés, effectuer le règlement des adhésions et collecter les factures.'|trans }}
                     </p>
                 </twig:Card>
 
                 <twig:Card class="flex flex-col gap-2">
-                    <h3 class="font-sans font-semibold text-base text-afup-800">{{ 'Comment est faite la reconduction ?'|trans }}</h3>
-                    <p class="font-sans font-normal text-sm text-neutre-700">
+                    <h3 class="font-semibold text-afup-800">{{ 'Comment est faite la reconduction ?'|trans }}</h3>
+                    <p class="text-sm text-neutre-700">
                         {{ "L'adhésion à l'AFUP est réalisée pour un an à partir de l'enregistrement de votre cotisation. Un mois avant l'échéance, nous vous avertirons que votre adhésion arrive à expiration. Vous pourrez alors choisir de régler à nouveau votre adhésion ou la laisser expirer. 15 jours après expiration de votre adhésion, si celle-ci n'a pas été renouvelée, les comptes de vos membres seront désactivés, ils perdront alors tous les avantages de votre adhésion."|trans }}
                     </p>
                 </twig:Card>

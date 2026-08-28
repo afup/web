@@ -22,11 +22,11 @@
                  class="size-24 sm:size-28 object-contain" />
 
             <div class="flex flex-col items-center gap-4">
-                <h1 class="font-titre font-normal text-3xl sm:text-4xl leading-tight text-white">Super-apéro PHP</h1>
-                <p class="font-sans font-normal text-lg text-white/90">Des apéros PHP le même jour dans toutes les antennes !</p>
+                <h1 class="font-titre text-3xl sm:text-4xl leading-tight text-white">Super-apéro PHP</h1>
+                <p class="text-lg text-white/90">Des apéros PHP le même jour dans toutes les antennes !</p>
             </div>
 
-            <p class="font-sans font-normal text-base text-white/90 max-w-3xl">
+            <p class="text-white/90 max-w-3xl">
                 Bloquez votre soirée du
                 <time datetime="{{ superApero.date|date('Y-m-d') }}" class="font-semibold text-white">{{ superApero.date|format_date(pattern='EEEE d MMMM', locale='fr') }}</time>
                 et rendez-vous dans votre antenne locale pour une soirée de conférences et d'échanges, où toute la
@@ -52,7 +52,7 @@
                         </div>
 
                         {% if meetup.description %}
-                            <div class="prose prose-sm max-w-none font-sans text-neutre-700">{{ meetup.description|raw }}</div>
+                            <div class="prose prose-sm max-w-none text-neutre-700">{{ meetup.description|raw }}</div>
                         {% endif %}
 
                         {# Sans groupe Meetup l'URL d'inscription serait tronquée : on n'affiche

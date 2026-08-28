@@ -5,7 +5,7 @@
 
 {% block content %}
     <div class="container mx-auto flex flex-col items-center px-4 my-5 gap-4">
-        <h1 class="font-titre font-normal text-5xl text-afup-800 text-center">{{ "Formulaire d'inscription à l'AFUP"|trans }}</h1>
+        <h1 class="font-titre text-5xl text-afup-800 text-center">{{ "Formulaire d'inscription à l'AFUP"|trans }}</h1>
 
         {{ form_start(form, {attr: {class: 'self-stretch'}}) }}
 
@@ -46,8 +46,8 @@
 
 
             <div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 border-t-2 border-neutre-300 pt-5">
-                <p class="font-sans font-normal text-sm text-neutre-700">{{ 'Vous avez un compte ?'|trans }} <a href="{{ path('app_login') }}" class="text-afup-500 underline hover:no-underline">{{ 'Se connecter'|trans }}</a></p>
-                {{ form_widget(form.userCommonInfo.save, {attr: { "class": "flex flex-row justify-center items-center py-3 px-8 gap-2 bg-ruby-500 rounded-lg font-sans font-semibold text-base text-white text-center"}}) }}
+                <p class="text-sm text-neutre-700">{{ 'Vous avez un compte ?'|trans }} <a href="{{ path('app_login') }}" class="text-afup-500 underline hover:no-underline">{{ 'Se connecter'|trans }}</a></p>
+                {{ form_widget(form.userCommonInfo.save, {attr: { "class": "flex flex-row justify-center items-center py-3 px-8 gap-2 bg-ruby-500 rounded-lg font-semibold text-white text-center"}}) }}
             </div>
 
         </twig:Card>

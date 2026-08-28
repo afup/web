@@ -1,6 +1,6 @@
 {# @block content Le libellé de la section #}
 {%- set style = html_cva(
-    base: "font-sans font-semibold text-base text-afup-800 border-b border-neutre-300 pb-2 [&_a]:hover:text-afup-500 [&_span]:font-normal [&_span]:text-sm [&_span]:text-neutre-400",
+    base: "font-semibold text-base text-afup-800 border-b border-neutre-300 pb-2 [&_a]:hover:text-afup-500 [&_span]:font-normal [&_span]:text-sm [&_span]:text-neutre-400",
 ) -%}
 <h2 class="{{ style.apply({}, attributes.render('class'))|tailwind_merge }}" {{ attributes }}>
     {%- block content %}{% endblock -%}

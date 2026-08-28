@@ -37,11 +37,11 @@
         <div class="bg-afup-900">
             <div class="container mx-auto px-4 py-10 sm:px-28 sm:py-14 flex flex-col gap-8">
                 <div class="flex flex-col gap-2">
-                    <p class="font-sans text-sm text-white/70">
+                    <p class="text-sm text-white/70">
                         <a href="{{ event_url }}" class="underline hover:no-underline">{{ event.title }}</a> · {{ event_date|trim }}
                     </p>
-                    <h1 class="font-titre font-normal text-2xl sm:text-4xl leading-tight text-white">{{ talk.title }}</h1>
-                    <p class="font-sans text-base text-white/90">{{ speakers_label }}</p>
+                    <h1 class="font-titre text-2xl sm:text-4xl leading-tight text-white">{{ talk.title }}</h1>
+                    <p class="text-white/90">{{ speakers_label }}</p>
                 </div>
 
                 <div class="w-full aspect-video rounded-2xl overflow-hidden bg-black">
@@ -58,11 +58,11 @@
         </div>
     {% else %}
         <div class="container mx-auto px-4 py-6 sm:px-28 sm:py-10 flex flex-col gap-2">
-            <p class="font-sans text-sm text-neutre-400">
+            <p class="text-sm text-neutre-400">
                 <a href="{{ event_url }}" class="text-afup-500 underline hover:no-underline">{{ event.title }}</a> · {{ event_date|trim }}
             </p>
-            <h1 class="font-titre font-normal text-2xl sm:text-4xl leading-tight text-afup-800">{{ talk.title }}</h1>
-            <p class="font-sans text-base text-neutre-700">{{ speakers_label }}</p>
+            <h1 class="font-titre text-2xl sm:text-4xl leading-tight text-afup-800">{{ talk.title }}</h1>
+            <p class="text-neutre-700">{{ speakers_label }}</p>
         </div>
     {% endif %}
 
@@ -102,7 +102,7 @@
                                     </a>
                                 {% endif %}
                             </div>
-                            <p class="font-sans font-normal text-base text-neutre-700">{{ speaker.biography }}</p>
+                            <p class="text-neutre-700">{{ speaker.biography }}</p>
                             <a href="{{ url('talks_list', {"fR": { "speakers.label" : [ speaker.label ]}}) }}"
                                class="text-sm text-afup-500 underline hover:no-underline">Voir tous ses talks</a>
                         </div>
@@ -115,7 +115,7 @@
                     <twig:SectionTitle>Commentaires</twig:SectionTitle>
                     {% for comment in comments|filter(comment => comment.comment|length) %}
                         <twig:Card class="flex flex-col gap-3">
-                            <p class="font-sans font-normal text-base text-neutre-700">{{ comment.comment }}</p>
+                            <p class="text-neutre-700">{{ comment.comment }}</p>
                             <div class="flex flex-wrap items-center gap-3 border-t border-neutre-300 pt-3">
                                 <div class="flex items-center gap-0.5" aria-label="Note : {{ comment.rating }} sur 5">
                                     {% for i in 1..5 %}
@@ -123,7 +123,7 @@
                                                       class="size-4 {{ comment.rating >= i ? 'text-afup-300' : 'text-neutre-300' }}" />
                                     {% endfor %}
                                 </div>
-                                <p class="font-sans text-sm text-neutre-400">
+                                <p class="text-sm text-neutre-400">
                                     {{ comment.user_display_name }}, le {{ comment.created_date|date('d/m/Y') }}
                                 </p>
                             </div>
@@ -138,7 +138,7 @@
                     <div class="transcript flex flex-col gap-2 border-l-4 border-afup-300 pl-4">
                         {% for cue in transcript %}
                             <p data-cue-start="{{ cue.start }}"
-                               class="font-sans font-normal text-base text-neutre-700 {% if talk.hasYoutubeId %}cursor-pointer hover:text-afup-500{% endif %}">{{ cue.text }}</p>
+                               class="text-neutre-700 {% if talk.hasYoutubeId %}cursor-pointer hover:text-afup-500{% endif %}">{{ cue.text }}</p>
                         {% endfor %}
                     </div>
                 </section>
@@ -179,18 +179,18 @@
 
                 <twig:Card:Section title="Langue">
                     <ul class="flex flex-col gap-2">
-                        <li class="flex items-center gap-2 font-sans text-sm text-neutre-700">
+                        <li class="flex items-center gap-2 text-sm text-neutre-700">
                             <twig:ux:icon name="mingcute:headphone-fill" class="size-4 shrink-0 text-afup-500" />
                             Audio : {{ talk.getLanguageLabel|lower }}
                         </li>
                         {% if talk.getVideoHasFrSubtitles %}
-                            <li class="flex items-center gap-2 font-sans text-sm text-neutre-700">
+                            <li class="flex items-center gap-2 text-sm text-neutre-700">
                                 <twig:ux:icon name="mingcute:subtitle-fill" class="size-4 shrink-0 text-afup-500" />
                                 Sous-titres : français
                             </li>
                         {% endif %}
                         {% if talk.getVideoHasEnSubtitles %}
-                            <li class="flex items-center gap-2 font-sans text-sm text-neutre-700">
+                            <li class="flex items-center gap-2 text-sm text-neutre-700">
                                 <twig:ux:icon name="mingcute:subtitle-fill" class="size-4 shrink-0 text-afup-500" />
                                 Sous-titres : anglais
                             </li>
