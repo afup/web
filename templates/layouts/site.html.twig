@@ -14,6 +14,9 @@
         {% endif %}
     {% endset %}
 
+    {# Sous-menu fourni par la page, pour celles qui n'ont pas de feuille CMS associée. #}
+    {% set submenu_content %}{% block submenu %}{% endblock %}{% endset %}
+
     <header>
         <main class="bg-afup-300">
             <div class="container mx-auto py-5 px-5 sm:px-0 flex items-center">
@@ -44,6 +47,7 @@
 
         <twig:MainMenu currentFeuilleId="{{ menu_current_feuille_id }}">
             <twig:block name="account">{{ account_buttons }}</twig:block>
+            <twig:block name="sub">{{ submenu_content }}</twig:block>
         </twig:MainMenu>
     </header>
 

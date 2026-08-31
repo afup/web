@@ -1,0 +1,15 @@
+{# @prop variant 'default'|'active' Le type d'entrée #}
+{# @block content Label de l'entrée #}
+{%- props variant = 'default' -%}
+{%- set style = html_cva(
+    base: "block pb-2 text-gray-800 border-b-3 hover:border-neutre-400 uppercase text-sm",
+    variants: {
+        variant: {
+            default: 'border-transparent',
+            active: 'border-black',
+        },
+    },
+) -%}
+<div class="px-4 pt-3">
+    <a class="{{ style.apply({variant}, attributes.render('class'))|tailwind_merge }}" {{ attributes }}>{%- block content %}{% endblock -%}</a>
+</div>

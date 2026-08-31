@@ -1,52 +1,53 @@
-{% extends 'admin/association/membership/_base.html.twig' %}
+{% extends 'layouts/member_company.html.twig' %}
+{% form_theme form 'form_themes/tailwind.html.twig' %}
 
-{% block submenu %}
-    {% include 'admin/association/membership/_company_menu.html.twig' with {
-        current: "public_profile"
-    } only %}
-{% endblock %}
+{% block title %}Profil public - AFUP{% endblock %}
 
-{% block page_title %}Profil public{% endblock %}
+{% block page_body %}
 
-{% block page_content %}
+    <div class="container mx-auto flex flex-col px-4 py-6 gap-6 sm:px-28 sm:py-10 sm:gap-10">
 
-    <div class="afup-form">
+        <h1 class="font-titre text-afup-800 text-2xl sm:text-4xl">Profil public</h1>
+
         {{ form_start(form) }}
-        <fieldset>
-            <legend>Profil public :  {{ company_member.companyName }}</legend>
-            <div class="afup-form-container">
+
+        <twig:Card class="flex flex-col gap-8 px-6 py-8 sm:px-10 sm:py-10">
+            {{ form_errors(form) }}
+
+            <twig:Card:Section title="Profil public : {{ company_member.companyName }}">
                 {{ form_row(form.enabled) }}
-                {# a modifier lors de l'ajout de la page publique #}
+
                 {% if company_member.publicProfileEnabled %}
-                <div>
-                    <label></label>
-                    <a href="{{ path('company_public_profile', {id: company_member.id, slug: company_member.slug}) }}">Voir mon profil public</a>
-                </div>
+                    <p>
+                        <a href="{{ path('company_public_profile', {id: company_member.id, slug: company_member.slug}) }}"
+                           class="text-afup-500 underline hover:no-underline">Voir mon profil public</a>
+                    </p>
                 {% endif %}
+
                 {{ form_row(form.description) }}
                 {{ form_row(form.logo) }}
+
                 {% if company_member.logoUrl %}
-                    <div>
-                        <label></label>
-                        <img src="{{ path('company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) }}" style="max-width: 200px" alt="" />
-                    </div>
+                    <img src="{{ path('company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) }}"
+                         alt="" class="max-w-50 h-auto" />
                 {% endif %}
+
                 {{ form_row(form.website_url) }}
                 {{ form_row(form.careers_page_url) }}
                 {{ form_row(form.contact_page_url) }}
                 {{ form_row(form.twitter_handle) }}
                 {{ form_row(form.related_afup_offices) }}
                 {{ form_row(form.membership_reason) }}
-            </div>
-        </fieldset>
+            </twig:Card:Section>
 
-        <div class="right">
-            {{ form_widget(form.submit, {attr: {class: "button button--call-to-action"}}) }}
-        </div>
+            <div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 border-t-2 border-neutre-300 pt-5">
+                <p class="text-sm text-neutre-400">*&nbsp;Indique un champ obligatoire</p>
+                {{ form_widget(form.submit) }}
+            </div>
+        </twig:Card>
 
         {{ form_end(form) }}
-    </div>
 
-    * Indique un champ obligatoire
+    </div>
 
 {% endblock %}

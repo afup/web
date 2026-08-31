@@ -1,93 +1,76 @@
-{% extends 'admin/association/membership/_base.html.twig' %}
+{% extends 'layouts/member.html.twig' %}
+{% form_theme form 'form_themes/tailwind.html.twig' %}
 
-{% block submenu %}
-    {% include 'admin/association/membership/_member_menu.html.twig' with {
-        current: "generalmeeting"
-    } only %}
-{% endblock %}
+{% block title %}Assemblée générale - Espace membre{% endblock %}
 
-{% block page_title %}Assemblée générale{% endblock %}
+{% block page_body %}
 
-{% block page_content %}
-    {% if general_meeting_planned %}
-        {% if question %}
-        <h2>Mon vote lors de l'assemblée générale</h2>
+    <div class="container mx-auto flex flex-col px-4 py-6 gap-6 sm:px-28 sm:py-10 sm:gap-10">
 
-        <div class="afup-form">
-            <form>
-                <fieldset>
-                    <legend>{{ question.texte }}</legend>
-                    <div class="afup-form-container">
+        <h1 class="font-titre text-afup-800 text-2xl sm:text-4xl">Assemblée générale</h1>
+
+        {% if general_meeting_planned %}
+
+            {% if question %}
+                <section class="flex flex-col gap-4">
+                    <twig:SectionTitle>Mon vote lors de l'assemblée générale</twig:SectionTitle>
+
+                    <twig:Card class="flex flex-col gap-5">
+                        <p class="font-titre text-xl text-afup-800">{{ question.texte }}</p>
+
                         {% if not vote_for_current_question %}
-                        <div class="container">
-                            {% for voteValeur in vote_valeurs %}
-                                <div class="col-md-4 txtcenter general-meeeting-vote-action__button-container">
-                                    <a href="{{ url('member_general_meeting_vote', {questionId: question.id, vote: voteValeur.value}) }}" class="button button--call-to-action general-meeeting-vote-action__button">{{ voteValeur.label() }}</a>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                            <div class="txtcenter">
-                                Votre vote : <span style="font-weight: bold">{{ vote_for_current_question.getValueLabel }}</span>
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                {% for voteValeur in vote_valeurs %}
+                                    <twig:Button as="a" variant="primary" class="flex grow px-8 py-3 text-base"
+                                                 href="{{ url('member_general_meeting_vote', {questionId: question.id, vote: voteValeur.value}) }}">{{ voteValeur.label() }}</twig:Button>
+                                {% endfor %}
                             </div>
+                        {% else %}
+                            <p class="text-neutre-700">Votre vote : <span class="font-semibold text-afup-800">{{ vote_for_current_question.getValueLabel }}</span></p>
                         {% endif %}
+                    </twig:Card>
+                </section>
+            {% endif %}
+
+            {% if question_results|length > 0 %}
+                <section class="flex flex-col gap-4">
+                    <twig:SectionTitle>Résultats des votes de l'Assemblée Générale du {{ latest_date|date('d/m/Y') }}</twig:SectionTitle>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b-2 border-neutre-300 text-sm uppercase text-neutre-700">
+                                    <th class="py-2 pr-4 font-medium">Vote</th>
+                                    <th class="py-2 pr-4 font-medium text-right">Oui</th>
+                                    <th class="py-2 pr-4 font-medium text-right">Non</th>
+                                    <th class="py-2 font-medium text-right">Abstention</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for question_result in question_results %}
+                                    <tr class="border-b border-neutre-300 text-neutre-700">
+                                        <td class="py-3 pr-4">{{ question_result.question.texte }}</td>
+                                        <td class="py-3 pr-4 text-right">{{ question_result.count_oui }}</td>
+                                        <td class="py-3 pr-4 text-right">{{ question_result.count_non }}</td>
+                                        <td class="py-3 text-right">{{ question_result.count_abstention }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                </fieldset>
-            </form>
-        </div>
-        {% endif %}
+                </section>
+            {% endif %}
 
-        {% if question_results|length > 0 %}
-        <h2>Résultats des votes de l'Assemblée Générale du {{ latest_date|date('d/m/Y') }}</h2>
+            <section class="flex flex-col gap-4">
+                <twig:SectionTitle>Ma participation à l'Assemblée Générale du {{ latest_date|date('d/m/Y') }}</twig:SectionTitle>
 
-        <table class="afup-table">
-            <thead>
-                <tr>
-                    <th class="general-meeeting-vote-results__column--question">Vote</th>
-                    <th class="general-meeeting-vote-results__column--result" >Oui</th>
-                    <th class="general-meeeting-vote-results__column--result" >Non</th>
-                    <th class="general-meeeting-vote-results__column--result" >Abstention</th>
-                </tr>
-            </thead>
-
-            <tbody>
-            {% for question_result in question_results %}
-                <tr>
-                    <td class="general-meeeting-vote-results__column--question">
-                        {{ question_result.question.texte }}
-                    </td>
-                    <td class="general-meeeting-vote-results__column--result">
-                        <span class="general-meeeting-vote-results__responsive-label">Oui</span>
-                        {{ question_result.count_oui }}
-                    </td>
-                    <td class="general-meeeting-vote-results__column--result">
-                        <span class="general-meeeting-vote-results__responsive-label">Non</span>
-                        {{ question_result.count_non }}
-                    </td>
-                    <td class="general-meeeting-vote-results__column--result">
-                        <span class="general-meeeting-vote-results__responsive-label">Abstention</span>
-                        {{ question_result.count_abstention }}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        {% endif %}
-
-        <div class="afup-form">
-            {{ form_start(form) }}
-
-            <fieldset>
-                <legend>Ma participation à l'Assemblée Générale du {{ latest_date|date('d/m/Y') }}</legend>
-
-                <div class="afup-form-container">
-                    <p>
-                        <span class="obligatoire">*</span>&nbsp;Indique un champ obligatoire
-                    </p>
+                {{ form_start(form) }}
+                <twig:Card class="flex flex-col gap-5 px-6 py-8 sm:px-10 sm:py-10">
+                    <p class="text-sm text-neutre-400">*&nbsp;Indique un champ obligatoire</p>
 
                     {% for key, presenceItem in form.presence.children %}
                         <div>
-                            {{ form_label(presenceItem, null, {"label_attr": {"class": "libelle"}}) }}
+                            {{ form_label(presenceItem) }}
                             {{ form_widget(presenceItem) }}
                         </div>
                         {% if presenceItem.vars.value == '2' %}
@@ -99,11 +82,14 @@
                         {% endif %}
                     {% endfor %}
 
-                    <div class="right">
-                        {{ form_widget(form.save, {"attr": {"class": "button button--call-to-action"}}) }}
+                    <div class="flex justify-end border-t-2 border-neutre-300 pt-5">
+                        {{ form_widget(form.save) }}
                     </div>
-                    <div class="clear"></div>
-                </div>
+                </twig:Card>
+                {{ form_end(form) }}
+
+                {# Script laissé dans le corps de page et non dans `javascripts` : ce bloc est rendu
+                   dans le <head>, où #pouvoir n'existe pas encore. Ici il s'exécute après le formulaire. #}
                 <script>
                     const ABSENCE = '2';
                     const hasError = {{ form.children.id_personne_avec_pouvoir.vars.errors|length >= 1 ? 'true' : 'false' }};
@@ -127,55 +113,58 @@
                         }
                     });
                 </script>
-            </fieldset>
+            </section>
 
+            {% if personnes_avec_pouvoir %}
+                <section class="flex flex-col gap-4">
+                    <twig:SectionTitle>Vos pouvoirs</twig:SectionTitle>
+                    <p class="text-neutre-700">Ces personnes vous ont donné leur pouvoir :</p>
+                    <ul class="list-disc pl-5 text-neutre-700">
+                        {% for personne_avec_pouvoir in personnes_avec_pouvoir %}
+                            <li>{{ personne_avec_pouvoir.lastname }} {{ personne_avec_pouvoir.firstname }}</li>
+                        {% endfor %}
+                    </ul>
+                </section>
+            {% endif %}
 
-            {{ form_end(form) }}
-        </div>
+            {% if last_general_meeting_description %}
+                <div class="prose max-w-none">{{ last_general_meeting_description|markdown }}</div>
+            {% endif %}
 
-        {% if personnes_avec_pouvoir %}
-            <h2>Vos pouvoirs</h2>
-            Ces personnes vous ont donné leur pouvoir :
-            <ul>
-            {% for personne_avec_pouvoir in personnes_avec_pouvoir %}
-                <li>{{ personne_avec_pouvoir.lastname }} {{ personne_avec_pouvoir.firstname }}</li>
-            {% endfor %}
-            </ul>
         {% endif %}
 
-        {% if last_general_meeting_description %}
-            {{ last_general_meeting_description|markdown }}
-        {% endif %}
+        <section class="flex flex-col gap-4">
+            <twig:SectionTitle>Comptes rendus des assemblées générales</twig:SectionTitle>
 
-    {% endif %}
+            {% if app.user.hasRole('ROLE_MEMBER_EXPIRED') %}
+                <p class="text-neutre-700">Les comptes rendus ne sont accessibles qu'aux membres à jour de cotisation.</p>
+            {% else %}
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="border-b-2 border-neutre-300 text-sm uppercase text-neutre-700">
+                                <th class="py-2 pr-4 font-medium">Date</th>
+                                <th class="py-2 pr-4 font-medium">Nom</th>
+                                <th class="py-2 font-medium">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for report in reports %}
+                                <tr class="border-b border-neutre-300 text-neutre-700">
+                                    <td class="py-3 pr-4 whitespace-nowrap">{{ report.date|date('d/m/Y') }}</td>
+                                    <td class="py-3 pr-4">{{ report.label }}</td>
+                                    <td class="py-3">
+                                        <twig:Button as="a" variant="secondary" class="flex shrink-0"
+                                                     href="{{ path('member_general_meeting_reports_download', {filename: report.filename}) }}">Télécharger</twig:Button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </section>
 
-    <h2>Comptes rendus des assemblées générales</h2>
+    </div>
 
-    {% if app.user.hasRole('ROLE_MEMBER_EXPIRED') %}
-        Les comptes rendus ne sont accessibles qu'aux membres à jour de cotisation.
-    {% else %}
-        <table class="afup-table">
-            <tr>
-                <th>Date</th>
-                <th>Nom</th>
-                <th>Actions</th>
-            </tr>
-            {% for report in reports %}
-                <tr>
-                    <td>
-                        {{ report.date|date('d/m/Y') }}
-                    </td>
-                    <td>
-                        {{ report.label }}
-                    </td>
-                    <td>
-                        <a class="button button-inverted button__medium" href="{{ path('member_general_meeting_reports_download', {filename: report.filename}) }}">
-                            <i class="fa fa-file"></i>
-                            Télécharger
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% endif %}
 {% endblock %}

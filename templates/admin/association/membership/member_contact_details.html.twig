@@ -1,52 +1,54 @@
-{% extends 'admin/association/membership/_base.html.twig' %}
+{% extends 'layouts/member.html.twig' %}
+{% form_theme form 'form_themes/tailwind.html.twig' %}
 
-{% block submenu %}
-    {% include 'admin/association/membership/_member_menu.html.twig' with {
-        current: "contact"
-    } only %}
-{% endblock %}
+{% block title %}Mes coordonnées - AFUP{% endblock %}
 
-{% block page_title %}Mes coordonnées{% endblock %}
+{% block page_body %}
 
-{% block page_content %}
+    <div class="container mx-auto flex flex-col px-4 py-6 gap-6 sm:px-28 sm:py-10 sm:gap-10">
 
-    <div class="afup-form">
+        <h1 class="font-titre text-afup-800 text-2xl sm:text-4xl">Mes coordonnées</h1>
+
         {{ form_start(form) }}
-        <p class="note">
-            *&nbsp;Indique un champ obligatoire
-        </p>
-        <fieldset>
-            <legend>Informations</legend>
-            <div class="afup-form-container">
-                {{ form_errors(form) }}
+
+        <twig:Card class="flex flex-col gap-8 px-6 py-8 sm:px-10 sm:py-10">
+            <p class="text-sm text-neutre-400">*&nbsp;Indique un champ obligatoire</p>
+
+            {{ form_errors(form) }}
+
+            <twig:Card:Section title="Informations">
                 {{ form_row(form.email) }}
                 {{ form_row(form.address) }}
-                {{ form_row(form.zipcode) }}
-                {{ form_row(form.city) }}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+                    {{ form_row(form.zipcode) }}
+                    {{ form_row(form.city) }}
+                </div>
                 {{ form_row(form.country) }}
-                {{ form_row(form.phone) }}
-                {{ form_row(form.mobilephone) }}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+                    {{ form_row(form.phone) }}
+                    {{ form_row(form.mobilephone) }}
+                </div>
                 {{ form_row(form.nearest_office) }}
-            </div>
-        </fieldset>
+            </twig:Card:Section>
 
-        <fieldset>
-            <legend>Identifiants de connexion</legend>
-            <div class="afup-form-container">
+            <twig:Card:Section title="Identifiants de connexion">
                 {{ form_row(form.username) }}
-
-                <p class="note">
+                <p class="text-sm text-neutre-700">
                     Ne renseignez le mot de passe et sa confirmation que si vous souhaitez le changer
                 </p>
-                {{ form_row(form.plainPassword.first) }}
-                {{ form_row(form.plainPassword.second) }}
-            </div>
-        </fieldset>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+                    {{ form_row(form.plainPassword.first) }}
+                    {{ form_row(form.plainPassword.second) }}
+                </div>
+            </twig:Card:Section>
 
-        <div class="right">
-            {{ form_widget(form.save, {"attr": {"class": "button button--call-to-action"}}) }}
-        </div>
+            <div class="flex justify-end border-t-2 border-neutre-300 pt-5">
+                {{ form_widget(form.save) }}
+            </div>
+        </twig:Card>
 
         {{ form_end(form) }}
+
     </div>
+
 {% endblock %}

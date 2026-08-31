@@ -1,138 +1,136 @@
-{% extends 'admin/association/membership/_base.html.twig' %}
+{% extends 'layouts/member_company.html.twig' %}
+{% form_theme formInvitation 'form_themes/tailwind.html.twig' %}
 
-{% block submenu %}
-    {% include 'admin/association/membership/_company_menu.html.twig' with {
-        current: "members"
-    } only %}
-{% endblock %}
+{% block title %}Les membres rattachés à mon entreprise - AFUP{% endblock %}
 
-{% block page_title %}Les membres rattachés à mon entreprise{% endblock %}
+{% block page_body %}
 
-{% block page_content %}
-    <div class="afup-form">
-        <form method="post">
-            <fieldset>
-                <legend>Les membres associés à mon compte</legend>
-                <div class="afup-form-container">
-                    <table class="afup-table">
-                        <thead>
-                        <tr>
-                            <th>Prénom</th>
-                            <th>Nom</th>
-                            <th title="Cet utilisateur a-t-il le droit de gérer le compte de l'entreprise ?">Gestion</th>
-                            <th>Email</th>
-                            <th></th>
+    <div class="container mx-auto flex flex-col px-4 py-6 gap-6 sm:px-28 sm:py-10 sm:gap-10">
+
+        <h1 class="font-titre text-afup-800 text-2xl sm:text-4xl">Les membres rattachés à mon entreprise</h1>
+
+        <section class="flex flex-col gap-4">
+            <twig:SectionTitle>Les membres associés à mon compte</twig:SectionTitle>
+
+            <form method="post" class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b-2 border-neutre-300 text-sm uppercase text-neutre-700">
+                            <th class="py-2 pr-4 font-medium">Prénom</th>
+                            <th class="py-2 pr-4 font-medium">Nom</th>
+                            <th class="py-2 pr-4 font-medium" title="Cet utilisateur a-t-il le droit de gérer le compte de l'entreprise ?">Gestion</th>
+                            <th class="py-2 pr-4 font-medium">Email</th>
+                            <th class="py-2 font-medium"></th>
                         </tr>
-                        </thead>
+                    </thead>
+                    <tbody>
                         {% for user in users %}
-                            <tr>
-                                <td>{{ user.firstName }}</td>
-                                <td>{{ user.lastName }}</td>
-                                <td>{{ user.hasRole('ROLE_COMPANY_MANAGER')?'Oui':'Non' }}</td>
-                                <td>{{ user.email }}</td>
-                                <td>
-                                    {% if user.id == app.user.id %}
-                                        <button type="submit" class="button button__medium" disabled="disabled" title="Vous ne pouvez pas enlever les droits de gestion à votre compte">
-                                            Enlever les droits de gestion
-                                        </button>
-                                        <button type="submit" class="button button__medium" disabled="disabled" title="Vous ne pouvez pas supprimer votre propre compte">
-                                            Supprimer ce compte
-                                        </button>
-                                    {% else %}
-                                        {% if user.hasRole('ROLE_COMPANY_MANAGER') %}
-                                            <button type="submit" class="button button__medium" name="promote_down" value="{{ user.email }}">Enlever les droits de gestion</button>
+                            <tr class="border-b border-neutre-300 text-neutre-700">
+                                <td class="py-3 pr-4">{{ user.firstName }}</td>
+                                <td class="py-3 pr-4">{{ user.lastName }}</td>
+                                <td class="py-3 pr-4">{{ user.hasRole('ROLE_COMPANY_MANAGER') ? 'Oui' : 'Non' }}</td>
+                                <td class="py-3 pr-4">{{ user.email }}</td>
+                                <td class="py-3">
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        {% if user.id == app.user.id %}
+                                            <twig:Button type="submit" variant="secondary" class="flex shrink-0" disabled
+                                                         title="Vous ne pouvez pas enlever les droits de gestion à votre compte">Enlever les droits de gestion</twig:Button>
+                                            <twig:Button type="submit" variant="secondary" class="flex shrink-0" disabled
+                                                         title="Vous ne pouvez pas supprimer votre propre compte">Supprimer ce compte</twig:Button>
                                         {% else %}
-                                            <button type="submit" class="button button__medium" name="promote_up" value="{{ user.email }}">Donner les droits de gestion</button>
+                                            {% if user.hasRole('ROLE_COMPANY_MANAGER') %}
+                                                <twig:Button type="submit" variant="secondary" class="flex shrink-0"
+                                                             name="promote_down" value="{{ user.email }}">Enlever les droits de gestion</twig:Button>
+                                            {% else %}
+                                                <twig:Button type="submit" variant="secondary" class="flex shrink-0"
+                                                             name="promote_up" value="{{ user.email }}">Donner les droits de gestion</twig:Button>
+                                            {% endif %}
+                                            <twig:Button type="submit" variant="secondary" class="flex shrink-0"
+                                                         name="remove" value="{{ user.email }}">Supprimer ce compte</twig:Button>
                                         {% endif %}
-                                        <button type="submit" class="button button__medium" name="remove" value="{{ user.email }}">Supprimer ce compte</button>
-                                    {% endif %}
+                                    </div>
                                 </td>
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="5">Aucun membre actuellement rattaché</td>
+                                <td colspan="5" class="py-3 text-neutre-400">Aucun membre actuellement rattaché</td>
                             </tr>
                         {% endfor %}
-                    </table>
-                </div>
-            </fieldset>
-            <input type="hidden" name="token" value="{{ token }}" />
-        </form>
-    </div>
+                    </tbody>
+                </table>
+                <input type="hidden" name="token" value="{{ token }}" />
+            </form>
+        </section>
 
+        <section class="flex flex-col gap-4">
+            <twig:SectionTitle>Invitations en attente</twig:SectionTitle>
 
-    <div class="afup-form">
-        <form method="post">
-            <fieldset>
-                <legend>Invitations en attente</legend>
-                <div class="afup-form-container">
-                    <table class="afup_tab">
-                        <thead>
-                        <tr>
-                            <th>Email</th>
-                            <th>Droits de gestion du compte</th>
-                            <th>Date d'envoi</th>
-                            <th></th>
+            <form method="post" class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b-2 border-neutre-300 text-sm uppercase text-neutre-700">
+                            <th class="py-2 pr-4 font-medium">Email</th>
+                            <th class="py-2 pr-4 font-medium">Droits de gestion du compte</th>
+                            <th class="py-2 pr-4 font-medium">Date d'envoi</th>
+                            <th class="py-2 font-medium"></th>
                         </tr>
-                        </thead>
+                    </thead>
+                    <tbody>
                         {% for invitation in invitations %}
-                            <tr>
-                                <td>{{ invitation.email }}</td>
-                                <td>{{ invitation.manager?'Oui':'Non' }}</td>
-                                <td>{{ invitation.submittedOn|date('d/m/Y H:i:s') }}</td>
-                                <td>
-                                    <button type="submit" class="button button__medium" name="resend_invitation" value="{{ invitation.email }}"
-                                            title="Renvoyer le mail d'invitation">Envoyer
-                                        à nouveau
-                                    </button>
-                                    <button type="submit" class="button button__medium" name="delete_invitation" value="{{ invitation.email }}" title="Annuler l'invitation">
-                                        Annuler
-                                    </button>
+                            <tr class="border-b border-neutre-300 text-neutre-700">
+                                <td class="py-3 pr-4">{{ invitation.email }}</td>
+                                <td class="py-3 pr-4">{{ invitation.manager ? 'Oui' : 'Non' }}</td>
+                                <td class="py-3 pr-4 whitespace-nowrap">{{ invitation.submittedOn|date('d/m/Y H:i:s') }}</td>
+                                <td class="py-3">
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <twig:Button type="submit" variant="secondary" class="flex shrink-0"
+                                                     name="resend_invitation" value="{{ invitation.email }}"
+                                                     title="Renvoyer le mail d'invitation">Envoyer à nouveau</twig:Button>
+                                        <twig:Button type="submit" variant="secondary" class="flex shrink-0"
+                                                     name="delete_invitation" value="{{ invitation.email }}"
+                                                     title="Annuler l'invitation">Annuler</twig:Button>
+                                    </div>
                                 </td>
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="4">Aucune invitation en attente</td>
+                                <td colspan="4" class="py-3 text-neutre-400">Aucune invitation en attente</td>
                             </tr>
                         {% endfor %}
-                    </table>
-                </div>
-            </fieldset>
-            <input type="hidden" name="token" value="{{ token }}" />
-        </form>
-    </div>
+                    </tbody>
+                </table>
+                <input type="hidden" name="token" value="{{ token }}" />
+            </form>
+        </section>
 
+        <section class="flex flex-col gap-4">
+            <twig:SectionTitle>Nouvelle invitation</twig:SectionTitle>
 
-    <div class="afup-form">
-        <p>
-            Votre cotisation actuelle vous permet d'avoir {{ company.maxMembers }} membres rattachés.
-        </p>
-        {{ form_start(formInvitation) }}
-        <fieldset>
-            <legend>Nouvelle invitation</legend>
-            <div class="afup-form-container">
+            <p class="text-neutre-700">Votre cotisation actuelle vous permet d'avoir {{ company.maxMembers }} membres rattachés.</p>
+
+            {{ form_start(formInvitation) }}
+            <twig:Card class="flex flex-col gap-5 px-6 py-8 sm:px-10 sm:py-10">
                 {{ form_row(formInvitation.email) }}
                 {{ form_row(formInvitation.manager) }}
                 {{ form_widget(formInvitation) }}
-                <div id="company_member_invitation_submit">
-                    {% if canAddUser %}
-                        <button type="submit" class="button">Envoyer l'invitation</button>
-                    {% else %}
-                        <button type="submit" class="button" disabled="disabled">Envoyer l'invitation</button>
-                    {% endif %}
+
+                <div id="company_member_invitation_submit" class="flex justify-end">
+                    <twig:Button type="submit" variant="primary" class="flex px-8 py-3 text-base"
+                                 :disabled="not canAddUser">Envoyer l'invitation</twig:Button>
                 </div>
+
                 {% if canAddUser == false %}
-                    <p>
+                    <p class="text-sm text-neutre-700">
                         Vous avez actuellement {{ users.count }} membre(s) rattaché(s) et {{ invitations.count }} invitation(s)
                         en attente. Vous ne pouvez envoyer de nouvelle invitation, votre nombre maximum de membre permis par
                         votre cotisation étant atteint. Si vous souhaitez rattacher d'avantage de membres, merci de nous
                         contacter à l'adresse tresorier@afup.org afin d'augmenter le nombre de membres lié à votre cotisation.
                     </p>
                 {% endif %}
-            </div>
-        </fieldset>
+            </twig:Card>
+            {{ form_end(formInvitation) }}
+        </section>
 
-        {{ form_end(formInvitation) }}
     </div>
 
 {% endblock %}

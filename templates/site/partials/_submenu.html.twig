@@ -1,0 +1,15 @@
+{#
+    Rendu générique d'un sous-menu de la barre secondaire, à placer dans le bloc `submenu`.
+    Remplace `site/secondary_menu.html.twig` pour les pages passées à la nouvelle charte.
+
+    items : liste de { label, route, params (optionnel), matches (optionnel) }
+            `matches` liste les routes qui allument l'onglet ; par défaut, sa propre route.
+            À renseigner quand plusieurs pages partagent le même onglet (une liste et sa fiche).
+#}
+{% set current_route = app.request.attributes.get('_route') %}
+
+{% for item in items %}
+    <twig:MainMenu:SubItem
+        href="{{ path(item.route, item.params|default({})) }}"
+        :variant="current_route in item.matches|default([item.route]) ? 'active' : null">{{ item.label }}</twig:MainMenu:SubItem>
+{% endfor %}
