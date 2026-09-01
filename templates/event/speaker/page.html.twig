@@ -87,7 +87,7 @@
                     <i>
                         {% if talk_info.planning %}
                             {% if talk_info.room %}({{ talk_info.room.name }}){% endif %}
-                            ({{ talk_info.planning.start|format_datetime('full', 'short') }})
+                            ({{ talk_info.planning.start|format_datetime('full', 'short', timezone=planning_timezone) }})
                         {% else %}
                             (salle et dates de passage à venir)
                         {% endif %}

@@ -116,8 +116,8 @@
                             <br/>
 
                             {% if session.planning %}
-                                <em>{{ session.planning.start|date("d/m/Y", timezone) }}</em> /
-                                {{ session.planning.start|date("H:i", timezone) }} - {{ session.planning.end|date("H:i", timezone) }} / {{ session.room ? session.room.name }}
+                                <em>{{ session.planning.start|date("d/m/Y", planning_timezone) }}</em> /
+                                {{ session.planning.start|date("H:i", planning_timezone) }} - {{ session.planning.end|date("H:i", planning_timezone) }} / {{ session.room ? session.room.name }}
                             {% else %}
                                 <span class="ui yellow label">non planifié</span>
                             {% endif %}

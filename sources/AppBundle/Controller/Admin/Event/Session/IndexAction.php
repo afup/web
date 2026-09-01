@@ -38,7 +38,6 @@ final class IndexAction extends AbstractController
                 'events' => $this->calendarEvents($sessions),
                 'resources' => $this->calendarResources($event),
             ],
-            'timezone' => Planning::TIMEZONE,
         ]);
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Event\Talk;
 
 use AppBundle\Event\Model\Event;
+use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
@@ -56,6 +57,8 @@ class ExportGenerator
 
         $toFile->fputcsv(['Title','Description','Speaker','Date','Time','Type'], escape: '\\');
 
+        $timezone = new \DateTimeZone(Planning::TIMEZONE);
+
         foreach ($talkAggregates as $talkAggregate) {
 
             // Gestion de la description
@@ -72,6 +75,11 @@ class ExportGenerator
             }
             $speakers = implode(',', $speakers);
 
+            // Gestion des horaires : stockés en timestamp, ils sont exportés dans la
+            // timezone de l'événement et non dans celle du serveur.
+            $start = $talkAggregate->planning?->getStart();
+            $start = $start === null ? null : \DateTimeImmutable::createFromInterface($start)->setTimezone($timezone);
+
             // Gestion du type de conférence
             if ($talkAggregate->planning?->getIsKeynote()) {
                 $type = 'Keynote';
@@ -85,8 +93,8 @@ class ExportGenerator
                 $talkAggregate->talk->getTitle(),
                 $abstract,
                 $speakers,
-                $talkAggregate->planning?->getStart()?->format('Y-m-d'),
-                $talkAggregate->planning?->getStart()?->format('H:i'),
+                $start?->format('Y-m-d'),
+                $start?->format('H:i'),
                 $type,
             ], escape: '\\');
         }
