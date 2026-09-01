@@ -20,8 +20,8 @@
             {% if talks_info.event.isPlanningDisplayable %}
                 <td width="20%" style="vertical-align: middle; text-align: center">
                     {{ talks_info.room.name }}<br />
-                    {{ talks_info.planning.start|date('d/m/Y') }}<br />
-                    {{ talks_info.planning.start|date('H:i') }}-{{ talks_info.planning.end|date('H:i') }}
+                    {{ talks_info.planning.start|date('d/m/Y', planning_timezone) }}<br />
+                    {{ talks_info.planning.start|date('H:i', planning_timezone) }}-{{ talks_info.planning.end|date('H:i', planning_timezone) }}
                 </td>
             {% endif %}
         </tr>
