@@ -12,6 +12,7 @@ Feature: Administration - Partie Infos Speakers
     And I follow "afup-main-menu-item--admin_event_speakers_management"
     Then the ".content h2" element should contain "Infos speakers"
     And the ".content table" element should contain "Geoffrey BACHELET"
+    And the ".content table" element should contain "Défraiement voyage nécessaire ?"
     When I follow the button of tooltip "Voir sa page"
     Then I should see "Ma page speaker : forum"
     And I should see "Nous vous hébergeons"
