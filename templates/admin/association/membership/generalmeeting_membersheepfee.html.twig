@@ -1,20 +1,22 @@
-{% extends 'admin/association/membership/_base.html.twig' %}
+{% extends 'layouts/member.html.twig' %}
 
-{% block submenu %}
-    {% include 'admin/association/membership/_member_menu.html.twig' with {
-        current: "generalmeeting"
-    } only %}
-{% endblock %}
+{% block title %}Ma participation à l'Assemblée Générale - AFUP{% endblock %}
 
-{% block page_title %}Ma participation à l'Assemblée Générale du {{ latest_date|date('d/m/Y') }}{% endblock %}
+{% block page_body %}
 
-{% block page_content %}
+    <div class="container mx-auto flex flex-col px-4 py-6 gap-6 sm:px-28 sm:py-10 sm:gap-10">
 
-    <p class="erreur">
-        La date d'échéance de votre dernière cotisation précède la date de la prochaine assemblée générale.<br>
-        <br>
-        Vous ne pourrez donc pas voter lors de cette assemblée générale.<br>
-        <br>Vous pouvez dès à présent régler votre cotisation via <a href="{{ path('member_membership_fee') }}">"Ma cotisation"</a>
-    </p>
+        <h1 class="font-titre text-afup-800 text-2xl sm:text-4xl">Ma participation à l'Assemblée Générale du {{ latest_date|date('d/m/Y') }}</h1>
+
+        <twig:Alert type="error" class="flex flex-col gap-3">
+            <p>La date d'échéance de votre dernière cotisation précède la date de la prochaine assemblée générale.</p>
+            <p>Vous ne pourrez donc pas voter lors de cette assemblée générale.</p>
+            <p>
+                Vous pouvez dès à présent régler votre cotisation via
+                <a href="{{ path('member_membership_fee') }}" class="underline hover:no-underline">Ma cotisation</a>.
+            </p>
+        </twig:Alert>
+
+    </div>
 
 {% endblock %}
