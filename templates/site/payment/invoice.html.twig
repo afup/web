@@ -1,24 +1,52 @@
-{% extends 'admin/association/membership/_base.html.twig' %}
-{% block page_content %}
-    <article>
-        <h1>Paiement en ligne de la facture #{{ invoice_number }}</h1>
+{% extends 'layouts/site.html.twig' %}
 
+{% block title %}Facture n° {{ invoice_number }} - AFUP{% endblock %}
+
+{% block metas %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block content %}
+
+    <div class="container mx-auto flex flex-col px-4 py-6 gap-6 sm:px-28 sm:py-10 sm:gap-10">
+
+        <h1 class="font-titre text-afup-800 text-2xl sm:text-4xl">Facture #{{ invoice_number }}</h1>
+
+        {# Retour de paiement : `InvoiceRedirectAction` pose un flash puis redirige ici. C'est le seul
+           endroit où le résultat est visible, et layouts/site.html.twig n'affiche pas les flashs. #}
+        {% for message in app.flashes('success') %}
+            <twig:Alert type="success">{{ message|nl2br }}</twig:Alert>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <twig:Alert type="error">{{ message|nl2br }}</twig:Alert>
+        {% endfor %}
+
+        {# `paybox` n'est fourni que si la facture est encore en attente de règlement. #}
         {% if paybox %}
-            <h2>Paiement</h2>
-            {{ paybox|raw }}
+            <twig:Card class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 bg-afup-100 border-afup-300">
+                <div class="grow">
+                    <p class="font-titre text-xl text-afup-800">Régler cette facture</p>
+                    <p class="text-sm text-neutre-700">Paiement immédiat et sécurisé par carte bancaire via Paybox.</p>
+                </div>
+                {# Le <button> du formulaire généré par AppBundle\Payment\Paybox porte les classes de
+                   buttons.css, que la nouvelle charte ne charge plus : on le restyle depuis le parent
+                   plutôt que de toucher au PHP, partagé avec le tunnel billetterie encore en legacy. #}
+                <div class="shrink-0 [&_button]:inline-flex [&_button]:items-center [&_button]:justify-center [&_button]:whitespace-nowrap [&_button]:rounded-lg [&_button]:bg-ruby-500 [&_button]:px-8 [&_button]:py-3 [&_button]:font-semibold [&_button]:text-white [&_button]:hover:bg-ruby-700">
+                    {{ paybox|raw }}
+                </div>
+            </twig:Card>
         {% endif %}
 
-        <p class="note">
+        <twig:Button as="a" variant="secondary" class="flex self-start px-8 py-3 text-base"
+                     href="{{ url('payment_invoice_download', {ref: ref}) }}">
+            Télécharger la facture en PDF
+        </twig:Button>
+
+        <p class="text-sm text-neutre-400">
             Si vous avez la moindre question, n'hésitez pas à contacter
-            <a href="mailto:tresorier@afup.org">la trésorerie</a>.
+            <a href="mailto:tresorier@afup.org" class="text-afup-500 underline hover:no-underline">la trésorerie</a>.
         </p>
 
-        <h2>Facture en PDF</h2>
-        <p>
-            <a href="{{ url('payment_invoice_download', {ref: ref}) }}">
-                Télécharger la facture en PDF
-            </a>
-        </p>
+    </div>
 
-    </article>
 {% endblock %}
