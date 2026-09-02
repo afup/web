@@ -17,6 +17,7 @@
                 <th data-tf-filter-type="select" class="center aligned">Nuit d'hotel entre les deux jours ?</th>
                 <th data-tf-filter-type="select" class="center aligned">Nuit d'hotel après l'évènement ?</th>
                 <th data-tf-filter-type="select" class="center aligned">Pas de nuit d'hotel ?</th>
+                <th data-tf-filter-type="select" class="center aligned">Défraiement voyage nécessaire ?</th>
                 <th data-tf-filter-type="select" class="center aligned">Sponsors ?</th>
                 <th data-tf-filter-type="select" class="center aligned">Justificatifs envoyés ?</th>
                 <th data-tf-filter-type="select" class="center aligned">Microphone</th>
@@ -121,6 +122,15 @@
                     {% endif %}
                     </span>
                 </td>
+                <td class="center aligned">
+                    <span class="ui label">
+                    {% if speaker.speaker.travelRefundNeeded %}
+                        oui
+                    {% else %}
+                        non
+                    {% endif %}
+                    </span>
+                </td>
                 <td  class="center aligned">
                     {% if not speaker.speaker.travelRefundSponsored and not speaker.speaker.hasHostingSponsor %}
                         <span class="ui label">non</span>
@@ -166,7 +176,7 @@
                 </td>
             </tr>
             {% else %}
-            <tr><td colspan="13" style="text-align: center;">
+            <tr><td colspan="15" style="text-align: center;">
                     <div class="ui icon header">
                         <i class="meh outline icon"></i>
                         Aucune information. {% if event == null %}Essayez de changez d'évènement !{% endif %}
