@@ -1,4 +1,10 @@
-{% extends 'site/base.html.twig' %}
+{% extends 'layouts/site.html.twig' %}
+
+{% block title %}{{ payboxResponse.successful ? 'Paiement confirmé' : 'Paiement non abouti' }} - Cotisation - AFUP{% endblock %}
+
+{% block metas %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
 
 {% block google_analytics %}
     {% embed 'google_analytics.html.twig' %}
@@ -13,26 +19,49 @@
     {% endembed %}
 {% endblock %}
 
-{% block inner_content %}
-    <div class="col-md-8">
-        <h2>Paiement de votre cotisation</h2>
-        <div>
-            <p>
-                {% if payboxResponse.successful %}
-                    Le paiement de votre cotisation s'est bien passé, merci.
-                {% elseif return_type == 'refused' %}
-                    Votre paiement a été refusé.<br>
-                    Aucun montant n'a &eacute;t&eacute; pr&eacute;lev&eacute;.
-                {% elseif return_type == 'canceled' %}
-                    Votre paiement a &eacute;t&eacute; annul&eacute;.<br>
-                    Aucun montant n'a &eacute;t&eacute; pr&eacute;lev&eacute;.
-                {% elseif return_type == 'error' %}
+{% block content %}
+    <div class="container mx-auto px-4 sm:px-28 py-16 flex flex-col items-center text-center gap-6">
+        {% if payboxResponse.successful %}
+            <span class="flex items-center justify-center rounded-full bg-afup-100 text-afup-500 p-6">
+                <twig:ux:icon name="mingcute:check-fill" class="size-12" />
+            </span>
+
+            <h1 class="font-titre font-normal text-4xl sm:text-5xl text-afup-800">Paiement confirmé&nbsp;!</h1>
+
+            <p class="text-xl sm:text-2xl max-w-2xl text-neutre-700">
+                Le paiement de votre cotisation s'est bien passé, merci.
+            </p>
+        {% else %}
+            <span class="flex items-center justify-center rounded-full bg-erreur-500/10 text-erreur-700 p-6">
+                <twig:ux:icon name="mdi:alert-outline" class="size-12" />
+            </span>
+
+            {# Les trois cas d'échec partagent la même mise en page, seul le libellé change. #}
+            {% if return_type == 'refused' %}
+                <h1 class="font-titre font-normal text-4xl sm:text-5xl text-afup-800">Paiement refusé</h1>
+                <p class="text-xl sm:text-2xl max-w-2xl text-neutre-700">
+                    Votre paiement a été refusé. Aucun montant n'a été prélevé.
+                </p>
+            {% elseif return_type == 'canceled' %}
+                <h1 class="font-titre font-normal text-4xl sm:text-5xl text-afup-800">Paiement annulé</h1>
+                <p class="text-xl sm:text-2xl max-w-2xl text-neutre-700">
+                    Votre paiement a été annulé. Aucun montant n'a été prélevé.
+                </p>
+            {% else %}
+                <h1 class="font-titre font-normal text-4xl sm:text-5xl text-afup-800">Une erreur est survenue</h1>
+                <p class="text-xl sm:text-2xl max-w-2xl text-neutre-700">
                     Il y a eu une erreur lors de l'enregistrement de votre cotisation.
-                {% endif %}
-            </p>
-            <p>
-                Si vous avez la moindre question, n'hésitez pas à contacter <a href="mailto:bonjour@afup.org">bonjour@afup.org</a>.
-            </p>
-        </div>
+                </p>
+            {% endif %}
+        {% endif %}
+
+        <p class="text-sm text-neutre-400 max-w-xl">
+            Si vous avez la moindre question, n'hésitez pas à nous écrire à
+            <a href="mailto:bonjour@afup.org" class="text-afup-500 underline hover:no-underline">bonjour (at) afup.org</a>.
+        </p>
+
+        <twig:Button as="a" variant="primary" href="{{ path('home') }}" class="px-8 py-3 text-base mt-4">
+            Retour à l'accueil
+        </twig:Button>
     </div>
 {% endblock %}
