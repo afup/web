@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Journal;
 
-use AppBundle\Accounting\Model\Repository\TransactionRepository;
-use AppBundle\Accounting\Model\Repository\InvoicingPeriodRepository;
+use AppBundle\Accounting\Entity\Repository\InvoicingPeriodRepository;
+use AppBundle\Accounting\Entity\Repository\TransactionRepository;
 use AppBundle\Accounting\TvaZone;
 use SplFileObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,8 +33,8 @@ class ExportAction extends AbstractController
         $csvFilename  = sprintf(
             'AFUP_%s_journal_from-%s_to-%s.csv',
             date('Y-M-d'),
-            $period->getStartDate()->format('Y-m-d'),
-            $period->getEndDate()->format('Y-m-d'),
+            $period->dateDebut->format('Y-m-d'),
+            $period->dateFin->format('Y-m-d'),
         );
         $tmpFile = tempnam(sys_get_temp_dir(), $csvFilename);
         $file = new SplFileObject($tmpFile, 'w');
