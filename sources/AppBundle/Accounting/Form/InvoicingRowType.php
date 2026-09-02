@@ -21,6 +21,7 @@ class InvoicingRowType extends AbstractType
     {
         $builder->add('reference', TextType::class, [
             'label' => 'Référence',
+            'empty_data' => '',
             'constraints' => [
                 new Assert\NotBlank(),
                 new Assert\Type(type: 'string'),
@@ -28,6 +29,7 @@ class InvoicingRowType extends AbstractType
             ],
         ])->add('designation', TextareaType::class, [
             'label' => 'Désignation',
+            'empty_data' => '',
             'constraints' => [
                 new Assert\NotBlank(),
                 new Assert\Type('string'),
