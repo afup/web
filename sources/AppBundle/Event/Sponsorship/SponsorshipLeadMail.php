@@ -25,17 +25,17 @@ class SponsorshipLeadMail
     public function sendSponsorshipFile(Lead $lead): void
     {
         $file = Event::getSponsorFilePath($lead->getEvent()->getPath(), $lead->getLanguage());
-        $subject = $this->translator->trans('mail.sponsoringfile.title', ['%eventName%' => $lead->getEvent()->getTitle()]);
+        $subject = $this->translator->trans('mail.sponsoringfile.title');
         $message = new Message($subject, MailUserFactory::sponsors(), new MailUser($lead->getEmail(), $lead->getLabel()));
 
         $message->addAttachment(new Attachment(
             $file,
-            basename($file),
+            sprintf('dossier-sponsoring-afup-%s.pdf', $lead->getLanguage()),
             'base64',
             'application/pdf',
         ));
 
-        $content = $this->translator->trans('mail.sponsoringfile.text', ['%eventName%' => $lead->getEvent()->getTitle()]);
+        $content = $this->translator->trans('mail.sponsoringfile.text');
 
         if (!$this->mailer->sendTransactional($message, $content)) {
             $this->logger->warning(sprintf('Mail not sent for sponsorship lead retrieval: "%s"', $lead->getEmail()));

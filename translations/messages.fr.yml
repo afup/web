@@ -182,10 +182,10 @@ type.3: "20 mn"
 'Website': 'Site web'
 'Language': 'Langue'
 'Become a sponsor': 'Devenir sponsor'
-'mail.sponsoringfile.title': 'Dossier de sponsoring %eventName%'
+'mail.sponsoringfile.title': 'Dossier de sponsoring AFUP'
 'mail.sponsoringfile.text': |
   Bonjour,<br />
-  <p>Vous avez demandé à recevoir le dossier de sponsoring pour le %eventName%.</p>
+  <p>Vous avez demandé à recevoir notre dossier de sponsoring.</p>
 
   <p>Vous trouverez le dossier en pièce jointe. Pour toute demande de précisions ou devis,
   n'hésitez pas à nous contacter par mail à l’adresse <a href="mailto:sponsors@afup.org">sponsors@afup.org</a>.</p>
