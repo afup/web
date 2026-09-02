@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event;
 
+use AppBundle\Event\Entity\Repository\EventCouponRepository;
 use AppBundle\Event\Form\EventType;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\EventCouponRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -35,7 +35,7 @@ class EventAction extends AbstractController
 
         $form = $this->createForm(EventType::class, $event);
 
-        if ($event->getId() && $couponsImploded = $this->couponRepository->couponsListForEventImploded($event)) {
+        if ($event->getId() && $couponsImploded = $this->couponRepository->couponsListForEventImploded((int) $event->getId())) {
             $form->get('coupons')->setData($couponsImploded);
         }
 
@@ -49,7 +49,7 @@ class EventAction extends AbstractController
 
             if ($form->get('coupons')->getData()) {
                 $eventCoupons = explode(',', (string) $form->get('coupons')->getData());
-                $this->couponRepository->changeCouponForEvent($event, $eventCoupons);
+                $this->couponRepository->changeCouponForEvent((int) $event->getId(), $eventCoupons);
             }
 
             $this->addFlash('notice', 'Évènement ' . ($id ? 'modifié' : 'ajouté'));
