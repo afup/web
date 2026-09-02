@@ -1,42 +1,87 @@
-{% extends 'admin/association/membership/_base.html.twig' %}
-{% block page_content %}
-    <article id="company-membership-payment">
-        <h1>Adhésion entreprise à l'AFUP</h1>
-        <h2>Adhésion enregistrée !</h2>
-        <p>
-            Votre inscription a bien été enregistrée ! Il ne vous reste plus qu'à régler votre cotisation.
-        </p>
-        <p>
-            Montant de la cotisation: {{ invoice.montant|number_format(2, '.', ' ') }} Euros
-        </p>
-        <h2>Facture disponible</h2>
+{% extends 'layouts/site.html.twig' %}
 
-        <p>
-            <a href="{{ url('company_membership_invoice', {invoiceNumber: invoice.numeroFacture, token: invoice.token}) }}" class="button">Télécharger la facture</a>
-        </p>
-        <h2>Régler votre cotisation par Carte Bleue</h2>
-        {{ paybox|raw }}
-        <h2>Régler votre cotisation par chèque</h2>
-        <p>Libellez le chèque à cet ordre: {{ afup.raison_sociale }}. Indiquez au dos le numéro de facture: {{ invoice.numeroFacture }}</p>
-        <address>
-            {{ afup.raison_sociale }}<br />
-            {{ afup.adresse }}<br />
-            {{ afup.code_postal }} {{ afup.ville }}
-        </address>
-        <h2>Régler votre cotisation par virement bancaire</h2>
-        <p>
-            Lors d'un règlement par virement bancaire, indiquez ce libellé: {{ invoice.numeroFacture }}.
-        </p>
-        <table>
-            <tr>
-                <th>IBAN</th><th>BIC/SWIFT</th>
-            </tr>
-            <tr>
-                <td>{{ bankAccount.iban }}</td><td>{{ bankAccount.bic }}</td>
-            </tr>
-        </table>
+{% block title %}Régler votre cotisation - Adhésion entreprise - AFUP{% endblock %}
 
+{% block metas %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
 
-        <p>Si vous rencontrez le moindre problème, n'hésitez pas à contacter l'AFUP par email: bonjour (at) afup.org.</p>
-    </article>
+{% block content %}
+
+    <div class="container mx-auto flex flex-col px-4 py-6 gap-6 sm:px-28 sm:py-10 sm:gap-10">
+
+        <div class="flex flex-col gap-5">
+            <h1 class="font-titre text-afup-800 text-2xl sm:text-4xl">Adhésion entreprise à l'AFUP</h1>
+            <p class="text-neutre-700">
+                Votre inscription a bien été enregistrée&nbsp;! Il ne vous reste plus qu'à régler votre cotisation.
+            </p>
+        </div>
+
+        <twig:Card class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 bg-afup-100 border-afup-300">
+            <div class="grow">
+                <p class="text-sm text-neutre-700">Montant de la cotisation</p>
+                <p class="font-titre text-2xl text-afup-800">{{ invoice.montant|number_format(2, ',', ' ') }}&nbsp;€</p>
+                <p class="text-sm text-neutre-700">Facture n° {{ invoice.numeroFacture }}</p>
+            </div>
+            <twig:Button as="a" variant="secondary" class="flex shrink-0 px-8 py-3 text-base"
+                         href="{{ url('company_membership_invoice', {invoiceNumber: invoice.numeroFacture, token: invoice.token}) }}">
+                Télécharger la facture
+            </twig:Button>
+        </twig:Card>
+
+        <twig:SectionTitle>Régler votre cotisation</twig:SectionTitle>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8">
+
+            <twig:Card class="flex flex-col gap-4 h-full">
+                <h3 class="font-titre font-bold text-afup-800">Par carte bancaire</h3>
+                <p class="text-neutre-700 grow">Paiement immédiat et sécurisé via Paybox.</p>
+                {# Le formulaire est produit par AppBundle\Payment\Paybox : son <button> porte les classes
+                   de buttons.css, que la nouvelle charte ne charge plus. On le restyle depuis le parent
+                   plutôt que de toucher au PHP, partagé avec le tunnel billetterie encore en legacy. #}
+                <div class="[&_button]:inline-flex [&_button]:items-center [&_button]:justify-center [&_button]:whitespace-nowrap [&_button]:rounded-lg [&_button]:bg-ruby-500 [&_button]:px-8 [&_button]:py-3 [&_button]:font-semibold [&_button]:text-white [&_button]:hover:bg-ruby-700">
+                    {{ paybox|raw }}
+                </div>
+            </twig:Card>
+
+            <twig:Card class="flex flex-col gap-4 h-full">
+                <h3 class="font-titre font-bold text-afup-800">Par chèque</h3>
+                <p class="text-neutre-700">
+                    Libellez le chèque à l'ordre de <span class="font-medium text-afup-800">{{ afup.raison_sociale }}</span>
+                    et indiquez au dos le numéro de facture <span class="font-medium text-afup-800">{{ invoice.numeroFacture }}</span>.
+                </p>
+                <address class="text-neutre-700 not-italic">
+                    {{ afup.raison_sociale }}<br />
+                    {{ afup.adresse }}<br />
+                    {{ afup.code_postal }} {{ afup.ville }}
+                </address>
+            </twig:Card>
+
+            <twig:Card class="flex flex-col gap-4 h-full">
+                <h3 class="font-titre font-bold text-afup-800">Par virement bancaire</h3>
+                <p class="text-neutre-700">
+                    Indiquez le libellé <span class="font-medium text-afup-800">{{ invoice.numeroFacture }}</span>.
+                </p>
+                <dl class="flex flex-col gap-2">
+                    <div>
+                        <dt class="text-sm text-neutre-700">IBAN</dt>
+                        {# break-all : un IBAN ne comporte pas d'espace et déborderait de la carte. #}
+                        <dd class="font-mono text-sm text-afup-800 break-all">{{ bankAccount.iban }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm text-neutre-700">BIC / SWIFT</dt>
+                        <dd class="font-mono text-sm text-afup-800">{{ bankAccount.bic }}</dd>
+                    </div>
+                </dl>
+            </twig:Card>
+
+        </div>
+
+        <p class="text-sm text-neutre-400">
+            Si vous rencontrez le moindre problème, n'hésitez pas à nous écrire à
+            <a href="mailto:bonjour@afup.org" class="text-afup-500 underline hover:no-underline">bonjour (at) afup.org</a>.
+        </p>
+
+    </div>
+
 {% endblock %}
