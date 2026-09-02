@@ -8,7 +8,7 @@
     <div class="ui clearing divider"></div>
     <div>
         <div class="ui form">
-            {{ form_row(form.quotationDate) }}
+            {{ form_row(form.dateDevis) }}
         </div>
     </div>
 </div>
@@ -25,12 +25,12 @@
                     Ces informations concernent la personne ou la société qui sera facturée<br><br>
                 </div>
             </div>
-            {{ form_row(form.company) }}
+            {{ form_row(form.societe) }}
             {{ form_row(form.service) }}
-            {{ form_row(form.address) }}
-            {{ form_row(form.zipcode) }}
-            {{ form_row(form.city) }}
-            {{ form_row(form.countryId) }}
+            {{ form_row(form.adresse) }}
+            {{ form_row(form.codePostal) }}
+            {{ form_row(form.ville) }}
+            {{ form_row(form.idPays) }}
         </div>
     </div>
 </div>
@@ -40,9 +40,9 @@
     <div class="ui clearing divider"></div>
     <div>
         <div class="ui form">
-            {{ form_row(form.lastname) }}
-            {{ form_row(form.firstname) }}
-            {{ form_row(form.phone) }}
+            {{ form_row(form.nom) }}
+            {{ form_row(form.prenom) }}
+            {{ form_row(form.telephone) }}
             {{ form_row(form.email) }}
             {{ form_row(form.tvaIntra) }}
         </div>
@@ -62,7 +62,7 @@
                 </div>
             </div>
             {% if form.vars.actionType == 'edit' %}
-            {{ form_row(form.quotationNumber) }}
+            {{ form_row(form.numeroDevis) }}
             {% endif %}
         </div>
     </div>
@@ -80,9 +80,9 @@
                     Possible d'avoir plusieurs références à mettre (obligation client)<br><br>
                 </div>
             </div>
-            {{ form_row(form.refClt1) }}
-            {{ form_row(form.refClt2) }}
-            {{ form_row(form.refClt3) }}
+            {{ form_row(form.referenceClient1) }}
+            {{ form_row(form.referenceClient2) }}
+            {{ form_row(form.referenceClient3) }}
         </div>
     </div>
 </div>
@@ -109,7 +109,7 @@
     <div class="ui clearing divider"></div>
     <div>
         <div class="ui form">
-            {{ form_row(form.currency) }}
+            {{ form_row(form.deviseFacture) }}
         </div>
     </div>
 </div>
@@ -134,8 +134,8 @@
             {{ form_row(detail.reference) }}
             {{ form_row(detail.tva) }}
             {{ form_row(detail.designation) }}
-            {{ form_row(detail.quantity) }}
-            {{ form_row(detail.unitPrice) }}
+            {{ form_row(detail.quantite) }}
+            {{ form_row(detail.prixUnitaire) }}
         </div>
         {% endfor %}
     </div>

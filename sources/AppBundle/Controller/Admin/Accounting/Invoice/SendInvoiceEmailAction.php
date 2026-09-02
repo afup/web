@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Invoice;
 
+use AppBundle\Accounting\Entity\Repository\InvoicingRepository;
 use AppBundle\Accounting\InvoicingMailer;
-use AppBundle\Accounting\Model\Repository\InvoicingRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\AuditLog\Audit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,10 +34,10 @@ class SendInvoiceEmailAction extends AbstractController
         }
 
         if ($this->invoicingMailer->sendInvoice($invoice)) {
-            $invoice->setDateEnvoi(new \DateTime());
+            $invoice->dateEnvoi = new \DateTime();
             $user = $this->security->getUser();
             if ($user instanceof User) {
-                $invoice->setEnvoyePar($user->getUsername());
+                $invoice->envoyePar = $user->getUsername();
             }
             $this->invoicingRepository->save($invoice);
             $this->audit->log('Envoi par email de la facture n°' . $invoiceRef);

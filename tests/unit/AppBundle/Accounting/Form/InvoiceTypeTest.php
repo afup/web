@@ -7,9 +7,10 @@ namespace AppBundle\Tests\Accounting\Form;
 use Afup\Site\Utils\Pays;
 use AppBundle\Accounting\Form\InvoiceType;
 use AppBundle\Accounting\InvoicingPaymentStatus;
-use AppBundle\Accounting\Model\Invoicing;
-use AppBundle\Accounting\Model\InvoicingDetail;
+use AppBundle\Accounting\Entity\Invoicing;
+use AppBundle\Accounting\Entity\InvoicingDetail;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\PreloadedExtension;
@@ -44,7 +45,7 @@ class InvoiceTypeTest extends TypeTestCase
         $form->submit($this->payload());
 
         self::assertTrue($form->isValid(), (string) $form->getErrors(true, false));
-        self::assertSame(InvoicingPaymentStatus::Payed, $invoice->getPaymentStatus());
+        self::assertSame(InvoicingPaymentStatus::Payed, $invoice->etatPaiement);
     }
 
     /**
@@ -65,7 +66,35 @@ class InvoiceTypeTest extends TypeTestCase
         $form->submit($this->payload());
 
         self::assertTrue($form->isValid(), (string) $form->getErrors(true, false));
-        self::assertSame(InvoicingPaymentStatus::Payed, $invoice->getPaymentStatus());
+        self::assertSame(InvoicingPaymentStatus::Payed, $invoice->etatPaiement);
+    }
+
+    /**
+     * Le navigateur laisse passer un champ obligatoire rempli d'espaces, que le formulaire
+     * réduit à une chaîne vide : elle doit arriver jusqu'à NotBlank, et non pas `null`
+     * dans une propriété `string` (InvalidTypeException, erreur 500).
+     */
+    #[Test]
+    #[DataProvider('champsObligatoires')]
+    public function unChampObligatoireRempliDEspacesEstRefuse(string $field): void
+    {
+        $invoice = $this->newInvoice([$this->detail('SPONSO', 'Sponsoring bronze')]);
+        $form = $this->factory->create(InvoiceType::class, $invoice);
+
+        $form->submit(array_merge($this->payload(), [$field => '   ']));
+
+        self::assertFalse($form->isValid());
+        self::assertCount(1, $form->get($field)->getErrors());
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function champsObligatoires(): iterable
+    {
+        foreach (['societe', 'codePostal', 'ville', 'email'] as $field) {
+            yield $field => [$field];
+        }
     }
 
     /**
@@ -74,27 +103,27 @@ class InvoiceTypeTest extends TypeTestCase
     private function payload(): array
     {
         return [
-            'invoiceDate' => '2026-01-15',
-            'company' => 'ACME',
+            'dateFacture' => '2026-01-15',
+            'societe' => 'ACME',
             'service' => '',
-            'address' => '1 rue du test',
-            'zipcode' => '69000',
-            'city' => 'Lyon',
-            'countryId' => 'FR',
-            'lastname' => '',
-            'firstname' => '',
-            'phone' => '',
+            'adresse' => '1 rue du test',
+            'codePostal' => '69000',
+            'ville' => 'Lyon',
+            'idPays' => 'FR',
+            'nom' => '',
+            'prenom' => '',
+            'telephone' => '',
             'email' => 'compta@example.com',
             'tvaIntra' => '',
-            'refClt1' => '',
-            'refClt2' => '',
-            'refClt3' => '',
+            'referenceClient1' => '',
+            'referenceClient2' => '',
+            'referenceClient3' => '',
             'observation' => '',
-            'currency' => 'EUR',
-            'quotationNumber' => '2026-001',
-            'invoiceNumber' => '2026-001',
-            'paymentStatus' => (string) InvoicingPaymentStatus::Payed->value,
-            'paymentDate' => '2026-02-01',
+            'deviseFacture' => 'EUR',
+            'numeroDevis' => '2026-001',
+            'numeroFacture' => '2026-001',
+            'etatPaiement' => (string) InvoicingPaymentStatus::Payed->value,
+            'datePaiement' => '2026-02-01',
         ];
     }
 
@@ -104,18 +133,20 @@ class InvoiceTypeTest extends TypeTestCase
     private function newInvoice(array $details): Invoicing
     {
         $invoice = new Invoicing();
-        $invoice->setId(42);
-        $invoice->setCompany('ACME');
-        $invoice->setAddress('1 rue du test');
-        $invoice->setZipcode('69000');
-        $invoice->setCity('Lyon');
-        $invoice->setCountryId('FR');
-        $invoice->setEmail('compta@example.com');
-        $invoice->setQuotationNumber('2026-001');
-        $invoice->setInvoiceNumber('2026-001');
-        $invoice->setInvoiceDate(new \DateTime('2026-01-15'));
-        $invoice->setPaymentStatus(InvoicingPaymentStatus::Waiting);
-        $invoice->setDetails($details);
+        $invoice->id = 42;
+        $invoice->societe = 'ACME';
+        $invoice->adresse = '1 rue du test';
+        $invoice->codePostal = '69000';
+        $invoice->ville = 'Lyon';
+        $invoice->idPays = 'FR';
+        $invoice->email = 'compta@example.com';
+        $invoice->numeroDevis = '2026-001';
+        $invoice->numeroFacture = '2026-001';
+        $invoice->dateFacture = new \DateTime('2026-01-15');
+        $invoice->etatPaiement = InvoicingPaymentStatus::Waiting;
+        foreach ($details as $detail) {
+            $invoice->addDetail($detail);
+        }
 
         return $invoice;
     }
@@ -123,11 +154,11 @@ class InvoiceTypeTest extends TypeTestCase
     private function detail(string $reference, string $designation): InvoicingDetail
     {
         $detail = new InvoicingDetail();
-        $detail->setReference($reference);
-        $detail->setDesignation($designation);
-        $detail->setQuantity(0.0);
-        $detail->setUnitPrice(0.0);
-        $detail->setTva(0.0);
+        $detail->reference = $reference;
+        $detail->designation = $designation;
+        $detail->quantite = 0.0;
+        $detail->prixUnitaire = 0.0;
+        $detail->tva = 0.0;
 
         return $detail;
     }

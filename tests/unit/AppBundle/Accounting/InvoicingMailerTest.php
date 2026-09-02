@@ -6,7 +6,7 @@ namespace AppBundle\Tests\Accounting;
 
 use AppBundle\Accounting\InvoicingMailer;
 use AppBundle\Accounting\InvoicingPdfGenerator;
-use AppBundle\Accounting\Model\Invoicing;
+use AppBundle\Accounting\Entity\Invoicing;
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\Message;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -17,10 +17,10 @@ final class InvoicingMailerTest extends TestCase
     public function testSendInvoiceAddsSponsorsCc(): void
     {
         $invoicing = new Invoicing();
-        $invoicing->setInvoiceNumber('2026-001');
-        $invoicing->setCompany('Société');
-        $invoicing->setEmail('contact@exemple.fr');
-        $invoicing->setLastname('Dupont');
+        $invoicing->numeroFacture = '2026-001';
+        $invoicing->societe = 'Société';
+        $invoicing->email = 'contact@exemple.fr';
+        $invoicing->nom = 'Dupont';
 
         /** @var Mailer&MockObject $mailer */
         $mailer = $this->createMock(Mailer::class);
@@ -44,9 +44,9 @@ final class InvoicingMailerTest extends TestCase
     public function testSendInvoiceSubjectWithoutCompany(): void
     {
         $invoicing = new Invoicing();
-        $invoicing->setInvoiceNumber('2026-001');
-        $invoicing->setEmail('contact@exemple.fr');
-        $invoicing->setLastname('Dupont');
+        $invoicing->numeroFacture = '2026-001';
+        $invoicing->email = 'contact@exemple.fr';
+        $invoicing->nom = 'Dupont';
 
         /** @var Mailer&MockObject $mailer */
         $mailer = $this->createMock(Mailer::class);

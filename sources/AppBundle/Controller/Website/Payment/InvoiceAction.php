@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\Payment;
 
 use Afup\Site\Utils\Utils;
+use AppBundle\Accounting\Entity\Invoicing;
+use AppBundle\Accounting\Entity\Repository\InvoicingRepository;
 use AppBundle\Accounting\InvoicingPaymentStatus;
-use AppBundle\Accounting\Model\Invoicing;
-use AppBundle\Accounting\Model\Repository\InvoicingRepository;
 use AppBundle\Payment\PayboxBilling;
 use AppBundle\Payment\PayboxFactory;
 use AppBundle\Twig\ViewRenderer;
@@ -37,12 +37,12 @@ class InvoiceAction extends AbstractController
         }
 
         $paybox = null;
-        if ($invoice->getPaymentStatus() === InvoicingPaymentStatus::Waiting) {
+        if ($invoice->etatPaiement === InvoicingPaymentStatus::Waiting) {
             $paybox = $this->buildPaybox($invoice);
         }
 
         return $this->view->render('site/payment/invoice.html.twig', [
-            'invoice_number' => $invoice->getInvoiceNumber(),
+            'invoice_number' => $invoice->numeroFacture,
             'ref' => $ref,
             'paybox' => $paybox,
         ]);
@@ -51,22 +51,22 @@ class InvoiceAction extends AbstractController
     private function buildPaybox(Invoicing $invoice): string
     {
         $amount = 0.0;
-        foreach ($invoice->getDetails() as $detail) {
-            $amount += $detail->getQuantity() * $detail->getUnitPrice() * (1 + ($detail->getTva() / 100));
+        foreach ($invoice->details as $detail) {
+            $amount += $detail->quantite * $detail->prixUnitaire * (1 + ($detail->tva / 100));
         }
 
         $paybox = $this->payboxFactory->getPaybox();
         $paybox
             ->setTotal((int) ($amount * 100))
-            ->setCmd($invoice->getInvoiceNumber())
-            ->setPorteur($invoice->getEmail())
+            ->setCmd($invoice->numeroFacture)
+            ->setPorteur($invoice->email)
             ->setUrlRetourEffectue($this->generateUrl('payment_invoice_redirect', ['type' => 'success'], UrlGeneratorInterface::ABSOLUTE_URL))
             ->setUrlRetourAnnule($this->generateUrl('payment_invoice_redirect', ['type' => 'canceled'], UrlGeneratorInterface::ABSOLUTE_URL))
             ->setUrlRetourRefuse($this->generateUrl('payment_invoice_redirect', ['type' => 'refused'], UrlGeneratorInterface::ABSOLUTE_URL))
             ->setUrlRetourErreur($this->generateUrl('payment_invoice_redirect', ['type' => 'error'], UrlGeneratorInterface::ABSOLUTE_URL))
         ;
 
-        $payboxBilling = new PayboxBilling($invoice->getFirstname(), $invoice->getLastname(), $invoice->getAddress(), $invoice->getZipcode(), $invoice->getCity(), $invoice->getCountryId());
+        $payboxBilling = new PayboxBilling($invoice->prenom, $invoice->nom, $invoice->adresse, $invoice->codePostal, $invoice->ville, $invoice->idPays);
 
         return $paybox->generate(new \DateTime(), $payboxBilling);
     }
