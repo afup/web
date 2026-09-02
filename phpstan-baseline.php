@@ -4022,13 +4022,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Speaker/SpeakerRegisterAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$speakers of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TalkToSpeakersRepository\\:\\:replaceSpeakers\\(\\) expects array\\<AppBundle\\\\Event\\\\Model\\\\Speaker\\>, mixed given\\.$#',
+	'message' => '#^Parameter \\#2 \\$speakers of method AppBundle\\\\Event\\\\Entity\\\\Repository\\\\TalkToSpeakerRepository\\:\\:replaceSpeakers\\(\\) expects array\\<AppBundle\\\\Event\\\\Model\\\\Speaker\\>, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Talk/AddAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$speakers of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TalkToSpeakersRepository\\:\\:replaceSpeakers\\(\\) expects array\\<AppBundle\\\\Event\\\\Model\\\\Speaker\\>, mixed given\\.$#',
+	'message' => '#^Parameter \\#2 \\$speakers of method AppBundle\\\\Event\\\\Entity\\\\Repository\\\\TalkToSpeakerRepository\\:\\:replaceSpeakers\\(\\) expects array\\<AppBundle\\\\Event\\\\Model\\\\Speaker\\>, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Talk/EditAction.php',
@@ -6512,12 +6512,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/EventStatsRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$speakers of class AppBundle\\\\Event\\\\Model\\\\EventStats\\\\CFPStats constructor expects int, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/EventStatsRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$paying of class AppBundle\\\\Event\\\\Model\\\\EventStats\\\\TicketTypeStats constructor expects list\\<int\\>, array\\<mixed\\> given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -7068,36 +7062,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'count\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkToSpeakersRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TalkToSpeakersRepository\\:\\:getNumberOfSpeakers\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkToSpeakersRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TalkToSpeakersRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkToSpeakersRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TalkToSpeakersRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkToSpeakersRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkToSpeakersRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',

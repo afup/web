@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Talk;
 
+use AppBundle\Event\Entity\Repository\TalkToSpeakerRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Notifier\SlackNotifier;
@@ -26,7 +26,7 @@ class TalkFormHandler
         private readonly SpeakerRepository $speakerRepository,
         private readonly SlackNotifier $slackNotifier,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly TalkToSpeakersRepository $talkToSpeakersRepository,
+        private readonly TalkToSpeakerRepository $talkToSpeakersRepository,
         private readonly UnitOfWork $unitOfWork,
         private readonly TalkSubmissionConfirmationMail $confirmationMail,
         private readonly LoggerInterface $logger,

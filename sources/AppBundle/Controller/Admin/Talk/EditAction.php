@@ -7,10 +7,10 @@ namespace AppBundle\Controller\Admin\Talk;
 use AppBundle\AuditLog\Audit;
 use AppBundle\Event\Form\TalkAdminType;
 use AppBundle\Event\Form\TalkType;
+use AppBundle\Event\Entity\Repository\TalkToSpeakerRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Event\Model\Talk;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +21,7 @@ class EditAction extends AbstractController
     public function __construct(
         private readonly EventRepository $eventRepository,
         private readonly TalkRepository $talkRepository,
-        private readonly TalkToSpeakersRepository $talkToSpeakersRepository,
+        private readonly TalkToSpeakerRepository $talkToSpeakersRepository,
         private readonly Audit $audit,
     ) {}
 
