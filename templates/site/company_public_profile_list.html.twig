@@ -1,54 +1,40 @@
-{% extends 'admin/association/membership/_base.html.twig' %}
+{% extends 'layouts/site.html.twig' %}
 
 {% block submenu %}
-    {% include 'site/_members_menu.html.twig' with {
-        current: "compagnies"
-    } only %}
+    {# `matches` : la fiche d'une entreprise garde cet onglet actif. #}
+    {% include 'site/partials/_submenu.html.twig' with { items: [
+        { label: 'Entreprises', route: 'company_public_profile_list',
+          matches: ['company_public_profile_list', 'company_public_profile'] },
+    ] } only %}
 {% endblock %}
 
 {% block title %}Les entreprises adhérentes à l'AFUP{% endblock %}
 
-{% block page_title %}Entreprises adhérentes{% endblock %}
+{% block content %}
 
-{% block page_content %}
+    <div class="container mx-auto flex flex-col px-4 py-6 gap-6 sm:px-28 sm:py-10 sm:gap-10">
 
-    <blockquote>
-        Ces entreprises soutiennent l'association et la communauté PHP française en étant adhérentes à l'AFUP.
-    </blockquote>
+        <div class="flex flex-col gap-5">
+            <h1 class="font-titre text-afup-800 text-2xl sm:text-4xl">Entreprises adhérentes</h1>
+            <p class="text-neutre-700">
+                Ces entreprises soutiennent l'association et la communauté PHP française en étant adhérentes à l'AFUP.
+            </p>
+        </div>
 
-    <table class="company-list">
-        <tbody>
-
-            {% for group in company_member_list|batch(3, false) %}
-                <tr>
-                {% for company_member in group %}
-                    <td>
-                        {% if company_member %}
-                        <a href="{{ path('company_public_profile', { id: company_member.id, slug: company_member.slug}) }}"
-                            title="Profil de l'entreprise {{ company_member.companyName }}">
-                            {% set logo_url = path('company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) %}
-                            <img src="{{ logo_url }}" alt="" />
-                        </a>
-                        {% endif %}
-                    </td>
-                {% endfor %}
-                </tr>
-
-                <tr>
-                {% for company_member in group %}
-                    <td>
-                        {% if company_member %}
-                        <a href="{{ path('company_public_profile', { id: company_member.id, slug: company_member.slug}) }}"
-                           title="Profile de l'entreprise {{ company_member.companyName }}">
-                            {{ company_member.companyName }}
-                        </a>
-                        {% endif %}
-                    </td>
-                {% endfor %}
-                </tr>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8">
+            {% for company_member in company_member_list %}
+                {# Un seul lien par entreprise : le legacy en posait deux (logo puis nom) vers la même cible. #}
+                <a href="{{ path('company_public_profile', { id: company_member.id, slug: company_member.slug }) }}"
+                   class="group">
+                    <twig:Card class="flex flex-col items-center gap-4 h-full group-hover:border-afup-300">
+                        <img src="{{ path('company_public_profile_logo', { id: company_member.id, slug: company_member.slug }) }}"
+                             alt="" class="h-20 w-full object-contain" />
+                        <span class="text-center text-afup-800 font-semibold">{{ company_member.companyName }}</span>
+                    </twig:Card>
+                </a>
             {% endfor %}
+        </div>
 
-        </tbody>
-    </table>
+    </div>
 
 {% endblock %}
