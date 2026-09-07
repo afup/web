@@ -1310,18 +1310,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/UserRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\UserRepository\\:\\:loadUserByEmailOrAlternateEmail\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/UserRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\UserRepository\\:\\:loadUserByEmailOrAlternateEmail\\(\\) has parameter \\$email with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/UserRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\UserRepository\\:\\:loadUserByHash\\(\\) has no return type specified\\.$#',
 	'identifier' => 'missingType.return',
 	'count' => 1,
@@ -1408,7 +1396,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#',
 	'identifier' => 'argument.type',
-	'count' => 2,
+	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/UserRepository.php',
 ];
 $ignoreErrors[] = [
@@ -1734,12 +1722,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/UserReminderFactory.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$user of method AppBundle\\\\Association\\\\UserMembership\\\\UserService\\:\\:resetPassword\\(\\) expects AppBundle\\\\Association\\\\Model\\\\User, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/UserService.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$route of method AppBundle\\\\AuditLog\\\\AuditLogRepository\\:\\:save\\(\\) expects string\\|null, mixed given\\.$#',
@@ -3954,18 +3936,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Api/Antennes/GetOneAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'email\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Auth/LostPasswordAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$email of method AppBundle\\\\Association\\\\UserMembership\\\\UserService\\:\\:resetPasswordForEmail\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Auth/LostPasswordAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method diff\\(\\) on DateTime\\|null\\.$#',
@@ -8469,12 +8439,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Slack/UsersChecker.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to an undefined method object\\:\\:modify\\(\\)\\.$#',
-	'identifier' => 'method.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Slack/UsersChecker.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'deleted\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
 	'count' => 1,
@@ -8513,24 +8477,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'real_name\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Slack/UsersChecker.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Slack/UsersChecker.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getLastSubscription\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Slack/UsersChecker.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot clone non\\-object variable \\$lastSubscription of type mixed\\.$#',
-	'identifier' => 'clone.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Slack/UsersChecker.php',
 ];

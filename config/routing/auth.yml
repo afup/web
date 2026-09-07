@@ -23,6 +23,11 @@ app_password_reset:
     path: /password-reset
     defaults: {_controller: AppBundle\Controller\Auth\LostPasswordAction}
 
+app_password_reset_confirm:
+    path: /password-reset/{token}
+    defaults: {_controller: AppBundle\Controller\Auth\ResetPasswordAction}
+    requirements: {token: '[0-9a-f]{64}'}
+
 auth_old_password:
     path: /admin/password
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController

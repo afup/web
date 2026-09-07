@@ -4,6 +4,7 @@ parameters:
     app.badge_dir: "%kernel.project_dir%/htdocs/uploads/badges"
     app.members_logo_dir: "%kernel.project_dir%/htdocs/uploads/members_logo"
     app.general_meetings_dir: "%kernel.project_dir%/htdocs/uploads/general_meetings_reports"
+    app.password_reset_token_ttl: 1800 # 30 minutes
     bluesky.api.identifier: "%env(BLUESKY_API_IDENTIFIER)%"
     bluesky.api.app_password: "%env(BLUESKY_API_APP_PASSWORD)%"
     database_name: "%env(DATABASE_NAME)%"

@@ -42,7 +42,7 @@ trait AuthContext
         $this->minkContext->clickLink("Mot de passe perdu");
         $this->minkContext->assertPageContainsText("Mot de passe perdu");
         $this->minkContext->fillField("form_email", $arg1);
-        $this->minkContext->pressButton("Demander un nouveau mot de passe");
-        $this->minkContext->assertPageContainsText("Votre demande a été prise en compte. Si un compte correspond à cet email vous recevez un nouveau mot de passe rapidement.");
+        $this->minkContext->pressButton("Recevoir un lien de réinitialisation");
+        $this->minkContext->assertPageContainsText("Votre demande a été prise en compte. Si un compte correspond à cet email, vous recevrez un lien pour choisir un nouveau mot de passe.");
     }
 }
