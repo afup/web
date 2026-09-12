@@ -76,6 +76,10 @@ sponsor_ticket_form:
   path: /{eventSlug}/tickets/sponsor-form
   defaults: { _controller: AppBundle\Controller\Event\Ticket\SponsorTicketFormAction }
 
+billeterie_privee_home:
+  path: /{eventSlug}/tickets/billeterie-privee/{token}
+  defaults: { _controller: AppBundle\Controller\Event\Ticket\BilleteriePriveeAction }
+
 ticket:
   path: /{eventSlug}/tickets
   defaults: { _controller: AppBundle\Controller\Event\Ticket\TicketAction }

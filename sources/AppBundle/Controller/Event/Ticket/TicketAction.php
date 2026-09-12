@@ -9,6 +9,8 @@ use AppBundle\Event\Invoice\EventInvoiceReferenceGenerator;
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\User;
 use AppBundle\Controller\Event\EventActionHelper;
+use AppBundle\Event\Entity\BilleteriePrivee;
+use AppBundle\Event\Entity\Repository\BilleteriePriveeRepository;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
@@ -28,6 +30,7 @@ final class TicketAction extends AbstractController
         private readonly TicketRepository $ticketRepository,
         private readonly EventActionHelper $eventActionHelper,
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
+        private readonly BilleteriePriveeRepository $billeteriePriveeRepository,
         private readonly EventInvoiceReferenceGenerator $referenceGenerator,
         private readonly Authentication $authentication,
     ) {}
@@ -36,15 +39,26 @@ final class TicketAction extends AbstractController
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
 
-        if ($event->getDateEndSales() < new \DateTime()) {
+        [$billeteriePrivee, $billeteriePriveeExpirée] = $this->getBilleteriePriveeFromSession($request, $event);
+        if ($billeteriePriveeExpirée || ($event->getDateEndSales() < new \DateTime() && $billeteriePrivee === null)) {
             return $this->render('event/ticket/sold_out.html.twig', ['event' => $event]);
+        }
+
+        $placesRestantes = null;
+        if ($billeteriePrivee !== null) {
+            $placesRestantes = $billeteriePrivee->getPlacesRestantes(
+                $this->billeteriePriveeRepository->countPlacesPrisesParToken($billeteriePrivee->token),
+            );
+            if ($placesRestantes <= 0) {
+                return $this->render('event/ticket/sold_out.html.twig', ['event' => $event]);
+            }
         }
 
         $purchaseFactory = $this->purchaseTypeFactory;
 
         $user = $this->authentication->getAfupUserOrNull();
 
-        $purchaseForm = $purchaseFactory->getPurchaseForUser($event, $user, $request->query->get('token', null));
+        $purchaseForm = $purchaseFactory->getPurchaseForUser($event, $user, $request->query->get('token', null), $billeteriePrivee, $placesRestantes);
 
         $purchaseForm->handleRequest($request);
 
@@ -63,6 +77,14 @@ final class TicketAction extends AbstractController
                 ->setCompanyCitation($purchaseForm->get('companyCitation')->getData())
                 ->setNewsletter($purchaseForm->get('newsletterAfup')->getData())
             ;
+
+            if ($billeteriePrivee !== null) {
+                // Re-vérification du quota au moment de la prise des places
+                $placesPrises = $this->billeteriePriveeRepository->countPlacesPrisesParToken($billeteriePrivee->token);
+                if ($placesPrises + count($tickets) > $billeteriePrivee->maxPlaces) {
+                    return $this->render('event/ticket/sold_out.html.twig', ['event' => $event]);
+                }
+            }
 
             if ($user instanceof User) {
                 $memberId = $user->getId();
@@ -110,5 +132,30 @@ final class TicketAction extends AbstractController
             'soldTicketsForMember' => $totalOfSoldTicketsByMember,
             'hasMembersTickets' => $this->ticketEventTypeRepository->doesEventHasRestrictedToMembersTickets($event, true, TicketEventTypeRepository::REMOVE_PAST_TICKETS),
         ]);
+    }
+
+    /**
+     * Charge la billeterie privée depuis la session.
+     * @return array{0: BilleteriePrivee|null, 1: bool} La billeterie, et true si elle existe mais sa fenêtre de vente est passée
+     */
+    private function getBilleteriePriveeFromSession(Request $request, \AppBundle\Event\Model\Event $event): array
+    {
+        $token = $request->getSession()->get('billeterie_privee_token');
+        if (!is_string($token)) {
+            return [null, false];
+        }
+
+        $billeteriePrivee = $this->billeteriePriveeRepository->findOneByToken($token);
+        if ($billeteriePrivee === null || $billeteriePrivee->eventId !== $event->getId()) {
+            $request->getSession()->remove('billeterie_privee_token');
+            return [null, false];
+        }
+
+        $now = new \DateTimeImmutable();
+        if ($billeteriePrivee->dateDebut > $now || $billeteriePrivee->dateFin < $now) {
+            return [null, true];
+        }
+
+        return [$billeteriePrivee, false];
     }
 }

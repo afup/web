@@ -1,0 +1,134 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Billeteries privées</h2>
+    {% include 'admin/event/change_event.html.twig' with {form: event_select_form} only %}
+
+    {% if billeteries_privees|length > 0 %}
+    <table class="ui table striped compact celled">
+        <thead>
+            <th>Nom</th>
+            <th>Type de place</th>
+            <th>Prix</th>
+            <th>Places prises / max</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+            <th>Token</th>
+            <th>Lien</th>
+            <th></th>
+        </thead>
+        <tbody>
+        {% for billeterie in billeteries_privees %}
+            {% set sale = billeterie.billeterie_privee %}
+            <tr>
+                <td>{{ sale.nom }}</td>
+                <td>{{ billeterie.ticket_type }}</td>
+                <td>{{ sale.prix }} €</td>
+                <td>
+                    {{ billeterie.places_prises }} / {{ sale.maxPlaces }}
+                </td>
+                <td>{{ sale.dateDebut|date('d/m/Y H:i') }}</td>
+                <td>{{ sale.dateFin|date('d/m/Y H:i') }}</td>
+                <td>{{ sale.token }}</td>
+                <td><a href="{{ path('billeterie_privee_home', {'eventSlug': event.path, 'token': sale.token}) }}">Lien</a></td>
+                <td>
+                    <a href="{{ path('admin_event_billeterie_privee_edit', {'event': event.id, 'id': sale.id}) }}"
+                       data-tooltip="Modifier"
+                       class="ui icon button">
+                        <i class="pencil alternate icon"></i>
+                    </a>
+                    {% if billeterie.places_prises == 0 %}
+                        <a href="{{ path('admin_event_billeterie_privee_delete', {'event': event.id, 'id': sale.id}) }}"
+                           data-tooltip="Supprimer"
+                           class="ui icon button">
+                            <i class="trash alternate icon"></i>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="ui placeholder segment">
+            <div class="ui icon header">
+                <i class="meh outline icon"></i>
+                Aucune billeterie privée trouvée.{% if event == null %} Essayez de changer d'évènement{% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="ui segment">
+        <h2 class="ui header">Nouvelle billeterie privée</h2>
+
+        <div class="ui clearing divider"></div>
+
+        {{ form_start(form) }}
+
+            <table class="ui table striped compact celled">
+                <thead>
+                    <th>{{ form_label(form.nom) }}</th>
+                    <th>{{ form_label(form.ticketTypeId) }}</th>
+                    <th>{{ form_label(form.prix) }}</th>
+                    <th>{{ form_label(form.maxPlaces) }}</th>
+                    <th>{{ form_label(form.dateDebut) }}</th>
+                    <th>{{ form_label(form.dateFin) }}</th>
+                    <th>{{ form_label(form.plainMotDePasse) }}</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="ui form">
+                                {{ form_errors(form.nom) }}
+                                {{ form_widget(form.nom) }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                {{ form_errors(form.ticketTypeId) }}
+                                {{ form_widget(form.ticketTypeId) }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                {{ form_errors(form.prix) }}
+                                {{ form_widget(form.prix) }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                {{ form_errors(form.maxPlaces) }}
+                                {{ form_widget(form.maxPlaces) }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                {{ form_errors(form.dateDebut) }}
+                                {{ form_widget(form.dateDebut) }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                {{ form_errors(form.dateFin) }}
+                                {{ form_widget(form.dateFin) }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                {{ form_errors(form.plainMotDePasse) }}
+                                {{ form_widget(form.plainMotDePasse) }}
+                            </div>
+                        </td>
+                        <td>
+                            <button type="submit" class="ui primary button">Enregistrer</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        {{ form_errors(form) }}
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

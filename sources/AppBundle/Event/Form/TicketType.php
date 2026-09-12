@@ -6,12 +6,14 @@ namespace AppBundle\Event\Form;
 
 use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Association\Genre;
+use AppBundle\Event\Entity\BilleteriePrivee;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketSpecialPriceRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Model\TicketEventType;
+use AppBundle\Event\Model\TicketSpecialPrice;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\RuntimeException;
@@ -93,17 +95,15 @@ class TicketType extends AbstractType
             $ticketSpecialPrice = $this->ticketSpecialPriceRepository->findUnusedToken($event, $options['special_price_token']);
 
             if (null !== $ticketSpecialPrice) {
-                $ticketType = $this->ticketTypeRepository->get(Ticket::TYPE_SPECIAL_PRICE);
+                $filteredEventTickets = $this->createSpecialPriceTicketEventType($ticketSpecialPrice, $filteredEventTickets);
+            }
 
-                $eToken = new TicketEventType();
-                $eToken->setDateStart($ticketSpecialPrice->getDateStart());
-                $eToken->setDateEnd($ticketSpecialPrice->getDateEnd());
-                $eToken->setPrice($ticketSpecialPrice->getPrice());
-                $eToken->setTicketType($ticketType);
-                $eToken->setEventId($ticketSpecialPrice->getEventId());
-                $eToken->setTicketTypeId(Ticket::TYPE_SPECIAL_PRICE);
-                $filteredEventTickets = [];
-                $filteredEventTickets[] = $eToken;
+            $billeteriePrivee = $options['billeterie_privee'];
+            $choiceLabel = 'ticketType.prettyName';
+            if ($billeteriePrivee instanceof BilleteriePrivee) {
+                $filteredEventTickets = $this->createBilleteriePriveeTicketEventType($billeteriePrivee, $filteredEventTickets);
+                $typeDePlace = $this->ticketTypeRepository->get($billeteriePrivee->ticketTypeId);
+                $choiceLabel = static fn(): string => $typeDePlace !== null ? $typeDePlace->getPrettyName() : 'Billet';
             }
 
             $formEvent->getForm()->add('ticketEventType', ChoiceType::class, [
@@ -111,7 +111,7 @@ class TicketType extends AbstractType
                 'multiple' => false,
                 'label' => 'Formule',
                 'choices' => $filteredEventTickets,
-                'choice_label' => 'ticketType.prettyName',
+                'choice_label' => $choiceLabel,
                 'error_bubbling' => false,
                 'choice_attr' => function (TicketEventType $type, $key, $index) use ($options, $event): array {
                     $attr = [
@@ -171,6 +171,57 @@ class TicketType extends AbstractType
             'is_cfp_submitter' => false,
             'event_id' => null,
             'special_price_token' => null,
+            'billeterie_privee' => null,
         ]);
+    }
+
+    /**
+     * @param TicketEventType[] $filteredEventTickets
+     * @return TicketEventType[]
+     */
+    private function createSpecialPriceTicketEventType(TicketSpecialPrice $ticketSpecialPrice, array $filteredEventTickets): array
+    {
+        $ticketType = $this->ticketTypeRepository->get(Ticket::TYPE_SPECIAL_PRICE);
+        if (!$ticketType instanceof \AppBundle\Event\Model\TicketType) {
+            return $filteredEventTickets;
+        }
+
+        $dateStart = $ticketSpecialPrice->getDateStart();
+        $dateEnd = $ticketSpecialPrice->getDateEnd();
+        if ($dateStart === null || $dateEnd === null) {
+            return $filteredEventTickets;
+        }
+
+        $eToken = new TicketEventType();
+        $eToken->setDateStart($dateStart);
+        $eToken->setDateEnd($dateEnd);
+        $eToken->setPrice($ticketSpecialPrice->getPrice());
+        $eToken->setTicketType($ticketType);
+        $eToken->setEventId($ticketSpecialPrice->getEventId());
+        $eToken->setTicketTypeId(Ticket::TYPE_SPECIAL_PRICE);
+
+        return [$eToken];
+    }
+
+    /**
+     * @param TicketEventType[] $filteredEventTickets
+     * @return TicketEventType[]
+     */
+    private function createBilleteriePriveeTicketEventType(BilleteriePrivee $billeteriePrivee, array $filteredEventTickets): array
+    {
+        $ticketType = $this->ticketTypeRepository->get(Ticket::TYPE_SPECIAL_PRICE);
+        if (!$ticketType instanceof \AppBundle\Event\Model\TicketType) {
+            return $filteredEventTickets;
+        }
+
+        $eBilleterie = new TicketEventType();
+        $eBilleterie->setDateStart(\DateTime::createFromImmutable($billeteriePrivee->dateDebut));
+        $eBilleterie->setDateEnd(\DateTime::createFromImmutable($billeteriePrivee->dateFin));
+        $eBilleterie->setPrice($billeteriePrivee->prix);
+        $eBilleterie->setTicketType($ticketType);
+        $eBilleterie->setEventId($billeteriePrivee->eventId);
+        $eBilleterie->setTicketTypeId(Ticket::TYPE_SPECIAL_PRICE);
+
+        return [$eBilleterie];
     }
 }

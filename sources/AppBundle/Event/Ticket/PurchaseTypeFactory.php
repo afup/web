@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Event\Ticket;
 
 use AppBundle\Association\Model\User;
+use AppBundle\Event\Entity\BilleteriePrivee;
 use AppBundle\Event\Form\PurchaseType;
 use AppBundle\Event\Form\TicketType;
 use AppBundle\Event\Model\Event;
@@ -23,7 +24,7 @@ class PurchaseTypeFactory
         private readonly SpeakerRepository $speakerRepository,
     ) {}
 
-    public function getPurchaseForUser(Event $event, ?User $user = null, $specialPriceToken = null)
+    public function getPurchaseForUser(Event $event, ?User $user = null, $specialPriceToken = null, ?BilleteriePrivee $billeteriePrivee = null, ?int $nbPlacesRestantes = null)
     {
         $memberType = TicketType::MEMBER_NOT;
 
@@ -43,7 +44,12 @@ class PurchaseTypeFactory
         $invoice = $this->invoiceFactory->createInvoiceForEvent($event);
         $ticket = new Ticket();
 
-        if (null !== $specialPriceToken) {
+        if ($billeteriePrivee !== null) {
+            $ticket->setSpecialPriceToken($billeteriePrivee->token);
+            for ($i = 1; $i <= min($nbPlacesRestantes ?? 1, PurchaseType::MAX_NB_PERSONNES); $i++) {
+                $invoice->addTicket(clone $ticket);
+            }
+        } elseif (null !== $specialPriceToken) {
             $ticket->setSpecialPriceToken($specialPriceToken);
             $invoice->addTicket(clone $ticket);
         } else {
@@ -55,7 +61,7 @@ class PurchaseTypeFactory
         return $this->formFactory->create(
             PurchaseType::class,
             $invoice,
-            ['event_id' => $event->getId(), 'member_type' => $memberType, 'is_cfp_submitter' => $isCfpSubmitter, 'special_price_token' => $specialPriceToken],
+            ['event_id' => $event->getId(), 'member_type' => $memberType, 'is_cfp_submitter' => $isCfpSubmitter, 'special_price_token' => $specialPriceToken, 'billeterie_privee' => $billeteriePrivee, 'max_personnes' => $nbPlacesRestantes],
         );
     }
 }
