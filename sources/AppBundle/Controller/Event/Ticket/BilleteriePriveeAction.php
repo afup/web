@@ -66,6 +66,7 @@ final class BilleteriePriveeAction extends AbstractController
 
         return $this->render('event/ticket/billeterie_privee_home.html.twig', [
             'event' => $event,
+            'eventSlug' => $eventSlug,
             'token' => $token,
         ]);
     }
