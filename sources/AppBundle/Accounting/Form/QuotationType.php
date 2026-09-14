@@ -151,6 +151,7 @@ class QuotationType extends AbstractType
             'keep_as_list' => true,
             'allow_add' => true,
             'allow_delete' => true,
+            'constraints' => [new Assert\Valid()],
         ]);
 
         if ($options['actionType'] === 'edit') {
