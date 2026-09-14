@@ -78,10 +78,12 @@ class EditBilleteriePriveeAction extends AbstractController
         }
 
         return $this->render('admin/event/billeterie_privee_edit.html.twig', [
+            'is_new' => false,
             'billeterie_privee' => $billeteriePrivee,
             'places_prises' => $placesPrises,
             'event' => $event,
             'title' => 'Billeteries privées - Modifier',
+            'edit_title' => $billeteriePrivee->nom,
             'form' => $form->createView(),
         ]);
     }

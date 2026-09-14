@@ -165,6 +165,7 @@ parameters:
                     url: '/admin/event/billeterie-privee'
                     extra_routes:
                         - admin_event_billeterie_privee
+                        - admin_event_billeterie_privee_add
                         - admin_event_billeterie_privee_edit
                         - admin_event_billeterie_privee_delete
                 admin_event_prices:

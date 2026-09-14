@@ -26,8 +26,8 @@ class BilleteriePriveeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $ticketTypes = $options['ticketTypes'];
-        if (!is_array($ticketTypes)) {
-            throw new \RuntimeException('L\'option ticketTypes doit être un tableau.');
+        if (!is_iterable($ticketTypes)) {
+            throw new \RuntimeException('L\'option ticketTypes doit être un itérable.');
         }
 
         $builder
@@ -40,7 +40,6 @@ class BilleteriePriveeType extends AbstractType
             ->add('ticketTypeId', ChoiceType::class, [
                 'label' => 'Type de place',
                 'choices' => $this->ticketTypesToChoices($ticketTypes),
-                'choice_value' => 'id',
                 'constraints' => [
                     new NotBlank(),
                 ],
@@ -97,20 +96,19 @@ class BilleteriePriveeType extends AbstractType
         $resolver->setRequired([
             'ticketTypes',
         ]);
-        $resolver->setAllowedTypes('ticketTypes', 'array');
     }
 
     /**
-     * @param array<array-key, mixed> $ticketTypes
-     * @return array<string, TicketType>
+     * @param iterable<mixed> $ticketTypes
+     * @return array<string, int>
      */
-    private function ticketTypesToChoices(array $ticketTypes): array
+    private function ticketTypesToChoices(iterable $ticketTypes): array
     {
         $choices = [];
 
         foreach ($ticketTypes as $ticketType) {
             if ($ticketType instanceof TicketType) {
-                $choices[$ticketType->getLabel()] = $ticketType;
+                $choices[$ticketType->getLabel()] = $ticketType->getId();
             }
         }
 
