@@ -6,10 +6,12 @@ namespace AppBundle\Controller\Admin\Accounting\Invoice;
 
 use AppBundle\Accounting\InvoicingMailer;
 use AppBundle\Accounting\Model\Repository\InvoicingRepository;
+use AppBundle\Association\Model\User;
 use AppBundle\AuditLog\Audit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SendInvoiceEmailAction extends AbstractController
@@ -18,6 +20,7 @@ class SendInvoiceEmailAction extends AbstractController
         private readonly InvoicingMailer $invoicingMailer,
         private readonly InvoicingRepository $invoicingRepository,
         private readonly Audit $audit,
+        private readonly Security $security,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -29,6 +32,12 @@ class SendInvoiceEmailAction extends AbstractController
         }
 
         if ($this->invoicingMailer->sendInvoice($invoice)) {
+            $invoice->setDateEnvoi(new \DateTime());
+            $user = $this->security->getUser();
+            if ($user instanceof User) {
+                $invoice->setEnvoyePar($user->getUsername());
+            }
+            $this->invoicingRepository->save($invoice);
             $this->audit->log('Envoi par email de la facture n°' . $invoiceRef);
             $this->addFlash('notice', 'La facture a été envoyée');
         } else {

@@ -9,6 +9,7 @@ use AppBundle\Accounting\Model\Invoicing;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -43,6 +44,7 @@ readonly class InvoicingMailer
             new MailUser(MailUser::DEFAULT_SENDER_EMAIL, MailUser::DEFAULT_SENDER_NAME),
             new MailUser($invoicing->getEmail(), $invoicing->getLastname()),
         );
+        $message->addCc(MailUserFactory::sponsors());
         $message->addAttachment(new Attachment(
             $cheminFacture,
             'facture-' . $invoiceNumber . '.pdf',
