@@ -50,6 +50,11 @@ admin_accounting_invoices_send_email:
   path: /invoices/send
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\Invoice\SendInvoiceEmailAction}
 
+admin_accounting_invoices_mark_sent:
+  path: /invoices/mark-sent
+  methods: [POST]
+  defaults: {_controller: AppBundle\Controller\Admin\Accounting\Invoice\MarkFactureAsSentAction}
+
 admin_accounting_search:
   path: /search
   defaults: {_controller: AppBundle\Controller\Admin\Accounting\SearchAction}

@@ -110,6 +110,21 @@ class FeatureContext implements Context
         $link->click();
     }
 
+    #[When('I press the button of tooltip :arg1')]
+    public function pressButtonOfTooltip(string $tooltip): void
+    {
+        $button = $this->minkContext->getSession()->getPage()->find('css', sprintf('button[data-tooltip="%s"]', $tooltip));
+
+        if (null === $button) {
+            throw new ExpectationException(
+                sprintf('Button of tooltip "%s" not found', $tooltip),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+
+        $button->press();
+    }
+
     #[Then('/^the rows of table "(?P<selector>[^"]+)" should be in the following order:$/')]
     public function assertTableRowsInOrder(string $selector, PyStringNode $expectedRows): void
     {
@@ -209,14 +224,18 @@ class FeatureContext implements Context
     #[Then('/^(?:|I )should see a (?P<color>(?:[\w])* )?label "(?P<value>(?:[^"]|\\")*)"$/')]
     public function shouldSeeLabel(string $color, string $text): void
     {
-        $label = $this->minkContext->getSession()->getPage()->find('css', sprintf('.ui.label%s', $color != '' ? ('.' . $color) : ''));
+        $labels = $this->minkContext->getSession()->getPage()->findAll('css', sprintf('.ui.label%s', $color != '' ? ('.' . $color) : ''));
 
-        if (null === $label) {
-            throw new ExpectationException(
-                sprintf('label "%s" was not found', $text),
-                $this->minkContext->getSession()->getDriver(),
-            );
+        foreach ($labels as $label) {
+            if (trim((string) $label->getText()) === $text) {
+                return;
+            }
         }
+
+        throw new ExpectationException(
+            sprintf('label "%s" was not found', $text),
+            $this->minkContext->getSession()->getDriver(),
+        );
     }
 
     /**
