@@ -26,7 +26,7 @@ class AddBilleteriePriveeAction extends AbstractController
         $event = $eventSelection->event;
 
         $billeteriePrivee = new BilleteriePrivee();
-        $billeteriePrivee->token = base64_encode(random_bytes(30));
+        $billeteriePrivee->token = rtrim(strtr(base64_encode(random_bytes(30)), '+/', '-_'), '=');
         $billeteriePrivee->eventId = (int) $event->getId();
         $billeteriePrivee->dateDebut = new DateTimeImmutable();
         $billeteriePrivee->dateFin = DateTimeImmutable::createFromMutable($event->getDateEndSales());
