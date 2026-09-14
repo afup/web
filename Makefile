@@ -1,3 +1,9 @@
+# Convention de nommage des targets :
+#   docker:* : targets destinées à être invoquées DANS le container
+#              (via `docker compose run ... make docker:*` ou les hooks git)
+#   local:*  : targets destinées à être invoquées DEPUIS votre machine,
+#              elles orchestrent docker pour vous
+#   autres   : targets internes (fichiers, mkdir), ne pas invoquer directement
 -include .env
 default: help
 
@@ -23,10 +29,14 @@ help:
 	printf "\n${COLOR_TITLE}Usage:${COLOR_RESET}\n"
 	printf "  ${COLOR_TARGET}make${COLOR_RESET} [target]\n"
 	printf "\n"
-	awk '/^[\w\.@%-]+:/i { \
+		awk '/^[\w\.@%:]+:/i { \
+		backslash = sprintf("%c", 92); \
 		helpMessage = match(lastLine, /^### (.*)/); \
 		if (helpMessage) { \
-			helpCommand = substr($$1, 0, index($$1, ":") - 1); \
+			helpCommand = substr($$1, 1, length($$1) - 1); \
+			strippedCommand = ""; \
+			for (j = 1; j <= length(helpCommand); j++) { c = substr(helpCommand, j, 1); if (c != backslash) strippedCommand = strippedCommand c; } \
+			helpCommand = strippedCommand; \
 			helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
 			printf "  ${COLOR_TARGET}%-30s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
 		} \
@@ -36,73 +46,73 @@ help:
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
-.PHONY: install docker-up docker-stop docker-down test test-functional test-functional-no-js test-functional-js hooks vendors db-seed db-migrations reset-db init console phpstan assets config
+.PHONY: help local\:up local\:stop local\:down docker\:test docker\:test-integration docker\:behat docker\:cs-lint docker\:cs-fix docker\:rector docker\:rector-fix docker\:phpstan docker\:phpstan-update-baseline local\:hooks local\:watch local\:install local\:test-functional local\:test-functional-no-js local\:test-functional-js local\:test-integration-ci local\:init local\:init-db local\:config local\:console local\:logs
 
 ##@ Setup
 
 ### Installer les dépendences (composer, npm)
-install: vendors
+local\:install: docker\:vendors
 
 ### Initialisation générale (config, bdd)
-init: htdocs/uploads
-	make config
-	make init-db
+local\:init: htdocs/uploads
+	make local\:config
+	make local\:init-db
 
 ##@ Docker
 
 ### Démarrer les containers
-docker-up: .env var/logs/.docker-build data compose.override.yml
+local\:up: .env var/logs/.docker-build data compose.override.yml
 	$(DOCKER_COMP) up $(DOCKER_UP_OPTIONS)
 
 ### Stopper les containers
-docker-stop:
+local\:stop:
 	$(DOCKER_COMP) stop
 
 ### Supprimer les containers
-docker-down:
+local\:down:
 	$(DOCKER_COMP) down
 
 ### Démarrer un bash dans le container PHP
-console:
+local\:console:
 	$(DOCKER_COMP) exec -u localUser -it apachephp bash
 
 ### Voir les logs docker compose
-logs:
+local\:logs:
 	$(DOCKER_COMP) logs -f --tail 150
 
 ##@ Quality
 
 ### Tests unitaires
-test:
+docker\:test:
 	$(PHP_CONT) ./bin/phpunit --testsuite unit
 	$(PHP_CONT) ./bin/php-cs-fixer fix --dry-run -vv
 
 ### Tests d'intégration
-test-integration:
+docker\:test-integration:
 	$(PHP_CONT) ./bin/phpunit --testsuite integration
 
-### Tests fonctionnels
-behat:
+### Behat
+docker\:behat:
 	$(PHP_CONT) ./bin/behat
 
 ### PHP CS Fixer (dry run)
-cs-lint:
+docker\:cs-lint:
 	$(PHP_CONT) ./bin/php-cs-fixer fix --dry-run -vv
 
 ### PHP CS Fixer (fix)
-cs-fix:
+docker\:cs-fix:
 	$(PHP_CONT) ./bin/php-cs-fixer fix -vv
 
 ### Rector (dry run)
-rector: var/cache/dev/AppKernelDevDebugContainer.xml
+docker\:rector: var/cache/dev/AppKernelDevDebugContainer.xml
 	$(PHP_CONT) ./bin/rector --dry-run
 
 ### Rector (fix)
-rector-fix: var/cache/dev/AppKernelDevDebugContainer.xml
+docker\:rector-fix: var/cache/dev/AppKernelDevDebugContainer.xml
 	$(PHP_CONT) ./bin/rector
 
 ### Tests fonctionnels
-test-functional: data config htdocs/uploads tmp
+local\:test-functional: data local\:config htdocs/uploads tmp
 	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
 	$(DOCKER_COMP) up -d dbtest apachephptest mailcatcher
 	make clean-test-deprecated-log
@@ -113,7 +123,7 @@ test-functional: data config htdocs/uploads tmp
 	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
 
 ### Tests fonctionnels (scénarios sans JS)
-test-functional-no-js: data config htdocs/uploads tmp
+local\:test-functional-no-js: data local\:config htdocs/uploads tmp
 	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
 	$(DOCKER_COMP) up -d dbtest apachephptest mailcatcher
 	make clean-test-deprecated-log
@@ -124,7 +134,7 @@ test-functional-no-js: data config htdocs/uploads tmp
 	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
 
 ### Tests fonctionnels (scénarios JS via Panther)
-test-functional-js: data config htdocs/uploads tmp
+local\:test-functional-js: data local\:config htdocs/uploads tmp
 	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
 	$(DOCKER_COMP) up -d dbtest apachephptest mailcatcher
 	make clean-test-deprecated-log
@@ -135,46 +145,46 @@ test-functional-js: data config htdocs/uploads tmp
 	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
 
 ### Tests d'intégration avec start/stop des images docker
-test-integration-ci:
+local\:test-integration-ci:
 	$(DOCKER_COMP) stop dbtest apachephptest
 	$(DOCKER_COMP) up -d dbtest apachephptest
-	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest make vendor
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest make docker\:vendor
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/phpunit --testsuite integration
 	$(DOCKER_COMP) stop dbtest apachephptest
 
 ### Analyse PHPStan
-phpstan:
+docker\:phpstan:
 	$(PHP_CONT) ./bin/phpstan --memory-limit=-1
 
 ### Mise à jour de la baseline PHPStan
-phpstan-update-baseline:
+docker\:phpstan-update-baseline:
 	$(PHP_CONT) ./bin/phpstan analyse --memory-limit=-1 --generate-baseline phpstan-baseline.php
 
 ##@ Frontend
 
 ### Compiler les assets pour la production
-assets:
+docker\:assets:
 	./node_modules/.bin/webpack -p
 	php bin/console importmap:install
 	php bin/console tailwind:build --minify
 
 ### Lancer le watcher pour les assets
-watch:
+local\:watch:
 	./node_modules/.bin/webpack --progress --colors --watch
 
 ##@ Git
 
 ### Mise en place de hooks
-hooks: .git/hooks/pre-commit .git/hooks/post-checkout
+local\:hooks: .git/hooks/pre-commit .git/hooks/post-checkout
 
 .git/hooks/pre-commit: Makefile
 	echo "#!/bin/sh" > .git/hooks/pre-commit
-	echo "docker compose run --rm -u localUser apachephp make test" >> .git/hooks/pre-commit
+	echo "docker compose run --rm -u localUser apachephp make docker\:test" >> .git/hooks/pre-commit
 	chmod +x .git/hooks/pre-commit
 
 .git/hooks/post-checkout: Makefile
 	echo "#!/bin/sh" > .git/hooks/post-checkout
-	echo "docker compose run --rm -u localUser apachephp make vendor" >> .git/hooks/post-checkout
+	echo "docker compose run --rm -u localUser apachephp make docker\:vendor" >> .git/hooks/post-checkout
 	chmod +x .git/hooks/post-checkout
 
 
@@ -190,22 +200,22 @@ var/logs/.docker-build: compose.yml compose.override.yml $(shell find docker -ty
 compose.override.yml:
 	cp compose.override.yml-dist compose.override.yml
 
-vendors: vendor node_modules
+docker\:vendors: docker\:vendor node_modules
 
-vendor: composer.lock
+docker\:vendor: composer.lock
 	composer install --no-scripts
 
 node_modules:
 	npm install --legacy-peer-deps
 
-init-db:
-	make reset-db
-	$(DOCKER_COMP) run --rm -u localUser apachephp make db-migrations
-	$(DOCKER_COMP) run --rm -u localUser apachephp make db-seed
+local\:init-db:
+	make docker\:reset-db
+	$(DOCKER_COMP) run --rm -u localUser apachephp make docker\:db-migrations
+	$(DOCKER_COMP) run --rm -u localUser apachephp make docker\:db-seed
 
-config:
-	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp make vendors
-	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp make assets
+local\:config:
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp make docker\:vendors
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp make docker\:assets
 
 data:
 	mkdir data
@@ -217,14 +227,14 @@ htdocs/uploads:
 tmp:
 	mkdir -p tmp
 
-reset-db:
+docker\:reset-db:
 	echo 'DROP DATABASE IF EXISTS web' | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
 	echo 'CREATE DATABASE web' | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
 
-db-migrations:
+docker\:db-migrations:
 	php bin/phinx migrate
 
-db-seed:
+docker\:db-seed:
 	php bin/phinx seed:run
 
 clean-test-deprecated-log:
