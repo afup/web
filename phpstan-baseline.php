@@ -7586,12 +7586,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Sponsorship/SponsorshipLeadMail.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getTitle\\(\\) on AppBundle\\\\Event\\\\Model\\\\Event\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Sponsorship/SponsorshipLeadMail.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'\\.aggregation\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
 	'count' => 1,
