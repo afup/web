@@ -5588,18 +5588,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$dateEnd of method AppBundle\\\\Event\\\\Model\\\\TicketEventType\\:\\:setDateEnd\\(\\) expects DateTime, DateTime\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$dateStart of method AppBundle\\\\Event\\\\Model\\\\TicketEventType\\:\\:setDateStart\\(\\) expects DateTime, DateTime\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$event of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketEventTypeRepository\\:\\:getTicketsByEvent\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Event, AppBundle\\\\Event\\\\Model\\\\Event\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -5607,12 +5595,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$event of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketSpecialPriceRepository\\:\\:findUnusedToken\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Event, AppBundle\\\\Event\\\\Model\\\\Event\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$ticketType of method AppBundle\\\\Event\\\\Model\\\\TicketEventType\\:\\:setTicketType\\(\\) expects AppBundle\\\\Event\\\\Model\\\\TicketType, AppBundle\\\\Event\\\\Model\\\\TicketType\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',

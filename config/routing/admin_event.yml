@@ -87,6 +87,24 @@ admin_event_special_price_extend:
   requirements:
     id: \d+
 
+admin_event_billeterie_privee:
+  path: /billeterie-privee
+  defaults: {_controller: AppBundle\Controller\Admin\Event\BilleteriePriveeAction}
+
+admin_event_billeterie_privee_edit:
+  path: /billeterie-privee/edit/{event}/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\EditBilleteriePriveeAction}
+  requirements:
+    event: \d+
+    id: \d+
+
+admin_event_billeterie_privee_delete:
+  path: /billeterie-privee/delete/{event}/{id}
+  defaults: {_controller: AppBundle\Controller\Admin\Event\DeleteBilleteriePriveeAction}
+  requirements:
+    event: \d+
+    id: \d+
+
 admin_event_prices:
   path: /prices
   defaults: {_controller: AppBundle\Controller\Admin\Event\PricesAction }

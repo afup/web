@@ -4,3 +4,7 @@ framework:
             policy: sliding_window
             limit: 10
             interval: '1 hour'
+        billeterie_privee:
+            policy: sliding_window
+            limit: 10
+            interval: '1 hour'

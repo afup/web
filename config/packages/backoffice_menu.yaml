@@ -159,6 +159,14 @@ parameters:
                     url: '/admin/event/special_price'
                     extra_routes:
                         - admin_event_special_price
+                admin_event_billeterie_privee:
+                    nom: 'Billeteries privées'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/billeterie-privee'
+                    extra_routes:
+                        - admin_event_billeterie_privee
+                        - admin_event_billeterie_privee_edit
+                        - admin_event_billeterie_privee_delete
                 admin_event_prices:
                     nom: 'Tarifications'
                     niveau: 'ROLE_FORUM'

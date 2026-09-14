@@ -1,0 +1,19 @@
+{% extends 'event/ticket/base.html.twig' %}
+
+{% block metas %}
+    {{ parent() }}
+    <meta name="robots" content="noindex">
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <h1>{{ 'Billetterie privée'|trans }}: {{ event.title }}</h1>
+        <form method="post" class="billeterie-privee-home-form" action="{{ path('billeterie_privee_home', {'eventSlug': eventSlug, 'token': token}) }}">
+            <div>
+                <label>Mot de passe</label>
+                <input type="password" name="billeterie_privee_mot_de_passe" /><input type="submit" value="OK" />
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('billeterie_privee') }}" />
+            </div>
+        </form>
+    </div>
+{% endblock %}

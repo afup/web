@@ -1,0 +1,39 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% form_theme form 'form_theme_admin.html.twig' %}
+
+{% block content %}
+    <h2>{{ title }}</h2>
+    <div class="ui segment">
+        {{ form_start(form) }}
+        <h2 class="ui header">{{ billeterie_privee.nom }}</h2>
+        <p>
+            Token : {{ billeterie_privee.token }}<br>
+            {% if places_prises is not null %}
+                Places déjà prises : {{ places_prises }}
+            {% endif %}
+        </p>
+        <div class="ui clearing divider"></div>
+        <div class="ui form">
+            {{ form_row(form.nom) }}
+            {{ form_row(form.ticketTypeId) }}
+            {{ form_row(form.prix) }}
+            {{ form_row(form.maxPlaces) }}
+            {{ form_row(form.dateDebut) }}
+            {{ form_row(form.dateFin) }}
+            {{ form_row(form.plainMotDePasse) }}
+        </div>
+        <div>
+            <div class="ui form">
+                <div class="inline fields ui grid">
+                    <div class="three wide column"></div>
+                    <div class="field nine wide column">
+                        <button type="submit" class="ui primary button">Modifier</button>
+                        <a href="{{ path('admin_event_billeterie_privee', {'id': event.id}) }}" class="ui button">Annuler</a>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
