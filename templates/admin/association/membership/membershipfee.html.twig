@@ -1,74 +1,79 @@
-{% extends 'admin/association/membership/_base.html.twig' %}
+{% extends 'layouts/member.html.twig' %}
 
-{% block submenu %}
-    {% include 'admin/association/membership/_member_menu.html.twig' with {
-        current: "membershipfee"
-    } only %}
-{% endblock %}
+{% block title %}Cotisations - Espace membre{% endblock %}
 
-{% block page_title %}Cotisations{% endblock %}
+{% block page_body %}
 
-{% block page_content %}
-    <h2>Payer ma cotisation</h2>
+    <div class="container mx-auto flex flex-col px-4 py-6 gap-6 sm:px-28 sm:py-10 sm:gap-10">
 
-    {% if message %}
-        <p>{{ message|raw }}</p>
-    {% endif %}
+        <h1 class="font-titre text-afup-800 text-2xl sm:text-4xl">Cotisations</h1>
 
-    <div class="container">
-        <div class="col-md-12 col-sm-12">
-            <div class="form-reset txtcenter">
-                <strong>{{ libelle|raw }}{% if isSubjectedToVat %} TTC{% endif %}</strong><br />
-                <p>{{ paybox|raw }}</p>
+        <section class="flex flex-col gap-4">
+            <twig:SectionTitle>Payer ma cotisation</twig:SectionTitle>
+
+            {% if message %}
+                <p class="text-neutre-700">{{ message|raw }}</p>
+            {% endif %}
+
+            <twig:Card class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 bg-afup-100 border-afup-300">
+                <p class="font-titre text-xl text-afup-800 grow">{{ libelle|raw }}{% if isSubjectedToVat %} TTC{% endif %}</p>
+                {# Le <button> produit par AppBundle\Payment\Paybox porte les classes de buttons.css,
+                   que la nouvelle charte ne charge plus : on le restyle depuis le parent. #}
+                <div class="shrink-0 [&_button]:inline-flex [&_button]:items-center [&_button]:justify-center [&_button]:whitespace-nowrap [&_button]:rounded-lg [&_button]:bg-ruby-500 [&_button]:px-8 [&_button]:py-3 [&_button]:font-semibold [&_button]:text-white [&_button]:hover:bg-ruby-700">
+                    {{ paybox|raw }}
+                </div>
+            </twig:Card>
+        </section>
+
+        <section class="flex flex-col gap-4">
+            <twig:SectionTitle>Historique des cotisations</twig:SectionTitle>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b-2 border-neutre-300 text-sm uppercase text-neutre-700">
+                            <th class="py-2 pr-4 font-medium">Debut</th>
+                            <th class="py-2 pr-4 font-medium">Fin</th>
+                            <th class="py-2 pr-4 font-medium text-right">Montant</th>
+                            <th class="py-2 font-medium">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cotisation in cotisations %}
+                            <tr class="border-b border-neutre-300 text-neutre-700">
+                                <td class="py-3 pr-4 whitespace-nowrap">{{ cotisation.dateDebut|date('d/m/Y') }}</td>
+                                <td class="py-3 pr-4 whitespace-nowrap">
+                                    {{ cotisation.dateFin|date('d/m/Y') }}
+                                    {% if cotisation.dateDebut < time and cotisation.dateFin > time %}
+                                        (toujours valide)
+                                    {% endif %}
+                                </td>
+                                <td class="py-3 pr-4 text-right whitespace-nowrap">{{ cotisation.montant|number_format(2, ',') }}&nbsp;€</td>
+                                <td class="py-3">
+                                    {% if cotisation.telechargerFacture %}
+                                        <div class="flex flex-col sm:flex-row gap-2">
+                                            <twig:Button as="a" variant="secondary" class="flex shrink-0"
+                                                         href="{{ path('member_membership_fee_download', {id: cotisation.id}) }}"
+                                                         title="Télécharger la facture pour la cotisation {{ cotisation.numeroFacture }}">Télécharger la facture</twig:Button>
+                                            <twig:Button as="a" variant="secondary" class="flex shrink-0"
+                                                         href="{{ path('member_membership_fee_send_mail', {id: cotisation.id}) }}"
+                                                         title="Envoyer la cotisation">Recevoir par mail</twig:Button>
+                                        </div>
+                                    {% else %}
+                                        <span title="Contactez la personne qui à le droit de gérer le compte de l'entreprise">Facture non accessible</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="py-3 text-neutre-400"><em>Aucune cotisation enregistrée</em></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-        </div>
+        </section>
+
     </div>
 
-
-    <h2>Historique des cotisations</h2>
-
-    <table class="afup-table">
-        <tr>
-            <th>Debut</th>
-            <th>Fin</th>
-            <th class="txtright">Montant</th>
-            <th colspan="1">Actions</th>
-        </tr>
-        {% if cotisations %}
-            {% for cotisation in cotisations %}
-                <tr>
-                    <td>
-                        {{ cotisation.dateDebut|date('d/m/Y') }}
-                    </td>
-                    <td>
-                        {{ cotisation.dateFin|date('d/m/Y') }}
-                        {% if cotisation.dateDebut < time and cotisation.dateFin > time %}
-                            (toujours valide)
-                        {% endif %}
-                    </td>
-                    <td class="txtright">{{ cotisation.montant|number_format(2, ',') }} &euro;</td>
-                    <td style="text-align: right; white-space: nowrap">
-                        {% if cotisation.telechargerFacture %}
-                        <a class="button button-inverted button__medium" href="{{ path('member_membership_fee_download', {id: cotisation.id}) }}" title="Télécharger la facture pour la cotisation {{ cotisation.numeroFacture }}">
-                            <i class="fa fa-file"></i>
-                            Télécharger la facture
-                        </a>
-                        <a class="button button-inverted button__medium" href="{{ path('member_membership_fee_send_mail', {id: cotisation.id}) }}" title="Envoyer la cotisation">
-                            <i class="fa fa-envelope"></i>
-                            Recevoir par mail
-                        </a>
-                        {% else %}
-                            <div title="Contactez la personne qui à le droit de gérer le compte de l'entreprise">
-                                Facture non accessible <i class="fa fa-question-circle"></i>
-                            </div>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-        {% else %}
-            <tr>
-                <td><em>Aucune cotisation enregistrée</em></td>
-            </tr>
-        {% endif %}
-    </table>
 {% endblock %}
