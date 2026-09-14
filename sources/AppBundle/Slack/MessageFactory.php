@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace AppBundle\Slack;
 
 use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Event\Entity\Repository\TalkToSpeakerRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\EventStats\SalesPilotage;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
@@ -262,7 +262,7 @@ class MessageFactory
     }
 
 
-    public function createMessageForCfpStats(Event $event, TalkRepository $talkRepository, TalkToSpeakersRepository $talkToSpeakersRepository, \DateTime $currentDate, ?\DateTime $since = null): Message
+    public function createMessageForCfpStats(Event $event, TalkRepository $talkRepository, TalkToSpeakerRepository $talkToSpeakersRepository, \DateTime $currentDate, ?\DateTime $since = null): Message
     {
         $message = new Message();
         $message
@@ -318,7 +318,7 @@ class MessageFactory
     /**
      * @return Field[]
      */
-    private function prepareCfpStatsFields(TalkRepository $talkRepository, TalkToSpeakersRepository $talkToSpeakersRepository, Event $event, ?\DateTime $since = null): array
+    private function prepareCfpStatsFields(TalkRepository $talkRepository, TalkToSpeakerRepository $talkToSpeakersRepository, Event $event, ?\DateTime $since = null): array
     {
         $infos = [
             'Nombre de talks' => $talkRepository->getNumberOfTalksByEvent($event, $since)['talks'],

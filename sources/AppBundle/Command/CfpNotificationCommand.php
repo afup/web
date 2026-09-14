@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AppBundle\Command;
 
+use AppBundle\Event\Entity\Repository\TalkToSpeakerRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Notifier\SlackNotifier;
 use AppBundle\Slack\MessageFactory;
 use Symfony\Component\Console\Command\Command;
@@ -22,7 +22,7 @@ class CfpNotificationCommand extends Command
         private readonly SlackNotifier $slackNotifier,
         private readonly EventRepository $eventRepository,
         private readonly TalkRepository $talkRepository,
-        private readonly TalkToSpeakersRepository $talkToSpeakersRepository,
+        private readonly TalkToSpeakerRepository $talkToSpeakersRepository,
     ) {
         parent::__construct();
     }
