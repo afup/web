@@ -81,8 +81,9 @@ Feature: Site Public - Register
     And I fill in "company_member_phone" with "0123456"
     And I fill in "company_member[invitations][0][email]" with "registeredUser@gmail.com"
     And I press "Enregistrer mon adhésion"
-    And I should see "Adhésion enregistrée !"
-    And I should see "Montant de la cotisation: 180.00 Euros"
+    And I should see "Votre inscription a bien été enregistrée !"
+    And I should see "Montant de la cotisation"
+    And I should see "180,00 €"
     When I press "Régler par carte"
     # Pour suivre la redirection POST de Paybox
     And I submit the form with name "PAYBOX"
