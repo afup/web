@@ -6328,7 +6328,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot cast mixed to int\\.$#',
 	'identifier' => 'cast.int',
-	'count' => 3,
+	'count' => 4,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/EventStatsRepository.php',
 ];
 $ignoreErrors[] = [

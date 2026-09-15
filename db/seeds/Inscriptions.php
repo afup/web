@@ -68,7 +68,8 @@ class Inscriptions extends AbstractSeed
                 'date' => new \DateTime("2024-01-02")->getTimestamp(),
                 'reference' => 'REF-TEST-004',
                 'type_inscription' => Tarif::TYPE_2_DAYS_AFUP['id'],
-                'montant' => Tarif::TYPE_2_DAYS_AFUP['default_price'],
+                // Prix vendeur de l'evenement de test (db/seeds/EventTarif.php : id_tarif = 3, price = 15)
+                'montant' => 15.0,
                 'genre' => Genre::Femme->value,
                 'nom' => 'Sans',
                 'prenom' => 'Cotisation',
@@ -85,7 +86,8 @@ class Inscriptions extends AbstractSeed
                 'date' => time(),
                 'reference' => 'REF-TEST-005',
                 'type_inscription' => Tarif::TYPE_2_DAYS_AFUP['id'],
-                'montant' => Tarif::TYPE_2_DAYS_AFUP['default_price'],
+                // Prix vendeur de l'evenement de test (db/seeds/EventTarif.php : id_tarif = 3, price = 15)
+                'montant' => 15.0,
                 'genre' => Genre::Homme->value,
                 'nom' => 'Personne',
                 'prenom' => 'Paul',
@@ -103,7 +105,8 @@ class Inscriptions extends AbstractSeed
                 'date' => time(),
                 'reference' => 'REF-TEST-006',
                 'type_inscription' => Tarif::TYPE_2_DAYS_AFUP['id'],
-                'montant' => Tarif::TYPE_2_DAYS_AFUP['default_price'],
+                // Prix vendeur de l'evenement de test (db/seeds/EventTarif.php : id_tarif = 3, price = 15)
+                'montant' => 15.0,
                 'genre' => Genre::Homme->value,
                 'nom' => 'Maurice',
                 'prenom' => 'Jean',
@@ -223,7 +226,7 @@ class Inscriptions extends AbstractSeed
             ],
             [
                 'reference' => 'REF-TEST-004',
-                'montant' => Tarif::TYPE_2_DAYS_AFUP['default_price'],
+                'montant' => 15.0,
                 'date_reglement' => new \DateTime("2024-01-02")->getTimestamp(),
                 'type_reglement' => Ticket::PAYMENT_CREDIT_CARD,
                 'email' => 'sans@cotisation.fr',
@@ -242,7 +245,7 @@ class Inscriptions extends AbstractSeed
             ],
             [
                 'reference' => 'REF-TEST-005',
-                'montant' => Tarif::TYPE_2_DAYS_AFUP['default_price'],
+                'montant' => 15.0,
                 'date_reglement' => new \DateTime("2024-01-02")->getTimestamp(),
                 'type_reglement' => Ticket::PAYMENT_CREDIT_CARD,
                 'nom' => 'Personne',
@@ -261,7 +264,7 @@ class Inscriptions extends AbstractSeed
             ],
             [
                 'reference' => 'REF-TEST-006',
-                'montant' => Tarif::TYPE_2_DAYS_AFUP['default_price'],
+                'montant' => 15.0,
                 'date_reglement' => new \DateTime("2024-01-02")->getTimestamp(),
                 'type_reglement' => Ticket::PAYMENT_CREDIT_CARD,
                 'nom' => 'Maurice',
