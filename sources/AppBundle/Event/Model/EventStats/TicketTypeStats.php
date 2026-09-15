@@ -15,5 +15,8 @@ final readonly class TicketTypeStats
 
         /** @var list<int> */
         public array $paying,
+
+        /** @var array<int, float> Montant réel encaissé ou en attente par type de tarif */
+        public array $realAmounts = [],
     ) {}
 }

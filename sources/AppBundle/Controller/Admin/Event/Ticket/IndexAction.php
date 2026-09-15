@@ -75,7 +75,8 @@ class IndexAction extends AbstractController
             $registered = $statistics->ticketType->registered[$ticketType] ?? 0;
             $confirmed = $statistics->ticketType->confirmed[$ticketType] ?? 0;
             $paying = $statistics->ticketType->paying[$ticketType] ?? 0;
-            $amount = $paying * $ticketOffer->price;
+            $realAmount = $statistics->ticketType->realAmounts[$ticketType] ?? 0.0;
+            $amount = $realAmount;
 
             if ($registered) {
                 $computed[$ticketType] = [
@@ -83,7 +84,7 @@ class IndexAction extends AbstractController
                     'registered' => $registered,
                     'confirmed' => $confirmed,
                     'paying' => $paying,
-                    'amount' => $ticketOffer->price,
+                    'amount' => $paying > 0 && $realAmount > 0 ? round($realAmount / $paying, 2) : $ticketOffer->price,
                     'payingAmount' => $amount,
                     'availableTickets' => $ticketOffer->availableTickets,
                 ];

@@ -76,6 +76,20 @@ class EventStatsRepository
         }
 
         $queryBuilder = clone $baseQueryBuilder;
+        $queryBuilder
+            ->select('type_inscription', 'SUM(montant) AS montant')
+            ->andWhere('etat IN(:states)')
+            ->setParameter('states', [Ticket::STATUS_PAID, Ticket::STATUS_WAITING], ArrayParameterType::INTEGER);
+        $statement = $queryBuilder->executeQuery();
+
+        $realAmounts = [];
+        foreach ($statement->fetchAllAssociative() as $row) {
+            if (is_numeric($row['montant'])) {
+                $realAmounts[(int) $row['type_inscription']] = (float) $row['montant'];
+            }
+        }
+
+        $queryBuilder = clone $baseQueryBuilder;
         $statement = $queryBuilder->andWhere('etat NOT IN(:states)')
             ->setParameter('states', [Ticket::STATUS_CANCELLED, Ticket::STATUS_ERROR, Ticket::STATUS_DECLINED], ArrayParameterType::INTEGER)
             ->executeQuery();
@@ -85,7 +99,7 @@ class EventStatsRepository
             $registered[$row['type_inscription']] = $row['c'];
         }
 
-        return new TicketTypeStats($confirmed, $registered, $paying);
+        return new TicketTypeStats($confirmed, $registered, $paying, $realAmounts);
     }
 
     private function getStatsForDay(int $eventId, string $day, ?Datetime $from = null): DailyStats
