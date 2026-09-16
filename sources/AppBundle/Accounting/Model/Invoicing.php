@@ -10,7 +10,6 @@ use AppBundle\Accounting\InvoicingPaymentStatus;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use DateTime;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class Invoicing implements NotifyPropertyInterface
 {
@@ -40,7 +39,6 @@ class Invoicing implements NotifyPropertyInterface
     private ?DateTime $paymentDate = null;
     private ?InvoicingCurrency $currency = null;
     /** @var InvoicingDetail[] */
-    #[Assert\Valid]
     private array $details = [];
 
     private ?float $price = null;
