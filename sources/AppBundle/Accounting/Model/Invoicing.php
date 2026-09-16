@@ -37,6 +37,8 @@ class Invoicing implements NotifyPropertyInterface
     private string $phone = '';
     private InvoicingPaymentStatus $paymentStatus = InvoicingPaymentStatus::Waiting;
     private ?DateTime $paymentDate = null;
+    private ?DateTime $dateEnvoi = null;
+    private ?string $envoyePar = null;
     private ?InvoicingCurrency $currency = null;
     /** @var InvoicingDetail[] */
     private array $details = [];
@@ -349,6 +351,32 @@ class Invoicing implements NotifyPropertyInterface
     public function setPrice(?float $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getDateEnvoi(): ?DateTime
+    {
+        return $this->dateEnvoi;
+    }
+
+    public function setDateEnvoi(?DateTime $dateEnvoi): self
+    {
+        $this->propertyChanged('dateEnvoi', $this->dateEnvoi, $dateEnvoi);
+        $this->dateEnvoi = $dateEnvoi;
+
+        return $this;
+    }
+
+    public function getEnvoyePar(): ?string
+    {
+        return $this->envoyePar;
+    }
+
+    public function setEnvoyePar(?string $envoyePar): self
+    {
+        $this->propertyChanged('envoyePar', $this->envoyePar, $envoyePar);
+        $this->envoyePar = $envoyePar;
 
         return $this;
     }

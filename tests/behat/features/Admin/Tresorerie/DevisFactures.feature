@@ -128,9 +128,10 @@ Feature: Administration - Trésorerie - Devis/Facture
     # Envoi de la facture par email
     Then I follow the button of tooltip "Envoyer la facture 2026-3 par mail"
     And I should only receive the following emails:
-      | from               | to                         | subject      |
-      | <bonjour@afup.org> | <martine@ens-en-folie.biz> | Facture AFUP |
+      | from               | to                                              | subject      |
+      | <bonjour@afup.org> | <martine@ens-en-folie.biz>,<sponsors@afup.org> | Facture AFUP |
     Then the ".content .message" element should contain "La facture a été envoyée"
+    And I should see a green label "Envoyé"
     # Lien de paiement
     Then I follow the button of tooltip "Récupérer le lien de paiement en ligne"
     Then I should see "Paiement en ligne de la facture"
@@ -234,6 +235,16 @@ Feature: Administration - Trésorerie - Devis/Facture
     Then The page "1" of the PDF should contain "TOTAL\t1000 €"
     Then The page "1" of the PDF should contain "TVA non applicable - art. 293B du CGI"
     Then the checksum of the response content should be "c424b17649ae6bfc83bf6791dc1543ab"
+
+  @reloadDbWithTestData
+  Scenario: Marquer une facture comme envoyée manuellement
+    Given I am logged in as admin and on the Administration
+    When I go to "/admin/accounting/invoices/list?periodId=16"
+    Then I should see a label "Non envoyé"
+    When I press the button of tooltip "Marquer la facture 2025-02 comme envoyée manuellement"
+    Then I should see "La facture a été marquée comme envoyée"
+    And I go to "/admin/accounting/invoices/list?periodId=16"
+    And I should see a green label "Envoyé"
 
 
   @reloadDbWithTestData

@@ -30,6 +30,7 @@
                 <th>Ville</th>
                 <th class="right aligned">Numéro facture</th>
                 <th>Référence client</th>
+                <th data-tf-filter-type="select" class="center aligned">État envoi</th>
                 <th data-tf-filter-type="select" class="center aligned">État paiement</th>
                 <th class="right aligned">
                     Montant{% if isSubjectedToVat %} HT{% endif %}
@@ -45,6 +46,18 @@
                     <td>{{ line.city }}</td>
                     <td class="right aligned">{{ line.invoiceNumber }}</td>
                     <td>{{ line.refClt1 }}</td>
+                    <td class="center aligned">
+                        {% if line.dateEnvoi %}
+                            <span class="ui green label"
+                                  data-position="top center"
+                                  data-tooltip="Envoyé le {{ line.dateEnvoi|format_datetime('short', 'short', locale='fr') }} par {{ line.envoyePar }}"
+                            >
+                                Envoyé
+                            </span>
+                        {% else %}
+                            <span class="ui label">Non envoyé</span>
+                        {% endif %}
+                    </td>
                     <td class="center aligned">
                         {% if line.paymentStatus == enum('AppBundle\\Accounting\\InvoicingPaymentStatus').Cancelled %}
                             <span class="ui label">Annulé</span>
@@ -77,6 +90,17 @@
                         >
                             <i class="paper plane icon"></i>
                         </a>
+                        <form method="post" action="{{ path('admin_accounting_invoices_mark_sent') }}" style="display: inline">
+                            <input type="hidden" name="_token" value="{{ csrf_token('admin_accounting_invoices_mark_sent') }}">
+                            <input type="hidden" name="ref" value="{{ line.invoiceNumber }}">
+                            <button type="submit"
+                                    data-position="left center"
+                                    data-tooltip="Marquer la facture {{ line.invoiceNumber }} comme envoyée manuellement"
+                                    class="compact ui icon button"
+                            >
+                                <i class="check icon"></i>
+                            </button>
+                        </form>
                         <a href="{{ url('payment_invoice', {ref: line.paymentUrlRef}) }}"
                            data-position="left center"
                            data-tooltip="Récupérer le lien de paiement en ligne"

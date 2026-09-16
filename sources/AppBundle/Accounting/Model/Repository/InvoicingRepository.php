@@ -51,7 +51,7 @@ class InvoicingRepository extends Repository implements MetadataInitializer
                     ->where('acf.date_devis <= (select date_fin from compta_periode where id = :periodId)')
                     ->bindValues(['periodId' => $periodId]);
         }
-        $builder->groupBy(['acf.id', 'date_devis', 'numero_devis', 'date_facture', 'numero_facture', 'societe', 'adresse', 'code_postal', 'ville', 'id_pays', 'email', 'observation', 'ref_clt1', 'ref_clt2', 'ref_clt3', 'nom', 'prenom', 'tel', 'etat_paiement', 'date_paiement', 'devise_facture'])
+        $builder->groupBy(['acf.id', 'date_devis', 'numero_devis', 'date_facture', 'numero_facture', 'societe', 'adresse', 'code_postal', 'ville', 'id_pays', 'email', 'observation', 'ref_clt1', 'ref_clt2', 'ref_clt3', 'nom', 'prenom', 'tel', 'etat_paiement', 'date_paiement', 'date_envoi', 'envoye_par', 'devise_facture'])
                 ->orderBy(["$filter $direction"]);
 
         $hydrator = new HydratorSingleObject();
@@ -82,7 +82,7 @@ class InvoicingRepository extends Repository implements MetadataInitializer
                     ->where('acf.date_facture <= (select date_fin from compta_periode where id = :periodId)')
                     ->bindValues(['periodId' => $periodId]);
         }
-        $builder->groupBy(['acf.id', 'date_devis', 'numero_devis', 'date_facture', 'numero_facture', 'societe', 'adresse', 'code_postal', 'ville', 'id_pays', 'email', 'observation', 'ref_clt1', 'ref_clt2', 'ref_clt3', 'nom', 'prenom', 'tel', 'etat_paiement', 'date_paiement', 'devise_facture'])
+        $builder->groupBy(['acf.id', 'date_devis', 'numero_devis', 'date_facture', 'numero_facture', 'societe', 'adresse', 'code_postal', 'ville', 'id_pays', 'email', 'observation', 'ref_clt1', 'ref_clt2', 'ref_clt3', 'nom', 'prenom', 'tel', 'etat_paiement', 'date_paiement', 'date_envoi', 'envoye_par', 'devise_facture'])
                 ->orderBy(["$filter $direction"]);
 
         $hydrator = new HydratorSingleObject();
@@ -314,6 +314,21 @@ class InvoicingRepository extends Repository implements MetadataInitializer
                 'serializer_options' => [
                     'unserialize' => ['enum' => InvoicingCurrency::class],
                 ],
+            ])
+            ->addField([
+                'columnName' => 'date_envoi',
+                'fieldName' => 'dateEnvoi',
+                'type' => 'datetime',
+                'serializer' => DateTime::class,
+                'serializer_options' => [
+                    'serialize' => ['format' => 'Y-m-d H:i:s'],
+                    'unserialize' => ['format' => 'Y-m-d H:i:s', 'unSerializeUseFormat' => true],
+                ],
+            ])
+            ->addField([
+                'columnName' => 'envoye_par',
+                'fieldName' => 'envoyePar',
+                'type' => 'string',
             ])
         ;
 
