@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Event\Blog;
 
 use AppBundle\Controller\Event\EventActionHelper;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\JsonLd;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +18,7 @@ final class PlanningAction extends AbstractController
         private readonly JsonLd $jsonLd,
         private readonly EventActionHelper $eventActionHelper,
         private readonly TalkRepository $talkRepository,
+        private readonly PlanningRepository $planningRepository,
     ) {}
 
     public function __invoke(Request $request, string $eventSlug): Response
@@ -30,7 +32,9 @@ final class PlanningAction extends AbstractController
 
         $applyPublicationDateFilters = $request->query->getBoolean('apply-publication-date-filters', true);
 
-        $talkAggregates = $this->talkRepository->getByEventsWithSpeakers($events, $applyPublicationDateFilters);
+        $talkAggregates = $this->planningRepository->enrichTalkAggregates(
+            $this->talkRepository->getByEventsWithSpeakers($events, $applyPublicationDateFilters),
+        );
 
         $jsonld = [];
         foreach ($events as $event) {
@@ -52,14 +56,14 @@ final class PlanningAction extends AbstractController
                 continue;
             }
 
-            $startDay = $planning->getStart()->format('d/m/Y');
+            $startDay = $planning->start->format('d/m/Y');
             if (isset($eventPlanning[$startDay]) === false) {
                 $eventPlanning[$startDay] = [];
             }
-            $dateStart = $planning->getStart()->setTimezone(new \DateTimeZone('Europe/Paris'));
+            $dateStart = $planning->start->setTimezone(new \DateTimeZone('Europe/Paris'));
             $start = $dateStart->format('d/m/Y H:i');
 
-            $dateEnd = $planning->getEnd()->setTimezone(new \DateTimeZone('Europe/Paris'));
+            $dateEnd = $planning->end->setTimezone(new \DateTimeZone('Europe/Paris'));
 
             if ($dateStart->format('H') < $hourMin || $hourMin === null) {
                 $hourMin = $dateStart->format('H');
@@ -73,7 +77,7 @@ final class PlanningAction extends AbstractController
                 $eventPlanning[$startDay][$start] = [];
             }
 
-            $interval = $planning->getEnd()->diff($planning->getStart());
+            $interval = $planning->end->diff($planning->start);
 
             $defaultProgramPagePrefix = '/';
             if (isset($events[$talk->getForumId()])) {
