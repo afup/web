@@ -8,9 +8,9 @@ use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Controller\Exception\InvalidSponsorTokenException;
 use AppBundle\Event\Entity\Repository\SponsorScanRepository;
 use AppBundle\Event\Entity\SponsorScan;
-use AppBundle\Event\Model\Repository\SponsorTicketRepository;
+use AppBundle\Event\Entity\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
-use AppBundle\Event\Model\SponsorTicket;
+use AppBundle\Event\Entity\SponsorTicket;
 use AppBundle\Event\Model\Ticket;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,7 +44,7 @@ final class FlashAction extends SponsorScanController
             return $this->redirectToRoute('sponsor_scan', ['eventSlug' => $eventSlug]);
         }
 
-        $scan = $this->sponsorScanRepository->findOneBy(['sponsorTicketId' => $sponsorTicket->getId(), 'ticketId' => $ticket->getId()]);
+        $scan = $this->sponsorScanRepository->findOneBy(['sponsorTicketId' => $sponsorTicket->id, 'ticketId' => $ticket->getId()]);
 
         if ($scan instanceof SponsorScan && $scan->deletedOn === null) {
             $this->addFlash('error', 'Code déjà scanné.');
@@ -66,7 +66,7 @@ final class FlashAction extends SponsorScanController
 
     private function createSponsorScan(SponsorTicket $sponsorTicket, Ticket $ticket): SponsorScan
     {
-        $sponsorTicketId = $sponsorTicket->getId();
+        $sponsorTicketId = $sponsorTicket->id;
         $ticketId = $ticket->getId();
         if ($sponsorTicketId === null || $ticketId === null) {
             throw new \InvalidArgumentException('Le ticket sponsor et le billet doivent être enregistrés');

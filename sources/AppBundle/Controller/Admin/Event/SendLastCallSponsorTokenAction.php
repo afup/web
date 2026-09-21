@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Event\Model\Repository\SponsorTicketRepository;
-use AppBundle\Event\Model\SponsorTicket;
+use AppBundle\Event\Entity\Repository\SponsorTicketRepository;
+use AppBundle\Event\Entity\SponsorTicket;
 use AppBundle\Event\Ticket\SponsorTokenMail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,7 +24,7 @@ class SendLastCallSponsorTokenAction extends AbstractController
     {
         $event = $this->eventActionHelper->getFromRequest('id', false)->event;
         /** @var SponsorTicket[] $tokens */
-        $tokens = $this->sponsorTicketRepository->getByEvent($event);
+        $tokens = $this->sponsorTicketRepository->findByEventId((int) $event->getId());
         $mailSent = 0;
 
         foreach ($tokens as $token) {

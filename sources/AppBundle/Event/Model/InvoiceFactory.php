@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model;
 
+use AppBundle\Event\Entity\SponsorTicket;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 
 class InvoiceFactory
@@ -12,7 +13,7 @@ class InvoiceFactory
 
     public function createInvoiceFromSponsorTicket(SponsorTicket $sponsorTicket)
     {
-        $reference = 'SPONSOR-' . $sponsorTicket->getIdForum() . '-' . $sponsorTicket->getId();
+        $reference = 'SPONSOR-' . $sponsorTicket->eventId . '-' . $sponsorTicket->id;
         $invoice = $this->invoiceRepository->get($reference);
         if ($invoice !== null) {
             return $invoice;
@@ -20,10 +21,10 @@ class InvoiceFactory
 
         $invoice = new Invoice();
         $invoice
-            ->setForumId($sponsorTicket->getIdForum())
+            ->setForumId($sponsorTicket->eventId)
             ->setAmount(0)
             ->setReference($reference)
-            ->setCompany($sponsorTicket->getCompany())
+            ->setCompany($sponsorTicket->societe)
             ->setPaymentType(Ticket::PAYMENT_NONE)
             ->setEmail('bureau@afup.org')
             ->setAddress('N/A')

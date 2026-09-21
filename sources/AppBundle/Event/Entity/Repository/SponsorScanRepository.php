@@ -6,7 +6,7 @@ namespace AppBundle\Event\Entity\Repository;
 
 use AppBundle\Doctrine\EntityRepository;
 use AppBundle\Event\Entity\SponsorScan;
-use AppBundle\Event\Model\SponsorTicket;
+use AppBundle\Event\Entity\SponsorTicket;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -26,7 +26,7 @@ final class SponsorScanRepository extends EntityRepository
      */
     public function getBySponsorTicket(SponsorTicket $sponsorTicket): array
     {
-        $sponsorTicketId = $sponsorTicket->getId();
+        $sponsorTicketId = $sponsorTicket->id;
         if ($sponsorTicketId === null) {
             throw new \InvalidArgumentException('Le ticket sponsor doit être enregistré');
         }

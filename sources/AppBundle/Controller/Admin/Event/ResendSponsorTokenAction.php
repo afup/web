@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Event\AdminEventSelection;
-use AppBundle\Event\Model\Repository\SponsorTicketRepository;
+use AppBundle\Event\Entity\Repository\SponsorTicketRepository;
 use AppBundle\Event\Ticket\SponsorTokenMail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,7 +20,7 @@ class ResendSponsorTokenAction extends AbstractController
 
     public function __invoke(Request $request, AdminEventSelection $eventSelection): RedirectResponse
     {
-        $token = $this->sponsorTicketRepository->get($request->request->get('sponsor_token_id'));
+        $token = $this->sponsorTicketRepository->find($request->request->get('sponsor_token_id'));
         if ($token === null) {
             throw $this->createNotFoundException(sprintf('Could not find token with id: %s', $request->request->get('sponsor_token_id')));
         }
