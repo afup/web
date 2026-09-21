@@ -4,16 +4,49 @@ declare(strict_types=1);
 
 namespace Afup\Tests\Behat\Bootstrap;
 
+use Behat\Mink\Exception\ExpectationException;
 use Behat\Step\Given;
 use Behat\Step\When;
+use Facebook\WebDriver\Exception\StaleElementReferenceException;
 
 trait AuthContext
 {
+    private const RETRY_DELAY_MS = 500;
+    private const MAX_RETRIES = 3;
+
     #[Given('I am logged in as admin and on the Administration')]
     public function iAmLoggedInAsAdminAndOnTheAdministration(): void
     {
         $this->iAmLoggedInAsAdmin();
-        $this->minkContext->clickLink('Administration');
+        try {
+            $this->minkContext->clickLink('Administration');
+        } catch (StaleElementReferenceException $exception) {
+            // Le DOM est remplacé pendant la redirection post-login : on retente.
+            $this->retry(fn() => $this->minkContext->clickLink('Administration'), $exception);
+        }
+    }
+
+    private function retry(callable $callback, ?\Throwable $previous = null): void
+    {
+        $exception = $previous;
+
+        for ($attempt = 0; $attempt < self::MAX_RETRIES; $attempt++) {
+            usleep(self::RETRY_DELAY_MS * 1000);
+
+            try {
+                $callback();
+
+                return;
+            } catch (\Throwable $thrown) {
+                $exception = $thrown;
+            }
+        }
+
+        throw new ExpectationException(
+            sprintf('Step failed after %d attempts: %s', self::MAX_RETRIES, $exception?->getMessage()),
+            $this->minkContext->getSession()->getDriver(),
+            $exception,
+        );
     }
 
     #[Given('I am logged in as admin')]

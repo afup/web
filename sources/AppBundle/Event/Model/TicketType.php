@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model;
 
+use AppBundle\Event\Entity\TicketType as DoctrineTicketType;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 
@@ -11,8 +12,9 @@ class TicketType implements NotifyPropertyInterface
 {
     use NotifyProperty;
 
-    public const string SPECIAL_PRICE_TECHNICAL_NAME = 'SPECIAL_PRICE';
-    public const array EARLY_BIRD_TECHNICAL_NAME = ['EARLY_BIRD', 'EARLY_BIRD_AFUP', 'AFUP_DAY_EARLY'];
+    // Constantes portées par l'entité Doctrine AppBundle\Event\Entity\TicketType, source de vérité commune
+    public const string SPECIAL_PRICE_TECHNICAL_NAME = DoctrineTicketType::SPECIAL_PRICE_TECHNICAL_NAME;
+    public const array EARLY_BIRD_TECHNICAL_NAME = DoctrineTicketType::EARLY_BIRD_TECHNICAL_NAME;
 
     /**
      * @var int
