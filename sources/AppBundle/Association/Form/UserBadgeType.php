@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Form;
 
-use AppBundle\Event\Model\Repository\BadgeRepository;
-use AppBundle\Event\Model\Repository\UserBadgeRepository;
+use AppBundle\Event\Entity\Repository\BadgeRepository;
+use AppBundle\Event\Entity\Repository\UserBadgeRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -24,17 +24,17 @@ class UserBadgeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $userBadgesIds = [];
-        foreach ($this->userBadgeRepository->findByUserId($options['user']->getId()) as $userBadge) {
-            $userBadgesIds[$userBadge->getBadge()->getId()] = $userBadge->getBadge()->getId();
+        foreach ($this->userBadgeRepository->findByUserId((int) $options['user']->getId()) as $userBadge) {
+            $userBadgesIds[$userBadge->badge->id] = $userBadge->badge->id;
         }
 
 
         $badges = [];
-        foreach ($this->badgeRepository->getAll() as $badge) {
-            if (isset($userBadgesIds[$badge->getId()])) {
+        foreach ($this->badgeRepository->findAll() as $badge) {
+            if (isset($userBadgesIds[$badge->id])) {
                 continue;
             }
-            $badges[$badge->getLabel()] = $badge->getId();
+            $badges[$badge->label] = $badge->id;
         }
 
         $builder

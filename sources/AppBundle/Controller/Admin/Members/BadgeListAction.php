@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Members;
 
 use AppBundle\Association\Model\Repository\UserRepository;
-use AppBundle\Event\Model\Repository\BadgeRepository;
+use AppBundle\Event\Entity\Repository\BadgeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -21,10 +21,10 @@ class BadgeListAction
     public function __invoke(Request $request): Response
     {
         $infos = [];
-        foreach ($this->badgeRepository->getAll() as $badge) {
+        foreach ($this->badgeRepository->findAll() as $badge) {
             $infos[] = [
                 'badge' => $badge,
-                'users' => $this->userRepository->loadByBadge($badge),
+                'users' => $this->userRepository->loadByBadge($badge->id),
             ];
         }
 

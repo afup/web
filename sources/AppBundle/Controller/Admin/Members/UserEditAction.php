@@ -8,7 +8,7 @@ use AppBundle\Association\Form\UserBadgeType;
 use AppBundle\Association\Form\UserEditType;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\AuditLog\Audit;
-use AppBundle\Event\Model\Repository\UserBadgeRepository;
+use AppBundle\Event\Entity\Repository\UserBadgeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,7 +49,7 @@ class UserEditAction extends AbstractController
             ]);
         }
 
-        $userBadges = iterator_to_array($this->userBadgeRepository->findByUserId($user->getId()));
+        $userBadges = $this->userBadgeRepository->findByUserId((int) $user->getId());
         $userBadgeForm = $this->createForm(UserBadgeType::class, [], [
             'user' => $user,
             'action' => $this->generateUrl('admin_members_user_badge_new', [

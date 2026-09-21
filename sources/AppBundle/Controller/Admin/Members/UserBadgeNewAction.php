@@ -6,17 +6,20 @@ namespace AppBundle\Controller\Admin\Members;
 
 use AppBundle\Association\Form\UserBadgeType;
 use AppBundle\Association\Model\Repository\UserRepository;
-use AppBundle\Event\Model\Repository\UserBadgeRepository;
-use AppBundle\Event\Model\UserBadge;
+use AppBundle\Event\Entity\Repository\BadgeRepository;
+use AppBundle\Event\Entity\Repository\UserBadgeRepository;
+use AppBundle\Event\Entity\UserBadge;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserBadgeNewAction
 {
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly FormFactoryInterface $formFactory,
+        private readonly BadgeRepository $badgeRepository,
         private readonly UserBadgeRepository $userBadgeRepository,
     ) {}
 
@@ -27,10 +30,16 @@ class UserBadgeNewAction
         $userBadgeForm->handleRequest($request);
         $data = $userBadgeForm->getData();
 
+        $badgeId = (int) $data['badge'];
+        $badge = $this->badgeRepository->find($badgeId);
+        if (null === $badge) {
+            throw new NotFoundHttpException(sprintf('Badge %d inexistant', $badgeId));
+        }
+
         $userBadge = new UserBadge();
-        $userBadge->setBadgeId($data['badge']);
-        $userBadge->setIssuedAt($data['date']);
-        $userBadge->setUserId($data['user']);
+        $userBadge->badge = $badge;
+        $userBadge->issuedAt = $data['date'];
+        $userBadge->userId = (int) $data['user'];
         $this->userBadgeRepository->save($userBadge);
 
         return new RedirectResponse($request->headers->get('referer'));
