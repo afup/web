@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Talk;
 
+use AppBundle\Event\Entity\Planning;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
@@ -13,7 +14,10 @@ use CCMBenchmark\Ting\Query\QueryException;
 
 class ExportGenerator
 {
-    public function __construct(private readonly TalkRepository $talkRepository) {}
+    public function __construct(
+        private readonly TalkRepository $talkRepository,
+        private readonly PlanningRepository $planningRepository,
+    ) {}
 
     /**
      *
@@ -53,7 +57,9 @@ class ExportGenerator
     public function exportJoindIn(Event $event, \SplFileObject $toFile): void
     {
         // Récupération des données
-        $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event);
+        $talkAggregates = $this->planningRepository->enrichTalkAggregates(
+            $this->talkRepository->getByEventWithSpeakers($event),
+        );
 
         $toFile->fputcsv(['Title','Description','Speaker','Date','Time','Type'], escape: '\\');
 
@@ -77,11 +83,11 @@ class ExportGenerator
 
             // Gestion des horaires : stockés en timestamp, ils sont exportés dans la
             // timezone de l'événement et non dans celle du serveur.
-            $start = $talkAggregate->planning?->getStart();
+            $start = $talkAggregate->planning?->start;
             $start = $start === null ? null : \DateTimeImmutable::createFromInterface($start)->setTimezone($timezone);
 
             // Gestion du type de conférence
-            if ($talkAggregate->planning?->getIsKeynote()) {
+            if ($talkAggregate->planning?->isKeynote) {
                 $type = 'Keynote';
             } elseif (Talk::TYPE_WORKSHOP === $talkAggregate->talk->getType()) {
                 $type = 'Workshop';

@@ -1994,42 +1994,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/CFP/ViewModel/EventTalkList.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getEnd\\(\\) on AppBundle\\\\Event\\\\Model\\\\Planning\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Calendar/IcsPlanningGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getName\\(\\) on AppBundle\\\\Event\\\\Model\\\\Room\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Calendar/IcsPlanningGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getStart\\(\\) on AppBundle\\\\Event\\\\Model\\\\Planning\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Calendar/IcsPlanningGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getEnd\\(\\) on AppBundle\\\\Event\\\\Model\\\\Planning\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Calendar/JsonPlanningGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getName\\(\\) on AppBundle\\\\Event\\\\Model\\\\Room\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Calendar/JsonPlanningGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getStart\\(\\) on AppBundle\\\\Event\\\\Model\\\\Planning\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Calendar/JsonPlanningGenerator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method setTimezone\\(\\) on DateTime\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 2,
@@ -2238,18 +2202,6 @@ $ignoreErrors[] = [
 	'identifier' => 'foreach.nonIterable',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Command/UpdateCompanyMemberStateCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Command/VideosDataCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getStart\\(\\) on AppBundle\\\\Event\\\\Model\\\\Planning\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Command/VideosDataCommand.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$messages of method Symfony\\\\Component\\\\Console\\\\Output\\\\OutputInterface\\:\\:writeln\\(\\) expects iterable\\<string\\>\\|string, string\\|false given\\.$#',
@@ -3104,30 +3056,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/DeleteAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getEnd\\(\\) on AppBundle\\\\Event\\\\Model\\\\Planning\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Event\\\\Model\\\\Planning\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getStart\\(\\) on AppBundle\\\\Event\\\\Model\\\\Planning\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setRoomId\\(\\) on AppBundle\\\\Event\\\\Model\\\\Planning\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Event\\\\Session\\\\EditAction\\:\\:getForm\\(\\) has parameter \\$roomChoices with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -3142,30 +3070,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Event\\\\Session\\\\EditAction\\:\\:roomChoices\\(\\) should return array\\<string, int\\> but returns array\\<int\\|null\\>\\.$#',
 	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$data of method AppBundle\\\\Controller\\\\Admin\\\\Event\\\\Session\\\\EditAction\\:\\:getForm\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Planning, AppBundle\\\\Event\\\\Model\\\\Planning\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\Planning\\>\\:\\:save\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Planning, AppBundle\\\\Event\\\\Model\\\\Planning\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$eventId of method AppBundle\\\\Event\\\\Model\\\\Planning\\:\\:setEventId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$talkId of method AppBundle\\\\Event\\\\Model\\\\Planning\\:\\:setTalkId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
 ];
@@ -5240,12 +5144,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Talks/ListAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getEventId\\(\\) on AppBundle\\\\Event\\\\Model\\\\Planning\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Talks/ShowAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$objectOrClass of class ReflectionClass constructor expects class\\-string\\<T of object\\>\\|T of object, string given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -6068,18 +5966,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Lead.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to int\\.$#',
-	'identifier' => 'cast.int',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Planning.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Planning\\:\\:setId\\(\\) has parameter \\$id with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Planning.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\BadgeRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -6500,30 +6386,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/InvoiceRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\PlanningRepository\\:\\:getByTalk\\(\\) should return AppBundle\\\\Event\\\\Model\\\\Planning\\|null but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/PlanningRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\PlanningRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/PlanningRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\PlanningRepository\\:\\:initMetadata\\(\\) return type with generic class CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/PlanningRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/PlanningRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\RoomRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -6734,12 +6596,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'planning\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'room\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
 	'count' => 2,
@@ -6891,12 +6747,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$room of class AppBundle\\\\Event\\\\Model\\\\TalkAggregate constructor expects AppBundle\\\\Event\\\\Model\\\\Room\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#4 \\$planning of class AppBundle\\\\Event\\\\Model\\\\TalkAggregate constructor expects AppBundle\\\\Event\\\\Model\\\\Planning\\|null, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',

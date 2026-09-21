@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event\Session;
 
 use AppBundle\AuditLog\Audit;
-use AppBundle\Event\Model\Planning;
-use AppBundle\Event\Model\Repository\PlanningRepository;
+use AppBundle\Event\Entity\Planning;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +21,7 @@ class DeleteAction extends AbstractController
     public function __invoke(Request $request): Response
     {
         $id = $request->attributes->get('id');
-        $planning = $this->planningRepository->get($id);
+        $planning = $this->planningRepository->find($id);
         if (!$planning instanceof Planning) {
             throw $this->createNotFoundException(sprintf('Planning not found with id "%s".', $id));
         }
