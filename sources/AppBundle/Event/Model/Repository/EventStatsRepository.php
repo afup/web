@@ -10,6 +10,7 @@ use AppBundle\Event\Model\EventStats\SalesPilotage;
 use AppBundle\Event\Model\EventStats\TicketTypeStats;
 use AppBundle\Event\Model\EventStats;
 use AppBundle\Event\Model\EventStats\DailyStats;
+use AppBundle\Event\Model\EventStats\SpecialPriceStats;
 use AppBundle\Event\Model\Ticket;
 use Datetime;
 use Doctrine\DBAL\ArrayParameterType;
@@ -90,6 +91,16 @@ class EventStatsRepository
         }
 
         $queryBuilder = clone $baseQueryBuilder;
+        $queryBuilder
+            ->select('COUNT(DISTINCT montant) AS nb_prices')
+            ->andWhere('type_inscription = :specialPrice')
+            ->setParameter('specialPrice', Ticket::TYPE_SPECIAL_PRICE)
+            ->andWhere('etat IN(:states)')
+            ->setParameter('states', [Ticket::STATUS_PAID, Ticket::STATUS_WAITING], ArrayParameterType::INTEGER);
+        $nbPrices = $queryBuilder->executeQuery()->fetchOne();
+        $specialPriceDistinctAmounts = is_numeric($nbPrices) ? (int) $nbPrices : 0;
+
+        $queryBuilder = clone $baseQueryBuilder;
         $statement = $queryBuilder->andWhere('etat NOT IN(:states)')
             ->setParameter('states', [Ticket::STATUS_CANCELLED, Ticket::STATUS_ERROR, Ticket::STATUS_DECLINED], ArrayParameterType::INTEGER)
             ->executeQuery();
@@ -99,7 +110,85 @@ class EventStatsRepository
             $registered[$row['type_inscription']] = $row['c'];
         }
 
-        return new TicketTypeStats($confirmed, $registered, $paying, $realAmounts);
+        return new TicketTypeStats(
+            $confirmed,
+            $registered,
+            $paying,
+            $realAmounts,
+            $specialPriceDistinctAmounts,
+            $this->getSpecialPriceStats($eventId, $from),
+        );
+    }
+
+    /**
+     * Statistiques du tarif spécial (montants spéciaux) regroupées en deux catégories :
+     * billetteries privées d'un côté, tokens visiteurs de l'autre.
+     */
+    private function getSpecialPriceStats(
+        int $eventId,
+        ?\Datetime $from,
+    ): SpecialPriceStats {
+        $queryBuilder = $this->connection->createQueryBuilder()
+            ->select('aif.etat AS etat', 'aif.montant AS montant', '(bp.token IS NOT NULL) AS is_billeterie_privee')
+            ->from('afup_inscription_forum', 'aif')
+            ->leftJoin('aif', 'afup_forum_billeterie_privee', 'bp', 'bp.token = aif.special_price_token AND bp.id_forum = aif.id_forum')
+            ->where('aif.id_forum = :eventId')
+            ->andWhere('aif.type_inscription = :specialPrice')
+            ->setParameter('eventId', $eventId)
+            ->setParameter('specialPrice', Ticket::TYPE_SPECIAL_PRICE);
+
+        if ($from instanceof \Datetime) {
+            $queryBuilder->andWhere('aif.date > :from')
+                ->setParameter('from', $from->getTimestamp());
+        }
+
+        $rows = $queryBuilder->executeQuery()->fetchAllAssociative();
+
+        $confirmed = [];
+        $registered = [];
+        $paying = [];
+        $realAmounts = [];
+        $montantsParBucket = [];
+
+        foreach (SpecialPriceStats::BUCKETS as $bucket) {
+            $montantsParBucket[$bucket] = [];
+            $confirmed[$bucket] = 0;
+            $registered[$bucket] = 0;
+            $paying[$bucket] = 0;
+            $realAmounts[$bucket] = 0.0;
+        }
+
+        foreach ($rows as $row) {
+            $bucket = $row['is_billeterie_privee']
+                ? SpecialPriceStats::BUCKET_BILLETTERIE_PRIVEE
+                : SpecialPriceStats::BUCKET_TOKEN_VISITEUR;
+            $etat = is_numeric($row['etat']) ? (int) $row['etat'] : 0;
+            $montant = is_numeric($row['montant']) ? (float) $row['montant'] : null;
+
+            if (in_array($etat, [Ticket::STATUS_PAID, Ticket::STATUS_WAITING, Ticket::STATUS_GUEST], true)) {
+                $confirmed[$bucket]++;
+            }
+
+            if (!in_array($etat, [Ticket::STATUS_CANCELLED, Ticket::STATUS_ERROR, Ticket::STATUS_DECLINED], true)) {
+                $registered[$bucket]++;
+            }
+
+            if (in_array($etat, [Ticket::STATUS_PAID, Ticket::STATUS_WAITING], true)) {
+                $paying[$bucket]++;
+                $realAmounts[$bucket] += (float) ($montant ?? 0.0);
+
+                if ($montant !== null && !in_array($row['montant'], $montantsParBucket[$bucket], true)) {
+                    $montantsParBucket[$bucket][] = $row['montant'];
+                }
+            }
+        }
+
+        $distinctAmounts = [];
+        foreach ($montantsParBucket as $bucket => $montants) {
+            $distinctAmounts[$bucket] = count($montants);
+        }
+
+        return new SpecialPriceStats($confirmed, $registered, $paying, $realAmounts, $distinctAmounts);
     }
 
     private function getStatsForDay(int $eventId, string $day, ?Datetime $from = null): DailyStats

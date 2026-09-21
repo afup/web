@@ -25,7 +25,13 @@
                 <td>
                     {{ ticket.label }}
                 </td>
-                <td class="right aligned">{{ ticket.amount }} €</td>
+                <td class="right aligned">
+                    {% if ticket.amount is null %}
+                        <a href="{{ ticket.linkUrl }}" data-tooltip="Plusieurs tarifs spéciaux de prix différents sont regroupés sur cette ligne.">{{ ticket.linkLabel }}</a>
+                    {% else %}
+                        {{ ticket.amount }} €
+                    {% endif %}
+                </td>
                 <td class="right aligned">{{ ticket.registered }}</td>
                 <td class="right aligned">{{ ticket.confirmed }}</td>
                 <td class="right aligned">{{ ticket.paying }}</td>
