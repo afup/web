@@ -38,11 +38,13 @@ class BadgesComputer
     {
         $specific = [];
 
-        foreach ($this->userBadgeRepository->findByUserId($user->getId()) as $badgeAttribue) {
+        $userBadges = $this->userBadgeRepository->findByUserId((int) $user->getId());
+
+        foreach ($userBadges as $userBadge) {
             $specific[] = [
-                'date' => $badgeAttribue->issuedAt->format('Y-m-d'),
-                'id' => $badgeAttribue->badgeId,
-                'tooltip' => $badgeAttribue->badgeLabel,
+                'date' => $userBadge->issuedAt->format('Y-m-d'),
+                'id' => $userBadge->badge->id,
+                'tooltip' => $userBadge->badge->label,
             ];
         }
 
