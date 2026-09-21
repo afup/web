@@ -4448,38 +4448,38 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/SuggestionAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$comment of method AppBundle\\\\Event\\\\Model\\\\SpeakerSuggestion\\:\\:setComment\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/SuggestionAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$eventId of method AppBundle\\\\Event\\\\Model\\\\SpeakerSuggestion\\:\\:setEventId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/SuggestionAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$speakerName of method AppBundle\\\\Event\\\\Model\\\\SpeakerSuggestion\\:\\:setSpeakerName\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/SuggestionAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$suggesterEmail of method AppBundle\\\\Event\\\\Model\\\\SpeakerSuggestion\\:\\:setSuggesterEmail\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/SuggestionAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$suggesterName of method AppBundle\\\\Event\\\\Model\\\\SpeakerSuggestion\\:\\:setSuggesterName\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/SuggestionAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$data of method AppBundle\\\\Controller\\\\Event\\\\Speaker\\\\SuggestionAction\\:\\:createSpeakerSuggestion\\(\\) expects array, mixed given\\.$#',
 	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/SuggestionAction.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Event\\\\Entity\\\\SpeakerSuggestion\\:\\:\\$comment \\(string\\|null\\) does not accept mixed\\.$#',
+	'identifier' => 'assign.propertyType',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/SuggestionAction.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Event\\\\Entity\\\\SpeakerSuggestion\\:\\:\\$eventId \\(int\\) does not accept int\\|null\\.$#',
+	'identifier' => 'assign.propertyType',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/SuggestionAction.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Event\\\\Entity\\\\SpeakerSuggestion\\:\\:\\$speakerName \\(string\\) does not accept mixed\\.$#',
+	'identifier' => 'assign.propertyType',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/SuggestionAction.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Event\\\\Entity\\\\SpeakerSuggestion\\:\\:\\$suggesterEmail \\(string\\) does not accept mixed\\.$#',
+	'identifier' => 'assign.propertyType',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/SuggestionAction.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Event\\\\Entity\\\\SpeakerSuggestion\\:\\:\\$suggesterName \\(string\\) does not accept mixed\\.$#',
+	'identifier' => 'assign.propertyType',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/SuggestionAction.php',
 ];
@@ -6630,24 +6630,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerSuggestionRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerSuggestionRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerSuggestionRepository\\:\\:initMetadata\\(\\) return type with generic class CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerSuggestionRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerSuggestionRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SponsorScanRepository\\:\\:getBySponsorTicket\\(\\) has no return type specified\\.$#',
