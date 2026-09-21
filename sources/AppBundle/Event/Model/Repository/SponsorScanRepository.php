@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model\Repository;
 
+use AppBundle\Event\Entity\SponsorTicket;
 use AppBundle\Event\Model\SponsorScan;
-use AppBundle\Event\Model\SponsorTicket;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -31,7 +31,7 @@ class SponsorScanRepository extends Repository implements MetadataInitializer
                 ORDER BY afup_forum_sponsor_scan.created_on DESC';
 
         return $this->getPreparedQuery($sql)
-            ->setParams(['sponsorTicketId' => $sponsorTicket->getId()])
+            ->setParams(['sponsorTicketId' => $sponsorTicket->id])
             ->query($this->getCollection(new HydratorArray()));
     }
 
