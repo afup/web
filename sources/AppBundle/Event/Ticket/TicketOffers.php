@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Ticket;
 
+use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
-use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\TicketOffer;
-use AppBundle\Event\Model\TicketType;
 
 readonly class TicketOffers
 {
@@ -25,14 +24,11 @@ readonly class TicketOffers
     {
         $offers = [];
 
-        /** @var TicketType[] $ticketTypes */
-        $ticketTypes = $this->ticketTypeRepository->getAll();
-        foreach ($ticketTypes as $ticketType) {
-            $ticketTypeId = $ticketType->getId();
-            $offers[$ticketTypeId] = new TicketOffer(
-                $ticketTypeId,
-                $ticketType->getPrettyName(),
-                $ticketType->getDefaultPrice(),
+        foreach ($this->ticketTypeRepository->findAllOrderedById() as $ticketType) {
+            $offers[$ticketType->id] = new TicketOffer(
+                $ticketType->id,
+                $ticketType->prettyName,
+                $ticketType->defaultPrice,
                 $event->getSeats(),
             );
         }

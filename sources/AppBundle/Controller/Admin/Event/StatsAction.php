@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Controller\Event\EventActionHelper;
+use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use AppBundle\Event\Form\EventCompareSelectType;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
-use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -78,8 +78,8 @@ class StatsAction extends AbstractController
         $totalInscrits = array_sum($rawStatsByType);
         array_walk($rawStatsByType, function (&$item, $key) use (&$ticketTypes, $totalInscrits): void {
             if (isset($ticketTypes[$key]) === false) {
-                $type = $this->ticketTypeRepository->get($key);
-                $ticketTypes[$key] = $type->getPrettyName();
+                $type = $this->ticketTypeRepository->find($key);
+                $ticketTypes[$key] = $type !== null ? $type->prettyName : '';
             }
             $item = ['name' => $ticketTypes[$key], 'y' => $item / $totalInscrits];
         });

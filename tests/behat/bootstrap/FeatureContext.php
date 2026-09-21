@@ -9,6 +9,8 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Hook\BeforeScenario;
+use Behat\Mink\Driver\PantherDriver;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Step\Then;
@@ -98,7 +100,7 @@ class FeatureContext implements Context
     #[When('I follow the button of tooltip :arg1')]
     public function clickLinkOfTooltip(string $tooltip): void
     {
-        $link = $this->minkContext->getSession()->getPage()->find('css', sprintf('a[data-tooltip="%s"]', $tooltip));
+        $link = $this->findTooltipLinkWhenRendered($tooltip, 'a');
 
         if (null === $link) {
             throw new ExpectationException(
@@ -113,7 +115,7 @@ class FeatureContext implements Context
     #[When('I press the button of tooltip :arg1')]
     public function pressButtonOfTooltip(string $tooltip): void
     {
-        $button = $this->minkContext->getSession()->getPage()->find('css', sprintf('button[data-tooltip="%s"]', $tooltip));
+        $button = $this->findTooltipLinkWhenRendered($tooltip, 'button');
 
         if (null === $button) {
             throw new ExpectationException(
@@ -123,6 +125,23 @@ class FeatureContext implements Context
         }
 
         $button->press();
+    }
+
+    private function findTooltipLinkWhenRendered(string $tooltip, string $tag): ?NodeElement
+    {
+        $session = $this->minkContext->getSession();
+        $find = fn(): ?NodeElement => $session->getPage()->find('css', sprintf('%s[data-tooltip="%s"]', $tag, $tooltip));
+        $element = $find();
+
+        if (null === $element && $session->getDriver() instanceof PantherDriver) {
+            $this->waitForCondition(
+                fn(): bool => $find() !== null,
+                sprintf('Tooltip "%s" not rendered', $tooltip),
+            );
+            $element = $find();
+        }
+
+        return $element;
     }
 
     #[Then('/^the rows of table "(?P<selector>[^"]+)" should be in the following order:$/')]

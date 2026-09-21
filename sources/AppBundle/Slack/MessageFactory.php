@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace AppBundle\Slack;
 
 use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\EventStats\SalesPilotage;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
-use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Vote;
 use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
@@ -199,7 +199,11 @@ class MessageFactory
                 if (0 === $value) {
                     continue;
                 }
-                $attachment->addField(new Field()->setShort(true)->setTitle($ticketRepository->get($typeId)->getPrettyName())->setValue($value));
+                $ticketType = $ticketRepository->find($typeId);
+                if ($ticketType === null) {
+                    continue;
+                }
+                $attachment->addField(new Field()->setShort(true)->setTitle($ticketType->prettyName)->setValue($value));
             }
 
             $message->addAttachment($attachment);
