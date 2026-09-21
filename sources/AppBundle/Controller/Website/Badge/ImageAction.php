@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Badge;
 
-use AppBundle\Event\Model\Repository\BadgeRepository;
+use AppBundle\Event\Entity\Repository\BadgeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -20,7 +20,7 @@ final class ImageAction extends AbstractController
 
     public function __invoke(int $id): Response
     {
-        $badge = $this->badgeRepository->get($id);
+        $badge = $this->badgeRepository->find($id);
         if (null === $badge) {
             throw $this->createNotFoundException();
         }
