@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Event\Blog;
 
 use AppBundle\Controller\Event\EventActionHelper;
+use AppBundle\Event\Entity\Repository\EventThemeRepository;
 use AppBundle\Event\JsonLd;
-use AppBundle\Event\Model\Repository\EventThemeRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,9 +28,9 @@ final class ProgramAction extends AbstractController
         $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true), $event->getHasThemes());
         $themes = null;
         if ($event->getHasThemes()) {
-            $themes = iterator_to_array($this->eventThemeRepository->getBy(['idForum' => $event->getId()]));
-            usort($themes, fn($a, $b): int => $a->getPriority() === $b->getPriority() ? $a->getName() <=> $b->getName() : $a->getPriority() <=> $b->getPriority());
-            $themes = array_combine(array_map(fn($theme): int => (int) $theme->getId(), $themes), $themes);
+            $themes = $this->eventThemeRepository->findBy(['idForum' => $event->getId()]);
+            usort($themes, fn($a, $b): int => $a->priority === $b->priority ? $a->name <=> $b->name : $a->priority <=> $b->priority);
+            $themes = array_combine(array_map(fn($theme): int => (int) $theme->id, $themes), $themes);
         }
         $now = new \DateTime();
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Form;
 
+use AppBundle\Event\Entity\EventTheme;
 use AppBundle\Event\Form\Support\EventHelper;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\EventTheme;
 use AppBundle\Event\Model\Repository\EventRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;

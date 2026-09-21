@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event;
 
+use AppBundle\Event\Entity\EventTheme;
+use AppBundle\Event\Entity\Repository\EventThemeRepository;
 use AppBundle\Event\Form\EventThemeType;
-use AppBundle\Event\Model\EventTheme;
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\EventThemeRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use CCMBenchmark\TingBundle\Attribute\MapEntity;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,12 +29,12 @@ class EventThemeAddEditAction extends AbstractController
             $new = true;
             $eventTheme = new EventTheme();
             if ($request->query->has('idForum')) {
-                $eventTheme->setIdForum($request->query->getInt('idForum'));
+                $eventTheme->idForum = $request->query->getInt('idForum');
             }
         } else {
-            $event = $this->eventRepository->get($eventTheme->getIdForum());
+            $event = $this->eventRepository->get($eventTheme->idForum);
             if ($event !== null) {
-                $talks = $this->talkRepository->getByEventWithSpeakers($event, false, false, $eventTheme->getId());
+                $talks = $this->talkRepository->getByEventWithSpeakers($event, false, false, $eventTheme->id);
             }
         }
 
@@ -45,7 +45,7 @@ class EventThemeAddEditAction extends AbstractController
             $this->eventThemeRepository->save($eventTheme);
 
             $this->addFlash('notice', 'Thème ' . ($new ? 'ajouté' : 'modifié'));
-            return $this->redirectToRoute('admin_event_themes_list', ['id' => $eventTheme->getIdForum()]);
+            return $this->redirectToRoute('admin_event_themes_list', ['id' => $eventTheme->idForum]);
         }
 
         return $this->render('admin/event/theme_add_edit.html.twig', [
