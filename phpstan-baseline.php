@@ -3230,36 +3230,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SpecialPriceAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Event\\\\Model\\\\SponsorTicket\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SponsorTicketAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setEditedOn\\(\\) on AppBundle\\\\Event\\\\Model\\\\SponsorTicket\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SponsorTicketAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\SponsorTicket\\>\\:\\:save\\(\\) expects AppBundle\\\\Event\\\\Model\\\\SponsorTicket, AppBundle\\\\Event\\\\Model\\\\SponsorTicket\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SponsorTicketAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$idForum of method AppBundle\\\\Event\\\\Model\\\\SponsorTicket\\:\\:setIdForum\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SponsorTicketAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$sponsorTicket of method AppBundle\\\\Event\\\\Ticket\\\\SponsorTokenMail\\:\\:sendNotification\\(\\) expects AppBundle\\\\Event\\\\Model\\\\SponsorTicket, AppBundle\\\\Event\\\\Model\\\\SponsorTicket\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SponsorTicketAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'n\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
 	'count' => 1,
@@ -6672,30 +6642,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SponsorScanRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SponsorTicketRepository\\:\\:getByEvent\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SponsorTicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SponsorTicketRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SponsorTicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SponsorTicketRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SponsorTicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SponsorTicketRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TalkInvitationRepository\\:\\:getPendingInvitationsByTalkId\\(\\) has parameter \\$talkId with no type specified\\.$#',

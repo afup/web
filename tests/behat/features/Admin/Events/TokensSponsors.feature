@@ -12,7 +12,7 @@ Feature: Administration - Évènements - Tokens Sponsors
     And I follow "Tokens sponsors"
     Then the ".content h2" element should contain "Liste des tokens sponsors pour forum"
     # ajout d'un token
-    When I fill in "sponsor_token[company]" with "Ma société"
+    When I fill in "sponsor_token[societe]" with "Ma société"
     And I fill in "sponsor_token[contactEmail]" with "testToken1@mail.com"
     And I fill in "sponsor_token[maxInvitations]" with "2"
     And I press "Enregistrer"
@@ -62,7 +62,7 @@ Feature: Administration - Évènements - Tokens Sponsors
     And I follow "Tokens sponsors"
     Then the ".content h2" element should contain "Liste des tokens sponsors pour forum"
     # ajout d'un token
-    When I fill in "sponsor_token[company]" with "Ma société"
+    When I fill in "sponsor_token[societe]" with "Ma société"
     And I fill in "sponsor_token[contactEmail]" with "testToken1@mail.com"
     And I fill in "sponsor_token[maxInvitations]" with "2"
     And I press "Enregistrer"

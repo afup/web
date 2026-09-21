@@ -7,7 +7,7 @@ namespace AppBundle\Controller\Event\SponsorScan;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Controller\Exception\InvalidSponsorTokenException;
 use AppBundle\Event\Model\Repository\SponsorScanRepository;
-use AppBundle\Event\Model\Repository\SponsorTicketRepository;
+use AppBundle\Event\Entity\Repository\SponsorTicketRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -7,7 +7,7 @@ namespace AppBundle\Controller\Event\SponsorScan;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Controller\Exception\InvalidSponsorTokenException;
 use AppBundle\Event\Model\Repository\SponsorScanRepository;
-use AppBundle\Event\Model\Repository\SponsorTicketRepository;
+use AppBundle\Event\Entity\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\SponsorScan;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +32,7 @@ final class DeleteAction extends SponsorScanController
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
 
-        $scan = $this->sponsorScanRepository->getOneBy(['sponsorTicketId' => $sponsorTicket->getId(), 'id' => $scanId]);
+        $scan = $this->sponsorScanRepository->getOneBy(['sponsorTicketId' => $sponsorTicket->id, 'id' => $scanId]);
 
         if ($scan instanceof SponsorScan) {
             $scan->setDeletedOn(new \DateTime('now'));

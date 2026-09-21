@@ -7,7 +7,7 @@ namespace AppBundle\Controller\Event\SponsorScan;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Controller\Exception\InvalidSponsorTokenException;
 use AppBundle\Event\Model\Repository\SponsorScanRepository;
-use AppBundle\Event\Model\Repository\SponsorTicketRepository;
+use AppBundle\Event\Entity\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\SponsorScan;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -42,7 +42,7 @@ final class FlashAction extends SponsorScanController
             return $this->redirectToRoute('sponsor_scan', ['eventSlug' => $eventSlug]);
         }
 
-        $scan = $this->sponsorScanRepository->getOneBy(['sponsorTicketId' => $sponsorTicket->getId(), 'ticketId' => $ticket->getId()]);
+        $scan = $this->sponsorScanRepository->getOneBy(['sponsorTicketId' => $sponsorTicket->id, 'ticketId' => $ticket->getId()]);
 
         if ($scan instanceof SponsorScan && $scan->getDeletedOn() === null) {
             $this->addFlash('error', 'Code déjà scanné.');
@@ -51,7 +51,7 @@ final class FlashAction extends SponsorScanController
 
         if (!$scan instanceof SponsorScan) {
             $scan = new SponsorScan()
-                ->setSponsorTicketId($sponsorTicket->getId())
+                ->setSponsorTicketId($sponsorTicket->id)
                 ->setTicketId($ticket->getId());
         }
 
