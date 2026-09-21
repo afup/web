@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model;
 
+use AppBundle\Event\Entity\Planning;
+
 final readonly class TalkAggregate
 {
     public function __construct(

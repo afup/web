@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Indexation\Talks;
 
+use AppBundle\Event\Entity\Planning;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 
@@ -18,7 +18,7 @@ class Transformer
     public function transform(Planning $planning, Talk $talk, Event $event, \Traversable $speakers): array
     {
         $item = [
-            'planning_id' => $planning->getId(),
+            'planning_id' => $planning->id,
             'talk_id' => $talk->getId(),
             'url_key' => $talk->getUrlKey(),
             'title' => $talk->getTitle(),

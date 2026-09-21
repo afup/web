@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Command;
 
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use Symfony\Component\Console\Command\Command;
@@ -15,6 +16,7 @@ class VideosDataCommand extends Command
 {
     public function __construct(
         private readonly TalkRepository $talkRepository,
+        private readonly PlanningRepository $planningRepository,
         private readonly EventRepository $eventRepository,
     ) {
         parent::__construct();
@@ -36,7 +38,9 @@ class VideosDataCommand extends Command
             throw new \InvalidArgumentException("Event not found");
         }
 
-        $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event);
+        $talkAggregates = $this->planningRepository->enrichTalkAggregates(
+            $this->talkRepository->getByEventWithSpeakers($event),
+        );
 
         $data = [];
 
@@ -51,7 +55,7 @@ class VideosDataCommand extends Command
                 'title' => sprintf("%s - %s - %s", $talkAggregate->talk->getTitle(), implode(',', $speakersNames), $event->getTitle()),
                 "language" => $talkAggregate->talk->getLanguageCode(),
                 'url' => "https://afup.org/talks/" . $talkAggregate->talk->getUrlKey(),
-                'recording_date' => $talkAggregate->planning->getStart()->format(\Datetime::ISO8601),
+                'recording_date' => $talkAggregate->planning?->start?->format(\Datetime::ISO8601),
             ];
         }
 
