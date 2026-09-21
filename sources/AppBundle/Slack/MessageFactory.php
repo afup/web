@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Slack;
 
 use AppBundle\Association\Model\Repository\UserRepository;
+use AppBundle\Event\Entity\Vote;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\EventStats\SalesPilotage;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
@@ -12,7 +13,6 @@ use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Talk;
-use AppBundle\Event\Model\Vote;
 use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -36,9 +36,9 @@ class MessageFactory
             ->setTitleLink('https://afup.org/pages/administration/index.php?page=forum_vote_github')
             ->setFallback(sprintf(
                     'Nouveau vote sur la conférence "%s". Note: %s. Commentaire: %s',
-                    $vote->getTalk()->getTitle(),
-                    $vote->getVote(),
-                    $vote->getComment(),
+                    $vote->talk?->getTitle() ?? '',
+                    $vote->vote,
+                    $vote->comment,
                 ),
             )
             ->setColor('good')
@@ -47,18 +47,18 @@ class MessageFactory
 
         $attachment
             ->addField(
-                new Field()->setShort(false)->setTitle('Talk')->setValue($vote->getTalk()->getTitle()),
+                new Field()->setShort(false)->setTitle('Talk')->setValue($vote->talk?->getTitle() ?? ''),
             )
             ->addField(
                 new Field()->setShort(false)->setTitle('Nouveau vote')->setValue(
-                    str_repeat(':star:', $vote->getVote()),
+                    str_repeat(':star:', $vote->vote),
                 ),
             )
         ;
-        if ($vote->getComment() !== null) {
+        if ($vote->comment !== null) {
             $attachment
                 ->addField(
-                    new Field()->setShort(false)->setTitle('Commentaire')->setValue($vote->getComment()),
+                    new Field()->setShort(false)->setTitle('Commentaire')->setValue($vote->comment),
                 )
             ;
         }
