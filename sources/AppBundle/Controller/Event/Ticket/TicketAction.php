@@ -110,6 +110,9 @@ final class TicketAction extends AbstractController
             $invoice->setReference($reference);
             $invoiceRepository->saveWithTickets($invoice);
 
+            // La commande est créée : on retire uniquement le token de billetterie privée de la session
+            $request->getSession()->remove('billeterie_privee_token');
+
             return $this->redirectToRoute('ticket_payment', ['eventSlug' => $eventSlug, 'invoiceRef' => $invoice->getReference()]);
         }
 
