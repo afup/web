@@ -8,13 +8,14 @@ use AppBundle\CFP\SpeakerFactory;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\TalkInvitationType;
 use AppBundle\Event\Form\TalkType;
+use AppBundle\Event\Entity\TalkInvitation;
+use AppBundle\Event\Enum\TalkInvitationState;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
-use AppBundle\Event\Model\Repository\TalkInvitationRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\VoteRepository;
 use AppBundle\Event\Model\Talk;
-use AppBundle\Event\Model\TalkInvitation;
+use AppBundle\Event\Entity\Repository\TalkInvitationRepository;
 use AppBundle\Event\Talk\InvitationFormHandler;
 use AppBundle\Event\Talk\TalkFormHandler;
 use AppBundle\Security\Authentication;
@@ -95,7 +96,7 @@ class EditAction extends AbstractController
             'event' => $event,
             'form' => $talkForm->createView(),
             'talk' => $talk,
-            'invitations' => $this->talkInvitationRepository->getPendingInvitationsByTalkId($talk->getId()),
+            'invitations' => $this->talkInvitationRepository->getPendingInvitationsByTalkId($talkId),
             'speakers' => $this->speakerRepository->getSpeakersByTalk($talk),
             'invitationForm' => $invitationForm->createView(),
             'votes' => $this->voteRepository->getVotesByTalkWithUser($talk->getId()),
@@ -106,12 +107,11 @@ class EditAction extends AbstractController
     private function createInvitationForm(GithubUser $user, Talk $talk): FormInterface
     {
         $invitation = new TalkInvitation();
-        $invitation
-            ->setSubmittedBy($user->getId())
-            ->setSubmittedOn(new DateTime())
-            ->setToken(base64_encode(random_bytes(30)))
-            ->setState(TalkInvitation::STATE_PENDING)
-            ->setTalkId($talk->getId());
+        $invitation->submittedBy = (int) $user->getId();
+        $invitation->submittedOn = new DateTime();
+        $invitation->token = base64_encode(random_bytes(30));
+        $invitation->state = TalkInvitationState::Pending;
+        $invitation->talkId = (int) $talk->getId();
 
         return $this->createForm(TalkInvitationType::class, $invitation);
     }
