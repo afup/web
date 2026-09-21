@@ -6,12 +6,11 @@ namespace AppBundle\Indexation\Talks;
 
 use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\AlgoliaSearch\SearchIndex;
-use AppBundle\Event\Model\Planning;
+use AppBundle\Event\Entity\Planning;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use CCMBenchmark\Ting\Repository\CollectionInterface;
 
 class Runner
 {
@@ -80,26 +79,26 @@ class Runner
     }
 
     /**
-     * @return CollectionInterface<Planning>
+     * @return list<Planning>
      */
-    protected function getAllPlannings()
+    protected function getAllPlannings(): array
     {
-        return $this->planningRepository->getAll();
+        return $this->planningRepository->findAll();
     }
 
     protected function prepareObject(Planning $planning): ?array
     {
-        if ($planning->getStart() > new \DateTime()) {
+        if ($planning->start > new \DateTime()) {
             return null;
         }
 
-        $talk = $this->talkRepository->get($planning->getTalkId());
+        $talk = $this->talkRepository->get($planning->talkId);
 
         if (null === $talk || !$talk->isDisplayedOnHistory()) {
             return  null;
         }
 
-        $event = $this->eventRepository->get($planning->getEventId());
+        $event = $this->eventRepository->get($planning->eventId);
 
         if (null === $event) {
             return null;

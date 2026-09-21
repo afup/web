@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event\Session;
 
+use AppBundle\Doctrine\Type\UnixTimestampType;
 use AppBundle\Event\AdminEventSelection;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Entity\Repository\RoomRepository;
 use AppBundle\Event\Entity\Room;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Session\CalendarEvent;
 use AppBundle\Event\Model\Session\CalendarResource;
@@ -21,13 +22,16 @@ final class IndexAction extends AbstractController
 {
     public function __construct(
         private readonly TalkRepository $talkRepository,
+        private readonly PlanningRepository $planningRepository,
         private readonly RoomRepository $roomRepository,
     ) {}
 
     public function __invoke(Request $request, AdminEventSelection $eventSelection): Response
     {
         $event = $eventSelection->event;
-        $sessions = $this->talkRepository->getByEventWithSpeakers($event, false);
+        $sessions = $this->planningRepository->enrichTalkAggregates(
+            $this->talkRepository->getByEventWithSpeakers($event, false),
+        );
 
         return $this->render('event/session/index.html.twig', [
             'event' => $event,
@@ -69,18 +73,18 @@ final class IndexAction extends AbstractController
      */
     private function calendarEvents(array $sessions): array
     {
-        $timezone = new \DateTimeZone(Planning::TIMEZONE);
+        $timezone = new \DateTimeZone(UnixTimestampType::TIMEZONE);
 
         $events = [];
         foreach ($sessions as $session) {
-            if (!$session->planning || !$session->room || !$session->planning->getStart() || !$session->planning->getEnd()) {
+            if (!$session->planning || !$session->room || !$session->planning->start || !$session->planning->end) {
                 continue;
             }
             $events[] = new CalendarEvent(
-                $session->planning->getId(),
+                $session->planning->id,
                 $session->talk->getTitle(),
-                $this->formatForCalendar($session->planning->getStart(), $timezone),
-                $this->formatForCalendar($session->planning->getEnd(), $timezone),
+                $this->formatForCalendar($session->planning->start, $timezone),
+                $this->formatForCalendar($session->planning->end, $timezone),
                 $session->room->getId(),
             );
         }

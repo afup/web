@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Tests\Indexation\Talks;
 
 use AppBundle\Association\Genre;
+use AppBundle\Event\Entity\Planning;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Indexation\Talks\Transformer;
@@ -32,11 +32,11 @@ final class TransformerTest extends TestCase
             ->setBlogPostUrl('http://tapoueh.org/confs/2014/06/23-PHPTour-Lyon-2014')
             ->setLanguageCode('fr');
 
-        ($planning = new Planning())
-            ->setId(266)
-            ->setTalkId(1007)
-            ->setEventId(10)
-            ->setIsKeynote(false);
+        $planning = new Planning();
+        $planning->id = 266;
+        $planning->talkId = 1007;
+        $planning->eventId = 10;
+        $planning->isKeynote = false;
 
         ($event = new Event())
             ->setId(10)

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Openfeedback;
 
 use AppBundle\CFP\PhotoStorage;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
 
@@ -12,12 +13,15 @@ class OpenfeedbackJsonGenerator
 {
     public function __construct(
         private readonly TalkRepository $talkRepository,
+        private readonly PlanningRepository $planningRepository,
         private readonly PhotoStorage $photoStorage,
     ) {}
 
     public function generate(Event $event): array
     {
-        $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event);
+        $talkAggregates = $this->planningRepository->enrichTalkAggregates(
+            $this->talkRepository->getByEventWithSpeakers($event),
+        );
         $data = [];
         foreach ($talkAggregates as $talkAggregate) {
             $speakersFormatted = [];
@@ -46,8 +50,8 @@ class OpenfeedbackJsonGenerator
             ];
 
             if (null !== $talkAggregate->planning) {
-                $talkFormatted['startTime'] = $this->getOpenfeedbackFormat($talkAggregate->planning->getStart());
-                $talkFormatted['endTime'] = $this->getOpenfeedbackFormat($talkAggregate->planning->getEnd());
+                $talkFormatted['startTime'] = $this->getOpenfeedbackFormat($talkAggregate->planning->start);
+                $talkFormatted['endTime'] = $this->getOpenfeedbackFormat($talkAggregate->planning->end);
             }
 
             $data['sessions'][$talkAggregate->talk->getId()] = $talkFormatted;

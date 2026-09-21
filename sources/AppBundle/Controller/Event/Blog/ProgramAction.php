@@ -6,6 +6,7 @@ namespace AppBundle\Controller\Event\Blog;
 
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Entity\Repository\EventThemeRepository;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\JsonLd;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,13 +20,16 @@ final class ProgramAction extends AbstractController
         private readonly EventActionHelper $eventActionHelper,
         private readonly TalkRepository $talkRepository,
         private readonly EventThemeRepository $eventThemeRepository,
+        private readonly PlanningRepository $planningRepository,
     ) {}
 
     public function __invoke(Request $request, $eventSlug): Response
     {
         $event = $this->eventActionHelper->getEvent($eventSlug);
         $jsonld = $this->jsonLd->getDataForEvent($event);
-        $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true), $event->getHasThemes());
+        $talkAggregates = $this->planningRepository->enrichTalkAggregates(
+            $this->talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true), $event->getHasThemes()),
+        );
         $themes = null;
         if ($event->getHasThemes()) {
             $themes = $this->eventThemeRepository->findBy(['eventId' => $event->getId()]);
