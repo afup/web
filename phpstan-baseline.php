@@ -4484,52 +4484,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/SuggestionAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/SponsorScan/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'created_on\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/SponsorScan/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'email\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/SponsorScan/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'nom\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/SponsorScan/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'prenom\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/SponsorScan/ExportAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/SponsorScan/ExportAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$sponsorTicketId of method AppBundle\\\\Event\\\\Model\\\\SponsorScan\\:\\:setSponsorTicketId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/SponsorScan/FlashAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$ticketId of method AppBundle\\\\Event\\\\Model\\\\SponsorScan\\:\\:setTicketId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/SponsorScan/FlashAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'code\' on mixed\\.$#',
@@ -6648,30 +6606,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerSuggestionRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SponsorScanRepository\\:\\:getBySponsorTicket\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SponsorScanRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SponsorScanRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SponsorScanRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SponsorScanRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SponsorScanRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SponsorScanRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SponsorTicketRepository\\:\\:getByEvent\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
