@@ -13,7 +13,7 @@ use AppBundle\Event\Entity\BilleteriePrivee;
 use AppBundle\Event\Entity\Repository\BilleteriePriveeRepository;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
-use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
+use AppBundle\Event\Entity\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Ticket\PurchaseTypeFactory;
@@ -96,7 +96,9 @@ final class TicketAction extends AbstractController
             }
 
             foreach ($tickets as $ticket) {
-                if ($ticket->getTicketEventType()->getTicketType()->getIsRestrictedToMembers() && isset($memberId, $memberType)) {
+                if ($ticket->getTicketEventType()?->ticketType !== null
+                    && $ticket->getTicketEventType()->ticketType->getIsRestrictedToMembers()
+                    && isset($memberId, $memberType)) {
                     $ticket
                         ->setMemberId($memberId)
                         ->setMemberType($memberType)

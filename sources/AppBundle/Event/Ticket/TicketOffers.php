@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Event\Ticket;
 
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
+use AppBundle\Event\Entity\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\TicketOffer;
 use AppBundle\Event\Model\TicketType;
@@ -39,11 +39,11 @@ readonly class TicketOffers
 
         $ticketTypes = $this->ticketEventTypeRepository->getTicketsByEvent($event, false);
         foreach ($ticketTypes as $ticketEventType) {
-            $ticketTypeId = $ticketEventType->getTicketTypeId();
+            $ticketTypeId = $ticketEventType->ticketTypeId;
             $offers[$ticketTypeId] = new TicketOffer(
                 $ticketTypeId,
-                $ticketEventType->getTicketType()->getPrettyName(),
-                $ticketEventType->getPrice(),
+                $ticketEventType->ticketType?->getPrettyName() ?? '',
+                $ticketEventType->price ?? 0.0,
                 $this->ticketTypeAvailability->getStock($ticketEventType, $event),
                 $event,
                 $ticketEventType,

@@ -9,7 +9,7 @@ use AppBundle\Association\UserMembership\StatisticsComputer;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
-use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
+use AppBundle\Event\Entity\Repository\TicketEventTypeRepository;
 use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use AppBundle\Security\Authentication;
 use AppBundle\Veille\Entity\Repository\NewsletterInscriptionRepository;
@@ -69,8 +69,8 @@ class HomeAction extends AbstractController
 
                 $montantTotal = 0;
                 foreach ($this->ticketEventTypeRepository->getTicketsByEvent($event, false) as $ticketEventType) {
-                    if (array_key_exists($ticketEventType->getTicketTypeId(), $stats->ticketType->paying)) {
-                        $montantTotal += $stats->ticketType->paying[$ticketEventType->getTicketTypeId()] * $ticketEventType->getPrice();
+                    if (array_key_exists($ticketEventType->ticketTypeId, $stats->ticketType->paying)) {
+                        $montantTotal += $stats->ticketType->paying[$ticketEventType->ticketTypeId] * ($ticketEventType->price ?? 0.0);
                     }
                 }
 
