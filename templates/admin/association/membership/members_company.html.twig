@@ -123,7 +123,7 @@
                 </div>
                 {% if canAddUser == false %}
                     <p>
-                        Vous avez actuellement {{ users.count }} membre(s) rattaché(s) et {{ invitations.count }} invitation(s)
+                        Vous avez actuellement {{ users.count }} membre(s) rattaché(s) et {{ invitations|length }} invitation(s)
                         en attente. Vous ne pouvez envoyer de nouvelle invitation, votre nombre maximum de membre permis par
                         votre cotisation étant atteint. Si vous souhaitez rattacher d'avantage de membres, merci de nous
                         contacter à l'adresse tresorier@afup.org afin d'augmenter le nombre de membres lié à votre cotisation.
