@@ -6,10 +6,12 @@ namespace AppBundle\Controller\Event\SponsorScan;
 
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Controller\Exception\InvalidSponsorTokenException;
-use AppBundle\Event\Model\Repository\SponsorScanRepository;
+use AppBundle\Event\Entity\Repository\SponsorScanRepository;
+use AppBundle\Event\Entity\SponsorScan;
 use AppBundle\Event\Model\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
-use AppBundle\Event\Model\SponsorScan;
+use AppBundle\Event\Model\SponsorTicket;
+use AppBundle\Event\Model\Ticket;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -42,25 +44,38 @@ final class FlashAction extends SponsorScanController
             return $this->redirectToRoute('sponsor_scan', ['eventSlug' => $eventSlug]);
         }
 
-        $scan = $this->sponsorScanRepository->getOneBy(['sponsorTicketId' => $sponsorTicket->getId(), 'ticketId' => $ticket->getId()]);
+        $scan = $this->sponsorScanRepository->findOneBy(['sponsorTicketId' => $sponsorTicket->getId(), 'ticketId' => $ticket->getId()]);
 
-        if ($scan instanceof SponsorScan && $scan->getDeletedOn() === null) {
+        if ($scan instanceof SponsorScan && $scan->deletedOn === null) {
             $this->addFlash('error', 'Code déjà scanné.');
             return $this->redirectToRoute('sponsor_scan', ['eventSlug' => $eventSlug]);
         }
 
         if (!$scan instanceof SponsorScan) {
-            $scan = new SponsorScan()
-                ->setSponsorTicketId($sponsorTicket->getId())
-                ->setTicketId($ticket->getId());
+            $scan = $this->createSponsorScan($sponsorTicket, $ticket);
         }
 
-        $scan->setCreatedOn(new \DateTime('now'))
-            ->setDeletedOn(null);
+        $scan->createdOn = new \DateTimeImmutable('now');
+        $scan->deletedOn = null;
         $this->sponsorScanRepository->save($scan);
 
         $this->addFlash('success', 'QR Code ajouté !');
 
         return $this->redirectToRoute('sponsor_scan', ['eventSlug' => $eventSlug]);
+    }
+
+    private function createSponsorScan(SponsorTicket $sponsorTicket, Ticket $ticket): SponsorScan
+    {
+        $sponsorTicketId = $sponsorTicket->getId();
+        $ticketId = $ticket->getId();
+        if ($sponsorTicketId === null || $ticketId === null) {
+            throw new \InvalidArgumentException('Le ticket sponsor et le billet doivent être enregistrés');
+        }
+
+        $scan = new SponsorScan();
+        $scan->sponsorTicketId = $sponsorTicketId;
+        $scan->ticketId = $ticketId;
+
+        return $scan;
     }
 }
