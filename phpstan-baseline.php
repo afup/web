@@ -2768,12 +2768,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/EventAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot clone DateTime\\|null\\.$#',
-	'identifier' => 'clone.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/ExtendSpecialPriceAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$reference of method AppBundle\\\\Event\\\\Invoice\\\\EventInvoicePdfGenerator\\:\\:generateQuote\\(\\) expects string, string\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -3054,18 +3048,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SpeakersManagementAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\TicketSpecialPrice\\>\\:\\:save\\(\\) expects AppBundle\\\\Event\\\\Model\\\\TicketSpecialPrice, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SpecialPriceAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$eventId of method AppBundle\\\\Event\\\\Model\\\\TicketSpecialPrice\\:\\:setEventId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SpecialPriceAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Event\\\\Model\\\\SponsorTicket\\|null\\.$#',
@@ -5330,12 +5312,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketInvoiceType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class AppBundle\\\\Event\\\\Form\\\\TicketSpecialPriceType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketSpecialPriceType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 2,
@@ -5378,19 +5354,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$event of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketSpecialPriceRepository\\:\\:findUnusedToken\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Event, AppBundle\\\\Event\\\\Model\\\\Event\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$event of method AppBundle\\\\Event\\\\Ticket\\\\TicketTypeAvailability\\:\\:getStock\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Event, AppBundle\\\\Event\\\\Model\\\\Event\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$token of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketSpecialPriceRepository\\:\\:findUnusedToken\\(\\) expects string\\|null, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
@@ -6846,36 +6810,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketSpecialPriceRepository\\:\\:findUnusedToken\\(\\) should return AppBundle\\\\Event\\\\Model\\\\TicketSpecialPrice\\|null but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketSpecialPriceRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketSpecialPriceRepository\\:\\:getByEvent\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketSpecialPriceRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketSpecialPriceRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketSpecialPriceRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketSpecialPriceRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketSpecialPriceRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketSpecialPriceRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketTypeRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
