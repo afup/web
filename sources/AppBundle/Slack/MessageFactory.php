@@ -7,11 +7,11 @@ namespace AppBundle\Slack;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Event\Entity\Repository\TalkToSpeakerRepository;
 use AppBundle\Event\Entity\Vote;
+use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\EventStats\SalesPilotage;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -199,7 +199,11 @@ class MessageFactory
                 if (0 === $value) {
                     continue;
                 }
-                $attachment->addField(new Field()->setShort(true)->setTitle($ticketRepository->get($typeId)->getPrettyName())->setValue($value));
+                $ticketType = $ticketRepository->find($typeId);
+                if ($ticketType === null) {
+                    continue;
+                }
+                $attachment->addField(new Field()->setShort(true)->setTitle($ticketType->prettyName)->setValue($value));
             }
 
             $message->addAttachment($attachment);

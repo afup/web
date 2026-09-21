@@ -26,6 +26,9 @@ services:
     Afup\Tests\Support\Wordpress\FakeWordpressClient: ~
     AppBundle\Event\Wordpress\WordpressClient: '@Afup\Tests\Support\Wordpress\FakeWordpressClient'
 
+    Afup\Tests\Support\Github\FakeGithubClient: ~
+    AppBundle\Github\GithubClient: '@Afup\Tests\Support\Github\FakeGithubClient'
+
     AppBundle\Offices\OfficeFinder:
         class: AppBundle\Offices\NullOfficeFinder
         autowire: true
