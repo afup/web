@@ -6,12 +6,12 @@ namespace AppBundle\Event\Talk;
 
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
+use AppBundle\Event\Entity\Repository\TalkInvitationRepository;
+use AppBundle\Event\Entity\TalkInvitation;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\GithubUser;
-use AppBundle\Event\Model\Repository\TalkInvitationRepository;
 use AppBundle\Event\Model\Talk;
-use AppBundle\Event\Model\TalkInvitation;
-use CCMBenchmark\Ting\Driver\QueryException;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
@@ -41,7 +41,7 @@ class InvitationFormHandler
         $invitation = $form->getData();
         try {
             $this->talkInvitationRepository->save($invitation);
-        } catch (QueryException $exception) {
+        } catch (UniqueConstraintViolationException $exception) {
             $form->addError(new FormError($exception->getMessage()));
         }
         // Send mail to the other guy, begging for him to join the talk
@@ -52,10 +52,10 @@ class InvitationFormHandler
                 '%link%' => $this->urlGenerator->generate('cfp_invite', [
                     'eventSlug' => $event->getPath(),
                     'talkId' => $talk->getId(),
-                    'token' => $invitation->getToken(),
+                    'token' => $invitation->token,
                 ], UrlGeneratorInterface::ABSOLUTE_URL),
             ]);
-            $this->mailer->sendSimpleMessage('CFP Afup', $text, new MailUser($invitation->getEmail()));
+            $this->mailer->sendSimpleMessage('CFP Afup', $text, new MailUser($invitation->email));
         });
 
         return true;
