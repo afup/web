@@ -31,6 +31,27 @@ final class BilleteriePriveeRepository extends EntityRepository
         return $billeteries;
     }
 
+    /**
+     * @param list<string> $tokens
+     * @return list<BilleteriePrivee>
+     */
+    public function findByTokens(array $tokens): array
+    {
+        if ($tokens === []) {
+            return [];
+        }
+
+        /** @var list<BilleteriePrivee> $billeteries */
+        $billeteries = $this->createQueryBuilder('billeterie_privee')
+            ->where('billeterie_privee.token IN (:tokens)')
+            ->setParameter('tokens', $tokens)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return $billeteries;
+    }
+
     public function findOneByToken(?string $token): ?BilleteriePrivee
     {
         if (!is_string($token) || $token === '') {
