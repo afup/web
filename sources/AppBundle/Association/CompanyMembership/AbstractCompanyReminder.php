@@ -6,8 +6,8 @@ namespace AppBundle\Association\CompanyMembership;
 
 use AppBundle\Association\MembershipReminderInterface;
 use AppBundle\Association\MemberType;
-use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
-use AppBundle\Association\Model\SubscriptionReminderLog;
+use AppBundle\Association\Entity\Repository\SubscriptionReminderLogRepository;
+use AppBundle\Association\Entity\SubscriptionReminderLog;
 use AppBundle\Association\NotifiableInterface;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\Mailer;
@@ -31,13 +31,11 @@ abstract class AbstractCompanyReminder implements MembershipReminderInterface
     public function sendReminder(NotifiableInterface $user): void
     {
         $log = new SubscriptionReminderLog();
-        $log
-            ->setEmail($user->getEmail())
-            ->setUserId($user->getId())
-            ->setReminderDate(new \DateTime())
-            ->setReminderKey($this->getKey())
-            ->setUserType(MemberType::MemberCompany->value)
-        ;
+        $log->email = (string) $user->getEmail();
+        $log->userId = (int) $user->getId();
+        $log->reminderDate = new \DateTimeImmutable();
+        $log->reminderKey = $this->getKey();
+        $log->userType = MemberType::MemberCompany;
 
         $message = new Message($this->getSubject(), MailUserFactory::sponsors(), new MailUser($user->getEmail()));
 
@@ -49,7 +47,7 @@ abstract class AbstractCompanyReminder implements MembershipReminderInterface
         ));
 
         $status = $this->mailer->sendTransactional($message, $this->getText());
-        $log->setMailSent($status);
+        $log->mailSent = $status;
         $this->subscriptionReminderLogRepository->save($log);
     }
 }

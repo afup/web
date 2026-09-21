@@ -16,27 +16,27 @@
         <tbody>
         {% for log in logs %}
             <tr class="{% if loop.index is even %}even{% endif %}">
-                <td>{{ log.app.firstname }} {{ log.app.lastname }}</td>
-                <td>{% if log.apm is not null %}{{ log.apm.companyName }}{% else %}¤{% endif %}</td>
+                <td>{{ log.prenom }} {{ log.nom }}</td>
+                <td>{% if log.apmId is not null %}{{ log.raisonSociale }}{% else %}¤{% endif %}</td>
                 <td class="center aligned">
-                    {% if log.asrl.mailSent %}
+                    {% if log.mailSent %}
                         <span class="ui green label">Ok</span>
                     {% else %}
                         <span class="ui red label">Erreur</span>
                     {% endif %}
                 </td>
-                <td>{{ log.asrl.reminderKey }}</td>
-                <td>{{ log.asrl.reminderDate|date('d/m/Y') }}</td>
+                <td>{{ log.reminderKey }}</td>
+                <td>{{ log.reminderDate|date('d/m/Y') }}</td>
                 <td class="right aligned">
                     <a data-position="left center"
                        class="compact ui green icon button"
-                       {% if log.apm is not null %}
-                           href="{{ url('admin_membership_fee_list', {'memberType': enum('AppBundle\\Association\\MemberType').MemberCompany.value, 'memberId': log.apm.id}) }}"
-                           data-tooltip="Gérer les cotisations de {{ log.apm.companyName }}"
-                        {% else %}
-                           href="{{ url('admin_membership_fee_list', {'memberType': enum('AppBundle\\Association\\MemberType').MemberPhysical.value, 'memberId': log.app.id}) }}"
-                           data-tooltip="Gérer les cotisations de {{ log.app.firstname }} {{ log.app.lastname }}"
-                        {% endif %}
+                       {% if log.apmId is not null %}
+                           href="{{ url('admin_membership_fee_list', {'memberType': enum('AppBundle\\Association\\MemberType').MemberCompany.value, 'memberId': log.apmId}) }}"
+                           data-tooltip="Gérer les cotisations de {{ log.raisonSociale }}"
+                       {% else %}
+                           href="{{ url('admin_membership_fee_list', {'memberType': enum('AppBundle\\Association\\MemberType').MemberPhysical.value, 'memberId': log.appId}) }}"
+                           data-tooltip="Gérer les cotisations de {{ log.prenom }} {{ log.nom }}"
+                       {% endif %}
                     >
                         <i class="money bill alternate icon"></i>
                     </a>
@@ -47,7 +47,7 @@
     </table>
 
     <div class="ui center aligned clearing segment">
-        {% if logs.count > limit %}
+        {% if logs|length > limit %}
             <div class="ui right floated segment">
                 <a href="{{ url('admin_relances', { page: page + 1 }) }}" class="ui right labeled icon button">
                     <i class="right chevron icon"></i>

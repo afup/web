@@ -8,7 +8,7 @@ use AppBundle\Association;
 use AppBundle\Association\CompanyMembership\CompanyReminderFactory;
 use AppBundle\Association\MembershipReminderInterface;
 use AppBundle\Association\MemberType;
-use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
+use AppBundle\Association\Entity\Repository\SubscriptionReminderLogRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\UserMembership\Reminder15DaysAfterEnd;
 use AppBundle\Association\UserMembership\Reminder15DaysBeforeEnd;
