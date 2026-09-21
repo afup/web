@@ -6,8 +6,8 @@ namespace AppBundle\Controller\Website\Membership;
 
 use AppBundle\Association\Event\NewMemberEvent;
 use AppBundle\Association\Form\UserType;
-use AppBundle\Association\Model\CompanyMemberInvitation;
-use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
+use AppBundle\Association\Entity\Repository\CompanyMemberInvitationRepository;
+use AppBundle\Association\Enum\InvitationEtat;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
@@ -31,10 +31,10 @@ final class MemberInvitationAction extends AbstractController
 
     public function __invoke(Request $request, int $invitationId, string $token): Response
     {
-        $invitation = $this->companyMemberInvitationRepository->getOneBy(['id' => $invitationId, 'token' => $token, 'status' => CompanyMemberInvitation::STATUS_PENDING]);
+        $invitation = $this->companyMemberInvitationRepository->findOneBy(['id' => $invitationId, 'token' => $token, 'status' => InvitationEtat::EnAttente]);
         $company = null;
         if ($invitation) {
-            $company = $this->companyMemberRepository->get($invitation->getCompanyId());
+            $company = $this->companyMemberRepository->get($invitation->companyId);
         }
 
         if ($invitation === null || $company === null) {
@@ -56,11 +56,11 @@ final class MemberInvitationAction extends AbstractController
                 ->setCompanyId($company->getId())
             ;
 
-            if ($invitation->getManager()) {
+            if ($invitation->manager) {
                 $user->setRoles(['ROLE_COMPANY_MANAGER', 'ROLE_USER']);
             }
 
-            $invitation->setStatus(CompanyMemberInvitation::STATUS_ACCEPTED);
+            $invitation->status = InvitationEtat::Acceptee;
 
             $this->userRepository->save($user);
             $this->companyMemberInvitationRepository->save($invitation);
