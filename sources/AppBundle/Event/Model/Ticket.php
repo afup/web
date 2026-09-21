@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Event\Model;
 
 use AppBundle\Association\Genre;
+use AppBundle\Event\Entity\TicketEventType;
 use AppBundle\Event\Validator\Constraints as Assert;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
@@ -322,7 +323,7 @@ class Ticket implements NotifyPropertyInterface
     public function setTicketEventType(TicketEventType $ticketEventType): self
     {
         $this->ticketEventType = $ticketEventType;
-        $this->ticketTypeId = $ticketEventType->getTicketTypeId();
+        $this->ticketTypeId = $ticketEventType->ticketTypeId;
         return $this;
     }
 

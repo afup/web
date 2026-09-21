@@ -2954,44 +2954,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/PricesAddAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$dateEnd of method AppBundle\\\\Event\\\\Model\\\\TicketEventType\\:\\:setDateEnd\\(\\) expects DateTime, DateTime\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/PricesAddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$dateStart of method AppBundle\\\\Event\\\\Model\\\\TicketEventType\\:\\:setDateStart\\(\\) expects DateTime, DateTime\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/PricesAddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$eventId of method AppBundle\\\\Event\\\\Model\\\\TicketEventType\\:\\:setEventId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/PricesAddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$message of class Symfony\\\\Component\\\\Form\\\\FormError constructor expects string, string\\|Stringable given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/PricesAddAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
 	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/PricesEditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setTicketType\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketEventType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/PricesEditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$ticketEventType of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketEventTypeRepository\\:\\:update\\(\\) expects AppBundle\\\\Event\\\\Model\\\\TicketEventType, AppBundle\\\\Event\\\\Model\\\\TicketEventType\\|null given\\.$#',
-	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/PricesEditAction.php',
 ];
@@ -4604,18 +4568,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Ticket/TicketAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getIsRestrictedToMembers\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Ticket/TicketAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getTicketType\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketEventType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Ticket/TicketAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getTickets\\(\\) on mixed\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -5552,25 +5504,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketSpecialPriceType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getIsRestrictedToCfpSubmitter\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getIsRestrictedToMembers\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getPrettyName\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
@@ -5588,7 +5522,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$event of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketEventTypeRepository\\:\\:getTicketsByEvent\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Event, AppBundle\\\\Event\\\\Model\\\\Event\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$event of method AppBundle\\\\Event\\\\Entity\\\\Repository\\\\TicketEventTypeRepository\\:\\:getTicketsByEvent\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Event, AppBundle\\\\Event\\\\Model\\\\Event\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
@@ -5920,19 +5854,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
 	'identifier' => 'method.nonObject',
-	'count' => 13,
-	'path' => __DIR__ . '/sources/AppBundle/Event/JsonLd.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getPrettyName\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/JsonLd.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getTechnicalName\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
+	'count' => 11,
 	'path' => __DIR__ . '/sources/AppBundle/Event/JsonLd.php',
 ];
 $ignoreErrors[] = [
@@ -6434,12 +6356,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/GithubUserRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getPrice\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketEventType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/InvoiceRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\InvoiceRepository\\:\\:getByEventId\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
@@ -6932,58 +6848,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkToSpeakersRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketEventTypeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getIsRestrictedToMembers\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketEventTypeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketEventTypeRepository\\:\\:doesEventHasRestrictedToMembersTickets\\(\\) has parameter \\$datesFilter with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketEventTypeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketEventTypeRepository\\:\\:getTicketsByEvent\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketEventTypeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketEventTypeRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketEventTypeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketEventTypeRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
+	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketEventTypeHydrationRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketEventTypeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketEventTypeRepository\\:\\:update\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketEventTypeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketEventTypeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$datesFilter of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketEventTypeRepository\\:\\:getTicketsByEvent\\(\\) expects int\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketEventTypeRepository.php',
+	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketEventTypeHydrationRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between \'@\' and mixed results in an error\\.$#',
@@ -7760,12 +7628,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/SponsorTokenMail.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getPrettyName\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/TicketOffers.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#4 \\$availableTickets of class AppBundle\\\\Event\\\\Model\\\\TicketOffer constructor expects int, int\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -7780,24 +7642,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Binary operation "\\-" between int\\|null and mixed results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/TicketTypeAvailability.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getDay\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/TicketTypeAvailability.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getDays\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/TicketTypeAvailability.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getTechnicalName\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/TicketTypeAvailability.php',
 ];

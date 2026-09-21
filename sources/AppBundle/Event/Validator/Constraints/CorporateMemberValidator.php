@@ -9,7 +9,7 @@ use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
-use AppBundle\Event\Model\TicketEventType;
+use AppBundle\Event\Entity\TicketEventType;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -33,11 +33,11 @@ class CorporateMemberValidator extends ConstraintValidator
         $eventId = null;
 
         foreach ($tickets as $ticket) {
-            if (!($ticket instanceof Ticket) || !$ticket->getTicketEventType() instanceof TicketEventType || $ticket->getTicketEventType()->getTicketType()->getIsRestrictedToMembers() === false) {
+            if (!($ticket instanceof Ticket) || !$ticket->getTicketEventType() instanceof TicketEventType || $ticket->getTicketEventType()->ticketType->getIsRestrictedToMembers() === false) {
                 continue;
             }
             if ($eventId === null) {
-                $eventId = $ticket->getTicketEventType()->getEventId();
+                $eventId = $ticket->getTicketEventType()->eventId;
             }
             $restrictedTickets++;
         }
