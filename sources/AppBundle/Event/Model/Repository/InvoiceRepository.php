@@ -45,7 +45,7 @@ class InvoiceRepository extends Repository implements MetadataInitializer
                     ->setTransportDistance(null)
                     ->setReference($invoice->getReference())
                     ->setDate(new \DateTime())
-                    ->setAmount($ticket->getTicketEventType()->getPrice())
+                    ->setAmount($ticket->getTicketEventType()->price ?? 0.0)
                     ->setStatus(Ticket::STATUS_CREATED)
                     ->setInvoiceStatus(Ticket::INVOICE_TODO)
                     ->setForumId($invoice->getForumId())
