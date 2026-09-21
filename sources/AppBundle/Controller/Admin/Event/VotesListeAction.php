@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Event\AdminEventSelection;
-use AppBundle\Event\Model\Repository\VoteRepository;
+use AppBundle\Event\Entity\Repository\VoteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

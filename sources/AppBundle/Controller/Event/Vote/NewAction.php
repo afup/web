@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Event\Vote;
 
 use AppBundle\Controller\Event\EventActionHelper;
+use AppBundle\Event\Entity\Vote;
+use AppBundle\Event\Entity\Repository\VoteRepository;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Repository\VoteRepository;
 use AppBundle\Event\Model\Talk;
-use AppBundle\Event\Model\Vote;
 use AppBundle\Notifier\SlackNotifier;
 use AppBundle\Security\Authentication;
-use CCMBenchmark\Ting\Exception;
+use DateTime;
+use Doctrine\DBAL\Exception as DbalException;
+use Doctrine\ORM\Exception\ORMException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +42,7 @@ final class NewAction extends VoteController
         $vote = new Vote();
         $user = $this->authentication->getGithubUserOrNull();
         if ($user instanceof GithubUser) {
-            $vote->setUser($user->getId());
+            $vote->userId = $user->getId();
         }
 
         $form = $this->createVoteForm($eventSlug, $talkId, $vote);
@@ -65,15 +67,15 @@ final class NewAction extends VoteController
         }
 
         $vote = $form->getData();
-        $vote->setSubmittedOn(new \DateTime());
+        $vote->submittedOn = new DateTime();
 
         try {
-            $vote->setTalk($talk);
+            $vote->talk = $talk;
             $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($vote): void {
                 $this->slackNotifier->notifyVote($vote);
             });
             $this->voteRepository->upsert($vote);
-        } catch (Exception $e) {
+        } catch (DbalException|ORMException $e) {
             return new JsonResponse(['errors' => [$e->getMessage()]], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 

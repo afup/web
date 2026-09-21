@@ -6,7 +6,7 @@ namespace AppBundle\Controller\Event\Event;
 
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Repository\VoteRepository;
+use AppBundle\Event\Entity\Repository\VoteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
