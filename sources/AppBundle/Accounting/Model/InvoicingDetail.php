@@ -16,7 +16,7 @@ class InvoicingDetail implements NotifyPropertyInterface
     private ?int $invoicingId = null;
 
     #[Assert\NotBlank]
-    #[Assert\Length(max: 20)]
+    #[Assert\Length(max: 50)]
     private ?string $reference = null;
 
     #[Assert\NotBlank]
