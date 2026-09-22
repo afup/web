@@ -95,7 +95,6 @@
     </div>
 
     {% for event in events %}
-        <a class="planning-link" href="{{ app.request.getSchemeAndHttpHost() }}/event/{{ event.path }}/calendar">Créer mon planning personnalisé{% if events|length > 1 %} ({{ event.title }}){% endif %}</a>
         <a class="planning-link" href="{{ app.request.getSchemeAndHttpHost() }}/event/{{ event.path }}/planning.ics">Télécharger le planning au format Ical{% if events|length > 1 %} ({{ event.title }}){% endif %}</a>
     {% endfor %}
 {% endif %}
