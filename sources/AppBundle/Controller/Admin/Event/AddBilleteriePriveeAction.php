@@ -7,8 +7,8 @@ namespace AppBundle\Controller\Admin\Event;
 use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Entity\BilleteriePrivee;
 use AppBundle\Event\Entity\Repository\BilleteriePriveeRepository;
+use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use AppBundle\Event\Form\BilleteriePriveeType;
-use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +33,7 @@ class AddBilleteriePriveeAction extends AbstractController
         $billeteriePrivee->createdOn = new DateTimeImmutable();
 
         $form = $this->createForm(BilleteriePriveeType::class, $billeteriePrivee, [
-            'ticketTypes' => $this->ticketTypeRepository->getAll(),
+            'ticketTypes' => $this->ticketTypeRepository->findAllOrderedById(),
         ]);
 
         $form->handleRequest($request);

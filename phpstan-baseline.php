@@ -3272,12 +3272,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/StatsAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getPrettyName\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/StatsAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$eventId of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\EventStatsRepository\\:\\:getRegistrationTracking\\(\\) expects int, int\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -9051,12 +9045,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method diff\\(\\) on DateTime\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Slack/MessageFactory.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getPrettyName\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Slack/MessageFactory.php',
