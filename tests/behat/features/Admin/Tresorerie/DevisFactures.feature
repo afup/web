@@ -134,7 +134,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     And I should see a green label "Envoyé"
     # Lien de paiement
     Then I follow the button of tooltip "Récupérer le lien de paiement en ligne"
-    Then I should see "Paiement en ligne de la facture"
+    Then I should see "Facture #"
     Then I should see "Télécharger la facture en PDF"
 
   # On n'utilise pas @reloadDbWithTestData pour conserver les données
