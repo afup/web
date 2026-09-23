@@ -125,6 +125,24 @@ class FeatureContext implements Context
         $button->press();
     }
 
+    #[When('/^I press "(?P<button>(?:[^"]|\\")*)" in the row of "(?P<row>(?:[^"]|\\")*)"$/')]
+    public function pressButtonInRow(string $button, string $row): void
+    {
+        $input = $this->minkContext->getSession()->getPage()->find(
+            'xpath',
+            sprintf('//tr[contains(., "%s")]//input[@value="%s"]', $row, $button),
+        );
+
+        if (null === $input) {
+            throw new ExpectationException(
+                sprintf('Button "%s" in row "%s" not found', $button, $row),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+
+        $input->press();
+    }
+
     #[Then('/^the rows of table "(?P<selector>[^"]+)" should be in the following order:$/')]
     public function assertTableRowsInOrder(string $selector, PyStringNode $expectedRows): void
     {

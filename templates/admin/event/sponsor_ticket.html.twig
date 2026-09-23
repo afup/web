@@ -47,6 +47,7 @@
                 <th>Token</th>
                 <th class="right aligned">Invitations totales</th>
                 <th class="right aligned">Invitations utilisées</th>
+                <th class="right aligned">Tokens restants</th>
                 <th class="right aligned">Peut scanner QR Codes</th>
                 <th colspan="3"></th>
             </tr>
@@ -62,6 +63,22 @@
                 <td>{{ token.token }}</td>
                 <td class="right aligned">{{ token.maxInvitations }}</td>
                 <td class="right aligned">{{ token.usedInvitations }}</td>
+                <td class="right aligned">
+                    {% set pending = token.pendingInvitations %}
+                    {% if token.maxInvitations > 0 %}
+                        {% set remainingRate = pending / token.maxInvitations %}
+                    {% else %}
+                        {% set remainingRate = 0 %}
+                    {% endif %}
+                    {% if remainingRate > 0.5 %}
+                        {% set color = 'red' %}
+                    {% elseif remainingRate == 0 %}
+                        {% set color = 'green' %}
+                    {% else %}
+                        {% set color = 'orange' %}
+                    {% endif %}
+                    <span class="ui {{ color }} label">{{ (remainingRate * 100)|round }}%</span>
+                </td>
                 <td class="right aligned">{% if token.qrCodesScannerAvailable %}OUI{% else %}-{% endif %}</td>
                 <td class="right aligned">
                     <form class="sponsor--token-admin-view" method="post" action="{{ url('sponsor_ticket_home', {eventSlug: event.path}) }}">
@@ -112,6 +129,21 @@
                 <th colspan="2"><strong>Total</strong></th>
                 <th class="right aligned">{{ totalInvitations }}</th>
                 <th class="right aligned">{{ totalUsedInvitations }}</th>
+                <th class="right aligned">
+                    {% if totalInvitations > 0 %}
+                        {% set remainingRate = (totalInvitations - totalUsedInvitations) / totalInvitations %}
+                    {% else %}
+                        {% set remainingRate = 0 %}
+                    {% endif %}
+                    {% if remainingRate > 0.5 %}
+                        {% set color = 'red' %}
+                    {% elseif remainingRate == 0 %}
+                        {% set color = 'green' %}
+                    {% else %}
+                        {% set color = 'orange' %}
+                    {% endif %}
+                    <span class="ui {{ color }} label">{{ (remainingRate * 100)|round }}%</span>
+                </th>
                 <th colspan="4"></th>
             </tr>
         </tfoot>

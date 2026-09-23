@@ -19,7 +19,11 @@ Feature: Administration - Évènements - Tokens Sponsors
     # Listing des tokens
     Then I should see "Invitations totales"
     And I should see tooltip "Supprimer"
-    When I press "Voir les invitations"
+    # Les 3 cas de taux d'utilisation des tokens (100% restant, 33% restant, 0% restant)
+    And I should see a red label "100%"
+    And I should see a orange label "33%"
+    And I should see a green label "0%"
+    When I press "Voir les invitations" in the row of "Ma société"
     # Listing des invitations vides
     Then I should see "Billetterie sponsor: forum - Ma société"
     And I should see "VOS PLACES GRATUITES"
@@ -46,13 +50,16 @@ Feature: Administration - Évènements - Tokens Sponsors
     Then I should see "Places disponibles: 1 / 2 "
     # Envoi de l'email de rappel
     When I am on "/admin/event/sponsor"
+    Then I should see a orange label "50%"
     Then I follow "Envoyer le mail de rappel"
-    And I should see "1 mails de relance ont été envoyés"
+    And I should see "3 mails de relance ont été envoyés"
     And I should only receive the following emails:
       | to                              | subject                                                      |
       | <testToken1@mail.com>           | Toutes les informations concernant votre sponsoring du forum |
       | <personneinvitee@masociete.com> | [forum] Merci !                                              |
       | <personneinvitee@masociete.com> | [forum] Merci !                                              |
+      | <vert@sponsor-test.com>         | Sponsor: enregistrez-vous pour le forum                      |
+      | <deuxtiers@sponsor-test.com>    | Sponsor: enregistrez-vous pour le forum                      |
       | <testToken1@mail.com>           | Sponsor: enregistrez-vous pour le forum                      |
 
   @reloadDbWithTestData
