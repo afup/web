@@ -69,7 +69,14 @@ final readonly class MembershipFeeMailer
         $numeroFacture = $this->pdfGenerator->genererFacture($idCotisation, $cheminFacture);
         $pattern = str_replace(' ', '', $patternPrefix) . '_' . $numeroFacture . '_' . date('dmY', $membership->dateDebut->getTimestamp()) . '.pdf';
 
-        $message = new Message('Facture AFUP', null, new MailUser(
+        $subject = 'Facture AFUP';
+        if ($membership->typePersonne === MemberType::MemberCompany) {
+            $subject .= ' - ' . $company->getCompanyName();
+        } else {
+            $subject .= ' - ' . $contactPhysique['nom'] . ' ' . $contactPhysique['prenom'];
+        }
+
+        $message = new Message($subject, null, new MailUser(
             $contactPhysique['email'],
             sprintf('%s %s', $contactPhysique['prenom'], $contactPhysique['nom']),
         ));

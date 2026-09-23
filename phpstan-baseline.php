@@ -8410,7 +8410,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot access property \\$typePersonne on AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null\\.$#',
 	'identifier' => 'property.nonObject',
-	'count' => 2,
+	'count' => 3,
 	'path' => __DIR__ . '/sources/AppBundle/MembershipFee/MembershipFeeMailer.php',
 ];
 $ignoreErrors[] = [
