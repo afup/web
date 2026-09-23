@@ -129,7 +129,7 @@ Feature: Administration - Trésorerie - Devis/Facture
     Then I follow the button of tooltip "Envoyer la facture 2026-3 par mail"
     And I should only receive the following emails:
       | from               | to                                              | subject      |
-      | <bonjour@afup.org> | <martine@ens-en-folie.biz>,<sponsors@afup.org> | Facture AFUP |
+      | <bonjour@afup.org> | <martine@ens-en-folie.biz>,<sponsors@afup.org> | Facture AFUP - ESN dev en folie |
     Then the ".content .message" element should contain "La facture a été envoyée"
     And I should see a green label "Envoyé"
     # Lien de paiement

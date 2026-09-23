@@ -26,7 +26,11 @@ readonly class InvoicingMailer
     {
         $invoiceNumber = $invoicing->getInvoiceNumber();
 
-        $sujet = "Facture AFUP";
+        $sujet = 'Facture AFUP';
+        $company = $invoicing->getCompany();
+        if ($company !== '') {
+            $sujet .= ' - ' . $company;
+        }
 
         $corps = "Bonjour, \n\n";
         $corps .= "Veuillez trouver ci-joint la facture correspondant à la participation au forum organisé par l'AFUP.\n";

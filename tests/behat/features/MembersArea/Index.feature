@@ -58,7 +58,7 @@ Feature: Espace membre, accueil
     When I follow "Recevoir par mail"
     And I should only receive the following emails:
       | from               | to                    | subject      |
-      | <bonjour@afup.org> | <userexpire@yahoo.fr> | Facture AFUP |
+      | <bonjour@afup.org> | <userexpire@yahoo.fr> | Facture AFUP - Maurice Jean |
 
   @reloadDbWithTestData @vat
   Scenario: Test d'une facture de cotisation de personne physique avant 2024
@@ -173,7 +173,7 @@ Feature: Espace membre, accueil
     When I follow "Recevoir par mail"
     And I should only receive the following emails:
       | from               | to                       | subject      |
-      | <bonjour@afup.org> | <raoul.dupont@mycorp.fr> | Facture AFUP |
+      | <bonjour@afup.org> | <raoul.dupont@mycorp.fr> | Facture AFUP - MyCorp |
 
   @reloadDbWithTestData
   Scenario: Si on est pas company manager de la personne morale, on ne peux pas télécharger la facture
