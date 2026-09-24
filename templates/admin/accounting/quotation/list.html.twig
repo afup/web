@@ -58,7 +58,7 @@
                         <td class="single line right aligned">
                         {% if line.invoiceNumber == '' %}
                             <a href="{{ url('admin_accounting_quotations_edit', {'quotationId': line.id}) }}"
-                               data-position="left center"
+                               data-position="top right"
                                data-tooltip="Modifier le devis {{ line.company }}"
                                class="compact ui icon button"
                             >
@@ -66,7 +66,7 @@
                             </a>
                         {% else %}
                             <a href="{{ url('admin_accounting_invoices_edit', {'invoiceId': line.id}) }}"
-                               data-position="left center"
+                               data-position="top right"
                                data-tooltip="Modifier la facture {{ line.company }}"
                                class="compact ui icon button"
                             >
@@ -74,7 +74,7 @@
                             </a>
                         {% endif %}
                             <a href="{{ url('admin_accounting_quotations_download', {'ref': line.quotationNumber}) }}"
-                               data-position="left center"
+                               data-position="top right"
                                data-tooltip="Télécharger le devis {{ line.company }}"
                                class="compact ui icon button"
                             >
@@ -82,7 +82,7 @@
                             </a>
                         {% if line.invoiceNumber == '' %}
                             <a href="{{ url('admin_accounting_quotations_convert', {'ref': line.quotationNumber}) }}"
-                               data-position="left center"
+                               data-position="top right"
                                data-tooltip="Transférer la ligne {{ line.company }} en facture"
                                class="compact ui icon button"
                             >
