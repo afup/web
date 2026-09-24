@@ -24,6 +24,20 @@
             min-height: 700px;
             width: 100%;
         }
+
+        /* Icône d'aide des statistiques (le texte est dans data-tooltip, tooltip Semantic UI comme les boutons) */
+        #accueil-container .ui.statistic .help.circle.icon {
+            margin-left: 2px;
+            opacity: 0.6;
+        }
+        #accueil-container .ui.statistic .help.circle.icon:hover {
+            opacity: 1;
+        }
+
+        /* les tooltips Semantic UI rend les \n du contenu (les tooltips des boutons, sans \n, ne changent pas) */
+        .ui.popup {
+            white-space: pre-line;
+        }
     </style>
     {% if cards %}
         <div class="ui basic right aligned segment" id="accueil-container">
@@ -63,7 +77,14 @@
                                                 {{ statistic }}
                                             {% endif %}
                                         </div>
-                                        <div class="label">
+                                        <div class="label"
+                                            {% if card.statistics_help is defined and card.statistics_help[label] is defined %}
+                                                data-tooltip="{{ card.statistics_help[label] }}"
+                                                data-position="top center"
+                                                data-variation="wide"
+                                            {% endif %}
+                                        >
+                                            {% if card.statistics_help is defined and card.statistics_help[label] is defined %}<i class="help circle outline icon"></i>{% endif %}
                                             {{ label }}
                                         </div>
                                     </div>

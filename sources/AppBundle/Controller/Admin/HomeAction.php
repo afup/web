@@ -20,6 +20,16 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class HomeAction extends AbstractController
 {
+    /**
+     * Explications pour les tooltips des stats « ventes de places » de l'événement,
+     * affichées sur la carte « Inscriptions » de la home admin.
+     */
+    private const STAT_STATUS_DESCRIPTION = "Billets « payés » uniquement — y compris via billeterie privée ou token spécial (affilié, promo…).";
+
+    private const STAT_EXCLUDED_DESCRIPTION = "Exclus : invitations, places sponsors, billets en attente de règlement et annulés.";
+
+    private const STAT_MONTANT_DESCRIPTION = "Billets « payés » ou « en attente de règlement » × prix public de chaque tarif. Billet acheté à prix réduit via un token : compté au prix public.";
+
     public function __construct(
         private readonly EventRepository $eventRepository,
         private readonly EventStatsRepository $eventStatsRepository,
@@ -60,9 +70,14 @@ class HomeAction extends AbstractController
                     }
 
                     $info['statistics'][$ticketsLabel] = $tickets;
+                    $info['statistics_help'][$ticketsLabel] = self::STAT_STATUS_DESCRIPTION
+                        . "\nPourcentage calculé sur la jauge de l'événement (" . $event->getSeats() . ' places).'
+                        . "\n" . self::STAT_EXCLUDED_DESCRIPTION;
                 } else {
                     $info['statistics']['entrées (premier jour)'] = $stats->firstDay->paid;
                     $info['statistics']['entrées (deuxième jour)'] = $stats->secondDay->paid;
+                    $info['statistics_help']['entrées (premier jour)'] = self::STAT_STATUS_DESCRIPTION . "\n" . self::STAT_EXCLUDED_DESCRIPTION;
+                    $info['statistics_help']['entrées (deuxième jour)'] = self::STAT_STATUS_DESCRIPTION . "\n" . self::STAT_EXCLUDED_DESCRIPTION;
                 }
                 $info['title'] = $event->getTitle();
                 $info['subtitle'] = 'Inscriptions';
@@ -75,6 +90,7 @@ class HomeAction extends AbstractController
                 }
 
                 $info['statistics']['montant total'] = number_format($montantTotal, 0, ',', "\u{a0}") . "\u{a0}€";
+                $info['statistics_help']['montant total'] = self::STAT_MONTANT_DESCRIPTION . "\n" . self::STAT_EXCLUDED_DESCRIPTION;
                 $info['url'] = $this->generateUrl('admin_event_ticket_list', ['id' => $event->getId()]);
 
                 $cards[] = $info;
