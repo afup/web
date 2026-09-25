@@ -8,7 +8,7 @@ use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Email\Emails;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Event\Form\SponsorTicketType;
-use AppBundle\Event\Model\Repository\SponsorTicketRepository;
+use AppBundle\Event\Entity\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\TicketFactory;
 use AppBundle\Event\Ticket\SponsorTicketHelper;
@@ -39,7 +39,7 @@ final class SponsorTicketFormAction extends AbstractController
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
 
-        $sponsorTicket = $this->sponsorTicketRepository->get($request->getSession()->get('sponsor_ticket_id'));
+        $sponsorTicket = $this->sponsorTicketRepository->find($request->getSession()->get('sponsor_ticket_id'));
         if ($sponsorTicket === null) {
             $this->addFlash('error', 'Token invalide');
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);

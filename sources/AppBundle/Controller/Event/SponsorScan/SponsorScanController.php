@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Event\SponsorScan;
 
 use AppBundle\Controller\Exception\InvalidSponsorTokenException;
-use AppBundle\Event\Model\Repository\SponsorTicketRepository;
-use AppBundle\Event\Model\SponsorTicket;
+use AppBundle\Event\Entity\Repository\SponsorTicketRepository;
+use AppBundle\Event\Entity\SponsorTicket;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,12 +20,12 @@ abstract class SponsorScanController extends AbstractController
             throw new InvalidSponsorTokenException('Merci de renseigner votre token.');
         }
 
-        $sponsorTicket = $this->sponsorTicketRepository->get($request->getSession()->get('sponsor_ticket_id'));
+        $sponsorTicket = $this->sponsorTicketRepository->find($request->getSession()->get('sponsor_ticket_id'));
         if ($sponsorTicket === null) {
             throw new InvalidSponsorTokenException('Token invalide.');
         }
 
-        if (!$sponsorTicket->getQrCodesScannerAvailable()) {
+        if (!$sponsorTicket->qrCodesScannerAvailable) {
             throw new InvalidSponsorTokenException('Accès non autorisé.');
         }
 

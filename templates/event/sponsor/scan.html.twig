@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
         <div class="col-md-6">
-            <h1>{{ 'QR Codes'|trans }} : {{ event.title }} - {{ sponsorTicket.company }}</h1>
+            <h1>{{ 'QR Codes'|trans }} : {{ event.title }} - {{ sponsorTicket.societe }}</h1>
             <h2 class="h3-like">{% trans %}SCANNEUR DE QR CODES{% endtrans %}</h2>
             <a class="button sponsor_scan" href="{{ url('sponsor_scan_new', {eventSlug: event.path}) }}">{% trans %}Scanner un QR Code{% endtrans %}</a>
 
