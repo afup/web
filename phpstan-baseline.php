@@ -965,32 +965,8 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$array of function implode expects array\\<string\\>, list given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/CompanyMember.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\CompanyMemberInvitationRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberInvitationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\CompanyMemberInvitationRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberInvitationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\CompanyMemberInvitationRepository\\:\\:loadPendingInvitationsByCompany\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberInvitationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberInvitationRepository.php',
-];
+ 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/CompanyMember.php',
+ ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'id\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
@@ -4934,12 +4910,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Member/MembersAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Website\\\\Member\\\\MembersAction\\:\\:addUser\\(\\) has parameter \\$pendingInvitations with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface but does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Member/MembersAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Controller\\\\Website\\\\Member\\\\MembersAction\\:\\:addUser\\(\\) has parameter \\$users with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface but does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
@@ -4976,13 +4946,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Member/MembersAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type array\\<AppBundle\\\\Association\\\\Model\\\\CompanyMemberInvitation\\>\\|null supplied for foreach, only iterables are supported\\.$#',
+	'message' => '#^Argument of an invalid type array\\<AppBundle\\\\Association\\\\Entity\\\\CompanyMemberInvitation\\>\\|null supplied for foreach, only iterables are supported\\.$#',
 	'identifier' => 'foreach.nonIterable',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/CompanyAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$value of function count expects array\\|Countable, array\\<AppBundle\\\\Association\\\\Model\\\\CompanyMemberInvitation\\>\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$value of function count expects array\\|Countable, array\\<AppBundle\\\\Association\\\\Entity\\\\CompanyMemberInvitation\\>\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/CompanyAction.php',

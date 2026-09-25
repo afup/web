@@ -35,6 +35,8 @@ Feature: Espace membre > Personne morale > Personnes rattachés
     # Envoyer la dernière
     Then I fill in "company_member_invitation[email]" with "email2@email.com"
     And I press "Envoyer l'invitation"
+    # Invitation max bloqué
+    Then I should see "Vous avez actuellement 1 membre(s) rattaché(s) et 2 invitation(s) en attente."
     # Renvoyer la dernière invitation
     And I press "Envoyer à nouveau"
     And I should see "L'invitation a été renvoyée."
@@ -43,7 +45,6 @@ Feature: Espace membre > Personne morale > Personnes rattachés
       | <email1@email.com> | MyCorp vous invite à profiter de son compte "Membre AFUP" |
       | <email2@email.com> | MyCorp vous invite à profiter de son compte "Membre AFUP" |
       | <email1@email.com> | MyCorp vous invite à profiter de son compte "Membre AFUP" |
-    # Invitation max bloqué
     Then I should see "Vous avez actuellement 1 membre(s) rattaché(s) et 2 invitation(s) en attente."
     # Annulation d'une invitation
     And I press "Annuler"
