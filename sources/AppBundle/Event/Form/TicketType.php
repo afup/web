@@ -8,11 +8,11 @@ use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Association\Genre;
 use AppBundle\Event\Entity\BilleteriePrivee;
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
+use AppBundle\Event\Entity\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketSpecialPriceRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Ticket;
-use AppBundle\Event\Model\TicketEventType;
+use AppBundle\Event\Entity\TicketEventType;
 use AppBundle\Event\Model\TicketSpecialPrice;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
 use Symfony\Component\Form\AbstractType;
@@ -85,7 +85,7 @@ class TicketType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) use ($eventTickets, $options, $event): void {
             $filteredEventTickets = [];
             foreach ($eventTickets as $eventTicket) {
-                if ($eventTicket->getTicketType()->getIsRestrictedToCfpSubmitter() && !$options['is_cfp_submitter']) {
+                if ($eventTicket->ticketType->getIsRestrictedToCfpSubmitter() && !$options['is_cfp_submitter']) {
                     continue;
                 }
                 $filteredEventTickets[] = $eventTicket;
@@ -115,19 +115,22 @@ class TicketType extends AbstractType
                 'error_bubbling' => false,
                 'choice_attr' => function (TicketEventType $type, $key, $index) use ($options, $event): array {
                     $attr = [
-                        'data-description' => $type->getDescription(),
-                        'data-price' => $type->getPrice(),
-                        'data-date-end' => $type->getDateEnd()->format('d/m'),
-                        'data-date-end-raw' => $type->getDateEnd()->format('Y-m-d'),
-                        'data-members-only' => (int) $type->getTicketType()->getIsRestrictedToMembers(),
-                        'data-max-tickets' => $type->getMaxTickets(),
-                        'data-stock' => $this->ticketTypeAvailability->getStock($type, $event),
-                        'data-label' => $type->getTicketType()->getPrettyName(),
+                        'data-description' => $type->description,
+                        'data-price' => $type->price,
+                        'data-date-end' => $type->dateEnd->format('d/m'),
+                        'data-date-end-raw' => $type->dateEnd->format('Y-m-d'),
+                        'data-max-tickets' => $type->maxTickets,
                     ];
 
+                    if ($type->ticketType !== null) {
+                        $attr['data-members-only'] = (int) $type->ticketType->getIsRestrictedToMembers();
+                        $attr['data-stock'] = $this->ticketTypeAvailability->getStock($type, $event);
+                        $attr['data-label'] = $type->ticketType->getPrettyName();
+                    }
+
                     if (
-                        ($type->getTicketType()->getIsRestrictedToMembers() === true && $options['member_type'] === self::MEMBER_NOT)
-                        || $attr['data-stock'] <= 0
+                        ($type->ticketType?->getIsRestrictedToMembers() === true && $options['member_type'] === self::MEMBER_NOT)
+                        || (isset($attr['data-stock']) && $attr['data-stock'] <= 0)
                     ) {
                         $attr['disabled'] = 'disabled';
                     }
@@ -193,12 +196,12 @@ class TicketType extends AbstractType
         }
 
         $eToken = new TicketEventType();
-        $eToken->setDateStart($dateStart);
-        $eToken->setDateEnd($dateEnd);
-        $eToken->setPrice($ticketSpecialPrice->getPrice());
-        $eToken->setTicketType($ticketType);
-        $eToken->setEventId($ticketSpecialPrice->getEventId());
-        $eToken->setTicketTypeId(Ticket::TYPE_SPECIAL_PRICE);
+        $eToken->dateStart = $dateStart;
+        $eToken->dateEnd = $dateEnd;
+        $eToken->price = $ticketSpecialPrice->getPrice();
+        $eToken->ticketType = $ticketType;
+        $eToken->eventId = $ticketSpecialPrice->getEventId();
+        $eToken->ticketTypeId = Ticket::TYPE_SPECIAL_PRICE;
 
         return [$eToken];
     }
@@ -215,12 +218,12 @@ class TicketType extends AbstractType
         }
 
         $eBilleterie = new TicketEventType();
-        $eBilleterie->setDateStart(\DateTime::createFromImmutable($billeteriePrivee->dateDebut));
-        $eBilleterie->setDateEnd(\DateTime::createFromImmutable($billeteriePrivee->dateFin));
-        $eBilleterie->setPrice($billeteriePrivee->prix);
-        $eBilleterie->setTicketType($ticketType);
-        $eBilleterie->setEventId($billeteriePrivee->eventId);
-        $eBilleterie->setTicketTypeId(Ticket::TYPE_SPECIAL_PRICE);
+        $eBilleterie->dateStart = \DateTime::createFromImmutable($billeteriePrivee->dateDebut);
+        $eBilleterie->dateEnd = \DateTime::createFromImmutable($billeteriePrivee->dateFin);
+        $eBilleterie->price = $billeteriePrivee->prix;
+        $eBilleterie->ticketType = $ticketType;
+        $eBilleterie->eventId = $billeteriePrivee->eventId;
+        $eBilleterie->ticketTypeId = Ticket::TYPE_SPECIAL_PRICE;
 
         return [$eBilleterie];
     }

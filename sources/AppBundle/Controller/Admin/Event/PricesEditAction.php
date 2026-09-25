@@ -7,12 +7,13 @@ namespace AppBundle\Controller\Admin\Event;
 use AppBundle\Association\Form\TicketEventType;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\EventSelectType;
-use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
+use AppBundle\Event\Entity\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PricesEditAction extends AbstractController
 {
@@ -28,11 +29,14 @@ class PricesEditAction extends AbstractController
         $event = $this->eventActionHelper->getEventById($event);
         $ticketType = $this->ticketTypeRepository->get($id);
 
-        $ticketEventType = $this->ticketEventTypeRepository->get([
-            'id_event' => $event->getId(),
-            'id_tarif' => $ticketType->getId(),
+        $ticketEventType = $this->ticketEventTypeRepository->find([
+            'eventId' => $event->getId(),
+            'ticketTypeId' => $ticketType->getId(),
         ]);
-        $ticketEventType->setTicketType($ticketType);
+        if ($ticketEventType === null) {
+            throw new NotFoundHttpException();
+        }
+        $ticketEventType->ticketType = $ticketType;
 
         $ticketTypes = $this->ticketTypeRepository->getAll();
         $form = $this->createForm(TicketEventType::class, $ticketEventType, [
@@ -44,7 +48,7 @@ class PricesEditAction extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->ticketEventTypeRepository->update($ticketEventType);
+            $this->ticketEventTypeRepository->save($ticketEventType);
 
             $this->addFlash('notice', 'Le tarif a été modifié');
 

@@ -23,15 +23,14 @@ class EarlyBirdTicketValidator extends ConstraintValidator
         $count = 0;
 
         foreach ($value as $index => $ticket) {
-            if ($ticket->getTicketEventType()
-                && $ticket->getTicketEventType()->getTicketType()
-                && $ticket->getTicketEventType()->getTicketType()->isEarly()) {
+            if ($ticket->getTicketEventType()?->ticketType !== null
+                && $ticket->getTicketEventType()->ticketType->isEarly()) {
                 $count++;
 
                 // On autorise qu'un seul ticket
                 if ($count > 1) {
                     $this->context->buildViolation($constraint->message)
-                        ->setParameter('{{ ticket_pretty_name }}', $ticket->getTicketEventType()->getTicketType()->getPrettyName())
+                        ->setParameter('{{ ticket_pretty_name }}', $ticket->getTicketEventType()->ticketType->getPrettyName())
                         ->atPath('[' . $index . '].ticketEventType')
                         ->addViolation()
                     ;

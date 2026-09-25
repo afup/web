@@ -110,6 +110,8 @@ class TicketRepository extends Repository implements MetadataInitializer
 
     public function getByInvoiceWithDetail(Invoice $invoice)
     {
+        // Les tarifs sont hydratés par Ting via un JOIN : l'entité Doctrine
+        // TicketEventType est ré-attachée au ticket (TicketEventTypeHydrationRepository)
         return $this->getPreparedQuery(
             'SELECT
             inscriptions.id, inscriptions.date, inscriptions.reference, inscriptions.coupon, inscriptions.type_inscription,
@@ -117,8 +119,8 @@ class TicketRepository extends Repository implements MetadataInitializer
             inscriptions.email, inscriptions.telephone, inscriptions.citer_societe, inscriptions.newsletter_afup, inscriptions.newsletter_nexen,
             inscriptions.commentaires, inscriptions.etat, inscriptions.facturation, inscriptions.id_forum,
             inscriptions.mail_partenaire, inscriptions.presence_day1, inscriptions.presence_day2,
-            tarif_event.id_tarif, tarif_event.id_event, tarif_event.price, tarif_event.date_start, tarif_event.date_end, tarif_event.description,
-            tarif.id, tarif.technical_name, tarif.day, tarif.pretty_name, tarif.public, tarif.members_only, tarif.default_price, tarif.active
+            tarif_event.id_tarif, tarif_event.id_event, tarif_event.price, tarif_event.date_start, tarif_event.date_end, tarif_event.description, tarif_event.max_tickets,
+            tarif.id, tarif.technical_name, tarif.day, tarif.pretty_name, tarif.public, tarif.members_only, tarif.default_price, tarif.active, tarif.cfp_submitter_only
             FROM afup_inscription_forum inscriptions
             JOIN afup_forum_tarif_event tarif_event ON tarif_event.id_tarif = inscriptions.type_inscription AND tarif_event.id_event = inscriptions.id_forum
             JOIN afup_forum_tarif tarif ON tarif.id = tarif_event.id_tarif

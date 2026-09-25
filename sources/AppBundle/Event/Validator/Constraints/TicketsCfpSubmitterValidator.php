@@ -19,15 +19,14 @@ class TicketsCfpSubmitterValidator extends ConstraintValidator
         $specialCFPSubmitter = 0;
 
         foreach ($value as $index => $ticket) {
-            if ($ticket->getTicketEventType()
-                && $ticket->getTicketEventType()->getTicketType()
-                && $ticket->getTicketEventType()->getTicketType()->getIsRestrictedToCfpSubmitter()) {
+            if ($ticket->getTicketEventType()?->ticketType !== null
+                && $ticket->getTicketEventType()->ticketType->getIsRestrictedToCfpSubmitter()) {
                 $specialCFPSubmitter++;
 
                 // On autorise qu'un seul ticket au tarif CFP submitter
                 if ($specialCFPSubmitter > 1) {
                     $this->context->buildViolation($constraint->messageTooMuchCfpSubmitterTickets)
-                        ->setParameter('{{ ticket_pretty_name }}', $ticket->getTicketEventType()->getTicketType()->getPrettyName())
+                        ->setParameter('{{ ticket_pretty_name }}', $ticket->getTicketEventType()->ticketType->getPrettyName())
                         ->atPath('[' . $index . '].ticketEventType')
                         ->addViolation()
                     ;
