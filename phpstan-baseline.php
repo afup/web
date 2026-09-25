@@ -656,18 +656,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$email of method AppBundle\\\\Association\\\\Model\\\\SubscriptionReminderLog\\:\\:setEmail\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$userId of method AppBundle\\\\Association\\\\Model\\\\SubscriptionReminderLog\\:\\:setUserId\\(\\) expects int, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Association\\\\CompanyMembership\\\\CompanyReminderFactory\\:\\:getReminder\\(\\) has parameter \\$class with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
 	'count' => 1,
@@ -1190,60 +1178,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Binary operation "\\*" between int and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/SubscriptionReminderLogRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\+" between mixed and 1 results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/SubscriptionReminderLogRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to int\\.$#',
-	'identifier' => 'cast.int',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/SubscriptionReminderLogRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\SubscriptionReminderLogRepository\\:\\:getPaginatedLogs\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/SubscriptionReminderLogRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\SubscriptionReminderLogRepository\\:\\:getPaginatedLogs\\(\\) has parameter \\$limit with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/SubscriptionReminderLogRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\SubscriptionReminderLogRepository\\:\\:getPaginatedLogs\\(\\) has parameter \\$page with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/SubscriptionReminderLogRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\SubscriptionReminderLogRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/SubscriptionReminderLogRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\SubscriptionReminderLogRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/SubscriptionReminderLogRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/SubscriptionReminderLogRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\SubscriptionRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -1677,18 +1611,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$email of class AppBundle\\\\Email\\\\Mailer\\\\MailUser constructor expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$email of method AppBundle\\\\Association\\\\Model\\\\SubscriptionReminderLog\\:\\:setEmail\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$userId of method AppBundle\\\\Association\\\\Model\\\\SubscriptionReminderLog\\:\\:setUserId\\(\\) expects int, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
@@ -9882,6 +9804,30 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/VideoNotifier/StatusGenerator.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot cast mixed to string\\.$#',
+	'identifier' => 'cast.string',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot cast mixed to int\\.$#',
+	'identifier' => 'cast.int',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot cast mixed to string\\.$#',
+	'identifier' => 'cast.string',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot cast mixed to int\\.$#',
+	'identifier' => 'cast.int',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
 ];
 
 return ['parameters' => ['ignoreErrors' => $ignoreErrors]];

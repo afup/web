@@ -6,7 +6,7 @@ namespace AppBundle\Association\UserMembership;
 
 use AppBundle\Association\CompanyMembership\SubscriptionManagement;
 use AppBundle\Association\MembershipReminderInterface;
-use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
+use AppBundle\Association\Entity\Repository\SubscriptionReminderLogRepository;
 use AppBundle\Email\Mailer\Mailer;
 
 class UserReminderFactory

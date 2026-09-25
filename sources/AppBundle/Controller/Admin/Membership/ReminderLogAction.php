@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Membership;
 
-use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
+use AppBundle\Association\Entity\Repository\SubscriptionReminderLogRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
