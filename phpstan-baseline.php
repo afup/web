@@ -758,21 +758,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/Form/TicketEventType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserBadgeType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getBadge\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserBadgeType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on mixed\\.$#',
 	'identifier' => 'method.nonObject',
-	'count' => 4,
+	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserBadgeType.php',
 ];
 $ignoreErrors[] = [
@@ -782,13 +770,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserBadgeType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Possibly invalid array key type int\\|null\\.$#',
-	'identifier' => 'offsetAccess.invalidOffset',
+	'message' => '#^Parameter \\#1 \\$userId of method AppBundle\\\\Event\\\\Entity\\\\Repository\\\\UserBadgeRepository\\:\\:findByUserId\\(\\) expects int, mixed given\\.$#',
+	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserBadgeType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Possibly invalid array key type mixed\\.$#',
+	'message' => '#^Possibly invalid array key type int\\|null\\.$#',
 	'identifier' => 'offsetAccess.invalidOffset',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserBadgeType.php',
@@ -1696,7 +1684,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
 	'identifier' => 'foreach.nonIterable',
-	'count' => 3,
+	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
 ];
 $ignoreErrors[] = [
@@ -1750,12 +1738,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on mixed\\.$#',
 	'identifier' => 'method.nonObject',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getBadge\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
 	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
 ];
@@ -1763,24 +1745,6 @@ $ignoreErrors[] = [
 	'message' => '#^Cannot call method getDateStart\\(\\) on mixed\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getIssuedAt\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getLabel\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
 ];
 $ignoreErrors[] = [
@@ -3758,55 +3722,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/GeneralMeeting/ReportsAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\UserBadge\\>\\:\\:delete\\(\\) expects AppBundle\\\\Event\\\\Model\\\\UserBadge, AppBundle\\\\Event\\\\Model\\\\UserBadge\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/UserBadgeDeleteAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$url of class Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse constructor expects string, string\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/UserBadgeDeleteAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'badge\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/UserBadgeNewAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'date\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/UserBadgeNewAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'user\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/UserBadgeNewAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$badgeId of method AppBundle\\\\Event\\\\Model\\\\UserBadge\\:\\:setBadgeId\\(\\) expects int, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/UserBadgeNewAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$issuedAt of method AppBundle\\\\Event\\\\Model\\\\UserBadge\\:\\:setIssuedAt\\(\\) expects DateTime\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/UserBadgeNewAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$url of class Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse constructor expects string, string\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/UserBadgeNewAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$userId of method AppBundle\\\\Event\\\\Model\\\\UserBadge\\:\\:setUserId\\(\\) expects int, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/UserBadgeNewAction.php',
@@ -3814,12 +3736,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'first\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/UserEditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$iterator of function iterator_to_array expects iterable, mixed given\\.$#',
-	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Members/UserEditAction.php',
 ];
@@ -7164,54 +7080,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketTypeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\UserBadgeRepository\\:\\:findByUserId\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/UserBadgeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\UserBadgeRepository\\:\\:findByUserId\\(\\) has parameter \\$userId with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/UserBadgeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\UserBadgeRepository\\:\\:getHydratorForUserBadge\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/UserBadgeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\UserBadgeRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/UserBadgeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\UserBadgeRepository\\:\\:initMetadata\\(\\) return type with generic class CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/UserBadgeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/UserBadgeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$hydrator of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\UserBadge\\>\\:\\:getCollection\\(\\) expects CCMBenchmark\\\\Ting\\\\Repository\\\\HydratorInterface\\<mixed\\>\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/UserBadgeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Unable to resolve the template type U in call to method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\UserBadge\\>\\:\\:getCollection\\(\\)$#',
-	'identifier' => 'argument.templateType',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/UserBadgeRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot cast mixed to int\\.$#',
