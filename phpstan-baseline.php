@@ -4292,18 +4292,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/CFP/EditAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$submittedBy of method AppBundle\\\\Event\\\\Model\\\\TalkInvitation\\:\\:setSubmittedBy\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/CFP/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$talkId of method AppBundle\\\\Event\\\\Model\\\\TalkInvitation\\:\\:setTalkId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/CFP/EditAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$eventSlug of method AppBundle\\\\Controller\\\\Event\\\\EventActionHelper\\:\\:getEvent\\(\\) expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -5474,12 +5462,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TalkAdminType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class AppBundle\\\\Event\\\\Form\\\\TalkInvitationType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TalkInvitationType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Class AppBundle\\\\Event\\\\Form\\\\TalkType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
@@ -6648,36 +6630,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SponsorTicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TalkInvitationRepository\\:\\:getPendingInvitationsByTalkId\\(\\) has parameter \\$talkId with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkInvitationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TalkInvitationRepository\\:\\:getPendingInvitationsByTalkId\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkInvitationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TalkInvitationRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkInvitationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TalkInvitationRepository\\:\\:initMetadata\\(\\) return type with generic class CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkInvitationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkInvitationRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'\\.aggregation\' on mixed\\.$#',

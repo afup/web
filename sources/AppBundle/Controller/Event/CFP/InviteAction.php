@@ -6,10 +6,10 @@ namespace AppBundle\Controller\Event\CFP;
 
 use AppBundle\CFP\SpeakerFactory;
 use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Event\Model\Repository\TalkInvitationRepository;
+use AppBundle\Event\Entity\Repository\TalkInvitationRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
-use AppBundle\Event\Model\TalkInvitation;
+use AppBundle\Event\Enum\TalkInvitationState;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +31,7 @@ class InviteAction extends AbstractController
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
         $token = $request->attributes->get('token');
         $talkId = (int) $request->attributes->get('talkId');
-        $invitation = $this->talkInvitationRepository->get(['talk_id' => $talkId, 'token' => $token]);
+        $invitation = $this->talkInvitationRepository->findOneBy(['talkId' => $talkId, 'token' => $token]);
         $talk = $this->talkRepository->get($talkId);
 
         if ($invitation === null || $talk === null || $talk->getForumId() !== $event->getId()) {
@@ -49,8 +49,8 @@ class InviteAction extends AbstractController
             ]);
         }
 
-        if ($invitation->getState() === TalkInvitation::STATE_PENDING) {
-            $invitation->setState(TalkInvitation::STATE_ACCEPTED);
+        if ($invitation->state === TalkInvitationState::Pending) {
+            $invitation->state = TalkInvitationState::Accepted;
             $this->addFlash('success', $this->translator->trans('Vous etes désormais co-conférencier !'));
             // Save co-speaker
             $this->talkInvitationRepository->save($invitation);
