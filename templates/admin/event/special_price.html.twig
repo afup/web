@@ -21,28 +21,28 @@
         <tbody>
         {% for row in special_prices %}
             <tr>
-                <td>{{ row.special_price.description }}</td>
-                <td>{{ row.special_price.createdOn|date('d/m/Y') }}</td>
-                <td>{% if row.creator %}{{ row.creator.firstName }} {{ row.creator.lastName }}{% endif %}</td>
-                <td>{{ row.special_price.token }}</td>
-                <td>{{ row.special_price.price }}</td>
-                <td>{{ row.special_price.dateStart|date('d/m/Y') }}</td>
-                <td>{{ row.special_price.dateEnd|date('d/m/Y') }}</td>
+                <td>{{ row.specialPrice.description }}</td>
+                <td>{{ row.specialPrice.createdOn|date('d/m/Y') }}</td>
+                <td>{% if row.creatorPrenom %}{{ row.creatorPrenom }} {{ row.creatorNom }}{% endif %}</td>
+                <td>{{ row.specialPrice.token }}</td>
+                <td>{{ row.specialPrice.price }}</td>
+                <td>{{ row.specialPrice.dateStart|date('d/m/Y') }}</td>
+                <td>{{ row.specialPrice.dateEnd|date('d/m/Y') }}</td>
                 <td>
-                    {% if row['.aggregation']['inscription']|length > 0 %}
+                    {% if row.used %}
                         <span class="ui green label">oui</span>
                     {% else %}
                         <span class="ui red label">non</span>
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('admin_event_special_price_extend', {'id': row.special_price.id}) }}"
+                    <a href="{{ path('admin_event_special_price_extend', {'id': row.specialPrice.id}) }}"
                        data-tooltip="Prolonger la validité de {{ extend_days }} jours"
                        class="ui icon button">
                         <i class="clock outline icon"></i>
                     </a>
                 </td>
-                <td><a href="{{ path('ticket', {'eventSlug' : event.path, 'token': row.special_price.token  }) }}">Lien</a></td>
+                <td><a href="{{ path('ticket', {'eventSlug' : event.path, 'token': row.specialPrice.token  }) }}">Lien</a></td>
 
             </tr>
         {% endfor %}

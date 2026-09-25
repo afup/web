@@ -9,11 +9,11 @@ use AppBundle\Association\Genre;
 use AppBundle\Event\Entity\BilleteriePrivee;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
-use AppBundle\Event\Model\Repository\TicketSpecialPriceRepository;
+use AppBundle\Event\Entity\Repository\TicketSpecialPriceRepository;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Model\TicketEventType;
-use AppBundle\Event\Model\TicketSpecialPrice;
+use AppBundle\Event\Entity\TicketSpecialPrice;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\RuntimeException;
@@ -91,8 +91,14 @@ class TicketType extends AbstractType
                 $filteredEventTickets[] = $eventTicket;
             }
 
-            $event = $this->eventRepository->get($options['event_id']);
-            $ticketSpecialPrice = $this->ticketSpecialPriceRepository->findUnusedToken($event, $options['special_price_token']);
+            $specialPriceToken = $options['special_price_token'];
+            $ticketSpecialPrice = null;
+            if (is_int($options['event_id'])) {
+                $ticketSpecialPrice = $this->ticketSpecialPriceRepository->findUnusedToken(
+                    $options['event_id'],
+                    is_string($specialPriceToken) ? $specialPriceToken : null,
+                );
+            }
 
             if (null !== $ticketSpecialPrice) {
                 $filteredEventTickets = $this->createSpecialPriceTicketEventType($ticketSpecialPrice, $filteredEventTickets);
@@ -186,18 +192,12 @@ class TicketType extends AbstractType
             return $filteredEventTickets;
         }
 
-        $dateStart = $ticketSpecialPrice->getDateStart();
-        $dateEnd = $ticketSpecialPrice->getDateEnd();
-        if ($dateStart === null || $dateEnd === null) {
-            return $filteredEventTickets;
-        }
-
         $eToken = new TicketEventType();
-        $eToken->setDateStart($dateStart);
-        $eToken->setDateEnd($dateEnd);
-        $eToken->setPrice($ticketSpecialPrice->getPrice());
+        $eToken->setDateStart(\DateTime::createFromImmutable($ticketSpecialPrice->dateStart));
+        $eToken->setDateEnd(\DateTime::createFromImmutable($ticketSpecialPrice->dateEnd));
+        $eToken->setPrice($ticketSpecialPrice->price ?? 0.0);
         $eToken->setTicketType($ticketType);
-        $eToken->setEventId($ticketSpecialPrice->getEventId());
+        $eToken->setEventId($ticketSpecialPrice->eventId);
         $eToken->setTicketTypeId(Ticket::TYPE_SPECIAL_PRICE);
 
         return [$eToken];
