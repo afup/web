@@ -6,9 +6,9 @@ namespace AppBundle\Controller\Event\CFP;
 
 use AppBundle\CFP\SpeakerFactory;
 use AppBundle\Controller\Event\EventActionHelper;
+use AppBundle\Event\Entity\Repository\TalkToSpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkInvitationRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Repository\TalkToSpeakersRepository;
 use AppBundle\Event\Model\TalkInvitation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,7 +22,7 @@ class InviteAction extends AbstractController
         private readonly TalkRepository $talkRepository,
         private readonly SpeakerFactory $speakerFactory,
         private readonly TalkInvitationRepository $talkInvitationRepository,
-        private readonly TalkToSpeakersRepository $talkToSpeakersRepository,
+        private readonly TalkToSpeakerRepository $talkToSpeakersRepository,
         private readonly TranslatorInterface $translator,
     ) {}
 
