@@ -6,10 +6,9 @@ namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Event\AdminEventSelection;
 use Symfony\Component\Form\FormView;
+use AppBundle\Event\Entity\Repository\RoomRepository;
+use AppBundle\Event\Entity\Room;
 use AppBundle\Event\Form\RoomType;
-use AppBundle\Event\Model\Repository\RoomRepository;
-use AppBundle\Event\Model\Room;
-use CCMBenchmark\Ting\Repository\CollectionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -29,16 +28,16 @@ class RoomAction extends AbstractController
         $rooms = $this->roomRepository->getByEvent($event);
         $editForms = $this->getFormsForRooms($rooms);
 
-        foreach ($editForms as $form) {
+        foreach ($editForms as $i => $form) {
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $room = $form->getData();
                 if ($request->request->has('delete')) {
                     $this->roomRepository->delete($room);
-                    $this->addFlash('notice', sprintf('La salle "%s" a été supprimée.', $room->getName()));
+                    $this->addFlash('notice', sprintf('La salle "%s" a été supprimée.', $room->name));
                 } else {
                     $this->roomRepository->save($room);
-                    $this->addFlash('notice', sprintf('La salle "%s" a été sauvegardée.', $room->getName()));
+                    $this->addFlash('notice', sprintf('La salle "%s" a été sauvegardée.', $room->name));
                 }
 
                 return $this->redirectToRoute('admin_event_room', [
@@ -48,15 +47,14 @@ class RoomAction extends AbstractController
         }
 
         $newRoom = new Room();
-        $newRoom->setEventId($event->getId());
+        $newRoom->eventId = $event->getId();
 
         $addForm = $this->createForm(RoomType::class, $newRoom);
         $addForm->handleRequest($request);
 
         if ($addForm->isSubmitted() && $addForm->isValid()) {
-            $newRoom = $addForm->getData();
             $this->roomRepository->save($newRoom);
-            $this->addFlash('notice', sprintf('La salle "%s" a été ajoutée.', $newRoom->getName()));
+            $this->addFlash('notice', sprintf('La salle "%s" a été ajoutée.', $newRoom->name));
 
             return $this->redirectToRoute('admin_event_room', [
                 'id' => $event->getId(),
@@ -74,13 +72,15 @@ class RoomAction extends AbstractController
     }
 
     /**
+     * @param array<Room> $rooms
+     *
      * @return FormInterface[]
      */
-    private function getFormsForRooms(CollectionInterface $rooms): array
+    private function getFormsForRooms(array $rooms): array
     {
         $forms = [];
         foreach ($rooms as $room) {
-            $forms[] = $this->formFactory->createNamedBuilder('edit_room_' . $room->getId(), RoomType::class,
+            $forms[] = $this->formFactory->createNamedBuilder('edit_room_' . $room->id, RoomType::class,
                 $room)->getForm();
         }
 

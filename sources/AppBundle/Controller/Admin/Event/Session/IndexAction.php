@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event\Session;
 
 use AppBundle\Event\AdminEventSelection;
+use AppBundle\Event\Entity\Repository\RoomRepository;
+use AppBundle\Event\Entity\Room;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Planning;
-use AppBundle\Event\Model\Repository\RoomRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Room;
 use AppBundle\Event\Model\Session\CalendarEvent;
 use AppBundle\Event\Model\Session\CalendarResource;
 use AppBundle\Event\Model\TalkAggregate;
@@ -54,8 +54,8 @@ final class IndexAction extends AbstractController
         /** @var Room $room */
         foreach ($rooms as $i => $room) {
             $resources[] = new CalendarResource(
-                $room->getId(),
-                $room->getName(),
+                $room->id,
+                $room->name,
                 $colors[$i % $m],
             );
         }

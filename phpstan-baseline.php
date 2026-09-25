@@ -3026,49 +3026,25 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/RemoveEventAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between \'edit_room_\' and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/RoomAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/RoomAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getName\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/RoomAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Event\\\\RoomAction\\:\\:getFormsForRooms\\(\\) has parameter \\$rooms with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface but does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/RoomAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Event\\\\RoomAction\\:\\:getFormsForRooms\\(\\) return type with generic interface Symfony\\\\Component\\\\Form\\\\FormInterface does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/RoomAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\Room\\>\\:\\:delete\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Room, mixed given\\.$#',
+	'message' => '#^Cannot access property \\$name on mixed\\.$#',
+	'identifier' => 'property.nonObject',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/RoomAction.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#1 \\$entity of method AppBundle\\\\Doctrine\\\\EntityRepository\\<AppBundle\\\\Event\\\\Entity\\\\Room\\>\\:\\:delete\\(\\) expects AppBundle\\\\Event\\\\Entity\\\\Room, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/RoomAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\Room\\>\\:\\:save\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Room, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/RoomAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$eventId of method AppBundle\\\\Event\\\\Model\\\\Room\\:\\:setEventId\\(\\) expects int, int\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$entity of method AppBundle\\\\Doctrine\\\\EntityRepository\\<AppBundle\\\\Event\\\\Entity\\\\Room\\>\\:\\:save\\(\\) expects AppBundle\\\\Event\\\\Entity\\\\Room, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/RoomAction.php',
@@ -3076,7 +3052,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#',
 	'identifier' => 'argument.type',
-	'count' => 3,
+	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/RoomAction.php',
 ];
 $ignoreErrors[] = [
@@ -3140,7 +3116,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Event\\\\Session\\\\EditAction\\:\\:roomChoices\\(\\) should return array\\<string, int\\> but returns array\\<int\\|null\\>\\.$#',
+	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Event\\\\Session\\\\EditAction\\:\\:roomChoices\\(\\) should return array\\<string, int\\> but returns array\\<string, int\\|null\\>\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
@@ -3170,7 +3146,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Possibly invalid array key type mixed\\.$#',
+	'message' => '#^Possibly invalid array key type string\\|null\\.$#',
 	'identifier' => 'offsetAccess.invalidOffset',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/EditAction.php',
@@ -3188,7 +3164,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/IndexAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$title of class AppBundle\\\\Event\\\\Model\\\\Session\\\\CalendarResource constructor expects string, mixed given\\.$#',
+	'message' => '#^Parameter \\#2 \\$title of class AppBundle\\\\Event\\\\Model\\\\Session\\\\CalendarResource constructor expects string, string\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/IndexAction.php',
