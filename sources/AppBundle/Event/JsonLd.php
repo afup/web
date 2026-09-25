@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Event;
 
 use AppBundle\CFP\PhotoStorage;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
@@ -16,6 +17,7 @@ final readonly class JsonLd
 {
     public function __construct(
         private TalkRepository $talkRepository,
+        private PlanningRepository $planningRepository,
         private TicketEventTypeRepository $ticketEventTypeRepository,
         private TicketTypeAvailability $ticketTypeAvailability,
         private Packages $packages,
@@ -24,7 +26,9 @@ final readonly class JsonLd
 
     public function getDataForEvent(Event $event): array
     {
-        $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event);
+        $talkAggregates = $this->planningRepository->enrichTalkAggregates(
+            $this->talkRepository->getByEventWithSpeakers($event),
+        );
 
         $subEvents = [];
         foreach ($talkAggregates as $talkAggregate) {
@@ -68,8 +72,8 @@ final readonly class JsonLd
             ];
 
             if ($talkAggregate->planning && $event->isPlanningDisplayable()) {
-                $subEvent['startDate'] = $talkAggregate->planning->getStart()->format('c');
-                $subEvent['endDate'] = $talkAggregate->planning->getEnd()->format('c');
+                $subEvent['startDate'] = $talkAggregate->planning->start->format('c');
+                $subEvent['endDate'] = $talkAggregate->planning->end->format('c');
             }
 
             $subEvents[] = $subEvent;
