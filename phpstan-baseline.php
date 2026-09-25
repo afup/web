@@ -4184,18 +4184,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/TechLetter/PreviewAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access property \\$urlName on AppBundle\\\\Antennes\\\\Meetup\\|null\\.$#',
-	'identifier' => 'property.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Api/Antennes/GetOneAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Api\\\\Antennes\\\\GetOneAction\\:\\:transformMeetup\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Api/Antennes/GetOneAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'email\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
 	'count' => 1,
@@ -7860,36 +7848,6 @@ $ignoreErrors[] = [
 	'identifier' => 'encapsedStringPart.nonString',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Github/Exception/UnableToGetGithubUserInfosException.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setSettings\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Indexation/Meetups/Runner.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Indexation\\\\Meetups\\\\Runner\\:\\:getTransformedMeetupsFromDatabase\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Indexation/Meetups/Runner.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Indexation\\\\Meetups\\\\Runner\\:\\:initIndex\\(\\) should return Algolia\\\\AlgoliaSearch\\\\SearchIndex but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Indexation/Meetups/Runner.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access property \\$urlName on AppBundle\\\\Antennes\\\\Meetup\\|null\\.$#',
-	'identifier' => 'property.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Indexation/Meetups/Transformer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Indexation\\\\Meetups\\\\Transformer\\:\\:transform\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Indexation/Meetups/Transformer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method setSettings\\(\\) on mixed\\.$#',

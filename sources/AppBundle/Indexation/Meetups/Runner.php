@@ -40,6 +40,7 @@ final readonly class Runner
 
     protected function initIndex(): SearchIndex
     {
+        /** @var SearchIndex $index */
         $index = $this->algoliaClient->initIndex('afup_meetups');
 
         $index->setSettings([
@@ -61,6 +62,9 @@ final readonly class Runner
         return $index;
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     private function getTransformedMeetupsFromDatabase(): array
     {
         $meetupsCollection = $this->meetupRepository->findAll();
@@ -70,7 +74,7 @@ final readonly class Runner
 
     /**
      * @param array<Meetup> $meetupsCollection
-     * @return list<array>
+     * @return list<array<string, mixed>>
      */
     public function transformMeetupsForIndexation(array $meetupsCollection): array
     {
