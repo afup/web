@@ -28,15 +28,15 @@ class CotisationRepository extends EntityRepository
 
     public function generateInvoiceNumber(): string
     {
-        $result = $this->getEntityManager()->getConnection()->executeQuery(
-            <<<'SQL'
-SELECT MAX(CAST(SUBSTRING_INDEX(numero_facture, '-', -1) AS UNSIGNED)) + 1 as number
-FROM afup_cotisations
-WHERE LEFT(numero_facture, 4) = :date
-  OR LEFT(numero_facture, 10) = :prefixed_date
-SQL,
-            ['date' => date('Y'), 'prefixed_date' => 'COTIS-' . date('Y')],
-        )->fetchOne();
+        $result = $this->getEntityManager()->getConnection()->createQueryBuilder()
+            ->select('MAX(CAST(SUBSTRING_INDEX(numero_facture, \'-\', -1) AS UNSIGNED)) + 1 as number')
+            ->from('afup_cotisations')
+            ->where('LEFT(numero_facture, 4) = :date')
+            ->orWhere('LEFT(numero_facture, 10) = :prefixed_date')
+            ->setParameter('date', date('Y'))
+            ->setParameter('prefixed_date', 'COTIS-' . date('Y'))
+            ->executeQuery()
+            ->fetchOne();
 
         return 'COTIS-' . date('Y') . '-' . (is_numeric($result) ? (int) $result : 1);
     }
