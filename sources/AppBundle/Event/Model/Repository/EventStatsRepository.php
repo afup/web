@@ -90,6 +90,16 @@ class EventStatsRepository
         }
 
         $queryBuilder = clone $baseQueryBuilder;
+        $queryBuilder
+            ->select('COUNT(DISTINCT montant) AS nb_prices')
+            ->andWhere('type_inscription = :specialPrice')
+            ->setParameter('specialPrice', Ticket::TYPE_SPECIAL_PRICE)
+            ->andWhere('etat IN(:states)')
+            ->setParameter('states', [Ticket::STATUS_PAID, Ticket::STATUS_WAITING], ArrayParameterType::INTEGER);
+        $nbPrices = $queryBuilder->executeQuery()->fetchOne();
+        $specialPriceDistinctAmounts = is_numeric($nbPrices) ? (int) $nbPrices : 0;
+
+        $queryBuilder = clone $baseQueryBuilder;
         $statement = $queryBuilder->andWhere('etat NOT IN(:states)')
             ->setParameter('states', [Ticket::STATUS_CANCELLED, Ticket::STATUS_ERROR, Ticket::STATUS_DECLINED], ArrayParameterType::INTEGER)
             ->executeQuery();
@@ -99,7 +109,7 @@ class EventStatsRepository
             $registered[$row['type_inscription']] = $row['c'];
         }
 
-        return new TicketTypeStats($confirmed, $registered, $paying, $realAmounts);
+        return new TicketTypeStats($confirmed, $registered, $paying, $realAmounts, $specialPriceDistinctAmounts);
     }
 
     private function getStatsForDay(int $eventId, string $day, ?Datetime $from = null): DailyStats
