@@ -1,0 +1,19 @@
+{#
+    Espace entreprise, réservé aux gestionnaires d'une adhésion morale.
+    Même contrat que `layouts/member.html.twig` : les pages définissent `page_body`.
+#}
+{% extends 'layouts/site.html.twig' %}
+
+{% block submenu %}
+    {% include 'site/partials/_submenu.html.twig' with { items: [
+        { label: 'Accueil', route: 'member_index' },
+        { label: 'Coordonnées', route: 'member_company' },
+        { label: 'Membres', route: 'member_company_members' },
+        { label: 'Profil public', route: 'member_company_public_profile' },
+    ] } only %}
+{% endblock %}
+
+{% block content %}
+    {% include 'site/partials/_flashes.html.twig' %}
+    {% block page_body %}{% endblock %}
+{% endblock %}
