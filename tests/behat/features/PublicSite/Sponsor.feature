@@ -27,7 +27,7 @@ Feature: Site Public - Devenir sponsor
     And I should only receive the following emails:
       | to                   | subject                                           |
       | <sponsors@afup.org>  | forum - Nouvelle demande de dossier de sponsoring |
-      | <email@domain.com>   |  Dossier de sponsoring forum                      |
+      | <email@domain.com>   | Dossier de sponsoring AFUP                        |
 
   @reloadDbWithTestData
   @clearEmails
@@ -48,4 +48,4 @@ Feature: Site Public - Devenir sponsor
     And I should only receive the following emails:
       | to                   | subject                                           |
       | <sponsors@afup.org>  | forum - Nouvelle demande de dossier de sponsoring |
-      | <email@domain.com>   |  Dossier de sponsoring forum                      |
+      | <email@domain.com>   | Dossier de sponsoring AFUP                        |
