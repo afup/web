@@ -3530,7 +3530,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/IndexAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$eventId of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\VoteRepository\\:\\:getVotesByEvent\\(\\) expects int, int\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$eventId of method AppBundle\\\\Event\\\\Entity\\\\Repository\\\\VoteRepository\\:\\:getVotesByEvent\\(\\) expects int, int\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/VotesListeAction.php',
@@ -4358,12 +4358,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Event/ShowAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'votes\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Event/ShowAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getPath\\(\\) on mixed\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -4700,38 +4694,38 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Vote/IndexAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$vote of method AppBundle\\\\Controller\\\\Event\\\\Vote\\\\VoteController\\:\\:createVoteForm\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Vote, mixed given\\.$#',
+	'message' => '#^Parameter \\#3 \\$vote of method AppBundle\\\\Controller\\\\Event\\\\Vote\\\\VoteController\\:\\:createVoteForm\\(\\) expects AppBundle\\\\Event\\\\Entity\\\\Vote, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Vote/IndexAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method setSubmittedOn\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
+	'message' => '#^Cannot access property \\$submittedOn on mixed\\.$#',
+	'identifier' => 'property.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Vote/NewAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method setTalk\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
+	'message' => '#^Cannot access property \\$talk on mixed\\.$#',
+	'identifier' => 'property.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Vote/NewAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$user of method AppBundle\\\\Event\\\\Model\\\\Vote\\:\\:setUser\\(\\) expects int, int\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$vote of method AppBundle\\\\Event\\\\Entity\\\\Repository\\\\VoteRepository\\:\\:upsert\\(\\) expects AppBundle\\\\Event\\\\Entity\\\\Vote, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Vote/NewAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$vote of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\VoteRepository\\:\\:upsert\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Vote, mixed given\\.$#',
+	'message' => '#^Parameter \\#1 \\$vote of method AppBundle\\\\Notifier\\\\SlackNotifier\\:\\:notifyVote\\(\\) expects AppBundle\\\\Event\\\\Entity\\\\Vote, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Vote/NewAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$vote of method AppBundle\\\\Notifier\\\\SlackNotifier\\:\\:notifyVote\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Vote, mixed given\\.$#',
-	'identifier' => 'argument.type',
+	'message' => '#^Property AppBundle\\\\Event\\\\Entity\\\\Vote\\:\\:\\$userId \\(int\\) does not accept int\\|null\\.$#',
+	'identifier' => 'assign.propertyType',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Vote/NewAction.php',
 ];
@@ -5298,6 +5292,18 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Email/Mailer/Mailer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot cast mixed to int\\.$#',
+	'identifier' => 'cast.int',
+	'count' => 7,
+	'path' => __DIR__ . '/sources/AppBundle/Event/Entity/Repository/VoteRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#1 \\$datetime of class DateTimeImmutable constructor expects string, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Event/Entity/Repository/VoteRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Class AppBundle\\\\Event\\\\Form\\\\EventCFPTextType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
@@ -7214,60 +7220,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/UserBadgeRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to int\\.$#',
-	'identifier' => 'cast.int',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/VoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\VoteRepository\\:\\:getNumberOfVotesByEvent\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/VoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\VoteRepository\\:\\:getVotesByEvent\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/VoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\VoteRepository\\:\\:getVotesByTalkWithUser\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/VoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\VoteRepository\\:\\:getVotesByTalkWithUser\\(\\) has parameter \\$talkId with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/VoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\VoteRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/VoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\VoteRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/VoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/VoteRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$submittedOn of method AppBundle\\\\Event\\\\Model\\\\Vote\\:\\:setSubmittedOn\\(\\) expects DateTime, DateTime\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/VoteRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property AppBundle\\\\Event\\\\Model\\\\Room\\:\\:\\$name \\(string\\) does not accept mixed\\.$#',
 	'identifier' => 'assign.propertyType',
 	'count' => 1,
@@ -7340,6 +7292,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Talk.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Event\\\\Model\\\\Talk\\:\\:\\$votes has unknown class AppBundle\\\\Event\\\\Model\\\\Vote as its type\\.$#',
+	'identifier' => 'class.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Talk.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Ticket\\:\\:getTags\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -7356,12 +7314,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/TicketType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Vote\\:\\:getId\\(\\) should return int but returns int\\|null\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Vote.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
@@ -9059,12 +9011,6 @@ $ignoreErrors[] = [
 	'message' => '#^Cannot call method getPrettyName\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Slack/MessageFactory.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getTitle\\(\\) on AppBundle\\\\Event\\\\Model\\\\Talk\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Slack/MessageFactory.php',
 ];
 $ignoreErrors[] = [

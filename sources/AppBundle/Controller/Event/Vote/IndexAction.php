@@ -7,7 +7,7 @@ namespace AppBundle\Controller\Event\Vote;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
-use AppBundle\Event\Model\Vote;
+use AppBundle\Event\Entity\Vote;
 use AppBundle\Security\Authentication;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
