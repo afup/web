@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model\Repository;
 
+use AppBundle\Event\Entity\Repository\TalkToSpeakerRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\EventStats\CFPStats;
 use AppBundle\Event\Model\EventStats\SalesPilotage;
@@ -26,7 +27,7 @@ class EventStatsRepository
     public function __construct(
         private readonly Connection $connection,
         private readonly TalkRepository $talkRepository,
-        private readonly TalkToSpeakersRepository $talkToSpeakersRepository,
+        private readonly TalkToSpeakerRepository $talkToSpeakersRepository,
         private readonly EventRepository $eventRepository,
     ) {}
 
