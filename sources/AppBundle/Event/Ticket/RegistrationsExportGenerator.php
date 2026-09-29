@@ -39,6 +39,7 @@ readonly class RegistrationsExportGenerator
             'email',
             'member_since',
             'office',
+            'date_inscription',
         ];
 
         $toFile->fputcsv($columns, escape: '\\');
@@ -91,6 +92,8 @@ readonly class RegistrationsExportGenerator
                 $office = $this->officeFinder->findOffice($invoice, $user);
             }
 
+            $dateInscription = $ticket->getDate();
+
             yield [
                 'id' => $ticket->getId(),
                 'reference' => $invoice->getReference(),
@@ -107,6 +110,7 @@ readonly class RegistrationsExportGenerator
                 'city' => null !== $user ? $user->getCity() : $invoice->getCity(),
                 'zip_code' => null !== $user ? $user->getZipCode() : $invoice->getZipCode(),
                 'country' => null !== $user ? $user->getCountry() : $invoice->getCountryId(),
+                'date_inscription' => $dateInscription ? $dateInscription->format('Y-m-d') : null,
             ];
         }
     }
