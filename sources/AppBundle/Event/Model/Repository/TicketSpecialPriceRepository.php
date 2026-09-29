@@ -44,6 +44,42 @@ class TicketSpecialPriceRepository extends Repository implements MetadataInitial
     }
 
     /**
+     * @param list<string> $tokens
+     * @return list<TicketSpecialPrice>
+     */
+    public function findByTokens(array $tokens): array
+    {
+        $params = [];
+        $tokensParams = [];
+        $cpt = 0;
+        foreach (array_values(array_unique($tokens)) as $token) {
+            $key = 'token_' . ++$cpt;
+            $params[$key] = $token;
+            $tokensParams[] = ':' . $key;
+        }
+
+        if ($tokensParams === []) {
+            return [];
+        }
+
+        $query = $this->getPreparedQuery(strtr(
+            'SELECT afup_forum_special_price.*
+            FROM afup_forum_special_price
+            WHERE afup_forum_special_price.token IN (%tokens%)',
+            ['%tokens%' => implode(', ', $tokensParams)],
+        ))->setParams($params);
+
+        $specialPrices = [];
+        foreach ($query->query($this->getCollection(new HydratorSingleObject())) as $specialPrice) {
+            if ($specialPrice instanceof TicketSpecialPrice) {
+                $specialPrices[] = $specialPrice;
+            }
+        }
+
+        return $specialPrices;
+    }
+
+    /**
      * @return CollectionInterface
      */
     public function getByEvent(Event $event)

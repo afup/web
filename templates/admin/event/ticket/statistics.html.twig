@@ -25,7 +25,13 @@
                 <td>
                     {{ ticket.label }}
                 </td>
-                <td class="right aligned">{{ ticket.amount }} €</td>
+                <td class="right aligned">
+                    {% if ticket.amount is null %}
+                        <a href="{{ path('admin_event_billeterie_privee', {id: event.id}) }}" data-tooltip="Plusieurs tarifs spéciaux de prix différents sont regroupés sur cette ligne.">Voir les billetteries privées</a>
+                    {% else %}
+                        {{ ticket.amount }} €
+                    {% endif %}
+                </td>
                 <td class="right aligned">{{ ticket.registered }}</td>
                 <td class="right aligned">{{ ticket.confirmed }}</td>
                 <td class="right aligned">{{ ticket.paying }}</td>

@@ -18,5 +18,8 @@ final readonly class TicketTypeStats
 
         /** @var array<int, float> Montant réel encaissé ou en attente par type de tarif */
         public array $realAmounts = [],
+
+        /** Nombre de montants distincts portés par le tarif spécial (TYPE_SPECIAL_PRICE), règlements réglés ou en attente */
+        public int $specialPriceDistinctAmounts = 0,
     ) {}
 }

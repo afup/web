@@ -26,6 +26,24 @@ final class EventStatsRepositoryTest extends IntegrationTestCase
 
         self::assertSame(2, $stats->paying[Ticket::TYPE_SPECIAL_PRICE] ?? 0);
         self::assertSame(160.0, $stats->realAmounts[Ticket::TYPE_SPECIAL_PRICE] ?? 0.0);
+        self::assertSame(1, $stats->specialPriceDistinctAmounts);
+    }
+
+    public function testSpecialPriceDistinctAmountsDetectsMultiplePrices(): void
+    {
+        $eventStatsRepository = self::getContainer()->get(EventStatsRepository::class);
+        $connection = self::getContainer()->get(Connection::class);
+
+        // Deux tarifs spéciaux de prix différents (billetteries privées ou tokens visiteurs)
+        $this->insertInscription($connection, 'TOKEN-STATS-A', 'STATS-D', 43, Ticket::STATUS_PAID, 80.0);
+        $this->insertInscription($connection, 'TOKEN-STATS-B', 'STATS-E', 43, Ticket::STATUS_WAITING, 50.0);
+        // Un tarif spécial annulé à un autre prix ne doit pas être compté
+        $this->insertInscription($connection, 'TOKEN-STATS-C', 'STATS-F', 43, Ticket::STATUS_CANCELLED, 99.0);
+
+        $stats = $eventStatsRepository->getStatsForTicketTypes(43, null);
+
+        self::assertSame(2, $stats->specialPriceDistinctAmounts);
+        self::assertSame(130.0, $stats->realAmounts[Ticket::TYPE_SPECIAL_PRICE] ?? 0.0);
     }
 
     private function insertInscription(

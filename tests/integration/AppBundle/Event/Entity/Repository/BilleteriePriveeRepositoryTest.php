@@ -44,6 +44,21 @@ final class BilleteriePriveeRepositoryTest extends IntegrationTestCase
         self::assertSame(8, $billeterie->getPlacesRestantes(2));
     }
 
+    public function testFindByTokens(): void
+    {
+        $billeteriePriveeRepository = self::getContainer()->get(BilleteriePriveeRepository::class);
+
+        $billeteriePriveeRepository->save($this->buildBilleteriePrivee('Billetterie école XYZ', 'TOKEN-XYZ'));
+        $billeteriePriveeRepository->save($this->buildBilleteriePrivee('Billetterie entreprise ABC', 'TOKEN-ABC'));
+
+        $found = $billeteriePriveeRepository->findByTokens(['TOKEN-XYZ', 'TOKEN-INTROUVABLE']);
+
+        self::assertCount(1, $found);
+        self::assertSame('Billetterie école XYZ', $found[0]->nom);
+
+        self::assertSame([], $billeteriePriveeRepository->findByTokens([]));
+    }
+
     private function buildBilleteriePrivee(string $nom, string $token): BilleteriePrivee
     {
         $now = new \DateTimeImmutable();

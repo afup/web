@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    {% include 'admin/event/ticket/statistics.html.twig' with {computed: computed, statistics: statistics} only %}
+    {% include 'admin/event/ticket/statistics.html.twig' with {computed: computed, statistics: statistics, event: event} only %}
 
     <div class="ui segment">
         {% form_theme filter_form 'form_theme_admin_filter.html.twig' %}
@@ -75,7 +75,13 @@
                             </a>
                         {% endif %}
                     </td>
-                    <td>{{ a.ticketType.prettyName }}</td>
+                    <td>
+                        {% if a.ticket.specialPriceToken is not empty and special_price_labels[a.ticket.specialPriceToken] is defined %}
+                            {{ special_price_labels[a.ticket.specialPriceToken] }}
+                        {% else %}
+                            {{ a.ticketType.prettyName }}
+                        {% endif %}
+                    </td>
                     <td>
                         {% if a.ticket.status == 0 %}
                             <span class="ui orange label">Créé</span>
