@@ -20,13 +20,16 @@ class SponsorTokenType extends AbstractType
         $builder
             ->add('societe', TextType::class, [
                 'label' => 'Sponsor (société)',
+                'empty_data' => '',
             ])
             ->add('contactEmail', EmailType::class, [
                 'label' => 'Email de contact',
+                'empty_data' => '',
             ])
-            ->add('token', TextType::class)
+            ->add('token', TextType::class, ['empty_data' => ''])
             ->add('maxInvitations', IntegerType::class, [
                 'label' => 'Nombre d\'invitations',
+                'empty_data' => '0',
             ])
             ->add('qrCodesScannerAvailable', CheckboxType::class, [
                 'label' => 'Autoriser le scan de QR Codes',
