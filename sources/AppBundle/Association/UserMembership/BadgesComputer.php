@@ -9,7 +9,7 @@ use AppBundle\AssembleeGenerale\Enum\PresenceEtat;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\UserBadgeRepository;
+use AppBundle\Event\Entity\Repository\UserBadgeRepository;
 
 class BadgesComputer
 {
@@ -38,13 +38,11 @@ class BadgesComputer
     {
         $specific = [];
 
-        $userBadges = $this->userBadgeRepository->findByUserId($user->getId());
-
-        foreach ($userBadges as $userBadge) {
+        foreach ($this->userBadgeRepository->findByUserId($user->getId()) as $badgeAttribue) {
             $specific[] = [
-                'date' => $userBadge->getIssuedAt()->format('Y-m-d'),
-                'id' => $userBadge->getBadge()->getId(),
-                'tooltip' => $userBadge->getBadge()->getLabel(),
+                'date' => $badgeAttribue->issuedAt->format('Y-m-d'),
+                'id' => $badgeAttribue->badgeId,
+                'tooltip' => $badgeAttribue->badgeLabel,
             ];
         }
 
