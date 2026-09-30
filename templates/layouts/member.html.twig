@@ -1,0 +1,21 @@
+{#
+    Espace membre. Fournit la barre secondaire et le rendu des messages flash,
+    que `layouts/site.html.twig` n'assure pas.
+    Les pages définissent `page_body` et non `content`.
+#}
+{% extends 'layouts/site.html.twig' %}
+
+{% block submenu %}
+    {% include 'site/partials/_submenu.html.twig' with { items: [
+        { label: 'Accueil', route: 'member_index' },
+        { label: 'Coordonnées', route: 'member_contact' },
+        { label: 'Cotisations', route: 'member_membership_fee' },
+        { label: 'Veille', route: 'member_techletter' },
+        { label: 'Assemblée générale', route: 'member_general_meeting' },
+    ] } only %}
+{% endblock %}
+
+{% block content %}
+    {% include 'site/partials/_flashes.html.twig' %}
+    {% block page_body %}{% endblock %}
+{% endblock %}
