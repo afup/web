@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\Association\Form;
 
+use AppBundle\Association\Entity\CompanyMemberInvitation;
 use AppBundle\Association\Form\CompanyMemberType;
 use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\CompanyMemberInvitation;
 use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
 use EWZ\Bundle\RecaptchaBundle\Locale\LocaleResolver;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -64,7 +64,7 @@ class CompanyMemberTypeTest extends TypeTestCase
 
         $form->submit($this->payload(['manager' => '0']), false);
 
-        self::assertTrue($this->invitation($data, 0)->getManager());
+        self::assertTrue($this->invitation($data, 0)->manager);
     }
 
     #[Test]
@@ -95,7 +95,7 @@ class CompanyMemberTypeTest extends TypeTestCase
         ], false);
 
         self::assertCount(1, $this->invitations($data));
-        self::assertSame('premier@example.com', $this->invitation($data, 0)->getEmail());
+        self::assertSame('premier@example.com', $this->invitation($data, 0)->email);
     }
 
     #[Test]
@@ -112,8 +112,8 @@ class CompanyMemberTypeTest extends TypeTestCase
         ], false);
 
         self::assertCount(2, $this->invitations($data));
-        self::assertSame('second@example.com', $this->invitation($data, 1)->getEmail());
-        self::assertFalse($this->invitation($data, 1)->getManager(), 'seul le premier est gestionnaire');
+        self::assertSame('second@example.com', $this->invitation($data, 1)->email);
+        self::assertFalse($this->invitation($data, 1)->manager, 'seul le premier est gestionnaire');
     }
 
     private function invitation(CompanyMember $member, int $index): CompanyMemberInvitation
@@ -144,7 +144,9 @@ class CompanyMemberTypeTest extends TypeTestCase
     private function newCompanyMember(): CompanyMember
     {
         $member = new CompanyMember();
-        $member->setInvitations([new CompanyMemberInvitation()->setManager(true)]);
+        $invitation = new CompanyMemberInvitation();
+        $invitation->manager = true;
+        $member->setInvitations([$invitation]);
 
         return $member;
     }

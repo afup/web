@@ -6,10 +6,11 @@ namespace AppBundle\Controller\Website\Membership;
 
 use AppBundle\Association\CompanyMembership\InvitationMail;
 use AppBundle\Association\CompanyMembership\SubscriptionManagement;
+use AppBundle\Association\Entity\CompanyMemberInvitation;
+use AppBundle\Association\Entity\Repository\CompanyMemberInvitationRepository;
+use AppBundle\Association\Enum\InvitationEtat;
 use AppBundle\Association\Form\CompanyMemberType;
 use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\CompanyMemberInvitation;
-use AppBundle\Association\Model\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,7 +40,11 @@ final class CompanyAction extends AbstractController
         $data = new CompanyMember();
         $data->setMaxMembers($defaultMembers);
         $data->setInvitations(array_map(
-            static fn(int $index): CompanyMemberInvitation => new CompanyMemberInvitation()->setManager(0 === $index),
+            static function (int $index): CompanyMemberInvitation {
+                $invitation = new CompanyMemberInvitation();
+                $invitation->manager = 0 === $index;
+                return $invitation;
+            },
             range(0, $defaultMembers - 1),
         ));
 
@@ -54,18 +59,16 @@ final class CompanyAction extends AbstractController
             $this->companyMemberRepository->save($member);
 
             foreach ($member->getInvitations() as $index => $invitation) {
-                if ($invitation->getEmail() === '') {
+                if ($invitation->email === '') {
                     continue;
                 }
-                $invitation
-                    ->setSubmittedOn(new \DateTime())
-                    ->setCompanyId($member->getId())
-                    ->setToken(base64_encode(random_bytes(30)))
-                    ->setStatus(CompanyMemberInvitation::STATUS_PENDING)
-                ;
+                $invitation->submittedOn = new \DateTime();
+                $invitation->companyId = (int) $member->getId();
+                $invitation->token = base64_encode(random_bytes(30));
+                $invitation->status = InvitationEtat::EnAttente;
                 if ($index === 0) {
                     // By security, force first employee to be defined as a manager
-                    $invitation->setManager(true);
+                    $invitation->manager = true;
                 }
 
                 $this->companyMemberInvitationRepository->save($invitation);

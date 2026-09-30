@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Association\Form;
 
 use AppBundle\Association\CompanyMembership\SubscriptionManagement;
+use AppBundle\Association\Entity\CompanyMemberInvitation;
 use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\CompanyMemberInvitation;
 use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
 use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaIsValid;
 use Symfony\Component\Form\AbstractType;
@@ -98,7 +98,7 @@ class CompanyMemberType extends AbstractType
                     new Callback(static function (?array $invitations, ExecutionContextInterface $context): void {
                         $first = $invitations[0] ?? null;
 
-                        if ($first instanceof CompanyMemberInvitation && '' !== trim($first->getEmail())) {
+                        if ($first instanceof CompanyMemberInvitation && '' !== trim($first->email)) {
                             return;
                         }
 

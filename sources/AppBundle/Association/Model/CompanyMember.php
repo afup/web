@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Association\Model;
 
 use AppBundle\Association\CompanyMembership\SubscriptionManagement;
+use AppBundle\Association\Entity\CompanyMemberInvitation;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use Cocur\Slugify\Slugify;
