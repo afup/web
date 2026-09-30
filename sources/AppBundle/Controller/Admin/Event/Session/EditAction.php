@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event\Session;
 
 use AppBundle\AuditLog\Audit;
+use AppBundle\Event\Entity\Repository\RoomRepository;
+use AppBundle\Event\Entity\Room;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\PlanningRepository;
-use AppBundle\Event\Model\Repository\RoomRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Room;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -134,7 +134,7 @@ class EditAction extends AbstractController
         $rooms = $this->roomRepository->getByEvent($event);
         /** @var Room $room */
         foreach ($rooms as $room) {
-            $roomChoices[$room->getName()] = $room->getId();
+            $roomChoices[$room->name] = $room->id;
         }
 
         return $roomChoices;
