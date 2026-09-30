@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Event\AdminEventSelection;
+use AppBundle\Event\Entity\Repository\EventThemeRepository;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\EventThemeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,11 +25,11 @@ class EventThemeAction extends AbstractController
             return $this->handleAjaxRequest($request, $event);
         }
         if ($request->getMethod() === 'POST' && $request->request->has('delete')) {
-            $theme = $this->eventThemeRepository->get($request->request->getInt('theme_id'));
+            $theme = $this->eventThemeRepository->find($request->request->getInt('theme_id'));
             if ($theme === null) {
                 $this->addFlash('error', 'Thème introuvable.');
             } else {
-                $name = $theme->getName();
+                $name = $theme->name;
                 $this->eventThemeRepository->delete($theme);
                 $this->addFlash('notice', sprintf('Le thème "%s" a été supprimé.', $name));
             }
@@ -61,12 +61,12 @@ class EventThemeAction extends AbstractController
         $themeId = $request->request->getInt('theme_id');
         $priority = $request->request->getInt('priority');
 
-        $theme = $this->eventThemeRepository->get($themeId);
+        $theme = $this->eventThemeRepository->find($themeId);
         if (!$theme) {
             return new JsonResponse(['error' => 'Thème non trouvé'], 404);
         }
 
-        $theme->setPriority($priority);
+        $theme->priority = $priority;
         $this->eventThemeRepository->save($theme);
 
         return new JsonResponse(['success' => true]);

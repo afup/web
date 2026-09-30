@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Event\AdminEventSelection;
+use AppBundle\Event\Entity\Repository\EventThemeRepository;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\EventThemeRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,7 +31,7 @@ class EventEditorializationAction extends AbstractController
 
         $eventId = $event->getId() ?? 0;
         $hasThemes = $event->getHasThemes();
-        $themes = $hasThemes ? iterator_to_array($this->eventThemeRepository->getByThemesOrderedByPriority($eventId)) : [];
+        $themes = $hasThemes ? $this->eventThemeRepository->getByThemesOrderedByPriority($eventId) : [];
         $scheduledTalks = iterator_to_array($this->talkRepository->getScheduledTalksByEvent($eventId));
 
         $talkGroups = $this->groupTalks($scheduledTalks, $themes, $hasThemes);
@@ -47,8 +47,8 @@ class EventEditorializationAction extends AbstractController
 
     /**
      * @param array<Talk> $scheduledTalks
-     * @param array<\AppBundle\Event\Model\EventTheme> $themes
-     * @return array<array{theme: ?\AppBundle\Event\Model\EventTheme, talks: array<Talk>}>
+     * @param array<\AppBundle\Event\Entity\EventTheme> $themes
+     * @return array<array{theme: ?\AppBundle\Event\Entity\EventTheme, talks: array<Talk>}>
      */
     private function groupTalks(array $scheduledTalks, array $themes, bool $hasThemes): array
     {
@@ -61,7 +61,7 @@ class EventEditorializationAction extends AbstractController
 
         $talksByThemeId = [];
         foreach ($themes as $theme) {
-            $talksByThemeId[(int) $theme->getId()] = [];
+            $talksByThemeId[(int) $theme->id] = [];
         }
 
         $noThemeTalks = [];
@@ -78,7 +78,7 @@ class EventEditorializationAction extends AbstractController
         $groups = [['theme' => null, 'talks' => $noThemeTalks]];
 
         foreach ($themes as $theme) {
-            $talks = $talksByThemeId[(int) $theme->getId()];
+            $talks = $talksByThemeId[(int) $theme->id];
             usort($talks, $this->compareTalks(...));
             $groups[] = ['theme' => $theme, 'talks' => $talks];
         }
