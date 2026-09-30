@@ -29,10 +29,10 @@ class EventThemeAddEditAction extends AbstractController
             $new = true;
             $eventTheme = new EventTheme();
             if ($request->query->has('idForum')) {
-                $eventTheme->idForum = $request->query->getInt('idForum');
+                $eventTheme->eventId = $request->query->getInt('idForum');
             }
         } else {
-            $event = $this->eventRepository->get($eventTheme->idForum);
+            $event = $this->eventRepository->get($eventTheme->eventId);
             if ($event !== null) {
                 $talks = $this->talkRepository->getByEventWithSpeakers($event, false, false, $eventTheme->id);
             }
@@ -45,7 +45,7 @@ class EventThemeAddEditAction extends AbstractController
             $this->eventThemeRepository->save($eventTheme);
 
             $this->addFlash('notice', 'Thème ' . ($new ? 'ajouté' : 'modifié'));
-            return $this->redirectToRoute('admin_event_themes_list', ['id' => $eventTheme->idForum]);
+            return $this->redirectToRoute('admin_event_themes_list', ['id' => $eventTheme->eventId]);
         }
 
         return $this->render('admin/event/theme_add_edit.html.twig', [

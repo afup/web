@@ -27,7 +27,7 @@ final class EventThemeRepositoryTest extends IntegrationTestCase
         $loaded = $eventThemeRepository->find($themeAtelier->id);
         self::assertInstanceOf(EventTheme::class, $loaded);
         self::assertSame('Atelier', $loaded->name);
-        self::assertSame(42, $loaded->idForum);
+        self::assertSame(42, $loaded->eventId);
         self::assertSame('Description de l\'atelier', $loaded->description);
         self::assertSame(2, $loaded->priority);
         self::assertNull($themeConference->description);
@@ -44,10 +44,10 @@ final class EventThemeRepositoryTest extends IntegrationTestCase
         self::assertCount(2, $eventThemeRepository->getByThemesOrderedByPriority(42));
     }
 
-    private function buildEventTheme(int $idForum, string $name, int $priority, ?string $description): EventTheme
+    private function buildEventTheme(int $eventId, string $name, int $priority, ?string $description): EventTheme
     {
         $eventTheme = new EventTheme();
-        $eventTheme->idForum = $idForum;
+        $eventTheme->eventId = $eventId;
         $eventTheme->name = $name;
         $eventTheme->description = $description;
         $eventTheme->priority = $priority;

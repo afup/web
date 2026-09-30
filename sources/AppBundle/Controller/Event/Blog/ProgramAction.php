@@ -28,7 +28,7 @@ final class ProgramAction extends AbstractController
         $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event, $request->query->getBoolean('apply-publication-date-filters', true), $event->getHasThemes());
         $themes = null;
         if ($event->getHasThemes()) {
-            $themes = $this->eventThemeRepository->findBy(['idForum' => $event->getId()]);
+            $themes = $this->eventThemeRepository->findBy(['eventId' => $event->getId()]);
             usort($themes, fn($a, $b): int => $a->priority === $b->priority ? $a->name <=> $b->name : $a->priority <=> $b->priority);
             $themes = array_combine(array_map(fn($theme): int => (int) $theme->id, $themes), $themes);
         }

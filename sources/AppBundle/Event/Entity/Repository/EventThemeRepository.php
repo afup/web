@@ -23,6 +23,6 @@ final class EventThemeRepository extends EntityRepository
      */
     public function getByThemesOrderedByPriority(int $eventId): array
     {
-        return $this->findBy(['idForum' => $eventId], ['priority' => 'ASC', 'name' => 'ASC']);
+        return $this->findBy(['eventId' => $eventId], ['priority' => 'ASC', 'name' => 'ASC']);
     }
 }

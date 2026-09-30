@@ -17,7 +17,7 @@ class EventTheme
     public ?int $id = null;
 
     #[ORM\Column(name: 'id_forum', nullable: false)]
-    public int $idForum;
+    public int $eventId;
 
     #[ORM\Column(nullable: false)]
     public string $name;

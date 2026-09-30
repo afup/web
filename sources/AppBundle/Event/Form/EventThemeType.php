@@ -30,7 +30,7 @@ class EventThemeType extends AbstractType
     {
         /** @var array<Event> $events */
         $events = iterator_to_array($this->eventRepository->getAllActive());
-        $idForumField = $builder->create('idForum', ChoiceType::class, [
+        $eventIdField = $builder->create('eventId', ChoiceType::class, [
             'label' => 'Évènement',
             'choice_label' => 'title',
             'choice_value' => fn(?Event $event): ?string => $event?->getId() !== null ? (string) $event->getId() : null,
@@ -38,11 +38,11 @@ class EventThemeType extends AbstractType
             'group_by' => fn(Event $choice): string => $this->eventHelper->groupByYear($choice),
         ]);
 
-        $idForumField->addModelTransformer(new CallbackTransformer(
-            fn(?int $idForum): ?Event => $idForum ? $this->eventRepository->getOneBy(['id' => $idForum]) : null,
+        $eventIdField->addModelTransformer(new CallbackTransformer(
+            fn(?int $eventId): ?Event => $eventId ? $this->eventRepository->getOneBy(['id' => $eventId]) : null,
             fn(?Event $event): ?int => $event?->getId(),
         ));
-        $builder->add($idForumField)
+        $builder->add($eventIdField)
             ->add('name', TextType::class, [
                 'label' => 'Nom du thème',
                 'constraints' => [new Assert\NotBlank(message: 'Titre du forum manquant')],
