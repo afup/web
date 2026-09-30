@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Association\CompanyMembership;
 
 use AppBundle\Association\MembershipReminderInterface;
-use AppBundle\Association\Model\Repository\SubscriptionReminderLogRepository;
+use AppBundle\Association\Entity\Repository\SubscriptionReminderLogRepository;
 use AppBundle\Email\Mailer\Mailer;
 
 class CompanyReminderFactory
