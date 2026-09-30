@@ -19,6 +19,7 @@ class SponsorTicket
     public ?int $id = null;
 
     #[ORM\Column(name: 'company', nullable: false)]
+    #[Assert\NotBlank]
     public string $societe;
 
     #[ORM\Column(length: 64, nullable: false)]
