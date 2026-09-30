@@ -9,8 +9,8 @@ use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Event\Form\SpeakerSuggestionType;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\SpeakerSuggestionRepository;
-use AppBundle\Event\Model\SpeakerSuggestion;
+use AppBundle\Event\Entity\Repository\SpeakerSuggestionRepository;
+use AppBundle\Event\Entity\SpeakerSuggestion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,14 +62,15 @@ final class SuggestionAction extends AbstractController
 
     private function createSpeakerSuggestion(Event $event, array $data): SpeakerSuggestion
     {
-        return new SpeakerSuggestion()
-            ->setEventId($event->getId())
-            ->setSuggesterEmail($data['suggester_email'])
-            ->setSuggesterName($data['suggester_name'])
-            ->setSpeakerName($data['speaker_name'])
-            ->setComment($data['comment'])
-            ->setCreatedAt(new \DateTime('now'))
-        ;
+        $speakerSuggestion = new SpeakerSuggestion();
+        $speakerSuggestion->eventId = $event->getId();
+        $speakerSuggestion->suggesterEmail = $data['suggester_email'];
+        $speakerSuggestion->suggesterName = $data['suggester_name'];
+        $speakerSuggestion->speakerName = $data['speaker_name'];
+        $speakerSuggestion->comment = $data['comment'];
+        $speakerSuggestion->createdAt = new \DateTimeImmutable('now');
+
+        return $speakerSuggestion;
     }
 
     private function sendMail(Event $event, SpeakerSuggestion $speakerSuggestion): void
