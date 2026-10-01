@@ -51,20 +51,36 @@ final class MeetupRepositoryTest extends IntegrationTestCase
         $autreAntenne->photoUrl = null;
         $meetupRepository->save($autreAntenne);
 
+        // Deuxième meetup futur pour lyon : permet de vérifier que findNextForAntenne()
+        // renvoie bien le meetup le plus proche et non le plus lointain
+        $plusLointain = new Meetup();
+        $plusLointain->id = 4;
+        $plusLointain->date = new \DateTimeImmutable('+4 days');
+        $plusLointain->titre = 'Meetup futur lointain';
+        $plusLointain->lieu = 'Lyon';
+        $plusLointain->description = 'Meetup à Lyon';
+        $plusLointain->codeAntenne = $antenne->code;
+        $plusLointain->photoUrl = null;
+        $meetupRepository->save($plusLointain);
+
         $next = $meetupRepository->findNextForAntenne($antenne);
         self::assertNotNull($next);
         self::assertSame(2, $next->id);
 
         $all = $meetupRepository->findAllForAntenne($antenne);
-        self::assertCount(2, $all);
-        self::assertSame(['Meetup passé', 'Meetup futur'], array_map(
-            static fn(Meetup $meetup): string => $meetup->titre,
-            $all,
-        ));
+        self::assertCount(3, $all);
+        $titres = array_map(static fn(Meetup $meetup): string => $meetup->titre, $all);
+        sort($titres);
+        self::assertSame(['Meetup futur', 'Meetup futur lointain', 'Meetup passé'], $titres);
 
-        self::assertSame([3, 2], array_map(
+        // Tri chronologique croissant, meetup passé exclu
+        self::assertSame([2, 3], array_map(
             static fn(Meetup $meetup): int => $meetup->id,
             $meetupRepository->findNextEvents(2),
+        ));
+        self::assertSame([2, 3, 4], array_map(
+            static fn(Meetup $meetup): int => $meetup->id,
+            $meetupRepository->findNextEvents(42),
         ));
 
         // Mise à jour d'une entité existante proche du comportement de ScrappingMeetupEventsCommand
