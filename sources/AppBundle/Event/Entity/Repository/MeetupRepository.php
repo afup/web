@@ -30,7 +30,7 @@ final class MeetupRepository extends EntityRepository
             ->setParameter('codeAntenne', $antenne->code)
             ->andWhere($qb->expr()->gt('m.date', ':after'))
             ->setParameter('after', $this->now()->modify('midnight'))
-            ->orderBy('m.date', 'DESC')
+            ->orderBy('m.date', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
@@ -55,8 +55,12 @@ final class MeetupRepository extends EntityRepository
      */
     public function findNextEvents(int $quantity): array
     {
-        return $this->createQueryBuilder('m')
-            ->orderBy('m.date', 'DESC')
+        $qb = $this->createQueryBuilder('m');
+
+        return $qb
+            ->where($qb->expr()->gte('m.date', ':now'))
+            ->setParameter('now', $this->now())
+            ->orderBy('m.date', 'ASC')
             ->setMaxResults($quantity)
             ->getQuery()
             ->getResult();
