@@ -37,7 +37,7 @@ final readonly class GetOneAction
                 'simple' => 'https://afup.org' . $antenne->logoUrl,
             ],
             'links' => [
-                'meetup' => $this->createLink('https://www.meetup.com/fr-FR/', $antenne->meetup->urlName),
+                'meetup' => $this->createLink('https://www.meetup.com/fr-FR/', $antenne->meetup?->urlName),
                 'linkedin' => $this->createLink('https://www.linkedin.com/company/', $antenne->socials->linkedin),
                 'bluesky' => $this->createLink('https://bsky.app/profile/', $antenne->socials->bluesky),
                 'cfp' => $antenne->socials->cfp,
@@ -70,6 +70,9 @@ final readonly class GetOneAction
         return $prefix . $suffix;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function transformMeetup(Antenne $antenne, Meetup $meetup): array
     {
         return [
@@ -77,7 +80,7 @@ final readonly class GetOneAction
             'date' => $meetup->date->format('Y-m-d H:i:s'),
             'location' => $meetup->lieu,
             'description' => $meetup->description,
-            'url' => 'https://www.meetup.com/fr-FR/' . $antenne->meetup->urlName . '/events/' . $meetup->id,
+            'url' => $antenne->meetup === null ? null : 'https://www.meetup.com/fr-FR/' . $antenne->meetup->urlName . '/events/' . $meetup->id,
             'photo' => $meetup->photoUrl,
         ];
     }
