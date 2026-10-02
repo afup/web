@@ -35,8 +35,8 @@ Ce document contient des instructions sur la mise en place d'une instance de dé
 git clone https://github.com/my-account/afup-web.git
 ```
 
-3. Lancer `make docker-up` pour lancer le projet
-4. Lancer `make init` pour le setup initial (config, dépendances, base de données)
+3. Lancer `make local:up` pour lancer le projet
+4. Lancer `make local:init` pour le setup initial (config, dépendances, base de données)
 
 Le site devrait maintenant être accessible en local :
 
@@ -51,7 +51,7 @@ La base de test inclus un utilisateur administration avec les identifiants suiva
 
 Plusieurs possibilités de configuration des containers sont disponibles, via l'utilisation de variables d'environnement.
 
-Pour faciliter leur configuration, un fichier `.env` est créé à la racine du projet à la première exécution de la commande `make docker-up`.
+Pour faciliter leur configuration, un fichier `.env` est créé à la racine du projet à la première exécution de la commande `make local:up`.
 Ce fichier contient la liste des options disponibles.
 
 ### Options Docker
@@ -60,7 +60,7 @@ Le fichier `compose.override.yml` est créé automatiquement à l'installation d
 
 Par exemple, les ports utilisés pour le site et mailcatcher peuvent être modifiés dans ce fichier.
 
-La variable d'environnement `DOCKER_UP_OPTIONS` permet de passer des options à la commande `docker compose up` (via `make docker-up`).
+La variable d'environnement `DOCKER_UP_OPTIONS` permet de passer des options à la commande `docker compose up` (via `make local:up`).
 
 ## Base de données
 
@@ -102,10 +102,15 @@ L'exécution des tests nécessite que le projet soit lancé via Docker.
 
 Behat est utilisé pour tester les différentes pages du site (front et backoffice).
 
-Il faut se connecter au container via `make console` puis :
+> [!NOTE]
+> Une commande `make docker:*` doit être exécutée dans le container (connectez-vous via `make local:console`
+> puis lancez `make docker:*`), tandis qu'une commande `make local:*` doit être exécutée depuis votre machine
+> (elle orchestre docker pour vous).
+
+Il faut se connecter au container via `make local:console` puis :
 
 ```bash
-./bin/behat
+make docker:behat
 ```
 
 > [!TIP]
@@ -118,7 +123,7 @@ Il faut se connecter au container via `make console` puis :
 > ./bin/behat tests/behat/features/Admin/Events/Planning.feature:14
 > ```
 
-Une alternative est d'utiliser la commande `make test-functional`, attention cette commande arrête les containeurs de
+Une alternative est d'utiliser la commande `make local:test-functional`, attention cette commande arrête les containeurs de
 tests à la fin de l'exécution de la suite de test.
 
 Si par la suite, vous souhaitez lancer un test, il faut bien penser à les allumer à nouveau.
@@ -127,26 +132,26 @@ Si par la suite, vous souhaitez lancer un test, il faut bien penser à les allum
 
 Les tests unitaires sont écrits via PHPUnit.
 
-Il faut se connecter au container via `make console` puis :
+Il faut se connecter au container via `make local:console` puis :
 
 ```bash
 ./bin/phpunit --testsuite unit
 ```
 
-Une alternative est d'utiliser `make test` dans le container, attention cette commande
+Une alternative est d'utiliser `make docker:test` dans le container, attention cette commande
 exécute également [PHP-Cs-Fixer](#php-cs-fixer).
 
 ### Tests d'intégration
 
 Ces tests sont écrits via PHPUnit et utilisent le kernel de Symfony : https://symfony.com/doc/current/testing.html#integration-tests
 
-Pour les lancer, il faut se connecter au container via `make console` puis :
+Pour les lancer, il faut se connecter au container via `make local:console` puis :
 
 ```bash
 ./bin/phpunit --testsuite integration
 ```
 
-Une alternative est d'utiliser la commande `make test-integration`, attention cette commande arrête les containeurs de
+Une alternative est d'utiliser la commande `make docker:test-integration`, attention cette commande arrête les containeurs de
 tests à la fin de l'exécution de la suite de test.
 
 Si par la suite, vous souhaitez lancer un test, il faut bien penser à les allumer à nouveau.
@@ -157,16 +162,16 @@ Si par la suite, vous souhaitez lancer un test, il faut bien penser à les allum
 
 Cet outil sert à s'assurer de la mise en forme du PHP.
 
-Il faut se connecter au container via `make console` puis,
+Il faut se connecter au container via `make local:console` puis,
 
 Pour afficher les erreurs :
 ```
-make cs-lint
+make docker:cs-lint
 ```
 
 Pour corriger les erreurs :
 ```
-make cs-fix
+make docker:cs-fix
 ```
 
 ### PHPStan
@@ -177,7 +182,7 @@ PHPStan est lancé via un container Docker dédié pour pouvoir utiliser la dern
 la version PHP du projet.
 
 ```
-make phpstan
+make docker:phpstan
 ```
 
 ## Outils externes
