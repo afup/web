@@ -8,7 +8,7 @@
 {% block content %}
     <div class="row">
         <div class="col-md-6">
-            <h1>{{ 'Billetterie sponsor'|trans }}: {{ event.title }} - {{ sponsorTicket.company }}</h1>
+            <h1>{{ 'Billetterie sponsor'|trans }}: {{ event.title }} - {{ sponsorTicket.societe }}</h1>
 
             {% if sponsorTicket.qrCodesScannerAvailable %}
                 <h2 class="h3-like">{% trans %}SCANNEUR DE QR CODES{% endtrans %}</h2>

@@ -59,7 +59,7 @@
             <tr class="{{ cycle(['odd', 'even'], loop.index0) }}">
                 {% set totalInvitations = totalInvitations + token.maxInvitations %}
                 {% set totalUsedInvitations = totalUsedInvitations + token.usedInvitations %}
-                <td>{{ token.company }}</td>
+                <td>{{ token.societe }}</td>
                 <td>{{ token.token }}</td>
                 <td class="right aligned">{{ token.maxInvitations }}</td>
                 <td class="right aligned">{{ token.usedInvitations }}</td>
@@ -159,7 +159,7 @@
 
     <div class="ui segment">
         {% if edit == true %}
-            <h2 class="ui header">Modifier le token de {{ form.vars.value.company}}</h2>
+            <h2 class="ui header">Modifier le token de {{ form.vars.value.societe}}</h2>
         {% else %}
             <h2 class="ui header">Nouveau token</h2>
         {% endif %}

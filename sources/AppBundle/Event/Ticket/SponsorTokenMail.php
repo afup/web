@@ -10,7 +10,7 @@ use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\SponsorTicket;
+use AppBundle\Event\Entity\SponsorTicket;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -34,7 +34,7 @@ class SponsorTokenMail
         /**
          * @var Event $event
          */
-        $event = $this->eventRepository->get($sponsorTicket->getIdForum());
+        $event = $this->eventRepository->get($sponsorTicket->eventId);
 
         $textLabel = 'mail.sponsorTicket.text';
         $subjectLabel = "mail.sponsorTicket.subject";
@@ -47,9 +47,9 @@ class SponsorTokenMail
         $text = $this->translator->trans(
             $textLabel,
             [
-                '%count%' => $sponsorTicket->getMaxInvitations(),
-                '%token%' => $sponsorTicket->getToken(),
-                '%places%' => $sponsorTicket->getMaxInvitations(),
+                '%count%' => $sponsorTicket->maxInvitations,
+                '%token%' => $sponsorTicket->token,
+                '%places%' => $sponsorTicket->maxInvitations,
                 '%event%' => $event->getTitle(),
                 '%link%' => $this->router->generate(
                     'sponsor_ticket_home',
@@ -63,7 +63,7 @@ class SponsorTokenMail
         return $this->mailer->sendTransactional(new Message(
             $this->translator->trans($subjectLabel, ['%event%' => $event->getTitle()]),
             MailUserFactory::afup(),
-            new MailUser($sponsorTicket->getContactEmail(), $sponsorTicket->getCompany()),
+            new MailUser($sponsorTicket->contactEmail, $sponsorTicket->societe),
         ), $text);
     }
 }
