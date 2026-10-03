@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Journal;
 
-use AppBundle\Accounting\Model\Transaction;
-use AppBundle\Accounting\Model\Repository\TransactionRepository;
+use AppBundle\Accounting\Entity\Transaction;
+use AppBundle\Accounting\Entity\Repository\TransactionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -22,13 +22,13 @@ class DownloadAttachmentAction extends AbstractController
 
     public function __invoke(Request $request, int $id): Response
     {
-        $accounting = $this->accountingRepository->get($id);
+        $accounting = $this->accountingRepository->find($id);
         if (!$accounting instanceof Transaction) {
             throw $this->createNotFoundException();
         }
 
-        $path = $this->uploadDir . $accounting->getAttachmentFilename();
-        if ($accounting->getAttachmentFilename() === null || !is_file($path)) {
+        $path = $this->uploadDir . $accounting->nomJustificatif;
+        if ($accounting->nomJustificatif === null || !is_file($path)) {
             throw $this->createNotFoundException('No attachment found');
         }
 
