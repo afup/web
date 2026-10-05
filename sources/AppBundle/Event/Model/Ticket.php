@@ -9,7 +9,6 @@ use AppBundle\Event\Validator\Constraints as Assert;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[Assert\LoggedInMember(groups: ['personal'])]
 #[Assert\PublicTicket(groups: ['not_logged_in'])]
@@ -136,7 +135,6 @@ class Ticket implements NotifyPropertyInterface
     /**
      * @var string
      */
-    #[NotBlank]
     #[Email]
     private $email;
 
