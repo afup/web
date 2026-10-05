@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Tests\Event\Model;
 
 use AppBundle\Event\Model\Ticket;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -20,9 +21,7 @@ final class TicketTest extends TestCase
             ->getValidator();
     }
 
-    /**
-     * @dataProvider emailProvider
-     */
+    #[DataProvider('emailProvider')]
     public function testEmailIsValidated(string $email, bool $isValid): void
     {
         $ticket = new Ticket();
