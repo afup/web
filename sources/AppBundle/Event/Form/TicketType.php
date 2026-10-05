@@ -26,6 +26,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 
 class TicketType extends AbstractType
 {
@@ -70,6 +71,9 @@ class TicketType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
+                'constraints' => [
+                    new Email(),
+                ],
             ])
             ->add('phoneNumber', TextType::class, [
                 'label' => 'Téléphone',

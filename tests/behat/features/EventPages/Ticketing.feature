@@ -95,3 +95,23 @@ Feature: Event pages - Ticketing
     When I press "Confirmer & Payer"
     Then I should see "Paiement de vos billets"
     And I should see "Vous serez redirigé vers notre partenaire paybox afin de procéder au paiement d'un montant de 15€"
+
+  @reloadDbWithTestData
+  Scenario: Refus des emails sans TLD lors de l'achat de billets
+    Given I am on "/event/forum/tickets"
+    Then I should see "Billetterie: forum"
+    And I select "0" from "purchase[paymentType]"
+    When I fill in "purchase[tickets][0][firstname]" with "Prénom personne 1"
+    And I fill in "purchase[tickets][0][lastname]" with "Nom personne 1"
+    # Email de billet sans extension de domaine (pas de TLD)
+    And I fill in "purchase[tickets][0][email]" with "personne1@hostname"
+    And I fill in "purchase[firstname]" with "Prénom facturation"
+    And I fill in "purchase[lastname]" with "Nom facturation"
+    And I fill in "purchase[address]" with "42 rue de Strasbourg"
+    And I fill in "purchase[zipcode]" with "75003"
+    And I fill in "purchase[city]" with "PARIS"
+    And I fill in "purchase[email]" with "facturationEntreprise@yahoo.fr"
+    And I check "purchase[cgv]"
+    When I press "Confirmer & Payer"
+    Then I should see "Cette valeur n'est pas une adresse email valide."
+    And I should not see "Paiement de vos billets"
