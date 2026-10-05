@@ -5638,7 +5638,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
 	'identifier' => 'method.nonObject',
-	'count' => 13,
+	'count' => 11,
 	'path' => __DIR__ . '/sources/AppBundle/Event/JsonLd.php',
 ];
 $ignoreErrors[] = [
