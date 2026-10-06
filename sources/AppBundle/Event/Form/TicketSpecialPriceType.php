@@ -33,7 +33,7 @@ class TicketSpecialPriceType extends AbstractType
                 'label' => 'Date de fin',
             ])
             ->add('price', NumberType::class, [
-                'label' => 'Prix (TTC)',
+                'label' => 'Prix (HT)',
                 'constraints' => [
                     new GreaterThan(value: 0),
                 ],
