@@ -27,6 +27,14 @@ class ComptaCompte extends AbstractSeed
                 'nom_compte' => 'Paypal',
                 'archived_at' => new DateTime('last year')->format('Y-m-d H:i:s'),
             ],
+            [
+                'id' => 5,
+                'nom_compte' => 'Compte courant CMUT',
+            ],
+            [
+                'id' => 6,
+                'nom_compte' => 'Livret CMUT',
+            ],
         ];
 
         $table = $this->table('compta_compte');
