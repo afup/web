@@ -16,9 +16,10 @@ class UserBadge
     public int $userId;
 
     #[ORM\Id]
-    #[ORM\Column(name: 'badge_id')]
-    public int $badgeId;
+    #[ORM\ManyToOne(targetEntity: Badge::class)]
+    #[ORM\JoinColumn(name: 'badge_id', nullable: false)]
+    public Badge $badge;
 
-    #[ORM\Column(name: 'issued_at', type: 'date_immutable')]
-    public \DateTimeImmutable $issuedAt;
+    #[ORM\Column(name: 'issued_at', type: 'date')]
+    public \DateTimeInterface $issuedAt;
 }
