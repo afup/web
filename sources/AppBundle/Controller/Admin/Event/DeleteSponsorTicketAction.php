@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event;
 
-use AppBundle\Event\Model\Repository\SponsorTicketRepository;
+use AppBundle\Event\Entity\Repository\SponsorTicketRepository;
 use AppBundle\Event\Ticket\SponsorTicketHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +19,7 @@ class DeleteSponsorTicketAction extends AbstractController
 
     public function __invoke(Request $request, int $tokenId): Response
     {
-        $token = $this->sponsorTicketRepository->get($tokenId);
+        $token = $this->sponsorTicketRepository->find($tokenId);
         if ($token === null) {
             throw $this->createNotFoundException(sprintf('Could not find token with id: %s', $tokenId));
         }

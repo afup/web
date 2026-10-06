@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Event\AdminEventSelection;
+use AppBundle\Event\Entity\Repository\SponsorTicketRepository;
+use AppBundle\Event\Entity\SponsorTicket;
 use AppBundle\Event\Form\SponsorTokenType;
-use AppBundle\Event\Model\Repository\SponsorTicketRepository;
-use AppBundle\Event\Model\SponsorTicket;
 use AppBundle\Event\Ticket\SponsorTokenMail;
 use AppBundle\Security\Authentication;
-use DateTime;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,24 +26,27 @@ class SponsorTicketAction extends AbstractController
     public function __invoke(Request $request, AdminEventSelection $eventSelection): Response
     {
         $event = $eventSelection->event;
-        $tokens = $this->sponsorTicketRepository->getByEvent($event);
+        $tokens = $this->sponsorTicketRepository->findByEventId((int) $event->getId());
         $edit = $request->query->has('ticket');
+        $now = new DateTimeImmutable();
         if ($edit) {
-            $newToken = $this->sponsorTicketRepository->get($request->query->get('ticket'));
-            $newToken->setEditedOn(new DateTime());
+            $newToken = $this->sponsorTicketRepository->find($request->query->get('ticket'));
+            if ($newToken === null) {
+                throw $this->createNotFoundException('Could not find token');
+            }
+            $newToken->editedOn = $now;
         } else {
             $newToken = new SponsorTicket();
-            $newToken
-                ->setToken(base64_encode(random_bytes(30)))
-                ->setIdForum($event->getId())
-                ->setCreatedOn(new DateTime())
-                ->setEditedOn(new DateTime())
-                ->setCreatorId($this->authentication->getAfupUser()->getId());
+            $newToken->token = base64_encode(random_bytes(30));
+            $newToken->eventId = (int) $event->getId();
+            $newToken->createdOn = $now;
+            $newToken->editedOn = $now;
+            $newToken->creatorId = $this->authentication->getAfupUser()->getId();
         }
         $form = $this->createForm(SponsorTokenType::class, $newToken);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($newToken->getId() === null) {
+            if ($newToken->id === null) {
                 $this->sponsorTokenMail->sendNotification($newToken);
             }
             $this->sponsorTicketRepository->save($newToken);
