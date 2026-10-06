@@ -20,6 +20,8 @@ class UserBadge
     #[ORM\JoinColumn(name: 'badge_id', nullable: false)]
     public Badge $badge;
 
-    #[ORM\Column(name: 'issued_at', type: 'date')]
-    public \DateTimeInterface $issuedAt;
+    #[ORM\Column(name: 'issued_at', type: 'date_immutable', nullable: false)]
+    // date_immutable column hydrates DateTimeImmutable; property stays
+    // \DateTimeInterface by choice (DBAL rejects mutable writes anyway).
+    public \DateTimeInterface $issuedAt; // @phpstan-ignore doctrine.columnType
 }

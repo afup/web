@@ -8,6 +8,7 @@ use AppBundle\Association\Genre;
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\User;
+use AppBundle\Event\Entity\Badge;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -144,7 +145,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         ;
     }
 
-    public function loadByBadge(int $badgeId)
+    public function loadByBadge(Badge $badge)
     {
         $queryBuilder = $this->getQueryBuilderWithCompleteUser();
 
@@ -153,7 +154,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
 
         return $this
             ->getPreparedQuery($queryBuilder->getStatement())
-            ->setParams(['badge_id' => $badgeId])
+            ->setParams(['badge_id' => $badge->id])
             ->query($this->getCollection($this->getHydratorForUser()))
         ;
     }

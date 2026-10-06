@@ -24,7 +24,7 @@ class BadgeListAction
         foreach ($this->badgeRepository->findAll() as $badge) {
             $infos[] = [
                 'badge' => $badge,
-                'users' => $this->userRepository->loadByBadge($badge->id),
+                'users' => $this->userRepository->loadByBadge($badge),
             ];
         }
 

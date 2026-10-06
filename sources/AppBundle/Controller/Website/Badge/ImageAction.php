@@ -25,7 +25,7 @@ final class ImageAction extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $filepath = $this->storageDir . DIRECTORY_SEPARATOR . $badge->getUrl();
+        $filepath = $this->storageDir . DIRECTORY_SEPARATOR . $badge->url;
         if (false === is_file($filepath)) {
             throw $this->createNotFoundException();
         }

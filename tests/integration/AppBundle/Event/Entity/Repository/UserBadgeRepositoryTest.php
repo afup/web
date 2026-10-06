@@ -60,7 +60,7 @@ final class UserBadgeRepositoryTest extends IntegrationTestCase
         $userBadge = new UserBadge();
         $userBadge->badge = $badge;
         $userBadge->userId = 42;
-        $userBadge->issuedAt = new \DateTime('2026-09-21');
+        $userBadge->issuedAt = new \DateTimeImmutable('2026-09-21');
         $userBadgeRepository->save($userBadge);
 
         $rows = $connection->fetchAllAssociative(

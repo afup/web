@@ -51,6 +51,7 @@ class UserBadgeType extends AbstractType
                 DateType::class,
                 [
                     'label' => 'Date',
+                    'input' => 'datetime_immutable',
                 ],
             )
             ->add(
