@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Speaker;
 
+use AppBundle\Event\Entity\Planning;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Room;
@@ -29,6 +30,7 @@ class SpeakerPage extends AbstractController
 {
     public function __construct(
         private readonly TalkRepository $talkRepository,
+        private readonly PlanningRepository $planningRepository,
         private readonly SpeakerRepository $speakerRepository,
         private readonly SpeakersExpensesStorage $speakersExpensesStorage,
     ) {}
@@ -204,7 +206,9 @@ class SpeakerPage extends AbstractController
      */
     protected function addTalkInfos(Event $event, array $talks): array
     {
-        $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event, false);
+        $talkAggregates = $this->planningRepository->enrichTalkAggregates(
+            $this->talkRepository->getByEventWithSpeakers($event, false),
+        );
         $allTalksById = [];
         foreach ($talkAggregates as $talkAggregate) {
             $allTalksById[$talkAggregate->talk->getId()] = [
