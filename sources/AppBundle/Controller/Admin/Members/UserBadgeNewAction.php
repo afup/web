@@ -29,7 +29,7 @@ class UserBadgeNewAction
         $userBadgeForm = $this->formFactory->create(UserBadgeType::class, [], ['user' => $user]);
         $userBadgeForm->handleRequest($request);
         if (!$userBadgeForm->isSubmitted() || !$userBadgeForm->isValid()) {
-            return new RedirectResponse($request->headers->get('referer'));
+            return new RedirectResponse($request->headers->get('referer') ?? $request->getRequestUri());
         }
 
         /** @var array{badge: int, date: \DateTimeInterface, user: string} $data */
@@ -47,6 +47,6 @@ class UserBadgeNewAction
         $userBadge->userId = (int) $data['user'];
         $this->userBadgeRepository->save($userBadge);
 
-        return new RedirectResponse($request->headers->get('referer'));
+        return new RedirectResponse($request->headers->get('referer') ?? $request->getRequestUri());
     }
 }

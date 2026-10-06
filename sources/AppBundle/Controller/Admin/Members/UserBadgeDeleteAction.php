@@ -34,6 +34,6 @@ class UserBadgeDeleteAction
         }
         $this->userBadgeRepository->delete($userBadge);
 
-        return new RedirectResponse($request->headers->get('referer'));
+        return new RedirectResponse($request->headers->get('referer') ?? $request->getRequestUri());
     }
 }
