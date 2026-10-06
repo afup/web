@@ -6,9 +6,9 @@
     <h2 class="ui header">Sélectionner un Journal</h2>
     <div class="ui clearing divider"></div>
     <div class="ui form">
-    {{ form_row(form.operationId) }}
-    {{ form_row(form.accountId) }}
-    {{ form_row(form.eventId) }}
+    {{ form_row(form.operation) }}
+    {{ form_row(form.compte) }}
+    {{ form_row(form.evenement) }}
     </div>
 </div>
 
@@ -16,14 +16,14 @@
     <h2 class="ui header">Détail Facture</h2>
     <div class="ui clearing divider"></div>
     <div class="ui form">
-    {{ form_row(form.accountingDate) }}
-    {{ form_row(form.categoryId) }}
-    {{ form_row(form.vendorName) }}
+    {{ form_row(form.dateEcriture) }}
+    {{ form_row(form.categorie) }}
+    {{ form_row(form.nomFournisseur) }}
     {{ form_row(form.tvaIntra) }}
-    {{ form_row(form.number) }}
+    {{ form_row(form.numero) }}
     {{ form_row(form.description) }}
-    {{ form_row(form.amount) }}
-    {{ form_row(form.comment) }}
+    {{ form_row(form.montant) }}
+    {{ form_row(form.commentaire) }}
     </div>
 </div>
 
@@ -31,7 +31,7 @@
     <h2 class="ui header">TVA</h2>
     <div class="ui clearing divider"></div>
     <div class="ui form">
-    {{ form_row(form.amountTva5_5) }}
+    {{ form_row(form.montantTva5_5) }}
     <div class="inline fields ui grid">
         <label class="three wide column">
         </label>
@@ -39,7 +39,7 @@
             <a href="#" id="apply-vat-5-5">Calculer le montant HT soumis à TVA 5,5% sur la base de l'intégralité du montant TTC</a>
         </div>
     </div>
-    {{ form_row(form.amountTva10) }}
+    {{ form_row(form.montantTva10) }}
     <div class="inline fields ui grid">
         <label class="three wide column">
         </label>
@@ -47,7 +47,7 @@
             <a href="#" id="apply-vat-10">Calculer le montant HT soumis à TVA 10% sur la base de l'intégralité du montant TTC</a>
         </div>
     </div>
-    {{ form_row(form.amountTva20) }}
+    {{ form_row(form.montantTva20) }}
     <div class="inline fields ui grid">
         <label class="three wide column">
         </label>
@@ -55,7 +55,7 @@
             <a href="#" id="apply-vat-20">Calculer le montant HT soumis à TVA 20% sur la base de l'intégralité du montant TTC</a>
         </div>
     </div>
-    {{ form_row(form.amountTva0) }}
+    {{ form_row(form.montantTva0) }}
         <div class="inline fields ui grid">
             <label class="three wide column">
             </label>
@@ -71,9 +71,9 @@
     <h2 class="ui header">Réglement</h2>
     <div class="ui clearing divider"></div>
     <div class="ui form">
-        {{ form_row(form.paymentTypeId) }}
-        {{ form_row(form.paymentDate) }}
-        {{ form_row(form.paymentComment) }}
+        {{ form_row(form.modeReglement) }}
+        {{ form_row(form.dateReglement) }}
+        {{ form_row(form.commentaireReglement) }}
     </div>
 </div>
 
