@@ -6,7 +6,7 @@ namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Entity\Repository\BilleteriePriveeRepository;
-use AppBundle\Event\Model\Repository\TicketTypeRepository;
+use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,10 +23,10 @@ class BilleteriePriveeAction extends AbstractController
 
         $billeteries = [];
         foreach ($this->billeteriePriveeRepository->findByEvent((int) $event->getId()) as $billeterie) {
-            $ticketType = $this->ticketTypeRepository->get($billeterie->ticketTypeId);
+            $ticketType = $this->ticketTypeRepository->find($billeterie->ticketTypeId);
             $billeteries[] = [
                 'billeterie_privee' => $billeterie,
-                'ticket_type' => $ticketType !== null ? $ticketType->getPrettyName() : '',
+                'ticket_type' => $ticketType !== null ? $ticketType->prettyName : '',
                 'places_prises' => $this->billeteriePriveeRepository->countPlacesPrisesParToken($billeterie->token),
             ];
         }

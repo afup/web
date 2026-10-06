@@ -7,8 +7,8 @@ namespace AppBundle\Controller\Admin\Event;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Entity\BilleteriePrivee;
 use AppBundle\Event\Entity\Repository\BilleteriePriveeRepository;
+use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use AppBundle\Event\Form\BilleteriePriveeType;
-use AppBundle\Event\Model\Repository\TicketTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +34,7 @@ class EditBilleteriePriveeAction extends AbstractController
         $maxPlacesActuelles = $billeteriePrivee->maxPlaces;
 
         $form = $this->createForm(BilleteriePriveeType::class, $billeteriePrivee, [
-            'ticketTypes' => $this->ticketTypeRepository->getAll(),
+            'ticketTypes' => $this->ticketTypeRepository->findAllOrderedById(),
             'is_edit' => true,
         ]);
 
