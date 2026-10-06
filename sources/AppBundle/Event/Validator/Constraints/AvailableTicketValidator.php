@@ -6,7 +6,7 @@ namespace AppBundle\Event\Validator\Constraints;
 
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Ticket;
-use AppBundle\Event\Model\TicketEventType;
+use AppBundle\Event\Entity\TicketEventType;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -29,9 +29,9 @@ class AvailableTicketValidator extends ConstraintValidator
             return ;
         }
 
-        $event = $this->eventRepository->get($ticket->getTicketEventType()->getEventId());
+        $event = $this->eventRepository->get($ticket->getTicketEventType()->eventId);
         if (
-            $ticket->getTicketEventType()->getDateEnd() < new \DateTime()
+            $ticket->getTicketEventType()->dateEnd < new \DateTime()
             || $this->ticketTypeAvailability->getStock($ticket->getTicketEventType(), $event) <= 0
         ) {
             $this->context->buildViolation($constraint->message)

@@ -7,8 +7,8 @@ namespace AppBundle\Event;
 use AppBundle\CFP\PhotoStorage;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
-use AppBundle\Event\Model\TicketEventType;
+use AppBundle\Event\Entity\Repository\TicketEventTypeRepository;
+use AppBundle\Event\Entity\TicketEventType;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
 use Symfony\Component\Asset\Packages;
 
@@ -93,12 +93,12 @@ final readonly class JsonLd
         foreach ($eventTickets as $eventTicket) {
             $offers[] = [
                 '@type' => 'Offer',
-                'name' => $eventTicket->getTicketType()->getPrettyName(),
-                'sku' => $eventTicket->getTicketType()->getTechnicalName(),
+                'name' => $eventTicket->ticketType?->getPrettyName(),
+                'sku' => $eventTicket->ticketType?->getTechnicalName(),
                 'priceCurrency' => 'EUR',
-                'price' => $eventTicket->getPrice(),
-                'validFrom' => $eventTicket->getDateStart()->format('c'),
-                'validThrough' => $eventTicket->getDateEnd()->format('c'),
+                'price' => $eventTicket->price,
+                'validFrom' => $eventTicket->dateStart->format('c'),
+                'validThrough' => $eventTicket->dateEnd->format('c'),
                 'availability' => $this->ticketTypeAvailability->getStock($eventTicket, $event) > 0 ? $available : $notAvailable,
             ];
         }

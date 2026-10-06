@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Form;
 
-use AppBundle\Event\Model\TicketEventType as ModelTicketEventType;
+use AppBundle\Event\Entity\TicketEventType as ModelTicketEventType;
 use AppBundle\Event\Model\TicketType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
