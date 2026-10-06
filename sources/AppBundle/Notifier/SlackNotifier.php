@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Notifier;
 
+use AppBundle\Event\Entity\Vote;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Talk;
-use AppBundle\Event\Model\Vote;
 use AppBundle\Slack\Message;
 use AppBundle\Slack\MessageFactory;
 use JMS\Serializer\SerializerInterface;
