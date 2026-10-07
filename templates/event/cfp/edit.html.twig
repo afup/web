@@ -18,11 +18,11 @@
                 <li>{{ speaker.firstname~' '~speaker.lastname }}</li>
             {% endfor %}
         </ul>
-        {% if invitations.count > 0 %}
+        {% if invitations|length > 0 %}
             <h3>{{ 'Invitations en attente'|trans }}</h3>
             <ul>
                 {% for invitation in invitations %}
-                    <li>{{ invitation['asi'].email }}</li>
+                    <li>{{ invitation.email }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
