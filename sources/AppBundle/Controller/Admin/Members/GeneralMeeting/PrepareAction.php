@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_MEMBRES_READER')]
+#[IsGranted('ROLE_AG_WRITER')]
 class PrepareAction extends AbstractController
 {
     public function __construct(

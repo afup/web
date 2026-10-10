@@ -69,8 +69,7 @@ security:
 
     role_hierarchy:
         ROLE_USER: [ROLE_MEMBER_EXPIRED]
-        # Company managers keep self-service access (bridge, data migration pending)
-        ROLE_COMPANY_MANAGER: [ROLE_USER, ROLE_MEMBRES_READER]
+        ROLE_COMPANY_MANAGER: [ROLE_USER]
         # ─── Marqueur console vide : ne donne accès à rien ───
         ROLE_ADMIN: []
         # ─── Pont rôles legacy → rôles fonctionnels (migration des comptes DB) ───

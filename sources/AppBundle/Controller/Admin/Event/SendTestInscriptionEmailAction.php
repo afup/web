@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_EVENT_READER')]
+#[IsGranted('ROLE_EVENT_WRITER')]
 class SendTestInscriptionEmailAction extends AbstractController
 {
     public function __construct(

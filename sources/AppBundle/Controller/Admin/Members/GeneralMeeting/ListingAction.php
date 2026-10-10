@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Webmozart\Assert\Assert;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_MEMBRES_READER')]
+#[IsGranted('ROLE_AG_READER')]
 class ListingAction
 {
     public function __construct(private readonly PresenceRepository $presenceRepository) {}

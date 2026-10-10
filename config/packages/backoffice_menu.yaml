@@ -54,7 +54,7 @@ parameters:
             elements:
                 veille_ generer_campagne:
                     nom: "Campagnes"
-                    niveau: 'ROLE_VEILLE_READER'
+                    niveau: 'ROLE_VEILLE_WRITER'
                     url: '/admin/techletter'
                     extra_routes:
                         - admin_techletter_index
@@ -144,19 +144,19 @@ parameters:
                         - admin_event_ticket_edit
                 forum_pending_bankwires:
                     nom: 'Virements en attente'
-                    niveau: 'ROLE_EVENT_READER'
+                    niveau: 'ROLE_EVENT_WRITER'
                     url: '/admin/event/bankwires'
                     extra_routes:
                         - admin_event_pending_bankwires
                 admin_event_sponsor_ticket:
                     nom: 'Tokens sponsors'
-                    niveau: 'ROLE_EVENT_READER'
+                    niveau: 'ROLE_EVENT_WRITER'
                     url: '/admin/event/sponsor'
                     extra_routes:
                         - admin_event_sponsor_ticket
                 admin_event_special_price:
                     nom: 'Tokens visiteurs'
-                    niveau: 'ROLE_EVENT_READER'
+                    niveau: 'ROLE_EVENT_WRITER'
                     url: '/admin/event/special_price'
                     extra_routes:
                         - admin_event_special_price
@@ -193,7 +193,7 @@ parameters:
                         - admin_talk_edit
                 admin_event_themes_list:
                     nom: 'Thèmes'
-                    niveau: 'ROLE_EVENT_READER'
+                    niveau: 'ROLE_EVENT_WRITER'
                     url: '/admin/event/themes'
                     extra_routes:
                         - admin_event_themes_list
@@ -201,7 +201,7 @@ parameters:
                         - admin_event_themes_edit
                 admin_event_editorialization:
                     nom: 'Éditorialisation'
-                    niveau: 'ROLE_EVENT_READER'
+                    niveau: 'ROLE_EVENT_WRITER'
                     url: '/admin/event/editorialization'
                     extra_routes:
                         - admin_event_editorialization
@@ -324,7 +324,7 @@ parameters:
                         - admin_members_general_meeting_reports
                 assemblee_generale_votes:
                     nom: 'Votes'
-                    niveau: 'ROLE_AG_READER'
+                    niveau: 'ROLE_AG_WRITER'
                     url: '/admin/members/general_meeting_vote'
                     extra_routes:
                         - admin_members_general_vote_list

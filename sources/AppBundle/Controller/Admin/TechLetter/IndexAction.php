@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_VEILLE_READER')]
+#[IsGranted('ROLE_VEILLE_WRITER')]
 final class IndexAction extends AbstractController
 {
     public function __construct(private readonly EnvoiRepository $envoiRepository) {}
