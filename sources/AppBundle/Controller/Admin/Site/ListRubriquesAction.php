@@ -8,7 +8,9 @@ use AppBundle\Site\Entity\Repository\RubriqueRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_SITE_READER')]
 class ListRubriquesAction
 {
     public function __construct(
