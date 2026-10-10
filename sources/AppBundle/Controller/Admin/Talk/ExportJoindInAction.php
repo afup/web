@@ -9,7 +9,9 @@ use AppBundle\Event\Talk\ExportGenerator;
 use SplFileObject;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_EVENT_READER')]
 readonly class ExportJoindInAction
 {
     public function __construct(

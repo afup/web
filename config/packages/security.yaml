@@ -52,23 +52,15 @@ security:
         - { path: ^/event/vote/, roles: ROLE_GITHUB }
         - { path: ^(/event/.*/(vote|cfp|speaker-infos)|/connect/github/check|/event/speaker-infos), roles: ROLE_GITHUB }
         - { path: ^/(login|register|password-reset), roles: PUBLIC_ACCESS }
-        - { path: ^/admin/techletter/members, roles: ROLE_ADMIN }
-        - { path: ^/admin/techletter, roles: ROLE_VEILLE }
-        - { path: ^/admin/company, roles: ROLE_COMPANY_MANAGER }
-        - { path: ^/admin/members/badges, roles: ROLE_ADMIN }
-        - { path: ^/admin/members/users, roles: ROLE_ADMIN }
-        - { path: ^/admin/members/companies, roles: ROLE_ADMIN }
-        - { path: ^/admin/event/speakers-management, roles: ROLE_FORUM }
-        - { path: ^/admin/event/interviews, roles: ROLE_FORUM }
-        - { path: ^/admin/event, roles: ROLE_ADMIN }
-        - { path: ^/admin/members/general_meeting, roles: ROLE_ADMIN }
-        - { path: ^/admin/members/general_meeting_vote, roles: ROLE_ADMIN }
-        - { path: ^/admin/site, roles: ROLE_ADMIN }
-        - { path: ^/admin/planete, roles: ROLE_ADMIN }
-        - { path: ^/admin/accounting, roles: ROLE_ADMIN }
-        - { path: ^/admin/(members/reporting|association/relances|talk|slackmembers/check|healthcheck), roles: ROLE_ADMIN}
-        - { path: ^/member, roles: [ROLE_USER, ROLE_MEMBER_EXPIRED]}
-        - { path: ^/admin/, roles: ROLE_MEMBER_EXPIRED }
+        - { path: ^/member, roles: [ROLE_USER, ROLE_MEMBER_EXPIRED] }
+        # ─── Redirections legacy du domaine authentification (login/logout/password) : publiques ───
+        - { path: ^/admin/(login|logout|password), roles: PUBLIC_ACCESS }
+        # ─── Console : toute personne ayant un rôle fonctionnel (READ ⩾) passe
+        #     (dashboard /admin/ compris) ; anonymes → redirection login,
+        #     membres simples → 403. ───
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        # ─── 4 pages SUPER_ADMIN (administrators, logs, healthcheck, techletter/members) :
+        #     fermées par attributs #[IsGranted] en code, pas par YAML ───
         - { path: ^/blog, allow_if: "request.getClientIp() in ['217.70.189.71', '127.0.0.1', '192.168.42.1'] or request.server.get('ALLOW_BLOG_FROM_ALL') == 1 or request.headers.get('x-afup-blog-api-key') == '%env(BLOG_API_KEY)%'" }
         - { path: ^/blog, roles: ROLE_NO_ACCESS }
         - { path: ^/(event/\w+/tickets|association)paybox-callback, roles: PUBLIC_ACCESS, ips: "%paybox_ips%" }
@@ -77,6 +69,35 @@ security:
 
     role_hierarchy:
         ROLE_USER: [ROLE_MEMBER_EXPIRED]
-        ROLE_COMPANY_MANAGER: [ROLE_USER]
-        ROLE_ADMIN:       [ROLE_USER, ROLE_DEPLOY, ROLE_APERO, ROLE_ANNUAIRE, ROLE_FORUM, ROLE_SITE, ROLE_VEILLE]
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        # Company managers keep self-service access (bridge, data migration pending)
+        ROLE_COMPANY_MANAGER: [ROLE_USER, ROLE_MEMBRES_READER]
+        # ─── Marqueur console vide : ne donne accès à rien ───
+        ROLE_ADMIN: []
+        # ─── Pont rôles legacy → rôles fonctionnels (migration des comptes DB) ───
+        ROLE_VEILLE: [ROLE_VEILLE_READER]
+        ROLE_ANNUAIRE: [ROLE_MEMBRES_READER]
+        ROLE_SITE: [ROLE_SITE_READER]
+        ROLE_APERO: [ROLE_APERO_READER]
+        ROLE_FORUM: [ROLE_EVENT_READER]
+        ROLE_ANTENNE: [ROLE_ANTENNES_READER]
+        # ─── READ ⇒ console + WRITE ⇒ READ ───
+        ROLE_MEMBRES_READER: [ROLE_ADMIN]
+        ROLE_MEMBRES_WRITER: [ROLE_MEMBRES_READER]
+        ROLE_VEILLE_READER: [ROLE_ADMIN]
+        ROLE_VEILLE_WRITER: [ROLE_VEILLE_READER]
+        ROLE_SITE_READER: [ROLE_ADMIN]
+        ROLE_SITE_WRITER: [ROLE_SITE_READER]
+        ROLE_APERO_READER: [ROLE_ADMIN]
+        ROLE_APERO_WRITER: [ROLE_APERO_READER]
+        ROLE_EVENT_READER: [ROLE_ADMIN]
+        ROLE_EVENT_WRITER: [ROLE_EVENT_READER]
+        ROLE_COMPTA_READER: [ROLE_ADMIN]
+        ROLE_COMPTA_WRITER: [ROLE_COMPTA_READER]
+        ROLE_AG_READER: [ROLE_ADMIN]
+        ROLE_AG_WRITER: [ROLE_AG_READER]
+        ROLE_PLANETE_READER: [ROLE_ADMIN]
+        ROLE_PLANETE_WRITER: [ROLE_PLANETE_READER]
+        ROLE_ANTENNES_READER: [ROLE_ADMIN]
+        ROLE_ANTENNES_WRITER: [ROLE_ANTENNES_READER]
+        # ─── Super admin : tout READ + impersonation ───
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH, ROLE_MEMBRES_READER, ROLE_VEILLE_READER, ROLE_SITE_READER, ROLE_APERO_READER, ROLE_EVENT_READER, ROLE_COMPTA_READER, ROLE_AG_READER, ROLE_PLANETE_READER, ROLE_ANTENNES_READER]
