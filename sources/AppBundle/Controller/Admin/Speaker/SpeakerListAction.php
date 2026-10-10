@@ -14,7 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 use Webmozart\Assert\Assert;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_EVENT_READER')]
 class SpeakerListAction
 {
     public const array VALID_SORTS = ['name', 'company'];
