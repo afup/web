@@ -8,7 +8,9 @@ use AppBundle\Event\Model\Repository\GithubUserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_EVENT_READER')]
 class GithubUserListAction
 {
     public function __construct(

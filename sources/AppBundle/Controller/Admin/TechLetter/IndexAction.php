@@ -9,7 +9,9 @@ use AppBundle\Veille\Entity\Repository\EnvoiRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_VEILLE_READER')]
 final class IndexAction extends AbstractController
 {
     public function __construct(private readonly EnvoiRepository $envoiRepository) {}
