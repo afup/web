@@ -8,7 +8,9 @@ use PlanetePHP\ArticleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_PLANETE_READER')]
 final readonly class FeedArticleListAction
 {
     public function __construct(
