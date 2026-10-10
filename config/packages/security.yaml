@@ -52,23 +52,77 @@ security:
         - { path: ^/event/vote/, roles: ROLE_GITHUB }
         - { path: ^(/event/.*/(vote|cfp|speaker-infos)|/connect/github/check|/event/speaker-infos), roles: ROLE_GITHUB }
         - { path: ^/(login|register|password-reset), roles: PUBLIC_ACCESS }
-        - { path: ^/admin/techletter/members, roles: ROLE_ADMIN }
-        - { path: ^/admin/techletter, roles: ROLE_VEILLE }
-        - { path: ^/admin/company, roles: ROLE_COMPANY_MANAGER }
-        - { path: ^/admin/members/badges, roles: ROLE_ADMIN }
-        - { path: ^/admin/members/users, roles: ROLE_ADMIN }
-        - { path: ^/admin/members/companies, roles: ROLE_ADMIN }
-        - { path: ^/admin/event/speakers-management, roles: ROLE_FORUM }
-        - { path: ^/admin/event/interviews, roles: ROLE_FORUM }
-        - { path: ^/admin/event, roles: ROLE_ADMIN }
-        - { path: ^/admin/members/general_meeting, roles: ROLE_ADMIN }
-        - { path: ^/admin/members/general_meeting_vote, roles: ROLE_ADMIN }
-        - { path: ^/admin/site, roles: ROLE_ADMIN }
-        - { path: ^/admin/planete, roles: ROLE_ADMIN }
-        - { path: ^/admin/accounting, roles: ROLE_ADMIN }
-        - { path: ^/admin/(members/reporting|association/relances|talk|slackmembers/check|healthcheck), roles: ROLE_ADMIN}
-        - { path: ^/member, roles: [ROLE_USER, ROLE_MEMBER_EXPIRED]}
-        - { path: ^/admin/, roles: ROLE_MEMBER_EXPIRED }
+        - { path: ^/member, roles: [ROLE_USER, ROLE_MEMBER_EXPIRED] }
+        # ─── Divers (administration console essentials) : SUPER_ADMIN only ───
+        - { path: ^/admin/administrators, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/logs, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/healthcheck, roles: ROLE_SUPER_ADMIN }
+        # ─── HOME (dashboard) : ROLE_ADMIN = console marker only ───
+        - { path: "^/admin/?$", roles: ROLE_ADMIN }
+        # ─── Membres ───
+        - { path: ^/admin/members/users/(add|edit|delete|reset-password|send-welcome|user_badge), roles: ROLE_MEMBRES_WRITER }
+        - { path: ^/admin/members/users/export, roles: ROLE_MEMBRES_READER }
+        - { path: ^/admin/members/users, roles: ROLE_MEMBRES_READER }
+        - { path: ^/admin/members/badges, roles: ROLE_MEMBRES_WRITER }
+        - { path: ^/admin/members/companies, roles: ROLE_MEMBRES_READER }
+        - { path: ^/admin/members/general_meeting_vote, roles: ROLE_AG_WRITER }
+        - { path: ^/admin/members/general_meeting_question, roles: ROLE_AG_WRITER }
+        - { path: ^/admin/members/general_meeting, roles: ROLE_AG_READER }
+        - { path: ^/admin/members/reporting, roles: ROLE_MEMBRES_READER }
+        - { path: ^/admin/association/relances, roles: ROLE_MEMBRES_READER }
+        # ─── Slack members ───
+        - { path: ^/admin/slackmembers/check, roles: ROLE_MEMBRES_READER }
+        # ─── Veille (techletter) ───
+        - { path: ^/admin/techletter/members, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/techletter, roles: ROLE_VEILLE_READER }
+        # ─── Site ───
+        - { path: ^/admin/site/(rubriques|articles|feuilles)/(add|edit|delete), roles: ROLE_SITE_WRITER }
+        - { path: ^/admin/site, roles: ROLE_SITE_READER }
+        # ─── Super-apéro ───
+        - { path: ^/admin/super-apero/(add|edit|delete), roles: ROLE_APERO_WRITER }
+        - { path: ^/admin/super-apero, roles: ROLE_APERO_READER }
+        # ─── Antennes ───
+        - { path: ^/admin/antennes, roles: ROLE_ANTENNES_READER }
+        # ─── Évènements (forum) ───
+        - { path: ^/admin/event/github-user, roles: ROLE_EVENT_READER }
+        - { path: ^/admin/event/speakers-management, roles: ROLE_EVENT_READER }
+        - { path: ^/admin/event/interviews, roles: ROLE_EVENT_READER }
+        - { path: ^/admin/event/sponsor, roles: ROLE_EVENT_WRITER }
+        - { path: ^/admin/event/(delete|restore|archive), roles: ROLE_EVENT_WRITER }
+        - { path: ^/admin/event/(new|edit), roles: ROLE_EVENT_WRITER }
+        - { path: ^/admin/event/(tickets|prices|special_price|billeterie-privee)/(add|edit), roles: ROLE_EVENT_WRITER }
+        - { path: ^/admin/event/(tickets|prices|billeterie-privee)/delete, roles: ROLE_EVENT_WRITER }
+        - { path: ^/admin/event/invoices/(issue|send|delete), roles: ROLE_EVENT_WRITER }
+        - { path: ^/admin/event/sessions/\d+\.json$, roles: ROLE_EVENT_READER }
+        - { path: ^/admin/event/sessions/delete, roles: ROLE_EVENT_WRITER }
+        - { path: ^/admin/event/sessions/\d+, roles: ROLE_EVENT_WRITER }
+        - { path: ^/admin/event/special_price/\d+/extend, roles: ROLE_EVENT_WRITER }
+        - { path: ^/admin/event, roles: ROLE_EVENT_READER }
+        # ─── Talks ───
+        - { path: ^/admin/talk/(add|edit|delete|update_indexation), roles: ROLE_EVENT_WRITER }
+        - { path: ^/admin/talk, roles: ROLE_EVENT_READER }
+        # ─── Speakers ───
+        - { path: ^/admin/speaker/(add|edit|delete|link-gravatar|register), roles: ROLE_EVENT_WRITER }
+        - { path: ^/admin/speaker, roles: ROLE_EVENT_READER }
+        # ─── Trésorerie (accounting) ───
+        - { path: ^/admin/accounting/configuration/(events|categories|operations|payments|accounts|rules)/(add|edit|delete), roles: ROLE_COMPTA_WRITER }
+        - { path: ^/admin/accounting/configuration/accounts/(archive|restore), roles: ROLE_COMPTA_WRITER }
+        - { path: ^/admin/accounting/configuration, roles: ROLE_COMPTA_READER }
+        - { path: ^/admin/accounting/membership-fee/(add|edit|send-invoice|delete), roles: ROLE_COMPTA_WRITER }
+        - { path: ^/admin/accounting/membership-fee, roles: ROLE_COMPTA_READER }
+        - { path: ^/admin/accounting/journal/(add|edit|delete|allocate|import|upload|update-info), roles: ROLE_COMPTA_WRITER }
+        - { path: ^/admin/accounting/journal, roles: ROLE_COMPTA_READER }
+        - { path: ^/admin/accounting/produits/(add|edit|delete), roles: ROLE_COMPTA_WRITER }
+        - { path: ^/admin/accounting/produits, roles: ROLE_COMPTA_READER }
+        - { path: ^/admin/accounting/quotations/(add|edit|convert), roles: ROLE_COMPTA_WRITER }
+        - { path: ^/admin/accounting/quotations, roles: ROLE_COMPTA_READER }
+        - { path: ^/admin/accounting/invoices/(edit|send|mark-sent), roles: ROLE_COMPTA_WRITER }
+        - { path: ^/admin/accounting/invoices, roles: ROLE_COMPTA_READER }
+        - { path: ^/admin/accounting, roles: ROLE_COMPTA_READER }
+        # ─── Planète PHP FR ───
+        - { path: ^/admin/planete, roles: ROLE_PLANETE_READER }
+        # ─── Default deny : anything under /admin not explicitly allowed ───
+        - { path: ^/admin, roles: ROLE_NO_ACCESS }
         - { path: ^/blog, allow_if: "request.getClientIp() in ['217.70.189.71', '127.0.0.1', '192.168.42.1'] or request.server.get('ALLOW_BLOG_FROM_ALL') == 1 or request.headers.get('x-afup-blog-api-key') == '%env(BLOG_API_KEY)%'" }
         - { path: ^/blog, roles: ROLE_NO_ACCESS }
         - { path: ^/(event/\w+/tickets|association)paybox-callback, roles: PUBLIC_ACCESS, ips: "%paybox_ips%" }
@@ -77,6 +131,35 @@ security:
 
     role_hierarchy:
         ROLE_USER: [ROLE_MEMBER_EXPIRED]
-        ROLE_COMPANY_MANAGER: [ROLE_USER]
-        ROLE_ADMIN:       [ROLE_USER, ROLE_DEPLOY, ROLE_APERO, ROLE_ANNUAIRE, ROLE_FORUM, ROLE_SITE, ROLE_VEILLE]
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        # Company managers keep self-service access (bridge, data migration pending)
+        ROLE_COMPANY_MANAGER: [ROLE_USER, ROLE_MEMBRES_READER]
+        # ─── Marqueur console vide : ne donne accès à rien ───
+        ROLE_ADMIN: []
+        # ─── Pont rôles legacy → rôles fonctionnels (migration des comptes DB) ───
+        ROLE_VEILLE: [ROLE_VEILLE_READER]
+        ROLE_ANNUAIRE: [ROLE_MEMBRES_READER]
+        ROLE_SITE: [ROLE_SITE_READER]
+        ROLE_APERO: [ROLE_APERO_READER]
+        ROLE_FORUM: [ROLE_EVENT_READER]
+        ROLE_ANTENNE: [ROLE_ANTENNES_READER]
+        # ─── READ ⇒ console + WRITE ⇒ READ ───
+        ROLE_MEMBRES_READER: [ROLE_ADMIN]
+        ROLE_MEMBRES_WRITER: [ROLE_MEMBRES_READER]
+        ROLE_VEILLE_READER: [ROLE_ADMIN]
+        ROLE_VEILLE_WRITER: [ROLE_VEILLE_READER]
+        ROLE_SITE_READER: [ROLE_ADMIN]
+        ROLE_SITE_WRITER: [ROLE_SITE_READER]
+        ROLE_APERO_READER: [ROLE_ADMIN]
+        ROLE_APERO_WRITER: [ROLE_APERO_READER]
+        ROLE_EVENT_READER: [ROLE_ADMIN]
+        ROLE_EVENT_WRITER: [ROLE_EVENT_READER]
+        ROLE_COMPTA_READER: [ROLE_ADMIN]
+        ROLE_COMPTA_WRITER: [ROLE_COMPTA_READER]
+        ROLE_AG_READER: [ROLE_ADMIN]
+        ROLE_AG_WRITER: [ROLE_AG_READER]
+        ROLE_PLANETE_READER: [ROLE_ADMIN]
+        ROLE_PLANETE_WRITER: [ROLE_PLANETE_READER]
+        ROLE_ANTENNES_READER: [ROLE_ADMIN]
+        ROLE_ANTENNES_WRITER: [ROLE_ANTENNES_READER]
+        # ─── Super admin : tout READ + impersonation ───
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH, ROLE_MEMBRES_READER, ROLE_VEILLE_READER, ROLE_SITE_READER, ROLE_APERO_READER, ROLE_EVENT_READER, ROLE_COMPTA_READER, ROLE_AG_READER, ROLE_PLANETE_READER, ROLE_ANTENNES_READER]

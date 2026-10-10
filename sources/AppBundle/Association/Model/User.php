@@ -622,7 +622,10 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
             $defaultRoles = ['ROLE_MEMBER_EXPIRED'];
         }
         if ($this->level === self::LEVEL_ADMIN) {
-            $defaultRoles[] = 'ROLE_SUPER_ADMIN';
+            // Un admin de base console seulement : ROLE_ADMIN est vide (marqueur d'accès console).
+            // Les droits fonctionnels viennent des levelModules ci-dessous.
+            // ROLE_SUPER_ADMIN est désormais réservé et ne doit plus être attribué automatiquement.
+            $defaultRoles[] = 'ROLE_ADMIN';
         }
         if (isset($this->levelModules[0]) && (int) $this->levelModules[0] > 0) {
             $defaultRoles[] = 'ROLE_APERO';

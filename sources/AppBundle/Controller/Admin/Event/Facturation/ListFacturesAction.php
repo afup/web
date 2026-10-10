@@ -10,7 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_EVENT_READER')]
 class ListFacturesAction extends AbstractController
 {
     public const array VALID_SORTS = ['date_facture', 'reference', 'societe', 'montant', 'etat', 'facturation'];

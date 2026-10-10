@@ -7,7 +7,9 @@ namespace AppBundle\Controller\Admin\Members;
 use AppBundle\Event\Entity\Repository\UserBadgeRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_MEMBRES_WRITER')]
 class UserBadgeDeleteAction
 {
     public function __construct(private readonly UserBadgeRepository $userBadgeRepository) {}

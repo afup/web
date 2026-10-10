@@ -7,7 +7,9 @@ namespace AppBundle\Controller\Admin\SlackMembers;
 use AppBundle\Slack\UsersChecker;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_MEMBRES_READER')]
 class CheckMembersAction
 {
     public function __construct(
