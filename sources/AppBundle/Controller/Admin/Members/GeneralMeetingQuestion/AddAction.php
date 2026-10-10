@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_MEMBRES_WRITER')]
+#[IsGranted('ROLE_AG_WRITER')]
 class AddAction extends AbstractController
 {
     public function __construct(

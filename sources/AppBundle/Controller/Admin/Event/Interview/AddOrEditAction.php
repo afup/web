@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_EVENT_READER')]
+#[IsGranted('ROLE_EVENT_WRITER')]
     class AddOrEditAction extends AbstractController
     {
     public function __construct(

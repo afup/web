@@ -12,7 +12,7 @@ use Twig\Environment;
 use Webmozart\Assert\Assert;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_MEMBRES_READER')]
+#[IsGranted('ROLE_AG_READER')]
 class ListAction
 {
     public const array VALID_SORTS = ['nom', 'date_consultation', 'presence', 'personnes_avec_pouvoir_nom'];
