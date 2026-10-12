@@ -17,4 +17,10 @@ class Utilisateur
 
     #[ORM\Column(length: 255, nullable: true)]
     public ?string $email = null;
+
+    #[ORM\Column(name: 'prenom', nullable: false)]
+    public string $firstname;
+
+    #[ORM\Column(name: 'nom', nullable: false)]
+    public string $lastname;
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Form;
 
-use AppBundle\Event\Model\TicketSpecialPrice;
+use AppBundle\Event\Entity\TicketSpecialPrice;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -15,6 +15,9 @@ use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @extends AbstractType<TicketSpecialPrice>
+ */
 class TicketSpecialPriceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

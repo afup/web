@@ -6,11 +6,11 @@ namespace AppBundle\Controller\Admin\Event\Ticket;
 
 use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Entity\Repository\BilleteriePriveeRepository;
+use AppBundle\Event\Entity\Repository\TicketSpecialPriceRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\EventStats;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
-use AppBundle\Event\Model\Repository\TicketSpecialPriceRepository;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Model\TicketAggregate;
 use AppBundle\Event\Ticket\TicketOffers;
@@ -102,10 +102,10 @@ class IndexAction extends AbstractController
         }
 
         foreach ($this->ticketSpecialPriceRepository->findByTokens($tokens) as $ticketSpecialPrice) {
-            if (isset($labels[$ticketSpecialPrice->getToken()])) {
+            if (isset($labels[$ticketSpecialPrice->token])) {
                 continue;
             }
-            $labels[$ticketSpecialPrice->getToken()] = sprintf('Token visiteurs - %s', $ticketSpecialPrice->getDescription());
+            $labels[$ticketSpecialPrice->token] = sprintf('Token visiteurs - %s', $ticketSpecialPrice->description);
         }
 
         return $labels;

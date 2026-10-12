@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Event\AdminEventSelection;
-use AppBundle\Event\Model\Repository\TicketSpecialPriceRepository;
-use AppBundle\Event\Model\TicketSpecialPrice;
+use AppBundle\Event\Entity\Repository\TicketSpecialPriceRepository;
+use AppBundle\Event\Entity\TicketSpecialPrice;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,15 +16,13 @@ class ExtendSpecialPriceAction extends AbstractController
 
     public function __invoke(int $id, AdminEventSelection $eventSelection): Response
     {
-        $specialPrice = $this->ticketSpecialPriceRepository->get($id);
+        $specialPrice = $this->ticketSpecialPriceRepository->find($id);
 
         if (!$specialPrice instanceof TicketSpecialPrice) {
             throw $this->createNotFoundException();
         }
 
-        $newDateEnd = clone $specialPrice->getDateEnd();
-        $newDateEnd->modify(sprintf('+%d days', SpecialPriceAction::EXTEND_DAYS));
-        $specialPrice->setDateEnd($newDateEnd);
+        $specialPrice->dateEnd = $specialPrice->dateEnd->modify(sprintf('+%d days', SpecialPriceAction::EXTEND_DAYS));
 
         $this->ticketSpecialPriceRepository->save($specialPrice);
 
