@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Entity\BilleteriePrivee;
-use AppBundle\Event\Model\TicketType;
+use AppBundle\Event\Entity\TicketType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -108,7 +108,7 @@ class BilleteriePriveeType extends AbstractType
 
         foreach ($ticketTypes as $ticketType) {
             if ($ticketType instanceof TicketType) {
-                $choices[$ticketType->getLabel()] = $ticketType->getId();
+                $choices[$ticketType->getLabel()] = $ticketType->id;
             }
         }
 
