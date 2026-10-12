@@ -6,22 +6,19 @@ namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Association\Form\TicketEventType;
 use AppBundle\Event\AdminEventSelection;
-use AppBundle\Event\Model\Repository\TicketEventTypeRepository;
+use AppBundle\Event\Entity\Repository\TicketEventTypeRepository;
+use AppBundle\Event\Entity\TicketEventType as ModelTicketEventType;
 use AppBundle\Event\Model\Repository\TicketTypeRepository;
-use AppBundle\Event\Model\TicketEventType as ModelTicketEventType;
-use AppBundle\Validator\Constraints\UniqueEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PricesAddAction extends AbstractController
 {
     public function __construct(
         private readonly TicketTypeRepository $ticketTypeRepository,
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
-        private readonly ValidatorInterface $validator,
     ) {}
 
     public function __invoke(Request $request, AdminEventSelection $eventSelection): Response
@@ -30,9 +27,9 @@ class PricesAddAction extends AbstractController
         $event = $eventSelection->event;
 
         $ticketEventType = new ModelTicketEventType();
-        $ticketEventType->setEventId($event->getId());
-        $ticketEventType->setDateStart($event->getDateStart());
-        $ticketEventType->setDateEnd($event->getDateEnd());
+        $ticketEventType->eventId = (int) $event->getId();
+        $ticketEventType->dateStart = $event->getDateStart() ?? new \DateTime();
+        $ticketEventType->dateEnd = $event->getDateEnd() ?? new \DateTime();
 
         $ticketTypes = $this->ticketTypeRepository->getAll();
         $form = $this->createForm(TicketEventType::class, $ticketEventType, [
@@ -42,17 +39,15 @@ class PricesAddAction extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $ticketEventType->setTicketTypeId($ticketEventType->getTicketType()->getId());
+            $ticketEventType->ticketTypeId = $ticketEventType->ticketType->getId();
 
-            $violations = $this->validator->validate($ticketEventType, [
-                new UniqueEntity(
-                    ['ticketTypeId', 'eventId'],
-                    $this->ticketEventTypeRepository,
-                    'Ce type de ticket existe déjà pour cet évènement.',
-                ),
+            // Vérification maison d'unicité : la clé primaire est composée de (ticketTypeId, eventId)
+            $existant = $this->ticketEventTypeRepository->findOneBy([
+                'eventId' => $ticketEventType->eventId,
+                'ticketTypeId' => $ticketEventType->ticketTypeId,
             ]);
-            foreach ($violations as $violation) {
-                $form->get('ticketType')->addError(new FormError($violation->getMessage()));
+            if ($existant !== null) {
+                $form->get('ticketType')->addError(new FormError('Ce type de ticket existe déjà pour cet évènement.'));
             }
 
             if ($form->isValid()) {

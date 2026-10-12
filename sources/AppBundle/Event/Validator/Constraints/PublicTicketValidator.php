@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Event\Validator\Constraints;
 
 use AppBundle\Event\Model\Ticket;
-use AppBundle\Event\Model\TicketEventType;
+use AppBundle\Event\Entity\TicketEventType;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -22,7 +22,7 @@ class PublicTicketValidator extends ConstraintValidator
             return ;
         }
 
-        if ($ticket->getTicketEventType()->getTicketType()->getIsRestrictedToMembers() === true) {
+        if ($ticket->getTicketEventType()->ticketType->getIsRestrictedToMembers() === true) {
             $this->context->buildViolation($constraint->messageNotLoggedIn)
                 ->atPath('email')
                 ->addViolation();
