@@ -24,20 +24,27 @@ class SponsorTicketHelper
     public function addTicketToSponsor(SponsorTicket $sponsorTicket, Ticket $ticket): void
     {
         $invoice = $this->invoiceFactory->createInvoiceFromSponsorTicket($sponsorTicket);
+        $isNewTicket = $ticket->getId() === null;
+
+        if ($isNewTicket) {
+            // Réservée hors transaction Ting (connexion Doctrine distincte) :
+            // en cas d'échec entre les deux écritures, le compteur surestime, sans risque de dépasser le quota
+            $sponsorTicket->usedInvitations++;
+            $this->sponsorTicketRepository->save($sponsorTicket);
+        }
+
         try {
             $this->invoiceRepository->startTransaction();
             $this->invoiceRepository->save($invoice);
-
-            if ($ticket->getId() === null) {
-                // Nouveau ticket : on incrémente le compteur d'invitations utilisées du sponsor
-                $sponsorTicket->usedInvitations++;
-            }
-
             $this->ticketRepository->save($ticket);
-            $this->sponsorTicketRepository->save($sponsorTicket);
             $this->invoiceRepository->commit();
         } catch (Exception) {
             $this->invoiceRepository->rollback();
+
+            if ($isNewTicket) {
+                $sponsorTicket->usedInvitations--;
+                $this->sponsorTicketRepository->save($sponsorTicket);
+            }
         }
     }
 
@@ -50,12 +57,17 @@ class SponsorTicketHelper
         try {
             $this->ticketRepository->startTransaction();
             $this->ticketRepository->delete($ticket);
-            $sponsorTicket->usedInvitations--;
-            $this->sponsorTicketRepository->save($sponsorTicket);
             $this->ticketRepository->commit();
         } catch (Exception) {
             $this->ticketRepository->rollback();
+
+            return;
         }
+
+        // Libérée seulement après le commit Ting (connexion Doctrine distincte) :
+        // si cette écriture échoue, le compteur surestime, sans risque de dépasser le quota
+        $sponsorTicket->usedInvitations--;
+        $this->sponsorTicketRepository->save($sponsorTicket);
     }
 
     public function doesTicketBelongsToSponsor(SponsorTicket $sponsorTicket, Ticket $ticket): bool
