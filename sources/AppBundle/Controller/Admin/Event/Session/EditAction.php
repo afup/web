@@ -7,10 +7,10 @@ namespace AppBundle\Controller\Admin\Event\Session;
 use AppBundle\AuditLog\Audit;
 use AppBundle\Event\Entity\Repository\RoomRepository;
 use AppBundle\Event\Entity\Room;
+use AppBundle\Event\Entity\Planning;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Planning;
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -43,21 +43,24 @@ class EditAction extends AbstractController
         $roomChoices = $this->roomChoices($event);
 
         if ($request->attributes->get('sessionId')) {
-            $planning = $this->planningRepository->get($request->attributes->get('sessionId'));
+            $planning = $this->planningRepository->find($request->attributes->get('sessionId'));
+            if (!$planning instanceof Planning) {
+                throw $this->createNotFoundException('Planning not found');
+            }
         } else {
             $planning = new Planning();
-            $planning->setTalkId($talk->getId());
-            $planning->setEventId($event->getId());
-            $planning->setStart($this->firstDayOfEvent($event));
-            $planning->setEnd($this->firstDayOfEvent($event));
+            $planning->talkId = $talk->getId();
+            $planning->eventId = $event->getId();
+            $planning->start = $this->firstDayOfEvent($event);
+            $planning->end = $this->firstDayOfEvent($event);
         }
 
         $form = $this->getForm($planning, $roomChoices);
 
         if ($request->query->get('mode') === 'add') {
-            $planning->getStart()?->setTime(9, 0);
-            $planning->getEnd()?->setTime(9, 40);
-            $planning->setRoomId(array_first($roomChoices));
+            $planning->start?->setTime(9, 0);
+            $planning->end?->setTime(9, 40);
+            $planning->roomId = array_first($roomChoices);
 
             $this->planningRepository->save($planning);
 
@@ -66,7 +69,7 @@ class EditAction extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $isNew = !$planning->getId();
+            $isNew = $planning->id === null;
 
             $this->planningRepository->save($planning);
 
