@@ -27,6 +27,12 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserEditType extends AbstractType
 {
+    private const array MODULE_LEVEL_CHOICES = [
+        '--' => User::LEVEL_MEMBER,
+        'Lecture seule' => User::LEVEL_READER,
+        'Gestionnaire' => User::LEVEL_ADMIN,
+    ];
+
     public function __construct(
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly Pays $pays,
@@ -144,41 +150,45 @@ class UserEditType extends AbstractType
                     'maxlength' => 20,
                 ],
             ])
-            ->add('level', ChoiceType::class, [
-                'label' => 'Niveau',
-                'choices' => [
-                    'Membre' => User::LEVEL_MEMBER,
-                    'Rédacteur' => User::LEVEL_WRITER,
-                    'Administrateur' => User::LEVEL_ADMIN,
-                ],
+            ->add('adminAccess', CheckboxType::class, [
+                'label' => "Accès à l'admin",
+                'required' => false,
             ])
-            ->add('directoryLevel', ChoiceType::class, [
-                'label' => 'Annuaire des prestataires',
-                'choices' => [
-                    '--' => User::LEVEL_MEMBER,
-                    'Gestionnaire' => User::LEVEL_ADMIN,
-                ],
+            ->add('membresLevel', ChoiceType::class, [
+                'label' => 'Membres',
+                'choices' => self::MODULE_LEVEL_CHOICES,
+            ])
+            ->add('veilleLevel', ChoiceType::class, [
+                'label' => 'Veille',
+                'choices' => self::MODULE_LEVEL_CHOICES,
+            ])
+            ->add('siteLevel', ChoiceType::class, [
+                'label' => 'Site',
+                'choices' => self::MODULE_LEVEL_CHOICES,
+            ])
+            ->add('aperoLevel', ChoiceType::class, [
+                'label' => 'Super-apéro',
+                'choices' => self::MODULE_LEVEL_CHOICES,
             ])
             ->add('eventLevel', ChoiceType::class, [
-                'label' => 'Évènement',
-                'choices' => [
-                    '--' => User::LEVEL_MEMBER,
-                    'Gestionnaire' => User::LEVEL_ADMIN,
-                ],
+                'label' => 'Évènements',
+                'choices' => self::MODULE_LEVEL_CHOICES,
             ])
-            ->add('websiteLevel', ChoiceType::class, [
-                'label' => 'Site web',
-                'choices' => [
-                    '--' => User::LEVEL_MEMBER,
-                    'Gestionnaire' => User::LEVEL_ADMIN,
-                ],
+            ->add('comptaLevel', ChoiceType::class, [
+                'label' => 'Trésorerie',
+                'choices' => self::MODULE_LEVEL_CHOICES,
             ])
-            ->add('officeLevel', ChoiceType::class, [
-                'label' => 'Antenne AFUP',
-                'choices' => [
-                    '--' => User::LEVEL_MEMBER,
-                    'Gestionnaire' => User::LEVEL_ADMIN,
-                ],
+            ->add('agLevel', ChoiceType::class, [
+                'label' => 'Assemblée générale',
+                'choices' => self::MODULE_LEVEL_CHOICES,
+            ])
+            ->add('planeteLevel', ChoiceType::class, [
+                'label' => 'Planète',
+                'choices' => self::MODULE_LEVEL_CHOICES,
+            ])
+            ->add('antennesLevel', ChoiceType::class, [
+                'label' => 'Antennes',
+                'choices' => self::MODULE_LEVEL_CHOICES,
             ])
             ->add('status', ChoiceType::class, [
                 'label' => 'État',
