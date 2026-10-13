@@ -16,9 +16,12 @@ class UserBadge
     public int $userId;
 
     #[ORM\Id]
-    #[ORM\Column(name: 'badge_id')]
-    public int $badgeId;
+    #[ORM\ManyToOne(targetEntity: Badge::class)]
+    #[ORM\JoinColumn(name: 'badge_id', nullable: false)]
+    public Badge $badge;
 
-    #[ORM\Column(name: 'issued_at', type: 'date_immutable')]
-    public \DateTimeImmutable $issuedAt;
+    #[ORM\Column(name: 'issued_at', type: 'date_immutable', nullable: false)]
+    // date_immutable column hydrates DateTimeImmutable; property stays
+    // \DateTimeInterface by choice (DBAL rejects mutable writes anyway).
+    public \DateTimeInterface $issuedAt; // @phpstan-ignore doctrine.columnType
 }

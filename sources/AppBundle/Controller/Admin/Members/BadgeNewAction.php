@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Members;
 
 use AppBundle\Association\Form\BadgeType;
-use AppBundle\Event\Model\Badge;
-use AppBundle\Event\Model\Repository\BadgeRepository;
+use AppBundle\Event\Entity\Badge;
+use AppBundle\Event\Entity\Repository\BadgeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
@@ -33,8 +33,8 @@ final class BadgeNewAction extends AbstractController
             $data['image']->move($this->storageDir, $filename);
 
             $badge = new Badge();
-            $badge->setLabel($data['label']);
-            $badge->setUrl($filename);
+            $badge->label = $data['label'];
+            $badge->url = $filename;
             $this->badgeRepository->save($badge);
             $this->addFlash('notice', 'Le badge a été ajouté');
 

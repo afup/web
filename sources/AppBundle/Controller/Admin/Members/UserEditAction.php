@@ -49,7 +49,7 @@ class UserEditAction extends AbstractController
             ]);
         }
 
-        $userBadges = iterator_to_array($this->userBadgeRepository->findByUserId($user->getId()));
+        $userBadges = $this->userBadgeRepository->findByUserId((int) $user->getId());
         $userBadgeForm = $this->createForm(UserBadgeType::class, [], [
             'user' => $user,
             'action' => $this->generateUrl('admin_members_user_badge_new', [
