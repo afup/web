@@ -9,6 +9,18 @@ Feature: Administration - Partie Personnes physiques
     When I follow "Ajouter"
     Then I should see "Ajouter une personne physique"
     Then The "user_edit[genre]" field should only contain the follow values '["Ne se prononce pas", "Femme", "Homme", "Non-binaire"]'
+    # Paramètres : checkbox d'accès à l'admin décochée par défaut, et chaque
+    # module du menu admin propose la matrice "-- / Lecture seule / Gestionnaire"
+    And the "user_edit[adminAccess]" checkbox should be unchecked
+    And The "user_edit[membresLevel]" field should only contain the follow values '["--", "Lecture seule", "Gestionnaire"]'
+    And The "user_edit[veilleLevel]" field should only contain the follow values '["--", "Lecture seule", "Gestionnaire"]'
+    And The "user_edit[siteLevel]" field should only contain the follow values '["--", "Lecture seule", "Gestionnaire"]'
+    And The "user_edit[aperoLevel]" field should only contain the follow values '["--", "Lecture seule", "Gestionnaire"]'
+    And The "user_edit[eventLevel]" field should only contain the follow values '["--", "Lecture seule", "Gestionnaire"]'
+    And The "user_edit[comptaLevel]" field should only contain the follow values '["--", "Lecture seule", "Gestionnaire"]'
+    And The "user_edit[agLevel]" field should only contain the follow values '["--", "Lecture seule", "Gestionnaire"]'
+    And The "user_edit[planeteLevel]" field should only contain the follow values '["--", "Lecture seule", "Gestionnaire"]'
+    And The "user_edit[antennesLevel]" field should only contain the follow values '["--", "Lecture seule", "Gestionnaire"]'
     When I press "Ajouter"
     Then I should see "Cette valeur ne doit pas être vide"
     When I fill in "user_edit[lastname]" with "Mon nom"

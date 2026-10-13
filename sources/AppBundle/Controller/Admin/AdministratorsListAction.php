@@ -16,8 +16,21 @@ class AdministratorsListAction extends AbstractController
 
     public function __invoke(): Response
     {
+        $modules = [
+            ['name' => 'membres', 'label' => 'Membres'],
+            ['name' => 'veille', 'label' => 'Veille'],
+            ['name' => 'site', 'label' => 'Site'],
+            ['name' => 'apero', 'label' => 'Super-apéro'],
+            ['name' => 'event', 'label' => 'Évènements'],
+            ['name' => 'compta', 'label' => 'Trésorerie'],
+            ['name' => 'ag', 'label' => 'Assemblée générale'],
+            ['name' => 'planete', 'label' => 'Planète'],
+            ['name' => 'antennes', 'label' => 'Antennes'],
+        ];
+
         return $this->render('admin/administrators.html.twig', [
             'administrators' => $this->userRepository->getAdministrators(),
+            'modules' => $modules,
         ]);
     }
 }

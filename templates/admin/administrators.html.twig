@@ -9,11 +9,10 @@
             <th>Nom</th>
             <th>Prénom</th>
             <th>Etat</th>
-            <th>Administration site</th>
-            <th>Module annuaire</th>
-            <th>Module site</th>
-            <th>Module forum</th>
-            <th>Module Antenne</th>
+            <th>Accès à l'admin</th>
+            {% for module in modules %}
+                <th>{{ module.label }}</th>
+            {% endfor %}
             <th>&nbsp;</th>
         </tr>
         </thead>
@@ -23,11 +22,13 @@
             <td>{{ administrator.lastName }}</td>
             <td>{{ administrator.firstName }}</td>
             <td>{% if administrator.status %}Actif{% else %}Inactif{% endif %}</td>
-            <td>{% if administrator.level == 2 %}Administrateur{% else %}---{% endif %}</td>
-            <td>{% if administrator.directoryLevel == 2 %}Gestionnaire{% else %}---{% endif %}</td>
-            <td>{% if administrator.websiteLevel == 2 %}Gestionnaire{% else %}---{% endif %}</td>
-            <td>{% if administrator.eventLevel == 2 %}Gestionnaire{% else %}---{% endif %}</td>
-            <td>{% if administrator.officeLevel == 2 %}Gestionnaire{% else %}---{% endif %}</td>
+            <td>{% if administrator.adminAccess %}Administrateur{% else %}---{% endif %}</td>
+            {% for module in modules %}
+                <td>
+                    {% set level = administrator.getModuleLevel(module.name) %}
+                    {% if level == 2 %}Gestionnaire{% elseif level == 1 %}Lecture seule{% else %}---{% endif %}
+                </td>
+            {% endfor %}
             <td>
                 <a id="modifier_{{ administrator.id }}"
                    href="/admin/members/users/edit?id={{ administrator.id }}"

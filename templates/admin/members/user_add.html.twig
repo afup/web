@@ -29,11 +29,16 @@
         <div class="ui clearing divider"></div>
         <div>
             <div class="ui form">
-                {{ form_row(form.level) }}
-                {{ form_row(form.directoryLevel) }}
+                {{ form_row(form.adminAccess) }}
+                {{ form_row(form.membresLevel) }}
+                {{ form_row(form.veilleLevel) }}
+                {{ form_row(form.siteLevel) }}
+                {{ form_row(form.aperoLevel) }}
                 {{ form_row(form.eventLevel) }}
-                {{ form_row(form.websiteLevel) }}
-                {{ form_row(form.officeLevel) }}
+                {{ form_row(form.comptaLevel) }}
+                {{ form_row(form.agLevel) }}
+                {{ form_row(form.planeteLevel) }}
+                {{ form_row(form.antennesLevel) }}
                 {{ form_row(form.status) }}
                 {{ form_row(form.username, {attr: {'data-role': 'field-login'}}) }}
                 <div class="inline fields ui grid">
