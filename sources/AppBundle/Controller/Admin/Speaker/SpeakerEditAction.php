@@ -16,7 +16,9 @@ use AppBundle\Event\Model\Talk;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_EVENT_WRITER')]
 class SpeakerEditAction extends AbstractController
 {
     public const int ID_FORUM_PHOTO_STORAGE = 16;
