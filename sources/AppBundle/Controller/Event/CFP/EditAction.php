@@ -13,7 +13,7 @@ use AppBundle\Event\Enum\TalkInvitationState;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Repository\VoteRepository;
+use AppBundle\Event\Entity\Repository\VoteRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Entity\Repository\TalkInvitationRepository;
 use AppBundle\Event\Talk\InvitationFormHandler;
@@ -99,7 +99,7 @@ class EditAction extends AbstractController
             'invitations' => $this->talkInvitationRepository->getPendingInvitationsByTalkId($talkId),
             'speakers' => $this->speakerRepository->getSpeakersByTalk($talk),
             'invitationForm' => $invitationForm->createView(),
-            'votes' => $this->voteRepository->getVotesByTalkWithUser($talk->getId()),
+            'votes' => $this->voteRepository->getVotesByTalkWithUser((int) $talk->getId()),
             'sidebar' => $this->sidebarRenderer->render($event),
         ]);
     }

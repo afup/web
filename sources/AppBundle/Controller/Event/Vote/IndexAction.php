@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Event\Vote;
 
 use AppBundle\Controller\Event\EventActionHelper;
+use AppBundle\Event\Entity\Repository\VoteRepository;
+use AppBundle\Event\Entity\Vote;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
-use AppBundle\Event\Model\Vote;
 use AppBundle\Security\Authentication;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,7 @@ final class IndexAction extends VoteController
         private readonly RequestStack $requestStack,
         private readonly EventActionHelper $eventActionHelper,
         private readonly TalkRepository $talkRepository,
+        private readonly VoteRepository $voteRepository,
         private readonly Authentication $authentication,
     ) {}
 
@@ -32,18 +34,21 @@ final class IndexAction extends VoteController
         }
 
         // Get a random list of unrated talks
+        $githubUser = $this->authentication->getGithubUser();
         if ($all === false) {
-            $talks = $this->talkRepository->getNewTalksToRate($event, $this->authentication->getGithubUser(), crc32($this->requestStack->getSession()->getId()), $page);
+            $talks = $this->talkRepository->getNewTalksToRate($event, $githubUser, crc32($this->requestStack->getSession()->getId()), $page);
+            $myUserVotes = [];
         } else {
-            $talks = $this->talkRepository->getAllTalksAndRatingsForUser($event, $this->authentication->getGithubUser(), crc32($this->requestStack->getSession()->getId()), $page);
+            $talks = $this->talkRepository->getAllTalksAndRatingsForUser($event, $githubUser, crc32($this->requestStack->getSession()->getId()), $page);
+            $myUserVotes = $this->voteRepository->getUserVotesByEvent((int) $githubUser->getId(), (int) $event->getId());
         }
 
         $vote = new Vote();
-        $forms = function () use ($talks, $vote, $eventSlug) {
+        $forms = function () use ($talks, $vote, $myUserVotes, $eventSlug) {
             foreach ($talks as $session) {
                 /** @var Talk $talk */
                 $talk = $session['sessions'];
-                $myVote = $session['asvg'] ?? clone $vote;
+                $myVote = $myUserVotes[(int) $talk->getId()] ?? clone $vote;
                 /*
                  * By using a yield here, there will be only one iteration over the talks for the entire page
                  */

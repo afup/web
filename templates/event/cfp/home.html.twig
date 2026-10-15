@@ -41,7 +41,7 @@
                             {% endif %}
                         </div>
                     </div>
-                    {{ include('event/cfp/list_votes.html.twig', {votes: talk.votes, cfp_open: event.cfpOpen}, with_context: false) }}
+                    {{ include('event/cfp/list_votes.html.twig', {votes: talksVotes[talk.id] ?? [], cfp_open: event.cfpOpen}, with_context: false) }}
                 {% endfor %}
             {% else %}
                 <p>{{ 'Aucune proposition enregistrée pour le moment.'|trans }}</p>

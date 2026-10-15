@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\TalkAggregateVote;
-use CCMBenchmark\Ting\Repository\Hydrator\AggregateFrom;
-use CCMBenchmark\Ting\Repository\Hydrator\AggregateTo;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\GithubUser;
 use AppBundle\Event\Model\Speaker;
@@ -17,9 +15,7 @@ use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
-use CCMBenchmark\Ting\Repository\Hydrator\RelationMany;
 use CCMBenchmark\Ting\Repository\HydratorArray;
-use CCMBenchmark\Ting\Repository\HydratorRelational;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -81,36 +77,6 @@ class TalkRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @return CollectionInterface&iterable<Talk>
-     */
-    public function getTalksBySpeakerWithVotes(Event $event, Speaker $speaker)
-    {
-        $query = $this->getPreparedQuery(
-            'SELECT sessions.session_id, titre, abstract, id_forum, sessions.plannifie, skill, sessions.genre, votes.*
-            FROM afup_sessions sessions
-            LEFT JOIN afup_conferenciers_sessions cs ON cs.session_id = sessions.session_id
-            LEFT JOIN afup_sessions_vote_github votes ON votes.session_id = sessions.session_id
-            LEFT JOIN afup_user_github aug ON aug.id = votes.user
-            INNER JOIN (
-                SELECT afup_conferenciers_sessions.session_id
-                FROM afup_conferenciers_sessions
-                INNER JOIN afup_sessions ON afup_conferenciers_sessions.session_id = afup_sessions.session_id
-                WHERE afup_sessions.id_forum = :event
-                AND afup_conferenciers_sessions.conferencier_id = :speaker
-                LIMIT 0, 20
-            ) as s2 ON s2.session_id = sessions.session_id
-            WHERE cs.conferencier_id = :speaker
-            ORDER BY titre
-        ',
-        )->setParams(['event' => $event->getId(), 'speaker' => $speaker->getId()]);
-        $hydrator = new HydratorRelational();
-        $hydrator->addRelation(new RelationMany(new AggregateFrom('github_user'), new AggregateTo('votes'), 'setGithubUser'));
-        $hydrator->addRelation(new RelationMany(new AggregateFrom('votes'), new AggregateTo('sessions'), 'setVotes'));
-        $hydrator->callableFinalizeAggregate(fn(array $row) => $row['sessions']);
-        return $query->query($this->getCollection($hydrator));
-    }
-
-    /**
      * @return CollectionInterface
      */
     public function getPreviousTalksBySpeaker(Event $event, Speaker $speaker)
@@ -142,9 +108,8 @@ class TalkRepository extends Repository implements MetadataInitializer
     public function getAllTalksAndRatingsForUser(Event $event, GithubUser $user, $randomSeed, $page = 1, $limit = 10)
     {
         $query = $this->getPreparedQuery(
-            'SELECT sessions.session_id, titre, abstract, skill, sessions.genre, id_forum, asvg.id, asvg.comment, asvg.vote
+            'SELECT sessions.session_id, titre, abstract, skill, sessions.genre, id_forum
             FROM afup_sessions sessions
-            LEFT JOIN afup_sessions_vote_github asvg ON (asvg.session_id = sessions.session_id AND asvg.user = :user)
             WHERE plannifie = 0 AND id_forum = :event
             ORDER BY RAND(:randomSeed)
             LIMIT ' . ((int) $page - 1) * $limit . ', ' . ((int) $limit + 1),

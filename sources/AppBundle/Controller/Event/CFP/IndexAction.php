@@ -8,6 +8,7 @@ use AppBundle\CFP\PhotoStorage;
 use AppBundle\CFP\SpeakerFactory;
 use AppBundle\CFP\ViewModel\EventTalkList;
 use AppBundle\Controller\Event\EventActionHelper;
+use AppBundle\Event\Entity\Repository\VoteRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
@@ -28,6 +29,7 @@ class IndexAction extends AbstractController
         private readonly SpeakerFactory $speakerFactory,
         private readonly PhotoStorage $photoStorage,
         private readonly SidebarRenderer $sidebarRenderer,
+        private readonly VoteRepository $voteRepository,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -39,7 +41,7 @@ class IndexAction extends AbstractController
         }
         $speaker = $this->speakerFactory->getSpeaker($event);
         $eventTalkList = new EventTalkList($event);
-        foreach ($this->talkRepository->getTalksBySpeakerWithVotes($event, $speaker) as $talk) {
+        foreach ($this->talkRepository->getTalksBySpeaker($event, $speaker) as $talk) {
             $eventTalkList->addTalk($talk);
         }
         /** @var EventTalkList[] $previousEventTalkLists */
@@ -64,6 +66,7 @@ class IndexAction extends AbstractController
             'speaker' => $speaker,
             'speakerPhoto' => $this->photoStorage->getUrl($speaker),
             'sidebar' => $this->sidebarRenderer->render($event),
+            'talksVotes' => $this->voteRepository->getVotesByEventGroupedBySession((int) $event->getId()),
         ]);
     }
 }
