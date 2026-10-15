@@ -4893,12 +4893,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/SecondaryMenuController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$parameters of method AppBundle\\\\Twig\\\\ViewRenderer\\:\\:render\\(\\) expects array, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Static/VoidAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between \'https\\://joind\\.in…\' and mixed results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 1,

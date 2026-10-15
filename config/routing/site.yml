@@ -49,10 +49,6 @@ superapero:
   options:
     sitemap: true
 
-void:
-  path: /void-route
-  defaults: { _controller: AppBundle\Controller\Website\Static\VoidAction }
-
 newsletter_subscribe:
   path: /newsletter-subscribe
   defaults: { _controller: AppBundle\Controller\Website\NewsletterController::subscribe }
