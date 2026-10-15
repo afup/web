@@ -22,7 +22,7 @@ class ResetPasswordAction extends AbstractController
     {
         $passwordResetToken = $this->passwordResetService->findValidToken($token);
         if ($passwordResetToken === null) {
-            // Jeton expiré, déjà utilisé ou inexistant : un seul et même message,
+            // Token expiré, déjà utilisé ou inexistant : un seul et même message,
             // pour ne rien apprendre à qui tenterait sa chance.
             return $this->withoutReferrer($this->view->render('site/auth/reset_password_invalid.html.twig'));
         }
@@ -49,7 +49,7 @@ class ResetPasswordAction extends AbstractController
     }
 
     /**
-     * Le jeton est dans l'URL : aucun lien de cette page ne doit le propager.
+     * Le token est dans l'URL : aucun lien de cette page ne doit le propager.
      */
     private function withoutReferrer(Response $response): Response
     {

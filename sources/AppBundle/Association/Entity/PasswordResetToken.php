@@ -12,7 +12,7 @@ class PasswordResetToken
 {
     /**
      * Identifiant assigné : la clé primaire est l'utilisateur lui-même, ce qui
-     * garantit qu'un seul jeton peut exister à un instant T pour un membre donné.
+     * garantit qu'un seul token peut exister à un instant T pour un membre donné.
      */
     #[ORM\Id]
     #[ORM\Column(name: 'user_id')]

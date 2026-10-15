@@ -18,7 +18,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 final class PasswordResetServiceTest extends IntegrationTestCase
 {
     /**
-     * Jetons en clair envoyés par email, dans l'ordre d'envoi.
+     * Tokens en clair envoyés par email, dans l'ordre d'envoi.
      *
      * @var list<string>
      */
@@ -71,11 +71,27 @@ final class PasswordResetServiceTest extends IntegrationTestCase
         $service->createTokenFor($user);
         $secondToken = $this->lastSentToken();
 
-        // La clé primaire est l'utilisateur : une seule ligne, donc un seul jeton
+        // La clé primaire est l'utilisateur : une seule ligne, donc un seul token
         // valide à un instant T.
         self::assertCount(1, $this->fetchTokenRows());
         self::assertNull($service->findValidToken($firstToken));
         self::assertNotNull($service->findValidToken($secondToken));
+    }
+
+    public function testANewRequestPurgesExpiredTokens(): void
+    {
+        Clock::set(new MockClock('2026-03-01 10:00:00'));
+
+        $service = $this->buildService();
+        $service->createTokenFor($this->createUser());
+
+        Clock::set(new MockClock('2026-03-01 11:00:00'));
+        $otherUser = $this->createUser('autre-utilisateur', 'autre@example.org');
+        $service->createTokenFor($otherUser);
+
+        $rows = $this->fetchTokenRows();
+        self::assertCount(1, $rows);
+        self::assertSame($otherUser->getId(), (int) $rows[0]['user_id']);
     }
 
     public function testResettingChangesThePasswordAndConsumesTheToken(): void
@@ -138,13 +154,13 @@ final class PasswordResetServiceTest extends IntegrationTestCase
         return self::getContainer()->get(PasswordResetService::class);
     }
 
-    private function createUser(): User
+    private function createUser(string $login = 'utilisateur-reset', string $email = 'reset@example.org'): User
     {
         $connection = self::getContainer()->get(Connection::class);
         $connection->insert('afup_personnes_physiques', [
-            'login' => 'utilisateur-reset',
+            'login' => $login,
             'mot_de_passe' => 'peu importe',
-            'email' => 'reset@example.org',
+            'email' => $email,
             'nom' => 'Test',
             'prenom' => 'Utilisateur',
             'roles' => '["ROLE_USER"]',

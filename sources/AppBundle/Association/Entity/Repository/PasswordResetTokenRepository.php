@@ -35,4 +35,19 @@ class PasswordResetTokenRepository extends EntityRepository
 
         return $token instanceof PasswordResetToken ? $token : null;
     }
+
+    /**
+     * Purge les tokens expirés, qui ne servent plus à rien : sans cela, une
+     * demande jamais consommée laisserait sa ligne indéfiniment.
+     */
+    public function deleteExpired(\DateTimeImmutable $now): void
+    {
+        $this->createQueryBuilder('t')
+            ->delete()
+            ->where('t.expiresAt <= :now')
+            ->setParameter('now', $now)
+            ->getQuery()
+            ->execute()
+        ;
+    }
 }

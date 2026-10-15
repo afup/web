@@ -14,10 +14,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 /**
- * Réinitialisation de mot de passe par lien à jeton.
+ * Réinitialisation de mot de passe par lien avec token.
  *
- * Le jeton en clair n'existe que dans l'e-mail : seul son SHA-256 est stocké.
- * La clé primaire de la table étant l'identifiant du membre, un seul jeton peut
+ * Le token en clair n'existe que dans l'e-mail : seul son SHA-256 est stocké.
+ * La clé primaire de la table étant l'identifiant du membre, un seul token peut
  * exister à un instant T pour un compte donné — une nouvelle demande remplace la
  * précédente, et la consommation supprime la ligne.
  */
@@ -62,9 +62,14 @@ class PasswordResetService
         $token->createdAt = $now;
         $token->expiresAt = $now->add(new \DateInterval(sprintf('PT%dS', $this->ttlInSeconds)));
 
-        // Le jeton doit être enregistré avant l'envoi : un e-mail parti alors que
+        // Le token doit être enregistré avant l'envoi : un e-mail parti alors que
         // l'écriture a échoué contiendrait un lien mort.
         $this->passwordResetTokenRepository->save($token);
+
+        // Purge faite après l'enregistrement : un DELETE DQL ne met pas à jour les
+        // entités déjà chargées, l'inverse risquerait de mettre à jour une ligne
+        // supprimée. Le token qui vient d'être créé n'est pas expiré, il reste.
+        $this->passwordResetTokenRepository->deleteExpired($now);
 
         return $this->passwordResetMailer->sendResetLink($user, $plainToken, $this->getValidityInMinutes());
     }
@@ -75,7 +80,7 @@ class PasswordResetService
     }
 
     /**
-     * @return bool false si l'utilisateur visé par le jeton n'existe plus
+     * @return bool false si l'utilisateur visé par le token n'existe plus
      */
     public function reset(PasswordResetToken $token, string $plainPassword): bool
     {
@@ -85,9 +90,9 @@ class PasswordResetService
         }
 
         // Ting et Doctrine écrivent sur deux connexions distinctes, sans transaction
-        // commune : on consomme le jeton d'abord. Si l'écriture du mot de passe
+        // commune : on consomme le token d'abord. Si l'écriture du mot de passe
         // échoue ensuite, le membre redemande un lien — l'ordre inverse laisserait
-        // un jeton rejouable après un changement réussi.
+        // un token rejouable après un changement réussi.
         $this->passwordResetTokenRepository->delete($token);
 
         $user->setPassword($this->passwordHasher->hashPassword($user, $plainPassword));
