@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Journal;
 
-use AppBundle\Accounting\Model\Repository\TransactionRepository;
-use AppBundle\Accounting\Model\Transaction;
+use AppBundle\Accounting\Entity\Repository\TransactionRepository;
+use AppBundle\Accounting\Entity\Transaction;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -24,7 +24,7 @@ class UploadAttachmentAction extends AbstractController
 
     public function __invoke(Request $request, int $id): Response
     {
-        $transaction = $this->transactionRepository->get($id);
+        $transaction = $this->transactionRepository->find($id);
         if (!$transaction instanceof Transaction) {
             throw $this->createNotFoundException();
         }
@@ -33,7 +33,7 @@ class UploadAttachmentAction extends AbstractController
             return new Response('No file uploaded', 400);
         }
 
-        $directory = $transaction->getAccountingDate()->format('Ym') . DIRECTORY_SEPARATOR;
+        $directory = $transaction->dateEcriture->format('Ym') . DIRECTORY_SEPARATOR;
         $targetDir = $this->uploadDir . $directory;
         if (!is_dir($targetDir)) {
             mkdir($targetDir, 0750, true);
@@ -49,19 +49,19 @@ class UploadAttachmentAction extends AbstractController
         }
 
         $filename = sprintf('%s.%s',
-            $transaction->getAccountingDate()->format('Y-m-d') . '_' . $transaction->getId() . '_' . substr(sha1_file($file->getPathname()), 0, 6),
+            $transaction->dateEcriture->format('Y-m-d') . '_' . $transaction->id . '_' . substr(sha1_file($file->getPathname()), 0, 6),
             $file->guessExtension(),
         );
         $file->move($targetDir, $filename);
 
-        if (!empty($transaction->getAttachmentFilename())) {
-            $oldFilename = $this->uploadDir . $transaction->getAttachmentFilename();
+        if (!empty($transaction->nomJustificatif)) {
+            $oldFilename = $this->uploadDir . $transaction->nomJustificatif;
             if (is_file($oldFilename)) {
                 unlink($oldFilename);
             }
         }
 
-        $transaction->setAttachmentFilename($directory . $filename);
+        $transaction->nomJustificatif = $directory . $filename;
         $this->transactionRepository->save($transaction);
 
         return new Response();
