@@ -73,3 +73,16 @@ Feature: Administration - Partie Personnes physiques
     When I press "Ajouter"
     Then I should see "Cette valeur ne doit pas être vide"
     And the "user_edit[companyId]" field should only contain the follow values '["","Helios Aerospace (id : 2)","My Corp (id : 3)","My Corp (id : 4)","MyCorp (id : 1)"]'
+
+  @reloadDbWithTestData
+  @clearEmails
+  Scenario: Envoi d'un lien de réinitialisation de mot de passe à une personne physique
+    Given I am logged in as admin and on the Administration
+    And I follow "Personnes physiques"
+    Then the ".content h2" element should contain "Personnes physiques"
+    # Suit le lien "Envoyer un lien de réinitialisation de mot de passe à Personne Paul"
+    When I follow "envoi_mdp_5"
+    Then I should see "Un lien de réinitialisation de mot de passe a été envoyé à la personne physique"
+    And I should receive an email
+    When I follow the password reset link received by email
+    Then I should see "Nouveau mot de passe"

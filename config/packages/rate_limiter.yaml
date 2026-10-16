@@ -8,3 +8,20 @@ framework:
             policy: sliding_window
             limit: 10
             interval: '1 hour'
+        password_reset_ip:
+            policy: sliding_window
+            limit: 10
+            interval: '1 hour'
+
+        password_reset_email:
+            policy: sliding_window
+            limit: 3
+            interval: '1 hour'
+
+when@test:
+    framework:
+        rate_limiter:
+            password_reset_ip:
+                limit: 10000
+            password_reset_email:
+                limit: 10000
