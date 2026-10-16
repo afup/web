@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Event\Ticket;
 
 use AppBundle\Controller\Event\EventActionHelper;
-use AppBundle\Event\Model\Repository\SponsorTicketRepository;
+use AppBundle\Event\Entity\Repository\SponsorTicketRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,13 +41,13 @@ final class SponsorTicketAction extends AbstractController
                 $token = $request->request->get('sponsor_token');
                 $limiter = $this->sponsorTokenLimiter->create($request->getClientIp());
                 $rateLimit = $limiter->consume(1);
-                $sponsorTicket = $this->sponsorTicketRepository->getOneBy(['token' => $token]);
+                $sponsorTicket = $this->sponsorTicketRepository->findOneBy(['token' => $token]);
                 if (!$rateLimit->isAccepted() || $sponsorTicket === null) {
                     // Même message que si le token n'existe pas, pour ne pas révéler le blocage
                     $errors[] = 'Ce token n\'existe pas.';
                 } else {
                     $limiter->reset();
-                    $session->set('sponsor_ticket_id', $sponsorTicket->getId());
+                    $session->set('sponsor_ticket_id', $sponsorTicket->id);
 
                     return $this->redirectToRoute('sponsor_ticket_form', ['eventSlug' => $eventSlug]);
                 }

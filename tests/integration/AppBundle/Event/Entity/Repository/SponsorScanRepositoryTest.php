@@ -7,7 +7,7 @@ namespace AppBundle\IntegrationTests\Event\Entity\Repository;
 use Afup\Tests\Support\IntegrationTestCase;
 use AppBundle\Event\Entity\Repository\SponsorScanRepository;
 use AppBundle\Event\Entity\SponsorScan;
-use AppBundle\Event\Model\SponsorTicket;
+use AppBundle\Event\Entity\SponsorTicket;
 use Doctrine\DBAL\Connection;
 
 final class SponsorScanRepositoryTest extends IntegrationTestCase
@@ -82,7 +82,7 @@ final class SponsorScanRepositoryTest extends IntegrationTestCase
     private function buildSponsorTicket(int $id): SponsorTicket
     {
         $sponsorTicket = new SponsorTicket();
-        $sponsorTicket->setId($id);
+        $sponsorTicket->id = $id;
 
         return $sponsorTicket;
     }
