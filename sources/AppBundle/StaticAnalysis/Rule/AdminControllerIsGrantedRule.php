@@ -22,7 +22,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
  * La matrice READ/WRITE est le vrai garde d'accès du back-office ;
  * sans ce garde, une route /admin n'est protégée que par la règle
  * console access_control (ROLE_ADMIN), ce qui laisse passer des comptes
- * LEVEL_ADMIN sans rôle fonctionnel.
+ * ayant seulement ROLE_ADMIN, sans rôle fonctionnel.
  *
  * @implements Rule<Class_>
  */

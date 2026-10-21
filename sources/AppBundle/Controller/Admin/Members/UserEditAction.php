@@ -32,7 +32,9 @@ class UserEditAction extends AbstractController
             $this->addFlash('error', 'Utilisateur non trouvé');
             return $this->redirectToRoute('admin_members_user_list');
         }
-        $form = $this->createForm(UserEditType::class, $user);
+        $form = $this->createForm(UserEditType::class, $user, [
+            'can_grant_super_admin' => $this->isGranted('ROLE_SUPER_ADMIN'),
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // Save password if not empty
