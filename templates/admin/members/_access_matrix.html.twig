@@ -1,0 +1,29 @@
+{# Matrice d'accès aux modules : une ligne par module, une colonne par niveau d'accès #}
+<div class="inline fields ui grid">
+    {{ form_label(access) }}
+    <div class="field nine wide column" style="flex-wrap: wrap;">
+        <table class="ui celled compact definition unstackable table">
+            <thead>
+            <tr>
+                <th></th>
+                {% for level in access|first %}
+                    <th class="center aligned">{{ level.vars.label }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for module in access %}
+                <tr>
+                    <td>{{ module.vars.label }}</td>
+                    {% for level in module %}
+                        <td class="center aligned">
+                            {{ form_widget(level, {radio: true, inline_label: '', attr: {'aria-label': module.vars.label ~ ' : ' ~ level.vars.label}}) }}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {{ form_errors(access) }}
+    </div>
+</div>
