@@ -301,9 +301,8 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     public function getAdministrators()
     {
         $queryBuilder = $this->getQueryBuilderWithCompleteUser()
-            ->where('niveau_modules <> 0 OR niveau = :level')
+            ->where('(app.roles LIKE \'%_READER"%\' OR app.roles LIKE \'%_WRITER"%\' OR app.roles LIKE \'%"ROLE_ADMIN"%\' OR app.roles LIKE \'%"ROLE_SUPER_ADMIN"%\')')
             ->orderBy(['nom', 'prenom']);
-        $queryBuilder->bindValue('level', User::LEVEL_ADMIN);
 
         return $this
             ->getQuery($queryBuilder->getStatement())
@@ -376,8 +375,8 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         return $this
             ->getQueryBuilderWithSubscriptions()
             ->cols([
-                'app.`id`', 'app.`id_personne_morale`', 'app.`login`', 'app.`mot_de_passe`', 'app.`niveau`',
-                'app.`niveau_modules`', 'app.`roles`', 'app.`genre`', 'app.`nom`', 'app.`prenom`', 'app.`email`',
+                'app.`id`', 'app.`id_personne_morale`', 'app.`login`', 'app.`mot_de_passe`',
+                'app.`roles`', 'app.`genre`', 'app.`nom`', 'app.`prenom`', 'app.`email`',
                 'app.`adresse`', 'app.`code_postal`', 'app.`ville`', 'app.`id_pays`', 'app.`telephone_fixe`',
                 'app.`telephone_portable`', 'app.`etat`', 'app.`date_relance`', 'app.`compte_svn`',
                 'app.`slack_invite_status`', 'app.`slack_alternate_email`', 'app.`needs_up_to_date_membership`',
@@ -531,16 +530,6 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             ->addField([
                 'columnName' => 'email',
                 'fieldName' => 'email',
-                'type' => 'string',
-            ])
-            ->addField([
-                'columnName' => 'niveau',
-                'fieldName' => 'level',
-                'type' => 'string',
-            ])
-            ->addField([
-                'columnName' => 'niveau_modules',
-                'fieldName' => 'levelModules',
                 'type' => 'string',
             ])
             ->addField([
