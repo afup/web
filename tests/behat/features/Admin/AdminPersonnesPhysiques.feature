@@ -9,6 +9,19 @@ Feature: Administration - Partie Personnes physiques
     When I follow "Ajouter"
     Then I should see "Ajouter une personne physique"
     Then The "user_edit[genre]" field should only contain the follow values '["Ne se prononce pas", "Femme", "Homme", "Non-binaire"]'
+    # Paramètres : checkbox d'accès à l'admin décochée par défaut, et matrice d'accès
+    # aux modules (Aucun / Lecteur / Gestionnaire) positionnée sur "Aucun" pour chaque module
+    And the "user_edit[adminAccess]" checkbox should be unchecked
+    And I should see "Accès aux modules"
+    And the "user_edit_access_membres_0" checkbox should be checked
+    And the "user_edit_access_veille_0" checkbox should be checked
+    And the "user_edit_access_site_0" checkbox should be checked
+    And the "user_edit_access_apero_0" checkbox should be checked
+    And the "user_edit_access_event_0" checkbox should be checked
+    And the "user_edit_access_compta_0" checkbox should be checked
+    And the "user_edit_access_ag_0" checkbox should be checked
+    And the "user_edit_access_planete_0" checkbox should be checked
+    And the "user_edit_access_antennes_0" checkbox should be checked
     When I press "Ajouter"
     Then I should see "Cette valeur ne doit pas être vide"
     When I fill in "user_edit[lastname]" with "Mon nom"
@@ -18,9 +31,19 @@ Feature: Administration - Partie Personnes physiques
     And I fill in "user_edit[zipcode]" with "69001"
     And I fill in "user_edit[city]" with "LYON"
     And I fill in "user_edit[username]" with "monlogin"
+    And I select "2" from "user_edit[access][veille]"
+    And I select "1" from "user_edit[access][site]"
+    And I check "user_edit_specialRoles_1"
     And I press "Ajouter"
 
     Then I should not see "Cette valeur ne doit pas être vide"
+    # les droits sont relus depuis les rôles de la personne
+    When I am on "/admin/members/users/edit?id=3"
+    Then the "user_edit_access_veille_2" checkbox should be checked
+    And the "user_edit_access_site_1" checkbox should be checked
+    And the "user_edit_access_membres_0" checkbox should be checked
+    And the "user_edit_specialRoles_1" checkbox should be checked
+    And the "user_edit_specialRoles_0" checkbox should be unchecked
     # on vérifie qu'il est dans la liste
     When I follow "Personnes physiques"
     And I check "alsoDisplayInactive"

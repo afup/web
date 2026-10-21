@@ -169,7 +169,7 @@ final class AdminAccessControlTest extends KernelTestCase
                 in_array($controllerRole, self::READER_ROLES, true)
                 || in_array($controllerRole, self::WRITER_ROLES, true)
                 || $controllerRole === 'ROLE_SUPER_ADMIN',
-                "Attribut #[IsGranted] '{$controllerRole}' interdit sur le controller de la route {$routeName} ({$path}) : la matrice READ/WRITE ou ROLE_SUPER_ADMIN, jamais ROLE_ADMIN seul (cela réouvrirait l'accès aux simples comptes LEVEL_ADMIN).",
+                "Attribut #[IsGranted] '{$controllerRole}' interdit sur le controller de la route {$routeName} ({$path}) : la matrice READ/WRITE ou ROLE_SUPER_ADMIN, jamais ROLE_ADMIN seul (cela réouvrirait l'accès aux simples comptes ROLE_ADMIN).",
             );
         }
 
@@ -212,15 +212,16 @@ final class AdminAccessControlTest extends KernelTestCase
 
     /**
      * Le rôle candidat satisfait-il le rôle requis ? Grâce à la hiérarchie :
-     * READ ⇒ ROLE_ADMIN (marqueur console), WRITE ⇒ READ, SUPER_ADMIN ⇒ tous les READ.
+     * READ ⇒ ROLE_ADMIN (marqueur console), WRITE ⇒ READ, SUPER_ADMIN ⇒ tous les WRITE et READ.
      */
     private static function satisfies(string $candidate, string $required): bool
     {
         if ($candidate === 'ROLE_SUPER_ADMIN') {
-            // ROLE_SUPER_ADMIN possède la console et tous les READ ; jamais un WRITE.
+            // ROLE_SUPER_ADMIN possède la console et tous les READ et WRITE.
             return $required === 'ROLE_SUPER_ADMIN'
                 || $required === 'ROLE_ADMIN'
-                || in_array($required, self::READER_ROLES, true);
+                || in_array($required, self::READER_ROLES, true)
+                || in_array($required, self::WRITER_ROLES, true);
         }
 
         if ($required === 'ROLE_ADMIN') {

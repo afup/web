@@ -21,9 +21,25 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
 {
     use NotifyProperty;
 
-    public const int LEVEL_MEMBER = 0;
-    public const int LEVEL_WRITER = 1;
-    public const int LEVEL_ADMIN = 2;
+    public const int LEVEL_NONE = 0;
+    public const int LEVEL_READER = 1;
+    public const int LEVEL_MANAGER = 2;
+
+    /**
+     * Modules du back-office, dans l'ordre d'affichage. Le niveau d'accès à un module
+     * est porté par les rôles ROLE_<MODULE>_READER (lecteur) et ROLE_<MODULE>_WRITER (gestionnaire).
+     */
+    public const array MODULES = [
+        'membres' => 'Membres',
+        'veille' => 'Veille',
+        'site' => 'Site',
+        'apero' => 'Super-apéro',
+        'event' => 'Évènements',
+        'compta' => 'Trésorerie',
+        'ag' => 'Assemblée générale',
+        'planete' => 'Planète',
+        'antennes' => 'Antennes',
+    ];
 
     public const int STATUS_PENDING = -1;
     public const int STATUS_ACTIVE = 1;
@@ -52,17 +68,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
     private $password;
 
     /**
-     * @var int
-     */
-    private $level = self::LEVEL_MEMBER;
-
-    /**
-     * @var string
-     */
-    private $levelModules = '00000';
-
-    /**
-     * @var array
+     * @var array<string>
      */
     private $roles = [];
 
@@ -272,42 +278,6 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
     {
         $this->propertyChanged('password', $this->password, $password);
         $this->password = $password;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLevel()
-    {
-        return $this->level;
-    }
-
-    /**
-     * @param int $level
-     */
-    public function setLevel($level): self
-    {
-        $this->propertyChanged('level', $this->level, $level);
-        $this->level = $level;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLevelModules()
-    {
-        return $this->levelModules;
-    }
-
-    /**
-     * @param string $levelModules
-     */
-    public function setLevelModules($levelModules): self
-    {
-        $this->propertyChanged('levelModules', $this->levelModules, $levelModules);
-        $this->levelModules = $levelModules;
         return $this;
     }
 
@@ -600,14 +570,66 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this->getSlackInviteStatus() === self::SLACK_INVITE_STATUS_REQUESTED;
     }
 
-    public function canAccessAdmin(): int
+    public function canAccessAdmin(): bool
     {
-        $roles = $this->getRoles();
+        foreach ($this->getRoles() as $role) {
+            if (
+                $role === 'ROLE_ADMIN'
+                || $role === 'ROLE_SUPER_ADMIN'
+                || str_ends_with($role, '_READER')
+                || str_ends_with($role, '_WRITER')
+            ) {
+                return true;
+            }
+        }
 
-        // TODO ça serait mieux d'avoir une liste d'inclusion des roles admin au lieu d'avoir une liste d'exclusion
-        $diff = array_diff($roles, ['ROLE_USER', 'ROLE_COMPANY_MANAGER', 'ROLE_MEMBER_EXPIRED']);
+        return false;
+    }
 
-        return count($diff);
+    /**
+     * Accès à l'admin (checkbox "Accès à l'admin") : marqueur ROLE_ADMIN de la console,
+     * sans aucun droit fonctionnel — ceux-ci viennent des rôles des modules.
+     */
+    public function isAdminAccess(): bool
+    {
+        return in_array('ROLE_ADMIN', $this->roles, true);
+    }
+
+    public function setAdminAccess(bool $adminAccess): self
+    {
+        return $this->setRoleGranted('ROLE_ADMIN', $adminAccess);
+    }
+
+    /**
+     * Niveau d'accès au module $module (clé de User::MODULES) :
+     * LEVEL_NONE, LEVEL_READER (ROLE_<MODULE>_READER) ou LEVEL_MANAGER (ROLE_<MODULE>_WRITER).
+     */
+    public function getModuleLevel(string $module): int
+    {
+        $prefix = 'ROLE_' . strtoupper($module);
+
+        if (in_array($prefix . '_WRITER', $this->roles, true)) {
+            return self::LEVEL_MANAGER;
+        }
+
+        if (in_array($prefix . '_READER', $this->roles, true)) {
+            return self::LEVEL_READER;
+        }
+
+        return self::LEVEL_NONE;
+    }
+
+    public function setModuleLevel(string $module, int $level): self
+    {
+        if (!array_key_exists($module, self::MODULES)) {
+            return $this;
+        }
+
+        $prefix = 'ROLE_' . strtoupper($module);
+
+        return $this
+            ->setRoleGranted($prefix . '_READER', $level === self::LEVEL_READER)
+            ->setRoleGranted($prefix . '_WRITER', $level === self::LEVEL_MANAGER);
     }
 
     public function isMemberForCompany(): bool
@@ -621,32 +643,9 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         if ($this->lastSubscription < new \DateTime()) {
             $defaultRoles = ['ROLE_MEMBER_EXPIRED'];
         }
-        if ($this->level === self::LEVEL_ADMIN) {
-            // Un admin de base console seulement : ROLE_ADMIN est vide (marqueur d'accès console).
-            // Les droits fonctionnels viennent des levelModules ci-dessous.
-            // ROLE_SUPER_ADMIN est désormais réservé et ne doit plus être attribué automatiquement.
-            $defaultRoles[] = 'ROLE_ADMIN';
-        }
-        if (isset($this->levelModules[0]) && (int) $this->levelModules[0] > 0) {
-            $defaultRoles[] = 'ROLE_APERO';
-        }
-        if (isset($this->levelModules[1]) && (int) $this->levelModules[1] > 0) {
-            $defaultRoles[] = 'ROLE_ANNUAIRE';
-        }
-        if (isset($this->levelModules[2]) && (int) $this->levelModules[2] > 0) {
-            $defaultRoles[] = 'ROLE_SITE';
-        }
-        if (isset($this->levelModules[3]) && (int) $this->levelModules[3] > 0) {
-            $defaultRoles[] = 'ROLE_FORUM';
-        }
-        if (isset($this->levelModules[4]) && (int) $this->levelModules[4] > 0) {
-            $defaultRoles[] = 'ROLE_ANTENNE';
-        }
 
         // On enlève le rôle ROLE_MEMBER_EXPIRED vu qu'il est défini en fonction de la cotisation dans les defaultRoles
-        // on fait de même avec tous les autres rôles définis en fonction des champs levelModules car ils peuvent se retrouver
-        // en base dans le tableau de rôle, et on ne veux pas que si on modifie le levelModules pour l'enlever, il reste via le roles
-        $userRoles = array_diff($this->roles, ['ROLE_MEMBER_EXPIRED', 'ROLE_APERO', 'ROLE_ANNUAIRE', 'ROLE_SITE', 'ROLE_FORUM', 'ROLE_ANTENNE']);
+        $userRoles = array_diff($this->roles, ['ROLE_MEMBER_EXPIRED']);
 
         return array_unique(array_merge($userRoles, $defaultRoles));
     }
@@ -660,6 +659,9 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return in_array($role, $roles);
     }
 
+    /**
+     * @param array<string>|null $roles
+     */
     public function setRoles(?array $roles = null): self
     {
         if ($roles === null) {
@@ -699,6 +701,21 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this;
     }
 
+    /** Ajoute ou retire $role des rôles enregistrés de la personne. */
+    public function setRoleGranted(string $role, bool $granted): self
+    {
+        $roles = array_values(array_diff($this->roles, [$role]));
+        if ($granted) {
+            $roles[] = $role;
+        }
+
+        if ($roles !== $this->roles) {
+            $this->setRoles($roles);
+        }
+
+        return $this;
+    }
+
     public function eraseCredentials(): void {}
 
     public function __serialize(): array
@@ -718,56 +735,6 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         $this->id = $serialized['id'];
         $this->username = $serialized['username'];
         $this->password = $serialized['password'];
-    }
-
-    public function getDirectoryLevel()
-    {
-        return $this->levelModules[1] ?? '0';
-    }
-
-    public function setDirectoryLevel($level): self
-    {
-        $oldLevelModules = $this->levelModules;
-        $this->levelModules[1] = $level;
-        $this->propertyChanged('levelModules', $oldLevelModules, $this->levelModules);
-
-        return $this;
-    }
-
-    public function getWebsiteLevel()
-    {
-        return $this->levelModules[2] ?? '0';
-    }
-
-    public function setWebsiteLevel($level): void
-    {
-        $oldLevelModules = $this->levelModules;
-        $this->levelModules[2] = $level;
-        $this->propertyChanged('levelModules', $oldLevelModules, $this->levelModules);
-    }
-
-    public function getEventLevel()
-    {
-        return $this->levelModules[3] ?? '0';
-    }
-
-    public function setEventLevel($level): void
-    {
-        $oldLevelModules = $this->levelModules;
-        $this->levelModules[3] = $level;
-        $this->propertyChanged('levelModules', $oldLevelModules, $this->levelModules);
-    }
-
-    public function getOfficeLevel()
-    {
-        return $this->levelModules[4] ?? '0';
-    }
-
-    public function setOfficeLevel($level): void
-    {
-        $oldLevelModules = $this->levelModules;
-        $this->levelModules[4] = $level;
-        $this->propertyChanged('levelModules', $oldLevelModules, $this->levelModules);
     }
 
     public function getAlternateEmail()

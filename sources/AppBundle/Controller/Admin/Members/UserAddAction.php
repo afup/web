@@ -30,7 +30,9 @@ class UserAddAction extends AbstractController
         $user = new User();
         $user->setRoles([]);
 
-        $form = $this->createForm(UserEditType::class, $user);
+        $form = $this->createForm(UserEditType::class, $user, [
+            'can_grant_super_admin' => $this->isGranted('ROLE_SUPER_ADMIN'),
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$user->getCompanyId()) {
