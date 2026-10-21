@@ -39,7 +39,7 @@ class HomeAction extends AbstractController
     {
         $nextevents = $this->eventRepository->getNextEvents();
         $cards = [];
-        if ($this->isGranted('ROLE_FORUM') && $nextevents) {
+        if ($this->isGranted('ROLE_EVENT_READER') && $nextevents) {
             $cfp = [
                 'title' => 'CFP',
                 'subtitle' => 'Talks et speakers',
