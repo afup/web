@@ -650,6 +650,18 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/AssembleeGenerale/Entity/Repository/PresenceRepository.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Cannot cast mixed to int\\.$#',
+	'identifier' => 'cast.int',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot cast mixed to string\\.$#',
+	'identifier' => 'cast.string',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$email of class AppBundle\\\\Email\\\\Mailer\\\\MailUser constructor expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -770,138 +782,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserBadgeType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to string\\.$#',
-	'identifier' => 'cast.string',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$address has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$alternateEmail has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$cellphone has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$city has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$companyId has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$directoryLevel has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$email has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$eventLevel has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$firstname has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$lastname has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$level has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$officeLevel has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$password has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$phone has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$roles has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$status has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$username has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$websiteLevel has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Form\\\\UserEditFormData\\:\\:\\$zipcode has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditFormData.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Anonymous function should return array but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Anonymous function should return non\\-empty\\-string but returns non\\-empty\\-string\\|false\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot cast mixed to int\\.$#',
 	'identifier' => 'cast.int',
 	'count' => 1,
@@ -910,7 +790,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot cast mixed to string\\.$#',
 	'identifier' => 'cast.string',
-	'count' => 2,
+	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserEditType.php',
 ];
 $ignoreErrors[] = [
@@ -941,8 +821,8 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$array of function implode expects array\\<string\\>, list given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
- 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/CompanyMember.php',
- ];
+	'path' => __DIR__ . '/sources/AppBundle/Association/Model/CompanyMember.php',
+];
 $ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'id\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
@@ -1186,7 +1066,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method bindValue\\(\\) on mixed\\.$#',
 	'identifier' => 'method.nonObject',
-	'count' => 5,
+	'count' => 4,
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/UserRepository.php',
 ];
 $ignoreErrors[] = [
@@ -1418,18 +1298,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:getDirectoryLevel\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:getEventLevel\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:getNearestOfficeLabel\\(\\) has no return type specified\\.$#',
 	'identifier' => 'missingType.return',
 	'count' => 1,
@@ -1442,26 +1310,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:getOfficeLevel\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:getRoles\\(\\) should return array\\<string\\> but returns array\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:getUserIdentifier\\(\\) should return non\\-empty\\-string but returns string\\.$#',
 	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:getWebsiteLevel\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
 ];
@@ -1478,51 +1328,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:setDirectoryLevel\\(\\) has parameter \\$level with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:setEventLevel\\(\\) has parameter \\$level with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:setNeedsUpToDateMembership\\(\\) has parameter \\$needsUpToDateMembership with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
 	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:setOfficeLevel\\(\\) has parameter \\$level with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:setRoles\\(\\) has parameter \\$roles with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:setWebsiteLevel\\(\\) has parameter \\$level with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$array of function array_diff expects an array of values castable to string, array given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$array of function array_unique expects an array of values castable to string, array given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
 ];
 $ignoreErrors[] = [
@@ -1544,12 +1352,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Association\\\\Model\\\\User\\:\\:\\$roles type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Association\\\\NotifiableInterface\\:\\:getEmail\\(\\) has no return type specified\\.$#',
 	'identifier' => 'missingType.return',
 	'count' => 1,
@@ -1560,6 +1362,18 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/NotifiableInterface.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot cast mixed to int\\.$#',
+	'identifier' => 'cast.int',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot cast mixed to string\\.$#',
+	'identifier' => 'cast.string',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$email of class AppBundle\\\\Email\\\\Mailer\\\\MailUser constructor expects string, mixed given\\.$#',
@@ -2864,15 +2678,15 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/RemoveEventAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Event\\\\RoomAction\\:\\:getFormsForRooms\\(\\) return type with generic interface Symfony\\\\Component\\\\Form\\\\FormInterface does not specify its types\\: TData$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/RoomAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access property \\$name on mixed\\.$#',
 	'identifier' => 'property.nonObject',
 	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/RoomAction.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Event\\\\RoomAction\\:\\:getFormsForRooms\\(\\) return type with generic interface Symfony\\\\Component\\\\Form\\\\FormInterface does not specify its types\\: TData$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/RoomAction.php',
 ];
 $ignoreErrors[] = [
@@ -9170,30 +8984,5 @@ $ignoreErrors[] = [
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/VideoNotifier/StatusGenerator.php',
 ];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to string\\.$#',
-	'identifier' => 'cast.string',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to int\\.$#',
-	'identifier' => 'cast.int',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/CompanyMembership/AbstractCompanyReminder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to string\\.$#',
-	'identifier' => 'cast.string',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to int\\.$#',
-	'identifier' => 'cast.int',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/AbstractUserReminder.php',
-];
 
 return ['parameters' => ['ignoreErrors' => $ignoreErrors]];
-
