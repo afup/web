@@ -38,7 +38,10 @@ Feature: Administration - Partie Personnes physiques
 
     Then I should not see "Cette valeur ne doit pas être vide"
     # les droits sont relus depuis les rôles de la personne
-    When I am on "/admin/members/users/edit?id=3"
+    # l'id 8 correspond à la personne créée ci-dessus : les seeds insèrent 7 personnes
+    # avec des identifiants explicites (cf. db/seeds/Users.php), le compteur auto-incrément
+    # est donc à 7
+    When I am on "/admin/members/users/edit?id=8"
     Then the "user_edit_access_veille_2" checkbox should be checked
     And the "user_edit_access_site_1" checkbox should be checked
     And the "user_edit_access_membres_0" checkbox should be checked
@@ -50,7 +53,7 @@ Feature: Administration - Partie Personnes physiques
     And I press "Filtrer"
     Then I should see "Mon prénom"
     # on supprime la personne
-    When I follow "supprimer_3"
+    When I follow "supprimer_8"
     Then I should see "La personne physique a été supprimée"
 
   @reloadDbWithTestData
