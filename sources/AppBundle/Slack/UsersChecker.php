@@ -35,6 +35,9 @@ class UsersChecker
                     continue;
                 }
                 $email = $user['profile']['email'];
+                if (!is_string($email)) {
+                    continue;
+                }
                 $userInfo = [
                     'slack_username' => $user['name'],
                     'slack_realname' => $user['real_name'],

@@ -16,6 +16,12 @@
                 <twig:Alert type="error" class="w-full">{{ error.messageKey|trans(error.messageData, 'security') }}</twig:Alert>
             {% endif %}
 
+            {# layouts/site.html.twig n'affiche pas les flashes : sans cette boucle, la
+               confirmation de changement de mot de passe serait invisible. #}
+            {% for message in app.flashes('success') %}
+                <twig:Alert type="success" class="w-full">{{ message }}</twig:Alert>
+            {% endfor %}
+
             {{ form_row(form.utilisateur) }}
             
             <div class="flex w-full flex-col gap-1.5">

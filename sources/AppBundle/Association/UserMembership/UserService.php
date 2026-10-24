@@ -6,74 +6,23 @@ namespace AppBundle\Association\UserMembership;
 
 use AppBundle\MembershipFee\MembershipFeeService;
 use AppBundle\Association\MemberType;
-use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
 use AppBundle\MembershipFee\Entity\Cotisation;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UserService
 {
-    private string $sender = MailUser::DEFAULT_SENDER_EMAIL;
-
     public function __construct(
-        private readonly UserRepository $userRepository,
         private readonly Mailer $mailer,
-        private readonly UrlGeneratorInterface $urlGenerator,
         private readonly MembershipFeeService $membershipFeeService,
-        private readonly UserPasswordHasherInterface $passwordHasher,
     ) {}
 
     public function generateRandomPassword(): string
     {
         return bin2hex(random_bytes(8));
-    }
-
-    public function resetPassword(User $user): void
-    {
-        $newPassword = $this->generateRandomPassword();
-        $user->setPassword($this->passwordHasher->hashPassword($user, $newPassword));
-        $this->userRepository->save($user);
-
-        $login = $user->getUsername();
-        $url = $this->urlGenerator->generate('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $message = new Message(
-            'AFUP : Mot de passe perdu ?',
-            new MailUser($this->sender),
-            new MailUser($user->getEmail(), $user->getFirstName() . ' ' . $user->getLastName()),
-        );
-        $message->setContent(<<<BODY
-Votre nouveau mot de passe est indiqué ci-dessous.
-Il vous permettra de vous connecter dès maintenant au site de l'AFUP.
-
-Votre identifiant : $login
-Votre mot de passe : $newPassword
-
-$url
-BODY
-        );
-        $this->mailer->send($message);
-    }
-
-    /**
-     * @param string $email
-     */
-    public function resetPasswordForEmail($email): void
-    {
-        try {
-            $user = $this->userRepository->loadUserByEmailOrAlternateEmail($email);
-        } catch (UserNotFoundException) {
-            // Email inconnu : on s'arrête sans le signaler, pour ne pas révéler quels
-            // emails correspondent à un compte.
-            return;
-        }
-
-        $this->resetPassword($user);
     }
 
     public function sendWelcomeEmail(User $user): bool

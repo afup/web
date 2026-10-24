@@ -70,7 +70,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         $this->save($user);
     }
 
-    public function loadUserByEmailOrAlternateEmail($email)
+    public function loadUserByEmailOrAlternateEmail(string $email): User
     {
         $queryBuilder = $this->getQueryBuilderWithCompleteUser();
         $queryBuilder
@@ -89,7 +89,12 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
             throw new UserNotFoundException(sprintf('Could not find the user with email "%s"', $email));
         }
 
-        return $result->first();
+        $user = $result->first();
+        if (!$user instanceof User) {
+            throw new UserNotFoundException(sprintf('Could not find the user with email "%s"', $email));
+        }
+
+        return $user;
     }
 
     public function loadUserByHash($hash)

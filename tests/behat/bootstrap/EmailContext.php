@@ -10,11 +10,14 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Hook\BeforeScenario;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Step\Then;
+use Behat\Step\When;
 use Symfony\Component\Filesystem\Filesystem;
 
 trait EmailContext
 {
     private const string MAILCATCHER_URL = 'http://mailcatcher:1080';
+
+    private ?string $lastPasswordResetPath = null;
 
     #[BeforeScenario('@clearAllMailInscriptionAttachments')]
     public static function beforeScenarioClearAllMailInscriptionAttachments(): void
@@ -142,6 +145,46 @@ trait EmailContext
                 $this->minkContext->getSession()->getDriver(),
             );
         }
+    }
+
+    #[When('I follow the password reset link received by email')]
+    public function iFollowThePasswordResetLinkReceivedByEmail(): void
+    {
+        $content = file_get_contents(self::MAILCATCHER_URL . '/messages');
+        $decodedContent = json_decode($content, true);
+
+        if ($decodedContent === []) {
+            throw new ExpectationException(
+                'No email has been received.',
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+
+        $lastEmail = end($decodedContent);
+        $body = file_get_contents(self::MAILCATCHER_URL . '/messages/' . $lastEmail['id'] . '.plain');
+
+        if (preg_match('#/password-reset/[0-9a-f]{64}#', (string) $body, $matches) !== 1) {
+            throw new ExpectationException(
+                sprintf('No password reset link found in the email: %s', $body),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+
+        $this->lastPasswordResetPath = $matches[0];
+        $this->minkContext->visitPath($this->lastPasswordResetPath);
+    }
+
+    #[When('I follow the password reset link received previously')]
+    public function iFollowThePasswordResetLinkReceivedPreviously(): void
+    {
+        if ($this->lastPasswordResetPath === null) {
+            throw new ExpectationException(
+                'No password reset link has been followed yet.',
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+
+        $this->minkContext->visitPath($this->lastPasswordResetPath);
     }
 
     #[Then('the email should contain a full URL starting with :arg1')]
