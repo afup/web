@@ -4040,12 +4040,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/EventActionHelper.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getPath\\(\\) on AppBundle\\\\Event\\\\Model\\\\Event\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Lead/BecomeSponsorLatestAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Controller\\\\Event\\\\Lead\\\\PostLeadAction\\:\\:__invoke\\(\\) has parameter \\$eventSlug with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
 	'count' => 1,
