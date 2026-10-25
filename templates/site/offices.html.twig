@@ -379,8 +379,8 @@
                     data-map-second-city-point-longitude="{{ antenne.map.secondCity.position.longitude }}"
                     {% endif %}
                  {% endif %}
-                 {% if antenne.departements is defined %}
-                    data-departements="{{ antenne.departements|join(',') }}"
+                 {% if antenne.departments is not null %}
+                    data-departements="{{ antenne.departments|join(',') }}"
                  {% endif %}
                  {% if antenne.pays is defined %}
                     data-pays="{{ antenne.pays|join(',') }}"
