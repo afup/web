@@ -218,6 +218,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/EventRepository.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Method AppBundle\\\\Accounting\\\\Entity\\\\Repository\\\\InvoicingPeriodRepository\\:\\:getCurrentPeriod\\(\\) should return AppBundle\\\\Accounting\\\\Entity\\\\InvoicingPeriod but returns AppBundle\\\\Accounting\\\\Entity\\\\InvoicingPeriod\\|null\\.$#',
+	'identifier' => 'return.type',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/InvoicingPeriodRepository.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Accounting\\\\Entity\\\\Repository\\\\PaymentRepository\\:\\:getAllSortedByName\\(\\) should return array\\<AppBundle\\\\Accounting\\\\Entity\\\\Payment\\> but returns mixed\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
@@ -234,6 +240,18 @@ $ignoreErrors[] = [
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/RuleRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
+	'identifier' => 'method.nonObject',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/TransactionRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method AppBundle\\\\Accounting\\\\Entity\\\\Repository\\\\TransactionRepository\\:\\:getNextTransaction\\(\\) should return AppBundle\\\\Accounting\\\\Entity\\\\Transaction\\|null but returns mixed\\.$#',
+	'identifier' => 'return.type',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/TransactionRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Class AppBundle\\\\Accounting\\\\Form\\\\AccountType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
