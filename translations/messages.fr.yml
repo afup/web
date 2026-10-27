@@ -182,6 +182,11 @@ type.3: "20 mn"
 'Website': 'Site web'
 'Language': 'Langue'
 'Become a sponsor': 'Devenir sponsor'
+'become_sponsor.generic.text': |
+  ## Sponsorisez l’AFUP !
+  Soutenir l’AFUP, c’est soutenir le langage avec lequel vous construisez vos projets, c’est dynamiser l’écosystème PHP dont dépend votre infrastructure technique, d’autant plus à l’ère de l’IA.\
+  Sponsorisez l’AFUP et ses activités, devenez un acteur de premier rang pour l’animation de la communauté PHP en France.\
+  Notre dossier de sponsoring est en phase de préparation : inscrivez-vous pour le recevoir, d’ici la fin de l’année 2026.
 'mail.sponsoringfile.title': 'Dossier de sponsoring %eventName%'
 'mail.sponsoringfile.title.generic': 'Dossier de sponsoring AFUP'
 'mail.sponsoringfile.text': |
