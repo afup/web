@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Accounting\Invoice;
 
 use Afup\Site\Utils\Vat;
+use AppBundle\Accounting\Entity\Repository\InvoicingPeriodRepository;
 use AppBundle\Accounting\Form\InvoicingPeriodType;
 use AppBundle\Accounting\InvoicingPaymentStatus;
 use AppBundle\Accounting\Model\Invoicing;
 use AppBundle\Accounting\Model\Repository\InvoicingRepository;
-use AppBundle\Accounting\Model\Repository\InvoicingPeriodRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,8 +31,8 @@ class ListInvoiceAction extends AbstractController
 
         $direction = $request->query->get('direction', 'desc');
         $sort = $request->query->get('sort', 'date');
-        $invoices = $this->invoiceRepository->getInvoicesByPeriodId($period->getId(), $sort, $direction);
-        $periods = $this->invoicingPeriodRepository->getAll();
+        $invoices = $this->invoiceRepository->getInvoicesByPeriodId($period->id, $sort, $direction);
+        $periods = $this->invoicingPeriodRepository->findAll();
 
         $totalHt = 0;
 
@@ -48,12 +48,12 @@ class ListInvoiceAction extends AbstractController
         return new Response($this->twig->render('admin/accounting/invoice/list.html.twig', [
             'lines' => $invoices,
             'periods' => $periods,
-            'periodId' => $period->getId(),
+            'periodId' => $period->id,
             'formPeriod' => $formPeriod->createView(),
             'direction' => $direction,
             'sort' => $sort,
             'totalHt' => $totalHt,
-            'isSubjectedToVat' => Vat::isSubjectedToVat($period->getEndDate()),
+            'isSubjectedToVat' => Vat::isSubjectedToVat($period->dateFin),
         ]));
     }
 }

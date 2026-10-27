@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Accounting\Form;
 
-use AppBundle\Accounting\Model\InvoicingPeriod;
-use AppBundle\Accounting\Model\Repository\InvoicingPeriodRepository;
+use AppBundle\Accounting\Entity\Repository\InvoicingPeriodRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,9 +17,8 @@ class InvoicingPeriodType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $periods = [];
-        /** @var InvoicingPeriod $period */
-        foreach ($this->invoicingPeriodRepository->getAll() as $period) {
-            $periods["{$period->getStartDate()->format('d/m/Y')} - {$period->getEndDate()->format('d/m/Y')}"] = $period->getId();
+        foreach ($this->invoicingPeriodRepository->findAll() as $period) {
+            $periods["{$period->dateDebut->format('d/m/Y')} - {$period->dateFin->format('d/m/Y')}"] = $period->id;
         }
 
         $builder->add('periodId', ChoiceType::class, [
