@@ -181,15 +181,20 @@ class UserEditType extends AbstractType
                     'size' => 30,
                     'maxlength' => 30,
                 ],
-            ])
-            ->add('plainPassword', RepeatedType::class, [
+            ]);
+
+        if ($options['can_edit_password']) {
+            $builder->add('plainPassword', RepeatedType::class, [
                 'mapped' => false,
                 'type' => PasswordType::class,
                 'required' => false,
                 'invalid_message' => 'The password fields must match',
                 'first_options' => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
-            ])
+            ]);
+        }
+
+        $builder
             ->add('specialRoles', ChoiceType::class, [
                 'label' => 'Rôles',
                 'mapped' => false,
@@ -251,7 +256,9 @@ class UserEditType extends AbstractType
         $resolver->setDefaults([
             'data_class' => User::class,
             'can_grant_super_admin' => false,
+            'can_edit_password' => true,
         ]);
         $resolver->setAllowedTypes('can_grant_super_admin', 'bool');
+        $resolver->setAllowedTypes('can_edit_password', 'bool');
     }
 }
