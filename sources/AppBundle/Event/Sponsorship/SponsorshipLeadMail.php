@@ -24,19 +24,39 @@ class SponsorshipLeadMail
         private readonly EventRepository $eventRepository,
     ) {}
 
+    /**
+     * Dossier envoyé depuis la page générique, quelle que soit la langue choisie, et déposé manuellement sur le serveur.
+     */
+    public static function getSponsorshipFilePath(): string
+    {
+        return Event::getSponsorFileDir() . 'dossier-sponsoring-afup.pdf';
+    }
+
+    public function hasSponsorshipFile(): bool
+    {
+        return is_file(self::getSponsorshipFilePath());
+    }
+
     public function sendSponsorshipFile(Lead $lead): void
     {
-        $file = Event::getSponsorFilePath($lead->getEvent()->getPath(), $lead->getLanguage());
+        $leadEvent = $lead->getEvent();
+        $file = $leadEvent instanceof Event
+            ? Event::getSponsorFilePath($leadEvent->getPath(), $lead->getLanguage())
+            : self::getSponsorshipFilePath();
+        $filename = basename($file);
         $event = $this->getSingleUpcomingEvent();
 
         if ($event === null) {
             $subject = $this->translator->trans('mail.sponsoringfile.title.generic');
             $content = $this->translator->trans('mail.sponsoringfile.text.generic');
-            $filename = sprintf('dossier-sponsoring-afup-%s.pdf', $lead->getLanguage());
+
+            // Le dossier d'un évènement est renommé pour ne pas trahir le nom de l'évènement
+            if ($leadEvent instanceof Event) {
+                $filename = sprintf('dossier-sponsoring-afup-%s.pdf', $lead->getLanguage());
+            }
         } else {
             $subject = $this->translator->trans('mail.sponsoringfile.title', ['%eventName%' => $event->getTitle()]);
             $content = $this->translator->trans('mail.sponsoringfile.text', ['%eventName%' => $event->getTitle()]);
-            $filename = basename($file);
         }
 
         $message = new Message($subject, MailUserFactory::sponsors(), new MailUser($lead->getEmail(), $lead->getLabel()));

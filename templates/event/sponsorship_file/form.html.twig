@@ -8,7 +8,7 @@
 
     <main>
         <div class="container mx-auto px-5 sm:px-0 items-center">
-            {% if event.becomeSponsorText is not empty %}
+            {% if event is defined and event.becomeSponsorText is not empty %}
                 <div class="flex">
                     <div class="prose prose-lg max-w-none sm:my-5 mt-5 sm:text-justify">
                         {{ event.becomeSponsorText|markdown_to_html }}
