@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Afup\Tests\Behat\Bootstrap;
 
 use AppBundle\Event\Model\Event;
+use AppBundle\Event\Sponsorship\SponsorshipLeadMail;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Hook\BeforeScenario;
@@ -31,6 +32,13 @@ trait EmailContext
     {
         $filesystem = new Filesystem();
         $filesystem->remove(Event::getSponsorFileDir());
+    }
+
+    #[BeforeScenario('@withSponsorshipFile')]
+    public static function beforeScenarioWithSponsorshipFile(): void
+    {
+        $filesystem = new Filesystem();
+        $filesystem->copy(__DIR__ . '/../files/test_file1.pdf', SponsorshipLeadMail::getSponsorshipFilePath(), true);
     }
 
     #[BeforeScenario('@clearEmails')]

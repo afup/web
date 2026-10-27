@@ -6716,12 +6716,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/SpeakerPage.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getPath\\(\\) on AppBundle\\\\Event\\\\Model\\\\Event\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Sponsorship/SponsorshipLeadMail.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'\\.aggregation\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
 	'count' => 1,

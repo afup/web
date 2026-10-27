@@ -11,9 +11,15 @@ old_home_redirect:
     route: 'home'
     permanent: false
 
-become_sponsor_latest:
+become_sponsor_generic:
   path: /become-sponsor
-  defaults: { _controller: AppBundle\Controller\Event\Lead\BecomeSponsorLatestAction }
+  defaults: { _controller: AppBundle\Controller\Event\Lead\BecomeSponsorGenericAction }
+
+become_sponsor_generic_thanks:
+  path: /become-sponsor/thank-you
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: 'event/sponsorship_file/thanks.html.twig'
 
 sitemap:
   path: /plan-du-site
