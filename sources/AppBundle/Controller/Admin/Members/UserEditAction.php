@@ -34,11 +34,13 @@ class UserEditAction extends AbstractController
         }
         $form = $this->createForm(UserEditType::class, $user, [
             'can_grant_super_admin' => $this->isGranted('ROLE_SUPER_ADMIN'),
+            // Changer le mot de passe d'un tiers permet de prendre son compte : réservé au super admin
+            'can_edit_password' => $this->isGranted('ROLE_SUPER_ADMIN'),
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // Save password if not empty
-            $newPassword = $form->get('plainPassword')->getViewData()['first'];
+            $newPassword = $form->has('plainPassword') ? $form->get('plainPassword')->getViewData()['first'] : null;
             if ($newPassword) {
                 $user->setPassword($this->passwordHasher->hashPassword($user, $newPassword));
             }
