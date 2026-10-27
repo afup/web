@@ -72,6 +72,7 @@
                 {{ form_row(form.specialRoles) }}
                 {{ form_row(form.status) }}
                 {{ form_row(form.username, {attr: {'data-role': 'field-login'}}) }}
+                {% if form.plainPassword is defined %}
                 <div class="inline fields ui grid">
                     <div class="three wide column"></div>
                     <div class="field nine wide column">
@@ -79,6 +80,7 @@
                     </div>
                 </div>
                 {{ form_row(form.plainPassword) }}
+                {% endif %}
                 {{ form_row(form.needsUpToDateMembership) }}
 
                 <div class="inline fields ui grid">

@@ -5,52 +5,40 @@ declare(strict_types=1);
 use Phinx\Migration\AbstractMigration;
 
 /**
- * Les droits d'accès au back-office sont désormais portés uniquement par la colonne roles :
- * - niveau = 2 (accès à l'admin) devient ROLE_ADMIN ;
- * - chaque chiffre de niveau_modules devient ROLE_<MODULE>_READER (1) ou ROLE_<MODULE>_WRITER (2) ;
- * - le rôle legacy ROLE_VEILLE devient ROLE_VEILLE_READER.
+ * Les droits d'accès au back-office sont désormais portés uniquement par la colonne roles.
  *
- * Les rôles de la matrice, ROLE_ADMIN et les autres rôles legacy déjà présents en base étaient ignorés
- * (recalculés depuis niveau / niveau_modules) : ils sont remplacés par le résultat du calcul.
+ * Plutôt que de convertir niveau / niveau_modules, on repart de zéro :
+ * - seuls les rôles non liés au back-office (ROLE_MEMBER_*, ROLE_COMPANY_MANAGER) sont conservés ;
+ * - ROLE_ADMIN, ROLE_SUPER_ADMIN, les rôles legacy (ROLE_VEILLE, …) et les rôles des modules sont retirés ;
+ * - seule la personne physique SUPER_ADMIN_ID reçoit ROLE_SUPER_ADMIN, les accès sont ensuite réattribués depuis l'admin.
  */
 class RolesRemplacentNiveauModules extends AbstractMigration
 {
-    /** Modules dans l'ordre des index de la chaîne niveau_modules. */
-    private const array MODULES = ['APERO', 'MEMBRES', 'SITE', 'EVENT', 'ANTENNES', 'VEILLE', 'COMPTA', 'AG', 'PLANETE'];
+    private const int SUPER_ADMIN_ID = 3225;
 
-    private const array LEGACY_ROLES = ['ROLE_APERO', 'ROLE_ANNUAIRE', 'ROLE_SITE', 'ROLE_FORUM', 'ROLE_ANTENNE', 'ROLE_VEILLE'];
+    private const array KEPT_ROLES = ['ROLE_COMPANY_MANAGER'];
+
+    private const string KEPT_ROLES_PREFIX = 'ROLE_MEMBER_';
 
     public function up(): void
     {
+        // Sans le super admin, la migration retirerait tous les accès à l'admin : on ne fait rien
+        if (!$this->superAdminExists()) {
+            return;
+        }
+
         // Avec les rôles des modules, la liste peut dépasser 255 caractères
         $this->table('afup_personnes_physiques')
             ->changeColumn('roles', 'text', ['null' => false])
             ->save();
 
-        $computedRoles = ['ROLE_ADMIN', ...self::LEGACY_ROLES];
-        foreach (self::MODULES as $module) {
-            $computedRoles[] = 'ROLE_' . $module . '_READER';
-            $computedRoles[] = 'ROLE_' . $module . '_WRITER';
-        }
-
-        foreach ($this->fetchAll('SELECT id, niveau, niveau_modules, roles FROM afup_personnes_physiques') as $row) {
-            $storedRoles = $this->decodeRoles($row['roles']);
-            $levels = str_split(str_pad((string) $row['niveau_modules'], count(self::MODULES), '0'));
-
-            $roles = array_values(array_diff($storedRoles, $computedRoles));
-            if ((int) $row['niveau'] === 2) {
-                $roles[] = 'ROLE_ADMIN';
-            }
-            foreach (self::MODULES as $index => $module) {
-                $level = (int) $levels[$index];
-                if ($module === 'VEILLE' && in_array('ROLE_VEILLE', $storedRoles, true)) {
-                    $level = max($level, 1);
-                }
-                if ($level >= 2) {
-                    $roles[] = 'ROLE_' . $module . '_WRITER';
-                } elseif ($level === 1) {
-                    $roles[] = 'ROLE_' . $module . '_READER';
-                }
+        foreach ($this->fetchAll('SELECT id, roles FROM afup_personnes_physiques') as $row) {
+            $roles = array_values(array_filter(
+                $this->decodeRoles($row['roles']),
+                fn(string $role): bool => in_array($role, self::KEPT_ROLES, true) || str_starts_with($role, self::KEPT_ROLES_PREFIX),
+            ));
+            if ((int) $row['id'] === self::SUPER_ADMIN_ID) {
+                $roles[] = 'ROLE_SUPER_ADMIN';
             }
 
             $this->execute(
@@ -67,27 +55,26 @@ class RolesRemplacentNiveauModules extends AbstractMigration
 
     public function down(): void
     {
+        // up() n'a rien fait si le super admin n'existait pas
+        if ($this->table('afup_personnes_physiques')->hasColumn('niveau')) {
+            return;
+        }
+
+        // Les anciens droits ne sont pas récupérables : seul le super admin retrouve l'accès à l'admin
         $this->table('afup_personnes_physiques')
             ->addColumn('niveau', 'integer', ['limit' => 255, 'signed' => false, 'default' => 0, 'after' => 'mot_de_passe'])
             ->addColumn('niveau_modules', 'char', ['limit' => 10, 'default' => '', 'after' => 'niveau'])
             ->save();
 
-        foreach ($this->fetchAll('SELECT id, roles FROM afup_personnes_physiques') as $row) {
-            $roles = $this->decodeRoles($row['roles']);
-            $levels = '';
-            foreach (self::MODULES as $module) {
-                $levels .= match (true) {
-                    in_array('ROLE_' . $module . '_WRITER', $roles, true) => '2',
-                    in_array('ROLE_' . $module . '_READER', $roles, true) => '1',
-                    default => '0',
-                };
-            }
+        $this->execute(
+            'UPDATE afup_personnes_physiques SET niveau = 2 WHERE id = ?',
+            [self::SUPER_ADMIN_ID],
+        );
+    }
 
-            $this->execute(
-                'UPDATE afup_personnes_physiques SET niveau = ?, niveau_modules = ? WHERE id = ?',
-                [in_array('ROLE_ADMIN', $roles, true) ? 2 : 0, $levels, $row['id']],
-            );
-        }
+    private function superAdminExists(): bool
+    {
+        return $this->fetchRow('SELECT id FROM afup_personnes_physiques WHERE id = ' . self::SUPER_ADMIN_ID) !== false;
     }
 
     /**
