@@ -5,6 +5,7 @@ Feature: Site Public - Devenir sponsor
   Scenario: Devenir sponsor - tous les champs remplis
     Given I go to "/event/forum/sponsor/become-sponsor"
     Then I should see "Recevoir notre dossier"
+    And I should not see "Sponsorisez l’AFUP !"
     Then The "lead_language" field should only contain the follow values '["fr", "en"]'
     When I fill in "lead_firstname" with "Prénom"
     And I fill in "lead_lastname" with "Nom"
@@ -55,6 +56,7 @@ Feature: Site Public - Devenir sponsor
   Scenario: Devenir sponsor depuis la page générique
     Given I go to "/become-sponsor"
     Then the "h1" element should contain "Devenir sponsor"
+    And I should see "Sponsorisez l’AFUP !"
     And I should see "Recevoir notre dossier"
     And The "lead_language" field should only contain the follow values '["fr", "en"]'
     When I fill in "lead_firstname" with "Prénom"
