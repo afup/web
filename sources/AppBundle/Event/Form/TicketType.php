@@ -7,10 +7,11 @@ namespace AppBundle\Event\Form;
 use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Association\Genre;
 use AppBundle\Event\Entity\BilleteriePrivee;
+use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Entity\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Entity\Repository\TicketSpecialPriceRepository;
-use AppBundle\Event\Model\Repository\TicketTypeRepository;
+use AppBundle\Event\Model\Repository\TicketTypeRepository as TingTicketTypeRepository;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Entity\TicketEventType;
 use AppBundle\Event\Entity\TicketSpecialPrice;
@@ -40,6 +41,7 @@ class TicketType extends AbstractType
         private readonly TicketTypeAvailability $ticketTypeAvailability,
         private readonly TicketSpecialPriceRepository $ticketSpecialPriceRepository,
         private readonly TicketTypeRepository $ticketTypeRepository,
+        private readonly TingTicketTypeRepository $tingTicketTypeRepository,
         private readonly AntenneRepository $antenneRepository,
     ) {}
 
@@ -112,8 +114,8 @@ class TicketType extends AbstractType
             $choiceLabel = 'ticketType.prettyName';
             if ($billeteriePrivee instanceof BilleteriePrivee) {
                 $filteredEventTickets = $this->createBilleteriePriveeTicketEventType($billeteriePrivee, $filteredEventTickets);
-                $typeDePlace = $this->ticketTypeRepository->get($billeteriePrivee->ticketTypeId);
-                $choiceLabel = static fn(): string => $typeDePlace !== null ? $typeDePlace->getPrettyName() : 'Billet';
+                $typeDePlace = $this->ticketTypeRepository->find($billeteriePrivee->ticketTypeId);
+                $choiceLabel = static fn(): string => $typeDePlace !== null ? $typeDePlace->prettyName : 'Billet';
             }
 
             $formEvent->getForm()->add('ticketEventType', ChoiceType::class, [
@@ -194,7 +196,7 @@ class TicketType extends AbstractType
      */
     private function createSpecialPriceTicketEventType(TicketSpecialPrice $ticketSpecialPrice, array $filteredEventTickets): array
     {
-        $ticketType = $this->ticketTypeRepository->get(Ticket::TYPE_SPECIAL_PRICE);
+        $ticketType = $this->tingTicketTypeRepository->get(Ticket::TYPE_SPECIAL_PRICE);
         if (!$ticketType instanceof \AppBundle\Event\Model\TicketType) {
             return $filteredEventTickets;
         }
@@ -216,7 +218,7 @@ class TicketType extends AbstractType
      */
     private function createBilleteriePriveeTicketEventType(BilleteriePrivee $billeteriePrivee, array $filteredEventTickets): array
     {
-        $ticketType = $this->ticketTypeRepository->get(Ticket::TYPE_SPECIAL_PRICE);
+        $ticketType = $this->tingTicketTypeRepository->get(Ticket::TYPE_SPECIAL_PRICE);
         if (!$ticketType instanceof \AppBundle\Event\Model\TicketType) {
             return $filteredEventTickets;
         }
