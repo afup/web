@@ -235,3 +235,7 @@ admin_event_editorialization:
 
 admin_event_ticket:
   resource: "admin_event_ticket.yml"
+
+admin_event_become_sponsor:
+  path: /become-sponsor
+  defaults: {_controller: AppBundle\Controller\Admin\Event\BecomeSponsorSettingsAction}

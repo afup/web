@@ -38,7 +38,7 @@ trait EmailContext
     public static function beforeScenarioWithSponsorshipFile(): void
     {
         $filesystem = new Filesystem();
-        $filesystem->copy(__DIR__ . '/../files/test_file1.pdf', SponsorshipLeadMail::getSponsorshipFilePath(), true);
+        $filesystem->copy(__DIR__ . '/../files/test_file1.pdf', SponsorshipLeadMail::getSponsorshipFilePath('fr'), true);
     }
 
     #[BeforeScenario('@clearEmails')]
