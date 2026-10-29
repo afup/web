@@ -182,6 +182,12 @@ parameters:
                     url: '/admin/event/invoices'
                     extra_routes:
                         - admin_event_factures
+                admin_event_become_sponsor:
+                    nom: 'Page devenir sponsor'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/event/become-sponsor'
+                    extra_routes:
+                        - admin_event_become_sponsor
                 talks:
                     nom: 'Conférences'
                     niveau: 'ROLE_FORUM'
