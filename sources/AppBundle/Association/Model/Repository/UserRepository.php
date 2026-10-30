@@ -306,7 +306,8 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
     public function getAdministrators()
     {
         $queryBuilder = $this->getQueryBuilderWithCompleteUser()
-            ->where('(app.roles LIKE \'%_READER"%\' OR app.roles LIKE \'%_WRITER"%\' OR app.roles LIKE \'%"ROLE_ADMIN"%\' OR app.roles LIKE \'%"ROLE_SUPER_ADMIN"%\')')
+            // "_" est un joker de LIKE : on l'échappe (\_ dans le SQL émis) pour ne cibler que les suffixes _READER / _WRITER
+            ->where('(app.roles LIKE \'%\\_READER"%\' OR app.roles LIKE \'%\\_WRITER"%\' OR app.roles LIKE \'%"ROLE_SUPER_ADMIN"%\')')
             ->orderBy(['nom', 'prenom']);
 
         return $this

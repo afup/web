@@ -102,13 +102,19 @@ class HomeAction extends AbstractController
             }
         }
 
-        if ($this->isGranted(('ROLE_ADMIN'))) {
+        // La liste des abonnés à la veille est une page réservée au super admin
+        if ($this->isGranted('ROLE_SUPER_ADMIN')) {
             $cards[] = [
                 'title' => 'Abonnements à la veille',
                 'statistics' => ['Abonnements' => $this->newsletterInscriptionRepository->countAllSubscriptionsWithUser()],
                 'url' => $this->generateUrl('admin_techletter_members'),
             ];
+        }
 
+        // Statistiques partagées par les cartes Membres et Assemblée générale, calculées une seule fois
+        $statistics = null;
+
+        if ($this->isGranted('ROLE_MEMBRES_READER')) {
             $statistics = $this->statisticsComputer->computeStatistics();
             $cards[] = [
                 'title' => 'Membres',
@@ -122,22 +128,23 @@ class HomeAction extends AbstractController
                 ],
                 'url' => $this->generateUrl('admin_members_reporting'),
             ];
+        }
 
+        if ($this->isGranted('ROLE_AG_READER') && $this->assembleGeneraleRepository->hasPlanned()) {
+            $statistics ??= $this->statisticsComputer->computeStatistics();
             $latestDate = $this->assembleGeneraleRepository->getLatestDate();
-            if ($this->assembleGeneraleRepository->hasPlanned()) {
-                $cards[] = [
-                    'title' => 'Assemblée générale',
-                    'statistics' => [
-                        'Votes et pouvoirs' => $this->presenceRepository->countAttendeesAndPowers($latestDate),
-                        'Présences' => $this->presenceRepository->countAttendees($latestDate),
-                    ],
-                    'main_statistic' => [
-                        'label' => 'Quorum',
-                        'value' => $this->presenceRepository->obtenirEcartQuorum($latestDate, $statistics->usersCount),
-                    ],
-                    'url' => $this->generateUrl('admin_members_general_meeting'),
-                ];
-            }
+            $cards[] = [
+                'title' => 'Assemblée générale',
+                'statistics' => [
+                    'Votes et pouvoirs' => $this->presenceRepository->countAttendeesAndPowers($latestDate),
+                    'Présences' => $this->presenceRepository->countAttendees($latestDate),
+                ],
+                'main_statistic' => [
+                    'label' => 'Quorum',
+                    'value' => $this->presenceRepository->obtenirEcartQuorum($latestDate, $statistics->usersCount),
+                ],
+                'url' => $this->generateUrl('admin_members_general_meeting'),
+            ];
         }
 
         return $this->render('admin/home.html.twig', [

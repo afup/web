@@ -159,10 +159,6 @@ class UserEditType extends AbstractType
                     'maxlength' => 20,
                 ],
             ])
-            ->add('adminAccess', CheckboxType::class, [
-                'label' => "Accès à l'admin",
-                'required' => false,
-            ])
             ->add('status', ChoiceType::class, [
                 'label' => 'État',
                 'choices' => [
@@ -213,6 +209,8 @@ class UserEditType extends AbstractType
         $access = $builder->create('access', FormType::class, [
             'label' => 'Accès aux modules',
             'inherit_data' => true,
+            // Un formulaire désactivé n'est pas soumis : les niveaux enregistrés sont conservés
+            'disabled' => !$options['can_edit_modules'],
         ]);
         foreach (User::MODULES as $module => $label) {
             $access->add($module, ChoiceType::class, [
@@ -257,8 +255,10 @@ class UserEditType extends AbstractType
             'data_class' => User::class,
             'can_grant_super_admin' => false,
             'can_edit_password' => true,
+            'can_edit_modules' => false,
         ]);
         $resolver->setAllowedTypes('can_grant_super_admin', 'bool');
         $resolver->setAllowedTypes('can_edit_password', 'bool');
+        $resolver->setAllowedTypes('can_edit_modules', 'bool');
     }
 }

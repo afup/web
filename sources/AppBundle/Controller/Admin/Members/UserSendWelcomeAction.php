@@ -7,6 +7,7 @@ namespace AppBundle\Controller\Admin\Members;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\AuditLog\Audit;
+use AppBundle\Security\ManageUserVoter;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,6 +29,7 @@ class UserSendWelcomeAction extends AbstractController
         if (null === $user) {
             throw $this->createNotFoundException('Personne physique non trouvée');
         }
+        $this->denyAccessUnlessGranted(ManageUserVoter::MANAGE_USER, $user);
         try {
             $this->userService->sendWelcomeEmail($user);
             $this->audit->log('Envoi d\'un message de bienvenue à la personne physique ' . $user->getId());

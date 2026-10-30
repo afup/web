@@ -9,7 +9,7 @@
             <th>Nom</th>
             <th>Prénom</th>
             <th>Etat</th>
-            <th>Accès à l'admin</th>
+            <th>Super admin</th>
             {% for label in modules %}
                 <th>{{ label }}</th>
             {% endfor %}
@@ -22,11 +22,12 @@
             <td>{{ administrator.lastName }}</td>
             <td>{{ administrator.firstName }}</td>
             <td>{% if administrator.status %}Actif{% else %}Inactif{% endif %}</td>
-            <td>{% if administrator.adminAccess %}Administrateur{% else %}---{% endif %}</td>
+            <td>{% if is_granted_for_user(administrator, 'ROLE_SUPER_ADMIN') %}Super admin{% else %}---{% endif %}</td>
+            {# Droits effectifs (hiérarchie des rôles comprise), et non les seuls rôles enregistrés #}
             {% for module, label in modules %}
+                {% set role_prefix = 'ROLE_' ~ module|upper %}
                 <td>
-                    {% set level = administrator.getModuleLevel(module) %}
-                    {% if level == constant('AppBundle\\Association\\Model\\User::LEVEL_MANAGER') %}Gestionnaire{% elseif level == constant('AppBundle\\Association\\Model\\User::LEVEL_READER') %}Lecteur{% else %}---{% endif %}
+                    {% if is_granted_for_user(administrator, role_prefix ~ '_WRITER') %}Gestionnaire{% elseif is_granted_for_user(administrator, role_prefix ~ '_READER') %}Lecteur{% else %}---{% endif %}
                 </td>
             {% endfor %}
             <td>

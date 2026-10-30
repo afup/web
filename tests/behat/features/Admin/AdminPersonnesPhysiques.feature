@@ -9,9 +9,8 @@ Feature: Administration - Partie Personnes physiques
     When I follow "Ajouter"
     Then I should see "Ajouter une personne physique"
     Then The "user_edit[genre]" field should only contain the follow values '["Ne se prononce pas", "Femme", "Homme", "Non-binaire"]'
-    # Paramètres : checkbox d'accès à l'admin décochée par défaut, et matrice d'accès
-    # aux modules (Aucun / Lecteur / Gestionnaire) positionnée sur "Aucun" pour chaque module
-    And the "user_edit[adminAccess]" checkbox should be unchecked
+    # Paramètres : matrice d'accès aux modules (Aucun / Lecteur / Gestionnaire)
+    # positionnée sur "Aucun" pour chaque module
     And I should see "Accès aux modules"
     And the "user_edit_access_membres_0" checkbox should be checked
     And the "user_edit_access_veille_0" checkbox should be checked
@@ -38,10 +37,10 @@ Feature: Administration - Partie Personnes physiques
 
     Then I should not see "Cette valeur ne doit pas être vide"
     # les droits sont relus depuis les rôles de la personne
-    # l'id 8 correspond à la personne créée ci-dessus : les seeds insèrent 7 personnes
+    # l'id 9 correspond à la personne créée ci-dessus : les seeds insèrent 8 personnes
     # avec des identifiants explicites (cf. db/seeds/Users.php), le compteur auto-incrément
-    # est donc à 7
-    When I am on "/admin/members/users/edit?id=8"
+    # est donc à 8
+    When I am on "/admin/members/users/edit?id=9"
     Then the "user_edit_access_veille_2" checkbox should be checked
     And the "user_edit_access_site_1" checkbox should be checked
     And the "user_edit_access_membres_0" checkbox should be checked
@@ -53,7 +52,7 @@ Feature: Administration - Partie Personnes physiques
     And I press "Filtrer"
     Then I should see "Mon prénom"
     # on supprime la personne
-    When I follow "supprimer_8"
+    When I follow "supprimer_9"
     Then I should see "La personne physique a été supprimée"
 
   @reloadDbWithTestData
