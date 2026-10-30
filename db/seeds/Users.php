@@ -15,6 +15,7 @@ class Users extends AbstractSeed
     public const ID_USER_PERSONNE_PHYSIQUE = 5;
     public const ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS = 6;
     public const ID_USER_PERSONNE_LIE_PERSONNE_MORALE_FIXED_COTISATIONS = 7;
+    public const ID_USER_GESTIONNAIRE_MEMBRES = 8;
 
     public const ID_PERSONNE_MORALE_MY_CORP = 1;
     public const ID_PERSONNE_MORALE_HELIOS_AEROSPACE = 2;
@@ -70,11 +71,10 @@ class Users extends AbstractSeed
                 'login' => 'admin',
                 'mot_de_passe' => md5('admin'),
                 'nom' => 'Admin',
-                'niveau' => 2, // AFUP_DROITS_NIVEAU_ADMINISTRATEUR,
                 'prenom' => 'Admin',
                 'email' => 'admin@admin.fr',
-                'niveau_modules' => '00000',
-                'roles' => '',
+                // La hiérarchie (config/packages/security.yaml) donne tous les *_WRITER au super admin
+                'roles' => json_encode(['ROLE_SUPER_ADMIN']),
                 'adresse' => '',
             ],
             // utilisateur ayant expiré, avec une date de cotisation fixe, utile pour les tests
@@ -83,10 +83,8 @@ class Users extends AbstractSeed
                 'login' => 'userexpire',
                 'mot_de_passe' => md5('userexpire'),
                 'nom' => 'Maurice',
-                'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
                 'prenom' => 'Jean',
                 'email' => 'userexpire@yahoo.fr',
-                'niveau_modules' => '00000',
                 'roles' => '',
                 'adresse' => '',
             ],
@@ -96,10 +94,8 @@ class Users extends AbstractSeed
                 'login' => 'cpike',
                 'mot_de_passe' => md5('cpike'),
                 'nom' => 'Pike',
-                'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
                 'prenom' => 'Christopher',
                 'email' => 'cpike@strafleet.fr',
-                'niveau_modules' => '00000',
                 'adresse' => '15, main road',
                 'code_postal' => '93501-1100',
                 'ville' => 'Mojave, CA',
@@ -110,12 +106,10 @@ class Users extends AbstractSeed
                 'login' => 'dayesa',
                 'mot_de_passe' => md5('dayesa'),
                 'nom' => 'Ayesa',
-                'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
                 'prenom' => 'Dev',
                 'email' => 'dev.ayesa@helios-aerospace.com',
                 'roles' => '["ROLE_COMPANY_MANAGER"]',
                 'id_personne_morale' => self::ID_PERSONNE_MORALE_HELIOS_AEROSPACE,
-                'niveau_modules' => '00000',
                 'adresse' => '',
             ],
             [
@@ -123,12 +117,10 @@ class Users extends AbstractSeed
                 'login' => 'edmonddupont',
                 'mot_de_passe' => md5('edmonddupont'),
                 'nom' => 'Dupont',
-                'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
                 'prenom' => 'Edmond',
                 'email' => 'edmond.dupont@mycorp.fr',
                 'roles' => '["ROLE_COMPANY_MANAGER"]',
                 'id_personne_morale' => self::ID_PERSONNE_MORALE_MY_CORP,
-                'niveau_modules' => '00000',
                 'adresse' => '',
             ],
             [
@@ -136,12 +128,10 @@ class Users extends AbstractSeed
                 'login' => 'raoul',
                 'mot_de_passe' => md5('raoul'),
                 'nom' => 'Raoul',
-                'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
                 'prenom' => 'Jan',
                 'email' => 'jean.raoul@mycorp.fr',
                 'roles' => '[]',
                 'id_personne_morale' => self::ID_PERSONNE_MORALE_MY_CORP,
-                'niveau_modules' => '00000',
                 'etat' => 1,
                 'adresse' => '',
             ],
@@ -151,11 +141,21 @@ class Users extends AbstractSeed
                 'mot_de_passe' => md5('paul'),
                 'nom' => 'Paul',
                 'prenom' => 'Personne',
-                'niveau' => 0, // AFUP_DROITS_NIVEAU_MEMBRE,
                 'email' => 'paul.personne@mycorp.fr',
                 'roles' => '[]',
                 'etat' => User::STATUS_ACTIVE,
-                'niveau_modules' => '00000',
+                'adresse' => '',
+            ],
+            // gestionnaire du module Membres, sans être super admin
+            [
+                'id'    => self::ID_USER_GESTIONNAIRE_MEMBRES,
+                'login' => 'gestionmembres',
+                'mot_de_passe' => md5('gestionmembres'),
+                'nom' => 'Zorglub',
+                'prenom' => 'Gestion',
+                'email' => 'gestion.membres@afup.test',
+                'roles' => json_encode(['ROLE_MEMBRES_WRITER']),
+                'etat' => User::STATUS_ACTIVE,
                 'adresse' => '',
             ],
         ];

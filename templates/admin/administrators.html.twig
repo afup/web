@@ -9,11 +9,10 @@
             <th>Nom</th>
             <th>Prénom</th>
             <th>Etat</th>
-            <th>Administration site</th>
-            <th>Module annuaire</th>
-            <th>Module site</th>
-            <th>Module forum</th>
-            <th>Module Antenne</th>
+            <th>Super admin</th>
+            {% for label in modules %}
+                <th>{{ label }}</th>
+            {% endfor %}
             <th>&nbsp;</th>
         </tr>
         </thead>
@@ -23,11 +22,14 @@
             <td>{{ administrator.lastName }}</td>
             <td>{{ administrator.firstName }}</td>
             <td>{% if administrator.status %}Actif{% else %}Inactif{% endif %}</td>
-            <td>{% if administrator.level == 2 %}Administrateur{% else %}---{% endif %}</td>
-            <td>{% if administrator.directoryLevel == 2 %}Gestionnaire{% else %}---{% endif %}</td>
-            <td>{% if administrator.websiteLevel == 2 %}Gestionnaire{% else %}---{% endif %}</td>
-            <td>{% if administrator.eventLevel == 2 %}Gestionnaire{% else %}---{% endif %}</td>
-            <td>{% if administrator.officeLevel == 2 %}Gestionnaire{% else %}---{% endif %}</td>
+            <td>{% if is_granted_for_user(administrator, 'ROLE_SUPER_ADMIN') %}Super admin{% else %}---{% endif %}</td>
+            {# Droits effectifs (hiérarchie des rôles comprise), et non les seuls rôles enregistrés #}
+            {% for module, label in modules %}
+                {% set role_prefix = 'ROLE_' ~ module|upper %}
+                <td>
+                    {% if is_granted_for_user(administrator, role_prefix ~ '_WRITER') %}Gestionnaire{% elseif is_granted_for_user(administrator, role_prefix ~ '_READER') %}Lecteur{% else %}---{% endif %}
+                </td>
+            {% endfor %}
             <td>
                 <a id="modifier_{{ administrator.id }}"
                    href="/admin/members/users/edit?id={{ administrator.id }}"

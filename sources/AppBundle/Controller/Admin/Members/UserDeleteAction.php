@@ -6,12 +6,15 @@ namespace AppBundle\Controller\Admin\Members;
 
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\AuditLog\Audit;
+use AppBundle\Security\ManageUserVoter;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_MEMBRES_WRITER')]
 class UserDeleteAction extends AbstractController
 {
     public function __construct(
@@ -25,6 +28,7 @@ class UserDeleteAction extends AbstractController
         if (null === $user) {
             throw $this->createNotFoundException('Utilisateur non trouvé');
         }
+        $this->denyAccessUnlessGranted(ManageUserVoter::MANAGE_USER, $user);
 
         try {
             $this->userRepository->remove($user);

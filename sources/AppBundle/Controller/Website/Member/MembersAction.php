@@ -45,7 +45,7 @@ final class MembersAction extends AbstractController
     public function __invoke(Request $request): Response
     {
         $id = $request->attributes->get('id');
-        if ($id && $this->isGranted('ROLE_SUPER_ADMIN')) {
+        if ($id && $this->isGranted('ROLE_MEMBRES_WRITER')) {
             $companyId = $id;
         } else {
             $companyId = $this->authentication->getAfupUser()->getCompanyId();
@@ -85,7 +85,7 @@ final class MembersAction extends AbstractController
             }
 
             return $this->redirectToRoute('member_company_members', [
-                'id' => $this->isGranted('ROLE_SUPER_ADMIN') ? $companyId : null,
+                'id' => $this->isGranted('ROLE_MEMBRES_WRITER') ? $companyId : null,
             ]);
         }
 
