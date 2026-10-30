@@ -7,6 +7,7 @@ namespace AppBundle\Controller\Admin\Members;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\PasswordReset\PasswordResetService;
 use AppBundle\AuditLog\Audit;
+use AppBundle\Security\ManageUserVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +28,7 @@ class UserResetPasswordAction extends AbstractController
         if (null === $user) {
             throw $this->createNotFoundException('Utilisateur non trouvé');
         }
+        $this->denyAccessUnlessGranted(ManageUserVoter::MANAGE_USER, $user);
 
         // Mailer::send() avale les exceptions et renvoie false : c'est la valeur de
         // retour, et non une exception, qui signale l'échec d'envoi.

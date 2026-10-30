@@ -32,6 +32,8 @@ class UserAddAction extends AbstractController
 
         $form = $this->createForm(UserEditType::class, $user, [
             'can_grant_super_admin' => $this->isGranted('ROLE_SUPER_ADMIN'),
+            // Attribuer des droits sur les modules revient à étendre ses propres accès : réservé au super admin
+            'can_edit_modules' => $this->isGranted('ROLE_SUPER_ADMIN'),
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

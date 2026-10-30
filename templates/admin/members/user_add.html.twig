@@ -29,7 +29,9 @@
         <div class="ui clearing divider"></div>
         <div>
             <div class="ui form">
-                {{ form_row(form.adminAccess) }}
+                {% if form.access.vars.disabled %}
+                    <div class="ui info message">Seul un super administrateur peut modifier les accès aux modules.</div>
+                {% endif %}
                 {% include 'admin/members/_access_matrix.html.twig' with {access: form.access} only %}
                 {{ form_row(form.specialRoles) }}
                 {{ form_row(form.status) }}
