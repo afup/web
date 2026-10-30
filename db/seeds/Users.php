@@ -15,6 +15,7 @@ class Users extends AbstractSeed
     public const ID_USER_PERSONNE_PHYSIQUE = 5;
     public const ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS = 6;
     public const ID_USER_PERSONNE_LIE_PERSONNE_MORALE_FIXED_COTISATIONS = 7;
+    public const ID_USER_GESTIONNAIRE_MEMBRES = 8;
 
     public const ID_PERSONNE_MORALE_MY_CORP = 1;
     public const ID_PERSONNE_MORALE_HELIOS_AEROSPACE = 2;
@@ -72,19 +73,8 @@ class Users extends AbstractSeed
                 'nom' => 'Admin',
                 'prenom' => 'Admin',
                 'email' => 'admin@admin.fr',
-                'roles' => json_encode([
-                    'ROLE_ADMIN',
-                    'ROLE_SUPER_ADMIN',
-                    'ROLE_MEMBRES_WRITER',
-                    'ROLE_VEILLE_WRITER',
-                    'ROLE_SITE_WRITER',
-                    'ROLE_APERO_WRITER',
-                    'ROLE_EVENT_WRITER',
-                    'ROLE_COMPTA_WRITER',
-                    'ROLE_AG_WRITER',
-                    'ROLE_PLANETE_WRITER',
-                    'ROLE_ANTENNES_WRITER',
-                ]),
+                // La hiérarchie (config/packages/security.yaml) donne tous les *_WRITER au super admin
+                'roles' => json_encode(['ROLE_SUPER_ADMIN']),
                 'adresse' => '',
             ],
             // utilisateur ayant expiré, avec une date de cotisation fixe, utile pour les tests
@@ -153,6 +143,18 @@ class Users extends AbstractSeed
                 'prenom' => 'Personne',
                 'email' => 'paul.personne@mycorp.fr',
                 'roles' => '[]',
+                'etat' => User::STATUS_ACTIVE,
+                'adresse' => '',
+            ],
+            // gestionnaire du module Membres, sans être super admin
+            [
+                'id'    => self::ID_USER_GESTIONNAIRE_MEMBRES,
+                'login' => 'gestionmembres',
+                'mot_de_passe' => md5('gestionmembres'),
+                'nom' => 'Zorglub',
+                'prenom' => 'Gestion',
+                'email' => 'gestion.membres@afup.test',
+                'roles' => json_encode(['ROLE_MEMBRES_WRITER']),
                 'etat' => User::STATUS_ACTIVE,
                 'adresse' => '',
             ],

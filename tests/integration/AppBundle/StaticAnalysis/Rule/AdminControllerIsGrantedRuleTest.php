@@ -35,4 +35,22 @@ final class AdminControllerIsGrantedRuleTest extends RuleTestCase
             ],
         ]);
     }
+
+    public function testRoleAdminAloneIsReported(): void
+    {
+        $u = __DIR__ . '/../../../../stubs/phpstan';
+
+        $this->analyse([
+            $u . '/ControllerWithRoleAdmin.php',
+            $u . '/HomeAction.php',
+            $u . '/ControllerClassLevelIsGranted.php',
+            $u . '/ControllerInvokeLevelIsGranted.php',
+            $u . '/KernelAdminListener.php',
+        ], [
+            [
+                'Controller d\'administration protégé uniquement par #[IsGranted(\'ROLE_ADMIN\')] : ce rôle ne donne aucun droit fonctionnel, utilisez un rôle de la matrice READ/WRITE (ou ROLE_SUPER_ADMIN).',
+                9,
+            ],
+        ]);
+    }
 }

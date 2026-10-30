@@ -6,6 +6,7 @@ namespace AppBundle\Controller\Admin\Members;
 
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\AuditLog\Audit;
+use AppBundle\Security\ManageUserVoter;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,6 +28,7 @@ class UserDeleteAction extends AbstractController
         if (null === $user) {
             throw $this->createNotFoundException('Utilisateur non trouvé');
         }
+        $this->denyAccessUnlessGranted(ManageUserVoter::MANAGE_USER, $user);
 
         try {
             $this->userRepository->remove($user);

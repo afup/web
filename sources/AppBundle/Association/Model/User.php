@@ -570,36 +570,6 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this->getSlackInviteStatus() === self::SLACK_INVITE_STATUS_REQUESTED;
     }
 
-    public function canAccessAdmin(): bool
-    {
-        foreach ($this->getRoles() as $role) {
-            if (
-                $role === 'ROLE_ADMIN'
-                || $role === 'ROLE_SUPER_ADMIN'
-                || str_ends_with($role, '_READER')
-                || str_ends_with($role, '_WRITER')
-            ) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Accès à l'admin (checkbox "Accès à l'admin") : marqueur ROLE_ADMIN de la console,
-     * sans aucun droit fonctionnel — ceux-ci viennent des rôles des modules.
-     */
-    public function isAdminAccess(): bool
-    {
-        return in_array('ROLE_ADMIN', $this->roles, true);
-    }
-
-    public function setAdminAccess(bool $adminAccess): self
-    {
-        return $this->setRoleGranted('ROLE_ADMIN', $adminAccess);
-    }
-
     /**
      * Niveau d'accès au module $module (clé de User::MODULES) :
      * LEVEL_NONE, LEVEL_READER (ROLE_<MODULE>_READER) ou LEVEL_MANAGER (ROLE_<MODULE>_WRITER).

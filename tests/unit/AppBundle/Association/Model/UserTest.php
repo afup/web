@@ -35,8 +35,6 @@ final class UserTest extends TestCase
 
         self::assertSame(User::LEVEL_NONE, $user->getModuleLevel($module));
         self::assertNotContains($rolePrefix . '_READER', $user->getRoles());
-        self::assertFalse($user->isAdminAccess());
-        self::assertFalse($user->canAccessAdmin());
         self::assertNotContains('ROLE_ADMIN', $user->getRoles());
     }
 
@@ -50,7 +48,6 @@ final class UserTest extends TestCase
         self::assertContains($rolePrefix . '_READER', $roles);
         self::assertNotContains($rolePrefix . '_WRITER', $roles);
         self::assertSame(User::LEVEL_READER, $user->getModuleLevel($module));
-        self::assertTrue($user->canAccessAdmin(), 'Un accès lecteur doit donner accès à l’admin');
     }
 
     #[DataProvider('provideModuleRoles')]
@@ -64,7 +61,6 @@ final class UserTest extends TestCase
         self::assertContains($rolePrefix . '_WRITER', $roles);
         self::assertNotContains($rolePrefix . '_READER', $roles, 'Le WRITER suffit via la hiérarchie WRITE ⇒ READ');
         self::assertSame(User::LEVEL_MANAGER, $user->getModuleLevel($module));
-        self::assertTrue($user->canAccessAdmin());
     }
 
     #[DataProvider('provideModuleRoles')]
@@ -96,19 +92,5 @@ final class UserTest extends TestCase
         $user->setModuleLevel('inconnu', User::LEVEL_MANAGER);
 
         self::assertSame([], array_values(array_diff($user->getRoles(), ['ROLE_USER'])));
-    }
-
-    public function testAdminAccessCheckboxGrantsConsoleMarkerOnly(): void
-    {
-        $user = $this->user();
-        $user->setAdminAccess(true);
-
-        self::assertTrue($user->isAdminAccess());
-        self::assertContains('ROLE_ADMIN', $user->getRoles());
-        self::assertTrue($user->canAccessAdmin());
-
-        $user->setAdminAccess(false);
-        self::assertNotContains('ROLE_ADMIN', $user->getRoles());
-        self::assertFalse($user->canAccessAdmin(), 'Un compte sans aucun rôle fonctionnel n’a plus accès à l’admin');
     }
 }
