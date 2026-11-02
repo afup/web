@@ -37,7 +37,7 @@ class InvoicingPeriodType extends AbstractType
     }
 
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return '';
     }
