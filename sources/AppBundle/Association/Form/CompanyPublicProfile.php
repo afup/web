@@ -98,7 +98,7 @@ class CompanyPublicProfile extends AbstractType
                     'label' => 'URL de votre site',
                     'required' => false,
                     'constraints' => [
-                        new Url(),
+                        new Url(requireTld: true),
                     ],
                 ],
             )
@@ -109,7 +109,7 @@ class CompanyPublicProfile extends AbstractType
                     'label' => "URL de votre page emploi",
                     'required' => false,
                     'constraints' => [
-                        new Url(),
+                        new Url(requireTld: true),
                     ],
                 ])
             ->add(
@@ -119,7 +119,7 @@ class CompanyPublicProfile extends AbstractType
                     'label' => "URL de votre page de contact",
                     'required' => false,
                     'constraints' => [
-                        new Url(),
+                        new Url(requireTld: true),
                     ],
                 ])
             ->add(

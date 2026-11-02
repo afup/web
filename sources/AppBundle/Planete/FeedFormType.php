@@ -38,6 +38,7 @@ class FeedFormType extends AbstractType
                 ],
             ])
             ->add('url', UrlType::class, [
+                'default_protocol' => 'http',
                 'label' => 'URL',
                 'required' => true,
                 'attr' => [
@@ -46,10 +47,11 @@ class FeedFormType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Url(),
+                    new Assert\Url(requireTld: true),
                 ],
             ])
             ->add('feed', UrlType::class, [
+                'default_protocol' => 'http',
                 'label' => 'Flux',
                 'required' => true,
                 'attr' => [
@@ -58,7 +60,7 @@ class FeedFormType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Url(),
+                    new Assert\Url(requireTld: true),
                 ],
             ])
             ->add('userId', ChoiceType::class, [

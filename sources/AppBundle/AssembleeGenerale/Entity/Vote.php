@@ -14,12 +14,12 @@ class Vote
 {
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Question::class)]
-    #[ORM\JoinColumn(name: 'afup_assemblee_generale_question_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'afup_assemblee_generale_question_id', referencedColumnName: 'id')]
     public Question $question;
 
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
-    #[ORM\JoinColumn(name: 'afup_personnes_physiques_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'afup_personnes_physiques_id', referencedColumnName: 'id')]
     public Utilisateur $utilisateur;
 
     #[ORM\Column(name: 'weight')]

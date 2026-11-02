@@ -35,6 +35,7 @@ class EventType extends AbstractType
                 'constraints' => [new Assert\NotBlank()],
             ])
             ->add('logoUrl', UrlType::class, [
+                'default_protocol' => 'http',
                 'label' => 'URL du logo de l\'événement',
                 'required' => false,
             ])
@@ -98,6 +99,7 @@ class EventType extends AbstractType
                 'required' => false,
             ])
             ->add('waitingListUrl', UrlType::class, [
+                'default_protocol' => 'http',
                 'required' => false,
                 'label' => 'URL de la liste d\'attente ',
             ])

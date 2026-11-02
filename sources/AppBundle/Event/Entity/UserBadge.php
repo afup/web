@@ -17,7 +17,7 @@ class UserBadge
 
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Badge::class)]
-    #[ORM\JoinColumn(name: 'badge_id', nullable: false)]
+    #[ORM\JoinColumn(name: 'badge_id')]
     public Badge $badge;
 
     #[ORM\Column(name: 'issued_at', type: 'date_immutable', nullable: false)]
