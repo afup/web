@@ -36,7 +36,9 @@
                     <td>{{ envoi.id }}</td>
                     <td>
                         {% if envoi.envoyeMailchimp %}
-                            {{ envoi.dateEnvoi|date('d/m/Y') }}
+                            <a href="{{ url('admin_techletter_show', {techletterId: envoi.id}) }}">
+                                {{ envoi.dateEnvoi|date('d/m/Y') }}
+                            </a>
                         {% else %}
                             <a href="{{ url('admin_techletter_generate', {techletterId: envoi.id}) }}">
                                 {{ envoi.dateEnvoi|date('d/m/Y') }}

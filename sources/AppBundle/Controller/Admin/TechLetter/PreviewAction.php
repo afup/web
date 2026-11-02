@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\TechLetter;
 
 use AppBundle\TechLetter\Model\TechLetterFactory;
+use AppBundle\TechLetter\PreviouslySharedLinks;
 use AppBundle\Veille\Entity\Repository\EnvoiRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,7 @@ final class PreviewAction extends AbstractController
     public function __construct(
         private readonly EnvoiRepository $envoiRepository,
         private readonly TechLetterFactory $techLetterFactory,
+        private readonly PreviouslySharedLinks $previouslySharedLinks,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -40,6 +42,7 @@ final class PreviewAction extends AbstractController
         return $this->render('admin/techletter/mail_template.html.twig', [
             'preview' => true,
             'tech_letter' => $techletter,
+            'previously_shared_links' => $this->previouslySharedLinks->findIn($techletter, $envoi),
         ]);
     }
 }
