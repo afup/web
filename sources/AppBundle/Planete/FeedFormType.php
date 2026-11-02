@@ -38,7 +38,7 @@ class FeedFormType extends AbstractType
                 ],
             ])
             ->add('url', UrlType::class, [
-                'default_protocol' => 'http',
+                'default_protocol' => 'https',
                 'label' => 'URL',
                 'required' => true,
                 'attr' => [
@@ -51,7 +51,7 @@ class FeedFormType extends AbstractType
                 ],
             ])
             ->add('feed', UrlType::class, [
-                'default_protocol' => 'http',
+                'default_protocol' => 'https',
                 'label' => 'Flux',
                 'required' => true,
                 'attr' => [
