@@ -42,7 +42,7 @@ final class PreviewAction extends AbstractController
         return $this->render('admin/techletter/mail_template.html.twig', [
             'preview' => true,
             'tech_letter' => $techletter,
-            'previously_shared_links' => $this->previouslySharedLinks->findIn($techletter, $envoi),
+            'previously_shared_links' => $this->previouslySharedLinks->findIn($techletter),
         ]);
     }
 }

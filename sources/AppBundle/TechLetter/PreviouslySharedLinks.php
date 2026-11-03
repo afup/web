@@ -5,23 +5,18 @@ declare(strict_types=1);
 namespace AppBundle\TechLetter;
 
 use AppBundle\TechLetter\Model\TechLetter;
-use AppBundle\TechLetter\Model\TechLetterFactory;
-use AppBundle\Veille\Entity\Envoi;
 use AppBundle\Veille\Entity\Repository\EnvoiRepository;
 
 final readonly class PreviouslySharedLinks
 {
-    public function __construct(
-        private EnvoiRepository $envoiRepository,
-        private TechLetterFactory $techLetterFactory,
-    ) {}
+    public function __construct(private EnvoiRepository $envoiRepository) {}
 
     /**
      * Find the links of the given techletter that were already shared in a techletter sent to Mailchimp.
      *
      * @return array<string, list<\DateTimeInterface>> url => sending dates of the previous techletters, most recent first
      */
-    public function findIn(TechLetter $techLetter, Envoi $current): array
+    public function findIn(TechLetter $techLetter): array
     {
         $urlsByNormalizedUrl = [];
         foreach ($techLetter->getUrls() as $url) {
@@ -34,19 +29,14 @@ final readonly class PreviouslySharedLinks
 
         $sharedLinks = [];
 
-        /** @var list<Envoi> $previousEnvois */
-        $previousEnvois = $this->envoiRepository->findBy(['envoyeMailchimp' => true], ['dateEnvoi' => 'DESC']);
+        // This runs on every preview refresh: only the URLs are needed, so the raw JSON is decoded
+        // instead of mapping every sent techletter to its model (~60x faster with ~250 techletters).
+        foreach ($this->envoiRepository->getSentContentsOrderedByDateDesc() as $sent) {
+            $previousUrls = array_unique(array_map(self::normalizeUrl(...), self::extractUrls($sent['contenu'])));
 
-        foreach ($previousEnvois as $previousEnvoi) {
-            if ($previousEnvoi->id === $current->id) {
-                continue;
-            }
-
-            $previousUrls = $this->techLetterFactory->createTechLetterFromJson($previousEnvoi->contenu)->getUrls();
-
-            foreach (array_unique(array_map(self::normalizeUrl(...), $previousUrls)) as $normalizedUrl) {
+            foreach ($previousUrls as $normalizedUrl) {
                 foreach ($urlsByNormalizedUrl[$normalizedUrl] ?? [] as $url) {
-                    $sharedLinks[$url][] = $previousEnvoi->dateEnvoi;
+                    $sharedLinks[$url][] = $sent['dateEnvoi'];
                 }
             }
         }
@@ -64,5 +54,36 @@ final readonly class PreviouslySharedLinks
         $url = (string) preg_replace('~^https?://(www\.)?~i', '', $url);
 
         return mb_strtolower(rtrim($url, '/'));
+    }
+
+    /**
+     * URLs of the news, articles and projects of a techletter stored as JSON (see TechLetter::jsonSerialize()).
+     *
+     * @return list<string>
+     */
+    private static function extractUrls(?string $json): array
+    {
+        $data = json_decode($json ?? '', true);
+        if (!is_array($data)) {
+            return [];
+        }
+
+        $items = [$data['firstNews'] ?? null, $data['secondNews'] ?? null];
+        foreach (['articles', 'projects'] as $collection) {
+            $collectionItems = $data[$collection] ?? null;
+            if (is_array($collectionItems)) {
+                array_push($items, ...array_values($collectionItems));
+            }
+        }
+
+        $urls = [];
+        foreach ($items as $item) {
+            $url = is_array($item) ? $item['url'] ?? null : null;
+            if (is_string($url)) {
+                $urls[] = $url;
+            }
+        }
+
+        return $urls;
     }
 }

@@ -8,11 +8,8 @@ use AppBundle\TechLetter\Model\Article;
 use AppBundle\TechLetter\Model\News;
 use AppBundle\TechLetter\Model\Project;
 use AppBundle\TechLetter\Model\TechLetter;
-use AppBundle\TechLetter\Model\TechLetterFactory;
 use AppBundle\TechLetter\PreviouslySharedLinks;
-use AppBundle\Veille\Entity\Envoi;
 use AppBundle\Veille\Entity\Repository\EnvoiRepository;
-use CuyZ\Valinor\MapperBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -47,25 +44,22 @@ final class PreviouslySharedLinksTest extends TestCase
 
     public function testFindIn(): void
     {
-        $current = $this->envoi(3, '2026-11-04', null, false);
-
         $repository = $this->createMock(EnvoiRepository::class);
         $repository
             ->expects(self::once())
-            ->method('findBy')
-            ->with(['envoyeMailchimp' => true], ['dateEnvoi' => 'DESC'])
+            ->method('getSentContentsOrderedByDateDesc')
             ->willReturn([
-                $this->envoi(2, '2026-10-21', new TechLetter(
+                $this->sent('2026-10-21', new TechLetter(
                     firstNews: new News('https://www.example.com/news/', 'News', new \DateTimeImmutable('2026-10-20')),
                     articles: [
                         $this->article('https://example.com/article'),
                         $this->article('https://example.com/article#duplicate-in-same-techletter'),
                     ],
-                ), true),
-                $this->envoi(1, '2026-10-08', new TechLetter(
+                )),
+                $this->sent('2026-10-08', new TechLetter(
                     articles: [$this->article('https://example.com/article')],
                     projects: [new Project('https://github.com/afup/web', 'afup/web', 'Le site')],
-                ), true),
+                )),
             ]);
 
         $techLetter = new TechLetter(
@@ -75,36 +69,49 @@ final class PreviouslySharedLinksTest extends TestCase
             projects: [new Project('https://github.com/afup/web', 'afup/web', 'Le site')],
         );
 
-        $sharedLinks = new PreviouslySharedLinks($repository, new TechLetterFactory(new MapperBuilder()))
-            ->findIn($techLetter, $current);
-
         self::assertEquals([
             'https://example.com/news' => [new \DateTime('2026-10-21')],
             'http://example.com/article/' => [new \DateTime('2026-10-21'), new \DateTime('2026-10-08')],
             'https://github.com/afup/web' => [new \DateTime('2026-10-08')],
-        ], $sharedLinks);
+        ], new PreviouslySharedLinks($repository)->findIn($techLetter));
+    }
+
+    public function testFindInIgnoresUnexpectedContents(): void
+    {
+        $repository = $this->createStub(EnvoiRepository::class);
+        $repository
+            ->method('getSentContentsOrderedByDateDesc')
+            ->willReturn([
+                ['dateEnvoi' => new \DateTime('2026-10-21'), 'contenu' => null],
+                ['dateEnvoi' => new \DateTime('2026-10-20'), 'contenu' => '{not json'],
+                ['dateEnvoi' => new \DateTime('2026-10-19'), 'contenu' => '"a string"'],
+                ['dateEnvoi' => new \DateTime('2026-10-18'), 'contenu' => '{"firstNews":"oops","articles":"oops","projects":[{"name":"no url"},{"url":42}]}'],
+                ['dateEnvoi' => new \DateTime('2026-10-17'), 'contenu' => '{"projects":[{"url":"https:\\/\\/example.com\\/article"}]}'],
+            ]);
+
+        self::assertEquals(
+            ['https://example.com/article' => [new \DateTime('2026-10-17')]],
+            new PreviouslySharedLinks($repository)->findIn(new TechLetter(articles: [$this->article('https://example.com/article')])),
+        );
     }
 
     public function testFindInEmptyTechLetterDoesNotQueryTheDatabase(): void
     {
         $repository = $this->createMock(EnvoiRepository::class);
-        $repository->expects(self::never())->method('findBy');
+        $repository->expects(self::never())->method('getSentContentsOrderedByDateDesc');
 
-        $sharedLinks = new PreviouslySharedLinks($repository, new TechLetterFactory(new MapperBuilder()))
-            ->findIn(new TechLetter(), $this->envoi(1, '2026-11-04', null, false));
-
-        self::assertSame([], $sharedLinks);
+        self::assertSame([], new PreviouslySharedLinks($repository)->findIn(new TechLetter()));
     }
 
-    private function envoi(int $id, string $date, ?TechLetter $techLetter, bool $sent): Envoi
+    /**
+     * @return array{dateEnvoi: \DateTimeInterface, contenu: string}
+     */
+    private function sent(string $date, TechLetter $techLetter): array
     {
-        $envoi = new Envoi();
-        $envoi->id = $id;
-        $envoi->dateEnvoi = new \DateTime($date);
-        $envoi->contenu = $techLetter instanceof TechLetter ? json_encode($techLetter->jsonSerialize(), JSON_THROW_ON_ERROR) : null;
-        $envoi->envoyeMailchimp = $sent;
-
-        return $envoi;
+        return [
+            'dateEnvoi' => new \DateTime($date),
+            'contenu' => json_encode($techLetter->jsonSerialize(), JSON_THROW_ON_ERROR),
+        ];
     }
 
     private function article(string $url): Article
