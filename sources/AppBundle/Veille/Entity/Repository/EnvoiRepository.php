@@ -31,16 +31,16 @@ class EnvoiRepository extends EntityRepository
     }
 
     /**
-     * Sending date and raw JSON content of the techletters sent to Mailchimp, most recent first.
+     * Id, sending date and raw JSON content of the techletters sent to Mailchimp, most recent first.
      * Only scalars are selected: no entity hydration, the caller decodes the content it needs.
      *
-     * @return list<array{dateEnvoi: \DateTimeInterface, contenu: ?string}>
+     * @return list<array{id: int, dateEnvoi: \DateTimeInterface, contenu: ?string}>
      */
     public function getSentContentsOrderedByDateDesc(): array
     {
-        /** @var list<array{dateEnvoi: \DateTimeInterface, contenu: ?string}> $rows */
+        /** @var list<array{id: int, dateEnvoi: \DateTimeInterface, contenu: ?string}> $rows */
         $rows = $this->createQueryBuilder('e')
-            ->select('e.dateEnvoi', 'e.contenu')
+            ->select('e.id', 'e.dateEnvoi', 'e.contenu')
             ->where('e.envoyeMailchimp = true')
             ->orderBy('e.dateEnvoi', 'DESC')
             ->getQuery()

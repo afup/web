@@ -49,14 +49,14 @@ final class PreviouslySharedLinksTest extends TestCase
             ->expects(self::once())
             ->method('getSentContentsOrderedByDateDesc')
             ->willReturn([
-                $this->sent('2026-10-21', new TechLetter(
+                $this->sent(210, '2026-10-21', new TechLetter(
                     firstNews: new News('https://www.example.com/news/', 'News', new \DateTimeImmutable('2026-10-20')),
                     articles: [
                         $this->article('https://example.com/article'),
                         $this->article('https://example.com/article#duplicate-in-same-techletter'),
                     ],
                 )),
-                $this->sent('2026-10-08', new TechLetter(
+                $this->sent(209, '2026-10-08', new TechLetter(
                     articles: [$this->article('https://example.com/article')],
                     projects: [new Project('https://github.com/afup/web', 'afup/web', 'Le site')],
                 )),
@@ -70,9 +70,12 @@ final class PreviouslySharedLinksTest extends TestCase
         );
 
         self::assertEquals([
-            'https://example.com/news' => [new \DateTime('2026-10-21')],
-            'http://example.com/article/' => [new \DateTime('2026-10-21'), new \DateTime('2026-10-08')],
-            'https://github.com/afup/web' => [new \DateTime('2026-10-08')],
+            'https://example.com/news' => [['id' => 210, 'dateEnvoi' => new \DateTime('2026-10-21')]],
+            'http://example.com/article/' => [
+                ['id' => 210, 'dateEnvoi' => new \DateTime('2026-10-21')],
+                ['id' => 209, 'dateEnvoi' => new \DateTime('2026-10-08')],
+            ],
+            'https://github.com/afup/web' => [['id' => 209, 'dateEnvoi' => new \DateTime('2026-10-08')]],
         ], new PreviouslySharedLinks($repository)->findIn($techLetter));
     }
 
@@ -82,15 +85,15 @@ final class PreviouslySharedLinksTest extends TestCase
         $repository
             ->method('getSentContentsOrderedByDateDesc')
             ->willReturn([
-                ['dateEnvoi' => new \DateTime('2026-10-21'), 'contenu' => null],
-                ['dateEnvoi' => new \DateTime('2026-10-20'), 'contenu' => '{not json'],
-                ['dateEnvoi' => new \DateTime('2026-10-19'), 'contenu' => '"a string"'],
-                ['dateEnvoi' => new \DateTime('2026-10-18'), 'contenu' => '{"firstNews":"oops","articles":"oops","projects":[{"name":"no url"},{"url":42}]}'],
-                ['dateEnvoi' => new \DateTime('2026-10-17'), 'contenu' => '{"projects":[{"url":"https:\\/\\/example.com\\/article"}]}'],
+                ['id' => 5, 'dateEnvoi' => new \DateTime('2026-10-21'), 'contenu' => null],
+                ['id' => 4, 'dateEnvoi' => new \DateTime('2026-10-20'), 'contenu' => '{not json'],
+                ['id' => 3, 'dateEnvoi' => new \DateTime('2026-10-19'), 'contenu' => '"a string"'],
+                ['id' => 2, 'dateEnvoi' => new \DateTime('2026-10-18'), 'contenu' => '{"firstNews":"oops","articles":"oops","projects":[{"name":"no url"},{"url":42}]}'],
+                ['id' => 1, 'dateEnvoi' => new \DateTime('2026-10-17'), 'contenu' => '{"projects":[{"url":"https:\\/\\/example.com\\/article"}]}'],
             ]);
 
         self::assertEquals(
-            ['https://example.com/article' => [new \DateTime('2026-10-17')]],
+            ['https://example.com/article' => [['id' => 1, 'dateEnvoi' => new \DateTime('2026-10-17')]]],
             new PreviouslySharedLinks($repository)->findIn(new TechLetter(articles: [$this->article('https://example.com/article')])),
         );
     }
@@ -104,11 +107,12 @@ final class PreviouslySharedLinksTest extends TestCase
     }
 
     /**
-     * @return array{dateEnvoi: \DateTimeInterface, contenu: string}
+     * @return array{id: int, dateEnvoi: \DateTimeInterface, contenu: string}
      */
-    private function sent(string $date, TechLetter $techLetter): array
+    private function sent(int $id, string $date, TechLetter $techLetter): array
     {
         return [
+            'id' => $id,
             'dateEnvoi' => new \DateTime($date),
             'contenu' => json_encode($techLetter->jsonSerialize(), JSON_THROW_ON_ERROR),
         ];

@@ -14,7 +14,7 @@ final readonly class PreviouslySharedLinks
     /**
      * Find the links of the given techletter that were already shared in a techletter sent to Mailchimp.
      *
-     * @return array<string, list<\DateTimeInterface>> url => sending dates of the previous techletters, most recent first
+     * @return array<string, list<array{id: int, dateEnvoi: \DateTimeInterface}>> url => previous techletters containing it, most recent first
      */
     public function findIn(TechLetter $techLetter): array
     {
@@ -36,7 +36,7 @@ final readonly class PreviouslySharedLinks
 
             foreach ($previousUrls as $normalizedUrl) {
                 foreach ($urlsByNormalizedUrl[$normalizedUrl] ?? [] as $url) {
-                    $sharedLinks[$url][] = $sent['dateEnvoi'];
+                    $sharedLinks[$url][] = ['id' => $sent['id'], 'dateEnvoi' => $sent['dateEnvoi']];
                 }
             }
         }

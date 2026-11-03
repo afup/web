@@ -19,14 +19,14 @@ final class PreviouslySharedLinksTest extends IntegrationTestCase
     {
         $envoiRepository = self::getContainer()->get(EnvoiRepository::class);
 
-        $envoiRepository->save($this->envoi('2026-09-16 09:00:00', true, new TechLetter(
+        $envoiRepository->save($september = $this->envoi('2026-09-16 09:00:00', true, new TechLetter(
             projects: [new Project('https://github.com/afup/web', 'afup/web', 'Le site')],
         )));
-        $envoiRepository->save($this->envoi('2026-10-21 09:00:00', true, new TechLetter(
+        $envoiRepository->save($lateOctober = $this->envoi('2026-10-21 09:00:00', true, new TechLetter(
             firstNews: new News('https://example.com/news', 'News', new \DateTimeImmutable('2026-10-20')),
             articles: [new Article('http://www.example.com/article/', 'Article', 'example.com', '5', 'Excerpt', 'fr')],
         )));
-        $envoiRepository->save($this->envoi('2026-10-08 09:00:00', true, new TechLetter(
+        $envoiRepository->save($earlyOctober = $this->envoi('2026-10-08 09:00:00', true, new TechLetter(
             articles: [new Article('https://example.com/article', 'Article', 'example.com', '5', 'Excerpt', 'fr')],
         )));
         // Not sent yet: its links are not "already shared"
@@ -44,11 +44,14 @@ final class PreviouslySharedLinksTest extends IntegrationTestCase
         ));
 
         self::assertSame([
-            'https://example.com/news' => ['2026-10-21'],
-            'https://example.com/article' => ['2026-10-21', '2026-10-08'],
-            'https://github.com/afup/web/' => ['2026-09-16'],
+            'https://example.com/news' => [[$lateOctober->id, '2026-10-21']],
+            'https://example.com/article' => [[$lateOctober->id, '2026-10-21'], [$earlyOctober->id, '2026-10-08']],
+            'https://github.com/afup/web/' => [[$september->id, '2026-09-16']],
         ], array_map(
-            static fn(array $dates): array => array_map(static fn(\DateTimeInterface $date): string => $date->format('Y-m-d'), $dates),
+            static fn(array $sendings): array => array_map(
+                static fn(array $sending): array => [$sending['id'], $sending['dateEnvoi']->format('Y-m-d')],
+                $sendings,
+            ),
             $sharedLinks,
         ));
     }
