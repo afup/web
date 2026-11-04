@@ -67,6 +67,10 @@ final class AntenneRepository
         return $labels;
     }
 
+    /**
+     * Après toute modification d'une antenne, regénérer la carte de la page des antennes
+     * avec `bin/console antennes:generate-map` (un test unitaire vérifie qu'elle est à jour).
+     */
     private function makeAntennes(): void
     {
         $this->add(new Antenne(
