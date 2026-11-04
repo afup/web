@@ -15,7 +15,7 @@ class Transformer
     public function __construct(private readonly AntenneRepository $antennesCollection) {}
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function transform(Meetup $meetup): array
     {
@@ -55,6 +55,11 @@ class Transformer
 
     private function getEventUrl(Antenne $antenne, Meetup $meetup): string
     {
-        return self::MEETUP_URL . $antenne->meetup->urlName . '/events/' . $meetup->id;
+        $antenneMeetup = $antenne->meetup;
+        if ($antenneMeetup === null) {
+            return self::MEETUP_URL . '/events/' . $meetup->id;
+        }
+
+        return self::MEETUP_URL . $antenneMeetup->urlName . '/events/' . $meetup->id;
     }
 }

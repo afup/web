@@ -8,7 +8,8 @@ Feature: Site Public - Home
 
   @reloadDbWithTestData
   Scenario: Sur la home on a bien un lien vers le dernier article affiché
-    Given I am on the homepage
+    Given the current date is "2026-01-01"
+    And I am on the homepage
 
     # Article à la une
     Then I should see "Un article en Markdown"
@@ -27,7 +28,8 @@ Feature: Site Public - Home
 
   @reloadDbWithTestData
   Scenario: Affichage des derniers meetups
-    Given I am on the homepage
+    Given the current date is "2025-11-01"
+    And I am on the homepage
     Then I should see "Le super meetup"
     And I should see "Lyon"
     And I should see "08/11"
