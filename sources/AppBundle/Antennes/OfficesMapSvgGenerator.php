@@ -53,7 +53,9 @@ final class OfficesMapSvgGenerator
         // ratio qui s'applique et qui laisse la place aux légendes qui débordent du viewBox.
         $xml->writeAttribute('width', (string) self::INTRINSIC_WIDTH);
         $xml->writeAttribute('height', (string) self::INTRINSIC_HEIGHT);
-        $xml->writeElement('title', "Carte de France des antennes de l'AFUP");
+        // Nom accessible sans <title>, que les navigateurs afficheraient en infobulle au
+        // survol de chaque élément de la carte.
+        $xml->writeAttribute('aria-label', "Carte de France des antennes de l'AFUP");
 
         $xml->startElement('g');
         $xml->writeAttribute('transform', sprintf('translate(%d %d)', self::MAP_OFFSET_X, self::MAP_OFFSET_Y));
