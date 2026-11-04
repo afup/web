@@ -36,7 +36,7 @@ admin_super_apero:
 
 admin_members_reporting:
   path: /members/reporting
-  defaults: {_controller: AppBundle\Controller\MembershipAdmin\ReportingAction}
+  defaults: {_controller: AppBundle\Controller\Admin\Members\ReportingAction}
 
 admin_members_general_meeting:
   path: /members/general_meeting

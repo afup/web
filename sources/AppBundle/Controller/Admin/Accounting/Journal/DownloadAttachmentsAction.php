@@ -14,7 +14,9 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ZipArchive;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_COMPTA_READER')]
 class DownloadAttachmentsAction extends AbstractController
 {
     public function __construct(

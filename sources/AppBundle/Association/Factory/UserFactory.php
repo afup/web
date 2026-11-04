@@ -15,9 +15,7 @@ class UserFactory
         return
             $user
                 ->setCountry('FR')
-                ->setLevel(User::LEVEL_MEMBER)
                 ->setStatus(User::STATUS_ACTIVE)
-                ->setDirectoryLevel(User::LEVEL_MEMBER)
         ;
     }
 }

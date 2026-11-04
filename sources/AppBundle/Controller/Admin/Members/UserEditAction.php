@@ -8,12 +8,15 @@ use AppBundle\Association\Form\UserBadgeType;
 use AppBundle\Association\Form\UserEditType;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\AuditLog\Audit;
+use AppBundle\Security\ManageUserVoter;
 use AppBundle\Event\Entity\Repository\UserBadgeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_MEMBRES_WRITER')]
 class UserEditAction extends AbstractController
 {
     public function __construct(
@@ -30,11 +33,19 @@ class UserEditAction extends AbstractController
             $this->addFlash('error', 'Utilisateur non trouvé');
             return $this->redirectToRoute('admin_members_user_list');
         }
-        $form = $this->createForm(UserEditType::class, $user);
+        $this->denyAccessUnlessGranted(ManageUserVoter::MANAGE_USER, $user);
+
+        $form = $this->createForm(UserEditType::class, $user, [
+            'can_grant_super_admin' => $this->isGranted('ROLE_SUPER_ADMIN'),
+            // Changer le mot de passe d'un tiers permet de prendre son compte : réservé au super admin
+            'can_edit_password' => $this->isGranted('ROLE_SUPER_ADMIN'),
+            // Attribuer des droits sur les modules revient à étendre ses propres accès : réservé au super admin
+            'can_edit_modules' => $this->isGranted('ROLE_SUPER_ADMIN'),
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // Save password if not empty
-            $newPassword = $form->get('plainPassword')->getViewData()['first'];
+            $newPassword = $form->has('plainPassword') ? $form->get('plainPassword')->getViewData()['first'] : null;
             if ($newPassword) {
                 $user->setPassword($this->passwordHasher->hashPassword($user, $newPassword));
             }

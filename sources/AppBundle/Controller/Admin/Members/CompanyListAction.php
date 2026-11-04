@@ -8,7 +8,9 @@ use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_MEMBRES_READER')]
 class CompanyListAction
 {
     public function __construct(
