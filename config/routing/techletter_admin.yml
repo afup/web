@@ -4,6 +4,12 @@ admin_techletter_generate:
   requirements:
     techletterId: '\d+'
 
+admin_techletter_show:
+  path: /show/{techletterId}
+  defaults: {_controller: AppBundle\Controller\Admin\TechLetter\ShowAction}
+  requirements:
+    techletterId: '\d+'
+
 admin_techletter_preview:
   path: /preview
   defaults: {_controller: AppBundle\Controller\Admin\TechLetter\PreviewAction}
