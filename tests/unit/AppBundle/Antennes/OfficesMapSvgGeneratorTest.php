@@ -28,7 +28,7 @@ final class OfficesMapSvgGeneratorTest extends TestCase
         $svg = $this->generate([]);
 
         self::assertCount(count(FranceMap::AREAS), $svg->query('//svg:path[@data-id]'));
-        self::assertCount(0, $svg->query('//svg:path[@fill]'));
+        self::assertCount(0, $svg->query('//svg:path[@fill] | //*[@data-antenne]'));
         self::assertCount(0, $svg->query('//svg:a | //svg:circle | //svg:image | //svg:text | //svg:title'));
     }
 
@@ -47,6 +47,7 @@ final class OfficesMapSvgGeneratorTest extends TestCase
         foreach (['department-33', 'department-40', 'country-lux'] as $area) {
             $path = $this->area($svg, $area);
             self::assertSame(self::ANTENNE_COLOR, $path->getAttribute('fill'));
+            self::assertSame('bordeaux', $path->getAttribute('data-antenne'));
 
             $link = $path->parentNode;
             self::assertInstanceOf(\DOMElement::class, $link);
@@ -60,6 +61,13 @@ final class OfficesMapSvgGeneratorTest extends TestCase
         $circle = $this->single($svg, '//svg:circle');
         self::assertSame('193.86', $circle->getAttribute('cx'));
         self::assertSame('413.02', $circle->getAttribute('cy'));
+        self::assertSame('bordeaux', $circle->getAttribute('data-antenne'));
+        // Contour blanc invisible, épaissi au survol du point ou d'une zone de l'antenne.
+        self::assertSame(['#fff', '0'], [$circle->getAttribute('stroke'), $circle->getAttribute('stroke-width')]);
+        self::assertStringContainsString(
+            "svg:has(path[data-antenne='bordeaux']:hover) circle[data-antenne='bordeaux']",
+            $this->single($svg, '//svg:style')->textContent,
+        );
 
         self::assertSame(
             ['M330,440L270,500', 'M270,500L230,500'],
@@ -115,8 +123,12 @@ final class OfficesMapSvgGeneratorTest extends TestCase
             $this->attributes($withLyon, '//svg:image', 'href'),
         );
 
+        self::assertStringContainsString("[data-antenne='lyon']", $this->single($withLyon, '//svg:style')->textContent);
+
         $withoutLyon = $this->generate([$bordeaux]);
         self::assertSame('', $this->area($withoutLyon, 'department-69')->getAttribute('fill'));
+        self::assertSame('', $this->area($withoutLyon, 'department-69')->getAttribute('data-antenne'));
+        self::assertStringNotContainsString("[data-antenne='lyon']", $this->single($withoutLyon, '//svg:style')->textContent);
         self::assertCount(1, $withoutLyon->query('//svg:circle'));
         self::assertSame(['Bordeaux'], $this->texts($withoutLyon));
         self::assertSame(['/images/offices/bordeaux.svg'], $this->attributes($withoutLyon, '//svg:image', 'href'));
