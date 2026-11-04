@@ -25,7 +25,7 @@ class LeadType extends AbstractType
             ->add('phone', TextType::class)
             ->add('company', TextType::class)
             ->add('poste', TextType::class, ['required' => false])
-            ->add('website', UrlType::class, ['required' => false])
+            ->add('website', UrlType::class, ['required' => false, 'default_protocol' => 'https'])
             ->add('email', EmailType::class)
             ->add('language', ChoiceType::class, [
                 'choices' => ['fr' => 'fr', 'en' => 'en'],

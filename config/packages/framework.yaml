@@ -12,6 +12,8 @@ framework:
     csrf_protection: ~
     validation:
         email_validation_mode: html5
+    property_info:
+        with_constructor_extractor: true
     default_locale:  "%locale%"
     trusted_hosts:   ~
     session:
@@ -37,7 +39,7 @@ when@dev:
     framework:
         router:
             strict_requirements: true
-        profiler: { only_exceptions: false }
+        profiler: { only_exceptions: false, collect_serializer_data: true }
         ide: '%env(default::resolve:SYMFONY_IDE)%'
 
 when@test:
@@ -48,4 +50,5 @@ when@test:
         profiler:
             only_exceptions: false
             collect: false
+            collect_serializer_data: true
         ide: '%env(default::resolve:SYMFONY_IDE)%'

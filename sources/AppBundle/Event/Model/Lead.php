@@ -48,7 +48,7 @@ class Lead implements \JsonSerializable
     /**
      * @var string
      */
-    #[Assert\Url]
+    #[Assert\Url(requireTld: true)]
     private $website;
 
     private ?Event $event = null;

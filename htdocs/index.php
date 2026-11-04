@@ -5,6 +5,7 @@ declare(strict_types=1);
 use AppBundle\AppKernel;
 use Composer\Autoload\ClassLoader;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
 $isDevEnv = isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] == 'dev';
@@ -27,6 +28,9 @@ if ($_SERVER['HTTP_HOST'] === 'afup.dev' || $isDevEnv || $isTestEnv) {
         exit('You are not allowed to access this file. Check ' . basename(__FILE__) . ' for more information.');
     }
 
+    if ($isDevEnv) {
+        Debug::enable();
+    }
     $kernel = $isDevEnv ? new AppKernel('dev', true) : new AppKernel('test', true);
 } else {
     $kernel = new AppKernel('prod', false);
