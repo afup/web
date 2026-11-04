@@ -29,7 +29,7 @@ final class OfficesMapSvgGeneratorTest extends TestCase
 
         self::assertCount(count(FranceMap::AREAS), $svg->query('//svg:path[@data-id]'));
         self::assertCount(0, $svg->query('//svg:path[@fill]'));
-        self::assertCount(0, $svg->query('//svg:a | //svg:circle | //svg:image | //svg:text'));
+        self::assertCount(0, $svg->query('//svg:a | //svg:circle | //svg:image | //svg:text | //svg:title'));
     }
 
     public function testAntenneIsDrawnOnTheMap(): void
