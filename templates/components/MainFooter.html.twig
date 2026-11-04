@@ -57,6 +57,9 @@
             <p class="grow">
                 Hébergé sur <a href="https://www.clever-cloud.com" class="text-afup-500 hover:underline">Clever Cloud</a>,
                 code source sur <a href="https://github.com/afup/web" class="text-afup-500 hover:underline">GitHub</a>
+                {% if google_analytics_enabled %}
+                    &middot; <a href="#tarteaucitron" onclick="tarteaucitron.userInterface.openPanel(); return false;" class="text-afup-500 hover:underline">Gestion des cookies</a>
+                {% endif %}
             </p>
             <p>
                 &copy; AFUP 2000-{{ "now"|date('Y') }}
