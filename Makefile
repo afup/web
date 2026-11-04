@@ -1,3 +1,9 @@
+# Convention de nommage des targets :
+#   docker:* : targets destinées à être invoquées DANS le container
+#              (via `docker compose run ... make docker:*` ou les hooks git)
+#   sans préfixe : targets destinées à être invoquées DEPUIS votre machine,
+#              elles orchestrent docker pour vous (celles listées dans `make help`)
+#   "Targets cachés" : targets internes (fichiers, mkdir), ne pas invoquer directement
 -include .env
 default: help
 
@@ -8,8 +14,6 @@ DOCKER_COMPOSE_BIN ?= docker compose
 
 # Exécutables
 DOCKER_COMP = CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN)
-PHP_CONT    = $(DOCKER_COMP) exec apachephp
-PHP         = $(PHP_CONT) php
 
 # Colors
 COLOR_RESET = \033[0m
@@ -23,10 +27,14 @@ help:
 	printf "\n${COLOR_TITLE}Usage:${COLOR_RESET}\n"
 	printf "  ${COLOR_TARGET}make${COLOR_RESET} [target]\n"
 	printf "\n"
-	awk '/^[\w\.@%-]+:/i { \
+		awk '/^[\w\.@%:]+:/i { \
+		backslash = sprintf("%c", 92); \
 		helpMessage = match(lastLine, /^### (.*)/); \
 		if (helpMessage) { \
-			helpCommand = substr($$1, 0, index($$1, ":") - 1); \
+			helpCommand = substr($$1, 1, length($$1) - 1); \
+			strippedCommand = ""; \
+			for (j = 1; j <= length(helpCommand); j++) { c = substr(helpCommand, j, 1); if (c != backslash) strippedCommand = strippedCommand c; } \
+			helpCommand = strippedCommand; \
 			helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
 			printf "  ${COLOR_TARGET}%-30s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
 		} \
@@ -36,12 +44,13 @@ help:
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
-.PHONY: install docker-up docker-stop docker-down test test-functional test-functional-no-js test-functional-js hooks vendors db-seed db-migrations reset-db init console phpstan assets config
+.PHONY: help up stop down docker\:test docker\:test-integration docker\:behat docker\:cs-lint docker\:cs-fix docker\:rector docker\:rector-fix docker\:phpstan docker\:phpstan-update-baseline hooks watch install test-functional test-functional-no-js test-functional-js test-integration-ci init init-db reset-db config console logs
 
 ##@ Setup
 
 ### Installer les dépendences (composer, npm)
-install: vendors
+install:
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp make docker\:vendors
 
 ### Initialisation générale (config, bdd)
 init: htdocs/uploads
@@ -51,15 +60,15 @@ init: htdocs/uploads
 ##@ Docker
 
 ### Démarrer les containers
-docker-up: .env var/logs/.docker-build data compose.override.yml
+up: .env var/logs/.docker-build data compose.override.yml
 	$(DOCKER_COMP) up $(DOCKER_UP_OPTIONS)
 
 ### Stopper les containers
-docker-stop:
+stop:
 	$(DOCKER_COMP) stop
 
 ### Supprimer les containers
-docker-down:
+down:
 	$(DOCKER_COMP) down
 
 ### Démarrer un bash dans le container PHP
@@ -73,33 +82,33 @@ logs:
 ##@ Quality
 
 ### Tests unitaires
-test:
-	$(PHP_CONT) ./bin/phpunit --testsuite unit
-	$(PHP_CONT) ./bin/php-cs-fixer fix --dry-run -vv
+docker\:test:
+	./bin/phpunit --testsuite unit
+	./bin/php-cs-fixer fix --dry-run -vv
 
 ### Tests d'intégration
-test-integration:
-	$(PHP_CONT) ./bin/phpunit --testsuite integration
+docker\:test-integration:
+	./bin/phpunit --testsuite integration
 
-### Tests fonctionnels
-behat:
-	$(PHP_CONT) ./bin/behat
+### Behat
+docker\:behat:
+	./bin/behat
 
 ### PHP CS Fixer (dry run)
-cs-lint:
-	$(PHP_CONT) ./bin/php-cs-fixer fix --dry-run -vv
+docker\:cs-lint:
+	./bin/php-cs-fixer fix --dry-run -vv
 
 ### PHP CS Fixer (fix)
-cs-fix:
-	$(PHP_CONT) ./bin/php-cs-fixer fix -vv
+docker\:cs-fix:
+	./bin/php-cs-fixer fix -vv
 
 ### Rector (dry run)
-rector: var/cache/dev/AppKernelDevDebugContainer.xml
-	$(PHP_CONT) ./bin/rector --dry-run
+docker\:rector: var/cache/dev/AppKernelDevDebugContainer.xml
+	./bin/rector --dry-run
 
 ### Rector (fix)
-rector-fix: var/cache/dev/AppKernelDevDebugContainer.xml
-	$(PHP_CONT) ./bin/rector
+docker\:rector-fix: var/cache/dev/AppKernelDevDebugContainer.xml
+	./bin/rector
 
 ### Tests fonctionnels
 test-functional: data config htdocs/uploads tmp
@@ -138,22 +147,22 @@ test-functional-js: data config htdocs/uploads tmp
 test-integration-ci:
 	$(DOCKER_COMP) stop dbtest apachephptest
 	$(DOCKER_COMP) up -d dbtest apachephptest
-	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest make vendor
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest make docker\:vendor
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/phpunit --testsuite integration
 	$(DOCKER_COMP) stop dbtest apachephptest
 
 ### Analyse PHPStan
-phpstan:
-	$(PHP_CONT) ./bin/phpstan --memory-limit=-1
+docker\:phpstan:
+	./bin/phpstan --memory-limit=-1
 
 ### Mise à jour de la baseline PHPStan
-phpstan-update-baseline:
-	$(PHP_CONT) ./bin/phpstan analyse --memory-limit=-1 --generate-baseline phpstan-baseline.php
+docker\:phpstan-update-baseline:
+	./bin/phpstan analyse --memory-limit=-1 --generate-baseline phpstan-baseline.php
 
 ##@ Frontend
 
 ### Compiler les assets pour la production
-assets:
+docker\:assets:
 	./node_modules/.bin/webpack -p
 	php bin/console importmap:install
 	php bin/console tailwind:build --minify
@@ -169,12 +178,12 @@ hooks: .git/hooks/pre-commit .git/hooks/post-checkout
 
 .git/hooks/pre-commit: Makefile
 	echo "#!/bin/sh" > .git/hooks/pre-commit
-	echo "docker compose run --rm -u localUser apachephp make test" >> .git/hooks/pre-commit
+	echo "docker compose run --rm -u localUser apachephp make docker\:test" >> .git/hooks/pre-commit
 	chmod +x .git/hooks/pre-commit
 
 .git/hooks/post-checkout: Makefile
 	echo "#!/bin/sh" > .git/hooks/post-checkout
-	echo "docker compose run --rm -u localUser apachephp make vendor" >> .git/hooks/post-checkout
+	echo "docker compose run --rm -u localUser apachephp make docker\:vendor" >> .git/hooks/post-checkout
 	chmod +x .git/hooks/post-checkout
 
 
@@ -190,9 +199,9 @@ var/logs/.docker-build: compose.yml compose.override.yml $(shell find docker -ty
 compose.override.yml:
 	cp compose.override.yml-dist compose.override.yml
 
-vendors: vendor node_modules
+docker\:vendors: docker\:vendor node_modules
 
-vendor: composer.lock
+docker\:vendor: composer.lock
 	composer install --no-scripts
 
 node_modules:
@@ -200,12 +209,12 @@ node_modules:
 
 init-db:
 	make reset-db
-	$(DOCKER_COMP) run --rm -u localUser apachephp make db-migrations
-	$(DOCKER_COMP) run --rm -u localUser apachephp make db-seed
+	$(DOCKER_COMP) run --rm -u localUser apachephp make docker\:db-migrations
+	$(DOCKER_COMP) run --rm -u localUser apachephp make docker\:db-seed
 
 config:
-	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp make vendors
-	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp make assets
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp make docker\:vendors
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp make docker\:assets
 
 data:
 	mkdir data
@@ -221,10 +230,10 @@ reset-db:
 	echo 'DROP DATABASE IF EXISTS web' | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
 	echo 'CREATE DATABASE web' | $(DOCKER_COMPOSE_BIN) run -T --rm db /opt/mysql_no_db
 
-db-migrations:
+docker\:db-migrations:
 	php bin/phinx migrate
 
-db-seed:
+docker\:db-seed:
 	php bin/phinx seed:run
 
 clean-test-deprecated-log:
