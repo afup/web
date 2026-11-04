@@ -11,6 +11,7 @@ use Doctrine\DBAL\Types\Type;
 class UnixTimestampType extends Type
 {
     public const string NAME = 'unix_timestamp';
+    public const string TIMEZONE = 'Europe/Paris';
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
@@ -24,7 +25,7 @@ class UnixTimestampType extends Type
             return null;
         }
 
-        $date = new \DateTime();
+        $date = new \DateTime('now', new \DateTimeZone(self::TIMEZONE));
         $date->setTimestamp((int) $value);
 
         return $date;

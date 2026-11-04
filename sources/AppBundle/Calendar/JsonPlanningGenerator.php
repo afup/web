@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Calendar;
 
 use AppBundle\CFP\PhotoStorage;
+use AppBundle\Doctrine\Type\UnixTimestampType;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
 
@@ -12,6 +14,7 @@ class JsonPlanningGenerator
 {
     public function __construct(
         private readonly TalkRepository $talkRepository,
+        private readonly PlanningRepository $planningRepository,
         private readonly PhotoStorage $photoStorage,
     ) {}
 
@@ -20,11 +23,17 @@ class JsonPlanningGenerator
      */
     public function generate(Event $event): array
     {
-        $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event);
+        $talkAggregates = $this->planningRepository->enrichTalkAggregates(
+            $this->talkRepository->getByEventWithSpeakers($event),
+        );
 
         $data = [];
 
         foreach ($talkAggregates as $talkAggregate) {
+            if ($talkAggregate->planning === null || $talkAggregate->room === null) {
+                continue;
+            }
+
             $conferenciers = [];
             foreach ($talkAggregate->speakers as $speaker) {
                 $conferenciers[] = [
@@ -34,9 +43,9 @@ class JsonPlanningGenerator
                 ];
             }
 
-            $timeZone = new \DateTimeZone("Europe/Paris");
-            $start = $talkAggregate->planning->getStart()->setTimezone($timeZone);
-            $end = $talkAggregate->planning->getEnd()->setTimezone($timeZone);
+            $timeZone = new \DateTimeZone(UnixTimestampType::TIMEZONE);
+            $start = $talkAggregate->planning->start->setTimezone($timeZone);
+            $end = $talkAggregate->planning->end->setTimezone($timeZone);
 
             $data[] = [
                 'conferenciers' => $conferenciers,

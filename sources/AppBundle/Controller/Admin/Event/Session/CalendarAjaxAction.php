@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Event\Session;
 
-use AppBundle\Event\Model\Planning;
-use AppBundle\Event\Model\Repository\PlanningRepository;
+use AppBundle\Doctrine\Type\UnixTimestampType;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ class CalendarAjaxAction extends AbstractController
 
     public function __invoke(int $id, Request $request): Response
     {
-        $planning = $this->planningRepository->get($id);
+        $planning = $this->planningRepository->find($id);
         if (!$planning) {
             throw $this->createNotFoundException('Planning not found: ' . $id);
         }
@@ -24,11 +24,11 @@ class CalendarAjaxAction extends AbstractController
 
         // Le calendrier envoie l'heure telle qu'affichée, sans décalage :
         // c'est donc l'heure locale de l'événement, pas celle du navigateur.
-        $timezone = new \DateTimeZone(Planning::TIMEZONE);
+        $timezone = new \DateTimeZone(UnixTimestampType::TIMEZONE);
 
-        $planning->setStart(new \DateTime($data['start'], $timezone));
-        $planning->setEnd(new \DateTime($data['end'], $timezone));
-        $planning->setRoomId((int) $data['roomId']);
+        $planning->start = new \DateTime($data['start'], $timezone);
+        $planning->end = new \DateTime($data['end'], $timezone);
+        $planning->roomId = (int) $data['roomId'];
 
         $this->planningRepository->save($planning);
 
