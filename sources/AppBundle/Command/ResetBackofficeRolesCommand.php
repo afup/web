@@ -41,7 +41,7 @@ class ResetBackofficeRolesCommand extends Command
                 'Tous les rôles ne correspondant pas aux rôles conservés sont retirés : ROLE_ADMIN, ROLE_SUPER_ADMIN,'
                 . ' les rôles legacy (ROLE_VEILLE, …) et les rôles des modules. Les accès sont ensuite réattribués'
                 . " depuis l'admin.\n\n"
-                . "Renseigner d'abord son propre compte (ROLE_SUPER_ADMIN via la DB) pour ne pas perdre l'accès à l'admin."
+                . "Renseigner d'abord son propre compte (ROLE_SUPER_ADMIN via la DB) pour ne pas perdre l'accès à l'admin.",
             );
     }
 
@@ -50,6 +50,7 @@ class ResetBackofficeRolesCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $dryRun = (bool) $input->getOption('dry-run');
 
+        /** @var array<int, array{0: User, 1: list<string>}> $wipe */
         $wipe = [];
         foreach ($this->userRepository->loadAll() as $user) {
             $before = $this->storedRoles($user);
@@ -89,6 +90,8 @@ class ResetBackofficeRolesCommand extends Command
 
     /**
      * Détail des rôles modifiés, une ligne par personne physique impactée.
+     *
+     * @param array<int, array{0: User, 1: list<string>}> $wipe
      */
     private function writeRolesDiff(SymfonyStyle $io, array $wipe): void
     {
@@ -109,6 +112,8 @@ class ResetBackofficeRolesCommand extends Command
     /**
      * Rôles tels qu'ils sont stockés en base. Les défauts ajoutés par User::getRoles()
      * (ROLE_USER et ROLE_MEMBER_EXPIRED, recalés dynamiquement) ne sont jamais persistés.
+     *
+     * @return list<string>
      */
     private function storedRoles(User $user): array
     {
@@ -117,6 +122,9 @@ class ResetBackofficeRolesCommand extends Command
 
     /**
      * Rôles conservés après le wipe : tout ce qui n'est pas admin, legacy ni rôles de modules.
+     *
+     * @param list<string> $roles
+     * @return list<string>
      */
     private function keptRoles(array $roles): array
     {
