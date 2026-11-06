@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ff7c4844d5e857107152414b5f845a0",
+    "content-hash": "ff81e3bfa2b0bb8e0b42575f2920a6ae",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -11407,32 +11407,32 @@
         },
         {
             "name": "tiime/newrelic-bundle",
-            "version": "v1.0.3",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Tiime-Software/TiimeNewRelicBundle.git",
-                "reference": "e40e9495bd0e6e360433989c9ae1d48717ad9039"
+                "reference": "f21defd984297174a7f879b63d5f01c4d5eb2006"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Tiime-Software/TiimeNewRelicBundle/zipball/e40e9495bd0e6e360433989c9ae1d48717ad9039",
-                "reference": "e40e9495bd0e6e360433989c9ae1d48717ad9039",
+                "url": "https://api.github.com/repos/Tiime-Software/TiimeNewRelicBundle/zipball/f21defd984297174a7f879b63d5f01c4d5eb2006",
+                "reference": "f21defd984297174a7f879b63d5f01c4d5eb2006",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.2",
-                "symfony/config": "^5.4|^6.4|^7.0",
-                "symfony/console": "^5.4|^6.4|^7.0",
-                "symfony/dependency-injection": "^5.4|^6.4|^7.0",
-                "symfony/event-dispatcher": "^5.4|^6.4|^7.0",
-                "symfony/http-kernel": "^5.4|^6.4|^7.0"
+                "php": "^8.4",
+                "symfony/config": "^7.4|^8.0",
+                "symfony/console": "^7.4|^8.0",
+                "symfony/dependency-injection": "^7.4|^8.0",
+                "symfony/event-dispatcher": "^7.4|^8.0",
+                "symfony/http-kernel": "^7.4|^8.0"
             },
             "require-dev": {
-                "matthiasnoback/symfony-dependency-injection-test": "^5.1",
+                "matthiasnoback/symfony-dependency-injection-test": "^6.3",
                 "monolog/monolog": "^3.0",
-                "phpunit/phpunit": "^9.6",
-                "symfony/framework-bundle": "^5.4|^6.4|^7.0",
-                "symfony/phpunit-bridge": "^7.1",
+                "phpunit/phpunit": "^11.5",
+                "symfony/framework-bundle": "^7.4|^8.0",
+                "symfony/phpunit-bridge": "^7.4|^8.0",
                 "twig/twig": "^3.10"
             },
             "type": "symfony-bundle",
@@ -11466,9 +11466,10 @@
             ],
             "support": {
                 "issues": "https://github.com/Tiime-Software/TiimeNewRelicBundle/issues",
-                "source": "https://github.com/Tiime-Software/TiimeNewRelicBundle/tree/v1.0.3"
+                "source": "https://github.com/Tiime-Software/TiimeNewRelicBundle/tree/v2.0.0"
             },
-            "time": "2026-04-08T09:49:10+00:00"
+            "time": "2026-08-18T08:26:06+00:00",
+            "published-time": "2026-08-18T08:33:44+00:00"
         },
         {
             "name": "twig/extra-bundle",
@@ -16798,5 +16799,5 @@
         "ext-zip": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.11.0"
 }
