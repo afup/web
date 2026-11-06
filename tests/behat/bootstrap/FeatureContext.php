@@ -227,7 +227,7 @@ class FeatureContext implements Context
         }
     }
 
-    #[Then('/^the downloaded file should (?P<mode>(strictly) )?be the same as "(?P<filename>(?:[^"]|\\")*)"$/')]
+    #[Then('/^the downloaded file should (?P<mode>strictly )?be the same as "(?P<filename>(?:[^"]|\\")*)"$/')]
     public function assertDownloadedFile(string $mode, string $filename): void
     {
         if ($this->minkContext->getMinkParameter('files_path')) {

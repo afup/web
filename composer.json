@@ -105,6 +105,9 @@
   },
   "extra": {
     "patches": {
+      "friends-of-behat/mink-extension": [
+        "patches/friends-of-behat-mink-extension-src-behat-minkextension-context-minkcontext-php.patch"
+      ],
       "setasign/tfpdf": [
         "patches/setasign-tfpdf-tfpdf-php.patch"
       ]
@@ -144,11 +147,11 @@
   ],
   "minimum-stability": "stable",
   "require-dev": {
-    "behat/behat": "^3.31",
+    "behat/behat": "^4.0",
     "behat/mink-browserkit-driver": "^2.3",
     "dbrekelmans/bdi": "^1.4",
     "fakerphp/faker": "^1.24",
-    "friends-of-behat/mink-extension": "^2.7",
+    "friends-of-behat/mink-extension": "^3.0@alpha",
     "friendsofphp/php-cs-fixer": "^3.95",
     "ifsnop/mysqldump-php": "^2.12",
     "kubawerlos/php-cs-fixer-custom-fixers": "^3.37",

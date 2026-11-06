@@ -62,7 +62,8 @@ trait AuthContext
         $this->minkContext->fillField('utilisateur', $username);
         $this->minkContext->fillField('mot_de_passe', $password);
         $this->minkContext->pressButton('Se connecter');
-        $this->minkContext->assertPageContainsText('Espace membre');
+        // Avec Panther, pressButton() n'attend pas la fin de la redirection post-login.
+        $this->waitToSeeText('Espace membre');
     }
 
     #[When('I request a password reset for :arg1')]
