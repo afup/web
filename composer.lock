@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ff7c4844d5e857107152414b5f845a0",
+    "content-hash": "fa5c0c660af307b160e99c648df32abd",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -12027,43 +12027,43 @@
     "packages-dev": [
         {
             "name": "behat/behat",
-            "version": "v3.31.0",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Behat.git",
-                "reference": "7fbdcda54ed653f032dd4fe1da5b2bb1546b24d6"
+                "reference": "3f65b57a8e52c7d2c45e219ecaf5900a995946bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Behat/zipball/7fbdcda54ed653f032dd4fe1da5b2bb1546b24d6",
-                "reference": "7fbdcda54ed653f032dd4fe1da5b2bb1546b24d6",
+                "url": "https://api.github.com/repos/Behat/Behat/zipball/3f65b57a8e52c7d2c45e219ecaf5900a995946bf",
+                "reference": "3f65b57a8e52c7d2c45e219ecaf5900a995946bf",
                 "shasum": ""
             },
             "require": {
-                "behat/gherkin": "^4.15.0",
+                "behat/gherkin": "^4.18.0",
                 "composer-runtime-api": "^2.2",
                 "composer/xdebug-handler": "^1.4 || ^2.0 || ^3.0",
+                "cucumber/tag-expressions": "^11.0",
                 "ext-mbstring": "*",
-                "nikic/php-parser": "^4.19.2 || ^5.2",
                 "php": ">=8.2 <8.6",
                 "psr/container": "^1.0 || ^2.0",
-                "symfony/config": "^5.4 || ^6.4 || ^7.0",
-                "symfony/console": "^5.4.9 || ^6.4 || ^7.0",
-                "symfony/dependency-injection": "^5.4 || ^6.4 || ^7.0",
-                "symfony/event-dispatcher": "^5.4 || ^6.4 || ^7.0",
-                "symfony/translation": "^5.4 || ^6.4 || ^7.0",
-                "symfony/yaml": "^5.4 || ^6.4 || ^7.0"
+                "symfony/config": "^5.4 || ^6.4 || ^7.0 || ^8.0",
+                "symfony/console": "^5.4.9 || ^6.4 || ^7.0 || ^8.0",
+                "symfony/dependency-injection": "^5.4 || ^6.4 || ^7.0 || ^8.0",
+                "symfony/event-dispatcher": "^5.4 || ^6.4 || ^7.0 || ^8.0",
+                "symfony/translation": "^5.4 || ^6.4 || ^7.0 || ^8.0",
+                "symfony/yaml": "^5.4 || ^6.4 || ^7.0 || ^8.0"
             },
             "require-dev": {
                 "opis/json-schema": "^2.5",
                 "php-cs-fixer/shim": "^3.89",
                 "phpstan/phpstan": "2.1.46",
-                "phpunit/phpunit": "^9.6",
+                "phpunit/phpunit": "^11.5",
                 "rector/rector": "2.3.9",
-                "sebastian/diff": "^4.0",
-                "symfony/filesystem": "^5.4 || ^6.4 || ^7.0",
+                "sebastian/diff": "^6.0",
+                "symfony/filesystem": "^5.4 || ^6.4 || ^7.0 || ^8.0",
                 "symfony/polyfill-php84": "^1.31",
-                "symfony/process": "^5.4 || ^6.4 || ^7.0"
+                "symfony/process": "^5.4 || ^6.4 || ^7.0 || ^8.0"
             },
             "suggest": {
                 "ext-dom": "Needed to output test results in JUnit format."
@@ -12111,7 +12111,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Behat/Behat/issues",
-                "source": "https://github.com/Behat/Behat/tree/v3.31.0"
+                "source": "https://github.com/Behat/Behat/tree/v4.0.0"
             },
             "funding": [
                 {
@@ -12127,20 +12127,21 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-19T21:04:32+00:00"
+            "time": "2026-09-28T16:13:53+00:00",
+            "published-time": "2026-09-28T16:17:31+00:00"
         },
         {
             "name": "behat/gherkin",
-            "version": "v4.17.0",
+            "version": "v4.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Gherkin.git",
-                "reference": "5c8b3149fac39b5a79942b64eeec59a5ee4001c0"
+                "reference": "496248b29d9d7848311a263c2d17c1860e4c7b6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Gherkin/zipball/5c8b3149fac39b5a79942b64eeec59a5ee4001c0",
-                "reference": "5c8b3149fac39b5a79942b64eeec59a5ee4001c0",
+                "url": "https://api.github.com/repos/Behat/Gherkin/zipball/496248b29d9d7848311a263c2d17c1860e4c7b6c",
+                "reference": "496248b29d9d7848311a263c2d17c1860e4c7b6c",
                 "shasum": ""
             },
             "require": {
@@ -12148,11 +12149,12 @@
                 "php": ">=8.1 <8.6"
             },
             "require-dev": {
-                "cucumber/gherkin-monorepo": "dev-gherkin-v39.1.0",
+                "cucumber/gherkin-monorepo": "dev-gherkin-v42.0.1",
                 "friendsofphp/php-cs-fixer": "^3.77",
                 "mikey179/vfsstream": "^1.6",
                 "phpstan/extension-installer": "^1",
-                "phpstan/phpstan": "^2",
+                "phpstan/phpstan": "2.2.14",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
                 "phpstan/phpstan-phpunit": "^2",
                 "phpunit/phpunit": "^10.5",
                 "symfony/yaml": "^5.4 || ^6.4 || ^7.0"
@@ -12194,7 +12196,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Behat/Gherkin/issues",
-                "source": "https://github.com/Behat/Gherkin/tree/v4.17.0"
+                "source": "https://github.com/Behat/Gherkin/tree/v4.18.0"
             },
             "funding": [
                 {
@@ -12210,7 +12212,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-05-18T09:33:47+00:00"
+            "time": "2026-09-25T21:26:10+00:00",
+            "published-time": "2026-09-25T21:28:06+00:00"
         },
         {
             "name": "behat/mink",
@@ -12476,6 +12479,50 @@
                 }
             ],
             "time": "2024-05-06T16:37:16+00:00"
+        },
+        {
+            "name": "cucumber/tag-expressions",
+            "version": "v11.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cucumber/tag-expressions-php.git",
+                "reference": "d88e12c03a2069b4336156dc7831a6b78cce5e1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cucumber/tag-expressions-php/zipball/d88e12c03a2069b4336156dc7831a6b78cce5e1d",
+                "reference": "d88e12c03a2069b4336156dc7831a6b78cce5e1d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.75",
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpunit/phpunit": "^10.5.46 || ^11.5 || ^13.0",
+                "symfony/yaml": "^6.4 || ^7.2 || ^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cucumber\\TagExpressions\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Cucumber Tag Expressions parser",
+            "homepage": "https://github.com/cucumber/tag-expressions",
+            "support": {
+                "issues": "https://github.com/cucumber/tag-expressions/issues",
+                "source": "https://github.com/cucumber/tag-expressions-php/tree/v11.0.1"
+            },
+            "time": "2026-03-24T10:42:49+00:00",
+            "published-time": "2026-08-15T17:37:27+00:00"
         },
         {
             "name": "dbrekelmans/bdi",
@@ -12768,35 +12815,39 @@
         },
         {
             "name": "friends-of-behat/mink-extension",
-            "version": "v2.7.5",
+            "version": "v3.0.0-ALPHA.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfBehat/MinkExtension.git",
-                "reference": "854336030e11983f580f49faad1b49a1238f9846"
+                "reference": "2c34fb10a315250ec5f399d6f2a15e9cc78d745f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfBehat/MinkExtension/zipball/854336030e11983f580f49faad1b49a1238f9846",
-                "reference": "854336030e11983f580f49faad1b49a1238f9846",
+                "url": "https://api.github.com/repos/FriendsOfBehat/MinkExtension/zipball/2c34fb10a315250ec5f399d6f2a15e9cc78d745f",
+                "reference": "2c34fb10a315250ec5f399d6f2a15e9cc78d745f",
                 "shasum": ""
             },
             "require": {
-                "behat/behat": "^3.0.5",
-                "behat/mink": "^1.5",
-                "php": ">=7.4",
-                "symfony/config": "^4.4 || ^5.0 || ^6.0 || ^7.0"
+                "behat/behat": "^3.32 || ^4.0",
+                "behat/mink": "^1.11",
+                "php": "^8.3",
+                "symfony/config": "^7.4 || ^8.0"
             },
             "replace": {
                 "behat/mink-extension": "self.version"
             },
             "require-dev": {
-                "behat/mink-goutte-driver": "^1.1 || ^2.0",
-                "phpspec/phpspec": "^6.0 || ^7.0 || 7.1.x-dev"
+                "behat/mink-browserkit-driver": "^2.0",
+                "friendsofphp/php-cs-fixer": "^3.75",
+                "phpspec/phpspec": "^8.0",
+                "phpstan/phpstan": "^2.0",
+                "symfony/browser-kit": "^7.4 || ^8.0",
+                "symfony/http-client": "^7.4 || ^8.0"
             },
             "type": "behat-extension",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1.x-dev"
+                    "dev-master": "3.x-dev"
                 }
             },
             "autoload": {
@@ -12819,7 +12870,7 @@
                 }
             ],
             "description": "Mink extension for Behat",
-            "homepage": "http://extensions.behat.org/mink",
+            "homepage": "https://github.com/FriendsOfBehat/MinkExtension#readme",
             "keywords": [
                 "browser",
                 "gui",
@@ -12828,9 +12879,10 @@
             ],
             "support": {
                 "issues": "https://github.com/FriendsOfBehat/MinkExtension/issues",
-                "source": "https://github.com/FriendsOfBehat/MinkExtension/tree/v2.7.5"
+                "source": "https://github.com/FriendsOfBehat/MinkExtension/tree/v3.0.0-ALPHA.1"
             },
-            "time": "2024-01-11T09:12:02+00:00"
+            "time": "2026-07-15T10:25:06+00:00",
+            "published-time": "2026-07-15T10:32:12+00:00"
         },
         {
             "name": "friendsofphp/php-cs-fixer",
@@ -13459,7 +13511,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-06-05T09:00:01+00:00"
+            "time": "2026-06-05T09:00:01+00:00",
+            "published-time": "2026-06-05T09:00:18+00:00"
         },
         {
             "name": "phpstan/phpstan-beberlei-assert",
@@ -16783,7 +16836,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "friends-of-behat/mink-extension": 15
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -16798,5 +16853,5 @@
         "ext-zip": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.11.0"
 }
