@@ -1,15 +1,44 @@
-$ = jQuery;
-
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function() {
     'use strict';
+
+    const form = document.getElementById('formulaire');
+    if (form === null) {
+        // Billetterie fermée (tous les billets vendus) : pas de formulaire.
+        return;
+    }
+
+    const ticketing = document.getElementById('ticketing');
+    const nbPersonnesSelect = document.getElementById('purchase_nbPersonnes');
 
     // Initialize variables
     let currentStep = 1;
-    let nbMaxPersonnes = $('#divPersonne').data('nb-max-personnes');
-    let isSubjectedToVat = $('#ticketing').data('is-subjected-to-vat') == 1;
-    let hasPricesDefinedWithVat = $('#ticketing').data('has-prices-defined-with-vat') == 1;
-    let vatRate = parseFloat($('#ticketing').data('vat-rate'));
-    let nbInscriptions = parseInt($('#purchase_nbPersonnes').val(), 10);
+    let nbMaxPersonnes = parseInt(document.getElementById('divPersonne').dataset.nbMaxPersonnes, 10);
+    let isSubjectedToVat = ticketing.dataset.isSubjectedToVat === '1';
+    let hasPricesDefinedWithVat = ticketing.dataset.hasPricesDefinedWithVat === '1';
+    let vatRate = parseFloat(ticketing.dataset.vatRate);
+    let nbInscriptions = parseInt(nbPersonnesSelect.value, 10);
+
+    // DOM helpers
+    const all = function(selector, root = document) {
+        return Array.from(root.querySelectorAll(selector));
+    }
+
+    const byName = function(name) {
+        return form.querySelector(`[name="${name}"]`);
+    }
+
+    const checkedTicketType = function(index) {
+        return form.querySelector(`input[name="purchase[tickets][${index}][ticketEventType]"]:checked`);
+    }
+
+    // Équivalent de `.val(value).change()` : les écouteurs (récapitulatif, localStorage) sont notifiés.
+    const setValue = function(field, value) {
+        if (field === null) {
+            return;
+        }
+        field.value = value;
+        field.dispatchEvent(new Event('change', {bubbles: true}));
+    }
 
     // VAT calculation functions
     const computeWithoutTaxesPriceFromPriceWithTaxes = function(price) {
@@ -27,13 +56,6 @@ $(document).ready(function() {
         return computeWithoutTaxesPriceFromPriceWithTaxes(price);
     }
 
-    const computeWithTaxesPriceFromPriceWithoutTaxesConditionally = function(price) {
-        if (!isSubjectedToVat) {
-            return price;
-        }
-        return computeWithTaxesPriceFromPriceWithoutTaxes(price);
-    }
-
     const formatPrice = function(price) {
         let formatter = Intl.NumberFormat(
             'fr-FR',
@@ -48,7 +70,7 @@ $(document).ready(function() {
     // LocalStorage helper functions
     const storageAvailable = function(type) {
         try {
-            var storage = window[type],
+            const storage = window[type],
                 x = '__storage_test__';
             storage.setItem(x, x);
             storage.removeItem(x);
@@ -61,18 +83,13 @@ $(document).ready(function() {
     // Update steps indicator
     const updateStepsIndicator = function(step) {
         // Update current step attribute
-        $('.steps-indicator').attr('data-current-step', step);
-        
-        // Reset all step classes
-        $('.step-item').removeClass('active completed');
-        
-        // Mark completed steps
-        for (let i = 1; i < step; i++) {
-            $(`.step-item[data-step="${i}"]`).addClass('completed');
-        }
-        
-        // Mark current step as active
-        $(`.step-item[data-step="${step}"]`).addClass('active');
+        document.querySelector('.steps-indicator').dataset.currentStep = step;
+
+        all('.step-item').forEach(function(item) {
+            const itemStep = parseInt(item.dataset.step, 10);
+            item.classList.toggle('completed', itemStep < step);
+            item.classList.toggle('active', itemStep === step);
+        });
     }
 
     // Navigation
@@ -83,56 +100,43 @@ $(document).ready(function() {
         }
 
         // Hide all steps and show the requested one
-        $('.ticket-step').removeClass('active');
-        $(`#ticket-step-${step}`).addClass('active');
+        all('.ticket-step').forEach(function(section) {
+            section.classList.toggle('active', section.id === `ticket-step-${step}`);
+        });
 
         // Update steps indicator
         updateStepsIndicator(step);
 
         // Update current step
         currentStep = step;
-        
+
         // If we're moving to step 2, update ticket sections to ensure required attributes are correctly set
         if (step === 2) {
             manageTicketSections();
         }
 
         // Scroll to top of the form
-        $('html, body').animate({
-            scrollTop: $(".steps-indicator").offset().top - 20
-        }, 300);
+        window.scrollTo({
+            top: document.querySelector('.steps-indicator').getBoundingClientRect().top + window.scrollY - 20,
+            behavior: 'smooth',
+        });
 
         return true;
     }
 
     const validateValuesPerFieldSearch = function(fieldSearch, stepName) {
-        let valid = true;
-        // Check required fields
-        const fields = $(`input[name^="${fieldSearch}"][required]`);
-        fields.each(function() {
-            if (!valid) {
-                return false;
-            }
-            const field = $(this);
-            if (field.val().trim() === '') {
-                valid = false;
+        // Check required fields: inputs first, then selects
+        const fields = all(`input[name^="${fieldSearch}"][required]`, form)
+            .concat(all(`select[name^="${fieldSearch}"][required]`, form));
+
+        for (const field of fields) {
+            if (field.value.trim() === '') {
                 field.focus();
                 alert(`Veuillez remplir tous les champs obligatoires pour ${stepName}.`);
-            }
-        })
-        const select = $(`select[name^="${fieldSearch}"][required]`);
-        select.each(function() {
-            if (!valid) {
                 return false;
             }
-            const field = $(this);
-            if (field.find(":selected").val().trim() === '') {
-                valid = false;
-                field.focus();
-                alert(`Veuillez remplir tous les champs obligatoires pour ${stepName}.`);
-            }
-        })
-        return valid;
+        }
+        return true;
     }
 
     // Step validation
@@ -142,7 +146,7 @@ $(document).ready(function() {
         switch(step) {
             case 1:
                 // Validate number of tickets
-                const nbPersonnes = parseInt($('#purchase_nbPersonnes').val(), 10);
+                const nbPersonnes = parseInt(nbPersonnesSelect.value, 10);
                 if (nbPersonnes < 1 || nbPersonnes > nbMaxPersonnes) {
                     valid = false;
                     alert('Veuillez sélectionner un nombre de billets valide.');
@@ -151,10 +155,10 @@ $(document).ready(function() {
 
             case 2:
                 // Validate ticket information ONLY for the selected number of tickets
-                const currentPersonnes = parseInt($('#purchase_nbPersonnes').val(), 10);
+                const currentPersonnes = parseInt(nbPersonnesSelect.value, 10);
                 for (let i = 0; i < currentPersonnes; i++) {
                     // Check if ticket type is selected
-                    if ($(`input[name="purchase[tickets][${i}][ticketEventType]"]:checked`).length === 0) {
+                    if (checkedTicketType(i) === null) {
                         alert(`Veuillez sélectionner un type de billet pour le billet ${i+1}.`);
                         return false;
                     }
@@ -167,7 +171,7 @@ $(document).ready(function() {
 
             case 3:
                 // Validate billing and payment information
-                if ($('input[name="purchase[paymentType]"]:checked').length === 0) {
+                if (form.querySelector('input[name="purchase[paymentType]"]:checked') === null) {
                     valid = false;
                     alert('Veuillez sélectionner un mode de paiement.');
                     break;
@@ -184,8 +188,8 @@ $(document).ready(function() {
                 ];
 
                 for (const fieldName of requiredFields) {
-                    const field = $(`input[name="${fieldName}"]`);
-                    if (field.val().trim() === '') {
+                    const field = byName(fieldName);
+                    if (field.value.trim() === '') {
                         valid = false;
                         field.focus();
                         alert('Veuillez remplir tous les champs obligatoires pour la facturation.');
@@ -198,33 +202,41 @@ $(document).ready(function() {
         return valid;
     }
 
+    // Les champs obligatoires des billets non affichés ne doivent pas bloquer l'envoi du formulaire :
+    // on mémorise ceux qui le sont au chargement pour pouvoir le leur rendre.
+    const markRequiredTicketFields = function() {
+        all('.ticket-section input[required], .ticket-section select[required]').forEach(function(field) {
+            field.dataset.required = 'true';
+        });
+    }
+
     // Manage ticket sections
     const manageTicketSections = function() {
-        const nbPersonnes = parseInt($('#purchase_nbPersonnes').val(), 10);
+        const nbPersonnes = parseInt(nbPersonnesSelect.value, 10);
         nbInscriptions = nbPersonnes;
-        
+
         // First, on page load, mark required fields with data-required attribute if not already done
-        $('.ticket-section').find('input[required],select[required]').each(function() {
-            $(this).attr('data-required', 'true');
-        });
-        
-        // Clear required attribute from all ticket sections first
-        $('.ticket-section').find('input,select').removeAttr('required');
-        
-        // Show/hide ticket sections based on number of tickets
-        $('.ticket-section').hide();
-        
-        // Show selected number of sections and restore required attributes
-        for (let i = 0; i < nbPersonnes; i++) {
-            $(`#ticket-section-${i}`).show();
+        markRequiredTicketFields();
+
+        all('.ticket-section').forEach(function(section, i) {
+            const visible = i < nbPersonnes;
+
+            // Show/hide ticket sections based on number of tickets
+            section.style.display = visible ? '' : 'none';
+
             // Ensure required fields are properly marked ONLY for visible sections
-            $(`#ticket-section-${i}`).find('input[data-required="true"],select[data-required="true"]').attr('required', 'required');
-        }
+            all('input, select', section).forEach(function(field) {
+                field.required = visible && field.dataset.required === 'true';
+            });
+        });
 
         // Select first available ticket type for each person if none selected
         for (let i = 0; i < nbPersonnes; i++) {
-            if ($(`input[name="purchase[tickets][${i}][ticketEventType]"]:checked`).length === 0) {
-                $(`#ticket-section-${i}`).find('ul.ticket-type-list input[type=radio]:not(:disabled):first').prop('checked', true);
+            if (checkedTicketType(i) === null) {
+                const firstAvailable = document.querySelector(`#ticket-section-${i} ul.ticket-type-list input[type=radio]:not(:disabled)`);
+                if (firstAvailable !== null) {
+                    firstAvailable.checked = true;
+                }
             }
         }
 
@@ -239,13 +251,13 @@ $(document).ready(function() {
 
     // Update the summary
     const updateSummary = function() {
-        var inscriptions = {};
-        for (var i = 0; i < nbInscriptions; i++) {
-            var radio = $(`input[name="purchase[tickets][${i}][ticketEventType]"]:checked`);
-            if (radio.length === 0) continue;
-            
-            var price = radio.data('price');
-            var label = radio.data('label');
+        const inscriptions = {};
+        for (let i = 0; i < nbInscriptions; i++) {
+            const radio = checkedTicketType(i);
+            if (radio === null) continue;
+
+            const price = parseFloat(radio.dataset.price);
+            const label = radio.dataset.label;
 
             if (typeof inscriptions[label] === 'undefined') {
                 inscriptions[label] = {price: price, quantity: 1};
@@ -406,111 +418,229 @@ $(document).ready(function() {
         mobileHtml += '</div>'; // End mobile-summary
 
         // Add both versions to the page
-        $('#ticket-summary').html(desktopHtml + mobileHtml);
+        document.getElementById('ticket-summary').innerHTML = desktopHtml + mobileHtml;
     }
+
 
     // Payment options
     const handlePaymentSelection = function() {
-        $('.payment-option').click(function() {
-            const radioInput = $(this).find('input[type="radio"]');
-            radioInput.prop('checked', true);
-            $('.payment-option').removeClass('selected');
-            $(this).addClass('selected');
+        const options = all('.payment-option');
+        options.forEach(function(option) {
+            option.addEventListener('click', function() {
+                option.querySelector('input[type="radio"]').checked = true;
+                options.forEach(function(other) {
+                    other.classList.toggle('selected', other === option);
+                });
+            });
         });
 
         // Alternative payment options toggle
-        $('#alt-payment-toggle').click(function() {
-            const $alternatives = $('.payment-alternative-options');
-            const $icon = $(this).find('i');
-            
-            if ($alternatives.is(':visible')) {
-                $alternatives.slideUp(300);
-                $icon.removeClass('fa-minus-circle').addClass('fa-plus-circle');
-            } else {
-                $alternatives.slideDown(300);
-                $icon.removeClass('fa-plus-circle').addClass('fa-minus-circle');
-            }
+        const toggle = document.getElementById('alt-payment-toggle');
+        toggle.addEventListener('click', function() {
+            const alternatives = document.querySelector('.payment-alternative-options');
+            const icon = toggle.querySelector('i');
+            const opening = alternatives.style.display === 'none';
+
+            alternatives.style.display = opening ? '' : 'none';
+            icon.classList.toggle('fa-plus-circle', !opening);
+            icon.classList.toggle('fa-minus-circle', opening);
         });
     }
 
     // Auto-fill billing from first ticket
     const setupBillingAutofill = function() {
-        $('#purchase_tickets_0_lastname').on('change', function() {
-            $('#purchase_lastname').val($(this).val()).change();
-        });
-        
-        $('#purchase_tickets_0_firstname').on('change', function() {
-            $('#purchase_firstname').val($(this).val()).change();
-        });
-        
-        $('#purchase_tickets_0_email').on('change', function() {
-            $('#purchase_email').val($(this).val()).change();
+        ['lastname', 'firstname', 'email'].forEach(function(name) {
+            document.getElementById(`purchase_tickets_0_${name}`).addEventListener('change', function() {
+                setValue(document.getElementById(`purchase_${name}`), this.value);
+            });
         });
     }
 
     // Transport information
     const cloneTransport = function() {
-        const $button = $('#clone_transport');
-        
-        if (nbInscriptions <= 1) {
-            $button.hide();
-        } else {
-            $button.show();
+        const button = document.getElementById('clone_transport');
+        if (button === null) {
+            return;
         }
 
-        $button.off('click').on('click', function(e) {
+        button.style.display = nbInscriptions <= 1 ? 'none' : '';
+    }
+
+    const setupCloneTransport = function() {
+        const button = document.getElementById('clone_transport');
+        if (button === null) {
+            return;
+        }
+
+        button.addEventListener('click', function(e) {
             e.preventDefault();
-            const mode = $('#purchase_tickets_0_transportMode').val();
-            const distance = $('#purchase_tickets_0_transportDistance').val();
-            
+            const mode = document.getElementById('purchase_tickets_0_transportMode').value;
+            const distance = document.getElementById('purchase_tickets_0_transportDistance').value;
+
             for (let i = 1; i < nbMaxPersonnes; i++) {
-                $(`#purchase_tickets_${i}_transportMode`).val(mode).change();
-                $(`#purchase_tickets_${i}_transportDistance`).val(distance).change();
+                setValue(document.getElementById(`purchase_tickets_${i}_transportMode`), mode);
+                setValue(document.getElementById(`purchase_tickets_${i}_transportDistance`), distance);
             }
-            
-            return false;
         });
+    }
+
+    const restoreFromLocalStorage = function() {
+        try {
+            const storedTickets = localStorage.getItem('tickets');
+            if (storedTickets !== null) {
+                const tickets = JSON.parse(storedTickets);
+                for (const field of form.elements) {
+                    // Ne jamais restaurer le token CSRF : sinon on écrase celui,
+                    // valide, généré par le serveur pour la session en cours.
+                    if (field.name === '' || field.name.endsWith('[_token]') || !Object.hasOwn(tickets, field.name)) continue;
+                    const value = tickets[field.name];
+                    if (value === '') continue;
+
+                    if (field.type === 'radio' || field.type === 'checkbox') {
+                        if (field.value === value) {
+                            field.checked = true;
+                        }
+                    } else {
+                        field.value = value;
+                    }
+                }
+            }
+
+            const storedNbPersonnes = localStorage.getItem('nbPersonnes');
+            if (storedNbPersonnes !== null) {
+                nbInscriptions = parseInt(storedNbPersonnes, 10);
+                if (nbPersonnesSelect.querySelector(`option[value="${nbInscriptions}"]`) !== null) {
+                    setValue(nbPersonnesSelect, nbInscriptions);
+                }
+            }
+        } catch (e) {
+            // There is an error in the value stored, remove it to prevent errors
+            localStorage.removeItem('tickets');
+            localStorage.removeItem('nbPersonnes');
+        }
+    }
+
+    const saveToLocalStorage = function() {
+        if (!storageAvailable('localStorage')) {
+            return;
+        }
+
+        const data = {};
+        for (const [key, value] of new FormData(form).entries()) {
+            // Ne jamais persister le token CSRF en localStorage.
+            if (key.endsWith('[_token]')) continue;
+            data[key] = value;
+        }
+
+        localStorage.setItem('tickets', JSON.stringify(data));
+    }
+
+    const handleSubmit = function(e) {
+        // Validate final step for payment and billing info
+        if (!validateStep(3)) {
+            e.preventDefault();
+            return;
+        }
+
+        // Validate all tickets based on current count
+        const currentPersonnes = parseInt(nbPersonnesSelect.value, 10);
+        let isValid = true;
+
+        // Validate ticket information only for the selected number of tickets
+        for (let i = 0; i < currentPersonnes; i++) {
+            // Check if ticket type is selected
+            if (checkedTicketType(i) === null) {
+                isValid = false;
+                alert(`Veuillez sélectionner un type de billet pour la personne ${i+1}.`);
+                break;
+            }
+
+            // Check required fields
+            const requiredFields = [
+                `purchase[tickets][${i}][firstname]`,
+                `purchase[tickets][${i}][lastname]`,
+                `purchase[tickets][${i}][email]`
+            ];
+
+            for (const fieldName of requiredFields) {
+                const field = byName(fieldName);
+                if (field.value.trim() === '') {
+                    isValid = false;
+                    field.focus();
+                    alert(`Veuillez remplir tous les champs obligatoires pour la personne ${i+1}.`);
+                    break;
+                }
+            }
+
+            if (!isValid) break;
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            // Retour à l'étape 2 pour corriger les informations des participants
+            goToStep(2);
+            return;
+        }
+
+        // Check CGV acceptance
+        if (!document.getElementById('purchase_cgv').checked) {
+            alert('Vous devez accepter les conditions générales de vente.');
+            e.preventDefault();
+            return;
+        }
+
+        // Clear localStorage on successful submission
+        if (storageAvailable('localStorage')) {
+            localStorage.removeItem('tickets');
+            localStorage.removeItem('nbPersonnes');
+        }
     }
 
     // Initialize and set up event listeners
     const init = function() {
         // Ensure all originally required fields are marked with data-required
-        $('.ticket-section').find('input[required],select[required]').each(function() {
-            $(this).attr('data-required', 'true');
-        });
-        
+        markRequiredTicketFields();
+
         // Initialize steps indicator
         updateStepsIndicator(currentStep);
-        
+
         // Initial management of ticket sections
         manageTicketSections();
-        
+
         // Set up navigation buttons
-        $('.btn-next').click(function(e) {
-            e.preventDefault();
-            goToStep(currentStep + 1);
-        });
-        
-        $('.btn-prev').click(function(e) {
-            e.preventDefault();
-            goToStep(currentStep - 1);
+        all('.btn-next').forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                goToStep(currentStep + 1);
+            });
         });
 
-        $('.step-item').click(function(e) {
-            if (!$(this).hasClass('completed')) return;
-            e.preventDefault();
-            goToStep($(this).data('step'));
-        })
+        all('.btn-prev').forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                goToStep(currentStep - 1);
+            });
+        });
+
+        all('.step-item').forEach(function(item) {
+            item.addEventListener('click', function(e) {
+                if (!item.classList.contains('completed')) return;
+                e.preventDefault();
+                goToStep(parseInt(item.dataset.step, 10));
+            });
+        });
 
         // Set up number of tickets selection
-        $('#purchase_nbPersonnes').change(function() {
+        nbPersonnesSelect.addEventListener('change', function() {
             manageTicketSections();
             cloneTransport();
         });
 
         // Set up ticket type selection
-        $(document).on('change', 'input[name^="purchase[tickets]"][name$="[ticketEventType]"]', function() {
-            updateSummary();
+        form.addEventListener('change', function(e) {
+            if (e.target.matches('input[name^="purchase[tickets]"][name$="[ticketEventType]"]')) {
+                updateSummary();
+            }
         });
 
         // Set up payment options
@@ -519,34 +649,11 @@ $(document).ready(function() {
         // Set up billing autofill
         setupBillingAutofill();
 
+        setupCloneTransport();
+
         // Restore from localStorage if available
         if (storageAvailable('localStorage')) {
-            try {
-                const storedTickets = localStorage.getItem('tickets');
-                if (storedTickets !== null) {
-                    const tickets = JSON.parse(storedTickets);
-                    for (const field in tickets) {
-                        // Ne jamais restaurer le token CSRF : sinon on écrase celui,
-                        // valide, généré par le serveur pour la session en cours.
-                        if (field.endsWith('[_token]')) continue;
-                        const value = tickets[field];
-                        if (value !== '') {
-                            $(`input[type!=radio][name="${field}"],select[name="${field}"],textarea[name="${field}"]`).val(value);
-                            $(`input[name="${field}"][value="${value}"]`).prop('checked', true);
-                        }
-                    }
-                }
-                
-                const storedNbPersonnes = localStorage.getItem('nbPersonnes');
-                if (storedNbPersonnes !== null) {
-                    nbInscriptions = parseInt(storedNbPersonnes);
-                    $(`#purchase_nbPersonnes option[value=${nbInscriptions}]`).prop('selected', true).change();
-                }
-            } catch (e) {
-                // There is an error in the value stored, remove it to prevent errors
-                localStorage.removeItem('tickets');
-                localStorage.removeItem('nbPersonnes');
-            }
+            restoreFromLocalStorage();
         }
 
         // Initialize form sections
@@ -557,91 +664,19 @@ $(document).ready(function() {
         // After a server-side validation failure the page re-renders at step 1, hiding field
         // errors that live in step 2 or step 3. Detect those errors and jump to the right step
         // so the user can see what needs to be corrected.
-        if ($('.tickets--errors p').length > 0) {
-            if ($('#ticket-step-2 .tickets--errors li').length > 0) {
+        if (document.querySelector('.tickets--errors p') !== null) {
+            if (document.querySelector('#ticket-step-2 .tickets--errors li') !== null) {
                 goToStep(2);
-            } else if ($('#ticket-step-3 .tickets--errors li').length > 0) {
+            } else if (document.querySelector('#ticket-step-3 .tickets--errors li') !== null) {
                 goToStep(3);
             }
         }
 
         // Handle form submission
-        $('#formulaire').on('submit', function(e) {
-            // Validate final step for payment and billing info
-            if (!validateStep(3)) {
-                e.preventDefault();
-                return false;
-            }
-            
-            // Validate all tickets based on current count
-            const currentPersonnes = parseInt($('#purchase_nbPersonnes').val(), 10);
-            let isValid = true;
-            
-            // Validate ticket information only for the selected number of tickets
-            for (let i = 0; i < currentPersonnes; i++) {
-                // Check if ticket type is selected
-                if ($(`input[name="purchase[tickets][${i}][ticketEventType]"]:checked`).length === 0) {
-                    isValid = false;
-                    alert(`Veuillez sélectionner un type de billet pour la personne ${i+1}.`);
-                    break;
-                }
-
-                // Check required fields
-                const requiredFields = [
-                    `purchase[tickets][${i}][firstname]`,
-                    `purchase[tickets][${i}][lastname]`,
-                    `purchase[tickets][${i}][email]`
-                ];
-
-                for (const fieldName of requiredFields) {
-                    const field = $(`input[name="${fieldName}"]`);
-                    if (field.val().trim() === '') {
-                        isValid = false;
-                        field.focus();
-                        alert(`Veuillez remplir tous les champs obligatoires pour la personne ${i+1}.`);
-                        break;
-                    }
-                }
-
-                if (!isValid) break;
-            }
-            
-            if (!isValid) {
-                e.preventDefault();
-                // Retour à l'étape 2 pour corriger les informations des participants
-                goToStep(2);
-                return false;
-            }
-
-            // Check CGV acceptance
-            if (!$('#purchase_cgv').prop('checked')) {
-                alert('Vous devez accepter les conditions générales de vente.');
-                e.preventDefault();
-                return false;
-            }
-
-            // Clear localStorage on successful submission
-            if (storageAvailable('localStorage')) {
-                localStorage.removeItem('tickets');
-                localStorage.removeItem('nbPersonnes');
-            }
-        });
+        form.addEventListener('submit', handleSubmit);
 
         // Save form data to localStorage on input change
-        $('#formulaire input, #formulaire select, #formulaire textarea').on('change', function() {
-            if (storageAvailable('localStorage')) {
-                const formData = new FormData(document.querySelector('#formulaire'));
-                const data = {};
-
-                for (const [key, value] of formData.entries()) {
-                    // Ne jamais persister le token CSRF en localStorage.
-                    if (key.endsWith('[_token]')) continue;
-                    data[key] = value;
-                }
-
-                localStorage.setItem('tickets', JSON.stringify(data));
-            }
-        });
+        form.addEventListener('change', saveToLocalStorage);
     }
 
     // Start the initialization
