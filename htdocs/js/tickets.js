@@ -604,9 +604,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Initialize steps indicator
         updateStepsIndicator(currentStep);
 
-        // Initial management of ticket sections
-        manageTicketSections();
-
         // Set up navigation buttons
         all('.btn-next').forEach(function(button) {
             button.addEventListener('click', function(e) {
