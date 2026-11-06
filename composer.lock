@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ff7c4844d5e857107152414b5f845a0",
+    "content-hash": "aa05a584e806a4df4f56e47eb2ba190e",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -590,33 +590,33 @@
         },
         {
             "name": "ccmbenchmark/ting",
-            "version": "3.12.1",
+            "version": "4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ccmbenchmark/ting.git",
-                "reference": "d0edb478f7af4c89c00bfe68a87f27fed8fa5d9e"
+                "reference": "a018ff6a966a14fae2d565a092d851fdc3045e10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ccmbenchmark/ting/zipball/d0edb478f7af4c89c00bfe68a87f27fed8fa5d9e",
-                "reference": "d0edb478f7af4c89c00bfe68a87f27fed8fa5d9e",
+                "url": "https://api.github.com/repos/ccmbenchmark/ting/zipball/a018ff6a966a14fae2d565a092d851fdc3045e10",
+                "reference": "a018ff6a966a14fae2d565a092d851fdc3045e10",
                 "shasum": ""
             },
             "require": {
                 "aura/sqlquery": "^2.6 || ^3.0",
                 "doctrine/cache": "^1.6",
-                "php": ">=8.0",
-                "symfony/property-access": "^6.0 || ^7.0"
+                "php": ">=8.1",
+                "symfony/property-access": "^6.0 || ^7.0 || ^8.0"
             },
             "require-dev": {
-                "atoum/atoum": "^4.0",
+                "atoum/atoum": "^4.2",
                 "atoum/stubs": "^2.0",
                 "brick/geo": "^0.5.1",
                 "ext-mysqli": "*",
                 "ext-pgsql": "*",
                 "pimple/pimple": "^3.0",
-                "symfony/cache": "^6.0 || ^7.0",
-                "symfony/uid": "^6.0 || ^7.0"
+                "symfony/cache": "^6.0 || ^7.0 || ^8.0",
+                "symfony/uid": "^6.0 || ^7.0 || ^8.0"
             },
             "suggest": {
                 "brick/geo": "Allow support of MariaDB Geometry type",
@@ -634,7 +634,6 @@
                 "Apache-2.0"
             ],
             "description": "Ting : a lightweight datamapper",
-            "homepage": "http://tech.ccmbg.com/ting/",
             "keywords": [
                 "database",
                 "datamapper",
@@ -647,45 +646,46 @@
                 "unitofwork"
             ],
             "support": {
-                "docs": "http://tech.ccmbg.com/ting/doc/en/",
-                "issues": "https://bitbucket.org/ccmbenchmark/ting/issues",
-                "source": "https://bitbucket.org/ccmbenchmark/ting"
+                "issues": "https://gitlab.ccmbg.com/core/ting/-/issues",
+                "source": "https://gitlab.ccmbg.com/core/ting"
             },
-            "time": "2025-12-16T17:21:34+00:00"
+            "time": "2026-10-07T09:44:39+00:00",
+            "published-time": "2026-10-07T09:45:39+00:00"
         },
         {
             "name": "ccmbenchmark/ting_bundle",
-            "version": "3.10.1",
+            "version": "4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ccmbenchmark/ting_bundle.git",
-                "reference": "d46b0b60672d192c186708cf8af91f14dceeb4b5"
+                "reference": "28f5480a701eb057270ba8b7d13234763cad89d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ccmbenchmark/ting_bundle/zipball/d46b0b60672d192c186708cf8af91f14dceeb4b5",
-                "reference": "d46b0b60672d192c186708cf8af91f14dceeb4b5",
+                "url": "https://api.github.com/repos/ccmbenchmark/ting_bundle/zipball/28f5480a701eb057270ba8b7d13234763cad89d8",
+                "reference": "28f5480a701eb057270ba8b7d13234763cad89d8",
                 "shasum": ""
             },
             "require": {
-                "ccmbenchmark/ting": "^3.11",
+                "ccmbenchmark/ting": "^4.0",
                 "doctrine/cache": "^1.10",
                 "php": ">=8.1",
-                "symfony/config": "^4.4 || ^5.0 || ^6.0 || ^7.0",
-                "symfony/dependency-injection": "^4.4 || ^5.0 || ^6.0 || ^7.0",
-                "symfony/http-kernel": "^4.4 || ^5.0 || ^6.0 || ^7.0",
-                "symfony/stopwatch": "^4.4 || ^5.0 || ^6.0 || ^7.0",
-                "symfony/validator": "^4.4 || ^5.0 || ^6.0 || ^7.0"
+                "symfony/config": "^4.4 || ^5.0 || ^6.0 || ^7.0 || ^8.0",
+                "symfony/dependency-injection": "^4.4 || ^5.0 || ^6.0 || ^7.0 || ^8.0",
+                "symfony/http-kernel": "^4.4 || ^5.0 || ^6.0 || ^7.0 || ^8.0",
+                "symfony/service-contracts": "^1.0 || ^2.0 || ^3.0",
+                "symfony/stopwatch": "^4.4 || ^5.0 || ^6.0 || ^7.0 || ^8.0",
+                "symfony/validator": "^4.4 || ^5.0 || ^6.0 || ^7.0 || ^8.0"
             },
             "require-dev": {
                 "atoum/atoum": "^4.2",
                 "atoum/stubs": "^2.2",
                 "brick/geo": ">=0.5 <=1.0",
-                "symfony/expression-language": "^6.3 || ^7.2",
-                "symfony/security-bundle": "^6.0 || ^7.0",
-                "symfony/security-core": "^6.0 || ^7.0",
-                "symfony/serializer": "^6.0 || ^7.0",
-                "symfony/uid": "^6.0 || ^7.0"
+                "symfony/expression-language": "^6.3 || ^7.2 || ^8.0",
+                "symfony/security-bundle": "^6.0 || ^7.0 || ^8.0",
+                "symfony/security-core": "^6.0 || ^7.0 || ^8.0",
+                "symfony/serializer": "^6.0 || ^7.0 || ^8.0",
+                "symfony/uid": "^6.0 || ^7.0 || ^8.0"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -699,10 +699,11 @@
             ],
             "description": "Symfony bundle for ccmbenchmark/ting. Provides an interface to use a lightweight datamapper in symfony.",
             "support": {
-                "issues": "https://github.com/ccmbenchmark/ting_bundle/issues",
-                "source": "https://github.com/ccmbenchmark/ting_bundle/tree/3.10.1"
+                "issues": "https://gitlab.ccmbg.com/core/ting_bundle/-/issues",
+                "source": "https://gitlab.ccmbg.com/core/ting_bundle"
             },
-            "time": "2025-04-17T09:54:35+00:00"
+            "time": "2026-10-05T15:05:56+00:00",
+            "published-time": "2026-10-07T09:45:39+00:00"
         },
         {
             "name": "cocur/slugify",
@@ -16798,5 +16799,5 @@
         "ext-zip": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.11.0"
 }
