@@ -8,6 +8,8 @@ use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Step\Then;
 use Behat\Step\When;
+use Facebook\WebDriver\Exception\NoAlertOpenException;
+use Facebook\WebDriver\Exception\NoSuchAlertException;
 use Facebook\WebDriver\Exception\TimeoutException;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverExpectedCondition;
@@ -30,7 +32,8 @@ trait BrowserContext
 
     /**
      * Pour les boutons présents plusieurs fois dans la page, dont un seul est affiché
-     * (ex. « Suivant » d'un formulaire en plusieurs étapes).
+     * (ex. « Suivant » d'un formulaire en plusieurs étapes). Attend ensuite que la page
+     * soit immobile.
      */
     #[When('I press the visible :button button')]
     public function pressVisibleButton(string $button): void
@@ -40,6 +43,7 @@ trait BrowserContext
         foreach ($page->findAll('named', ['button', $button]) as $element) {
             if ($element->isVisible()) {
                 $element->press();
+                $this->waitUntilThePageIsStill();
 
                 return;
             }
@@ -77,6 +81,45 @@ trait BrowserContext
                 sprintf('The alert says "%s", expected "%s"', $actual, $text),
                 $this->minkContext->getSession()->getDriver(),
             );
+        }
+    }
+
+    /**
+     * Un changement d'étape fait défiler la page et apparaître la nouvelle étape en fondu :
+     * tant que la page bouge, un clic peut tomber à côté de sa cible.
+     */
+    private function waitUntilThePageIsStill(): void
+    {
+        $webDriver = $this->webDriver();
+        $previousScroll = null;
+
+        $this->waitForCondition(
+            function () use ($webDriver, &$previousScroll): bool {
+                // Exécuter un script fermerait l'alerte, que l'étape suivante doit lire.
+                if ($this->isAlertOpen($webDriver)) {
+                    return true;
+                }
+
+                [$scroll, $runningAnimations] = $webDriver->executeScript(
+                    'return [window.scrollY, document.getAnimations().length];',
+                );
+                $isStill = 0 === $runningAnimations && $scroll === $previousScroll;
+                $previousScroll = $scroll;
+
+                return $isStill;
+            },
+            'The page is still moving',
+        );
+    }
+
+    private function isAlertOpen(RemoteWebDriver $webDriver): bool
+    {
+        try {
+            $webDriver->switchTo()->alert()->getText();
+
+            return true;
+        } catch (NoAlertOpenException|NoSuchAlertException) {
+            return false;
         }
     }
 
