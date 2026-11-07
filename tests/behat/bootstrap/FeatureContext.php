@@ -20,6 +20,7 @@ class FeatureContext implements Context
 {
     use ApiContext;
     use AuthContext;
+    use BrowserContext;
     use EmailContext;
     use FormContext;
     use PdfContext;
