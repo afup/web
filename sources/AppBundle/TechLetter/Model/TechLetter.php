@@ -43,6 +43,30 @@ class TechLetter implements \JsonSerializable
         return $this->projects;
     }
 
+    /**
+     * @return list<string>
+     */
+    public function getUrls(): array
+    {
+        $urls = [];
+
+        foreach ([$this->firstNews, $this->secondNews] as $news) {
+            if ($news instanceof News) {
+                $urls[] = $news->getUrl();
+            }
+        }
+
+        foreach ($this->articles as $article) {
+            $urls[] = $article->getUrl();
+        }
+
+        foreach ($this->projects as $project) {
+            $urls[] = $project->getUrl();
+        }
+
+        return $urls;
+    }
+
     public function jsonSerialize(): array
     {
         return [

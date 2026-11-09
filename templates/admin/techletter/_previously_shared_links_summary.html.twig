@@ -1,0 +1,15 @@
+{#- Preview only. Placed outside the editable blocks: the edit overlay of the preview does not cover these links. -#}
+{%- if preview and previously_shared_links|default([]) is not empty -%}
+    <div style="background:#fff3cd; border:1px solid #ffc107; border-radius:3px; color:#856404; font-size:13px; line-height:18px; padding:6px 10px; margin-bottom:9px;">
+        <strong>⚠️ Liens déjà partagés dans une veille précédente :</strong>
+        <ul style="margin:4px 0 0; padding-left:18px;">
+            {%- for url, sendings in previously_shared_links %}
+                <li style="word-break:break-all;">{{ url }} :
+                    {% for sending in sendings -%}
+                        <a href="{{ path('admin_techletter_show', {techletterId: sending.id}) }}" target="_blank" rel="noopener noreferrer" style="color:#856404;">{{ sending.dateEnvoi|date('d/m/Y') }}</a>{{ loop.last ? '' : ', ' }}
+                    {%- endfor %}
+                </li>
+            {%- endfor %}
+        </ul>
+    </div>
+{%- endif -%}

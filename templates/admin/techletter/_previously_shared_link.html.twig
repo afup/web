@@ -1,0 +1,4 @@
+{%- if preview and previously_shared_links[url] is defined -%}
+    {%- set dates = previously_shared_links[url]|map(sending => sending.dateEnvoi|date('d/m/Y'))|join(', ') -%}
+    {{ ' ' }}<span style="display:inline-block; background:#fff3cd; border:1px solid #ffc107; border-radius:3px; color:#856404; font-size:12px; font-style:normal; line-height:16px; padding:0 4px; white-space:nowrap;" title="Lien déjà partagé dans la veille du {{ dates }}">⚠️ {{ dates }}</span>
+{%- endif -%}

@@ -1,0 +1,39 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Veille de l'AFUP du {{ envoi.dateEnvoi|date("d/m/Y") }}</h2>
+
+    <div class="ui menu borderless">
+        <div class="item">
+            <a href="{{ path('admin_techletter_index') }}" class="ui button">
+                <i class="arrow left icon"></i>
+                Retour aux campagnes
+            </a>
+        </div>
+        <div class="right menu">
+            {% if envoi.urlArchive %}
+                <div class="item">
+                    <a href="{{ envoi.urlArchive }}" class="ui button" target="_blank" rel="noopener noreferrer">
+                        <i class="external alternate icon"></i>
+                        Voir l'archive sur Mailchimp
+                    </a>
+                </div>
+            {% endif %}
+            {% if not envoi.envoyeMailchimp %}
+                <div class="item">
+                    <a href="{{ path('admin_techletter_generate', {techletterId: envoi.id}) }}" class="ui button primary">
+                        <i class="edit icon"></i>
+                        Modifier
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="ui segment">
+        <iframe id="techletter-mail"
+                srcdoc="{{ mail_content }}"
+                style="width: 100%; min-height: 600px; border: 0;"
+                onload="this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px';"></iframe>
+    </div>
+{% endblock %}

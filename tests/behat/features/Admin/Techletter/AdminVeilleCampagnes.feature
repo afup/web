@@ -30,3 +30,14 @@ Feature: Administration - Veille - Campagnes
     And I should see "3" in the "tbody > tr:first-child > td:nth-child(1)" element
     And I should see "01/02/2023" in the "tbody > tr:first-child > td:nth-child(2)" element
     And I should see "non" in the "tbody > tr:first-child > td:nth-child(3)" element
+
+  @reloadDbWithTestData
+  Scenario: Consulter une campagne déjà envoyée
+    Given I am logged in as admin and on the Administration
+    And I follow "Campagnes"
+    And I should see "oui" in the "tbody > tr:last-child > td:nth-child(3)" element
+    When I follow "04/04/2018"
+    Then the ".content h2" element should contain "Veille de l'AFUP du 04/04/2018"
+    And I should see an "iframe#techletter-mail" element
+    And the response should contain "Modern PHP Without a Framework | Kevin Smith"
+    And I should not see "Verrouiller et envoyer à Mailchimp"
