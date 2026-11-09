@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Talks;
 
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Joindin\JoindinComments;
@@ -35,7 +35,10 @@ final class ShowAction extends AbstractController
 
         $speakers = $this->speakerRepository->getSpeakersByTalk($talk);
         $planning = $this->planningRepository->getByTalk($talk);
-        $event = $this->eventRepository->get($planning->getEventId());
+        if ($planning === null) {
+            throw $this->createNotFoundException();
+        }
+        $event = $this->eventRepository->get($planning->eventId);
         $comments = $this->joindinComments->getCommentsFromTalk($talk);
 
         $parser = new Parser();
