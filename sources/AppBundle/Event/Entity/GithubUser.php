@@ -2,32 +2,42 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Event\Model;
+namespace AppBundle\Event\Entity;
 
-use AppBundle\Model\HasUniqueId;
-use CCMBenchmark\Ting\Entity\NotifyProperty;
-use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;
+use AppBundle\Event\Entity\Repository\GithubUserRepository;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Webmozart\Assert\Assert;
 
-class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInterface, \Stringable, HasUniqueId
+#[ORM\Entity(repositoryClass: GithubUserRepository::class)]
+#[ORM\Table(name: 'afup_user_github')]
+class GithubUser implements UserInterface, EquatableInterface, \Stringable
 {
-    use NotifyProperty;
-
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(options: ['unsigned' => true])]
     private ?int $id = null;
 
-    private ?int $githubId = null;
+    #[ORM\Column(name: 'github_id', options: ['unsigned' => true])]
+    private int $githubId = 0;
 
+    #[ORM\Column(length: 255)]
     private string $login = '';
 
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $company = null;
 
+    #[ORM\Column(name: 'profile_url', length: 255)]
     private string $profileUrl = '';
 
+    #[ORM\Column(name: 'avatar_url', length: 255)]
     private string $avatarUrl = '';
 
+    #[ORM\Column(name: 'afup_crew', options: ['unsigned' => true, 'default' => 0])]
     private bool $afupCrew = false;
 
     public function __toString(): string
@@ -35,9 +45,37 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
         return $this->getLabel();
     }
 
+    /**
+     * @param array<mixed> $apiData Données renvoyées par l'API GitHub (/users/{login})
+     */
+    public static function fromApi(array $apiData): self
+    {
+        Assert::string($apiData['login']);
+        Assert::integer($apiData['id']);
+        Assert::string($apiData['avatar_url']);
+        Assert::nullOrString($apiData['company']);
+        Assert::nullOrString($apiData['name']);
+        Assert::string($apiData['html_url']);
+
+        return new self()
+            ->setLogin($apiData['login'])
+            ->setGithubId($apiData['id'])
+            ->setAvatarUrl($apiData['avatar_url'])
+            ->setCompany($apiData['company'])
+            ->setName($apiData['name'])
+            ->setProfileUrl($apiData['html_url']);
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getLabel(): string
@@ -50,35 +88,15 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
         return $label;
     }
 
-    public static function fromApi(array $apiData): self
-    {
-        $githubUser = new self();
-        $githubUser->setLogin($apiData['login']);
-        $githubUser->setGithubId($apiData['id']);
-        $githubUser->setAvatarUrl($apiData['avatar_url']);
-        $githubUser->setCompany($apiData['company']);
-        $githubUser->setName($apiData['name']);
-        $githubUser->setProfileUrl($apiData['html_url']);
-
-        return $githubUser;
-    }
-
-    public function setId(int $id): self
-    {
-        $this->propertyChanged('id', $this->id, $id);
-        $this->id = $id;
-        return $this;
-    }
-
-    public function getGithubId(): ?int
+    public function getGithubId(): int
     {
         return $this->githubId;
     }
 
     public function setGithubId(int $githubId): self
     {
-        $this->propertyChanged('githubId', $this->githubId, $githubId);
         $this->githubId = $githubId;
+
         return $this;
     }
 
@@ -89,8 +107,8 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
 
     public function setLogin(string $login): self
     {
-        $this->propertyChanged('login', $this->login, $login);
         $this->login = $login;
+
         return $this;
     }
 
@@ -101,8 +119,8 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
 
     public function setName(?string $name): self
     {
-        $this->propertyChanged('name', $this->name, $name);
         $this->name = $name;
+
         return $this;
     }
 
@@ -113,8 +131,8 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
 
     public function setCompany(?string $company): self
     {
-        $this->propertyChanged('company', $this->company, $company);
         $this->company = $company;
+
         return $this;
     }
 
@@ -125,8 +143,8 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
 
     public function setProfileUrl(string $profileUrl): self
     {
-        $this->propertyChanged('profileUrl', $this->profileUrl, $profileUrl);
         $this->profileUrl = $profileUrl;
+
         return $this;
     }
 
@@ -137,8 +155,8 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
 
     public function setAvatarUrl(string $avatarUrl): self
     {
-        $this->propertyChanged('avatarUrl', $this->avatarUrl, $avatarUrl);
         $this->avatarUrl = $avatarUrl;
+
         return $this;
     }
 
@@ -150,46 +168,36 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
     public function setAfupCrew(bool $afupCrew): self
     {
         $this->afupCrew = $afupCrew;
+
         return $this;
     }
 
     public function getRoles(): array
     {
         $roles = ['ROLE_GITHUB'];
-        if ($this->afupCrew === true) {
+        if ($this->afupCrew) {
             $roles[] = 'ROLE_AFUP_CREW';
         }
+
         return $roles;
     }
 
-    public function getPassword(): ?string
-    {
-        return null;
-    }
-
-    public function getSalt(): ?string
-    {
-        return null;
-    }
-
-    public function getUsername(): string
-    {
-        return $this->getLogin();
-    }
-
-    /**
-     *
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
-        return $this->getLogin();
+        if ($this->login === '') {
+            throw new \LogicException('A GitHub user must have a login to be identified.');
+        }
+
+        return $this->login;
     }
 
     public function eraseCredentials(): void {}
 
+    /**
+     * Seuls l'id et le login sont stockés en session : le user provider recharge l'entité complète.
+     *
+     * @return array{id: ?int, login: string}
+     */
     public function __serialize(): array
     {
         return [
@@ -198,26 +206,17 @@ class GithubUser implements NotifyPropertyInterface, UserInterface, EquatableInt
         ];
     }
 
-    public function __unserialize($serialized): void
+    /**
+     * @param array{id: ?int, login: string} $data
+     */
+    public function __unserialize(array $data): void
     {
-        $this->id = $serialized['id'];
-        $this->login = $serialized['login'];
+        $this->id = $data['id'];
+        $this->login = $data['login'];
     }
 
     public function isEqualTo(UserInterface $user): bool
     {
-        /**
-         * @var self $user
-         */
-        return ($user->getId() === $this->id);
-    }
-
-    public function uniqueId(): ?string
-    {
-        if ($this->id === null) {
-            return null;
-        }
-
-        return (string) $this->id;
+        return $user instanceof self && $user->getId() === $this->id;
     }
 }

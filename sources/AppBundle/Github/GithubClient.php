@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Github;
 
-use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Github\Exception\UnableToFindGithubUserException;
 use AppBundle\Github\Exception\UnableToGetGithubUserInfosException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;

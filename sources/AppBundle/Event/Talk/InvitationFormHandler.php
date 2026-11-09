@@ -9,7 +9,7 @@ use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Event\Entity\Repository\TalkInvitationRepository;
 use AppBundle\Event\Entity\TalkInvitation;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Event\Model\Talk;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

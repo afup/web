@@ -2888,13 +2888,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/GetMenuAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getLogin\\(\\) on AppBundle\\\\Event\\\\Model\\\\GithubUser\\|null\\.$#',
+	'message' => '#^Cannot call method getLogin\\(\\) on AppBundle\\\\Event\\\\Entity\\\\GithubUser\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/GithubUser/GithubUserAddAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method setAfupCrew\\(\\) on AppBundle\\\\Event\\\\Model\\\\GithubUser\\|null\\.$#',
+	'message' => '#^Cannot call method setAfupCrew\\(\\) on AppBundle\\\\Event\\\\Entity\\\\GithubUser\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/GithubUser/GithubUserAddAction.php',
@@ -2906,16 +2906,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/GithubUser/GithubUserAddAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\GithubUser\\>\\:\\:save\\(\\) expects AppBundle\\\\Event\\\\Model\\\\GithubUser, AppBundle\\\\Event\\\\Model\\\\GithubUser\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$entity of method AppBundle\\\\Doctrine\\\\EntityRepository\\<AppBundle\\\\Event\\\\Entity\\\\GithubUser\\>\\:\\:save\\(\\) expects AppBundle\\\\Event\\\\Entity\\\\GithubUser, AppBundle\\\\Event\\\\Entity\\\\GithubUser\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/GithubUser/GithubUserAddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$value of function count expects array\\|Countable, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/GithubUser/GithubUserListAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'CURRENT_TIMESTAMP\' on mixed\\.$#',
@@ -3212,7 +3206,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Site/Feuille/EditFeuilleAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Event\\\\Model\\\\GithubUser\\|int\\.$#',
+	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Event\\\\Entity\\\\GithubUser\\|int\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Speaker/SpeakerAddAction.php',
@@ -3230,7 +3224,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Speaker/SpeakerAddAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Event\\\\Model\\\\GithubUser\\|int\\.$#',
+	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Event\\\\Entity\\\\GithubUser\\|int\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Speaker/SpeakerEditAction.php',
@@ -4514,12 +4508,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/GithubUserType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$repository of class AppBundle\\\\Validator\\\\Constraints\\\\UniqueEntity constructor expects CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\|string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Form/GithubUserType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Class AppBundle\\\\Event\\\\Form\\\\LeadType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
@@ -5036,84 +5024,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Event.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'id\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/GithubUser.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'login\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/GithubUser.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:__unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/GithubUser.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:fromApi\\(\\) has parameter \\$apiData with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/GithubUser.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:getUserIdentifier\\(\\) should return non\\-empty\\-string but returns string\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/GithubUser.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$avatarUrl of method AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:setAvatarUrl\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/GithubUser.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$company of method AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:setCompany\\(\\) expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/GithubUser.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$githubId of method AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:setGithubId\\(\\) expects int, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/GithubUser.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$login of method AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:setLogin\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/GithubUser.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$name of method AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:setName\\(\\) expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/GithubUser.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$profileUrl of method AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:setProfileUrl\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/GithubUser.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:\\$id \\(int\\|null\\) does not accept mixed\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/GithubUser.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:\\$login \\(string\\) does not accept mixed\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/GithubUser.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Invoice\\:\\:getTickets\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -5400,36 +5310,6 @@ $ignoreErrors[] = [
 	'identifier' => 'offsetAccess.invalidOffset',
 	'count' => 4,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/EventStatsRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class AppBundle\\\\Event\\\\Model\\\\Repository\\\\GithubUserRepository implements generic interface Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserProviderInterface but does not specify its types\\: TUser$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/GithubUserRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\GithubUserRepository\\:\\:getAllOrderedByLogin\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/GithubUserRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\GithubUserRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/GithubUserRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\GithubUserRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/GithubUserRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/GithubUserRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\InvoiceRepository\\:\\:getByEventId\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
@@ -7394,13 +7274,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Security/GithubAuthenticator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$githubId of method AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:setGithubId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/GithubAuthenticator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$login of method AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:setLogin\\(\\) expects string, string\\|null given\\.$#',
+	'message' => '#^Parameter \\#1 \\$login of method AppBundle\\\\Event\\\\Entity\\\\GithubUser\\:\\:setLogin\\(\\) expects string, string\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Security/GithubAuthenticator.php',
@@ -7448,50 +7322,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Security/TalkVoter.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'id\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Security/TestGithubAuthenticator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'login\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/TestGithubAuthenticator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'name\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/TestGithubAuthenticator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Security\\\\TestGithubAuthenticator\\:\\:getTestUsersDetails\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/TestGithubAuthenticator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Security\\\\TestGithubAuthenticator\\:\\:onAuthenticationSuccess\\(\\) has parameter \\$firewallName with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/TestGithubAuthenticator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$githubId of method AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:setGithubId\\(\\) expects int, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/TestGithubAuthenticator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$login of method AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:setLogin\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/TestGithubAuthenticator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$name of method AppBundle\\\\Event\\\\Model\\\\GithubUser\\:\\:setName\\(\\) expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Security/TestGithubAuthenticator.php',
 ];

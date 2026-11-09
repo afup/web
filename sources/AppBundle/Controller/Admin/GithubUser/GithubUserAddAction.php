@@ -7,7 +7,7 @@ namespace AppBundle\Controller\Admin\GithubUser;
 use AppBundle\AuditLog\Audit;
 use AppBundle\Event\Form\GithubUserFormData;
 use AppBundle\Event\Form\GithubUserType;
-use AppBundle\Event\Model\Repository\GithubUserRepository;
+use AppBundle\Event\Entity\Repository\GithubUserRepository;
 use AppBundle\Github\GithubClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +25,6 @@ class GithubUserAddAction extends AbstractController
         $data = new GithubUserFormData();
         $form = $this->createForm(GithubUserType::class, $data, [
             'github_client' => $this->githubClient,
-            'github_user_repository' => $this->githubUserRepository,
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

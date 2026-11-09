@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Security;
 
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
-use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Talk;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

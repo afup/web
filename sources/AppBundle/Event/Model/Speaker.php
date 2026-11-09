@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Event\Model;
 
 use AppBundle\Association\Genre;
+use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Event\Speaker\MicrophoneType;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
 use CCMBenchmark\Ting\Entity\NotifyPropertyInterface;

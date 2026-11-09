@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Event\Form;
 
 use AppBundle\Association\Genre;
-use AppBundle\Event\Model\GithubUser;
-use AppBundle\Event\Model\Repository\GithubUserRepository;
+use AppBundle\Event\Entity\GithubUser;
+use AppBundle\Event\Entity\Repository\GithubUserRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;
 use Symfony\Component\Form\AbstractType;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Security;
 
-use AppBundle\Event\Model\GithubUser;
-use AppBundle\Event\Model\Repository\GithubUserRepository;
+use AppBundle\Event\Entity\GithubUser;
+use AppBundle\Event\Entity\Repository\GithubUserRepository;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
@@ -20,6 +20,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
+use Webmozart\Assert\Assert;
 
 class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationEntryPointInterface
 {
@@ -40,13 +41,15 @@ class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationE
                 $githubUser = $client->fetchUserFromToken($accessToken);
 
                 // 1) have they logged in with GitHub before? Easy!
-                $user = $this->githubUserRepository->getOneBy(['githubId' => $githubUser->getId()]);
+                $githubId = $githubUser->getId();
+                Assert::notNull($githubId);
+                $user = $this->githubUserRepository->findOneByGithubId($githubId);
                 if ($user === null) {
                     $user = new GithubUser();
                 }
 
                 $user
-                    ->setGithubId($githubUser->getId())
+                    ->setGithubId($githubId)
                     ->setName($githubUser->getName())
                     ->setLogin($githubUser->getNickname())
                 ;
