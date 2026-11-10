@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Command;
 
-use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Enum\CompanyMemberStatus;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,10 +26,8 @@ class UpdateCompanyMemberStateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var CompanyMember $companyMember */
         foreach ($this->companyMemberRepository->loadAll() as $companyMember) {
-            $hasUptoDateMembershipFee = $companyMember->hasUpToDateMembershipFee();
-            $companyMember->setStatus($hasUptoDateMembershipFee ? 1 : 0);
+            $companyMember->status = $companyMember->hasUpToDateMembershipFee() ? CompanyMemberStatus::Active : CompanyMemberStatus::Inactive;
             $this->companyMemberRepository->save($companyMember);
         }
 

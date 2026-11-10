@@ -35,7 +35,7 @@
                 <p>Aucun résultat</p>
             </div>
         {% else %}
-            {% if results.companyMembers.count > 0 %}
+            {% if results.companyMembers|length > 0 %}
                 <div class="ui segment">
                     <h2 class="ui header">Cotisations de personnes morales</h2>
 

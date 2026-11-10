@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Subscriber;
 
 use Afup\Site\Corporate\Feuille;
-use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Controller\Website\News\ListAction;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
@@ -162,7 +161,6 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
 
     private function registerMembers(UrlContainerInterface $urls): void
     {
-        /** @var CompanyMember[] $members */
         $members = $this->companyMemberRepository->findDisplayableCompanies();
 
         foreach ($members as $member) {
@@ -171,7 +169,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                     $this->urlGenerator->generate(
                         'company_public_profile',
                         [
-                            'id' => $member->getId(),
+                            'id' => $member->id,
                             'slug' => $member->getSlug(),
                         ],
                         UrlGeneratorInterface::ABSOLUTE_URL,

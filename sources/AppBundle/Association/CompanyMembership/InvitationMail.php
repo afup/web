@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\CompanyMembership;
 
-use AppBundle\Association\Model\CompanyMember;
+use AppBundle\Association\Entity\CompanyMember;
 use AppBundle\Association\Entity\CompanyMemberInvitation;
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUser;
@@ -32,8 +32,8 @@ class InvitationMail
     {
         $text = $this->translator->trans('mail.invitationMembership.text',
             [
-                '%firstname%' => $companyMember->getFirstName(),
-                '%lastname%' => $companyMember->getLastName(),
+                '%firstname%' => $companyMember->firstName,
+                '%lastname%' => $companyMember->lastName,
                 '%link%' => $this->router->generate(
                     'company_invitation',
                     ['invitationId' => $invitation->id, 'token' => $invitation->token],
@@ -43,7 +43,7 @@ class InvitationMail
         );
 
         return $this->mailer->sendTransactional(new Message(
-            sprintf('%s vous invite à profiter de son compte "Membre AFUP"', $companyMember->getCompanyName()),
+            sprintf('%s vous invite à profiter de son compte "Membre AFUP"', $companyMember->companyName),
             MailUserFactory::sponsors(),
             new MailUser($invitation->email),
         ), $text);

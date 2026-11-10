@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\CompanyPublicProfile;
 
-use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\CompanyMember;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 abstract class CompanyPublicProfileController extends AbstractController
@@ -18,7 +18,7 @@ abstract class CompanyPublicProfileController extends AbstractController
 
         if ($companyMember === null
             || $companyMember->getSlug() != $slug
-            || false === $companyMember->getPublicProfileEnabled()
+            || true !== $companyMember->publicProfileEnabled
             || false === $companyMember->hasUpToDateMembershipFee()
         ) {
             throw $this->createNotFoundException("Company member not found");
