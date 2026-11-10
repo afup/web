@@ -29,22 +29,18 @@ final class GithubUserRepository extends EntityRepository implements UserProvide
     }
 
     /**
-     * Le tri est insensible à la casse : la colonne login est en utf8mb4_bin,
-     * d'où la collation explicite (non exprimable en DQL).
+     * Le tri est insensible à la casse : la colonne login est en utf8mb4_bin.
      *
      * @return list<GithubUser>
      */
     public function getAllOrderedByLogin(): array
     {
-        $rsm = $this->createResultSetMappingBuilder('u');
-
-        $sql = sprintf(
-            'SELECT %s FROM afup_user_github u ORDER BY u.login COLLATE utf8mb4_unicode_ci ASC',
-            $rsm->generateSelectClause(),
-        );
-
         /** @var list<GithubUser> $users */
-        $users = $this->getEntityManager()->createNativeQuery($sql, $rsm)->getResult();
+        $users = $this->createQueryBuilder('u')
+            ->orderBy('LOWER(u.login)', 'ASC')
+            ->addOrderBy('u.login', 'ASC')
+            ->getQuery()
+            ->getResult();
 
         return $users;
     }

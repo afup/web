@@ -7274,24 +7274,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Security/GithubAuthenticator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$githubId of method AppBundle\\\\Event\\\\Entity\\\\GithubUser\\:\\:setGithubId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/GithubAuthenticator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$githubId of method AppBundle\\\\Event\\\\Entity\\\\Repository\\\\GithubUserRepository\\:\\:findOneByGithubId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/GithubAuthenticator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$login of method AppBundle\\\\Event\\\\Entity\\\\GithubUser\\:\\:setLogin\\(\\) expects string, string\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/GithubAuthenticator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$url of class Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse constructor expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,

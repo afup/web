@@ -39,16 +39,22 @@ class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationE
                 /** @var GithubResourceOwner $githubUser */
                 $githubUser = $client->fetchUserFromToken($accessToken);
 
+                $githubId = $githubUser->getId();
+                $login = $githubUser->getNickname();
+                if ($githubId === null || $login === null) {
+                    throw new AuthenticationException('Unable to retrieve the GitHub user id or login.');
+                }
+
                 // 1) have they logged in with GitHub before? Easy!
-                $user = $this->githubUserRepository->findOneByGithubId($githubUser->getId());
+                $user = $this->githubUserRepository->findOneByGithubId($githubId);
                 if ($user === null) {
                     $user = new GithubUser();
                 }
 
                 $user
-                    ->setGithubId($githubUser->getId())
+                    ->setGithubId($githubId)
                     ->setName($githubUser->getName())
-                    ->setLogin($githubUser->getNickname())
+                    ->setLogin($login)
                 ;
                 $this->githubUserRepository->save($user);
 
