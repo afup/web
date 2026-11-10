@@ -32,7 +32,10 @@ class GithubClient
         }
 
         if ($response->getStatusCode() === 200) {
-            return GithubUser::fromApi($response->toArray());
+            /** @var array{login: string, id: int, avatar_url: string, company: ?string, name: ?string, html_url: string} $apiData */
+            $apiData = $response->toArray();
+
+            return GithubUser::fromApi($apiData);
         }
 
         throw new UnableToGetGithubUserInfosException(

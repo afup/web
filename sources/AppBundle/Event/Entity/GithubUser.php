@@ -8,7 +8,6 @@ use AppBundle\Event\Entity\Repository\GithubUserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Webmozart\Assert\Assert;
 
 #[ORM\Entity(repositoryClass: GithubUserRepository::class)]
 #[ORM\Table(name: 'afup_user_github')]
@@ -46,17 +45,10 @@ class GithubUser implements UserInterface, EquatableInterface, \Stringable
     }
 
     /**
-     * @param array<mixed> $apiData Données renvoyées par l'API GitHub (/users/{login})
+     * @param array{login: string, id: int, avatar_url: string, company: ?string, name: ?string, html_url: string} $apiData Données renvoyées par l'API GitHub (/users/{login})
      */
     public static function fromApi(array $apiData): self
     {
-        Assert::string($apiData['login']);
-        Assert::integer($apiData['id']);
-        Assert::string($apiData['avatar_url']);
-        Assert::nullOrString($apiData['company']);
-        Assert::nullOrString($apiData['name']);
-        Assert::string($apiData['html_url']);
-
         return new self()
             ->setLogin($apiData['login'])
             ->setGithubId($apiData['id'])

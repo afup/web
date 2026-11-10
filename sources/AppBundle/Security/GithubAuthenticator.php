@@ -20,7 +20,6 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
-use Webmozart\Assert\Assert;
 
 class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationEntryPointInterface
 {
@@ -41,15 +40,13 @@ class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationE
                 $githubUser = $client->fetchUserFromToken($accessToken);
 
                 // 1) have they logged in with GitHub before? Easy!
-                $githubId = $githubUser->getId();
-                Assert::notNull($githubId);
-                $user = $this->githubUserRepository->findOneByGithubId($githubId);
+                $user = $this->githubUserRepository->findOneByGithubId($githubUser->getId());
                 if ($user === null) {
                     $user = new GithubUser();
                 }
 
                 $user
-                    ->setGithubId($githubId)
+                    ->setGithubId($githubUser->getId())
                     ->setName($githubUser->getName())
                     ->setLogin($githubUser->getNickname())
                 ;

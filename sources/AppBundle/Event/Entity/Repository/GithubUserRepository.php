@@ -11,7 +11,6 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @extends EntityRepository<GithubUser>
@@ -44,9 +43,8 @@ final class GithubUserRepository extends EntityRepository implements UserProvide
             $rsm->generateSelectClause(),
         );
 
+        /** @var list<GithubUser> $users */
         $users = $this->getEntityManager()->createNativeQuery($sql, $rsm)->getResult();
-        Assert::isList($users);
-        Assert::allIsInstanceOf($users, GithubUser::class);
 
         return $users;
     }
