@@ -6,7 +6,7 @@ namespace AppBundle\Association\UserMembership;
 
 use AppBundle\AssembleeGenerale\Entity\Repository\PresenceRepository;
 use AppBundle\AssembleeGenerale\Enum\PresenceEtat;
-use AppBundle\Association\Model\CompanyMember;
+use AppBundle\Association\Entity\CompanyMember;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Entity\Repository\UserBadgeRepository;

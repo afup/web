@@ -6,7 +6,7 @@ namespace AppBundle\Association\Model\Repository;
 
 use AppBundle\Association\Genre;
 use AppBundle\Association\MemberType;
-use AppBundle\Association\Model\CompanyMember;
+use AppBundle\Association\Entity\CompanyMember;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Entity\Badge;
 use Aura\SqlQuery\Common\SelectInterface;
@@ -127,7 +127,7 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         return $this
             ->getPreparedQuery($queryBuilder->getStatement())
             ->setParams([
-                'company' => $companyMember->getId(),
+                'company' => $companyMember->id,
                 'state' => User::STATUS_ACTIVE,
             ])
             ->query($this->getCollection($this->getHydratorForUser()))
@@ -389,6 +389,8 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
                 'app.`nearest_office`', 'app.`last_login`',
                 'MD5(CONCAT(app.`id`, \'_\', app.`email`, \'_\', app.`login`)) as hash',
                 "MAX(ac.date_fin) AS lastsubcription",
+                'apm.`raison_sociale` AS company_name',
+                'apm.`max_members` AS company_max_members',
             ]);
     }
 
@@ -411,7 +413,8 @@ class UserRepository extends Repository implements MetadataInitializer, UserProv
         return new HydratorSingleObject()
             ->mapAliasTo('lastsubcription', 'app', 'setLastSubscription')
             ->mapAliasTo('hash', 'app', 'setHash')
-            ->mapObjectTo('apm', 'app', 'setCompany')
+            ->mapAliasTo('company_name', 'app', 'setCompanyName')
+            ->mapAliasTo('company_max_members', 'app', 'setCompanyMaxMembers')
         ;
     }
 

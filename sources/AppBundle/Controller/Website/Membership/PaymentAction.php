@@ -6,7 +6,7 @@ namespace AppBundle\Controller\Website\Membership;
 
 use AppBundle\Afup;
 use AppBundle\MembershipFee\MembershipFeeService;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\MembershipFee\Entity\Cotisation;
 use AppBundle\Payment\PayboxBilling;
@@ -29,19 +29,19 @@ final class PaymentAction extends AbstractController
         $invoice = $this->membershipFeeService->getByInvoice($invoiceNumber, $token);
         $company = null;
         if ($invoice instanceof Cotisation) {
-            $company = $this->companyMemberRepository->get($invoice->idPersonne);
+            $company = $this->companyMemberRepository->find($invoice->idPersonne);
         }
 
         if (!$invoice || $company === null) {
             throw $this->createNotFoundException(sprintf('Could not find the invoice "%s" with token "%s"', $invoiceNumber, $token));
         }
 
-        $payboxBilling = new PayboxBilling($company->getFirstName(), $company->getLastName(), $company->getAddress(), $company->getZipCode(), $company->getCity(), $company->getCountry());
+        $payboxBilling = new PayboxBilling($company->firstName, $company->lastName, $company->address, $company->zipCode, $company->city, $company->country);
 
         $paybox = $this->payboxFactory->createPayboxForSubscription(
             'F' . $invoiceNumber,
             (float) $invoice->montant,
-            $company->getEmail(),
+            $company->email,
             $payboxBilling,
         );
 

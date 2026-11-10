@@ -8,8 +8,8 @@ use Afup\Tests\Support\IntegrationTestCase;
 use AppBundle\Association\Entity\CompanyMemberInvitation;
 use AppBundle\Association\Entity\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Enum\InvitationEtat;
-use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\CompanyMember;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 
 final class CompanyMemberInvitationRepositoryTest extends IntegrationTestCase
 {
@@ -21,12 +21,12 @@ final class CompanyMemberInvitationRepositoryTest extends IntegrationTestCase
         $company = $this->createCompany($companyMemberRepository, 'societe-a@example.com');
         $otherCompany = $this->createCompany($companyMemberRepository, 'societe-b@example.com');
 
-        $this->persistInvitation($repository, $company->getId(), 'en-attente@example.com', InvitationEtat::EnAttente);
-        $this->persistInvitation($repository, $company->getId(), 'annulee@example.com', InvitationEtat::Annulee);
-        $this->persistInvitation($repository, $company->getId(), 'acceptee@example.com', InvitationEtat::Acceptee);
-        $this->persistInvitation($repository, $otherCompany->getId(), 'autre-societe@example.com', InvitationEtat::EnAttente);
+        $this->persistInvitation($repository, $company->id, 'en-attente@example.com', InvitationEtat::EnAttente);
+        $this->persistInvitation($repository, $company->id, 'annulee@example.com', InvitationEtat::Annulee);
+        $this->persistInvitation($repository, $company->id, 'acceptee@example.com', InvitationEtat::Acceptee);
+        $this->persistInvitation($repository, $otherCompany->id, 'autre-societe@example.com', InvitationEtat::EnAttente);
 
-        $invitations = $repository->loadPendingInvitationsByCompany((int) $company->getId());
+        $invitations = $repository->loadPendingInvitationsByCompany((int) $company->id);
 
         self::assertCount(1, $invitations);
         self::assertSame('en-attente@example.com', $invitations[0]->email);
@@ -40,13 +40,13 @@ final class CompanyMemberInvitationRepositoryTest extends IntegrationTestCase
 
         $company = $this->createCompany($companyMemberRepository, 'tri@example.com');
 
-        $ancienne = $this->persistInvitation($repository, $company->getId(), 'ancienne@example.com', InvitationEtat::EnAttente);
+        $ancienne = $this->persistInvitation($repository, $company->id, 'ancienne@example.com', InvitationEtat::EnAttente);
         $ancienne->submittedOn = new \DateTime('-2 days');
         $repository->save($ancienne);
 
-        $recente = $this->persistInvitation($repository, $company->getId(), 'recente@example.com', InvitationEtat::EnAttente);
+        $recente = $this->persistInvitation($repository, $company->id, 'recente@example.com', InvitationEtat::EnAttente);
 
-        $invitations = $repository->loadPendingInvitationsByCompany((int) $company->getId());
+        $invitations = $repository->loadPendingInvitationsByCompany((int) $company->id);
 
         self::assertSame(['ancienne@example.com', 'recente@example.com'], array_map(
             static fn(CompanyMemberInvitation $invitation): string => $invitation->email,
@@ -63,16 +63,16 @@ final class CompanyMemberInvitationRepositoryTest extends IntegrationTestCase
         $company = $this->createCompany($companyMemberRepository, 'recherche@example.com');
         $otherCompany = $this->createCompany($companyMemberRepository, 'recherche-autre@example.com');
 
-        $this->persistInvitation($repository, $company->getId(), 'invite@example.com', InvitationEtat::EnAttente);
+        $this->persistInvitation($repository, $company->id, 'invite@example.com', InvitationEtat::EnAttente);
 
-        $invitation = $repository->findPendingByEmail((int) $company->getId(), 'invite@example.com');
+        $invitation = $repository->findPendingByEmail((int) $company->id, 'invite@example.com');
 
         self::assertNotNull($invitation);
         self::assertSame('invite@example.com', $invitation->email);
-        self::assertSame((int) $company->getId(), $invitation->companyId);
+        self::assertSame((int) $company->id, $invitation->companyId);
 
         // Le même email chez une autre société ne doit rien retourner.
-        self::assertNull($repository->findPendingByEmail((int) $otherCompany->getId(), 'invite@example.com'));
+        self::assertNull($repository->findPendingByEmail((int) $otherCompany->id, 'invite@example.com'));
     }
 
     public function testFindPendingByEmailIgnoresCancelledInvitation(): void
@@ -82,11 +82,11 @@ final class CompanyMemberInvitationRepositoryTest extends IntegrationTestCase
 
         $company = $this->createCompany($companyMemberRepository, 'annulation@example.com');
 
-        $invitation = $this->persistInvitation($repository, $company->getId(), 'annulee@example.com', InvitationEtat::EnAttente);
+        $invitation = $this->persistInvitation($repository, $company->id, 'annulee@example.com', InvitationEtat::EnAttente);
         $invitation->status = InvitationEtat::Annulee;
         $repository->save($invitation);
 
-        self::assertNull($repository->findPendingByEmail((int) $company->getId(), 'annulee@example.com'));
+        self::assertNull($repository->findPendingByEmail((int) $company->id, 'annulee@example.com'));
     }
 
     public function testSaveThenUpdateKeepsSameRow(): void
@@ -97,7 +97,7 @@ final class CompanyMemberInvitationRepositoryTest extends IntegrationTestCase
 
         $company = $this->createCompany($companyMemberRepository, 'cycle@example.com');
 
-        $invitation = $this->persistInvitation($repository, $company->getId(), 'cycle@example.com', InvitationEtat::EnAttente);
+        $invitation = $this->persistInvitation($repository, $company->id, 'cycle@example.com', InvitationEtat::EnAttente);
         $id = $invitation->id;
 
         $invitation->status = InvitationEtat::Acceptee;
@@ -110,7 +110,7 @@ final class CompanyMemberInvitationRepositoryTest extends IntegrationTestCase
         );
         self::assertSame(1, (int) $connection->fetchOne(
             'SELECT COUNT(*) FROM afup_personnes_morales_invitations WHERE company_id = :companyId',
-            ['companyId' => $company->getId()],
+            ['companyId' => $company->id],
         ));
     }
 
@@ -119,16 +119,16 @@ final class CompanyMemberInvitationRepositoryTest extends IntegrationTestCase
         static $counter = 0;
         $counter++;
 
-        $company = (new CompanyMember())
-            ->setFirstName('Prénom')
-            ->setLastName('Nom')
-            ->setEmail($email)
-            ->setCompanyName('Société de test ' . $counter)
-            ->setSiret('12345678901234')
-            ->setAddress('1 rue du Test')
-            ->setZipCode('75000')
-            ->setCity('Paris')
-            ->setCountry('FR');
+        $company = new CompanyMember();
+        $company->firstName = 'Prénom';
+        $company->lastName = 'Nom';
+        $company->email = $email;
+        $company->companyName = 'Société de test ' . $counter;
+        $company->siret = '12345678901234';
+        $company->address = '1 rue du Test';
+        $company->zipCode = '75000';
+        $company->city = 'Paris';
+        $company->country = 'FR';
         $repository->save($company);
 
         return $company;

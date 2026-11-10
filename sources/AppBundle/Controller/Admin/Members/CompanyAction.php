@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Members;
 
 use AppBundle\Association\Form\CompanyEditType;
-use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\CompanyMember;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,7 +24,7 @@ class CompanyAction extends AbstractController
     {
         $company = new CompanyMember();
         if ($id) {
-            $company = $this->companyMemberRepository->get($id);
+            $company = $this->companyMemberRepository->find($id);
             if ($company === null) {
                 $this->addFlash('error', 'Personne morale non trouvée');
                 return $this->redirectToRoute('admin_members_company_list');
@@ -37,7 +37,7 @@ class CompanyAction extends AbstractController
                 $this->companyMemberRepository->save($company);
                 $this->addFlash('notice', 'La personne morale a été ' . ($id ? 'modifiée' : 'ajoutée'));
 
-                return $this->redirectToRoute('admin_members_company_list', ['filter' => $company->getCompanyName()]);
+                return $this->redirectToRoute('admin_members_company_list', ['filter' => $company->companyName]);
             } catch (Exception) {
                 $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout de la personne morale');
             }
@@ -45,7 +45,7 @@ class CompanyAction extends AbstractController
 
         return $this->render('admin/members/company/' . ($id ? 'edit' : 'add') . '.html.twig', [
             'form' => $form->createView(),
-            'users' => $this->userRepository->search('lastname', 'asc', null, $company->getId(), onlyActive: false),
+            'users' => $this->userRepository->search('lastname', 'asc', null, $company->id, onlyActive: false),
             'company' => $company,
         ]);
     }

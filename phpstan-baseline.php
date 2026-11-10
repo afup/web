@@ -350,12 +350,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Accounting/Form/TransactionsImportType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to an undefined method AppBundle\\\\Association\\\\Model\\\\CompanyMember\\|AppBundle\\\\Association\\\\Model\\\\User\\:\\:getCompanyName\\(\\)\\.$#',
-	'identifier' => 'method.notFound',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Accounting/Invoices/Generator/CompanyMemberInvoiceGenerator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Binary operation "\\+" between mixed and 0\\|30\\|90\\|110\\|130\\|160\\|190 results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 4,
@@ -852,222 +846,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\CompanyMember\\:\\:getFormattedRelatedAfupOffices\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/CompanyMember.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\CompanyMember\\:\\:setFormattedRelatedAfupOffices\\(\\) has parameter \\$relatedAfupOffices with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/CompanyMember.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$array of function implode expects array\\<string\\>, list given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
- 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/CompanyMember.php',
- ];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'id\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'id_personne_morale\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'nb\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'raison_sociale\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset 0 on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access property \\$nb on mixed\\.$#',
-	'identifier' => 'property.nonObject',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method bindValue\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method cols\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getBindValues\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getStatement\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 4,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method orderBy\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method where\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 4,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to int\\.$#',
-	'identifier' => 'cast.int',
-	'count' => 5,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\CompanyMemberRepository\\:\\:findById\\(\\) has parameter \\$id with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\CompanyMemberRepository\\:\\:findById\\(\\) should return AppBundle\\\\Association\\\\Model\\\\CompanyMember\\|null but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\CompanyMemberRepository\\:\\:findDisplayableCompanies\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\CompanyMemberRepository\\:\\:getHydratorForCompanyMember\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\CompanyMemberRepository\\:\\:getQueryBuilderWithCompleteCompanyMember\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\CompanyMemberRepository\\:\\:getQueryBuilderWithSubscriptions\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\CompanyMemberRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\CompanyMemberRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\CompanyMemberRepository\\:\\:loadAll\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\CompanyMemberRepository\\:\\:search\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\CompanyMemberRepository\\:\\:searchCompanyMemberSubscriptions\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$hydrator of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Association\\\\Model\\\\CompanyMember\\>\\:\\:getCollection\\(\\) expects CCMBenchmark\\\\Ting\\\\Repository\\\\HydratorInterface\\<mixed\\>\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 4,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$params of method CCMBenchmark\\\\Ting\\\\Query\\\\Query\\:\\:setParams\\(\\) expects array, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$sql of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Association\\\\Model\\\\CompanyMember\\>\\:\\:getPreparedQuery\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$sql of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Association\\\\Model\\\\CompanyMember\\>\\:\\:getQuery\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$callback of function array_filter expects \\(callable\\(mixed\\)\\: bool\\)\\|null, Closure\\(AppBundle\\\\Association\\\\Model\\\\CompanyMember\\)\\: bool given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Unable to resolve the template type U in call to method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Association\\\\Model\\\\CompanyMember\\>\\:\\:getCollection\\(\\)$#',
-	'identifier' => 'argument.templateType',
-	'count' => 5,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/Repository/CompanyMemberRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\Repository\\\\SubscriptionRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
@@ -1970,12 +1748,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Command/TicketStatsNotificationCommand.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Command/UpdateCompanyMemberStateCommand.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$messages of method Symfony\\\\Component\\\\Console\\\\Output\\\\OutputInterface\\:\\:writeln\\(\\) expects iterable\\<string\\>\\|string, string\\|false given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -2246,30 +2018,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/Journal/UploadAttachmentAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getCompanyName\\(\\) on AppBundle\\\\Association\\\\Model\\\\CompanyMember\\|AppBundle\\\\Association\\\\Model\\\\User\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/MembershipFee/AddMembershipFeeAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getFirstName\\(\\) on AppBundle\\\\Association\\\\Model\\\\CompanyMember\\|AppBundle\\\\Association\\\\Model\\\\User\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/MembershipFee/AddMembershipFeeAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Association\\\\Model\\\\CompanyMember\\|AppBundle\\\\Association\\\\Model\\\\User\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/MembershipFee/AddMembershipFeeAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getLastName\\(\\) on AppBundle\\\\Association\\\\Model\\\\CompanyMember\\|AppBundle\\\\Association\\\\Model\\\\User\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/MembershipFee/AddMembershipFeeAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$datetime of method Symfony\\\\Polyfill\\\\Intl\\\\Icu\\\\IntlDateFormatter\\:\\:format\\(\\) expects DateTimeInterface\\|int\\|string, DateTime\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 3,
@@ -2286,30 +2034,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/MembershipFee/DownloadMembershipFeeInvoiceAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getCompanyName\\(\\) on AppBundle\\\\Association\\\\Model\\\\CompanyMember\\|AppBundle\\\\Association\\\\Model\\\\User\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/MembershipFee/EditMembershipFeeAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getFirstName\\(\\) on AppBundle\\\\Association\\\\Model\\\\CompanyMember\\|AppBundle\\\\Association\\\\Model\\\\User\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/MembershipFee/EditMembershipFeeAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Association\\\\Model\\\\CompanyMember\\|AppBundle\\\\Association\\\\Model\\\\User\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/MembershipFee/EditMembershipFeeAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getLastName\\(\\) on AppBundle\\\\Association\\\\Model\\\\CompanyMember\\|AppBundle\\\\Association\\\\Model\\\\User\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/MembershipFee/EditMembershipFeeAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$entity of method AppBundle\\\\Doctrine\\\\EntityRepository\\<AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\>\\:\\:save\\(\\) expects AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation, AppBundle\\\\MembershipFee\\\\Entity\\\\Cotisation\\|null given\\.$#',
@@ -3908,38 +3632,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/ValueResolver/AdminEventSelectionValueResolver.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$code of method AppBundle\\\\Antennes\\\\AntenneRepository\\:\\:findByCode\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/CompanyPublicProfile/IndexAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$callback of function usort expects callable\\(mixed, mixed\\)\\: int, Closure\\(AppBundle\\\\Association\\\\Model\\\\CompanyMember, AppBundle\\\\Association\\\\Model\\\\CompanyMember\\)\\: int\\<\\-1, 1\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/CompanyPublicProfile/ListAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
 	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HtmlSitemapAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getCompanyName\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HtmlSitemapAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HtmlSitemapAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getSlug\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HtmlSitemapAction.php',
 ];
@@ -4022,54 +3716,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Member/CompanyPublicProfileAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$careersPageUrl of method AppBundle\\\\Association\\\\Model\\\\CompanyMember\\:\\:setCareersPageUrl\\(\\) expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Member/CompanyPublicProfileAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$contactPageUrl of method AppBundle\\\\Association\\\\Model\\\\CompanyMember\\:\\:setContactPageUrl\\(\\) expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Member/CompanyPublicProfileAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$description of method AppBundle\\\\Association\\\\Model\\\\CompanyMember\\:\\:setDescription\\(\\) expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Member/CompanyPublicProfileAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$membershipReason of method AppBundle\\\\Association\\\\Model\\\\CompanyMember\\:\\:setMembershipReason\\(\\) expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Member/CompanyPublicProfileAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$publicProfileEnabled of method AppBundle\\\\Association\\\\Model\\\\CompanyMember\\:\\:setPublicProfileEnabled\\(\\) expects bool, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Member/CompanyPublicProfileAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$relatedAfupOffices of method AppBundle\\\\Association\\\\Model\\\\CompanyMember\\:\\:setFormattedRelatedAfupOffices\\(\\) expects array, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Member/CompanyPublicProfileAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$twitterHandle of method AppBundle\\\\Association\\\\Model\\\\CompanyMember\\:\\:setTwitterHandle\\(\\) expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Member/CompanyPublicProfileAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$websiteUrl of method AppBundle\\\\Association\\\\Model\\\\CompanyMember\\:\\:setWebsiteUrl\\(\\) expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Member/CompanyPublicProfileAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Binary operation "\\+" between int\\<0, max\\> and mixed results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 1,
@@ -4116,24 +3762,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Member/MembersAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type array\\<AppBundle\\\\Association\\\\Entity\\\\CompanyMemberInvitation\\>\\|null supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/CompanyAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$value of function count expects array\\|Countable, array\\<AppBundle\\\\Association\\\\Entity\\\\CompanyMemberInvitation\\>\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/CompanyAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$numberOfMembers of method AppBundle\\\\Association\\\\CompanyMembership\\\\SubscriptionManagement\\:\\:createInvoiceForInscription\\(\\) expects int, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/CompanyAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'first\' on mixed\\.$#',

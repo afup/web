@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\Member;
 
 use AppBundle\Association\Form\AdminCompanyMemberType;
-use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\CompanyMember;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Security\Authentication;
 use AppBundle\Twig\ViewRenderer;
 use Exception;
@@ -24,7 +24,7 @@ final class CompanyAction extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $company = $this->companyMemberRepository->get($this->authentication->getAfupUser()->getCompanyId());
+        $company = $this->companyMemberRepository->find($this->authentication->getAfupUser()->getCompanyId());
         if ($company === null) {
             throw $this->createNotFoundException('Company not found');
         }
