@@ -8,7 +8,9 @@ use AppBundle\TechLetter\Model\TechLetterFactory;
 use AppBundle\Veille\Entity\Repository\EnvoiRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_VEILLE_READER')]
 final class ShowAction extends AbstractController
 {
     public function __construct(
