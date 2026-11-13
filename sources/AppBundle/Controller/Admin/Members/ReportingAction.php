@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller\MembershipAdmin;
+namespace AppBundle\Controller\Admin\Members;
 
 use AppBundle\Association\UserMembership\StatisticsComputer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_MEMBRES_READER')]
 class ReportingAction
 {
     public function __construct(

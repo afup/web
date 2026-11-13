@@ -22,5 +22,6 @@ parameters:
 rules:
     - AppBundle\StaticAnalysis\Rule\NoDebugFunctionsRule
     - AppBundle\StaticAnalysis\Rule\NoGetUserMethodRule
+    - AppBundle\StaticAnalysis\Rule\AdminControllerIsGrantedRule
     - AppBundle\StaticAnalysis\Rule\DoctrineRepositoryRule
     - AppBundle\StaticAnalysis\Rule\DoctrineDisableDQLRule

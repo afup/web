@@ -13,7 +13,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_MEMBRES_WRITER')]
 class UserAddAction extends AbstractController
 {
     public function __construct(
@@ -28,7 +30,11 @@ class UserAddAction extends AbstractController
         $user = new User();
         $user->setRoles([]);
 
-        $form = $this->createForm(UserEditType::class, $user);
+        $form = $this->createForm(UserEditType::class, $user, [
+            'can_grant_super_admin' => $this->isGranted('ROLE_SUPER_ADMIN'),
+            // Attribuer des droits sur les modules revient à étendre ses propres accès : réservé au super admin
+            'can_edit_modules' => $this->isGranted('ROLE_SUPER_ADMIN'),
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$user->getCompanyId()) {

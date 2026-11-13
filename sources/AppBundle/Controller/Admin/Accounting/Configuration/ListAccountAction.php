@@ -8,7 +8,9 @@ use AppBundle\Accounting\Entity\Repository\AccountRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_COMPTA_READER')]
 class ListAccountAction
 {
     public function __construct(

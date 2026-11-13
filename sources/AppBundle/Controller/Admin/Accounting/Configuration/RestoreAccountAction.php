@@ -8,7 +8,9 @@ use AppBundle\Accounting\Entity\Account;
 use AppBundle\Accounting\Entity\Repository\AccountRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_COMPTA_WRITER')]
 final class RestoreAccountAction extends AbstractController
 {
     public function __construct(private readonly AccountRepository $accountRepository) {}

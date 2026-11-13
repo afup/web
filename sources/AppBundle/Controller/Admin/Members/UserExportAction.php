@@ -9,7 +9,9 @@ use SplFileObject;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_MEMBRES_READER')]
 class UserExportAction
 {
     public function __construct(private readonly UserRepository $userRepository) {}

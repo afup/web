@@ -9,7 +9,9 @@ use AppBundle\Association\Model\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_MEMBRES_READER')]
 class UserListAction
 {
     public function __construct(
