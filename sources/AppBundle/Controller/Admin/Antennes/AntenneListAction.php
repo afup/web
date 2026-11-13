@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Antennes;
 
-use AppBundle\Antennes\Antenne;
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Antenne;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -23,7 +23,7 @@ final readonly class AntenneListAction
 
         uasort(
             $antennes,
-            fn(Antenne $a, Antenne $b): int => strcmp($a->label, $b->label),
+            fn(Antenne $a, Antenne $b): int => strcmp($a->libelle, $b->libelle),
         );
 
         return new Response($this->twig->render('admin/antennes/list.html.twig', [

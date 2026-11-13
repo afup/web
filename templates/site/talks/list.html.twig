@@ -79,16 +79,16 @@
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
-            {% for antenne in antennes|filter(antenne => antenne.socials.youtube is not null) %}
+            {% for antenne in antennes|filter(antenne => antenne.reseauxSociaux.youtube is not null) %}
                 <twig:Card class="flex flex-row items-center gap-4">
                     <div class="bg-neutre-200 rounded-2xl size-12 shrink-0 flex items-center justify-center">
-                        <img src="{{ antenne.logoUrl }}" alt="" class="w-full h-full object-contain p-1.5" />
+                        <img src="{{ antenne.urlLogo }}" alt="" class="w-full h-full object-contain p-1.5" />
                     </div>
                     {# min-w-0 : sans lui le titre refuse de se compresser et pousse le bouton hors de la carte #}
-                    <h3 class="font-titre font-bold text-afup-800 grow min-w-0">{{ antenne.label }}</h3>
-                    <twig:Button variant="secondary" as="a" href="{{ antenne.socials.youtube }}"
+                    <h3 class="font-titre font-bold text-afup-800 grow min-w-0">{{ antenne.libelle }}</h3>
+                    <twig:Button variant="secondary" as="a" href="{{ antenne.reseauxSociaux.youtube }}"
                                  class="flex items-center gap-2 shrink-0"
-                                 aria-label="Chaîne YouTube de l'antenne {{ antenne.label }}">
+                                 aria-label="Chaîne YouTube de l'antenne {{ antenne.libelle }}">
                         <twig:ux:icon name="mingcute:youtube-fill" class="size-5" />
                         YouTube
                     </twig:Button>

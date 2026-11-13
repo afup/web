@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Form;
 
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,7 +19,7 @@ class NearestOfficeChoiceType extends AbstractType
 
         $offices = ['-Aucune-' => ''];
         foreach ($this->antennesRepository->getAllSortedByLabels() as $antenne) {
-            $offices[$antenne->label] = $antenne->code;
+            $offices[$antenne->libelle] = $antenne->code;
         }
 
         $resolver->setDefaults(['choices' => $offices]);

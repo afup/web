@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Form;
 
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Association\Genre;
 use AppBundle\Event\Entity\BilleteriePrivee;
 use AppBundle\Event\Entity\Repository\TicketTypeRepository;

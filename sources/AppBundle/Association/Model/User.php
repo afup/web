@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Model;
 
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Association\Genre;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\NotifiableInterface;
@@ -196,7 +196,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this;
     }
 
-    public function getNearestOfficeLabel(AntenneRepository $antenneRepository)
+    public function getNearestOfficeLabel(AntenneRepository $antenneRepository): ?string
     {
         $code = $this->getNearestOffice();
 
@@ -205,7 +205,7 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
             return  null;
         }
 
-        return $antenneRepository->findByCode($code)->label;
+        return $antenneRepository->findByCode($code)->libelle;
     }
 
     /**

@@ -358,80 +358,80 @@
         {% for antenne in antennes %}
             <div class="afup-office flex flex-col items-start bg-white border-2 border-neutre-300 rounded-2xl p-4 sm:p-6"
                 data-map-key="{{ antenne.code }}"
-                 {% if antenne.map is defined %}
-                    data-map-legend-first-point-x="{{ antenne.map.firstCity.firstPoint.x }}"
-                    data-map-legend-first-point-y="{{ antenne.map.firstCity.firstPoint.y }}"
-                    data-map-legend-second-point-x="{{ antenne.map.firstCity.secondPoint.x }}"
-                    data-map-legend-second-point-y="{{ antenne.map.firstCity.secondPoint.y }}"
-                    data-map-legend-third-point-x="{{ antenne.map.firstCity.thirdPoint.x }}"
-                    data-map-legend-third-point-y="{{ antenne.map.firstCity.thirdPoint.y }}"
-                    data-map-legend-attachment="{{ antenne.map.legendAttachment.value }}"
-                    data-map-point-latitude="{{ antenne.map.firstCity.position.latitude }}"
-                    data-map-point-longitude="{{ antenne.map.firstCity.position.longitude }}"
-                    {% if antenne.map.secondCity is not null %}
-                    data-map-legend-second-city-first-point-x="{{ antenne.map.secondCity.firstPoint.x }}"
-                    data-map-legend-second-city-first-point-y="{{ antenne.map.secondCity.firstPoint.y }}"
-                    data-map-legend-second-city-second-point-x="{{ antenne.map.secondCity.secondPoint.x }}"
-                    data-map-legend-second-city-second-point-y="{{ antenne.map.secondCity.secondPoint.y }}"
-                    data-map-legend-second-city-third-point-x="{{ antenne.map.secondCity.thirdPoint.x }}"
-                    data-map-legend-second-city-third-point-y="{{ antenne.map.secondCity.thirdPoint.y }}"
-                    data-map-second-city-point-latitude="{{ antenne.map.secondCity.position.latitude }}"
-                    data-map-second-city-point-longitude="{{ antenne.map.secondCity.position.longitude }}"
+                 {% if antenne.carte is defined %}
+                    data-map-legend-first-point-x="{{ antenne.carte.premiereVille.premierPoint.x }}"
+                    data-map-legend-first-point-y="{{ antenne.carte.premiereVille.premierPoint.y }}"
+                    data-map-legend-second-point-x="{{ antenne.carte.premiereVille.deuxiemePoint.x }}"
+                    data-map-legend-second-point-y="{{ antenne.carte.premiereVille.deuxiemePoint.y }}"
+                    data-map-legend-third-point-x="{{ antenne.carte.premiereVille.troisiemePoint.x }}"
+                    data-map-legend-third-point-y="{{ antenne.carte.premiereVille.troisiemePoint.y }}"
+                    data-map-legend-attachment="{{ antenne.carte.ancrageLegende.value }}"
+                    data-map-point-latitude="{{ antenne.carte.premiereVille.position.latitude }}"
+                    data-map-point-longitude="{{ antenne.carte.premiereVille.position.longitude }}"
+                    {% if antenne.carte.secondeVille is not null %}
+                    data-map-legend-second-city-first-point-x="{{ antenne.carte.secondeVille.premierPoint.x }}"
+                    data-map-legend-second-city-first-point-y="{{ antenne.carte.secondeVille.premierPoint.y }}"
+                    data-map-legend-second-city-second-point-x="{{ antenne.carte.secondeVille.deuxiemePoint.x }}"
+                    data-map-legend-second-city-second-point-y="{{ antenne.carte.secondeVille.deuxiemePoint.y }}"
+                    data-map-legend-second-city-third-point-x="{{ antenne.carte.secondeVille.troisiemePoint.x }}"
+                    data-map-legend-second-city-third-point-y="{{ antenne.carte.secondeVille.troisiemePoint.y }}"
+                    data-map-second-city-point-latitude="{{ antenne.carte.secondeVille.position.latitude }}"
+                    data-map-second-city-point-longitude="{{ antenne.carte.secondeVille.position.longitude }}"
                     {% endif %}
                  {% endif %}
-                 {% if antenne.departments is not null %}
-                    data-departements="{{ antenne.departments|join(',') }}"
+                 {% if antenne.departements is not null %}
+                    data-departements="{{ antenne.departements|join(',') }}"
                  {% endif %}
                  {% if antenne.pays is defined %}
                     data-pays="{{ antenne.pays|join(',') }}"
                  {% endif %}
-                 {% if antenne.map.useSecondColor %}
+                 {% if antenne.carte.utiliserSecondeCouleur %}
                     data-use-second-color="1"
                  {% endif %}
             >
                <div class="flex flex-row gap-4">
                     <div class="bg-neutre-200 rounded-2xl w-20 h-20 flex items-center justify-center">
-                        <img src="{{ antenne.logoUrl }}" alt="" class="w-full h-full object-contain"/>
+                        <img src="{{ antenne.urlLogo }}" alt="" class="w-full h-full object-contain"/>
                     </div>
                     <div class="flex flex-col gap-2">
-                        <h3 class="font-titre font-bold text-2xl text-afup-800">{{ antenne.label }}</h3>
-                        <span class="text-neutre-700">{{ antenne.administrativeArea }}</span>
+                        <h3 class="font-titre font-bold text-2xl text-afup-800">{{ antenne.libelle }}</h3>
+                        <span class="text-neutre-700">{{ antenne.region }}</span>
                     </div>
                 </div>
                 <p class="h-4 font-semibold text-xs uppercase text-neutre-400 mt-6 mb-4">réseaux sociaux</p>
                 <div class="flex flex-row flex-wrap items-start content-start gap-2">
-                        {% if antenne.socials.blog is not null %}
-                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="{{ antenne.socials.blog }}">
+                        {% if antenne.reseauxSociaux.blog is not null %}
+                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="{{ antenne.reseauxSociaux.blog }}">
                                 <twig:ux:icon name="mdi:rss" class="size-5" />
                             </a>
                         {% endif %}
 
-                        {% if antenne.socials.twitter is not null %}
-                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://twitter.com/{{ antenne.socials.twitter }}">
+                        {% if antenne.reseauxSociaux.twitter is not null %}
+                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://twitter.com/{{ antenne.reseauxSociaux.twitter }}">
                                 <twig:ux:icon name="fa:twitter" class="size-5" />
                             </a>
                         {% endif %}
 
-                        {% if antenne.socials.linkedin is not null %}
-                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://www.linkedin.com/company/{{ antenne.socials.linkedin }}">
+                        {% if antenne.reseauxSociaux.linkedin is not null %}
+                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://www.linkedin.com/company/{{ antenne.reseauxSociaux.linkedin }}">
                                 <twig:ux:icon name="mdi:linkedin" class="size-5" />
                             </a>
                         {% endif %}
 
-                        {% if antenne.socials.bluesky is not null %}
-                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://bsky.app/profile/{{ antenne.socials.bluesky }}">
+                        {% if antenne.reseauxSociaux.bluesky is not null %}
+                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://bsky.app/profile/{{ antenne.reseauxSociaux.bluesky }}">
                                 <twig:ux:icon name="simple-icons:bluesky" class="size-5" />
                             </a>
                         {% endif %}
 
                         {% if antenne.meetup is not null %}
-                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://www.meetup.com/fr-FR/{{ antenne.meetup.urlName }}">
+                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://www.meetup.com/fr-FR/{{ antenne.meetup.nomUrl }}">
                                 <twig:ux:icon name="fa:meetup" class="size-5" />
                             </a>
                         {% endif %}
 
-                        {% if antenne.socials.youtube is not null %}
-                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="{{ antenne.socials.youtube }}">
+                        {% if antenne.reseauxSociaux.youtube is not null %}
+                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="{{ antenne.reseauxSociaux.youtube }}">
                                 <twig:ux:icon name="fa:youtube" class="size-5" />
                             </a>
                         {% endif %}

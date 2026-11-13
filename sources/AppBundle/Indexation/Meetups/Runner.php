@@ -6,7 +6,7 @@ namespace AppBundle\Indexation\Meetups;
 
 use Algolia\AlgoliaSearch\SearchClient;
 use Algolia\AlgoliaSearch\SearchIndex;
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Event\Entity\Meetup;
 use AppBundle\Event\Entity\Repository\MeetupRepository;
 
