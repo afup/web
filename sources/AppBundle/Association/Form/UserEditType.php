@@ -6,7 +6,7 @@ namespace AppBundle\Association\Form;
 
 use Afup\Site\Utils\Pays;
 use AppBundle\Association\Genre;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;

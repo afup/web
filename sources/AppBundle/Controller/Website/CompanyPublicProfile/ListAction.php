@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\CompanyPublicProfile;
 
-use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\CompanyMember;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,8 +22,8 @@ final class ListAction extends AbstractController
         $displayableCompanies = $this->companyMemberRepository->findDisplayableCompanies();
 
         usort($displayableCompanies, function (CompanyMember $companyMemberA, CompanyMember $companyMemberB): int {
-            $a = $companyMemberA->getCompanyName();
-            $b = $companyMemberB->getCompanyName();
+            $a = $companyMemberA->companyName;
+            $b = $companyMemberB->companyName;
             return $a <=> $b;
         });
 

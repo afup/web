@@ -10,8 +10,8 @@ use AppBundle\Association\Entity\CompanyMemberInvitation;
 use AppBundle\Association\Entity\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Enum\InvitationEtat;
 use AppBundle\Association\Form\CompanyMemberType;
-use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\CompanyMember;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -38,15 +38,15 @@ final class CompanyAction extends AbstractController
         $defaultMembers = SubscriptionManagement::AFUP_PERSONNE_MORALE_SEUIL;
 
         $data = new CompanyMember();
-        $data->setMaxMembers($defaultMembers);
-        $data->setInvitations(array_map(
+        $data->maxMembers = $defaultMembers;
+        $data->invitations = array_map(
             static function (int $index): CompanyMemberInvitation {
                 $invitation = new CompanyMemberInvitation();
                 $invitation->manager = 0 === $index;
                 return $invitation;
             },
             range(0, $defaultMembers - 1),
-        ));
+        );
 
         $subscribeForm = $this->createForm(CompanyMemberType::class, $data);
         $subscribeForm->handleRequest($request);
@@ -58,12 +58,12 @@ final class CompanyAction extends AbstractController
             $member = $subscribeForm->getData();
             $this->companyMemberRepository->save($member);
 
-            foreach ($member->getInvitations() as $index => $invitation) {
+            foreach ($member->getValidInvitations() as $index => $invitation) {
                 if ($invitation->email === '') {
                     continue;
                 }
                 $invitation->submittedOn = new \DateTime();
-                $invitation->companyId = (int) $member->getId();
+                $invitation->companyId = (int) $member->id;
                 $invitation->token = base64_encode(random_bytes(30));
                 $invitation->status = InvitationEtat::EnAttente;
                 if ($index === 0) {
@@ -80,7 +80,7 @@ final class CompanyAction extends AbstractController
             }
 
             $subscriptionManager = $this->subscriptionManagement;
-            $invoice = $subscriptionManager->createInvoiceForInscription($member, count($member->getInvitations()));
+            $invoice = $subscriptionManager->createInvoiceForInscription($member, count($member->getValidInvitations()));
 
             return $this->redirectToRoute('company_membership_payment', ['invoiceNumber' => $invoice['invoice'], 'token' => $invoice['token']]);
         }

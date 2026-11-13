@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\MembershipFee;
 
+use AppBundle\Association\Entity\CompanyMember;
 use AppBundle\Association\MemberType;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\AuditLog\Audit;
 use AppBundle\MembershipFee\Entity\Cotisation;
@@ -30,17 +31,21 @@ class AddMembershipFeeAction extends AbstractController
     {
         $membershipFee = new Cotisation();
         $member = match ($memberType) {
-            MemberType::MemberCompany => $this->companyMemberRepository->get($memberId),
+            MemberType::MemberCompany => $this->companyMemberRepository->find($memberId),
             MemberType::MemberPhysical => $this->userRepository->get($memberId),
         };
 
-        $startDate = $this->membershipFeeRepository->getMembershipStartingDate($memberType, $member->getId());
+        if ($member === null) {
+            throw $this->createNotFoundException('Membre non trouvé');
+        }
+
+        $startDate = $this->membershipFeeRepository->getMembershipStartingDate($memberType, $memberId);
         $endDate = clone $startDate;
         $endDate->modify('+1 year');
         $membershipFee->dateDebut = $startDate;
         $membershipFee->dateFin = $endDate;
         $membershipFee->typePersonne = $memberType;
-        $membershipFee->idPersonne = $member->getId();
+        $membershipFee->idPersonne = $memberId;
         $membershipFee->token = base64_encode(random_bytes(30));
         $membershipFee->dateFacture = $this->clock->now();
 
@@ -54,7 +59,7 @@ class AddMembershipFeeAction extends AbstractController
             );
             $fmt->setPattern('dd MMMM yyyy');
 
-            $name = $memberType->value === MemberType::MemberCompany->value ? $member->getCompanyName() : $member->getFirstName() . ' ' . $member->getLastName();
+            $name = $member instanceof CompanyMember ? $member->companyName : $member->getFirstName() . ' ' . $member->getLastName();
 
             try {
                 $membershipFee->numeroFacture = $this->membershipFeeRepository->generateInvoiceNumber();
@@ -64,7 +69,7 @@ class AddMembershipFeeAction extends AbstractController
             } catch (\Exception) {
                 $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout de la cotisation jusqu\'au ' . $fmt->format($membershipFee->dateFin) . ' pour ' . $name);
             }
-            return $this->redirectToRoute('admin_membership_fee_list', ['memberType' => $memberType->value, 'memberId' => $member->getId()]);
+            return $this->redirectToRoute('admin_membership_fee_list', ['memberType' => $memberType->value, 'memberId' => $memberId]);
         }
 
         return $this->render('admin/accounting/membership/add.html.twig', [

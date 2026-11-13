@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Event\Validator\Constraints;
 
 use AppBundle\Association\MemberType;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
@@ -66,7 +66,7 @@ class CorporateMemberValidator extends ConstraintValidator
             return;
         }
 
-        $company = $this->companyMemberRepository->get($user->getCompanyId());
+        $company = $this->companyMemberRepository->find($user->getCompanyId());
 
         if ($company === null) {
             // Il faut etre connecté pour avoir accès aux tickets membre
@@ -77,11 +77,11 @@ class CorporateMemberValidator extends ConstraintValidator
 
         $ticketsSoldToThisCompany = $this->ticketRepository->getTotalOfSoldTicketsByMember(
             MemberType::MemberCompany->value,
-            $company->getId(),
+            $company->id,
             $eventId,
         );
 
-        if (($ticketsSoldToThisCompany + $restrictedTickets) > $company->getMaxMembers()) {
+        if (($ticketsSoldToThisCompany + $restrictedTickets) > $company->maxMembers) {
             $this->context->buildViolation($constraint->messageTooMuchRestrictedTickets)
                 ->atPath('tickets')
                 ->addViolation()

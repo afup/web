@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\UserMembership;
 
-use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Enum\CompanyMemberStatus;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 
@@ -34,7 +34,7 @@ class StatisticsComputer
                 $statistics->usersCountWithoutCompanies++;
             }
         }
-        $statistics->companiesCount = $this->companyMemberRepository->countByStatus(CompanyMember::STATUS_ACTIVE);
+        $statistics->companiesCount = $this->companyMemberRepository->countByStatus(CompanyMemberStatus::Active);
 
         return $statistics;
     }

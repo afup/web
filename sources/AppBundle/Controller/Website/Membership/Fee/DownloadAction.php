@@ -7,8 +7,8 @@ namespace AppBundle\Controller\Website\Membership\Fee;
 use AppBundle\MembershipFee\MembershipFeeInvoicePdfGenerator;
 use Afup\Site\Droits;
 use AppBundle\Association\MemberType;
-use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\CompanyMember;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\AuditLog\Audit;
@@ -46,9 +46,9 @@ final class DownloadAction extends AbstractController
         $membershipFee = $this->membershipFeeRepository->find($id);
 
         if ($membershipFee->typePersonne === MemberType::MemberCompany) {
-            $company = $this->companyMemberRepository->get($membershipFee->idPersonne);
+            $company = $this->companyMemberRepository->find($membershipFee->idPersonne);
             Assert::isInstanceOf($company, CompanyMember::class);
-            $patternPrefix = $company->getCompanyName();
+            $patternPrefix = $company->companyName;
         } else {
             $user = $this->userRepository->get($membershipFee->idPersonne);
             Assert::isInstanceOf($user, User::class);
