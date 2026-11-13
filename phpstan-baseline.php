@@ -200,6 +200,30 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/Afup/Utils/Vat.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\InvoicingDetail\\:\\:\\$designation type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#',
+	'identifier' => 'doctrine.columnType',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/InvoicingDetail.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\InvoicingDetail\\:\\:\\$prixUnitaire type mapping mismatch\\: property can contain float\\|null but database expects float\\|int\\.$#',
+	'identifier' => 'doctrine.columnType',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/InvoicingDetail.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\InvoicingDetail\\:\\:\\$quantite type mapping mismatch\\: property can contain float\\|null but database expects float\\|int\\.$#',
+	'identifier' => 'doctrine.columnType',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/InvoicingDetail.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property AppBundle\\\\Accounting\\\\Entity\\\\InvoicingDetail\\:\\:\\$reference type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#',
+	'identifier' => 'doctrine.columnType',
+	'count' => 1,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/InvoicingDetail.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Accounting\\\\Entity\\\\Repository\\\\AccountRepository\\:\\:getAllSortedByName\\(\\) should return array\\<AppBundle\\\\Accounting\\\\Entity\\\\Account\\> but returns mixed\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
@@ -222,6 +246,24 @@ $ignoreErrors[] = [
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/InvoicingPeriodRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot access property \\$dateDebut on AppBundle\\\\Accounting\\\\Entity\\\\InvoicingPeriod\\|null\\.$#',
+	'identifier' => 'property.nonObject',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/InvoicingRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot access property \\$dateFin on AppBundle\\\\Accounting\\\\Entity\\\\InvoicingPeriod\\|null\\.$#',
+	'identifier' => 'property.nonObject',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/InvoicingRepository.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Cannot cast mixed to int\\.$#',
+	'identifier' => 'cast.int',
+	'count' => 2,
+	'path' => __DIR__ . '/sources/AppBundle/Accounting/Entity/Repository/InvoicingRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Accounting\\\\Entity\\\\Repository\\\\PaymentRepository\\:\\:getAllSortedByName\\(\\) should return array\\<AppBundle\\\\Accounting\\\\Entity\\\\Payment\\> but returns mixed\\.$#',
