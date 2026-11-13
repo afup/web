@@ -10,6 +10,9 @@
 
 @plugin "@tailwindcss/typography";
 
+/* Classes d'alignement des cellules générées par league/commonmark (@see sources/AppBundle/Markdown/Markdown.php) */
+@source inline("text-left text-center text-right");
+
 @theme {
     --color-afup-100: #E6F3F9;
     --color-afup-300: #36A7DF;
