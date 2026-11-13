@@ -10,6 +10,33 @@
         @apply rounded-lg;
     }
 
+    /* Code inline long (ex : `IntlDatePatternGenerator::getSkeleton()`) : coupure autorisée pour ne pas faire déborder la page sur mobile.
+       Exclus : les blocs de code (déjà scrollables) et les tableaux (qui défilent dans leur conteneur) */
+    .prose code:not(pre *, th *, td *) {
+        overflow-wrap: anywhere;
+    }
+
+    /* Tableaux : scroll horizontal sur petits écrans.
+       `overflow` empêche la fusion des marges : on les reporte du tableau vers le conteneur */
+    .prose .table-wrapper {
+        @apply overflow-x-auto my-[1.75em];
+    }
+
+    .prose .table-wrapper > table {
+        @apply my-0!;
+    }
+
+    /* Le `sm:text-justify` du conteneur ne doit pas s'appliquer aux cellules.
+       Couche base : les classes text-left/center/right (couche utilities) restent prioritaires */
+    .prose :where(th, td) {
+        @apply text-start;
+    }
+
+    /* Listes de tâches : pas de puce devant la case à cocher */
+    .prose li:has(> input[type="checkbox"]) {
+        @apply list-none -ms-6;
+    }
+
     /* Gestion de certaines pages CMS avec des boutons */
     /* Les classes sont les mêmes que pour le composant Button */
     /* @see templates/components/Button.html.twig */
