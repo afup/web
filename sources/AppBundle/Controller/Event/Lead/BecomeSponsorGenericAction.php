@@ -6,8 +6,12 @@ namespace AppBundle\Controller\Event\Lead;
 
 use AppBundle\Email\Mailer\Mailer;
 use AppBundle\Email\Mailer\MailUserFactory;
+use AppBundle\Event\Entity\Repository\SponsorshipSettingsRepository;
+use AppBundle\Event\Enum\BecomeSponsorMode;
 use AppBundle\Event\Form\LeadType;
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Lead;
+use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Sponsorship\SponsorshipLeadMail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -17,6 +21,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Demande de dossier de sponsoring de l'association, indépendante de tout évènement.
+ * En mode « évènement », redirige vers la page de sponsoring du dernier évènement.
  */
 final class BecomeSponsorGenericAction extends AbstractController
 {
@@ -24,10 +29,24 @@ final class BecomeSponsorGenericAction extends AbstractController
         private readonly Mailer $mailer,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly SponsorshipLeadMail $sponsorshipLeadMail,
+        private readonly SponsorshipSettingsRepository $sponsorshipSettingsRepository,
+        private readonly EventRepository $eventRepository,
     ) {}
 
     public function __invoke(Request $request): Response
     {
+        $settings = $this->sponsorshipSettingsRepository->get();
+
+        if ($settings->mode === BecomeSponsorMode::Event) {
+            // Entre la fin d'un évènement et la création du suivant, il n'y a pas d'évènement courant
+            $event = $this->eventRepository->getCurrentEvent() ?? $this->eventRepository->getLastEvent();
+
+            // Sans aucun évènement, on se rabat sur la page générique
+            if ($event instanceof Event) {
+                return $this->redirectToRoute('sponsor_leads', ['eventSlug' => $event->getPath()]);
+            }
+        }
+
         // Sans dossier à envoyer, inutile de collecter la demande
         if (!$this->sponsorshipLeadMail->hasSponsorshipFile()) {
             throw $this->createNotFoundException('Sponsorship file not found');
@@ -54,6 +73,7 @@ final class BecomeSponsorGenericAction extends AbstractController
 
         return $this->render('event/sponsorship_file/form.html.twig', [
             'leadForm' => $leadForm->createView(),
+            'become_sponsor_text' => $settings->getText($request->getLocale()),
         ]);
     }
 

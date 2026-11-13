@@ -17,6 +17,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SponsorshipLeadMail
 {
+    public const array LANGUAGES = ['fr', 'en'];
+
     public function __construct(
         private readonly Mailer $mailer,
         private readonly TranslatorInterface $translator,
@@ -25,16 +27,37 @@ class SponsorshipLeadMail
     ) {}
 
     /**
-     * Dossier envoyé depuis la page générique, quelle que soit la langue choisie, et déposé manuellement sur le serveur.
+     * Dossier envoyé depuis la page générique, déposé depuis l'administration.
      */
-    public static function getSponsorshipFilePath(): string
+    public static function getSponsorshipFilePath(string $language): string
     {
-        return Event::getSponsorFileDir() . 'dossier-sponsoring-afup.pdf';
+        return Event::getSponsorFileDir() . self::getSponsorshipFileName($language);
+    }
+
+    public static function getSponsorshipFilePublicPath(string $language): string
+    {
+        return '/docs/' . self::getSponsorshipFileName($language);
+    }
+
+    public static function getSponsorshipFileName(string $language): string
+    {
+        return sprintf('pack-sponsoring-afup-%s.pdf', $language);
+    }
+
+    public static function hasSponsorshipFileForLanguage(string $language): bool
+    {
+        return is_file(self::getSponsorshipFilePath($language));
     }
 
     public function hasSponsorshipFile(): bool
     {
-        return is_file(self::getSponsorshipFilePath());
+        foreach (self::LANGUAGES as $language) {
+            if (self::hasSponsorshipFileForLanguage($language)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function sendSponsorshipFile(Lead $lead): void
@@ -42,7 +65,7 @@ class SponsorshipLeadMail
         $leadEvent = $lead->getEvent();
         $file = $leadEvent instanceof Event
             ? Event::getSponsorFilePath($leadEvent->getPath(), $lead->getLanguage())
-            : self::getSponsorshipFilePath();
+            : $this->getGenericSponsorshipFilePath($lead->getLanguage());
         $filename = basename($file);
         $event = $this->getSingleUpcomingEvent();
 
@@ -71,6 +94,20 @@ class SponsorshipLeadMail
         if (!$this->mailer->sendTransactional($message, $content)) {
             $this->logger->warning(sprintf('Mail not sent for sponsorship lead retrieval: "%s"', $lead->getEmail()));
         }
+    }
+
+    /**
+     * Le dossier de la langue demandée, à défaut celui d'une autre langue.
+     */
+    private function getGenericSponsorshipFilePath(string $language): string
+    {
+        foreach ([$language, ...self::LANGUAGES] as $candidate) {
+            if (self::hasSponsorshipFileForLanguage($candidate)) {
+                return self::getSponsorshipFilePath($candidate);
+            }
+        }
+
+        return self::getSponsorshipFilePath($language);
     }
 
     /**

@@ -14,10 +14,10 @@
                         {{ event.becomeSponsorText|markdown_to_html }}
                     </div>
                 </div>
-            {% elseif event is not defined %}
+            {% elseif become_sponsor_text is defined and become_sponsor_text is not empty %}
                 <div class="flex">
                     <div class="prose prose-lg max-w-none sm:my-5 mt-5">
-                        {{ 'become_sponsor.generic.text'|trans|markdown_to_html }}
+                        {{ become_sponsor_text|markdown_to_html }}
                     </div>
                 </div>
             {% endif %}
