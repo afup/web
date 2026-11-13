@@ -7,7 +7,7 @@ namespace AppBundle\Antennes;
 final readonly class Meetup
 {
     public function __construct(
-        public string $urlName,
+        public string $nomUrl,
         public string $id,
     ) {}
 }

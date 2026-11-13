@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Association\Form;
 
 use Afup\Site\Utils\Pays;
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Association\Model\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -108,7 +108,7 @@ class ContactDetailsType extends AbstractType
     {
         $offices = ['' => '-Aucune-'];
         foreach ($this->antenneRepository->getAllSortedByLabels() as $antenne) {
-            $offices[$antenne->label] = $antenne->code;
+            $offices[$antenne->libelle] = $antenne->code;
         }
         return $offices;
     }

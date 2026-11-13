@@ -79,10 +79,10 @@
                     {% for antenne in antennes %}
                         <twig:Card class="flex items-center gap-4">
                             <div class="bg-neutre-200 rounded-2xl size-12 shrink-0 flex items-center justify-center">
-                                <img src="{{ antenne.logoUrl }}" alt="" class="w-full h-full object-contain p-1.5" />
+                                <img src="{{ antenne.urlLogo }}" alt="" class="w-full h-full object-contain p-1.5" />
                             </div>
                             {# min-w-0 : sans lui un nom long refuse de se compresser et déborde de la carte. #}
-                            <h3 class="font-titre font-bold text-afup-800 grow min-w-0">{{ antenne.label }}</h3>
+                            <h3 class="font-titre font-bold text-afup-800 grow min-w-0">{{ antenne.libelle }}</h3>
                         </twig:Card>
                     {% endfor %}
                 </div>

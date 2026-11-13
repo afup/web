@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\Antennes;
 
-use AppBundle\Antennes\Antenne;
-use AppBundle\Antennes\AntenneRepository;
-use AppBundle\Antennes\City;
+use AppBundle\Antennes\Entity\Antenne;
+use AppBundle\Antennes\Ville;
 use AppBundle\Antennes\FranceMap;
-use AppBundle\Antennes\LegendAttachment;
-use AppBundle\Antennes\Map;
+use AppBundle\Antennes\AncrageLegende;
+use AppBundle\Antennes\Carte;
 use AppBundle\Antennes\Meetup;
 use AppBundle\Antennes\OfficesMapSvgGenerator;
 use AppBundle\Antennes\Point;
 use AppBundle\Antennes\Position;
-use AppBundle\Antennes\Socials;
-use AppBundle\Command\GenerateOfficesMapCommand;
+use AppBundle\Antennes\ReseauxSociaux;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -37,10 +35,10 @@ final class OfficesMapSvgGeneratorTest extends TestCase
         $svg = $this->generate([
             $this->antenne(
                 code: 'bordeaux',
-                label: 'Bordeaux',
-                departments: ['33', '40'],
+                libelle: 'Bordeaux',
+                departements: ['33', '40'],
                 pays: ['lux'],
-                socials: new Socials(blog: 'https://bordeaux.afup.org'),
+                reseauxSociaux: new ReseauxSociaux(blog: 'https://bordeaux.afup.org'),
             ),
         ]);
 
@@ -78,7 +76,7 @@ final class OfficesMapSvgGeneratorTest extends TestCase
     public function testSecondCityHasItsOwnPointAndLines(): void
     {
         $svg = $this->generate([
-            $this->antenne(secondCity: new City(
+            $this->antenne(secondeVille: new Ville(
                 new Point(630, 140),
                 new Point(680, 200),
                 new Point(720, 200),
@@ -97,12 +95,12 @@ final class OfficesMapSvgGeneratorTest extends TestCase
 
     public function testAddingAndRemovingAnAntenne(): void
     {
-        $bordeaux = $this->antenne(code: 'bordeaux', label: 'Bordeaux', departments: ['33']);
+        $bordeaux = $this->antenne(code: 'bordeaux', libelle: 'Bordeaux', departements: ['33']);
         $lyon = $this->antenne(
             code: 'lyon',
-            label: 'Lyon',
-            departments: ['69'],
-            logoUrl: '/images/offices/lyon.svg',
+            libelle: 'Lyon',
+            departements: ['69'],
+            urlLogo: '/images/offices/lyon.svg',
             position: new Position(45.759723, 4.842223),
         );
 
@@ -127,14 +125,14 @@ final class OfficesMapSvgGeneratorTest extends TestCase
      */
     #[DataProvider('legendAttachments')]
     public function testLegendPosition(
-        LegendAttachment $attachment,
+        AncrageLegende $ancrage,
         string $logoX,
         string $logoY,
         string $textX,
         string $textY,
         string $textAnchor,
     ): void {
-        $svg = $this->generate([$this->antenne(legendAttachment: $attachment)]);
+        $svg = $this->generate([$this->antenne(ancrageLegende: $ancrage)]);
 
         $image = $this->single($svg, '//svg:image');
         self::assertSame([$logoX, $logoY], [$image->getAttribute('x'), $image->getAttribute('y')]);
@@ -147,20 +145,20 @@ final class OfficesMapSvgGeneratorTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{LegendAttachment, string, string, string, string, string}>
+     * @return iterable<string, array{AncrageLegende, string, string, string, string, string}>
      */
     public static function legendAttachments(): iterable
     {
-        yield 'left' => [LegendAttachment::Left, '234', '475', '287', '498', 'start'];
-        yield 'right' => [LegendAttachment::Right, '181', '475', '173', '498', 'end'];
-        yield 'top' => [LegendAttachment::Top, '155', '504', '208', '527', 'start'];
-        yield 'bottom' => [LegendAttachment::Bottom, '155', '446', '208', '469', 'start'];
+        yield 'left' => [AncrageLegende::Gauche, '234', '475', '287', '498', 'start'];
+        yield 'right' => [AncrageLegende::Droite, '181', '475', '173', '498', 'end'];
+        yield 'top' => [AncrageLegende::Haut, '155', '504', '208', '527', 'start'];
+        yield 'bottom' => [AncrageLegende::Bas, '155', '446', '208', '469', 'start'];
     }
 
     #[DataProvider('links')]
-    public function testLinkIsTheFirstSocialNetworkOfTheAntenne(Socials $socials, ?Meetup $meetup, ?string $expected): void
+    public function testLinkIsTheFirstSocialNetworkOfTheAntenne(ReseauxSociaux $socials, ?Meetup $meetup, ?string $expected): void
     {
-        $svg = $this->generate([$this->antenne(socials: $socials, meetup: $meetup)]);
+        $svg = $this->generate([$this->antenne(reseauxSociaux: $socials, meetup: $meetup)]);
 
         self::assertSame(self::ANTENNE_COLOR, $this->area($svg, 'department-33')->getAttribute('fill'));
 
@@ -174,17 +172,17 @@ final class OfficesMapSvgGeneratorTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{Socials, ?Meetup, ?string}>
+     * @return iterable<string, array{ReseauxSociaux, ?Meetup, ?string}>
      */
     public static function links(): iterable
     {
-        yield 'blog' => [new Socials(youtube: 'https://youtube.com/@afup', blog: 'https://blog.example', twitter: 'afup'), null, 'https://blog.example'];
-        yield 'twitter' => [new Socials(twitter: 'afup_reims', linkedin: 'afup'), null, 'https://twitter.com/afup_reims'];
-        yield 'linkedin' => [new Socials(linkedin: 'afup-hdf'), null, 'https://www.linkedin.com/company/afup-hdf'];
-        yield 'bluesky' => [new Socials(bluesky: 'hdf.afup.org'), new Meetup('afup', '1'), 'https://bsky.app/profile/hdf.afup.org'];
-        yield 'meetup' => [new Socials(youtube: 'https://youtube.com/@afup'), new Meetup('afup-lyon-php', '1'), 'https://www.meetup.com/fr-FR/afup-lyon-php'];
-        yield 'youtube' => [new Socials(youtube: 'https://youtube.com/@afup'), null, 'https://youtube.com/@afup'];
-        yield 'aucun' => [new Socials(), null, null];
+        yield 'blog' => [new ReseauxSociaux(youtube: 'https://youtube.com/@afup', blog: 'https://blog.example', twitter: 'afup'), null, 'https://blog.example'];
+        yield 'twitter' => [new ReseauxSociaux(twitter: 'afup_reims', linkedin: 'afup'), null, 'https://twitter.com/afup_reims'];
+        yield 'linkedin' => [new ReseauxSociaux(linkedin: 'afup-hdf'), null, 'https://www.linkedin.com/company/afup-hdf'];
+        yield 'bluesky' => [new ReseauxSociaux(bluesky: 'hdf.afup.org'), new Meetup('afup', '1'), 'https://bsky.app/profile/hdf.afup.org'];
+        yield 'meetup' => [new ReseauxSociaux(youtube: 'https://youtube.com/@afup'), new Meetup('afup-lyon-php', '1'), 'https://www.meetup.com/fr-FR/afup-lyon-php'];
+        yield 'youtube' => [new ReseauxSociaux(youtube: 'https://youtube.com/@afup'), null, 'https://youtube.com/@afup'];
+        yield 'aucun' => [new ReseauxSociaux(), null, null];
     }
 
     public function testAntenneWithoutMapOnlyColorsItsAreas(): void
@@ -197,7 +195,7 @@ final class OfficesMapSvgGeneratorTest extends TestCase
 
     public function testLabelsAreEscaped(): void
     {
-        $svg = $this->generate([$this->antenne(label: 'Aix & <Marseille>')]);
+        $svg = $this->generate([$this->antenne(libelle: 'Aix & <Marseille>')]);
 
         self::assertSame('Aix & <Marseille>', $this->single($svg, '//svg:text')->textContent);
     }
@@ -206,17 +204,6 @@ final class OfficesMapSvgGeneratorTest extends TestCase
     {
         // Ajaccio
         self::assertEqualsWithDelta(['x' => 562.72, 'y' => 589.03], FranceMap::project(41.9192, 8.7386), 0.01);
-    }
-
-    public function testCommittedMapIsUpToDate(): void
-    {
-        $generated = new OfficesMapSvgGenerator()->generate(new AntenneRepository()->getAllSortedByLabels());
-
-        self::assertStringEqualsFile(
-            __DIR__ . '/../../../../templates/' . GenerateOfficesMapCommand::MAP_TEMPLATE,
-            $generated,
-            'La carte des antennes n\'est plus à jour : lancer `bin/console antennes:generate-map`.',
-        );
     }
 
     /**
@@ -278,35 +265,35 @@ final class OfficesMapSvgGeneratorTest extends TestCase
     }
 
     /**
-     * @param list<string>|null $departments
+     * @param list<string>|null $departements
      * @param list<string>|null $pays
      */
     private function antenne(
         string $code = 'bordeaux',
-        string $label = 'Bordeaux',
-        ?array $departments = ['33'],
+        string $libelle = 'Bordeaux',
+        ?array $departements = ['33'],
         ?array $pays = null,
-        string $logoUrl = '/images/offices/bordeaux.svg',
-        ?Socials $socials = null,
+        string $urlLogo = '/images/offices/bordeaux.svg',
+        ?ReseauxSociaux $socials = null,
         ?Meetup $meetup = null,
         bool $withMap = true,
-        LegendAttachment $legendAttachment = LegendAttachment::Right,
+        AncrageLegende $ancrageLegende = AncrageLegende::Droite,
         Position $position = new Position(44.837912, -0.579541),
-        ?City $secondCity = null,
+        ?Ville $secondeVille = null,
     ): Antenne {
         return new Antenne(
             code: $code,
-            label: $label,
+            libelle: $libelle,
             meetup: $meetup,
-            logoUrl: $logoUrl,
-            socials: $socials ?? new Socials(blog: 'https://' . $code . '.afup.org'),
-            map: $withMap ? new Map(
-                useSecondColor: false,
-                legendAttachment: $legendAttachment,
-                firstCity: new City(new Point(330, 440), new Point(270, 500), new Point(230, 500), $position),
-                secondCity: $secondCity,
+            urlLogo: $urlLogo,
+            reseauxSociaux: $socials ?? new ReseauxSociaux(blog: 'https://' . $code . '.afup.org'),
+            carte: $withMap ? new Carte(
+                utiliserSecondeCouleur: false,
+                ancrageLegende: $ancrageLegende,
+                premiereVille: new Ville(new Point(330, 440), new Point(270, 500), new Point(230, 500), $position),
+                secondeVille: $secondeVille,
             ) : null,
-            departments: $departments,
+            departements: $departements,
             pays: $pays,
         );
     }

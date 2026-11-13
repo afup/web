@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Twig;
 
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -16,10 +16,10 @@ class OfficesExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('office_name', fn($code): string => $this->antennesRepository->findByCode($code)->label),
-            new TwigFunction('office_logo', fn($code): string => $this->antennesRepository->findByCode($code)->logoUrl),
+            new TwigFunction('office_name', fn(string $code): string => $this->antennesRepository->findByCode($code)->libelle),
+            new TwigFunction('office_logo', fn(string $code): string => $this->antennesRepository->findByCode($code)->urlLogo),
             // Toutes les antennes n'ont pas de groupe Meetup (ex : Clermont), d'où le `?->`
-            new TwigFunction('office_meetup_urlname', fn($code) => $this->antennesRepository->findByCode($code)->meetup?->urlName),
+            new TwigFunction('office_meetup_urlname', fn(string $code): ?string => $this->antennesRepository->findByCode($code)->meetup?->nomUrl),
         ];
     }
 }

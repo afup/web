@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Tests\Indexation\Meetups;
+namespace AppBundle\IntegrationTests\Indexation\Meetups;
 
-use AppBundle\Antennes\AntenneRepository;
+use Afup\Tests\Support\IntegrationTestCase;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Indexation\Meetups\MeetupClient;
 use CuyZ\Valinor\MapperBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
-final class MeetupClientTest extends TestCase
+final class MeetupClientTest extends IntegrationTestCase
 {
     #[DataProvider('failureDataProvider')]
     public function testFailure(MockResponse $response, string $expectedExceptionMessage): void
     {
         $httpClient = $this->makeGuzzleMockClient($response);
 
-        $meetupClient = new MeetupClient($httpClient, new AntenneRepository(), new MapperBuilder());
+        $meetupClient = new MeetupClient($httpClient, self::getContainer()->get(AntenneRepository::class), new MapperBuilder());
 
         self::expectException(\Exception::class);
         self::expectExceptionMessage($expectedExceptionMessage);
@@ -119,7 +119,7 @@ final class MeetupClientTest extends TestCase
             ),
         );
 
-        $meetupClient = new MeetupClient($httpClient, new AntenneRepository(), new MapperBuilder());
+        $meetupClient = new MeetupClient($httpClient, self::getContainer()->get(AntenneRepository::class), new MapperBuilder());
 
         $antennes = $meetupClient->getEvents();
 

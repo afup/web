@@ -105,7 +105,7 @@
                         <td class="{% if isActive %}actif{% else %}disabled{% endif %}">
                             {% if user.nearestOffice in antennes|keys %}
                                 <span class="ui image label">
-                                    <img src="{{ antennes[user.nearestOffice].logoUrl }}" />
+                                    <img src="{{ antennes[user.nearestOffice].urlLogo }}" />
                                     {{ antennes[user.nearestOffice].label }}
                                 </span>
                             {% endif %}

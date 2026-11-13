@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\SuperApero\Form;
 
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\SuperApero\Entity\Repository\SuperAperoRepository;
 use AppBundle\SuperApero\Entity\SuperApero;
 use AppBundle\SuperApero\Entity\SuperAperoMeetup;
@@ -49,7 +49,7 @@ final class SuperAperoType extends AbstractType
                 $existing = $superApero->meetups[$antenne->code] ?? null;
 
                 $meetupsForm->add($antenne->code, SuperAperoMeetupType::class, [
-                    'label' => $antenne->label,
+                    'label' => $antenne->libelle,
                     'data' => $existing instanceof SuperAperoMeetup
                         ? SuperAperoMeetupFormData::fromEntity($existing)
                         : null,

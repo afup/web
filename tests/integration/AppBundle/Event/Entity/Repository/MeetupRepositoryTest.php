@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\IntegrationTests\Event\Entity\Repository;
 
 use Afup\Tests\Support\IntegrationTestCase;
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Event\Entity\Meetup;
 use AppBundle\Event\Entity\Repository\MeetupRepository;
 

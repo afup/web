@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\CompanyPublicProfile;
 
-use AppBundle\Antennes\Antenne;
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Antenne;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
@@ -42,14 +42,14 @@ final class IndexAction extends CompanyPublicProfileController
         $antennes = [];
         foreach ($companyMember->getFormattedRelatedAfupOffices() as $localOffice) {
             $antenne = $this->antenneRepository->findByCode($localOffice);
-            if ($antenne->hideOnOfficesPage) {
+            if ($antenne->masqueePageAntennes) {
                 continue;
             }
 
             $antennes[] = $antenne;
         }
 
-        usort($antennes, fn(Antenne $a, Antenne $b): int => $a->label <=> $b->label);
+        usort($antennes, fn(Antenne $a, Antenne $b): int => $a->libelle <=> $b->libelle);
 
         return $antennes;
     }

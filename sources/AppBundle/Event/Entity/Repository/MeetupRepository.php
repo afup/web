@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Entity\Repository;
 
-use AppBundle\Antennes\Antenne;
+use AppBundle\Antennes\Entity\Antenne;
 use AppBundle\Doctrine\EntityRepository;
 use AppBundle\Event\Entity\Meetup;
 use Doctrine\Persistence\ManagerRegistry;
