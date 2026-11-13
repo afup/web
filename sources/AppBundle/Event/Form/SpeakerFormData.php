@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Event\Form;
 
 use AppBundle\Association\Genre;
-use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Entity\GithubUser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 

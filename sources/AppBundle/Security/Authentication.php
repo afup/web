@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Security;
 
 use AppBundle\Association\Model\User;
-use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Security\Exception\UnexpectedUserTypeException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;

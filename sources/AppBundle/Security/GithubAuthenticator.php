@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Security;
 
-use AppBundle\Event\Model\GithubUser;
-use AppBundle\Event\Model\Repository\GithubUserRepository;
+use AppBundle\Event\Entity\GithubUser;
+use AppBundle\Event\Entity\Repository\GithubUserRepository;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
@@ -39,16 +39,22 @@ class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationE
                 /** @var GithubResourceOwner $githubUser */
                 $githubUser = $client->fetchUserFromToken($accessToken);
 
+                $githubId = $githubUser->getId();
+                $login = $githubUser->getNickname();
+                if ($githubId === null || $login === null) {
+                    throw new AuthenticationException('Unable to retrieve the GitHub user id or login.');
+                }
+
                 // 1) have they logged in with GitHub before? Easy!
-                $user = $this->githubUserRepository->getOneBy(['githubId' => $githubUser->getId()]);
+                $user = $this->githubUserRepository->findOneByGithubId($githubId);
                 if ($user === null) {
                     $user = new GithubUser();
                 }
 
                 $user
-                    ->setGithubId($githubUser->getId())
+                    ->setGithubId($githubId)
                     ->setName($githubUser->getName())
-                    ->setLogin($githubUser->getNickname())
+                    ->setLogin($login)
                 ;
                 $this->githubUserRepository->save($user);
 

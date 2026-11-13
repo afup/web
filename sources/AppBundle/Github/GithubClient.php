@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Github;
 
-use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Github\Exception\UnableToFindGithubUserException;
 use AppBundle\Github\Exception\UnableToGetGithubUserInfosException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -32,7 +32,10 @@ class GithubClient
         }
 
         if ($response->getStatusCode() === 200) {
-            return GithubUser::fromApi($response->toArray());
+            /** @var array{login: string, id: int, avatar_url: string, company: ?string, name: ?string, html_url: string} $apiData */
+            $apiData = $response->toArray();
+
+            return GithubUser::fromApi($apiData);
         }
 
         throw new UnableToGetGithubUserInfosException(
