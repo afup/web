@@ -6,7 +6,7 @@ namespace AppBundle\Command;
 
 use Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
 use Algolia\AlgoliaSearch\SearchClient;
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Event\Entity\Repository\MeetupRepository;
 use AppBundle\Indexation\Meetups\Runner;
 use Symfony\Component\Console\Command\Command;

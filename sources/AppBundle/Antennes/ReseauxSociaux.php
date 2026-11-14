@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Antennes;
 
-final readonly class Socials
+final readonly class ReseauxSociaux
 {
     public function __construct(
         public ?string $youtube = null,

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Tests\Indexation\Meetups;
+namespace AppBundle\IntegrationTests\Indexation\Meetups;
 
-use AppBundle\Antennes\AntenneRepository;
+use Afup\Tests\Support\IntegrationTestCase;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Event\Entity\Meetup;
 use AppBundle\Indexation\Meetups\Transformer;
-use PHPUnit\Framework\TestCase;
 
-final class TransformerTest extends TestCase
+final class TransformerTest extends IntegrationTestCase
 {
     public function testTransform(): void
     {
-        $transformer = new Transformer(new AntenneRepository());
+        $transformer = new Transformer(self::getContainer()->get(AntenneRepository::class));
 
         $meetup = new Meetup();
         $meetup->id = 244992881;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Offices;
 
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Invoice;
 use Geocoder\Geocoder;
@@ -113,15 +113,15 @@ class OfficeFinder
         $localOfficesDistance = [];
 
         foreach ($this->antenneRepository->getAll() as $antenne) {
-            if (null === $antenne->map) {
+            if (null === $antenne->carte) {
                 continue;
             }
 
             $localOfficesDistance[$antenne->code] = $this->haversineGreatCircleDistance(
                 $coordinates->getLatitude(),
                 $coordinates->getLongitude(),
-                $antenne->map->firstCity->position->latitude,
-                $antenne->map->firstCity->position->longitude,
+                $antenne->carte->premiereVille->position->latitude,
+                $antenne->carte->premiereVille->position->longitude,
             );
         }
 

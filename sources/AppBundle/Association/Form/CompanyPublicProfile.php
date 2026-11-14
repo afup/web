@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Association\Form;
 
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -33,7 +33,7 @@ class CompanyPublicProfile extends AbstractType
     {
         $antennesInfos = [];
         foreach ($this->antennesRepository->getAll() as $antenne) {
-            $antennesInfos[$antenne->label] = $antenne->code;
+            $antennesInfos[$antenne->libelle] = $antenne->code;
         }
 
         $logoConstraints = [

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Api\Antennes;
 
-use AppBundle\Antennes\Antenne;
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Antenne;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Event\Entity\Meetup;
 use AppBundle\Event\Entity\Repository\MeetupRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,23 +26,23 @@ final readonly class GetOneAction
             throw new NotFoundHttpException();
         }
 
-        if ($antenne->hideOnOfficesPage) {
+        if ($antenne->masqueePageAntennes) {
             throw new NotFoundHttpException();
         }
 
         $response = [
             'code' => $antenne->code,
-            'label' => $antenne->label,
+            'label' => $antenne->libelle,
             'logo' => [
-                'simple' => 'https://afup.org' . $antenne->logoUrl,
+                'simple' => 'https://afup.org' . $antenne->urlLogo,
             ],
             'links' => [
-                'meetup' => $this->createLink('https://www.meetup.com/fr-FR/', $antenne->meetup?->urlName),
-                'linkedin' => $this->createLink('https://www.linkedin.com/company/', $antenne->socials->linkedin),
-                'bluesky' => $this->createLink('https://bsky.app/profile/', $antenne->socials->bluesky),
-                'cfp' => $antenne->socials->cfp,
-                'github' => $this->createLink('https://github.com/', $antenne->socials->github),
-                'discord' => $this->createLink('https://discord.com/invite/', $antenne->socials->discord),
+                'meetup' => $this->createLink('https://www.meetup.com/fr-FR/', $antenne->meetup?->nomUrl),
+                'linkedin' => $this->createLink('https://www.linkedin.com/company/', $antenne->reseauxSociaux->linkedin),
+                'bluesky' => $this->createLink('https://bsky.app/profile/', $antenne->reseauxSociaux->bluesky),
+                'cfp' => $antenne->reseauxSociaux->cfp,
+                'github' => $this->createLink('https://github.com/', $antenne->reseauxSociaux->github),
+                'discord' => $this->createLink('https://discord.com/invite/', $antenne->reseauxSociaux->discord),
             ],
         ];
 
@@ -80,7 +80,7 @@ final readonly class GetOneAction
             'date' => $meetup->date->format('Y-m-d H:i:s'),
             'location' => $meetup->lieu,
             'description' => $meetup->description,
-            'url' => $antenne->meetup === null ? null : 'https://www.meetup.com/fr-FR/' . $antenne->meetup->urlName . '/events/' . $meetup->id,
+            'url' => $antenne->meetup === null ? null : 'https://www.meetup.com/fr-FR/' . $antenne->meetup->nomUrl . '/events/' . $meetup->id,
             'photo' => $meetup->photoUrl,
         ];
     }

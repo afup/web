@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Indexation\Meetups;
 
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Event\Entity\Meetup;
 use AppBundle\Indexation\Meetups\GraphQL\QueryGroupsResponse;
 use CuyZ\Valinor\Mapper\Source\Source;
