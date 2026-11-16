@@ -12,7 +12,7 @@ use Afup\Site\Utils\Vat;
 use AppBundle\Security\MembershipFeeVoter;
 use AppBundle\Association\MembershipFeeReferenceGenerator;
 use AppBundle\Association\MemberType;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\UserMembership\UserService;
 use AppBundle\MembershipFee\Entity\Cotisation;

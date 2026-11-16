@@ -6,7 +6,7 @@ namespace AppBundle\Association\Form;
 
 use AppBundle\Association\CompanyMembership\SubscriptionManagement;
 use AppBundle\Association\Entity\CompanyMemberInvitation;
-use AppBundle\Association\Model\CompanyMember;
+use AppBundle\Association\Entity\CompanyMember;
 use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
 use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaIsValid;
 use Symfony\Component\Form\AbstractType;
@@ -36,41 +36,49 @@ class CompanyMemberType extends AbstractType
 
         $builder
             ->add('companyName', TextType::class, [
+                'empty_data' => '',
                 'label' => 'Company',
                 'constraints' => [
                     new Length(max: 100),
                 ],
             ])
             ->add('firstName', TextType::class, [
+                'empty_data' => '',
                 'label' => 'Firstname',
                 'constraints' => [
                     new Length(max: 40),
                 ],
             ])
             ->add('lastName', TextType::class, [
+                'empty_data' => '',
                 'label' => 'Lastname',
                 'constraints' => [
                     new Length(max: 40),
                 ],
             ])
             ->add('email', EmailType::class, [
+                'empty_data' => '',
                 'constraints' => [
                     new Length(max: 100),
                 ],
             ])
             ->add('siret', TextType::class, [
+                'empty_data' => '',
                 'constraints' => [
                     new Length(max: 14),
                 ],
             ])
-            ->add('address', TextareaType::class)
+            ->add('address', TextareaType::class, ['empty_data' => ''])
             ->add('zipcode', TextType::class, [
+                'property_path' => 'zipCode',
+                'empty_data' => '',
                 'label' => 'Zip code',
                 'constraints' => [
                     new Length(max: 10),
                 ],
             ])
             ->add('city', TextType::class, [
+                'empty_data' => '',
                 'constraints' => [
                     new Length(max: 50),
                 ],
@@ -92,7 +100,7 @@ class CompanyMemberType extends AbstractType
                 'entry_type'   => CompanyMemberInvitationType::class,
                 'allow_add' => true,
                 'required' => false,
-                // Déclaré ici et non sur le modèle : CompanyMember::$invitations n'a pas
+                // Déclaré ici et non sur l'entité : CompanyMember::$invitations n'a pas
                 // d'Assert\Valid, la validation ne cascade donc pas vers les invitations.
                 'constraints' => [
                     new Callback(static function (?array $invitations, ExecutionContextInterface $context): void {

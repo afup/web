@@ -9,8 +9,8 @@ use Afup\Site\Utils\Utils;
 use Afup\Site\Utils\Vat;
 use AppBundle\Accounting\Invoices\InvoiceGenerator;
 use AppBundle\Association\MemberType;
-use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\CompanyMember;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
@@ -37,13 +37,16 @@ final readonly class MembershipFeeInvoicePdfGenerator
     {
         $cotisation = $this->membershipFeeRepository->find($idCotisation);
 
-        $userRepository = match ($cotisation->typePersonne) {
-            MemberType::MemberCompany => $this->companyMemberRepository,
-            default => $this->userRepository,
-        };
+        $idPersonne = $cotisation->idPersonne;
 
-        /** @var User|CompanyMember $user */
-        $user = $userRepository->get($cotisation->idPersonne);
+        /** @var User|CompanyMember|null $user */
+        $user = match ($cotisation->typePersonne) {
+            MemberType::MemberCompany => $this->companyMemberRepository->find($idPersonne),
+            default => $this->userRepository->get($idPersonne),
+        };
+        if (null === $user) {
+            throw new \LogicException(sprintf('Member %d not found.', $idPersonne));
+        }
         $invoiceData = $this->invoiceGenerator->getInvoiceData($user);
 
         $dateFacture = $cotisation->dateFacture

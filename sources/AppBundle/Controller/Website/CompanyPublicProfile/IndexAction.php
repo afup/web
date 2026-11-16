@@ -6,8 +6,8 @@ namespace AppBundle\Controller\Website\CompanyPublicProfile;
 
 use AppBundle\Antennes\Antenne;
 use AppBundle\Antennes\AntenneRepository;
-use AppBundle\Association\Model\CompanyMember;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\CompanyMember;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Association\UserMembership\BadgesComputer;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Component\HttpFoundation\Response;

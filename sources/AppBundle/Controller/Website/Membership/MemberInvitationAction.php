@@ -8,7 +8,7 @@ use AppBundle\Association\Event\NewMemberEvent;
 use AppBundle\Association\Form\UserType;
 use AppBundle\Association\Entity\Repository\CompanyMemberInvitationRepository;
 use AppBundle\Association\Enum\InvitationEtat;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Twig\ViewRenderer;
@@ -34,7 +34,7 @@ final class MemberInvitationAction extends AbstractController
         $invitation = $this->companyMemberInvitationRepository->findOneBy(['id' => $invitationId, 'token' => $token, 'status' => InvitationEtat::EnAttente]);
         $company = null;
         if ($invitation) {
-            $company = $this->companyMemberRepository->get($invitation->companyId);
+            $company = $this->companyMemberRepository->find($invitation->companyId);
         }
 
         if ($invitation === null || $company === null) {
@@ -53,7 +53,7 @@ final class MemberInvitationAction extends AbstractController
             $user->setPassword($hash);
             $user
                 ->setStatus(User::STATUS_ACTIVE)
-                ->setCompanyId($company->getId())
+                ->setCompanyId((int) $company->id)
             ;
 
             if ($invitation->manager) {

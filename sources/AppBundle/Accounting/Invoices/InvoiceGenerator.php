@@ -6,7 +6,7 @@ namespace AppBundle\Accounting\Invoices;
 
 use AppBundle\Accounting\Invoices\Dto\InvoiceData;
 use AppBundle\Accounting\Invoices\Generator\InvoiceGeneration;
-use AppBundle\Association\Model\CompanyMember;
+use AppBundle\Association\Entity\CompanyMember;
 use AppBundle\Association\Model\User;
 
 class InvoiceGenerator
@@ -26,7 +26,7 @@ class InvoiceGenerator
         throw new \RuntimeException(sprintf(
             'No invoice generator supports member of type %s (id: %d).',
             $user::class,
-            $user->getId(),
+            $user instanceof CompanyMember ? $user->id : $user->getId(),
         ));
     }
 }

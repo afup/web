@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\CompanyPublicProfile;
 
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -22,7 +22,7 @@ final class LogoAction extends CompanyPublicProfileController
     {
         $companyMember = $this->checkAndGetCompanyMember($id, $slug);
 
-        $filepath = $this->storageDir . DIRECTORY_SEPARATOR . $companyMember->getLogoUrl();
+        $filepath = $this->storageDir . DIRECTORY_SEPARATOR . $companyMember->logoUrl;
 
         if (false === is_file($filepath)) {
             throw $this->createNotFoundException();

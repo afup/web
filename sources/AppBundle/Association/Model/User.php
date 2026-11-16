@@ -129,7 +129,10 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
 
     private ?\DateTimeImmutable $lastSubscription = null;
 
-    private ?CompanyMember $company = null;
+    // Renseignés par UserRepository depuis la jointure sur afup_personnes_morales
+    private ?string $companyName = null;
+
+    private ?int $companyMaxMembers = null;
 
     private ?string $nearestOffice = null;
 
@@ -557,17 +560,25 @@ class User implements NotifyPropertyInterface, NotifiableInterface, UserInterfac
         return $this->lastSubscription?->diff($now)->days;
     }
 
-    /**
-     * @return CompanyMember
-     */
-    public function getCompany(): ?CompanyMember
+    public function getCompanyName(): ?string
     {
-        return $this->company;
+        return $this->companyName;
     }
 
-    public function setCompany(CompanyMember $company): self
+    public function setCompanyName(?string $companyName): self
     {
-        $this->company = $company;
+        $this->companyName = $companyName;
+        return $this;
+    }
+
+    public function getCompanyMaxMembers(): ?int
+    {
+        return $this->companyMaxMembers;
+    }
+
+    public function setCompanyMaxMembers(int|string|null $companyMaxMembers): self
+    {
+        $this->companyMaxMembers = $companyMaxMembers !== null ? (int) $companyMaxMembers : null;
         return $this;
     }
 

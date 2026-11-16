@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members;
 
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\AuditLog\Audit;
 use Exception;
 use InvalidArgumentException;
@@ -21,13 +21,13 @@ class CompanyDeleteAction extends AbstractController
 
     public function __invoke(Request $request): RedirectResponse
     {
-        $companyMember = $this->companyMemberRepository->get($request->query->get('id'));
+        $companyMember = $this->companyMemberRepository->find($request->query->getInt('id'));
         if (null === $companyMember) {
             throw $this->createNotFoundException('Personne morale non trouvée');
         }
         try {
             $this->companyMemberRepository->remove($companyMember);
-            $this->audit->log('Suppression de la personne morale ' . $companyMember->getId());
+            $this->audit->log('Suppression de la personne morale ' . $companyMember->id);
             $this->addFlash('notice', 'La personne morale a été supprimée');
         } catch (InvalidArgumentException $e) {
             $this->addFlash('error', $e->getMessage());

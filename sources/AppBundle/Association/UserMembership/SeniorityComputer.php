@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Association\UserMembership;
 
 use AppBundle\Association\MemberType;
-use AppBundle\Association\Model\CompanyMember;
+use AppBundle\Association\Entity\CompanyMember;
 use AppBundle\Association\Model\User;
 use AppBundle\MembershipFee\Entity\Cotisation;
 use AppBundle\MembershipFee\Entity\Repository\CotisationRepository;
@@ -17,7 +17,7 @@ class SeniorityComputer
     /** @return array{years: int, first_year: int|null} */
     public function computeCompanyAndReturnInfos(CompanyMember $companyMember): array
     {
-        $cotis = $this->membershipFeeRepository->getListByUserTypeAndId(MemberType::MemberCompany, $companyMember->getId());
+        $cotis = $this->membershipFeeRepository->getListByUserTypeAndId(MemberType::MemberCompany, (int) $companyMember->id);
 
         return $this->computeFromCotisationsAndReturnInfos($cotis);
     }

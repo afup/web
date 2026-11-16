@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Association\Form;
 
 use Afup\Site\Utils\Pays;
-use AppBundle\Association\Model\CompanyMember;
+use AppBundle\Association\Entity\CompanyMember;
+use AppBundle\Association\Enum\CompanyMemberStatus;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -25,6 +26,7 @@ class CompanyEditType extends AbstractType
             ->add('companyName', TextType::class, [
                 'label' => 'Raison sociale',
                 'required' => true,
+                'empty_data' => '',
                 'attr' => [
                     'size' => 30,
                     'maxlength' => 40,
@@ -33,6 +35,7 @@ class CompanyEditType extends AbstractType
             ->add('siret', TextType::class, [
                 'label' => 'SIRET',
                 'required' => false,
+                'empty_data' => '',
                 'attr' => [
                     'size' => 30,
                     'maxlength' => 40,
@@ -41,6 +44,7 @@ class CompanyEditType extends AbstractType
             ->add('address', TextareaType::class, [
                 'label' => 'Adresse',
                 'required' => true,
+                'empty_data' => '',
                 'attr' => [
                     'cols' => 42,
                     'rows' => 10,
@@ -49,6 +53,7 @@ class CompanyEditType extends AbstractType
             ->add('zipCode', TextType::class, [
                 'label' => 'Code postal',
                 'required' => true,
+                'empty_data' => '',
                 'attr' => [
                     'size' => 6,
                     'maxlength' => 10,
@@ -57,6 +62,7 @@ class CompanyEditType extends AbstractType
             ->add('city', TextType::class, [
                 'label' => 'Ville',
                 'required' => true,
+                'empty_data' => '',
                 'attr' => [
                     'size' => 30,
                     'maxlength' => 50,
@@ -70,6 +76,7 @@ class CompanyEditType extends AbstractType
             ->add('lastName', TextType::class, [
                 'label' => 'Nom',
                 'required' => true,
+                'empty_data' => '',
                 'attr' => [
                     'size' => 30,
                     'maxlength' => 40,
@@ -78,6 +85,7 @@ class CompanyEditType extends AbstractType
             ->add('firstName', TextType::class, [
                 'label' => 'Prénom',
                 'required' => true,
+                'empty_data' => '',
                 'attr' => [
                     'size' => 30,
                     'maxlength' => 40,
@@ -86,6 +94,7 @@ class CompanyEditType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Email',
                 'required' => true,
+                'empty_data' => '',
                 'attr' => [
                     'size' => 30,
                     'maxlength' => 100,
@@ -110,9 +119,9 @@ class CompanyEditType extends AbstractType
             ->add('status', ChoiceType::class, [
                 'label' => 'État',
                 'choices' => [
-                    'Non finalisé' => CompanyMember::STATUS_PENDING,
-                    'Actif' => CompanyMember::STATUS_ACTIVE,
-                    'Inactif' => CompanyMember::STATUS_INACTIVE,
+                    'Non finalisé' => CompanyMemberStatus::Pending,
+                    'Actif' => CompanyMemberStatus::Active,
+                    'Inactif' => CompanyMemberStatus::Inactive,
                 ],
             ])
             ->add('maxMembers', ChoiceType::class, [

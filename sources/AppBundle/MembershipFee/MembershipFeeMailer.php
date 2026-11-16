@@ -6,7 +6,7 @@ namespace AppBundle\MembershipFee;
 
 use AppBundle\Afup;
 use AppBundle\Association\MemberType;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Email\Mailer\Attachment;
 use AppBundle\Email\Mailer\Mailer;
@@ -39,12 +39,12 @@ final readonly class MembershipFeeMailer
         $membership = $this->membershipFeeRepository->find($idCotisation);
 
         if ($membership->typePersonne === MemberType::MemberCompany) {
-            $company = $this->companyMemberRepository->get($membership->idPersonne);
+            $company = $this->companyMemberRepository->find($membership->idPersonne);
             Assert::notNull($company);
             $contactPhysique = [
-                'nom' => $company->getLastName(),
-                'prenom' => $company->getFirstName(),
-                'email' => $company->getEmail(),
+                'nom' => $company->lastName,
+                'prenom' => $company->firstName,
+                'email' => $company->email,
             ];
         } else {
             $user = $this->userRepository->get($membership->idPersonne);
@@ -71,7 +71,7 @@ final readonly class MembershipFeeMailer
 
         $subject = 'Facture AFUP';
         if ($membership->typePersonne === MemberType::MemberCompany) {
-            $subject .= ' - ' . $company->getCompanyName();
+            $subject .= ' - ' . $company->companyName;
         } else {
             $subject .= ' - ' . $contactPhysique['nom'] . ' ' . $contactPhysique['prenom'];
         }
@@ -114,10 +114,10 @@ final readonly class MembershipFeeMailer
         ];
 
         if ($typePersonne == MemberType::MemberCompany->value) {
-            if ($company = $this->companyMemberRepository->get($idPersonne)) {
-                $infos['nom'] = $company->getLastName();
-                $infos['prenom'] = $company->getFirstName();
-                $infos['email'] = $company->getEmail();
+            if (null !== $company = $this->companyMemberRepository->find((int) $idPersonne)) {
+                $infos['nom'] = $company->lastName;
+                $infos['prenom'] = $company->firstName;
+                $infos['email'] = $company->email;
             }
         } else {
             if ($user = $this->userRepository->get($idPersonne)) {
