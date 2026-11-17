@@ -239,3 +239,49 @@ Feature: Site Public - Talks
     When I go to "/talks/1-jouons-tous-ensemble-a-un-petit-jeu"
     Then the response should contain "href=\"https://apachephptest:80/talks/evenements/forum\""
     And the response should not contain "fR%5Bevent.title"
+
+  @reloadDbWithTestData
+  Scenario: Hub des talks rendu côté serveur
+    When I go to "/talks/"
+    Then the response status code should be 200
+    And I should see "Historique des conférences de l'AFUP" in the "h1" element
+    And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/\" />"
+    # Les données de test n'ont que 2 talks publiés avec vidéo (le hub en affiche jusqu'à 12) ;
+    # « Révolutionons PHP » a une vidéo mais une publication à venir.
+    And the texts of "#dernieres-videos article h3" should be, in this order:
+      """
+      REST ou GraphQL ? Exemples illustrés avec Symfony et API Platform
+      Jouons tous ensemble à un petit jeu
+      """
+    And the response should contain "href=\"/talks/2-rest-ou-graphql-exemples-illustres-avec-symfony-et-api-platform\""
+    And the response should contain "href=\"/talks/1-jouons-tous-ensemble-a-un-petit-jeu\""
+    And the texts of "#editions section li a" should be, in this order:
+      """
+      forum
+      Un évènement du passé
+      """
+    And the response should contain "href=\"/talks/evenements/forum\""
+    And the response should contain "href=\"/talks/evenements/passed\""
+    And the response should not contain "href=\"/talks/evenements/afup-day-lyon\""
+    And the response should contain "href=\"/talks/speakers/\""
+    And the response should contain "href=\"/talks/evenements/\""
+    # Conteneurs du moteur Algolia (htdocs/js/talk/list.js), toujours présents sous le hub
+    And the response should contain "<div id=\"search-box\"></div>"
+    And the response should contain "<div id=\"hits-container\""
+    And the response should contain "<div id=\"refinement-event\"></div>"
+    And the response should contain "<nav id=\"pagination\""
+
+  @reloadDbWithTestData
+  Scenario: Le hub des talks n'est pas affiché sur une recherche
+    When I go to "/talks/?q=symfony&hPP=7&idx=afup_talks&p=0&is_v=1"
+    Then the response status code should be 200
+    And the response should not contain "id=\"dernieres-videos\""
+    And the response should not contain "id=\"editions\""
+    And the response should contain "<div id=\"search-box\"></div>"
+    When I go to "/talks/?fR[event.title][0]=forum&p=1"
+    Then the response should not contain "id=\"dernieres-videos\""
+    And I should see "forum les vidéos"
+    When I go to "/talks/?p=2"
+    Then the response should not contain "id=\"dernieres-videos\""
+    When I go to "/talks/?q=&hPP=7&idx=afup_talks&p=0&is_v=1&utm_source=newsletter"
+    Then the response should contain "id=\"dernieres-videos\""

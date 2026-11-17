@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\Talks;
 
 use AppBundle\Event\Talk\PublishedTalkRepository;
+use AppBundle\Event\Talk\EventTalksSummary;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,14 +19,8 @@ final class EventListAction extends AbstractController
 
     public function __invoke(): Response
     {
-        // Les éditions sont déjà triées de la plus récente à la plus ancienne : les années aussi.
-        $summariesByYear = [];
-        foreach ($this->publishedTalkRepository->getEventSummaries() as $summary) {
-            $summariesByYear[$summary->getYear()][] = $summary;
-        }
-
         return $this->view->render('site/talks/events.html.twig', [
-            'summaries_by_year' => $summariesByYear,
+            'summaries_by_year' => EventTalksSummary::groupByYear($this->publishedTalkRepository->getEventSummaries()),
         ]);
     }
 }
