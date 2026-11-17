@@ -16,6 +16,11 @@ Feature: Site Public - Sitemaps
     And the response should contain "<loc>https://apachephptest:80/talks/?fR%5Bspeakers.label%5D%5B0%5D=Geoffrey%20BACHELET</loc>"
     And the response should contain "<loc>https://apachephptest:80/talks/?fR%5Bevent.title%5D%5B0%5D=forum</loc>"
     And the response should contain "<loc>https://apachephptest:80/talks/</loc>"
+    # lastmod = fin du créneau de planning, et non date de soumission au CFP
+    And the response should contain "<loc>https://apachephptest:80/talks/6-revolutionons-php</loc><lastmod>2020-09-15T10:40:00+02:00</lastmod>"
+    # Speaker et événement sans talk publié : pas de facette
+    And the response should not contain "speakers.label%5D%5B0%5D=John%20DOE"
+    And the response should not contain "event.title%5D%5B0%5D=AFUP%20Day%20Lyon"
 
   @reloadDbWithTestData
   Scenario: On accède sitemap video
@@ -26,6 +31,7 @@ Feature: Site Public - Sitemaps
   Scenario: On accède sitemap news
     Given I am on "/sitemap.news.xml"
     And the response should contain "<loc>https://apachephptest:80/news/1-les-videos-du-forum-2018-en-ligne</loc>"
+    And the response should not contain "?page="
 
   @reloadDbWithTestData
   Scenario: On accède sitemap members

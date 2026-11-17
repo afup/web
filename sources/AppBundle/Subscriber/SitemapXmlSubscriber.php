@@ -7,12 +7,11 @@ namespace AppBundle\Subscriber;
 use Afup\Site\Corporate\Feuille;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
-use AppBundle\Controller\Website\News\ListAction;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Entity\Repository\FeuilleRepository;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
@@ -29,6 +28,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly TalkRepository $talkRepository,
+        private readonly PlanningRepository $planningRepository,
         private readonly SpeakerRepository $speakerRepository,
         private readonly EventRepository $eventRepository,
         private readonly ArticleRepository $articleRepository,
@@ -45,31 +45,54 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
 
     public function populate(SitemapPopulateEvent $event): void
     {
-        $this->registerTalksUrls($event->getUrlContainer());
-        $this->registerSpeakersTalksUrls($event->getUrlContainer());
-        $this->registerEventsTalksUrls($event->getUrlContainer());
+        $publishedTalks = $this->getPublishedTalks();
+
+        $this->registerTalksUrls($event->getUrlContainer(), $publishedTalks);
+        $this->registerSpeakersTalksUrls($event->getUrlContainer(), $publishedTalks);
+        $this->registerEventsTalksUrls($event->getUrlContainer(), $publishedTalks);
         $this->registerNewsUrls($event->getUrlContainer());
         $this->registerMembers($event->getUrlContainer());
         $this->registerDefaultPages($event->getUrlContainer());
     }
 
-    public function registerTalksUrls(UrlContainerInterface $urls): void
+    /**
+     * Talks passés visibles dans l'historique, indexés par identifiant
+     * (un talk planifié sur plusieurs créneaux n'apparaît qu'une fois).
+     *
+     * @return array<int, Talk>
+     */
+    private function getPublishedTalks(): array
     {
-        /** @var Talk[] $talks */
-        $talks = $this->talkRepository->getAllPastTalks(new \DateTime());
+        $publishedTalks = [];
 
-        foreach ($talks as $talk) {
-            if (!$talk->isDisplayedOnHistory()) {
-                continue;
+        /** @var iterable<Talk> $pastTalks */
+        $pastTalks = $this->talkRepository->getAllPastTalks(new \DateTime());
+
+        foreach ($pastTalks as $talk) {
+            $talkId = $talk->getId();
+            if ($talkId !== null && $talk->isDisplayedOnHistory()) {
+                $publishedTalks[$talkId] = $talk;
             }
+        }
 
+        return $publishedTalks;
+    }
+
+    /**
+     * @param array<int, Talk> $publishedTalks
+     */
+    private function registerTalksUrls(UrlContainerInterface $urls, array $publishedTalks): void
+    {
+        $plannings = $this->planningRepository->findIndexedByTalkIds(array_keys($publishedTalks));
+
+        foreach ($publishedTalks as $talkId => $talk) {
             $url = new UrlConcrete(
                 $this->urlGenerator->generate(
                     'talks_show',
-                    ['id' => $talk->getId(), 'slug' => $talk->getSlug()],
+                    ['id' => $talkId, 'slug' => $talk->getSlug()],
                     UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
-                $talk->getSubmittedOn(),
+                $plannings[$talkId]->end ?? null,
             );
             $urls->addUrl($url, 'talks');
 
@@ -87,42 +110,70 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function registerSpeakersTalksUrls(UrlContainerInterface $urls): void
+    /**
+     * Facettes speaker de la liste des talks : uniquement les speakers ayant
+     * au moins un talk publié, une seule URL par label normalisé.
+     *
+     * @param array<int, Talk> $publishedTalks
+     */
+    private function registerSpeakersTalksUrls(UrlContainerInterface $urls, array $publishedTalks): void
     {
-        /** @var Speaker[] $speakers */
-        $speakers = $this->speakerRepository->getAll();
-        foreach ($speakers as $speaker) {
-            $url = new UrlConcrete(
-                $this->urlGenerator->generate(
-                    'talks_list',
-                    ['fR' => ['speakers.label' => [$speaker->getLabel()]]],
-                    UrlGeneratorInterface::ABSOLUTE_URL,
+        $labels = [];
+        foreach ($this->speakerRepository->getSpeakersByTalkIds(array_keys($publishedTalks)) as $speaker) {
+            $label = self::normalizeLabel($speaker->getLabel());
+            if ($label !== '') {
+                $labels[$label] ??= $speaker->getLabel();
+            }
+        }
+
+        foreach ($labels as $label) {
+            $urls->addUrl(
+                new UrlConcrete(
+                    $this->urlGenerator->generate(
+                        'talks_list',
+                        ['fR' => ['speakers.label' => [$label]]],
+                        UrlGeneratorInterface::ABSOLUTE_URL,
+                    ),
                 ),
+                'talks',
             );
-            $urls->addUrl($url, 'talks');
         }
     }
 
-    public function registerEventsTalksUrls(UrlContainerInterface $urls): void
+    /**
+     * Facettes événement de la liste des talks : uniquement les événements
+     * ayant au moins un talk publié, une seule URL par titre.
+     *
+     * @param array<int, Talk> $publishedTalks
+     */
+    private function registerEventsTalksUrls(UrlContainerInterface $urls, array $publishedTalks): void
     {
-        /** @var Event[] $events */
-        $events = $this->eventRepository->getAll();
-        foreach ($events as $event) {
-            $url = new UrlConcrete(
-                $this->urlGenerator->generate(
-                    'talks_list',
-                    ['fR' => ['event.title' => [$event->getTitle()]]],
-                    UrlGeneratorInterface::ABSOLUTE_URL,
+        $eventIds = array_map(static fn(Talk $talk): ?int => $talk->getForumId(), $publishedTalks);
+
+        $registeredTitles = [];
+        /** @var Event $event */
+        foreach ($this->eventRepository->getAll() as $event) {
+            $title = $event->getTitle();
+            if (!in_array($event->getId(), $eventIds, true) || in_array($title, $registeredTitles, true)) {
+                continue;
+            }
+            $registeredTitles[] = $title;
+
+            $urls->addUrl(
+                new UrlConcrete(
+                    $this->urlGenerator->generate(
+                        'talks_list',
+                        ['fR' => ['event.title' => [$title]]],
+                        UrlGeneratorInterface::ABSOLUTE_URL,
+                    ),
+                    $event->getDateEnd(),
                 ),
-                $event->getDateEnd(),
-                UrlConcrete::CHANGEFREQ_DAILY,
-                1,
+                'talks',
             );
-            $urls->addUrl($url, 'talks');
         }
     }
 
-    public function registerNewsUrls(UrlContainerInterface $urls): void
+    private function registerNewsUrls(UrlContainerInterface $urls): void
     {
         $news = $this->articleRepository->findAllPublishedArticles();
 
@@ -141,23 +192,11 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                 'news',
             );
         }
+    }
 
-        $total = $this->articleRepository->countPublishedArticles([]);
-        $byPage = ListAction::ARTICLES_PER_PAGE;
-        $lastPage = ceil($total / $byPage);
-
-        for ($page = max($lastPage, 1); $page <= $lastPage; $page++) {
-            $urls->addUrl(
-                new UrlConcrete(
-                    $this->urlGenerator->generate(
-                        'news_list',
-                        ['page' => $page],
-                        UrlGeneratorInterface::ABSOLUTE_URL,
-                    ),
-                ),
-                'news',
-            );
-        }
+    private static function normalizeLabel(string $label): string
+    {
+        return (string) preg_replace('/\s+/u', ' ', trim($label));
     }
 
     private function registerMembers(UrlContainerInterface $urls): void
