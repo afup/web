@@ -10,7 +10,7 @@ use AppBundle\Event\Form\TalkInvitationType;
 use AppBundle\Event\Form\TalkType;
 use AppBundle\Event\Entity\TalkInvitation;
 use AppBundle\Event\Enum\TalkInvitationState;
-use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Entity\Repository\VoteRepository;

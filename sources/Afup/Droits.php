@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Afup\Site;
 
 use AppBundle\Association\Model\User;
-use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Entity\GithubUser;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

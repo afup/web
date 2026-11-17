@@ -7,7 +7,7 @@ namespace AppBundle\Controller\Event\Vote;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Entity\Vote;
 use AppBundle\Event\Entity\Repository\VoteRepository;
-use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Notifier\SlackNotifier;

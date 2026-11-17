@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\CFP;
 
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

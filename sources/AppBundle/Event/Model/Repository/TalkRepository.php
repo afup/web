@@ -6,7 +6,7 @@ namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\TalkAggregateVote;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\TalkAggregate;

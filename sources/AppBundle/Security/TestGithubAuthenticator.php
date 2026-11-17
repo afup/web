@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Security;
 
-use AppBundle\Event\Model\GithubUser;
-use AppBundle\Event\Model\Repository\GithubUserRepository;
+use AppBundle\Event\Entity\GithubUser;
+use AppBundle\Event\Entity\Repository\GithubUserRepository;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,7 +32,7 @@ class TestGithubAuthenticator extends OAuth2Authenticator implements Authenticat
 
         return new SelfValidatingPassport(
             new UserBadge($userTest, function () use ($githubUserDetails) {
-                $user = $this->githubUserRepository->getOneBy(['githubId' => $githubUserDetails['id']]);
+                $user = $this->githubUserRepository->findOneByGithubId($githubUserDetails['id']);
 
                 if ($user === null) {
                     $user = new GithubUser();
@@ -49,6 +49,9 @@ class TestGithubAuthenticator extends OAuth2Authenticator implements Authenticat
         );
     }
 
+    /**
+     * @return array<string, array{id: int, name: string, login: string}>
+     */
     private function getTestUsersDetails(): array
     {
         return ['userGithub1' => [

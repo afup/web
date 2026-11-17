@@ -13,7 +13,7 @@ security:
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
         github_users:
-            id: 'AppBundle\Event\Model\Repository\GithubUserRepository'
+            id: 'AppBundle\Event\Entity\Repository\GithubUserRepository'
         database_users:
             id: 'AppBundle\Association\Model\Repository\UserRepository'
 

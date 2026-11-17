@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Afup\Tests\Support\Github;
 
-use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Github\Exception\UnableToFindGithubUserException;
 use AppBundle\Github\GithubClient;
 use Symfony\Component\HttpClient\MockHttpClient;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\GithubUser;
+use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Ting\DateTimeWithTimeZoneSerializer;
 use Aura\SqlQuery\Mysql\Select;
