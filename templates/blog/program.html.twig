@@ -61,6 +61,13 @@
                         {% endif %}
                     {% endfor %}
                 </div>
+                {% if video_talk_ids[talk.talk.id] is defined %}
+                <div>
+                    <div class="banner-button-container">
+                        <a href="{{ url('talks_show', {id: talk.talk.id, slug: talk.talk.slug}) }}" class="banner-button basis-primary-background">Voir la vidéo</a>
+                    </div>
+                </div>
+                {% endif %}
                 {% if display_joindin_links and talk.talk.getJoindinUrl %}
                 <div>
                     <div class="banner-button-container">

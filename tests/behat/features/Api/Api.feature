@@ -49,3 +49,34 @@ Feature: API pour event
     Then the response should contain "Jouons tous ensemble à un petit jeu"
     And the response should contain "REST ou GraphQL ? Exemples illustrés avec Symfony et API Platform"
     And the response should contain "Geoffrey BACHELET"
+
+  @reloadDbWithTestData
+  Scenario: Le programme lie la vidéo de chaque talk publié qui en a une
+    Given I am on "/blog/forum/program?apply-publication-date-filters=0"
+    Then the response should contain "Voir la vidéo"
+    And the response should contain "href=\"https://apachephptest:80/talks/1-jouons-tous-ensemble-a-un-petit-jeu\""
+    And the response should contain "href=\"https://apachephptest:80/talks/2-rest-ou-graphql-exemples-illustres-avec-symfony-et-api-platform\""
+    # Talk 3 : une vidéo, mais une date de publication future.
+    And the response should contain "Révolutionons PHP"
+    And the response should not contain "/talks/3-"
+
+  @reloadDbWithTestData
+  Scenario: Le programme ne lie pas un talk publié sans vidéo
+    Given I am on "/blog/passed/program"
+    Then the response should contain "Révolutionons PHP"
+    And the response should not contain "/talks/6-"
+    And the response should not contain "Voir la vidéo"
+
+  @reloadDbWithTestData
+  Scenario: Les speakers sont liés à leur page sur afup.org quand elle existe
+    Given I am on "/blog/forum/speakers?apply-publication-date-filters=0"
+    Then the response should contain "href=\"https://apachephptest:80/talks/speakers/geoffrey-bachelet\""
+    # Adrien Gallou n'a aucun talk publié : sa page speaker n'existe pas.
+    And the response should contain "Adrien GALLOU"
+    And the response should not contain "/talks/speakers/adrien-gallou"
+
+  @reloadDbWithTestData
+  Scenario: Le widget talk lie le speaker à sa page sur afup.org
+    Given I am on "/blog/talk_widget?ids=1&type=speaker"
+    Then the response should contain "href=\"https://apachephptest:80/talks/speakers/geoffrey-bachelet\""
+    And the response should not contain "href=\"\""
