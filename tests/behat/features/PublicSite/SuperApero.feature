@@ -3,7 +3,7 @@ Feature: Site Public - Super Apéro PHP
   @reloadDbWithTestData
   Scenario: Page du Super Apéro désactivée si aucun Super Apéro pour l'année courante
     Given I am on "/super-apero"
-    Then the current URL should match "#/home#"
+    Then the current URL should match "#^https?://[^/]+/$#"
 
   @reloadDbWithTestData
   Scenario: Page du Super Apéro désactivée si le Super Apéro de l'année est passé
@@ -19,7 +19,7 @@ Feature: Site Public - Super Apéro PHP
     And I press "Ajouter"
     # Affichage de la page du Super Apéro
     Given I am on "/super-apero"
-    Then the current URL should match "#/home#"
+    Then the current URL should match "#^https?://[^/]+/$#"
 
   @reloadDbWithTestData
   Scenario: Page du Super Apéro active si un Super Apéro est actif dans l'année courante

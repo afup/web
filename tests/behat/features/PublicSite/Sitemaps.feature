@@ -35,4 +35,5 @@ Feature: Site Public - Sitemaps
   @reloadDbWithTestData
   Scenario: On accède sitemap default
     Given I am on "/sitemap.default.xml"
-    And the response should contain "<loc>https://apachephptest:80/home</loc>"
+    And the response should contain "<loc>https://apachephptest:80/</loc>"
+    And the response should not contain "<loc>https://apachephptest:80/home</loc>"

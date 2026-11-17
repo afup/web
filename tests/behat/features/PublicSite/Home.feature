@@ -33,3 +33,15 @@ Feature: Site Public - Home
     Then I should see "Le super meetup"
     And I should see "Lyon"
     And I should see "08/11"
+
+  @reloadDbWithTestData
+  Scenario: La home est servie sur / avec une canonical vers /
+    Given I am on "/"
+    Then the response status code should be 200
+    And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/\"/>"
+
+  Scenario: L'ancienne URL /home redirige en 301 vers /
+    Given I do not follow redirects
+    When I am on "/home"
+    Then the response status code should be 301
+    And the response header "Location" should match "#^(https?://[^/]+)?/$#"
