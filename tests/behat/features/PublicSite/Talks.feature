@@ -81,3 +81,42 @@ Feature: Site Public - Talks
     User-agent: *
     Disallow: /talks/*/joindin
     """
+
+  @reloadDbWithTestData
+  Scenario: Fil d'Ariane de la page d'un talk
+    When I go to "/talks/6-revolutionons-php"
+    Then I should see "Accueil" in the "nav[aria-label^=Fil]" element
+    And I should see "Conférences" in the "nav[aria-label^=Fil]" element
+    And I should see "Un évènement du passé" in the "nav[aria-label^=Fil]" element
+    And I should see "Révolutionons PHP" in the "nav[aria-label^=Fil] [aria-current=page]" element
+    And the JSON-LD "BreadcrumbList" should have the following items:
+      | position | name                  | item                                                                                    |
+      | 1        | Accueil               | https://apachephptest:80/                                                               |
+      | 2        | Conférences           | https://apachephptest:80/talks/                                                         |
+      | 3        | Un évènement du passé | https://apachephptest:80/talks/?fR%5Bevent.title%5D%5B0%5D=Un%20%C3%A9v%C3%A8nement%20du%20pass%C3%A9 |
+      | 4        | Révolutionons PHP     | https://apachephptest:80/talks/6-revolutionons-php                                      |
+
+  @reloadDbWithTestData
+  Scenario: Liens vers les autres talks depuis la page d'un talk
+    When I go to "/talks/6-revolutionons-php"
+    Then the page should contain at least 8 links to other talks
+    And I should see "Keynote d'ouverture" in the "a[rel=prev]" element
+    And I should see "Tester sans se ruiner" in the "a[rel=next]" element
+    And I should see "Aussi au Un évènement du passé"
+    And I should see "Observabilité avec OpenTelemetry"
+    And I should see "Le typage statique en pratique"
+    And I should see "Clôture : le futur de PHP"
+    And I should see "Migrer une application legacy"
+    And I should see "Autres talks de Geoffrey BACHELET"
+    And I should see "Jouons tous ensemble à un petit jeu"
+    And I should see "REST ou GraphQL ? Exemples illustrés avec Symfony et API Platform"
+    And I should not see "Un talk pas encore publié"
+
+  @reloadDbWithTestData
+  Scenario: Premier et dernier talks du planning d'une édition
+    When I go to "/talks/8-keynote-d-ouverture"
+    Then I should not see "Talk précédent"
+    And I should see "Révolutionons PHP" in the "a[rel=next]" element
+    When I go to "/talks/7-cloture-le-futur-de-php"
+    Then I should see "Le typage statique en pratique" in the "a[rel=prev]" element
+    And I should not see "Talk suivant"
