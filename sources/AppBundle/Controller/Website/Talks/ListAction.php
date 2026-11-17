@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\Talks;
 
 use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Event\Model\Repository\SpeakerRepository;
+use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Talk\TalkListQuery;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -21,29 +24,48 @@ final class ListAction extends AbstractController
         #[Autowire(env: 'ALGOLIA_FRONTEND_API_KEY')]
         private readonly string $algoliaFrontendApikey,
         private readonly AntenneRepository $antennesRepository,
+        private readonly SpeakerRepository $speakerRepository,
+        private readonly TalkRepository $talkRepository,
     ) {}
 
     public function __invoke(Request $request): Response
     {
+        $query = new TalkListQuery($request->query->all());
+        $speakerLabels = $query->getFacetValues(TalkListQuery::FACET_SPEAKER);
+        $eventTitles = $query->getFacetValues(TalkListQuery::FACET_EVENT);
+
+        $now = new \DateTimeImmutable();
+        foreach ($speakerLabels as $label) {
+            if (!$this->speakerRepository->hasPublishedTalkForLabel($label, $now)) {
+                throw $this->createNotFoundException('Aucun talk publié pour ce speaker');
+            }
+        }
+        foreach ($eventTitles as $eventTitle) {
+            if (!$this->talkRepository->hasPublishedTalkForEventTitle($eventTitle, $now)) {
+                throw $this->createNotFoundException('Aucun talk publié pour cet événement');
+            }
+        }
+
         $title = 'Historique des conférences de l\'AFUP';
         $canonical = $this->generateUrl('talks_list', referenceType: UrlGeneratorInterface::ABSOLUTE_URL);
-        if (isset($request->query->all('fR')['speakers.label'][0])) {
-            $label = $request->query->all('fR')['speakers.label'][0];
+        if (isset($speakerLabels[0])) {
+            $label = $speakerLabels[0];
             $title = 'Les vidéos de ' . $label;
             $canonical = $this->generateUrl('talks_list', [
-                'fR' => ['speakers.label' => [$label]],
+                'fR' => [TalkListQuery::FACET_SPEAKER => [$label]],
             ], UrlGeneratorInterface::ABSOLUTE_URL);
-        } elseif (isset($request->query->all('fR')['event.title'][0])) {
-            $label = $request->query->all('fR')['event.title'][0];
-            $title = $request->query->all('fR')['event.title'][0] . ' les vidéos';
+        } elseif (isset($eventTitles[0])) {
+            $label = $eventTitles[0];
+            $title = $label . ' les vidéos';
             $canonical = $this->generateUrl('talks_list', [
-                'fR' => ['event.title' => [$label]],
+                'fR' => [TalkListQuery::FACET_EVENT => [$label]],
             ], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
         return $this->view->render('site/talks/list.html.twig', [
             'title' => $title,
             'canonical' => $canonical,
+            'noindex' => !$query->isIndexable(),
             'antennes' => $this->antennesRepository->getAllSortedByLabels(),
             'algolia_app_id' => $this->algoliaAppId,
             'algolia_api_key' => $this->algoliaFrontendApikey,
