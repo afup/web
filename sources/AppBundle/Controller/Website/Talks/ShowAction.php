@@ -29,15 +29,20 @@ final class ShowAction extends AbstractController
     {
         $talk = $this->talkRepository->get($id);
 
-        if (null === $talk || $talk->getSlug() != $slug || !$talk->isDisplayedOnHistory()) {
+        if (null === $talk || !$talk->isDisplayedOnHistory()) {
             throw $this->createNotFoundException();
         }
 
-        $speakers = $this->speakerRepository->getSpeakersByTalk($talk);
         $planning = $this->planningRepository->getByTalk($talk);
         if ($planning === null) {
             throw $this->createNotFoundException();
         }
+
+        if ($talk->getSlug() !== $slug) {
+            return $this->redirectToRoute('talks_show', ['id' => $id, 'slug' => $talk->getSlug()], Response::HTTP_MOVED_PERMANENTLY);
+        }
+
+        $speakers = $this->speakerRepository->getSpeakersByTalk($talk);
         $event = $this->eventRepository->get($planning->eventId);
         $comments = $this->joindinComments->getCommentsFromTalk($talk);
 
