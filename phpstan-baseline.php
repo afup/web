@@ -3728,12 +3728,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/CompanyPublicProfile/ListAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HtmlSitemapAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getCompanyName\\(\\) on mixed\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -3765,12 +3759,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Controller\\\\Website\\\\Global\\\\HtmlSitemapAction\\:\\:news\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HtmlSitemapAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Website\\\\Global\\\\HtmlSitemapAction\\:\\:talks\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HtmlSitemapAction.php',
