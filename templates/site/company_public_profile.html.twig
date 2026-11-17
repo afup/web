@@ -10,6 +10,8 @@
 
 {% block title %}{{ company_member.companyName }} est adhérente à l'AFUP{% endblock %}
 
+{% block description %}{{ (company_member.description ?: company_member.companyName ~ " est une entreprise adhérente à l'AFUP et soutient la communauté PHP française.")|meta_description }}{% endblock %}
+
 {% set logo_url = path('company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) %}
 
 {% block metas %}

@@ -16,6 +16,13 @@ class SiteRubrique extends AbstractSeed
                 'nom' => "Actualités",
                 'etat' => 1,
             ],
+            [
+                'id' => Rubrique::ID_RUBRIQUE_ASSOCIATION,
+                'id_parent' => 0,
+                'nom' => "Association",
+                'raccourci' => 'association',
+                'etat' => 1,
+            ],
         ];
 
         $table = $this->table('afup_site_rubrique');
