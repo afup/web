@@ -7,7 +7,6 @@ namespace AppBundle\Controller\Website\Global;
 use Afup\Site\Corporate\Feuille;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
 use AppBundle\Site\Entity\Repository\FeuilleRepository;
 use AppBundle\Twig\ViewRenderer;
@@ -90,16 +89,18 @@ final class HtmlSitemapAction extends AbstractController
         return $news;
     }
 
+    /**
+     * @return list<array{name: string, url: string}>
+     */
     private function talks(): array
     {
         $talks = [];
-        $talkList = $this->talkRepository->getAllPastTalks(new \DateTime()->setTime(29, 59, 59));
+        $talkList = $this->talkRepository->getPublishedTalks(new \DateTimeImmutable()->setTime(23, 59, 59));
 
-        /** @var Talk $talk */
-        foreach ($talkList as $talk) {
+        foreach ($talkList as $talkId => $talk) {
             $url = $this->generateUrl(
                 'talks_show',
-                ['id' => $talk->getId(), 'slug' => $talk->getSlug()],
+                ['id' => $talkId, 'slug' => $talk->getSlug()],
             );
 
             $talks[] = [

@@ -380,17 +380,36 @@ SQL;
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
-    public function getAllPastTalks(\DateTime $dateTime)
+    /**
+     * Talks publiés : terminés avant la date donnée et visibles dans l'historique
+     * (ni clinique, ni présentation des speakers, et planifiés), indexés par
+     * identifiant pour qu'un talk planifié sur plusieurs créneaux n'apparaisse qu'une fois.
+     *
+     * Source commune du plan du site et du sitemap XML : chaque talk renvoyé a une page
+     * `talks_show` qui répond 200.
+     *
+     * @return array<int, Talk>
+     */
+    public function getPublishedTalks(\DateTimeInterface $endedBefore): array
     {
         $query = $this->getPreparedQuery(
             '
             SELECT talk.*
             FROM afup_sessions AS talk
-            LEFT JOIN afup_forum_planning afp ON talk.session_id = afp.id_session
+            INNER JOIN afup_forum_planning afp ON talk.session_id = afp.id_session
             WHERE afp.fin <= :date_fin',
-        )->setParams(['date_fin' => $dateTime->format('U')]);
+        )->setParams(['date_fin' => $endedBefore->format('U')]);
 
-        return $query->query($this->getCollection(new HydratorSingleObject()));
+        $publishedTalks = [];
+        /** @var Talk $talk */
+        foreach ($query->query($this->getCollection(new HydratorSingleObject())) as $talk) {
+            $talkId = $talk->getId();
+            if ($talkId !== null && $talk->isDisplayedOnHistory()) {
+                $publishedTalks[$talkId] = $talk;
+            }
+        }
+
+        return $publishedTalks;
     }
 
     /**

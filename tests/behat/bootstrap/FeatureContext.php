@@ -351,4 +351,41 @@ class FeatureContext implements Context
 
         $node->click();
     }
+
+    #[Then('/^every link matching "(?P<pattern>(?:[^"]|\\")*)" should respond with status (?P<code>\d+)$/')]
+    public function assertEveryLinkMatchingRespondsWithStatus(string $pattern, int $code): void
+    {
+        $session = $this->minkContext->getSession();
+
+        $urls = [];
+        foreach ($session->getPage()->findAll('css', 'a[href]') as $link) {
+            $href = (string) $link->getAttribute('href');
+            if (preg_match($pattern, $href)) {
+                $urls[$href] = true;
+            }
+        }
+
+        if ($urls === []) {
+            throw new ExpectationException(
+                sprintf('No link matching "%s" was found', $pattern),
+                $session->getDriver(),
+            );
+        }
+
+        $failures = [];
+        foreach (array_keys($urls) as $url) {
+            $this->minkContext->visitPath($url);
+            $status = $session->getStatusCode();
+            if ($status !== $code) {
+                $failures[] = sprintf('%s (%d)', $url, $status);
+            }
+        }
+
+        if ($failures !== []) {
+            throw new ExpectationException(
+                sprintf('%d link(s) matching "%s" did not respond with status %d: %s', count($failures), $pattern, $code, implode(', ', $failures)),
+                $session->getDriver(),
+            );
+        }
+    }
 }
