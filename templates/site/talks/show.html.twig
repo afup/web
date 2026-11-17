@@ -106,8 +106,10 @@
                                 {% endif %}
                             </div>
                             <p class="text-neutre-700">{{ speaker.biography }}</p>
-                            <a href="{{ url('talks_list', {"fR": { "speakers.label" : [ speaker.label ]}}) }}"
-                               class="text-sm text-afup-500 underline hover:no-underline">Voir tous ses talks</a>
+                            {% if speaker_slugs[speaker.id] is defined %}
+                                <a href="{{ path('talks_speaker', {slug: speaker_slugs[speaker.id]}) }}"
+                                   class="text-sm text-afup-500 underline hover:no-underline">Voir tous ses talks</a>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}

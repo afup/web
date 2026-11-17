@@ -457,4 +457,17 @@ class FeatureContext implements Context
 
         return $found;
     }
+
+    #[Then('the JSON-LD :type property :property should contain :value')]
+    public function assertJsonLdPropertyContains(string $type, string $property, string $value): void
+    {
+        $actualValue = $this->findJsonLd($type)[$property] ?? null;
+
+        if (!is_array($actualValue) || !in_array($value, $actualValue, true)) {
+            throw new ExpectationException(
+                sprintf('JSON-LD "%s" property "%s" is %s, it does not contain "%s"', $type, $property, json_encode($actualValue, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), $value),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+    }
 }

@@ -1,0 +1,80 @@
+{% extends 'layouts/site.html.twig' %}
+
+{% set name = profile.identity.name %}
+{% set latest_talk = profile.talks|first %}
+
+{% block title %}Talks de {{ name }} – AFUP{% endblock %}
+
+{% block description %}{{ name }} : {{ profile.talks|length }} talk{{ profile.talks|length > 1 ? 's' }} aux conférences de l'AFUP, dont « {{ latest_talk.talk.title }} » ({{ latest_talk.event.title }}). {{ profile.biography }}{% endblock %}
+
+{% block metas %}
+    {{ parent() }}
+    <script type="application/ld+json">{{ person|json_encode(constant('AppBundle\\Event\\Speaker\\PersonJsonLd::JSON_FLAGS'))|raw }}</script>
+{% endblock %}
+
+{% block content %}
+    {% set social_networks = {
+        twitter:  { icon: 'fa:twitter',          label: 'X (Twitter)' },
+        mastodon: { icon: 'mdi:mastodon',        label: 'Mastodon' },
+        bluesky:  { icon: 'simple-icons:bluesky', label: 'Bluesky' },
+        linkedin: { icon: 'mdi:linkedin',        label: 'LinkedIn' },
+        github:   { icon: 'mdi:github',          label: 'GitHub' },
+    } %}
+
+    <div class="container mx-auto px-4 py-6 sm:px-28 sm:py-10 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
+        {# La photo est facultative : elle ne doit pas laisser de colonne vide quand elle manque. #}
+        {% if photo_url %}
+            <img src="{{ photo_url }}" alt="{{ name }}"
+                 class="size-32 shrink-0 rounded-2xl object-cover bg-neutre-200" />
+        {% endif %}
+        <div class="flex flex-col gap-4 grow min-w-0">
+            <p class="text-sm text-neutre-400">
+                <a href="{{ path('talks_speakers') }}" class="text-afup-500 underline hover:no-underline">Speakers</a>
+            </p>
+            <h1 class="font-titre text-2xl sm:text-4xl leading-tight text-afup-800">{{ name }}</h1>
+            {% if profile.biography %}
+                <p class="text-neutre-700">{{ profile.biography }}</p>
+            {% endif %}
+            {% if profile.socialLinks|length %}
+                <ul class="flex flex-wrap items-center gap-2">
+                    {% for network, url in profile.socialLinks %}
+                        <li>
+                            <a href="{{ url }}" rel="me noopener" target="_blank"
+                               class="inline-flex items-center gap-1.5 rounded-lg bg-afup-100 px-2 py-1 text-sm font-medium text-afup-500 hover:bg-afup-500 hover:text-white">
+                                <twig:ux:icon name="{{ social_networks[network].icon }}" class="size-4" />
+                                {{ social_networks[network].label }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 pb-6 sm:px-28 sm:pb-10 flex flex-col gap-4">
+        <twig:SectionTitle>{{ profile.talks|length > 1 ? 'Ses talks' : 'Son talk' }}</twig:SectionTitle>
+
+        <ul class="flex flex-col gap-4">
+            {% for speaker_talk in profile.talks %}
+                {% set talk = speaker_talk.talk %}
+                {% set talk_url = path('talks_show', {id: talk.id, slug: talk.slug}) %}
+                <li>
+                    <article class="flex flex-col sm:flex-row gap-4 rounded-2xl border-2 border-neutre-300 p-4">
+                        <a href="{{ talk_url }}" class="shrink-0 w-full sm:w-44" tabindex="-1" aria-hidden="true">
+                            <img src="{{ talk.hasYoutubeId ? 'https://img.youtube.com/vi/' ~ talk.youtubeId ~ '/hqdefault.jpg' : asset('/images/no_video.jpg') }}"
+                                 alt="" loading="lazy" class="w-full aspect-video rounded-xl object-cover bg-neutre-200" />
+                        </a>
+                        <div class="flex flex-col gap-2 grow min-w-0">
+                            <h3 class="font-titre text-lg leading-snug text-afup-800">
+                                <a href="{{ talk_url }}" class="hover:underline">{{ talk.title }}</a>
+                            </h3>
+                            <p class="text-sm text-neutre-400">
+                                {{ speaker_talk.event.title }} · <time datetime="{{ speaker_talk.startsAt|date('Y-m-d') }}">{{ speaker_talk.startsAt|format_date('long') }}</time>
+                            </p>
+                        </div>
+                    </article>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
