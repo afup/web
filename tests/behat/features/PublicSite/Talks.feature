@@ -396,3 +396,13 @@ Feature: Site Public - Talks
     Then the page should have a meta description
     When I go to "/talks/evenements/"
     Then the page should have a meta description
+
+  @reloadDbWithTestData
+  Scenario: Le title d'un talk au titre court contient l'évènement
+    When I go to "/talks/1-jouons-tous-ensemble-a-un-petit-jeu"
+    Then the response should contain "<title>Jouons tous ensemble à un petit jeu – forum</title>"
+
+  @reloadDbWithTestData
+  Scenario: Le title d'un talk au titre long se limite au titre
+    When I go to "/talks/2-rest-ou-graphql-exemples-illustres-avec-symfony-et-api-platform"
+    Then the response should contain "<title>REST ou GraphQL ? Exemples illustrés avec Symfony et API Platform</title>"
