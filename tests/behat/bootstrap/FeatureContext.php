@@ -436,4 +436,42 @@ class FeatureContext implements Context
             );
         }
     }
+
+    /**
+     * Le texte de chaque élément trouvé par le sélecteur CSS, dans l'ordre de la page : ni plus, ni moins.
+     */
+    #[Then('/^the texts of "(?P<selector>[^"]+)" should be, in this order:$/')]
+    public function assertElementTextsInOrder(string $selector, PyStringNode $expectedTexts): void
+    {
+        $expected = array_values(array_filter(array_map(trim(...), $expectedTexts->getStrings())));
+        $actual = array_map(
+            static fn(NodeElement $element): string => trim($element->getText()),
+            $this->minkContext->getSession()->getPage()->findAll('css', $selector),
+        );
+
+        if ($expected !== $actual) {
+            throw new ExpectationException(
+                sprintf('The texts of "%s" are %s, %s expected', $selector, json_encode($actual, JSON_UNESCAPED_UNICODE), json_encode($expected, JSON_UNESCAPED_UNICODE)),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+    }
+
+    /**
+     * La propriété :key de chaque élément de la liste :property du JSON-LD, dans l'ordre : ni plus, ni moins.
+     */
+    #[Then('the :key of each item of the JSON-LD :type property :property should be, in this order:')]
+    public function assertJsonLdListValues(string $key, string $type, string $property, PyStringNode $expectedValues): void
+    {
+        $items = $this->findJsonLd($type)[$property] ?? null;
+        $actual = is_array($items) ? array_map(static fn($item): mixed => is_array($item) ? $item[$key] ?? null : null, $items) : null;
+        $expected = array_values(array_filter(array_map(trim(...), $expectedValues->getStrings())));
+
+        if ($expected !== $actual) {
+            throw new ExpectationException(
+                sprintf('The "%s" of the JSON-LD "%s" property "%s" are %s, %s expected', $key, $type, $property, json_encode($actual, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), json_encode($expected, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+    }
 }

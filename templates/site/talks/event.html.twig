@@ -1,0 +1,68 @@
+{% extends 'layouts/site.html.twig' %}
+
+{% set talk_count = event_talks|length %}
+{% set video_count = event_talks|filter(event_talk => event_talk.talk.hasYoutubeId)|length %}
+{% set event_dates %}
+    {%- if event.dateStart|date('Y-m-d') == event.dateEnd|date('Y-m-d') -%}
+        le {{ event.dateStart|format_date('long') }}
+    {%- elseif event.dateStart|date('Y-m') == event.dateEnd|date('Y-m') -%}
+        du {{ event.dateStart|date('j') }} au {{ event.dateEnd|format_date('long') }}
+    {%- else -%}
+        du {{ event.dateStart|format_date('long') }} au {{ event.dateEnd|format_date('long') }}
+    {%- endif -%}
+{% endset %}
+
+{% block title %}{{ event.title }} : les talks et vidéos – AFUP{% endblock %}
+
+{% block description %}{{ event.title }}, {{ event_dates }}{% if event.placeName %} à {{ event.placeName }}{% endif %} : {{ talk_count }} talk{{ talk_count > 1 ? 's' }}{% if video_count %} dont {{ video_count }} en vidéo{% endif %}, avec leurs speakers.{% endblock %}
+
+{% block metas %}
+    {{ parent() }}
+    <script type="application/ld+json">{{ item_list|json_encode(constant('AppBundle\\Event\\Speaker\\PersonJsonLd::JSON_FLAGS'))|raw }}</script>
+{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto px-4 py-6 sm:px-28 sm:py-10 flex flex-col gap-4">
+        <p class="text-sm text-neutre-400">
+            <a href="{{ path('talks_events') }}" class="text-afup-500 underline hover:no-underline">Événements</a>
+        </p>
+        <h1 class="font-titre text-2xl sm:text-4xl leading-tight text-afup-800">{{ event.title }} : les talks et vidéos</h1>
+        <p class="text-neutre-700">
+            {{ event.title }} s'est déroulé {{ event_dates }}{% if event.placeName %} à {{ event.placeName }}{% endif %}.
+            Retrouvez {{ talk_count > 1 ? 'les ' ~ talk_count ~ ' talks' : 'le talk' }} de cette édition{% if video_count %}, dont {{ video_count }} en vidéo{% endif %}, dans l'ordre du programme.
+        </p>
+        <p>
+            <a href="https://event.afup.org/{{ event.path|url_encode }}/" class="text-afup-500 underline hover:no-underline">Voir la page de l'édition sur event.afup.org</a>
+        </p>
+    </div>
+
+    <div class="container mx-auto px-4 pb-6 sm:px-28 sm:pb-10 flex flex-col gap-4">
+        <twig:SectionTitle>{{ talk_count > 1 ? 'Les talks' : 'Le talk' }}</twig:SectionTitle>
+
+        <ol class="flex flex-col gap-4">
+            {% for event_talk in event_talks %}
+                <li>
+                    {% embed 'site/talks/_talk_card.html.twig' with {talk: event_talk.talk} %}
+                        {% block details %}
+                            {% if event_talk.speakers|length %}
+                                <p class="text-neutre-700">
+                                    {% for speaker in event_talk.speakers -%}
+                                        {%- if speaker_slugs[speaker.id] is defined -%}
+                                            <a href="{{ path('talks_speaker', {slug: speaker_slugs[speaker.id]}) }}" class="text-afup-500 underline hover:no-underline">{{ speaker.label }}</a>
+                                        {%- else -%}
+                                            {{ speaker.label }}
+                                        {%- endif -%}
+                                        {{- not loop.last ? ', ' -}}
+                                    {%- endfor %}
+                                </p>
+                            {% endif %}
+                            <p class="text-sm text-neutre-400">
+                                <time datetime="{{ event_talk.startsAt|date('Y-m-d\\TH:i') }}">{{ event_talk.startsAt|format_datetime('long', 'short') }}</time>
+                            </p>
+                        {% endblock %}
+                    {% endembed %}
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+{% endblock %}

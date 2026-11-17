@@ -41,7 +41,7 @@
     {% set event_date %}
         {% if event.dateStart == event.dateEnd %}le {{ event.dateStart|date('d') }}{% else %}les {{ event.dateStart|date('d') }} et {{ event.dateEnd|date('d') }}{% endif %} {{ event.dateEnd|format_date('none', 'MMMM YYYY') }}
     {% endset %}
-    {% set event_url = url('talks_list', {"fR": { "event.title" : [ event.title ]}}) %}
+    {% set event_url = url('talks_event', {path: event.path}) %}
     {% set speakers_label = speakers|map(speaker => speaker.label)|join(', ') %}
 
     {% if talk.hasYoutubeId %}

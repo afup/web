@@ -30,23 +30,13 @@ use Webmozart\Assert\Assert;
 class SpeakerRepository extends Repository implements MetadataInitializer
 {
     /**
-     * Jointures et conditions d'un talk publié, vu depuis ses speakers : planifié, ni clinique ni
-     * présentation des speakers (l'équivalent SQL de Talk::isDisplayedOnHistory(), le filtre de la
-     * page du talk), avec un créneau terminé et une date de publication vide ou passée.
+     * Jointures d'un talk publié, vu depuis ses speakers ; les conditions sont TalkRepository::PUBLISHED_TALK_CONDITIONS.
      */
     private const string PUBLISHED_SPEAKER_TALKS_JOINS = '
         FROM afup_conferenciers speaker
         INNER JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = speaker.conferencier_id
         INNER JOIN afup_sessions talk ON talk.session_id = cs.session_id
-        INNER JOIN (
-            SELECT id_session, MIN(debut) AS debut, MIN(fin) AS fin FROM afup_forum_planning GROUP BY id_session
-        ) planning ON planning.id_session = talk.session_id';
-
-    private const string PUBLISHED_SPEAKER_TALKS_CONDITIONS = '
-        talk.plannifie = 1
-        AND talk.genre NOT IN (' . Talk::TYPE_CLINIC . ', ' . Talk::TYPE_SPEAKER_INTRODUCTIONS . ')
-        AND planning.fin <= UNIX_TIMESTAMP()
-        AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)';
+        ' . TalkRepository::PUBLISHED_TALK_PLANNING_JOIN;
 
     /**
      * @return CollectionInterface<Speaker>&iterable<Speaker>
@@ -353,7 +343,7 @@ SQL
             speaker.prenom AS firstname, speaker.nom AS lastname, talk.session_id AS talk_id, planning.debut AS starts_at'
             . self::PUBLISHED_SPEAKER_TALKS_JOINS
             . ' INNER JOIN afup_speaker_person person ON person.id = speaker.person_id'
-            . ' WHERE ' . self::PUBLISHED_SPEAKER_TALKS_CONDITIONS,
+            . ' WHERE ' . TalkRepository::PUBLISHED_TALK_CONDITIONS,
         );
 
         $appearances = [];
@@ -403,7 +393,7 @@ SQL
             . ' INNER JOIN afup_forum event ON event.id = talk.id_forum
             LEFT JOIN afup_user_github github ON github.id = speaker.user_github
             WHERE speaker.conferencier_id IN (:' . implode(', :', array_keys($params)) . ')
-            AND ' . self::PUBLISHED_SPEAKER_TALKS_CONDITIONS
+            AND ' . TalkRepository::PUBLISHED_TALK_CONDITIONS
             . ' ORDER BY planning.debut DESC, talk.session_id DESC, speaker.conferencier_id DESC',
         )->setParams($params);
 
