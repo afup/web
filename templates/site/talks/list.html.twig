@@ -2,6 +2,8 @@
 
 {% block title %}{{ title }}{% endblock %}
 
+{% block description %}Les talks et vidéos des conférences de l'AFUP : Forum PHP, AFUP Day, PHP Tour… Dernières vidéos, toutes les éditions année par année, les speakers et une recherche dans tout l'historique.{% endblock %}
+
 {% block canonical %}
     <link rel="canonical" href="{{ canonical }}" />
 {% endblock %}
@@ -36,6 +38,46 @@
             Retrouvez ici toutes les conférences passées de l'AFUP. Pour s'informer sur nos prochains
             évènements, rendez-vous sur <a href="https://event.afup.org" class="text-afup-500 underline hover:no-underline">event.afup.org</a>.
         </p>
+
+        {% if show_hub %}
+            <ul class="flex flex-wrap gap-3">
+                <li><twig:Button variant="secondary" as="a" href="{{ path('talks_events') }}">Tous les événements</twig:Button></li>
+                <li><twig:Button variant="secondary" as="a" href="{{ path('talks_speakers') }}">Tous les speakers de A à Z</twig:Button></li>
+            </ul>
+        {% endif %}
+    </div>
+
+    {# Hub rendu côté serveur : liens HTML vers les talks, les éditions et les speakers, lisibles sans JavaScript. #}
+    {% if show_hub %}
+        {% if latest_talks is not empty %}
+            <section id="dernieres-videos" class="container mx-auto px-4 pb-6 sm:px-28 sm:pb-10 flex flex-col gap-4">
+                <twig:SectionTitle>Dernières vidéos</twig:SectionTitle>
+                <ol class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    {% for latest in latest_talks %}
+                        <li>
+                            {% embed 'site/talks/_talk_card.html.twig' with {talk: latest.talk} %}
+                                {% block details %}
+                                    <p class="text-sm text-neutre-400">
+                                        <a href="{{ path('talks_event', {path: latest.event.path}) }}" class="text-afup-500 underline hover:no-underline">{{ latest.event.title }}</a>
+                                    </p>
+                                {% endblock %}
+                            {% endembed %}
+                        </li>
+                    {% endfor %}
+                </ol>
+            </section>
+        {% endif %}
+
+        <section id="editions" class="container mx-auto px-4 pb-6 sm:px-28 sm:pb-10 flex flex-col gap-4">
+            <twig:SectionTitle>Les éditions</twig:SectionTitle>
+            {% include 'site/talks/_events_by_year.html.twig' with {heading_level: 3} %}
+        </section>
+    {% endif %}
+
+    <div class="container mx-auto px-4 pb-6 sm:px-28 sm:pb-10 flex flex-col gap-4">
+        {% if show_hub %}
+            <twig:SectionTitle>Rechercher une conférence</twig:SectionTitle>
+        {% endif %}
 
         {# instantsearch remplace cet input ; les classes sont posées via cssClasses.input #}
         <div id="search-box"></div>
