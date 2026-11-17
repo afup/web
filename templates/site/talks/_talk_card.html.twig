@@ -1,0 +1,14 @@
+{# Carte d'un talk : vignette (ou image par défaut), titre en lien, puis le bloc « details » de l'appelant. #}
+{% set talk_url = path('talks_show', {id: talk.id, slug: talk.slug}) %}
+<article class="flex flex-col sm:flex-row gap-4 rounded-2xl border-2 border-neutre-300 p-4">
+    <a href="{{ talk_url }}" class="shrink-0 w-full sm:w-44" tabindex="-1" aria-hidden="true">
+        <img src="{{ talk.hasYoutubeId ? 'https://img.youtube.com/vi/' ~ talk.youtubeId ~ '/hqdefault.jpg' : asset('/images/no_video.jpg') }}"
+             alt="" loading="lazy" class="w-full aspect-video rounded-xl object-cover bg-neutre-200" />
+    </a>
+    <div class="flex flex-col gap-2 grow min-w-0">
+        <h3 class="font-titre text-lg leading-snug text-afup-800">
+            <a href="{{ talk_url }}" class="hover:underline">{{ talk.title }}</a>
+        </h3>
+        {% block details %}{% endblock %}
+    </div>
+</article>

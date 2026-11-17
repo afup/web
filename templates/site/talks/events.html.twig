@@ -1,0 +1,49 @@
+{% extends 'layouts/site.html.twig' %}
+
+{% block title %}Événements et conférences : talks et vidéos – AFUP{% endblock %}
+
+{% block description %}Toutes les éditions des conférences de l'AFUP, année par année : Forum PHP, AFUP Day, PHP Tour… Retrouvez les talks et vidéos de chaque événement.{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto px-4 py-6 sm:px-28 sm:py-10 flex flex-col gap-5">
+        <p class="text-sm text-neutre-400">
+            <a href="{{ path('talks_list') }}" class="text-afup-500 underline hover:no-underline">Vidéos</a>
+        </p>
+        <h1 class="font-titre text-afup-800 text-2xl sm:text-4xl">Les événements de l'AFUP et leurs talks</h1>
+
+        {% if summaries_by_year|length > 1 %}
+            <nav aria-label="Années">
+                <ul class="flex flex-wrap gap-2">
+                    {% for year in summaries_by_year|keys %}
+                        <li>
+                            <a href="#evenements-{{ year }}"
+                               class="inline-flex items-center justify-center rounded-lg bg-afup-100 px-2 py-1 text-sm font-medium text-afup-500 hover:bg-afup-500 hover:text-white">{{ year }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        {% endif %}
+    </div>
+
+    <div class="container mx-auto px-4 pb-6 sm:px-28 sm:pb-10 flex flex-col gap-8">
+        {% for year, summaries in summaries_by_year %}
+            <section id="evenements-{{ year }}" class="flex flex-col gap-4 scroll-mt-4">
+                <twig:SectionTitle>{{ year }}</twig:SectionTitle>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {% for summary in summaries %}
+                        <li class="flex flex-col gap-1 rounded-2xl border-2 border-neutre-300 p-4">
+                            <a href="{{ path('talks_event', {path: summary.event.path}) }}"
+                               class="font-titre text-lg leading-snug text-afup-800 hover:underline">{{ summary.event.title }}</a>
+                            <p class="text-sm text-neutre-400">
+                                {{ summary.talkCount }} talk{{ summary.talkCount > 1 ? 's' }}
+                                · {{ summary.videoCount }} vidéo{{ summary.videoCount > 1 ? 's' }}
+                            </p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% else %}
+            <p class="text-neutre-700">Aucun événement pour le moment.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
