@@ -67,3 +67,17 @@ Feature: Site Public - Talks
     Then the response status code should be 404
     When I go to "/talks/4-mauvais-slug/joindin"
     Then the response status code should be 404
+
+  @reloadDbWithTestData
+  Scenario: Les liens vers joind.in d'un talk ne sont pas suivis par les robots
+    When I go to "/talks/1-jouons-tous-ensemble-a-un-petit-jeu"
+    Then I should see "Fiche joind.in"
+    And all links with href containing "/joindin" should have rel containing "nofollow"
+
+  Scenario: Le robots.txt interdit le crawl des redirections joind.in
+    When I go to "/robots.txt"
+    Then the response should contain the html
+    """
+    User-agent: *
+    Disallow: /talks/*/joindin
+    """

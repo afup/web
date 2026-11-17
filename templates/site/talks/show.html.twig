@@ -171,7 +171,7 @@
                     { shown: talk.hasSlidesUrl,        url: talk.getSlidesurl,      icon: 'mingcute:presentation-1-fill', label: 'Slides' },
                     { shown: talk.hasBlogPostUrl,      url: talk.getBlogPostUrl,    icon: 'mingcute:rss-fill',            label: 'Article de blog' },
                     { shown: talk.hasInterviewUrl,     url: talk.getInterviewUrl,   icon: 'mingcute:news-2-fill',         label: 'Interview' },
-                    { shown: talk.hasJoindinId,        url: talk.getJoindinUrl,     icon: 'mingcute:message-3-fill',      label: 'Fiche joind.in' },
+                    { shown: talk.hasJoindinId,        url: talk.getJoindinUrl,     icon: 'mingcute:message-3-fill',      label: 'Fiche joind.in', rel: 'nofollow' },
                     { shown: talk.hasOpenfeedbackPath, url: talk.getOpenfeedbackUrl, icon: 'mingcute:message-3-fill',     label: 'Fiche openfeedback.io' },
                 ]|filter(link => link.shown) %}
 
@@ -179,7 +179,7 @@
                     <twig:Card:Section title="Ressources">
                         <div class="flex flex-col gap-2">
                             {% for link in links %}
-                                <twig:Button variant="secondary" as="a" href="{{ link.url }}"
+                                <twig:Button variant="secondary" as="a" href="{{ link.url }}" :rel="link.rel ?? false"
                                              class="flex w-full items-center justify-start gap-2">
                                     <twig:ux:icon name="{{ link.icon }}" class="size-4 shrink-0" />
                                     {{ link.label }}

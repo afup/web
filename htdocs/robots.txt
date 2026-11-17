@@ -85,3 +85,6 @@ User-agent: Timpibot
 
 # Target
 Disallow: /
+
+User-agent: *
+Disallow: /talks/*/joindin
