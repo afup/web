@@ -9,6 +9,8 @@
 
 {% block title %}{{ talk.title }} - {{ event.title }}{% endblock %}
 
+{% block description %}{{ talk.description|meta_description }}{% endblock %}
+
 {% block metas %}
     {{ parent() }}
     <meta name="twitter:card" content="summary">

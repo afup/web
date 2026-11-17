@@ -1,5 +1,9 @@
 {% extends 'layouts/site.html.twig' %}
 
+{% block title %}AFUP – Association française des utilisateurs de PHP{% endblock %}
+
+{% block description %}Association française des utilisateurs de PHP depuis 2000 : Forum PHP, AFUP Day, meetups en région, vidéos des conférences et veille technique.{% endblock %}
+
 {% block metas %}
     {{ parent() }}
     <script type="application/ld+json">
@@ -39,9 +43,9 @@
 
 <div class="container mx-auto p-4 sm:py-10 flex flex-col gap-10">
     <section class="w-full">
-        <h1 class="text-afup-800 font-titre text-2xl sm:text-4xl border-b-2 border-neutre-300 pb-3 mb-5 hidden sm:block">
+        <h2 class="text-afup-800 font-titre text-2xl sm:text-4xl border-b-2 border-neutre-300 pb-3 mb-5 hidden sm:block">
             Actualités
-        </h1>
+        </h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
             <twig:Card class="col-span-2 p-0 flex-col overflow-hidden hidden sm:flex">
@@ -118,9 +122,9 @@
     </section>
 
     <section class="w-full">
-        <h1 class="text-afup-800 font-titre text-2xl sm:text-4xl border-b-2 border-neutre-300 pb-3 mb-5 hidden sm:block">
+        <h2 class="text-afup-800 font-titre text-2xl sm:text-4xl border-b-2 border-neutre-300 pb-3 mb-5 hidden sm:block">
             Forum PHP 2026
-        </h1>
+        </h2>
 
         <div class="flex flex-col sm:grid sm:grid-cols-2">
             <div class="relative isolate bg-cover bg-center grow flex items-center justify-center rounded-t-xl rounded-bl-none sm:rounded-l-xl sm:rounded-tr-none
@@ -129,9 +133,9 @@
                 <img src="{{ asset('images/forumphp-2026-vecto-light.svg') }}" class="min-h-30 sm:min-h-60 m-20" alt="Logo Forum PHP 2026" />
             </div>
             <div class="rounded-b-xl rounded-tr-none sm:rounded-r-xl sm:rounded-bl-none p-4 sm:p-10 flex flex-col gap-8 bg-linear-to-b from-afup-700 to-afup-300 text-white">
-                <h1 class="font-titre text-4xl">
+                <h2 class="font-titre text-4xl">
                     Merci d’avoir été des nôtres au Forum PHP 2026 !
-                </h1>
+                </h2>
                 <p>
                     Merci d’avoir été des nôtres ces 8-9 octobre à Disneyland Paris, lors de ces deux jours de rencontres,
                     d’échanges, de partage des savoirs : le Forum PHP, c’est bien plus que des conférences !
@@ -166,9 +170,9 @@
                                 <h2 class="flex items-center gap-1 uppercase font-bold text-sm">
                                     <twig:UX:Icon name="akar-icons:location" class="size-4" /> {{ office_name(meetup.codeAntenne) }}
                                 </h2>
-                                <h1 class="text-titre font-light">
+                                <h2 class="text-titre font-light">
                                     {{ meetup.titre }}
-                                </h1>
+                                </h2>
                             </div>
                         </article>
                     </a>

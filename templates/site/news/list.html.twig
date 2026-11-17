@@ -2,6 +2,8 @@
 
 {% block title %}Les actualités de l'AFUP, page {{ current_page }}{% endblock %}
 
+{% block description %}Les actualités de l'AFUP : annonces du Forum PHP et de l'AFUP Day, vie de l'association, des antennes locales et de la communauté PHP.{% endblock %}
+
 {% block metas %}
     {{ parent() }}
     {# Une liste filtrée est une page de recherche : utile aux visiteurs, hors de l'index. #}
@@ -19,6 +21,8 @@
 
 <div class="container mx-auto px-4 py-6 sm:px-0 sm:py-10 flex flex-row sm:flex-row gap-5">
     <div class="flex flex-col gap-10 sm:gap-12 flex-grow">
+        <h1 class="font-titre text-afup-800 text-2xl sm:text-4xl">Actualités de l'AFUP</h1>
+
         {% for article in articles %}
             <article>
                 <h2 class="text-afup-800 text-xl sm:text-2xl">
