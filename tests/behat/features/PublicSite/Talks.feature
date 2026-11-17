@@ -81,3 +81,14 @@ Feature: Site Public - Talks
     User-agent: *
     Disallow: /talks/*/joindin
     """
+
+  @reloadDbWithTestData
+  Scenario: Meta description d'un talk tirée de son résumé, sans balises et tronquée
+    When I go to "/talks/2-rest-ou-graphql-exemples-illustres-avec-symfony-et-api-platform"
+    Then the page should have a meta description
+    And the meta description should be "GraphQL est une alternative aux architectures REST pour la réalisation d’API web. Le langage promu par Facebook a des avantages indéniab les…"
+
+  @reloadDbWithTestData
+  Scenario: Meta description de la liste des vidéos
+    When I go to "/talks/"
+    Then the page should have a meta description

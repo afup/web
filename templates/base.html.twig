@@ -7,6 +7,13 @@
               content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         {% endblock %}
+        {# Texte de la page, converti en texte brut tronqué à 155 caractères. Un champ HTML doit passer
+           par |meta_description dans le bloc : sinon ses entités, échappées par Twig, resteraient visibles. #}
+        {% set meta_description_content %}{% block description %}{% endblock %}{% endset %}
+        {% set meta_description_content = meta_description_content|meta_description %}
+        {% if meta_description_content is not empty %}
+            <meta name="description" content="{{ meta_description_content }}">
+        {% endif %}
         {% block canonical %}
             {% if app.request.attributes.get('_route') %}
             <link rel="canonical" href="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" />
