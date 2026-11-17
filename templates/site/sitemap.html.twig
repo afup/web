@@ -92,9 +92,15 @@
         <section id="conferences">
             <twig:SectionTitle>
                 <a href="{{ path('talks_list') }}">Historique des conférences</a>
-                <span>({{ talks|length }})</span>
             </twig:SectionTitle>
-            {{ _self.list(talks, true) }}
+            {# Les talks ne sont plus listés un par un (plus d'un millier de liens) : chaque édition
+               mène à sa page, qui liste ses talks, et les index donnent les autres entrées. #}
+            {{ _self.list([
+                { name: 'Tous les talks et vidéos', url: path('talks_list') },
+                { name: 'Tous les événements', url: path('talks_events') },
+                { name: 'Tous les speakers', url: path('talks_speakers') },
+            ]) }}
+            {% include 'site/talks/_events_by_year.html.twig' with { heading_level: 3 } %}
         </section>
 
     </div>

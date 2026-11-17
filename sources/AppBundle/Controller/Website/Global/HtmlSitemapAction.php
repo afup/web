@@ -7,7 +7,7 @@ namespace AppBundle\Controller\Website\Global;
 use Afup\Site\Corporate\Feuille;
 use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Talk;
+use AppBundle\Event\Talk\EventTalksSummary;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
 use AppBundle\Site\Entity\Repository\FeuilleRepository;
 use AppBundle\Twig\ViewRenderer;
@@ -31,7 +31,7 @@ final class HtmlSitemapAction extends AbstractController
             'association' => $this->buildPages(Feuille::ID_FEUILLE_ANTENNES),
             'members' => $this->members(),
             'news' => $this->news(),
-            'talks' => $this->talks(),
+            'summaries_by_year' => EventTalksSummary::groupByYear($this->talkRepository->getEventTalksSummaries()),
         ]);
     }
 
@@ -88,26 +88,5 @@ final class HtmlSitemapAction extends AbstractController
         }
 
         return $news;
-    }
-
-    private function talks(): array
-    {
-        $talks = [];
-        $talkList = $this->talkRepository->getAllPastTalks(new \DateTime()->setTime(29, 59, 59));
-
-        /** @var Talk $talk */
-        foreach ($talkList as $talk) {
-            $url = $this->generateUrl(
-                'talks_show',
-                ['id' => $talk->getId(), 'slug' => $talk->getSlug()],
-            );
-
-            $talks[] = [
-                'name' => $talk->getTitle(),
-                'url' => $url,
-            ];
-        }
-
-        return $talks;
     }
 }
