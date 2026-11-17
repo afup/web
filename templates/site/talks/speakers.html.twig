@@ -1,0 +1,45 @@
+{% extends 'layouts/site.html.twig' %}
+
+{% block title %}Speakers des conférences – AFUP{% endblock %}
+
+{% block description %}Tous les speakers des conférences de l'AFUP, de A à Z : retrouvez les talks, vidéos et slides de chacun.{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto px-4 py-6 sm:px-28 sm:py-10 flex flex-col gap-5">
+        <p class="text-sm text-neutre-400">
+            <a href="{{ path('talks_list') }}" class="text-afup-500 underline hover:no-underline">Vidéos</a>
+        </p>
+        <h1 class="font-titre text-afup-800 text-2xl sm:text-4xl">Les speakers des conférences de l'AFUP</h1>
+
+        {% if speakers_by_initial|length > 1 %}
+            <nav aria-label="Initiales">
+                <ul class="flex flex-wrap gap-2">
+                    {% for initial in speakers_by_initial|keys %}
+                        <li>
+                            <a href="#speakers-{{ initial == '#' ? 'autres' : initial }}"
+                               class="inline-flex size-8 items-center justify-center rounded-lg bg-afup-100 text-sm font-medium text-afup-500 hover:bg-afup-500 hover:text-white">{{ initial }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        {% endif %}
+    </div>
+
+    <div class="container mx-auto px-4 pb-6 sm:px-28 sm:pb-10 flex flex-col gap-8">
+        {% for initial, speakers in speakers_by_initial %}
+            <section id="speakers-{{ initial == '#' ? 'autres' : initial }}" class="flex flex-col gap-4 scroll-mt-4">
+                <twig:SectionTitle>{{ initial }}</twig:SectionTitle>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-2">
+                    {% for speaker in speakers %}
+                        <li>
+                            <a href="{{ path('talks_speaker', {slug: speaker.slug}) }}"
+                               class="text-afup-500 underline hover:no-underline">{{ speaker.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% else %}
+            <p class="text-neutre-700">Aucun speaker pour le moment.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
