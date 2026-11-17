@@ -16,7 +16,9 @@
     <div class="flex flex-col gap-10 sm:gap-12 flex-grow">
         {% for article in articles %}
             <article>
-                <h2 class="text-afup-800 text-xl sm:text-2xl">{{ article.titre }}</h2>
+                <h2 class="text-afup-800 text-xl sm:text-2xl">
+                    <a href="{{ path('news_display', { code: article.slug}) }}">{{ article.titre }}</a>
+                </h2>
 
                 <time datetime="{{ article.datePublication|date('Y-m-d H:i') }}" class="text-lg text-neutre-400">
                     {{ article.datePublication|format_date('long') }}
