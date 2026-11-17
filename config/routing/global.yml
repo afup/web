@@ -1,15 +1,15 @@
 home:
-  path: /home
+  path: /
   defaults: { _controller: AppBundle\Controller\Website\Global\HomeAction }
   options:
     sitemap: true
 
 old_home_redirect:
-  path: /
+  path: /home
   controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
   defaults:
     route: 'home'
-    permanent: false
+    permanent: true
 
 become_sponsor_generic:
   path: /become-sponsor

@@ -8,7 +8,9 @@ use Afup\Tests\Support\DatabaseManager;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
+use Behat\Hook\AfterScenario;
 use Behat\Hook\BeforeScenario;
+use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
@@ -48,6 +50,28 @@ class FeatureContext implements Context
     public function beforeScenarioReloadDatabase(): void
     {
         $this->databaseManager->reloadDatabase();
+    }
+
+    #[When('I do not follow redirects')]
+    public function doNotFollowRedirects(): void
+    {
+        $driver = $this->minkContext->getSession()->getDriver();
+
+        if (!$driver instanceof BrowserKitDriver) {
+            throw new \LogicException('This step requires a non-@javascript scenario.');
+        }
+
+        $driver->getClient()->followRedirects(false);
+    }
+
+    #[AfterScenario]
+    public function restoreFollowRedirects(): void
+    {
+        $driver = $this->minkContext->getSession()->getDriver();
+
+        if ($driver instanceof BrowserKitDriver) {
+            $driver->getClient()->followRedirects(true);
+        }
     }
 
     #[Then('simulate the Paybox callback')]
