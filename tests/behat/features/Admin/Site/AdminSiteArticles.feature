@@ -29,6 +29,7 @@ Feature: Administration - Partie Site
     And I fill in "article[titre]" with "Le titre de l'article"
     And I fill in "article[chapeau]" with "Le chapeau de l'article"
     And I fill in "article[contenu]" with "Le contenu de l'article"
+    And I fill in "article[description]" with "La description de l'article"
     And I fill in "article[raccourci]" with "url-article"
     And I select "Actualités" from "article[rubrique]"
     And I select "9" from "article[position]"
@@ -43,6 +44,7 @@ Feature: Administration - Partie Site
     Then I should see "Le titre de l'article"
     Then I should see "Le chapeau de l'article"
     Then I should see "Le contenu de l'article"
+    And the meta description should be "La description de l'article"
 
     # modification d'un article
     When I follow "Administration"
@@ -198,3 +200,36 @@ Feature: Administration - Partie Site
     # l'image n'est plus affichée sur la page publique
     When I go to "/news/17-url-article-illustre"
     Then I should not see a "article main figure img" element
+
+  @reloadDbWithTestData
+  Scenario: Description d'une page CMS, avec repli sur le début du contenu
+    Given I am logged in as admin and on the Administration
+    And I follow "Articles"
+    When I follow "Ajouter"
+    Then I should see "Ajouter un article"
+    And I fill in "article[titre]" with "Les statuts"
+    And I fill in "article[contenu]" with "Les **statuts** de l'association, adoptés en assemblée générale."
+    And I fill in "article[description]" with "Les statuts de l'AFUP & leur historique."
+    And I fill in "article[raccourci]" with "statuts"
+    And I select "Association" from "article[rubrique]"
+    And I select "En ligne" from "article[etat]"
+    And I press "Ajouter"
+    Then I should see "Liste des articles"
+
+    # la description saisie est la meta description de la page
+    When I go to "/p/17-statuts"
+    Then I should see "Les statuts"
+    And the meta description should be "Les statuts de l'AFUP & leur historique."
+
+    # la description est éditable
+    When I follow "Administration"
+    And I follow "Articles"
+    And I follow "modifier_17"
+    Then the "article[description]" field should contain "Les statuts de l'AFUP & leur historique."
+    When I fill in "article[description]" with ""
+    And I press "Modifier"
+    Then I should see "L'article Les statuts a été modifié"
+
+    # sans description, la meta description reprend le début du contenu, sans Markdown
+    When I go to "/p/17-statuts"
+    Then the meta description should be "Les statuts de l'association, adoptés en assemblée générale."

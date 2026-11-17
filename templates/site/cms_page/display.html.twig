@@ -3,6 +3,9 @@
 
 {% block title %}{{ article.titre }} - AFUP{% endblock %}
 
+{# Description saisie dans l'admin, à défaut le début du contenu. #}
+{% block description %}{{ (article.description ?: article.contenu|markdown_to_html)|meta_description }}{% endblock %}
+
 {% block content %}
 <article class="container mx-auto sm:pt-10 flex flex-col gap-5">
     <h1 class="text-afup-800 text-2xl sm:text-4xl">{{ article.titre }}</h1>
