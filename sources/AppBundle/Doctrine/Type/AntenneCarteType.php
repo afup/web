@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace AppBundle\Doctrine\Type;
 
-use AppBundle\Antennes\AncrageLegende;
 use AppBundle\Antennes\Carte;
-use AppBundle\Antennes\Point;
-use AppBundle\Antennes\Position;
 use AppBundle\Antennes\Ville;
+use CuyZ\Valinor\Mapper\MappingError;
+use CuyZ\Valinor\Mapper\TreeMapper;
+use CuyZ\Valinor\MapperBuilder;
 
 /**
  * Colonne JSON `afup_antenne.carte` hydratée en objet Carte (et ses Ville / Point / Position).
@@ -32,6 +32,11 @@ final class AntenneCarteType extends JsonValueObjectType
 {
     public const string NAME = 'antenne_carte';
 
+    /**
+     * Un type Doctrine ne pouvant pas recevoir de service injecté, le mapper est construit une seule fois ici.
+     */
+    private static ?TreeMapper $mapper = null;
+
     public function getName(): string
     {
         return self::NAME;
@@ -44,22 +49,11 @@ final class AntenneCarteType extends JsonValueObjectType
 
     protected function fromArray(array $data): Carte
     {
-        $utiliserSecondeCouleur = $data['utiliserSecondeCouleur'] ?? null;
-        if (!is_bool($utiliserSecondeCouleur)) {
-            throw new \UnexpectedValueException('la clé "utiliserSecondeCouleur" doit être un booléen');
+        try {
+            return self::mapper()->map(Carte::class, $data);
+        } catch (MappingError $e) {
+            throw new \UnexpectedValueException($e->getMessage(), 0, $e);
         }
-
-        $ancrageLegende = AncrageLegende::tryFrom((string) self::nullableString($data, 'ancrageLegende'));
-        if ($ancrageLegende === null) {
-            throw new \UnexpectedValueException('la clé "ancrageLegende" est invalide');
-        }
-
-        return new Carte(
-            utiliserSecondeCouleur: $utiliserSecondeCouleur,
-            ancrageLegende: $ancrageLegende,
-            premiereVille: self::ville(self::arrayValue($data, 'premiereVille')),
-            secondeVille: isset($data['secondeVille']) ? self::ville(self::arrayValue($data, 'secondeVille')) : null,
-        );
     }
 
     protected function toArray(object $value): array
@@ -72,51 +66,9 @@ final class AntenneCarteType extends JsonValueObjectType
         ];
     }
 
-    /**
-     * @param array<mixed> $data
-     */
-    private static function ville(array $data): Ville
+    private static function mapper(): TreeMapper
     {
-        $position = self::arrayValue($data, 'position');
-
-        return new Ville(
-            self::point(self::arrayValue($data, 'premierPoint')),
-            self::point(self::arrayValue($data, 'deuxiemePoint')),
-            self::point(self::arrayValue($data, 'troisiemePoint')),
-            new Position(
-                self::float($position, 'latitude'),
-                self::float($position, 'longitude'),
-            ),
-        );
-    }
-
-    /**
-     * @param array<mixed> $data
-     */
-    private static function point(array $data): Point
-    {
-        $x = $data['x'] ?? null;
-        $y = $data['y'] ?? null;
-
-        if (!is_int($x) || !is_int($y)) {
-            throw new \UnexpectedValueException('les coordonnées "x" et "y" d\'un point doivent être des entiers');
-        }
-
-        return new Point($x, $y);
-    }
-
-    /**
-     * @param array<mixed> $data
-     */
-    private static function float(array $data, string $key): float
-    {
-        $value = $data[$key] ?? null;
-
-        if (!is_float($value) && !is_int($value)) {
-            throw new \UnexpectedValueException(sprintf('la clé "%s" doit être un nombre', $key));
-        }
-
-        return (float) $value;
+        return self::$mapper ??= new MapperBuilder()->mapper();
     }
 
     /**

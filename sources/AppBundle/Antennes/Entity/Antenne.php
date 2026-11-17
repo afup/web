@@ -14,17 +14,18 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * La classe n'est plus `readonly` dans son ensemble : `meetup` est reconstruit à partir des colonnes
- * `meetup_nom_url` / `meetup_id_externe` au chargement (callback PostLoad), Doctrine ne sachant pas
- * hydrater un embeddable nullable. Cette propriété est donc en `private(set)` ; toutes les autres
- * restent `readonly`.
+ * `meetup` est une propriété virtuelle calculée à partir des colonnes `meetup_nom_url` / `meetup_id_externe`.
+ * La classe ne peut pas être `readonly` à cause de ce hook : `readonly` est donc porté par chaque propriété.
  */
 #[ORM\Entity(repositoryClass: AntenneRepository::class)]
 #[ORM\Table(name: 'afup_antenne')]
-#[ORM\HasLifecycleCallbacks]
 final class Antenne
 {
-    public private(set) ?Meetup $meetup;
+    public ?Meetup $meetup {
+        get => $this->meetupNomUrl !== null && $this->meetupIdExterne !== null
+            ? new Meetup($this->meetupNomUrl, $this->meetupIdExterne)
+            : null;
+    }
 
     #[ORM\Column(length: 255, nullable: true)]
     private readonly ?string $meetupNomUrl;
@@ -58,16 +59,7 @@ final class Antenne
         #[ORM\Column(options: ['default' => false])]
         public readonly bool $masqueePageAntennes = false,
     ) {
-        $this->meetup = $meetup;
         $this->meetupNomUrl = $meetup?->nomUrl;
         $this->meetupIdExterne = $meetup?->id;
-    }
-
-    #[ORM\PostLoad]
-    public function initialiserMeetup(): void
-    {
-        $this->meetup = $this->meetupNomUrl !== null && $this->meetupIdExterne !== null
-            ? new Meetup($this->meetupNomUrl, $this->meetupIdExterne)
-            : null;
     }
 }

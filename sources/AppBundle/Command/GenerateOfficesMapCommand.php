@@ -16,7 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 #[AsCommand(
     name: 'antennes:generate-map',
-    description: 'Génère la carte SVG de la page des antennes, à relancer après chaque modification d'une antenne (migration ou seed)',
+    description: 'Génère la carte SVG de la page des antennes, à relancer après chaque modification d\'une antenne (migration ou seed)',
 )]
 class GenerateOfficesMapCommand extends Command
 {

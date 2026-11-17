@@ -102,20 +102,4 @@ abstract class JsonValueObjectType extends Type
 
         return $value;
     }
-
-    /**
-     * @param array<mixed> $data
-     *
-     * @return array<mixed>
-     */
-    protected static function arrayValue(array $data, string $key): array
-    {
-        $value = $data[$key] ?? null;
-
-        if (!is_array($value)) {
-            throw new \UnexpectedValueException(sprintf('la clé "%s" doit être un objet', $key));
-        }
-
-        return $value;
-    }
 }
