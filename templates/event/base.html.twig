@@ -1,6 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Call For Papers - Afup{% endblock %}
+{% block title %}{{ 'Appel à conférenciers'|trans }}{% if event is defined %} – {{ event.title }}{% endif %} – AFUP{% endblock %}
+
+{# Une page enfant désindexe avec `{% set noindex = true %}` : pas de canonical vers une page noindex. #}
+{% block metas %}
+    {{ parent() }}
+    {% if noindex|default(false) %}
+        <meta name="robots" content="noindex, follow">
+    {% endif %}
+{% endblock %}
+
+{% block canonical %}
+    {% if not noindex|default(false) %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}

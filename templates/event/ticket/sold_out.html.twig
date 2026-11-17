@@ -1,6 +1,7 @@
 {% extends 'event/ticket/base.html.twig' %}
 
-{% block title %}Billetterie sponsors - Afup{% endblock %}
+{# La billetterie est fermée (ventes terminées) : la page n'a plus d'intérêt dans les résultats. #}
+{% set noindex = true %}
 
 {% block stylesheets %}
     {{ parent() }}

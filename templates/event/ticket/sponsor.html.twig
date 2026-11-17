@@ -1,5 +1,7 @@
 {% extends 'event/ticket/base.html.twig' %}
 
+{% set noindex = true %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/sponsor_tickets.css') }}">

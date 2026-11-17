@@ -1,9 +1,6 @@
 {% extends 'event/ticket/base.html.twig' %}
 
-{% block metas %}
-    {{ parent() }}
-    <meta name="robots" content="noindex">
-{% endblock %}
+{% set noindex = true %}
 
 {% block content %}
     <div class="col-md-12">

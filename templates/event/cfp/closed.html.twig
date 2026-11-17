@@ -1,5 +1,8 @@
 {% extends 'event/cfp/base.html.twig' %}
 
+{# Le CFP et le vote sont terminés : la page n'a plus d'intérêt dans les résultats. #}
+{% set noindex = true %}
+
 {% block content %}
     <div class="col-md-8">
         <h1>CFP: {{ event.title }}</h1>
