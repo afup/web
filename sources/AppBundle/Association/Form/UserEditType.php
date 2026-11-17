@@ -14,12 +14,15 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
@@ -27,6 +30,18 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserEditType extends AbstractType
 {
+    private const array MODULE_LEVEL_CHOICES = [
+        'Aucun' => User::LEVEL_NONE,
+        'Lecteur' => User::LEVEL_READER,
+        'Gestionnaire' => User::LEVEL_MANAGER,
+    ];
+
+    /** Rôles hors matrice des modules, attribuables par case à cocher. */
+    private const array SPECIAL_ROLES = [
+        'Super administrateur' => 'ROLE_SUPER_ADMIN',
+        'Gestionnaire de la personne morale' => 'ROLE_COMPANY_MANAGER',
+    ];
+
     public function __construct(
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly Pays $pays,
@@ -144,42 +159,6 @@ class UserEditType extends AbstractType
                     'maxlength' => 20,
                 ],
             ])
-            ->add('level', ChoiceType::class, [
-                'label' => 'Niveau',
-                'choices' => [
-                    'Membre' => User::LEVEL_MEMBER,
-                    'Rédacteur' => User::LEVEL_WRITER,
-                    'Administrateur' => User::LEVEL_ADMIN,
-                ],
-            ])
-            ->add('directoryLevel', ChoiceType::class, [
-                'label' => 'Annuaire des prestataires',
-                'choices' => [
-                    '--' => User::LEVEL_MEMBER,
-                    'Gestionnaire' => User::LEVEL_ADMIN,
-                ],
-            ])
-            ->add('eventLevel', ChoiceType::class, [
-                'label' => 'Évènement',
-                'choices' => [
-                    '--' => User::LEVEL_MEMBER,
-                    'Gestionnaire' => User::LEVEL_ADMIN,
-                ],
-            ])
-            ->add('websiteLevel', ChoiceType::class, [
-                'label' => 'Site web',
-                'choices' => [
-                    '--' => User::LEVEL_MEMBER,
-                    'Gestionnaire' => User::LEVEL_ADMIN,
-                ],
-            ])
-            ->add('officeLevel', ChoiceType::class, [
-                'label' => 'Antenne AFUP',
-                'choices' => [
-                    '--' => User::LEVEL_MEMBER,
-                    'Gestionnaire' => User::LEVEL_ADMIN,
-                ],
-            ])
             ->add('status', ChoiceType::class, [
                 'label' => 'État',
                 'choices' => [
@@ -198,21 +177,28 @@ class UserEditType extends AbstractType
                     'size' => 30,
                     'maxlength' => 30,
                 ],
-            ])
-            ->add('plainPassword', RepeatedType::class, [
+            ]);
+
+        if ($options['can_edit_password']) {
+            $builder->add('plainPassword', RepeatedType::class, [
                 'mapped' => false,
                 'type' => PasswordType::class,
                 'required' => false,
                 'invalid_message' => 'The password fields must match',
                 'first_options' => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
-            ])
-            ->add('roles', TextareaType::class, [
+            ]);
+        }
+
+        $builder
+            ->add('specialRoles', ChoiceType::class, [
                 'label' => 'Rôles',
-                'attr' => [
-                    'cols' => 42,
-                    'rows' => 5,
-                ],
+                'mapped' => false,
+                'required' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => self::SPECIAL_ROLES,
+                'choice_attr' => fn(string $role): array => $role === 'ROLE_SUPER_ADMIN' && !$options['can_grant_super_admin'] ? ['disabled' => 'disabled'] : [],
             ])
             ->add('needsUpToDateMembership', CheckboxType::class, [
                 'label' => 'Nécessite une cotisation à jour',
@@ -220,10 +206,41 @@ class UserEditType extends AbstractType
             ])
             ->add('save', SubmitType::class, ['label' => 'Ajouter']);
 
-        $builder->get('roles')->addModelTransformer(new CallbackTransformer(
-            fn($rolesAsArray): string => json_encode($rolesAsArray),
-            fn($rolesAsString): array => json_decode((string) $rolesAsString),
-        ));
+        $access = $builder->create('access', FormType::class, [
+            'label' => 'Accès aux modules',
+            'inherit_data' => true,
+            // Un formulaire désactivé n'est pas soumis : les niveaux enregistrés sont conservés
+            'disabled' => !$options['can_edit_modules'],
+        ]);
+        foreach (User::MODULES as $module => $label) {
+            $access->add($module, ChoiceType::class, [
+                'label' => $label,
+                'expanded' => true,
+                'choices' => self::MODULE_LEVEL_CHOICES,
+                'getter' => fn(User $user): int => $user->getModuleLevel($module),
+                'setter' => fn(User $user, ?int $level) => $user->setModuleLevel($module, (int) $level),
+            ]);
+        }
+        $builder->add($access);
+
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
+            /** @var User $user */
+            $user = $event->getData();
+            $event->getForm()->get('specialRoles')->setData(array_values(array_intersect(self::SPECIAL_ROLES, $user->getRoles())));
+        });
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($options): void {
+            /** @var User $user */
+            $user = $event->getData();
+            /** @var list<string> $selectedRoles */
+            $selectedRoles = $event->getForm()->get('specialRoles')->getData() ?? [];
+            foreach (self::SPECIAL_ROLES as $role) {
+                if ($role === 'ROLE_SUPER_ADMIN' && !$options['can_grant_super_admin']) {
+                    continue;
+                }
+                $user->setRoleGranted($role, in_array($role, $selectedRoles, true));
+            }
+        });
 
         $builder
             ->get('companyId')->addModelTransformer(new CallbackTransformer(
@@ -236,6 +253,12 @@ class UserEditType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'can_grant_super_admin' => false,
+            'can_edit_password' => true,
+            'can_edit_modules' => false,
         ]);
+        $resolver->setAllowedTypes('can_grant_super_admin', 'bool');
+        $resolver->setAllowedTypes('can_edit_password', 'bool');
+        $resolver->setAllowedTypes('can_edit_modules', 'bool');
     }
 }

@@ -25,8 +25,11 @@
 {%- endblock form_row -%}
 
 {%- block checkbox_widget -%}
-    <div class="ui checkbox">
+    <div class="ui {{ radio|default(false) ? 'radio ' : '' }}checkbox">
         {{ parent() }}
+        {%- if inline_label is defined -%}
+            <label>{{ inline_label }}</label>
+        {%- endif -%}
     </div>
 {%- endblock checkbox_widget -%}
 
@@ -35,10 +38,7 @@
     <div{% with {attr: attr} %}{{ block('attributes') }}{% endwith %}>
         {% for child in form %}
             <div class="field">
-                <div class="ui radio checkbox">
-                    {{- form_widget(child) -}}
-                    <label>{{ child.vars.label }}</label>
-                </div>
+                {{- form_widget(child, {radio: not multiple, inline_label: child.vars.label}) -}}
             </div>
         {% endfor %}
     </div>

@@ -12,7 +12,9 @@ use AppBundle\Event\Model\Speaker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_EVENT_READER')]
 class ListAction extends AbstractController
 {
     public function __construct(
