@@ -1,6 +1,6 @@
 {% extends 'layouts/site.html.twig' %}
 
-{% block title %}{{ talk.title }} - {{ event.title }}{% endblock %}
+{% block title %}{{ talk_page_title(talk.title, event.title) }}{% endblock %}
 
 {% block metas %}
     {{ parent() }}
