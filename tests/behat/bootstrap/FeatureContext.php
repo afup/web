@@ -8,6 +8,7 @@ use Afup\Tests\Support\DatabaseManager;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
+use Behat\Gherkin\Node\TableNode;
 use Behat\Hook\AfterScenario;
 use Behat\Hook\BeforeScenario;
 use Behat\Mink\Driver\BrowserKitDriver;
@@ -379,5 +380,65 @@ class FeatureContext implements Context
         }
 
         $node->click();
+    }
+
+    #[Then('the JSON-LD :type should have the following properties:')]
+    public function assertJsonLdHasProperties(string $type, TableNode $expectedProperties): void
+    {
+        $data = $this->findJsonLd($type);
+
+        if (null === $data) {
+            throw new ExpectationException(sprintf('No JSON-LD of type "%s" found', $type), $this->minkContext->getSession()->getDriver());
+        }
+
+        foreach ($expectedProperties->getRowsHash() as $property => $expectedValue) {
+            $actualValue = $data[$property] ?? null;
+            if (!is_scalar($actualValue) || (string) $actualValue !== $expectedValue) {
+                throw new ExpectationException(
+                    sprintf('JSON-LD "%s" property "%s" is %s, "%s" expected', $type, $property, json_encode($actualValue, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), $expectedValue),
+                    $this->minkContext->getSession()->getDriver(),
+                );
+            }
+        }
+    }
+
+    #[Then('the JSON-LD :type property :property should match :regex')]
+    public function assertJsonLdPropertyMatches(string $type, string $property, string $regex): void
+    {
+        $actualValue = $this->findJsonLd($type)[$property] ?? null;
+
+        if (!is_string($actualValue) || !preg_match($regex, $actualValue)) {
+            throw new ExpectationException(
+                sprintf('JSON-LD "%s" property "%s" is %s, it does not match "%s"', $type, $property, json_encode($actualValue, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), $regex),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+    }
+
+    #[Then('the response should not contain a JSON-LD :type')]
+    public function assertNoJsonLd(string $type): void
+    {
+        if (null !== $this->findJsonLd($type)) {
+            throw new ExpectationException(sprintf('A JSON-LD of type "%s" was found', $type), $this->minkContext->getSession()->getDriver());
+        }
+    }
+
+    /**
+     * Décode chaque <script type="application/ld+json"> de la page : un JSON invalide fait échouer le step.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function findJsonLd(string $type): ?array
+    {
+        $scripts = $this->minkContext->getSession()->getPage()->findAll('css', 'script[type="application/ld+json"]');
+
+        foreach ($scripts as $script) {
+            $data = json_decode($script->getHtml(), true, flags: JSON_THROW_ON_ERROR);
+            if (is_array($data) && ($data['@type'] ?? null) === $type) {
+                return $data;
+            }
+        }
+
+        return null;
     }
 }

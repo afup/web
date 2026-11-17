@@ -8,6 +8,7 @@ use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Talk\VideoObjectJsonLd;
 use AppBundle\Joindin\JoindinComments;
 use AppBundle\Subtitles\Parser;
 use AppBundle\Twig\ViewRenderer;
@@ -23,6 +24,7 @@ final class ShowAction extends AbstractController
         private readonly SpeakerRepository $speakerRepository,
         private readonly PlanningRepository $planningRepository,
         private readonly EventRepository $eventRepository,
+        private readonly VideoObjectJsonLd $videoObjectJsonLd,
     ) {}
 
     public function __invoke(int $id, string $slug): Response
@@ -55,6 +57,7 @@ final class ShowAction extends AbstractController
             'speakers' => $speakers,
             'comments' => $comments,
             'transcript' => $parsedContent,
+            'video_object' => $this->videoObjectJsonLd->getData($talk, $planning->start, $parsedContent),
         ]);
     }
 }
