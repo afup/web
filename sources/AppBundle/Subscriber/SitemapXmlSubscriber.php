@@ -10,10 +10,9 @@ use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Controller\Website\News\ListAction;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
+use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Site\Entity\Repository\FeuilleRepository;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
@@ -29,7 +28,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly TalkRepository $talkRepository,
-        private readonly SpeakerRepository $speakerRepository,
+        private readonly SpeakerProfileResolver $speakerProfileResolver,
         private readonly EventRepository $eventRepository,
         private readonly ArticleRepository $articleRepository,
         private readonly CompanyMemberRepository $companyMemberRepository,
@@ -46,7 +45,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
     public function populate(SitemapPopulateEvent $event): void
     {
         $this->registerTalksUrls($event->getUrlContainer());
-        $this->registerSpeakersTalksUrls($event->getUrlContainer());
+        $this->registerSpeakersUrls($event->getUrlContainer());
         $this->registerEventsTalksUrls($event->getUrlContainer());
         $this->registerNewsUrls($event->getUrlContainer());
         $this->registerMembers($event->getUrlContainer());
@@ -87,17 +86,20 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function registerSpeakersTalksUrls(UrlContainerInterface $urls): void
+    /**
+     * La page de chaque speaker ayant au moins un talk publié ; l'index des speakers
+     * est déclaré par l'option sitemap de sa route.
+     */
+    public function registerSpeakersUrls(UrlContainerInterface $urls): void
     {
-        /** @var Speaker[] $speakers */
-        $speakers = $this->speakerRepository->getAll();
-        foreach ($speakers as $speaker) {
+        foreach ($this->speakerProfileResolver->getIdentities() as $identity) {
             $url = new UrlConcrete(
                 $this->urlGenerator->generate(
-                    'talks_list',
-                    ['fR' => ['speakers.label' => [$speaker->getLabel()]]],
+                    'talks_speaker',
+                    ['slug' => $identity->slug],
                     UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
+                $identity->latestTalkAt,
             );
             $urls->addUrl($url, 'talks');
         }

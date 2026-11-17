@@ -8,6 +8,8 @@ use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Joindin\JoindinComments;
 use AppBundle\Subtitles\Parser;
 use AppBundle\Twig\ViewRenderer;
@@ -23,6 +25,7 @@ final class ShowAction extends AbstractController
         private readonly SpeakerRepository $speakerRepository,
         private readonly PlanningRepository $planningRepository,
         private readonly EventRepository $eventRepository,
+        private readonly SpeakerProfileResolver $speakerProfileResolver,
     ) {}
 
     public function __invoke(int $id, string $slug): Response
@@ -34,6 +37,15 @@ final class ShowAction extends AbstractController
         }
 
         $speakers = $this->speakerRepository->getSpeakersByTalk($talk);
+        // Slug de la page de chaque speaker, par ID de ligne speaker : un seul index, chargé une fois pour tous.
+        $speakerSlugs = [];
+        /** @var Speaker $speaker */
+        foreach ($speakers as $speaker) {
+            $identity = $this->speakerProfileResolver->getIdentityForSpeaker($speaker);
+            if (null !== $identity && null !== $speaker->getId()) {
+                $speakerSlugs[$speaker->getId()] = $identity->slug;
+            }
+        }
         $planning = $this->planningRepository->getByTalk($talk);
         if ($planning === null) {
             throw $this->createNotFoundException();
@@ -48,6 +60,7 @@ final class ShowAction extends AbstractController
             'talk' => $talk,
             'event' => $event,
             'speakers' => $speakers,
+            'speaker_slugs' => $speakerSlugs,
             'comments' => $comments,
             'transcript' => $parsedContent,
         ]);

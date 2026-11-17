@@ -6,9 +6,23 @@ talks_list:
       section: talks
       changefreq: monthly
 
+# Avant talks_show (dont l'id est numérique) : /{id}-{slug} ne doit jamais capturer une page speaker.
+talks_speakers:
+  path: /speakers/
+  defaults: { _controller: AppBundle\Controller\Website\Talks\SpeakerListAction }
+  options:
+    sitemap:
+      section: talks
+      changefreq: monthly
+
+talks_speaker:
+  path: /speakers/{slug}
+  defaults: { _controller: AppBundle\Controller\Website\Talks\SpeakerShowAction }
+
 talks_show:
   path: /{id}-{slug}
   defaults: { _controller: AppBundle\Controller\Website\Talks\ShowAction }
+  requirements: { id: '\d+' }
 
 talks_joindin:
   path: /{id}-{slug}/joindin
