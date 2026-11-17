@@ -24,4 +24,21 @@ final readonly class EventTalksSummary
     {
         return (int) $this->event->getDateStart()?->format('Y');
     }
+
+    /**
+     * Les éditions regroupées par année, dans l'ordre donné : des éditions triées de la plus récente à la plus
+     * ancienne donnent des années dans le même ordre.
+     *
+     * @param list<self> $summaries
+     * @return array<int, non-empty-list<self>>
+     */
+    public static function groupByYear(array $summaries): array
+    {
+        $summariesByYear = [];
+        foreach ($summaries as $summary) {
+            $summariesByYear[$summary->getYear()][] = $summary;
+        }
+
+        return $summariesByYear;
+    }
 }
