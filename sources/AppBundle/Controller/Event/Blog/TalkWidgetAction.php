@@ -9,6 +9,7 @@ use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,7 @@ final class TalkWidgetAction extends AbstractController
         private readonly TalkRepository $talkRepository,
         private readonly InterviewRepository $interviewRepository,
         private readonly PlanningRepository $planningRepository,
+        private readonly SpeakerProfileResolver $speakerProfileResolver,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -49,9 +51,20 @@ final class TalkWidgetAction extends AbstractController
             }
         }
 
+        // Slug de la page speaker sur afup.org, pour les seules personnes qui ont un talk publié
+        // (sinon la page n'existe pas) : un seul index, chargé une fois pour tous.
+        $speakerSlugs = [];
+        foreach ($speakers as $speakerId => $speaker) {
+            $identity = $this->speakerProfileResolver->getIdentityForSpeaker($speaker);
+            if (null !== $identity) {
+                $speakerSlugs[$speakerId] = $identity->slug;
+            }
+        }
+
         $data = [
             'talks_infos' => $talksInfos,
             'speakers' => $speakers,
+            'speaker_slugs' => $speakerSlugs,
             'widget_type' => $widgetType,
             'event' => $event,
             'questions' => [],
