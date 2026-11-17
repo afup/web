@@ -156,9 +156,9 @@ final class OfficesMapSvgGeneratorTest extends TestCase
     }
 
     #[DataProvider('links')]
-    public function testLinkIsTheFirstSocialNetworkOfTheAntenne(ReseauxSociaux $socials, ?Meetup $meetup, ?string $expected): void
+    public function testLinkIsTheFirstSocialNetworkOfTheAntenne(ReseauxSociaux $reseauxSociaux, ?Meetup $meetup, ?string $expected): void
     {
-        $svg = $this->generate([$this->antenne(reseauxSociaux: $socials, meetup: $meetup)]);
+        $svg = $this->generate([$this->antenne(reseauxSociaux: $reseauxSociaux, meetup: $meetup)]);
 
         self::assertSame(self::ANTENNE_COLOR, $this->area($svg, 'department-33')->getAttribute('fill'));
 
@@ -274,7 +274,7 @@ final class OfficesMapSvgGeneratorTest extends TestCase
         ?array $departements = ['33'],
         ?array $pays = null,
         string $urlLogo = '/images/offices/bordeaux.svg',
-        ?ReseauxSociaux $socials = null,
+        ?ReseauxSociaux $reseauxSociaux = null,
         ?Meetup $meetup = null,
         bool $withMap = true,
         AncrageLegende $ancrageLegende = AncrageLegende::Droite,
@@ -286,7 +286,7 @@ final class OfficesMapSvgGeneratorTest extends TestCase
             libelle: $libelle,
             meetup: $meetup,
             urlLogo: $urlLogo,
-            reseauxSociaux: $socials ?? new ReseauxSociaux(blog: 'https://' . $code . '.afup.org'),
+            reseauxSociaux: $reseauxSociaux ?? new ReseauxSociaux(blog: 'https://' . $code . '.afup.org'),
             carte: $withMap ? new Carte(
                 utiliserSecondeCouleur: false,
                 ancrageLegende: $ancrageLegende,
