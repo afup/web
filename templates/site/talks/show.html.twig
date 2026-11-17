@@ -1,5 +1,12 @@
 {% extends 'layouts/site.html.twig' %}
 
+{% set breadcrumb = [
+    { name: 'Accueil', url: url('home') },
+    { name: 'Conférences', url: url('talks_list') },
+    { name: event.title, url: url('talks_event', {path: event.path}) },
+    { name: talk.title, url: url('talks_show', {id: talk.id, slug: talk.slug}) },
+] %}
+
 {% block title %}{{ talk.title }} - {{ event.title }}{% endblock %}
 
 {% block metas %}
@@ -25,6 +32,19 @@
     {% if video_object %}
         <script type="application/ld+json">{{ video_object|json_encode(constant('AppBundle\\Event\\Talk\\VideoObjectJsonLd::JSON_FLAGS'))|raw }}</script>
     {% endif %}
+
+    <script type="application/ld+json">
+        {{ {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: breadcrumb|map((item, index) => {
+                '@type': 'ListItem',
+                position: index + 1,
+                name: item.name,
+                item: item.url,
+            }),
+        }|json_encode|raw }}
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -34,6 +54,21 @@
     {% endset %}
     {% set event_url = url('talks_event', {path: event.path}) %}
     {% set speakers_label = speakers|map(speaker => speaker.label)|join(', ') %}
+
+    <nav aria-label="Fil d'Ariane" class="container mx-auto px-4 py-3 sm:px-28 text-sm text-neutre-400">
+        <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
+            {% for item in breadcrumb %}
+                <li class="flex items-center gap-2 min-w-0">
+                    {% if loop.last %}
+                        <span aria-current="page" class="text-neutre-700">{{ item.name }}</span>
+                    {% else %}
+                        <a href="{{ item.url }}" class="text-afup-500 underline hover:no-underline">{{ item.name }}</a>
+                        <span aria-hidden="true">›</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ol>
+    </nav>
 
     {% if talk.hasYoutubeId %}
         {# Scène sombre : le bandeau n'annonce pas la page, il détache le lecteur du fond. #}
@@ -235,6 +270,76 @@
                     </div>
                 </section>
             {% endif %}
+        </div>
+    {% endif %}
+
+    {% if related_talks.previous or related_talks.next or related_talks.sameEvent|length or related_talks.bySpeaker|length %}
+        <div class="container mx-auto px-4 pb-6 sm:px-28 sm:pb-10 flex flex-col gap-10">
+            {% if related_talks.previous or related_talks.next %}
+                <nav aria-label="Dans le planning de l'édition" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {% if related_talks.previous %}
+                        <a href="{{ path('talks_show', {id: related_talks.previous.id, slug: related_talks.previous.slug}) }}"
+                           rel="prev"
+                           class="group flex items-center gap-3 border-2 border-neutre-300 rounded-2xl p-4 hover:border-afup-300">
+                            <twig:ux:icon name="mingcute:arrow-left-fill" class="size-5 shrink-0 text-afup-500" />
+                            <span class="flex flex-col min-w-0">
+                                <span class="text-sm text-neutre-400">Talk précédent</span>
+                                <span class="font-semibold text-afup-800 group-hover:text-afup-500">{{ related_talks.previous.title }}</span>
+                            </span>
+                        </a>
+                    {% endif %}
+                    {% if related_talks.next %}
+                        <a href="{{ path('talks_show', {id: related_talks.next.id, slug: related_talks.next.slug}) }}"
+                           rel="next"
+                           class="group flex items-center justify-end gap-3 border-2 border-neutre-300 rounded-2xl p-4 text-right hover:border-afup-300 sm:col-start-2">
+                            <span class="flex flex-col min-w-0">
+                                <span class="text-sm text-neutre-400">Talk suivant</span>
+                                <span class="font-semibold text-afup-800 group-hover:text-afup-500">{{ related_talks.next.title }}</span>
+                            </span>
+                            <twig:ux:icon name="mingcute:arrow-right-fill" class="size-5 shrink-0 text-afup-500" />
+                        </a>
+                    {% endif %}
+                </nav>
+            {% endif %}
+
+            {% if related_talks.sameEvent|length %}
+                <section class="flex flex-col gap-4">
+                    <twig:SectionTitle>Aussi au {{ event.title }}</twig:SectionTitle>
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {% for related in related_talks.sameEvent %}
+                            <li>
+                                <a href="{{ path('talks_show', {id: related.id, slug: related.slug}) }}" class="group flex flex-col gap-2">
+                                    {% if related.hasYoutubeId %}
+                                        <img src="https://img.youtube.com/vi/{{ related.youtubeId }}/mqdefault.jpg" alt="" loading="lazy"
+                                             class="w-full aspect-video rounded-xl object-cover bg-neutre-200" />
+                                    {% else %}
+                                        <span class="w-full aspect-video rounded-xl bg-afup-100 flex items-center justify-center text-afup-300">
+                                            <twig:ux:icon name="mingcute:presentation-1-fill" class="size-10" />
+                                        </span>
+                                    {% endif %}
+                                    <span class="font-semibold text-afup-800 group-hover:text-afup-500">{{ related.title }}</span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <a href="{{ event_url }}" class="self-start text-sm text-afup-500 underline hover:no-underline">Tous les talks du {{ event.title }}</a>
+                </section>
+            {% endif %}
+
+            {% for speaker_talks in related_talks.bySpeaker %}
+                <section class="flex flex-col gap-4">
+                    <twig:SectionTitle>Autres talks de {{ speaker_talks.speaker.label }}</twig:SectionTitle>
+                    <ul class="flex flex-col gap-2">
+                        {% for related in speaker_talks.talks %}
+                            <li class="flex flex-wrap items-baseline gap-x-2">
+                                <a href="{{ path('talks_show', {id: related.talk.id, slug: related.talk.slug}) }}"
+                                   class="font-semibold text-afup-800 hover:text-afup-500">{{ related.talk.title }}</a>
+                                <span class="text-sm text-neutre-400">{{ related.event.title }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </section>
+            {% endfor %}
         </div>
     {% endif %}
 {% endblock %}

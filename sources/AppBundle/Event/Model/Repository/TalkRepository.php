@@ -377,6 +377,116 @@ SQL;
     }
 
     /**
+     * Talks publiés d'une édition, dans l'ordre du planning.
+     *
+     * Un talk publié est planifié, a un créneau (sans créneau, sa page répond 404)
+     * et sa date de publication est passée. Le filtre sur le type de talk est fait
+     * en PHP par Talk::isDisplayedOnHistory(), comme sur la page du talk.
+     *
+     * @return list<Talk>
+     */
+    public function getPublishedByEventInPlanningOrder(Event $event): array
+    {
+        $query = $this->getPreparedQuery(
+            'SELECT talk.*
+            FROM afup_sessions AS talk
+            INNER JOIN (
+                SELECT id_session, MIN(debut) AS debut FROM afup_forum_planning GROUP BY id_session
+            ) AS planning ON planning.id_session = talk.session_id
+            WHERE talk.id_forum = :event AND talk.plannifie = 1
+            AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)
+            ORDER BY planning.debut ASC, talk.session_id ASC',
+        )->setParams(['event' => $event->getId()]);
+
+        $talks = [];
+        foreach ($query->query($this->getCollection(new HydratorSingleObject())) as $talk) {
+            if ($talk instanceof Talk && $talk->isDisplayedOnHistory()) {
+                $talks[] = $talk;
+            }
+        }
+
+        return $talks;
+    }
+
+    /**
+     * Talks publiés, toutes éditions confondues, des personnes qui ont présenté ces speakers,
+     * du plus récent au plus ancien.
+     *
+     * Un speaker étant une ligne par édition, la même personne est retrouvée par son
+     * compte GitHub ou, à défaut, par son prénom et son nom.
+     *
+     * @param list<Speaker> $speakers
+     *
+     * @return list<array{talk: Talk, event: Event, speakers: list<Speaker>}> les speakers de chaque talk qui correspondent à l'un de ceux demandés
+     */
+    public function getPublishedBySpeakers(array $speakers, Talk $excludedTalk): array
+    {
+        $conditions = [];
+        $params = ['excluded' => $excludedTalk->getId()];
+        foreach ($speakers as $index => $speaker) {
+            $conditions[] = sprintf('(LOWER(TRIM(speaker.prenom)) = :firstname%1$d AND LOWER(TRIM(speaker.nom)) = :lastname%1$d)', $index);
+            $params['firstname' . $index] = mb_strtolower(trim((string) $speaker->getFirstname()));
+            $params['lastname' . $index] = mb_strtolower(trim((string) $speaker->getLastname()));
+
+            if ($speaker->getUser()) {
+                $conditions[] = sprintf('speaker.user_github = :github%d', $index);
+                $params['github' . $index] = $speaker->getUser();
+            }
+        }
+
+        if ($conditions === []) {
+            return [];
+        }
+
+        $hydrator = new JoinHydrator();
+        $hydrator->aggregateOn('talk', 'speaker', 'getId');
+
+        $query = $this->getPreparedQuery(
+            sprintf('SELECT talk.*,
+            speaker.conferencier_id, speaker.id_forum, speaker.prenom, speaker.nom, speaker.user_github,
+            event.id, event.titre, event.path, event.date_debut, event.date_fin
+            FROM afup_sessions AS talk
+            INNER JOIN (
+                SELECT id_session, MIN(debut) AS debut FROM afup_forum_planning GROUP BY id_session
+            ) AS planning ON planning.id_session = talk.session_id
+            INNER JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
+            INNER JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
+            INNER JOIN afup_forum event ON event.id = talk.id_forum
+            WHERE talk.session_id != :excluded AND talk.plannifie = 1
+            AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)
+            AND (%s)
+            ORDER BY planning.debut DESC, talk.session_id DESC', implode(' OR ', $conditions)),
+        )->setParams($params);
+
+        $talks = [];
+        /** @var array{talk: Talk, event: Event, '.aggregation': array{speaker: array<Speaker>}} $row */
+        foreach ($query->query($this->getCollection($hydrator)) as $row) {
+            if ($row['talk']->isDisplayedOnHistory()) {
+                $talks[] = [
+                    'talk' => $row['talk'],
+                    'event' => $row['event'],
+                    'speakers' => array_values($row['.aggregation']['speaker']),
+                ];
+            }
+        }
+
+        return $talks;
+    }
+
+    public function getAllPastTalks(\DateTime $dateTime)
+    {
+        $query = $this->getPreparedQuery(
+            '
+            SELECT talk.*
+            FROM afup_sessions AS talk
+            LEFT JOIN afup_forum_planning afp ON talk.session_id = afp.id_session
+            WHERE afp.fin <= :date_fin',
+        )->setParams(['date_fin' => $dateTime->format('U')]);
+
+        return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
      * @param array<int> $talkIds
      * @return CollectionInterface<Talk>
      */

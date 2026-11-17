@@ -12,6 +12,7 @@ use AppBundle\Event\Talk\PublishedTalkRepository;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Event\Talk\VideoObjectJsonLd;
+use AppBundle\Event\Talk\RelatedTalks;
 use AppBundle\Joindin\JoindinComments;
 use AppBundle\Subtitles\Parser;
 use AppBundle\Twig\ViewRenderer;
@@ -50,7 +51,7 @@ final class ShowAction extends AbstractController
             return $this->redirectToRoute('talks_show', ['id' => $id, 'slug' => $talk->getSlug()], Response::HTTP_MOVED_PERMANENTLY);
         }
 
-        $speakers = $this->speakerRepository->getSpeakersByTalk($talk);
+        $speakers = iterator_to_array($this->speakerRepository->getSpeakersByTalk($talk), false);
         // Slug de la page de chaque speaker, par ID de ligne speaker : un seul index, chargé une fois pour tous.
         $speakerSlugs = [];
         /** @var Speaker $speaker */
@@ -61,6 +62,15 @@ final class ShowAction extends AbstractController
             }
         }
         $event = $this->eventRepository->get($planning->eventId);
+        if ($event === null) {
+            throw $this->createNotFoundException();
+        }
+        $relatedTalks = RelatedTalks::build(
+            $talk,
+            $this->talkRepository->getPublishedByEventInPlanningOrder($event),
+            $speakers,
+            $this->talkRepository->getPublishedBySpeakers($speakers, $talk),
+        );
         $comments = $this->joindinComments->getCommentsFromTalk($talk);
 
         $parser = new Parser();
@@ -74,6 +84,7 @@ final class ShowAction extends AbstractController
             'comments' => $comments,
             'transcript' => $parsedContent,
             'video_object' => $this->videoObjectJsonLd->getData($talk, $planning->start, $parsedContent, $this->generateUrl('talks_show', ['id' => $talk->getId(), 'slug' => $talk->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)),
+            'related_talks' => $relatedTalks,
         ]);
     }
 }

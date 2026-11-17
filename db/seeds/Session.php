@@ -136,6 +136,45 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
             ],
         ];
 
+        $forcedPlannings = [
+            6 => [
+                'debut' => new \DateTime('2020-09-15 10:00:00')->format('U'),
+                'fin' => new \DateTime('2020-09-15 10:40:00')->format('U'),
+            ],
+        ];
+
+        // Une édition passée avec un planning complet (7 talks publiés, une vidéo sur
+        // deux, des horaires dans un autre ordre que les identifiants) et un talk dont
+        // la publication est à venir, pour les liens entre talks de la page talk.
+        $passedEventTalks = [
+            7 => ['titre' => 'Clôture : le futur de PHP', 'youtube_id' => 'videoTalk07', 'debut' => '16:00'],
+            8 => ['titre' => 'Keynote d\'ouverture', 'youtube_id' => null, 'debut' => '09:00'],
+            9 => ['titre' => 'Tester sans se ruiner', 'youtube_id' => 'videoTalk09', 'debut' => '11:00'],
+            10 => ['titre' => 'Migrer une application legacy', 'youtube_id' => null, 'debut' => '12:00'],
+            11 => ['titre' => 'Observabilité avec OpenTelemetry', 'youtube_id' => 'videoTalk11', 'debut' => '14:00'],
+            12 => ['titre' => 'Le typage statique en pratique', 'youtube_id' => null, 'debut' => '15:00'],
+            13 => ['titre' => 'Un talk pas encore publié', 'youtube_id' => 'videoTalk13', 'debut' => '17:00', 'date_publication' => new \DateTime()->modify('+5 days')->format('Y-m-d H:i:s')],
+        ];
+        foreach ($passedEventTalks as $sessionId => $passedEventTalk) {
+            $sessions[] = [
+                'session_id' => $sessionId,
+                'id_forum' => Event::ID_PASSED,
+                'date_soumission' => '2020-05-01',
+                'titre' => $passedEventTalk['titre'],
+                'abstract' => 'Résumé du talk « ' . $passedEventTalk['titre'] . ' ».',
+                'genre' => 1,
+                'skill' => 0,
+                'plannifie' => 1,
+                'youtube_id' => $passedEventTalk['youtube_id'],
+                'language_code' => 'fr',
+                'date_publication' => $passedEventTalk['date_publication'] ?? null,
+            ];
+            $forcedPlannings[$sessionId] = [
+                'debut' => new \DateTime('2020-09-15 ' . $passedEventTalk['debut'])->format('U'),
+                'fin' => new \DateTime('2020-09-15 ' . $passedEventTalk['debut'])->modify('+40 minutes')->format('U'),
+            ];
+        }
+
         $sessionsByIds = [];
         foreach ($sessions as $session) {
             $sessionsByIds[$session['session_id']] = $session;
@@ -158,6 +197,11 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
         }
 
         $conferenciers[2]['conferencier_id'] = 2;
+        foreach ($conferenciers as $index => $conferencier) {
+            if (isset($passedEventTalks[$conferencier['session_id']])) {
+                $conferenciers[$index]['conferencier_id'] = 3;
+            }
+        }
 
         $table = $this->table('afup_conferenciers_sessions');
         $table->truncate();
@@ -177,14 +221,6 @@ il souffre aussi de d&eacute;fauts souvent sous-estim&eacute;s parmi lesquels l&
                 'id_forum' => Event::ID_FORUM,
             ])
             ->save();
-
-
-        $forcedPlannings = [
-            6 => [
-                'debut' => new \DateTime('2020-09-15 10:00:00')->format('U'),
-                'fin' => new \DateTime('2020-09-15 10:40:00')->format('U'),
-            ],
-        ];
 
 
         $i = 1;
