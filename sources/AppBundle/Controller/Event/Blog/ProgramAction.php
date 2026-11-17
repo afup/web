@@ -36,6 +36,14 @@ final class ProgramAction extends AbstractController
             usort($themes, fn($a, $b): int => $a->priority === $b->priority ? $a->name <=> $b->name : $a->priority <=> $b->priority);
             $themes = array_combine(array_map(fn($theme): int => (int) $theme->id, $themes), $themes);
         }
+        // Talks publiés qui ont une vidéo (définition commune aux pages /talks/), en une requête :
+        // le widget leur ajoute un lien vers leur page sur afup.org.
+        $videoTalkIds = [];
+        foreach ($this->talkRepository->getPublishedByEventWithSpeakers($event) as $eventTalk) {
+            if ($eventTalk->talk->hasYoutubeId()) {
+                $videoTalkIds[(int) $eventTalk->talk->getId()] = true;
+            }
+        }
         $now = new \DateTime();
 
         return $this->render(
@@ -47,6 +55,7 @@ final class ProgramAction extends AbstractController
                 'speakersPagePrefix' => $request->query->get('speakers-page-prefix', '/' . $event->getPath() . '/speakers/'),
                 'display_joindin_links' => $now >= $event->getDateStart() && $now <= \DateTimeImmutable::createFromMutable($event->getDateEnd())->modify('+10 days'),
                 'themes' => $themes,
+                'video_talk_ids' => $videoTalkIds,
             ],
         );
     }
