@@ -6,6 +6,7 @@ namespace AppBundle\Controller\Website\Global;
 
 use AppBundle\Event\Entity\Repository\MeetupRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
+use AppBundle\Event\Talk\LatestVideos;
 use AppBundle\Site\ArticleImageStorage;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
 use AppBundle\Twig\ViewRenderer;
@@ -20,6 +21,7 @@ final class HomeAction extends AbstractController
         private readonly MeetupRepository $meetupRepository,
         private readonly EventRepository $eventRepository,
         private readonly ArticleImageStorage $articleImageStorage,
+        private readonly LatestVideos $latestVideos,
     ) {}
 
     public function __invoke(): Response
@@ -32,6 +34,7 @@ final class HomeAction extends AbstractController
             'meetups' => $meetups,
             'lastArticleImageUrl' => $this->articleImageStorage->getUrl($articles[0]) ?? 'images/article-default-image.svg',
             'currentEvent' => $this->eventRepository->getMostRecentEvent(),
+            'latestVideos' => $this->latestVideos->get(),
         ]);
     }
 }
