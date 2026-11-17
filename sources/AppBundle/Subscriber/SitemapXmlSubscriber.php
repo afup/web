@@ -8,8 +8,6 @@ use Afup\Site\Corporate\Feuille;
 use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Controller\Website\News\ListAction;
-use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Talk\PublishedTalkRepository;
@@ -30,7 +28,6 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly TalkRepository $talkRepository,
         private readonly SpeakerProfileResolver $speakerProfileResolver,
-        private readonly EventRepository $eventRepository,
         private readonly ArticleRepository $articleRepository,
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly FeuilleRepository $feuilleRepository,
@@ -108,20 +105,21 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * La page de chaque édition ayant au moins un talk publié ; l'index des éditions
+     * est déclaré par l'option sitemap de sa route.
+     */
     public function registerEventsTalksUrls(UrlContainerInterface $urls): void
     {
-        /** @var Event[] $events */
-        $events = $this->eventRepository->getAll();
-        foreach ($events as $event) {
+        foreach ($this->talkRepository->getEventTalksSummaries() as $summary) {
             $url = new UrlConcrete(
                 $this->urlGenerator->generate(
-                    'talks_list',
-                    ['fR' => ['event.title' => [$event->getTitle()]]],
+                    'talks_event',
+                    ['path' => $summary->event->getPath()],
                     UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
-                $event->getDateEnd(),
-                UrlConcrete::CHANGEFREQ_DAILY,
-                1,
+                $summary->event->getDateEnd(),
+                UrlConcrete::CHANGEFREQ_MONTHLY,
             );
             $urls->addUrl($url, 'talks');
         }
