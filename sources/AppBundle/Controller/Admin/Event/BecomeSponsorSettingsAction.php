@@ -14,10 +14,12 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * Réglages de la page publique /become-sponsor.
  */
+#[IsGranted('ROLE_EVENT_WRITER')]
 final class BecomeSponsorSettingsAction extends AbstractController
 {
     public function __construct(private readonly ParametrageSponsoringRepository $parametrageSponsoringRepository) {}
