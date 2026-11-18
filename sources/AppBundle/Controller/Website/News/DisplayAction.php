@@ -32,7 +32,9 @@ final class DisplayAction extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        if (!$this->authorizationChecker->isGranted('ROLE_ADMIN') && ($article->etat !== ArticleEtat::EnLigne || $article->datePublication > new \DateTime())) {
+        $isScheduled = $article->datePublication > new \DateTime();
+
+        if (!$this->authorizationChecker->isGranted('ROLE_SITE_WRITER') && ($article->etat !== ArticleEtat::EnLigne || $isScheduled)) {
             throw $this->createNotFoundException();
         }
 
@@ -42,6 +44,7 @@ final class DisplayAction extends AbstractController
             'next' => $this->articleRepository->findNext($article),
             'related_event' => $this->getRelatedEvent($article),
             'image_url' => $this->articleImageStorage->getUrl($article),
+            'is_scheduled' => $isScheduled,
         ]);
     }
 

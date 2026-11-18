@@ -51,7 +51,10 @@ Feature: Administration - Partie Site
     And I should see "Modifier un article"
     And I fill in "article[titre]" with "Le titre de l'article modifié"
     And I press "Modifier"
-    And I should see "Liste des article"
+    Then I should see "L'article Le titre de l'article modifié a été modifié"
+    And I should see "Modifier un article"
+    And the "article[titre]" field should contain "Le titre de l'article modifié"
+    When I follow "Articles"
     Then the ".content table" element should contain "Le titre de l'article modifié"
 
     # vérification que le raccourci n'a pas changé avec le titre
@@ -179,8 +182,7 @@ Feature: Administration - Partie Site
 
     # Modifier l'article sans changer l'image la conserve
     And I press "Modifier"
-    Then I should see "Liste des articles"
-    Then I follow "modifier_17"
+    Then I should see "L'article Un article illustré a été modifié"
     And I should see "Modifier un article"
     And I should see "Supprimer l'image de couverture"
     And I should see a "#article-image-preview" element
@@ -188,9 +190,7 @@ Feature: Administration - Partie Site
     # suppression de l'image de couverture
     When I check "article[supprimerImage]"
     And I press "Modifier"
-    Then I should see "Liste des articles"
-    When I follow "Articles"
-    And I follow "modifier_17"
+    Then I should see "L'article Un article illustré a été modifié"
     And I should see "Modifier un article"
     Then I should not see "Supprimer l'image de couverture"
     And I should not see a "#article_supprimerImage" element

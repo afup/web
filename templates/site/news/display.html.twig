@@ -31,6 +31,10 @@
                     <twig:Alert type="warning" class="mb-10">
                         <strong>En attente</strong> : article non publié
                     </twig:Alert>
+                {% elseif is_scheduled %}
+                    <twig:Alert type="warning" class="mb-10">
+                        <strong>Programmé</strong> : article visible publiquement à partir du {{ article.datePublication|format_datetime('long', 'short') }}
+                    </twig:Alert>
                 {% endif %}
             </div>
 
