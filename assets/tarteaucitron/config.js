@@ -33,8 +33,8 @@ tarteaucitron.init({
     "removeCredit": true, /* Remove credit link */
     "moreInfoLink": true, /* Show more info link */
 
-    "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
-    "useExternalJs": false, /* If false, the tarteaucitron.js file will be loaded */
+    "useExternalCss": true, /* CSS, lang et services chargés via AssetMapper (templates/google_analytics.html.twig) */
+    "useExternalJs": true,
 
     //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
 

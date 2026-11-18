@@ -1,6 +1,9 @@
 {% if google_analytics_enabled %}
-    <script src="{{ asset('/assets/tarteaucitron/tarteaucitron.js') }}"></script>
-    <script src="{{ asset('/js/tarteaucitron.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('tarteaucitron/css/tarteaucitron.min.css') }}">
+    <script src="{{ asset('tarteaucitron/tarteaucitron.min.js') }}"></script>
+    <script src="{{ asset('tarteaucitron/lang/tarteaucitron.fr.min.js') }}"></script>
+    <script src="{{ asset('tarteaucitron/tarteaucitron.services.min.js') }}"></script>
+    <script src="{{ asset('tarteaucitron/config.js') }}"></script>
 
     <script type="text/javascript">
         tarteaucitron.user.gtagUa = '{{ google_analytics_id }}';

@@ -18,7 +18,6 @@
     "sass-loader": "^7.1",
     "style-loader": "^0.23",
     "tablefilter": "^0.7.0",
-    "tarteaucitronjs": "^1.32.0",
     "webpack": "^3.6"
   },
   "scripts": {
