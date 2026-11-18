@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "30fb447b997beed259efa361c1abb27a",
+    "content-hash": "168d1e975ab50c3c1039e7fc96f437ee",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -4486,6 +4486,19 @@
                 "source": "https://github.com/nette/utils/tree/v4.1.4"
             },
             "time": "2026-05-11T20:49:54+00:00"
+        },
+        {
+            "name": "npm-asset/tarteaucitronjs",
+            "version": "1.32.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/tarteaucitronjs/-/tarteaucitronjs-1.32.0.tgz",
+                "shasum": "35888a974a0c9e80b1711b51852d30d1a6fc4da3"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "nyholm/psr7",

@@ -2,7 +2,8 @@ framework:
   asset_mapper:
     # The paths to make available to the asset mapper.
     paths:
-      - '%kernel.project_dir%/assets/'
+      '%kernel.project_dir%/assets/': ''
+      '%kernel.project_dir%/vendor/npm-asset/tarteaucitronjs/': 'npm-asset/tarteaucitronjs'
     importmap_path: '%kernel.project_dir%/importmap.php'
     missing_import_mode: strict
     vendor_dir: '%kernel.project_dir%/assets/vendor'
