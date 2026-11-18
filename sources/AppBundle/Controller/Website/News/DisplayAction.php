@@ -34,7 +34,7 @@ final class DisplayAction extends AbstractController
 
         $isScheduled = $article->datePublication > new \DateTime();
 
-        if (!$this->authorizationChecker->isGranted('ROLE_ADMIN') && ($article->etat !== ArticleEtat::EnLigne || $isScheduled)) {
+        if (!$this->authorizationChecker->isGranted('ROLE_SITE_WRITER') && ($article->etat !== ArticleEtat::EnLigne || $isScheduled)) {
             throw $this->createNotFoundException();
         }
 
