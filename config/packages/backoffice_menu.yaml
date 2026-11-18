@@ -185,7 +185,7 @@ parameters:
                         - admin_event_factures
                 admin_event_become_sponsor:
                     nom: 'Page devenir sponsor'
-                    niveau: 'ROLE_ADMIN'
+                    niveau: 'ROLE_EVENT_WRITER'
                     url: '/admin/event/become-sponsor'
                     extra_routes:
                         - admin_event_become_sponsor
