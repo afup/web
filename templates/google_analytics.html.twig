@@ -1,15 +1,18 @@
 {% if google_analytics_enabled %}
     <link rel="stylesheet" href="{{ asset('tarteaucitron/css/tarteaucitron.min.css') }}">
-    <script src="{{ asset('tarteaucitron/tarteaucitron.min.js') }}"></script>
-    <script src="{{ asset('tarteaucitron/lang/tarteaucitron.fr.min.js') }}"></script>
-    <script src="{{ asset('tarteaucitron/tarteaucitron.services.min.js') }}"></script>
-    <script src="{{ asset('tarteaucitron/config.js') }}"></script>
+    <script src="{{ asset('tarteaucitron/tarteaucitron.min.js') }}" defer></script>
+    <script src="{{ asset('tarteaucitron/lang/tarteaucitron.fr.min.js') }}" defer></script>
+    <script src="{{ asset('tarteaucitron/tarteaucitron.services.min.js') }}" defer></script>
+    <script src="{{ asset('tarteaucitron/config.js') }}" defer></script>
 
     <script type="text/javascript">
-        tarteaucitron.user.gtagUa = '{{ google_analytics_id }}';
-        tarteaucitron.user.gtagMore = function () {
-            {% block google_analytics_gtag %}{% endblock %}
-        };
-        (tarteaucitron.job = tarteaucitron.job || []).push('gtag');
+        {# Les scripts defer s'exécutent avant DOMContentLoaded, pas avant ce script inline #}
+        document.addEventListener('DOMContentLoaded', function () {
+            tarteaucitron.user.gtagUa = '{{ google_analytics_id }}';
+            tarteaucitron.user.gtagMore = function () {
+                {% block google_analytics_gtag %}{% endblock %}
+            };
+            (tarteaucitron.job = tarteaucitron.job || []).push('gtag');
+        });
     </script>
 {% endif %}
