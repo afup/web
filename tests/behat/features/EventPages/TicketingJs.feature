@@ -90,13 +90,16 @@ Feature: Event pages - Ticketing (JavaScript)
   Scenario: La saisie est conservée après un rechargement de la page
     Given I am on "/event/forum/tickets"
     And I clear the local storage
-    When I press the visible "Suivant" button
+    When I select "2" from "purchase[nbPersonnes]"
+    And I press the visible "Suivant" button
     And I wait until I see "Informations sur les participant•e•s"
     And I fill in "purchase[tickets][0][firstname]" with "Prénom personne 1"
     And I select "2" from "purchase[tickets][0][ticketEventType]"
     And I reload the page
-    And I press the visible "Suivant" button
+    Then The "purchase[nbPersonnes]" field should have the following selected value "2"
+    When I press the visible "Suivant" button
     Then I wait until I see "Informations sur les participant•e•s"
+    And I should see "Billet 2"
     And the "purchase[tickets][0][firstname]" field should contain "Prénom personne 1"
     And the "#ticket-summary table" element should contain "<td>2 Jours</td>"
 
