@@ -72,3 +72,18 @@ Feature: Site Public - Devenir sponsor
       | to                   | subject                                   |
       | <sponsors@afup.org>  | Nouvelle demande de dossier de sponsoring |
       | <email@domain.com>   | Dossier de sponsoring AFUP                |
+
+  @reloadDbWithTestData
+  @clearEmails
+  @withSponsorshipFile
+  Scenario: Sans dossier dans la langue demandée, on envoie celui d'une autre langue
+    Given I go to "/become-sponsor"
+    When I fill in "lead_firstname" with "Prénom"
+    And I fill in "lead_lastname" with "Nom"
+    And I fill in "lead_email" with "email@domain.com"
+    And I fill in "lead_phone" with "0600000000"
+    And I fill in "lead_company" with "company"
+    And I select "en" from "lead_language"
+    And I press "Recevoir le dossier"
+    Then the url should match "/become-sponsor/thank-you"
+    And the checksum of the attachment "pack-sponsoring-afup-fr.pdf" of the message of id "2" should be "27df44e78e2f3c9a7f331275a4c5b304"
