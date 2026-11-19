@@ -17,6 +17,18 @@
     {% if talk.hasYoutubeId %}
         <meta property="og:image" content="https://img.youtube.com/vi/{{ talk.getYoutubeId }}/hqdefault.jpg" />
         <meta property="og:type" content="video.other" />
+        <script type="application/ld+json">
+            {{ {
+                '@context': 'https://schema.org',
+                '@type': 'VideoObject',
+                name: talk.title,
+                description: talk.description|striptags|trim,
+                thumbnailUrl: ['https://img.youtube.com/vi/' ~ talk.youtubeId ~ '/hqdefault.jpg'],
+                uploadDate: (event.dateEnd ?? event.dateStart)|date('c'),
+                embedUrl: 'https://www.youtube.com/embed/' ~ talk.youtubeId,
+                url: url('talks_show', {id: talk.id, slug: talk.slug}),
+            }|json_encode|raw }}
+        </script>
     {% else %}
         <meta property="og:type" content="article" />
     {% endif %}
