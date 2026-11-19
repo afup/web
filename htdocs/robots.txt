@@ -1,3 +1,5 @@
+Sitemap: https://afup.org/sitemap.xml
+
 # OpenAI’s web crawler: GPT3.5, GPT4, ChatGPT
 # https://platform.openai.com/docs/bots
 User-agent: GPTBot
