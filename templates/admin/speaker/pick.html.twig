@@ -1,0 +1,67 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% block content %}
+    <h2>Reprendre un conférencier pour le {{ event.title }}</h2>
+
+    <div class="ui segment">
+        <form method="GET" class="ui form">
+            <input type="hidden" name="eventId" value="{{ event.id }}"/>
+            <div class="inline fields">
+                <div class="field">
+                    <label for="speaker_pick_q">Nom, prénom, email ou société</label>
+                    <input type="text" id="speaker_pick_q" name="q" value="{{ search }}" autofocus>
+                </div>
+                <div class="field">
+                    <input type="submit" value="Rechercher" class="ui button">
+                </div>
+            </div>
+        </form>
+
+        {% if search is not empty %}
+            {% if results is not empty %}
+                <table class="ui table striped compact celled">
+                    <thead>
+                    <tr>
+                        <th>Nom Prénom</th>
+                        <th>Société</th>
+                        <th>Dernière édition</th>
+                        <th>Éditions</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for result in results %}
+                        <tr>
+                            <td>
+                                <strong>{{ result.lastname }} {{ result.firstname }}</strong>
+                                {% if result.personSlug %}
+                                    <a href="{{ path('admin_speaker_person', {id: result.personId}) }}" class="ui tiny label">{{ result.personSlug }}</a>
+                                {% else %}
+                                    <span class="ui tiny grey label">non rattaché</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ result.company }}</td>
+                            <td>{{ result.lastEventTitle }}</td>
+                            <td>{{ result.eventCount }}</td>
+                            <td style="text-align: right">
+                                <a href="{{ path('admin_speaker_add', {eventId: event.id, from: result.speakerId}) }}"
+                                   class="compact ui primary button"
+                                   data-tooltip="Reprendre {{ result.lastname }} {{ result.firstname }}"
+                                   data-position="left center"
+                                >Reprendre</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="ui placeholder segment">
+                    <div class="ui icon header">
+                        <i class="meh outline icon"></i>
+                        Aucun conférencier trouvé.
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

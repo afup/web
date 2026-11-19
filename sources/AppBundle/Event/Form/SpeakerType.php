@@ -112,7 +112,7 @@ class SpeakerType extends AbstractType
                     $speaker->setMastodon($previousSpeakerInfos->getMastodon());
                     $speaker->setLinkedin($previousSpeakerInfos->getLinkedin());
                     $speaker->setBluesky($previousSpeakerInfos->getBluesky());
-                    $speaker->setPhoto($previousSpeakerInfos->getPhoto());
+                    // La photo n'est pas reprise ici : son fichier est rangé par édition, SpeakerAction le copie à l'enregistrement.
 
                     $formEvent->getForm()->add('isFromPreviousEvent', HiddenType::class, ['mapped' => false]);
                 }

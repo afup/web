@@ -8,6 +8,7 @@ use Phinx\Seed\AbstractSeed;
 class Conferenciers extends AbstractSeed
 {
     public const ID_CONFERENCIER = 1;
+    public const ID_CONFERENCIER_ANCIEN = 4;
 
     public function run(): void
     {
@@ -67,6 +68,48 @@ class Conferenciers extends AbstractSeed
                 'bluesky' => '',
                 'user_github' => 3,
                 'photo' => '1968.jpg',
+                'will_attend_speakers_diner' => null,
+                'has_special_diet' => null,
+                'special_diet_description' => null,
+                'hotel_nights' => null,
+            ],
+            // Conférencière d'une édition passée, pas encore inscrite au forum : reprise en back-office et CFP prérempli
+            [
+                'conferencier_id' => self::ID_CONFERENCIER_ANCIEN,
+                'id_forum' => Event::ID_PASSED,
+                'genre' => Genre::Femme->value,
+                'nom' => 'Ancienne',
+                'prenom' => 'Marie',
+                'email' => 'marie@example.com',
+                'societe' => 'Ancienne Société',
+                'ville' => 'Lyon',
+                'biographie' => 'Bio Marie',
+                'twitter' => '',
+                'mastodon' => '',
+                'bluesky' => '',
+                'user_github' => GithubUsers::ID_GITHUBUSER_ANCIEN,
+                'photo' => self::ID_CONFERENCIER_ANCIEN . '.png',
+                'will_attend_speakers_diner' => null,
+                'has_special_diet' => null,
+                'special_diet_description' => null,
+                'hotel_nights' => null,
+            ],
+            // Fiche historique non rattachée, homonyme de Geoffrey Bachelet : suggestion de rattachement
+            [
+                'conferencier_id' => 5,
+                'id_forum' => Event::ID_PASSED,
+                'genre' => null,
+                'nom' => 'Bachelet',
+                'prenom' => 'Geoffrey',
+                'email' => 'geoffrey@example.com',
+                'societe' => null,
+                'ville' => null,
+                'biographie' => 'Ancienne bio',
+                'twitter' => null,
+                'mastodon' => null,
+                'bluesky' => null,
+                'user_github' => null,
+                'photo' => null,
                 'will_attend_speakers_diner' => null,
                 'has_special_diet' => null,
                 'special_diet_description' => null,
