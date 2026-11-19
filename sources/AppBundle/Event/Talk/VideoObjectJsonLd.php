@@ -21,10 +21,11 @@ final readonly class VideoObjectJsonLd
 
     /**
      * @param array<array{text: mixed}> $transcript les phrases renvoyées par AppBundle\Subtitles\Parser
+     * @param string $url URL absolue de la page du talk
      *
      * @return array<string, string>|null null quand le talk n'a pas de vidéo ou pas de date de créneau
      */
-    public function getData(Talk $talk, ?\DateTimeInterface $start, array $transcript): ?array
+    public function getData(Talk $talk, ?\DateTimeInterface $start, array $transcript, string $url): ?array
     {
         if (!$talk->hasYoutubeId() || null === $start) {
             return null;
@@ -38,16 +39,15 @@ final readonly class VideoObjectJsonLd
             'name' => $talk->getTitle(),
         ];
 
+        // description est obligatoire pour Google : sans résumé, on reprend le titre.
         $description = $this->toPlainText((string) $talk->getDescription());
-        if ('' !== $description) {
-            $data['description'] = $description;
-        }
+        $data['description'] = '' !== $description ? $description : $talk->getTitle();
 
         $data += [
             'thumbnailUrl' => sprintf('https://img.youtube.com/vi/%s/hqdefault.jpg', $youtubeId),
             'uploadDate' => $start->format(\DateTimeInterface::ATOM),
             'embedUrl' => sprintf('https://www.youtube.com/embed/%s', $youtubeId),
-            'contentUrl' => (string) $talk->getYoutubeUrl(),
+            'url' => $url,
         ];
 
         if (null !== $talk->getLanguageCode()) {

@@ -424,7 +424,8 @@ class FeatureContext implements Context
     }
 
     /**
-     * Décode chaque <script type="application/ld+json"> de la page : un JSON invalide fait échouer le step.
+     * Décode chaque <script type="application/ld+json"> de la page : un JSON invalide, ou deux JSON-LD
+     * du même type (par exemple un bloc en double après un merge), font échouer le step.
      *
      * @return array<string, mixed>|null
      */
@@ -432,13 +433,17 @@ class FeatureContext implements Context
     {
         $scripts = $this->minkContext->getSession()->getPage()->findAll('css', 'script[type="application/ld+json"]');
 
+        $found = null;
         foreach ($scripts as $script) {
             $data = json_decode($script->getHtml(), true, flags: JSON_THROW_ON_ERROR);
             if (is_array($data) && ($data['@type'] ?? null) === $type) {
-                return $data;
+                if (null !== $found) {
+                    throw new ExpectationException(sprintf('Several JSON-LD of type "%s" found', $type), $this->minkContext->getSession()->getDriver());
+                }
+                $found = $data;
             }
         }
 
-        return null;
+        return $found;
     }
 }

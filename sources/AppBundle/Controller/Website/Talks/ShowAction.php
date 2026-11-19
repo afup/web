@@ -14,6 +14,7 @@ use AppBundle\Subtitles\Parser;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class ShowAction extends AbstractController
 {
@@ -57,7 +58,7 @@ final class ShowAction extends AbstractController
             'speakers' => $speakers,
             'comments' => $comments,
             'transcript' => $parsedContent,
-            'video_object' => $this->videoObjectJsonLd->getData($talk, $planning->start, $parsedContent),
+            'video_object' => $this->videoObjectJsonLd->getData($talk, $planning->start, $parsedContent, $this->generateUrl('talks_show', ['id' => $talk->getId(), 'slug' => $talk->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)),
         ]);
     }
 }

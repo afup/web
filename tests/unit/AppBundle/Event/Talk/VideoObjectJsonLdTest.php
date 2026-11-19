@@ -10,6 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 final class VideoObjectJsonLdTest extends TestCase
 {
+    private const string URL = 'https://afup.org/talks/42-rest-ou-graphql';
+
     public function testGetData(): void
     {
         $talk = new Talk();
@@ -23,7 +25,7 @@ final class VideoObjectJsonLdTest extends TestCase
         $data = new VideoObjectJsonLd()->getData($talk, $start, [
             ['start' => 28.0, 'text' => 'Merci.'],
             ['start' => 31.0, 'text' => '<i>Bonjour</i> à toutes et à tous.'],
-        ]);
+        ], self::URL);
 
         self::assertSame([
             '@context' => 'https://schema.org',
@@ -33,7 +35,7 @@ final class VideoObjectJsonLdTest extends TestCase
             'thumbnailUrl' => 'https://img.youtube.com/vi/QhAToFl_Omo/hqdefault.jpg',
             'uploadDate' => '2019-05-16T09:30:00+02:00',
             'embedUrl' => 'https://www.youtube.com/embed/QhAToFl_Omo',
-            'contentUrl' => 'https://www.youtube.com/watch?v=QhAToFl_Omo',
+            'url' => self::URL,
             'inLanguage' => 'en',
             'transcript' => 'Merci. Bonjour à toutes et à tous.',
         ], $data);
@@ -46,7 +48,7 @@ final class VideoObjectJsonLdTest extends TestCase
         $talk->setAbstract('Un résumé');
         $talk->setYoutubeId('abc');
 
-        $data = new VideoObjectJsonLd()->getData($talk, new \DateTime(), []);
+        $data = new VideoObjectJsonLd()->getData($talk, new \DateTime(), [], self::URL);
 
         self::assertIsArray($data);
         self::assertArrayNotHasKey('transcript', $data);
@@ -58,10 +60,10 @@ final class VideoObjectJsonLdTest extends TestCase
         $talk = new Talk();
         $talk->setTitle('Un talk');
 
-        self::assertNull(new VideoObjectJsonLd()->getData($talk, new \DateTime(), []));
+        self::assertNull(new VideoObjectJsonLd()->getData($talk, new \DateTime(), [], self::URL));
 
         $talk->setYoutubeId('');
-        self::assertNull(new VideoObjectJsonLd()->getData($talk, new \DateTime(), []));
+        self::assertNull(new VideoObjectJsonLd()->getData($talk, new \DateTime(), [], self::URL));
     }
 
     public function testGetDataWithoutPlanningStart(): void
@@ -70,7 +72,7 @@ final class VideoObjectJsonLdTest extends TestCase
         $talk->setTitle('Un talk');
         $talk->setYoutubeId('abc');
 
-        self::assertNull(new VideoObjectJsonLd()->getData($talk, null, []));
+        self::assertNull(new VideoObjectJsonLd()->getData($talk, null, [], self::URL));
     }
 
     public function testEncodedDataCannotCloseTheScriptTag(): void
@@ -82,7 +84,7 @@ final class VideoObjectJsonLdTest extends TestCase
 
         $data = new VideoObjectJsonLd()->getData($talk, new \DateTime(), [
             ['start' => 0.0, 'text' => 'Texte &lt;/script&gt;'],
-        ]);
+        ], self::URL);
         self::assertIsArray($data);
 
         $json = json_encode($data, VideoObjectJsonLd::JSON_FLAGS);
@@ -91,5 +93,18 @@ final class VideoObjectJsonLdTest extends TestCase
         self::assertStringNotContainsStringIgnoringCase('</script', $json);
         self::assertStringNotContainsString('<', $json);
         self::assertSame($data, json_decode($json, true));
+    }
+
+    public function testDescriptionFallsBackToTheTitleWhenTheAbstractIsEmpty(): void
+    {
+        $talk = new Talk();
+        $talk->setTitle('Un talk sans résumé');
+        $talk->setAbstract('<p> </p>');
+        $talk->setYoutubeId('abc');
+
+        $data = new VideoObjectJsonLd()->getData($talk, new \DateTime(), [], self::URL);
+
+        self::assertIsArray($data);
+        self::assertSame('Un talk sans résumé', $data['description']);
     }
 }

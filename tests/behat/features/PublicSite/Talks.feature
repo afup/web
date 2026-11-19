@@ -92,10 +92,10 @@ Feature: Site Public - Talks
       | description  | Hey ! Tu as participé au quiz du #SuperApéroPHP ? Tu te demandes : mais comment ont-ils fait ? Ne cherche pas plus loin, je te propose de nous retrouver pour un petit jeu et de découvrir ensemble l'envers du décor ! Au programme : une session interactive avec Laravel / Laravel Echo / Redis et Socket.IO. |
       | thumbnailUrl | https://img.youtube.com/vi/MseSkWbhxV8/hqdefault.jpg                                                                                                                                                                                                                                   |
       | embedUrl     | https://www.youtube.com/embed/MseSkWbhxV8                                                                                                                                                                                                                                              |
-      | contentUrl   | https://www.youtube.com/watch?v=MseSkWbhxV8                                                                                                                                                                                                                                            |
       | inLanguage   | fr                                                                                                                                                                                                                                                                                     |
       | transcript   | Merci. Merci. Bonjour, bonjour à toutes et à tous.                                                                                                                                                                                                                                     |
     And the JSON-LD "VideoObject" property "uploadDate" should match "/^\d{4}-\d{2}-\d{2}T09:00:00\+0[12]:00$/"
+    And the JSON-LD "VideoObject" property "url" should match "#^https://[^/]+/talks/1-jouons-tous-ensemble-a-un-petit-jeu$#"
 
   @reloadDbWithTestData
   Scenario: Pas de VideoObject sur la page d'un talk sans vidéo
