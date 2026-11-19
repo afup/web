@@ -318,6 +318,35 @@ class FeatureContext implements Context
         }
     }
 
+    /**
+     * Échoue aussi si aucun lien ne correspond, pour ne pas passer à vide.
+     * exemple:
+     * all links with href containing "/joindin" should have rel containing "nofollow"
+     */
+    #[Then('/^all links with href containing "(?P<href>(?:[^"]|\\")*)" should have rel containing "(?P<rel>(?:[^"]|\\")*)"$/')]
+    public function allLinksShouldHaveRel(string $href, string $rel): void
+    {
+        $links = $this->minkContext->getSession()->getPage()->findAll('css', sprintf('a[href*="%s"]', $href));
+
+        if ([] === $links) {
+            throw new ExpectationException(
+                sprintf('No link with href containing "%s" was found', $href),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+
+        foreach ($links as $link) {
+            $relTokens = preg_split('/\s+/', (string) $link->getAttribute('rel'), -1, PREG_SPLIT_NO_EMPTY);
+
+            if (!in_array($rel, $relTokens, true)) {
+                throw new ExpectationException(
+                    sprintf('The link "%s" has rel "%s", which does not contain "%s"', $link->getAttribute('href'), $link->getAttribute('rel'), $rel),
+                    $this->minkContext->getSession()->getDriver(),
+                );
+            }
+        }
+    }
+
     #[Then('/^(?:|I )click on link with (class|id) "(?P<text>(?:[^"]|\\")*)"$/')]
     public function clickOnLink(string $type, string $text): void
     {

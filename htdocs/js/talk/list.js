@@ -104,8 +104,8 @@ search.addWidget(
                     : '/images/no_video.jpg';
 
                 var links = '';
-                var link = function (href, svg, label) {
-                    return '<a href="' + href + '" target="_blank" rel="noopener"'
+                var link = function (href, svg, label, rel) {
+                    return '<a href="' + href + '" target="_blank" rel="' + (rel || 'noopener') + '"'
                         + ' class="inline-flex items-center gap-1.5 rounded-lg bg-afup-100 px-2 py-1 text-xs font-medium text-afup-500 hover:bg-afup-500 hover:text-white">'
                         + icon(svg, 'size-3.5') + label + '</a>';
                 };
@@ -117,7 +117,7 @@ search.addWidget(
                     links += link(data.slides_url, ICONS.slides, 'Slides');
                 }
                 if (typeof data.joindin_url !== 'undefined') {
-                    links += link(data.joindin_url, ICONS.comments, 'Fiche joind.in');
+                    links += link(data.joindin_url, ICONS.comments, 'Fiche joind.in', 'noopener nofollow');
                 }
 
                 return ''
