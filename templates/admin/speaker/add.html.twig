@@ -4,6 +4,12 @@
 
 {% block content %}
     <h2>Ajouter un conférencier pour le {{ event.title }}</h2>
+    {% if source %}
+        <div class="ui info message">
+            Fiche reprise de {{ source.firstname }} {{ source.lastname }} (conférencier n°{{ source.id }}).
+            {% if sourcePhoto %}La photo sera copiée si vous n'en envoyez pas d'autre.{% endif %}
+        </div>
+    {% endif %}
     <div class="ui segment">
         <h2 class="ui header">Conférencier</h2>
         <div class="ui clearing divider"></div>
@@ -26,6 +32,14 @@
                 {{ form_row(form.referent_person_email) }}
                 {{ form_row(form.photoFile) }}
                 {{ form_row(form.github_user) }}
+                {% if sourcePhoto %}
+                    <div class="inline fields ui grid">
+                        <div class="three wide column"></div>
+                        <div class="nine wide column">
+                            <img src="{{ asset(sourcePhoto) }}" alt="Photo reprise" style="max-width: 200px"/>
+                        </div>
+                    </div>
+                {% endif %}
                 <div class="inline fields ui grid">
                     <div class="three wide column"></div>
                     <div class="field nine wide column">

@@ -8,10 +8,12 @@ use AppBundle\Association\Genre;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
+use AppBundle\Event\Speaker\SpeakerSearchResult;
 use AppBundle\Event\Speaker\MicrophoneType;
 use AppBundle\Ting\JoinHydrator;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
+use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -118,6 +120,151 @@ class SpeakerRepository extends Repository implements MetadataInitializer
         }
 
         return $speaker->first();
+    }
+
+    /**
+     * Personne de la ligne la plus récente rattachée à ce compte GitHub.
+     */
+    public function findLatestPersonIdByGithubUser(int $githubUserId): ?int
+    {
+        $query = $this->getPreparedQuery(
+            'SELECT c.person_id
+            FROM afup_conferenciers c
+            LEFT JOIN afup_forum f ON f.id = c.id_forum
+            WHERE c.user_github = :userGithub AND c.person_id IS NOT NULL
+            ORDER BY f.date_debut DESC, c.conferencier_id DESC
+            LIMIT 1',
+        )->setParams(['userGithub' => $githubUserId]);
+
+        /** @var array{person_id: string}|null $row */
+        $row = $query->query($this->getCollection(new HydratorArray()))->first();
+
+        return $row === null ? null : (int) $row['person_id'];
+    }
+
+    public function findOneByPersonInEvent(int $personId, Event $event): ?Speaker
+    {
+        return $this->getOneBy(['personId' => $personId, 'eventId' => $event->getId()]);
+    }
+
+    /**
+     * Ligne d'une personne dans un événement, saisie sans compte GitHub (par exemple par l'admin).
+     */
+    public function findOneByPersonInEventWithoutGithubUser(int $personId, Event $event): ?Speaker
+    {
+        $query = $this->getPreparedQuery(
+            'SELECT c.* FROM afup_conferenciers c
+            WHERE c.person_id = :personId AND c.id_forum = :eventId AND c.user_github IS NULL
+            ORDER BY c.conferencier_id
+            LIMIT 1',
+        )->setParams(['personId' => $personId, 'eventId' => $event->getId()]);
+
+        $speaker = $query->query($this->getCollection(new HydratorSingleObject()))->first();
+
+        return $speaker instanceof Speaker ? $speaker : null;
+    }
+
+    /**
+     * Recherche tous événements confondus : une ligne par personne, plus une ligne par conférencier non rattaché.
+     * Chaque résultat pointe vers la ligne la plus récente.
+     *
+     * @return list<SpeakerSearchResult>
+     */
+    public function searchAcrossEvents(string $search, int $limit = 50): array
+    {
+        $search = trim($search);
+        if ($search === '') {
+            return [];
+        }
+
+        $match = "CONCAT_WS(' ', m.prenom, m.nom, m.nom, m.prenom, m.email, m.societe) COLLATE utf8mb4_unicode_ci LIKE :search";
+        $query = $this->getPreparedQuery(
+            "SELECT c.conferencier_id, c.id_forum, c.person_id, c.prenom, c.nom, c.societe, c.email, f.titre, p.slug
+            FROM afup_conferenciers c
+            LEFT JOIN afup_forum f ON f.id = c.id_forum
+            LEFT JOIN afup_speaker_person p ON p.id = c.person_id
+            WHERE c.conferencier_id IN (SELECT m.conferencier_id FROM afup_conferenciers m WHERE $match)
+            OR c.person_id IN (SELECT m.person_id FROM afup_conferenciers m WHERE m.person_id IS NOT NULL AND $match)
+            ORDER BY f.date_debut DESC, c.conferencier_id DESC",
+        )->setParams(['search' => '%' . $search . '%']);
+
+        $groups = [];
+        /** @var iterable<array{conferencier_id: string, id_forum: string, person_id: string|null, prenom: string, nom: string, societe: string|null, email: string|null, titre: string|null, slug: string|null}> $rows */
+        $rows = $query->query($this->getCollection(new HydratorArray()));
+        foreach ($rows as $row) {
+            $key = $row['person_id'] !== null ? 'p' . $row['person_id'] : 's' . $row['conferencier_id'];
+            if (!isset($groups[$key])) {
+                $groups[$key] = ['row' => $row, 'events' => []];
+            }
+            $groups[$key]['events'][(int) $row['id_forum']] = true;
+        }
+
+        $results = [];
+        foreach (array_slice($groups, 0, $limit) as $group) {
+            $row = $group['row'];
+            $results[] = new SpeakerSearchResult(
+                (int) $row['conferencier_id'],
+                $row['person_id'] !== null ? (int) $row['person_id'] : null,
+                $row['slug'],
+                $row['prenom'],
+                $row['nom'],
+                $row['societe'],
+                $row['email'],
+                $row['titre'],
+                count($group['events']),
+            );
+        }
+
+        return $results;
+    }
+
+    /**
+     * Lignes d'une personne, de la plus récente à la plus ancienne.
+     *
+     * @return list<Speaker>
+     */
+    public function findByPerson(int $personId): array
+    {
+        $query = $this->getPreparedQuery(
+            'SELECT c.* FROM afup_conferenciers c
+            LEFT JOIN afup_forum f ON f.id = c.id_forum
+            WHERE c.person_id = :personId
+            ORDER BY f.date_debut DESC, c.conferencier_id DESC',
+        )->setParams(['personId' => $personId]);
+
+        /** @var list<Speaker> $speakers */
+        $speakers = iterator_to_array($query->query($this->getCollection(new HydratorSingleObject())), false);
+
+        return $speakers;
+    }
+
+    /**
+     * Lignes non rattachées qui ressemblent à la personne : même compte GitHub ou même « prénom nom »
+     * (comparaison insensible à la casse et aux accents). Le rattachement reste une décision humaine.
+     *
+     * @return list<Speaker>
+     */
+    public function findLinkSuggestions(int $personId): array
+    {
+        $query = $this->getPreparedQuery(
+            "SELECT c.* FROM afup_conferenciers c
+            LEFT JOIN afup_forum f ON f.id = c.id_forum
+            WHERE c.person_id IS NULL
+            AND EXISTS (
+                SELECT 1 FROM afup_conferenciers p
+                WHERE p.person_id = :personId
+                AND (
+                    p.user_github = c.user_github
+                    OR CONCAT_WS(' ', TRIM(p.prenom), TRIM(p.nom)) COLLATE utf8mb4_unicode_ci = CONCAT_WS(' ', TRIM(c.prenom), TRIM(c.nom)) COLLATE utf8mb4_unicode_ci
+                )
+            )
+            ORDER BY f.date_debut DESC, c.conferencier_id DESC",
+        )->setParams(['personId' => $personId]);
+
+        /** @var list<Speaker> $speakers */
+        $speakers = iterator_to_array($query->query($this->getCollection(new HydratorSingleObject())), false);
+
+        return $speakers;
     }
 
     /**
@@ -271,6 +418,11 @@ SQL
             ->addField([
                 'columnName' => 'user_github',
                 'fieldName' => 'user',
+                'type' => 'int',
+            ])
+            ->addField([
+                'columnName' => 'person_id',
+                'fieldName' => 'personId',
                 'type' => 'int',
             ])
             ->addField([

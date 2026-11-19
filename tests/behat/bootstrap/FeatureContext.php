@@ -16,6 +16,8 @@ use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
+use Symfony\Component\Filesystem\Filesystem;
+use Behat\Step\Given;
 use Behat\Step\Then;
 use Behat\Step\When;
 
@@ -73,6 +75,15 @@ class FeatureContext implements Context
         if ($driver instanceof BrowserKitDriver) {
             $driver->getClient()->followRedirects(true);
         }
+    }
+
+    /**
+     * Les photos des conférenciers ne sont pas versionnées : ce step en dépose une, par exemple « 3/originals/4.png ».
+     */
+    #[Given('the speaker photo :file is stored as :path')]
+    public function storeSpeakerPhoto(string $file, string $path): void
+    {
+        new Filesystem()->copy(__DIR__ . '/../files/' . $file, __DIR__ . '/../../../htdocs/uploads/speakers/' . $path, true);
     }
 
     #[Then('simulate the Paybox callback')]

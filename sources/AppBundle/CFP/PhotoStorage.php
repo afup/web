@@ -40,17 +40,45 @@ final readonly class PhotoStorage
         $fileName = $speaker->getId() . '.' . $photo->guessExtension();
         $directory = $this->basePath . '/' . $speaker->getEventId() . '/' . self::DIR_ORIGINAL;
         $this->createDirectory($directory);
-        // delete all formats
-        if ($speaker->getId() !== null) {
-            foreach (array_keys(self::FORMAT) as $format) {
-                $files = glob($this->basePath . '/' . $speaker->getEventId() . '/' . $format . '/' . $speaker->getId() . '.*');
-                $this->filesystem->remove($files);
-            }
-        }
+        $this->removeAllFormats($speaker);
 
         $photo->move($directory, $fileName);
 
         return $fileName;
+    }
+
+    /**
+     * Copie la photo originale d'une ligne (autre édition) vers une ligne déjà enregistrée.
+     * Retourne le nom de fichier de la cible, ou null si la source n'a pas de photo.
+     */
+    public function copyFrom(Speaker $source, Speaker $target): ?string
+    {
+        if ($source->getPhoto() === null || $target->getId() === null) {
+            return null;
+        }
+        $sourcePath = $this->getPath($source, self::DIR_ORIGINAL);
+        if (!is_file($sourcePath)) {
+            return null;
+        }
+
+        $fileName = $target->getId() . '.' . pathinfo($sourcePath, PATHINFO_EXTENSION);
+        $directory = $this->basePath . '/' . $target->getEventId() . '/' . self::DIR_ORIGINAL;
+        $this->createDirectory($directory);
+        $this->removeAllFormats($target);
+        $this->filesystem->copy($sourcePath, $directory . '/' . $fileName, true);
+
+        return $fileName;
+    }
+
+    private function removeAllFormats(Speaker $speaker): void
+    {
+        if ($speaker->getId() === null) {
+            return;
+        }
+        foreach (array_keys(self::FORMAT) as $format) {
+            $files = glob($this->basePath . '/' . $speaker->getEventId() . '/' . $format . '/' . $speaker->getId() . '.*');
+            $this->filesystem->remove($files);
+        }
     }
 
     public function getUrl(Speaker $speaker, $format = null): ?string
