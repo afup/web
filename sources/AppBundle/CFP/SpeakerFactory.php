@@ -37,13 +37,30 @@ class SpeakerFactory
             'eventId' => $event->getId(),
         ]);
 
-        if ($speaker === null) {
-            $speaker = new Speaker();
-            $speaker
-                ->setUser($user)
-                ->setEventId($event->getId())
-            ;
+        if ($speaker !== null) {
+            return $speaker;
         }
+
+        $personId = null;
+        if (is_int($user)) {
+            $personId = $this->speakerRepository->findLatestPersonIdByGithubUser($user);
+            // La personne a peut-être déjà une ligne pour cet événement, saisie par l'admin sans compte GitHub :
+            // on la reprend plutôt que de créer un doublon.
+            $adminSpeaker = $personId !== null ? $this->speakerRepository->findOneByPersonInEventWithoutGithubUser($personId, $event) : null;
+            if ($adminSpeaker !== null) {
+                $adminSpeaker->setUser($user);
+                $this->speakerRepository->save($adminSpeaker);
+
+                return $adminSpeaker;
+            }
+        }
+
+        $speaker = new Speaker();
+        $speaker
+            ->setUser($user)
+            ->setEventId($event->getId())
+            ->setPersonId($personId)
+        ;
 
         return $speaker;
     }

@@ -7,6 +7,8 @@ use Phinx\Seed\AbstractSeed;
 class GithubUsers extends AbstractSeed
 {
     public const ID_GITHUBUSER_UBERMUDA = 1;
+    /** Conférencier d'une édition passée, sans fiche sur le forum courant (voir TestGithubAuthenticator) */
+    public const ID_GITHUBUSER_ANCIEN = 4;
 
     public function run(): void
     {
@@ -40,6 +42,16 @@ class GithubUsers extends AbstractSeed
                 'profile_url' => 'https://github.com/afup',
                 'avatar_url' => 'https://avatars.githubusercontent.com/u/1090307?v=4',
                 'afup_crew' => 1,
+            ],
+            [
+                'id' => self::ID_GITHUBUSER_ANCIEN,
+                'github_id' => 77,
+                'login' => 'ancien',
+                'name' => 'Marie Ancienne',
+                'company' => 'AFUP',
+                'profile_url' => 'https://github.com/ancien',
+                'avatar_url' => 'https://avatars.githubusercontent.com/u/77?v=4',
+                'afup_crew' => 0,
             ],
         ];
 

@@ -66,6 +66,10 @@ class TestGithubAuthenticator extends OAuth2Authenticator implements Authenticat
             'id' => 320372,
             'name' => 'agallou',
             'login' => 'agallou',
+        ], 'ancien' => [
+            'id' => 77,
+            'name' => 'Marie Ancienne',
+            'login' => 'ancien',
         ]];
     }
 

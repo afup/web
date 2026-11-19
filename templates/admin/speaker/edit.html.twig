@@ -53,6 +53,61 @@
         {{ form_end(form) }}
     </div>
 
+    <div class="ui segment" id="speaker-person">
+        <h2 class="ui header">Personne</h2>
+        <div class="ui clearing divider"></div>
+        {% if person %}
+            <p>
+                Fiche rattachée à la personne
+                <a href="{{ path('admin_speaker_person', {id: person.id}) }}">{{ person.slug }}</a>.
+            </p>
+        {% else %}
+            <p>Cette fiche n'est rattachée à aucune personne.</p>
+            <form method="post" action="{{ path('admin_speaker_person_create') }}" style="display: inline">
+                <input type="hidden" name="_token" value="{{ csrf_token('admin_speaker_person') }}">
+                <input type="hidden" name="speakerId" value="{{ speakerId }}">
+                <input type="submit" value="Créer la personne" class="ui button">
+            </form>
+            <h3 class="ui header">Rattacher à la personne…</h3>
+            <form method="GET" class="ui form">
+                <input type="hidden" name="id" value="{{ speakerId }}"/>
+                <div class="inline fields">
+                    <div class="field">
+                        <label for="speaker_person_q">Nom, prénom, email ou société</label>
+                        <input type="text" id="speaker_person_q" name="personQuery" value="{{ personSearch }}">
+                    </div>
+                    <div class="field">
+                        <input type="submit" value="Rechercher" class="ui button">
+                    </div>
+                </div>
+            </form>
+            {% if personCandidates is not empty %}
+                <table class="ui table striped compact celled">
+                    <tbody>
+                    {% for candidate in personCandidates %}
+                        <tr>
+                            <td>{{ candidate.personSlug }}</td>
+                            <td>{{ candidate.lastname }} {{ candidate.firstname }}</td>
+                            <td>{{ candidate.lastEventTitle }}</td>
+                            <td>{{ candidate.eventCount }} édition(s)</td>
+                            <td style="text-align: right">
+                                <form method="post" action="{{ path('admin_speaker_person_attach') }}" style="display: inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('admin_speaker_person') }}">
+                                    <input type="hidden" name="speakerId" value="{{ speakerId }}">
+                                    <input type="hidden" name="personId" value="{{ candidate.personId }}">
+                                    <input type="submit" value="Rattacher" class="compact ui button">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% elseif personSearch is not empty %}
+                <p>Aucune personne trouvée.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+
     <div class="ui segment">
         <h2 class="ui header">Gravatar (si besoin)</h2>
         <div class="ui clearing divider"></div>

@@ -121,3 +121,30 @@ Feature: Event pages - CFP
     When I am on "/event/afup-day-lyon/vote"
     Then I should not see "Une deuxième conf pour voter"
     Then I should see "Une conf pour voter"
+
+  @reloadDbWithTestData
+  Scenario: Une conférencière d'une édition passée retrouve son profil prérempli, avec sa photo
+    Given the speaker photo "avatar1.png" is stored as "3/originals/4.png"
+    And I am on "/event/forum/cfp"
+    When I follow "Connect as ancien"
+    And I follow "Mon profil conférencier"
+    Then the "speaker[firstname]" field should contain "Marie"
+    And the "speaker[company]" field should contain "Ancienne Société"
+    And the response should contain "/uploads/speakers/3/originals/4.png"
+    When I press "Sauvegarder"
+    Then I should see "Profil sauvegardé."
+    And the response should contain "/uploads/speakers/1/originals/"
+
+  @reloadDbWithTestData
+  Scenario: Le CFP reprend la fiche créée par l'admin pour la même personne, sans doublon
+    Given I am logged in as admin and on the Administration
+    And I am on "/admin/speaker/add?eventId=1&from=4"
+    When I select "" from "speaker[github_user]"
+    And I press "Sauvegarder"
+    Then I should see "Le conférencier a été ajouté"
+    When I am on "/event/forum/cfp"
+    And I follow "Connect as ancien"
+    Then I should see "Mon espace conférencier"
+    And I should not see "Vous n'avez pas encore rempli votre profil conférencier."
+    When I am on "/admin/speaker/person?id=4"
+    Then I should see 2 "#person-speakers tbody tr" elements
