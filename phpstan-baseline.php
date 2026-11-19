@@ -1424,18 +1424,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/BadgesComputer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method diff\\(\\) on DateTime\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/SeniorityComputer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/UserMembership/SeniorityComputer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Association\\\\UserMembership\\\\UserReminderFactory\\:\\:getReminder\\(\\) has parameter \\$class with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
 	'count' => 1,

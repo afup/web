@@ -9,10 +9,14 @@ use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\User;
 use AppBundle\MembershipFee\Entity\Cotisation;
 use AppBundle\MembershipFee\Entity\Repository\CotisationRepository;
+use Psr\Clock\ClockInterface;
 
-class SeniorityComputer
+final readonly class SeniorityComputer
 {
-    public function __construct(private readonly CotisationRepository $membershipFeeRepository) {}
+    public function __construct(
+        private CotisationRepository $membershipFeeRepository,
+        private ClockInterface $clock,
+    ) {}
 
     /** @return array{years: int, first_year: int|null} */
     public function computeCompanyAndReturnInfos(CompanyMember $companyMember): array
@@ -43,35 +47,26 @@ class SeniorityComputer
      */
     private function computeFromCotisationsAndReturnInfos(array $cotisations): array
     {
-        $now = new \DateTime();
-        $diffs = [];
+        $now = $this->clock->now();
+        $membershipYears = [];
+        $startYears = [];
 
-        $years = [];
-        foreach ($cotisations as $coti) {
-            $from = $coti->dateDebut;
-            $to = $coti->dateFin;
-            $to = min($now, $to);
-            $diffs[] = $from->diff($to);
-            $years[] = $from->format('Y');
-        }
+        foreach ($cotisations as $cotisation) {
+            // Une cotisation correspond toujours à une année d'adhésion, comptée dès son premier jour.
+            // On ne compte pas la durée d'une ligne de cotisation, pour éviter de compter les périodes de pause.
+            // Une cotisation enregistrée plusieurs fois (même date de fin) ne compte qu'une fois.
+            if ($cotisation->dateDebut !== null && $cotisation->dateFin !== null && $cotisation->dateDebut <= $now) {
+                $membershipYears[$cotisation->dateFin->format('Y-m-d')] = true;
+            }
 
-        $reference = new \DateTimeImmutable();
-        $lastest = clone $reference;
-        foreach ($diffs as $dif) {
-            $lastest = $lastest->add($dif);
-        }
-
-        $totalDiffs = $reference->diff($lastest);
-
-        $firstYear = null;
-
-        if ($years !== []) {
-            $firstYear = (int) min($years);
+            if ($cotisation->dateDebut !== null) {
+                $startYears[] = (int) $cotisation->dateDebut->format('Y');
+            }
         }
 
         return [
-            'years' => $totalDiffs->y,
-            'first_year' => $firstYear,
+            'years' => count($membershipYears),
+            'first_year' => $startYears === [] ? null : min($startYears),
         ];
     }
 }
