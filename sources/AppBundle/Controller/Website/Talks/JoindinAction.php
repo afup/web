@@ -8,6 +8,7 @@ use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Joindin\JoindinTalk;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 final class JoindinAction extends AbstractController
 {
@@ -20,8 +21,12 @@ final class JoindinAction extends AbstractController
     {
         $talk = $this->talkRepository->get($id);
 
-        if (null === $talk || $talk->getSlug() != $slug || !$talk->isDisplayedOnHistory()) {
+        if (null === $talk || !$talk->isDisplayedOnHistory()) {
             throw $this->createNotFoundException();
+        }
+
+        if ($talk->getSlug() !== $slug) {
+            return $this->redirectToRoute('talks_joindin', ['id' => $id, 'slug' => $talk->getSlug()], Response::HTTP_MOVED_PERMANENTLY);
         }
 
         $stub = $this->joindinTalk->getStubFromTalk($talk);
