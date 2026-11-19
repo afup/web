@@ -6,6 +6,7 @@ namespace AppBundle\Controller\Website\Talks;
 
 use AppBundle\Antennes\AntenneRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Talk\EventTalksSummary;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +18,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class ListAction extends AbstractController
 {
+    public const int LATEST_TALKS_COUNT = 12;
+
+    /**
+     * Paramètres de l'état de recherche qu'instantsearch (urlSync) écrit dans l'URL : requête et filtres.
+     */
+    private const array SEARCH_PARAMETERS = ['q', 'fR', 'dFR', 'hFR', 'nR', 'tR', 'fE'];
+
     public function __construct(
         private readonly ViewRenderer $view,
         #[Autowire(env: 'ALGOLIA_APP_ID')]
@@ -51,8 +59,15 @@ final class ListAction extends AbstractController
             ], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
+        // Le hub (dernières vidéos, éditions, speakers) ne s'affiche que hors recherche : sur une URL de recherche,
+        // il repousserait les résultats sous la ligne de flottaison, et ces URLs ne sont pas destinées à être indexées.
+        $showHub = !$this->isSearch($request);
+
         return $this->view->render('site/talks/list.html.twig', [
             'title' => $title,
+            'show_hub' => $showHub,
+            'latest_talks' => $showHub ? $this->talkRepository->getLatestPublishedTalksWithVideo(self::LATEST_TALKS_COUNT) : [],
+            'summaries_by_year' => $showHub ? EventTalksSummary::groupByYear($this->talkRepository->getEventTalksSummaries()) : [],
             'canonical' => $canonical,
             'antennes' => $this->antennesRepository->getAllSortedByLabels(),
             'algolia_app_id' => $this->algoliaAppId,
@@ -97,6 +112,23 @@ final class ListAction extends AbstractController
         }
 
         return null;
+    }
+
+    /**
+     * L'URL porte un état de recherche : une requête, un filtre ou une page de résultats autre que la première.
+     */
+    private function isSearch(Request $request): bool
+    {
+        $query = $request->query->all();
+        foreach (self::SEARCH_PARAMETERS as $parameter) {
+            if (!in_array($query[$parameter] ?? null, [null, '', []], true)) {
+                return true;
+            }
+        }
+
+        $page = $query['p'] ?? 0;
+
+        return is_numeric($page) && (int) $page > 0;
     }
 
     /**

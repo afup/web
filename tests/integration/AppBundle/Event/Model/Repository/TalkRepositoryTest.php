@@ -88,6 +88,34 @@ final class TalkRepositoryTest extends IntegrationTestCase
         );
     }
 
+    public function testGetLatestPublishedTalksWithVideoSortsBySlotEnd(): void
+    {
+        // Le créneau du talk 301 se termine après celui du talk 300, qui a un identifiant plus petit.
+        $this->insertTalk(301, 3, 'Forum 2018, fin de journée', strtotime('2018-10-25 17:00:00'), youtubeId: 'video301');
+        $this->insertTalk(110, 1, 'Vidéo, créneau en cours', time() - 600, youtubeId: 'video110', slotEnd: time() + 600);
+        $this->insertTalk(111, 1, 'Vidéo, non planifié', strtotime('2019-10-24 11:00:00'), youtubeId: 'video111', scheduled: false);
+        $repository = self::getContainer()->get(TalkRepository::class);
+        $toRows = static fn(array $latest): array => array_map(static fn(array $row): array => [
+            $row['talk']->getId(),
+            $row['talk']->getTitle(),
+            $row['talk']->getYoutubeId(),
+            $row['event']->getPath(),
+        ], $latest);
+
+        // Exclus : sans vidéo ou vidéo vide (101, 103, 200), clinique (104), publication à venir (107), créneau en
+        // cours (110), non planifié (111).
+        self::assertSame(
+            [
+                [100, 'Clôture', 'video100', 'forumphp2019'],
+                [102, 'Salle 2', 'video102', 'forumphp2019'],
+                [301, 'Forum 2018, fin de journée', 'video301', 'forumphp2018'],
+                [300, 'Forum 2018', 'video300', 'forumphp2018'],
+            ],
+            $toRows($repository->getLatestPublishedTalksWithVideo(12)),
+        );
+        self::assertSame([100, 102], array_column($toRows($repository->getLatestPublishedTalksWithVideo(2)), 0));
+    }
+
     private function getEvent(string $path): Event
     {
         $event = self::getContainer()->get(EventRepository::class)->getByPath($path);

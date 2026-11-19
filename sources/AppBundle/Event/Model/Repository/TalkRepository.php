@@ -485,6 +485,34 @@ SQL;
     }
 
     /**
+     * Les derniers talks publiés qui ont une vidéo, avec leur édition, du créneau terminé le plus récent au plus
+     * ancien, en une seule requête.
+     *
+     * @return list<array{talk: Talk, event: Event}>
+     */
+    public function getLatestPublishedTalksWithVideo(int $limit): array
+    {
+        $query = $this->getQuery(
+            "SELECT talk.session_id, talk.titre, talk.youtube_id, event.id, event.titre, event.path
+            FROM afup_sessions talk
+            " . self::PUBLISHED_TALK_PLANNING_JOIN . '
+            INNER JOIN afup_forum event ON event.id = talk.id_forum
+            WHERE ' . self::PUBLISHED_TALK_CONDITIONS . "
+            AND talk.youtube_id IS NOT NULL AND talk.youtube_id <> ''
+            ORDER BY planning.fin DESC, talk.session_id DESC
+            LIMIT " . max(0, $limit),
+        );
+
+        $latest = [];
+        /** @var array{talk: Talk, event: Event} $row */
+        foreach ($query->query($this->getCollection(new Hydrator())) as $row) {
+            $latest[] = ['talk' => $row['talk'], 'event' => $row['event']];
+        }
+
+        return $latest;
+    }
+
+    /**
      * @param array<int> $talkIds
      * @return CollectionInterface<Talk>
      */
