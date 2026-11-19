@@ -46,3 +46,11 @@
         @apply no-underline!;
     }
 }
+
+@layer utilities {
+    /* Suppression du " ` " autour des blocs de code inline ajoutés par le plugin typography */
+    .prose code::before,
+    .prose code::after {
+        content: none;
+    }
+}
