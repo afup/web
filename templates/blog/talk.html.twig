@@ -48,7 +48,11 @@
         <tr>
             <td width="20%" style="vertical-align: top">
                 <img src="{{ app.request.getSchemeAndHttpHost() }}{{ photo_storage.getUrl(speaker) }}" alt="{{ speaker.label }}"><br />
-                <a href="">{{ speaker.label }}</a>
+                {% if speaker_slugs[speaker.id] is defined %}
+                    <a href="{{ url('talks_speaker', {slug: speaker_slugs[speaker.id]}) }}">{{ speaker.label }}</a>
+                {% else %}
+                    {{ speaker.label }}
+                {% endif %}
             </td>
             <td width="80%" style="text-align: left;padding: 10px;vertical-align: top">
                 {{ speaker.biography }}
