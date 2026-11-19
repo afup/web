@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\Talks;
 
 use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,13 +25,14 @@ final class ListAction extends AbstractController
         private readonly string $algoliaFrontendApikey,
         private readonly AntenneRepository $antennesRepository,
         private readonly SpeakerProfileResolver $speakerProfileResolver,
+        private readonly TalkRepository $talkRepository,
     ) {}
 
     public function __invoke(Request $request): Response
     {
-        $speakerRedirect = $this->redirectSpeakerFacet($request);
-        if (null !== $speakerRedirect) {
-            return $speakerRedirect;
+        $facetRedirect = $this->redirectSpeakerFacet($request) ?? $this->redirectEventFacet($request);
+        if (null !== $facetRedirect) {
+            return $facetRedirect;
         }
 
         $title = 'Historique des conférences de l\'AFUP';
@@ -64,10 +66,8 @@ final class ListAction extends AbstractController
      */
     private function redirectSpeakerFacet(Request $request): ?RedirectResponse
     {
-        $labels = $request->query->all('fR')['speakers.label'] ?? null;
-        $label = is_array($labels) ? $labels[0] ?? null : null;
-
-        if (!is_string($label) || $request->query->all() !== ['fR' => ['speakers.label' => [$label]]]) {
+        $label = $this->getSingleFacet($request, 'speakers.label');
+        if (null === $label) {
             return null;
         }
 
@@ -77,5 +77,40 @@ final class ListAction extends AbstractController
         }
 
         return $this->redirectToRoute('talks_speaker', ['slug' => $identity->slug], Response::HTTP_MOVED_PERMANENTLY);
+    }
+
+    /**
+     * L'ancienne URL d'une édition, `/talks/?fR[event.title][0]=…` sans aucun autre paramètre,
+     * redirige vers sa page si elle a des talks publiés. Une facette combinée à d'autres filtres reste une recherche.
+     */
+    private function redirectEventFacet(Request $request): ?RedirectResponse
+    {
+        $title = $this->getSingleFacet($request, 'event.title');
+        if (null === $title) {
+            return null;
+        }
+
+        foreach ($this->talkRepository->getEventTalksSummaries() as $summary) {
+            if ($summary->event->getTitle() === $title) {
+                return $this->redirectToRoute('talks_event', ['path' => $summary->event->getPath()], Response::HTTP_MOVED_PERMANENTLY);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * La valeur de la facette quand la requête n'a aucun autre paramètre que `fR[$facet][0]`.
+     */
+    private function getSingleFacet(Request $request, string $facet): ?string
+    {
+        $values = $request->query->all('fR')[$facet] ?? null;
+        $value = is_array($values) ? $values[0] ?? null : null;
+
+        if (!is_string($value) || $request->query->all() !== ['fR' => [$facet => [$value]]]) {
+            return null;
+        }
+
+        return $value;
     }
 }

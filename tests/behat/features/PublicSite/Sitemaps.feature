@@ -16,7 +16,10 @@ Feature: Site Public - Sitemaps
     And the response should contain "<loc>https://apachephptest:80/talks/speakers/geoffrey-bachelet</loc>"
     And the response should contain "<loc>https://apachephptest:80/talks/speakers/</loc>"
     And the response should not contain "fR%5Bspeakers"
-    And the response should contain "<loc>https://apachephptest:80/talks/?fR%5Bevent.title%5D%5B0%5D=forum</loc>"
+    And the response should contain "<loc>https://apachephptest:80/talks/evenements/forum</loc>"
+    And the response should contain "<loc>https://apachephptest:80/talks/evenements/passed</loc>"
+    And the response should contain "<loc>https://apachephptest:80/talks/evenements/</loc>"
+    And the response should not contain "fR%5Bevent"
     And the response should contain "<loc>https://apachephptest:80/talks/</loc>"
 
   @reloadDbWithTestData
