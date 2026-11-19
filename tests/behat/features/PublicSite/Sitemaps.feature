@@ -37,3 +37,11 @@ Feature: Site Public - Sitemaps
     Given I am on "/sitemap.default.xml"
     And the response should contain "<loc>https://apachephptest:80/</loc>"
     And the response should not contain "<loc>https://apachephptest:80/home</loc>"
+
+  @reloadDbWithTestData
+  Scenario: Le plan du site ne lie que des talks publiés
+    Given I am on "/plan-du-site"
+    Then the response status code should be 200
+    And the response should contain "/talks/1-jouons-tous-ensemble-a-un-petit-jeu"
+    And the response should not contain "/talks/4-une-conf-pour-voter"
+    And every link matching "#^/talks/\d+-[^/]+$#" should respond with status 200

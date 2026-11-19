@@ -13,7 +13,6 @@ use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Speaker;
-use AppBundle\Event\Model\Talk;
 use AppBundle\Site\Entity\Repository\FeuilleRepository;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
@@ -55,14 +54,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
 
     public function registerTalksUrls(UrlContainerInterface $urls): void
     {
-        /** @var Talk[] $talks */
-        $talks = $this->talkRepository->getAllPastTalks(new \DateTime());
-
-        foreach ($talks as $talk) {
-            if (!$talk->isDisplayedOnHistory()) {
-                continue;
-            }
-
+        foreach ($this->talkRepository->getPublishedTalks(new \DateTimeImmutable()) as $talk) {
             $url = new UrlConcrete(
                 $this->urlGenerator->generate(
                     'talks_show',
