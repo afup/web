@@ -12,6 +12,10 @@
             Ajouter
         </div>
     </a>
+    <a href="{{ path('admin_speaker_pick', {eventId: eventId}) }}" class="item">
+        <i class="icon redo"></i>
+        Reprendre un conférencier
+    </a>
     <a href="{{ path('admin_speaker_register', {id: eventId}) }}" class="item">
         Créer les insciptions conférencier pour le forum
     </a>

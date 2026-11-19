@@ -25,3 +25,31 @@ admin_speaker_link_gravatar:
 admin_speaker_register:
   path: /register
   defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerRegisterAction}
+
+admin_speaker_pick:
+  path: /pick
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerPickAction}
+
+admin_speaker_person:
+  path: /person
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerPersonAction}
+
+admin_speaker_person_create:
+  path: /person/create
+  methods: [POST]
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerPersonCreateAction}
+
+admin_speaker_person_attach:
+  path: /person/attach
+  methods: [POST]
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerPersonAttachAction}
+
+admin_speaker_person_detach:
+  path: /person/detach
+  methods: [POST]
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerPersonDetachAction}
+
+admin_speaker_person_merge:
+  path: /person/merge
+  methods: [POST]
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerPersonMergeAction}
