@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle;
 
 use AppBundle\DependencyInjection\ControllersWithEventSelectorPass;
+use AppBundle\Doctrine\Type\UnixTimestampType;
 use AppBundle\DependencyInjection\TingRepositoryPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -13,6 +14,14 @@ use Symfony\Component\HttpKernel\Kernel;
 class AppKernel extends Kernel
 {
     use MicroKernelTrait;
+
+    #[\Override]
+    public function boot(): void
+    {
+        date_default_timezone_set(UnixTimestampType::TIMEZONE);
+
+        parent::boot();
+    }
 
     #[\Override]
     public function getProjectDir(): string
