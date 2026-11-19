@@ -3,9 +3,6 @@
 {% block content %}
     <h2>Veille de l'AFUP du {{ envoi.dateEnvoi|date("d/m/Y") }}</h2>
 
-    <link rel="stylesheet" href="{{ asset('assets/techletter/notyf.min.css') }}"/>
-    <script src="{{ asset('assets/techletter/notyf.min.js') }}"></script>
-
     <div class="ui menu asd borderless">
         <div class="right menu">
             <div class="item">
@@ -88,6 +85,6 @@
             w.techletter = {{ tech_letter|json_encode|raw }};
         })(window);
     </script>
-    <script src="{{ asset('js_dist/techletter.js') }}"></script>
+    {{ importmap('techletter') }}
 
 {% endblock %}

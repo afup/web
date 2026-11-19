@@ -8,8 +8,7 @@ const path = require('path');
 const adminConfig = {
   context: __dirname,
   entry: {
-    "admin": './sources/admin.js',
-    "techletter": './htdocs/js/techletter/techletter.js'
+    "admin": './sources/admin.js'
   },
   output: {
     path: path.resolve(__dirname, 'htdocs/js_dist'),
@@ -21,7 +20,6 @@ const adminConfig = {
     ]),
     new CopyWebpackPlugin([
       { from: path.resolve(__dirname, 'node_modules/tablefilter/dist') },
-      { from: path.resolve(__dirname, 'node_modules/notyf/dist/'), to: path.resolve(__dirname, 'htdocs/assets/techletter/') },
       { from: path.resolve(__dirname, 'node_modules/qr-scanner/qr-scanner.min.js'), to: path.resolve(__dirname, 'htdocs/assets/qr-scanner/qr-scanner.min.js') },
       { from: path.resolve(__dirname, 'node_modules/qr-scanner/qr-scanner-worker.min.js'), to: path.resolve(__dirname, 'htdocs/assets/qr-scanner/qr-scanner-worker.min.js') },
       { from: path.resolve(__dirname, 'node_modules/tarteaucitronjs/tarteaucitron.js'), to: path.resolve(__dirname, 'htdocs/assets/tarteaucitron/tarteaucitron.js') },

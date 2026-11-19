@@ -1,16 +1,12 @@
-import { LinkEditor } from './linkEditor';
-import { IframeOverlay, LoadingOverlay } from './iframeOverlay';
+import { LinkEditor } from './linkEditor.js';
+import { IframeOverlay, LoadingOverlay } from './iframeOverlay.js';
+import { notifySuccess, notifyError } from './notify.js';
 
 (function(w, d) {
 	'use strict';
 	let iframeOverlay, iframePlusOverlay;
 
 	let form = d.querySelector('#form-update');
-	/**
-	 * @todo should not be global, we should use events
-	 * @type {Notyf}
-	 */
-	w.notyf = new Notyf();
 
 	let linkEditor = new LinkEditor(document.querySelector('#link-editor'));
 	let loadingOverlay = new LoadingOverlay(d.getElementById('preview-techletter'));
@@ -119,11 +115,11 @@ import { IframeOverlay, LoadingOverlay } from './iframeOverlay';
 			linkEditor
 				.updateLink(reference)
 				.then(newdata => {
-					notyf.confirm('Mise à jour en cours');
+					notifySuccess('Mise à jour en cours');
 					updatePreview();
 				})
 				.catch(reason => {
-					notyf.alert('Erreur lors de la mise à jour des données : ' + reason);
+					notifyError('Erreur lors de la mise à jour des données : ' + reason);
 					console.log('error in promise', reason);
 				});
 			;
@@ -132,11 +128,11 @@ import { IframeOverlay, LoadingOverlay } from './iframeOverlay';
 			linkEditor
 				.addLink(reference)
 				.then(newdata => {
-					notyf.confirm('Mise à jour en cours');
+					notifySuccess('Mise à jour en cours');
 					updatePreview();
 				})
 				.catch(reason => {
-					notyf.alert('Erreur lors de la mise à jour des données : ' + reason);
+					notifyError('Erreur lors de la mise à jour des données : ' + reason);
 					console.log('error in promise', reason);
 				})
 			;

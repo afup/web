@@ -1,5 +1,7 @@
 'use strict';
 
+import { notifySuccess, notifyError } from './notify.js';
+
 let getModelForType = (type) => {
 	let model = editableElements.find(item => {
 		return item.type === type;
@@ -292,12 +294,12 @@ LinkEditor.prototype = {
 					}
 				});
 				// @todo move to an event
-				notyf.confirm('Mise à jour du lien effectuée');
+				notifySuccess('Mise à jour du lien effectuée');
 				this.unlock();
 			})
 			.catch(error => {
 				// @todo move to an event
-				notyf.alert('Erreur lors de la mise à jour: ' + error);
+				notifyError('Erreur lors de la mise à jour: ' + error);
 				this.unlock();
 			})
 		;
