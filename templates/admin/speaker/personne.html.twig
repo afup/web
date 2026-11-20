@@ -1,8 +1,8 @@
 {% extends 'admin/base_with_header.html.twig' %}
 
-{% set token = csrf_token('admin_speaker_person') %}
+{% set token = csrf_token('admin_speaker_personne') %}
 
-{% macro speaker_row(speaker, eventTitles, action, label, personId, token) %}
+{% macro speaker_row(speaker, eventTitles, action, label, personneId, token) %}
     <tr>
         <td>{{ eventTitles[speaker.eventId] ?? speaker.eventId }}</td>
         <td>
@@ -14,7 +14,7 @@
             <form method="post" action="{{ path(action) }}" style="display: inline">
                 <input type="hidden" name="_token" value="{{ token }}">
                 <input type="hidden" name="speakerId" value="{{ speaker.id }}">
-                <input type="hidden" name="personId" value="{{ personId }}">
+                <input type="hidden" name="personneId" value="{{ personneId }}">
                 <input type="submit" value="{{ label }}" class="compact ui button">
             </form>
         </td>
@@ -22,18 +22,18 @@
 {% endmacro %}
 
 {% block content %}
-    <h2>Personne {{ person.slug }}</h2>
+    <h2>Personne {{ personne.slug }}</h2>
 
     <div class="ui segment">
         <h3 class="ui header">Fiches conférencier rattachées</h3>
         {% if speakers is not empty %}
-            <table class="ui table striped compact celled" id="person-speakers">
+            <table class="ui table striped compact celled" id="personne-speakers">
                 <thead>
                 <tr><th>Édition</th><th>Nom Prénom</th><th>Email</th><th>Compte GitHub</th><th>&nbsp;</th></tr>
                 </thead>
                 <tbody>
                 {% for speaker in speakers %}
-                    {{ _self.speaker_row(speaker, eventTitles, 'admin_speaker_person_detach', 'Détacher', person.id, token) }}
+                    {{ _self.speaker_row(speaker, eventTitles, 'admin_speaker_personne_detach', 'Détacher', personne.id, token) }}
                 {% endfor %}
                 </tbody>
             </table>
@@ -46,13 +46,13 @@
         <h3 class="ui header">Suggestions</h3>
         <p>Fiches non rattachées avec le même compte GitHub ou le même nom.</p>
         {% if suggestions is not empty %}
-            <table class="ui table striped compact celled" id="person-suggestions">
+            <table class="ui table striped compact celled" id="personne-suggestions">
                 <thead>
                 <tr><th>Édition</th><th>Nom Prénom</th><th>Email</th><th>Compte GitHub</th><th>&nbsp;</th></tr>
                 </thead>
                 <tbody>
                 {% for speaker in suggestions %}
-                    {{ _self.speaker_row(speaker, eventTitles, 'admin_speaker_person_attach', 'Rattacher', person.id, token) }}
+                    {{ _self.speaker_row(speaker, eventTitles, 'admin_speaker_personne_attach', 'Rattacher', personne.id, token) }}
                 {% endfor %}
                 </tbody>
             </table>
@@ -63,13 +63,13 @@
 
     <div class="ui segment">
         <h3 class="ui header">Fusionner avec la personne…</h3>
-        <p>Les fiches de la personne choisie rejoignent {{ person.slug }}, puis elle est supprimée.</p>
+        <p>Les fiches de la personne choisie rejoignent {{ personne.slug }}, puis elle est supprimée.</p>
         <form method="GET" class="ui form">
-            <input type="hidden" name="id" value="{{ person.id }}"/>
+            <input type="hidden" name="id" value="{{ personne.id }}"/>
             <div class="inline fields">
                 <div class="field">
-                    <label for="person_merge_q">Nom, prénom, email ou société</label>
-                    <input type="text" id="person_merge_q" name="q" value="{{ search }}">
+                    <label for="personne_merge_q">Nom, prénom, email ou société</label>
+                    <input type="text" id="personne_merge_q" name="q" value="{{ search }}">
                 </div>
                 <div class="field">
                     <input type="submit" value="Rechercher" class="ui button">
@@ -77,21 +77,21 @@
             </div>
         </form>
         {% if mergeCandidates is not empty %}
-            <table class="ui table striped compact celled" id="person-merge">
+            <table class="ui table striped compact celled" id="personne-merge">
                 <tbody>
                 {% for candidate in mergeCandidates %}
                     <tr>
-                        <td>{{ candidate.personSlug }}</td>
+                        <td>{{ candidate.personneSlug }}</td>
                         <td>{{ candidate.lastname }} {{ candidate.firstname }}</td>
                         <td>{{ candidate.lastEventTitle }}</td>
                         <td>{{ candidate.eventCount }} édition(s)</td>
                         <td style="text-align: right">
-                            <form method="post" action="{{ path('admin_speaker_person_merge') }}" style="display: inline">
+                            <form method="post" action="{{ path('admin_speaker_personne_merge') }}" style="display: inline">
                                 <input type="hidden" name="_token" value="{{ token }}">
-                                <input type="hidden" name="id" value="{{ person.id }}">
-                                <input type="hidden" name="sourceId" value="{{ candidate.personId }}">
+                                <input type="hidden" name="id" value="{{ personne.id }}">
+                                <input type="hidden" name="sourceId" value="{{ candidate.personneId }}">
                                 <input type="submit" value="Fusionner" class="compact ui red button confirmable"
-                                       data-confirmable-label="Fusionner {{ candidate.personSlug }} dans {{ person.slug }} ?">
+                                       data-confirmable-label="Fusionner {{ candidate.personneSlug }} dans {{ personne.slug }} ?">
                             </form>
                         </td>
                     </tr>

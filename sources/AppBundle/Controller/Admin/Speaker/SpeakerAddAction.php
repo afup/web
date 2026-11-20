@@ -12,7 +12,7 @@ use AppBundle\Event\Form\SpeakerType;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;
-use AppBundle\Event\Speaker\SpeakerPersonLinker;
+use AppBundle\Event\Speaker\PersonneConferencierLinker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +27,7 @@ class SpeakerAddAction extends AbstractController
         private readonly SpeakerRepository $speakerRepository,
         private readonly PhotoStorage $photoStorage,
         private readonly SpeakerFormDataFactory $speakerFormDataFactory,
-        private readonly SpeakerPersonLinker $speakerPersonLinker,
+        private readonly PersonneConferencierLinker $personneConferencierLinker,
         private readonly Audit $audit,
     ) {}
 
@@ -40,8 +40,8 @@ class SpeakerAddAction extends AbstractController
         $source = $request->query->has('from') ? $this->speakerRepository->get($request->query->getInt('from')) : null;
         $sourcePhoto = null;
         if ($source instanceof Speaker) {
-            $personId = $this->speakerPersonLinker->findPersonId($source);
-            $existing = $personId !== null ? $this->speakerPersonLinker->findRowInEvent($personId, $event) : null;
+            $personneId = $this->personneConferencierLinker->findPersonneId($source);
+            $existing = $personneId !== null ? $this->personneConferencierLinker->findRowInEvent($personneId, $event) : null;
             if ($existing instanceof Speaker) {
                 $this->addFlash('notice', 'Ce conférencier existe déjà pour cet événement');
 
@@ -80,13 +80,13 @@ class SpeakerAddAction extends AbstractController
             $speaker->setReferentPersonEmail($data->referentPersonEmail);
             if ($source instanceof Speaker) {
                 // La source rejoint la même personne que la nouvelle ligne.
-                if ($source->getPersonId() === null) {
-                    $this->speakerPersonLinker->ensurePerson($source);
+                if ($source->getPersonneId() === null) {
+                    $this->personneConferencierLinker->ensurePersonne($source);
                     $this->speakerRepository->save($source);
                 }
-                $speaker->setPersonId($source->getPersonId());
+                $speaker->setPersonneId($source->getPersonneId());
             } else {
-                $this->speakerPersonLinker->ensurePerson($speaker);
+                $this->personneConferencierLinker->ensurePersonne($speaker);
             }
             $this->speakerRepository->save($speaker);
             if (null !== $data->photoFile) {

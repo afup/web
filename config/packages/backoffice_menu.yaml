@@ -226,7 +226,7 @@ parameters:
                         - admin_speaker_add
                         - admin_speaker_edit
                         - admin_speaker_pick
-                        - admin_speaker_person
+                        - admin_speaker_personne
                 admin_event_speakers_management:
                     nom: 'Infos speakers'
                     niveau: 'ROLE_EVENT_READER'

@@ -6,21 +6,19 @@ namespace AppBundle\Controller\Admin\Speaker;
 
 use AppBundle\AuditLog\Audit;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
-use AppBundle\Event\Speaker\SpeakerPersonLinker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
- * Crée la personne d'une ligne conférencier qui n'est rattachée à rien.
+ * Détache une ligne conférencier de sa personne. La personne est conservée, même vide.
  */
 #[IsGranted('ROLE_EVENT_WRITER')]
-final class SpeakerPersonCreateAction extends AbstractController
+final class PersonneConferencierDetachAction extends AbstractController
 {
     public function __construct(
         private readonly SpeakerRepository $speakerRepository,
-        private readonly SpeakerPersonLinker $speakerPersonLinker,
         private readonly Audit $audit,
     ) {}
 
@@ -30,21 +28,21 @@ final class SpeakerPersonCreateAction extends AbstractController
         if ($speaker === null) {
             throw $this->createNotFoundException('Speaker non trouvé');
         }
-        if (!$this->isCsrfTokenValid('admin_speaker_person', $request->request->getString('_token'))) {
-            $this->addFlash('error', 'Token invalide');
-
+        $personneId = $speaker->getPersonneId();
+        if ($personneId === null) {
             return $this->redirectToRoute('admin_speaker_edit', ['id' => $speaker->getId()]);
         }
-        if ($speaker->getPersonId() !== null) {
-            return $this->redirectToRoute('admin_speaker_person', ['id' => $speaker->getPersonId()]);
+        if (!$this->isCsrfTokenValid('admin_speaker_personne', $request->request->getString('_token'))) {
+            $this->addFlash('error', 'Token invalide');
+
+            return $this->redirectToRoute('admin_speaker_personne', ['id' => $personneId]);
         }
 
-        $person = $this->speakerPersonLinker->createPerson($speaker->getFirstname() . ' ' . $speaker->getLastname());
-        $speaker->setPersonId($person->id);
+        $speaker->setPersonneId(null);
         $this->speakerRepository->save($speaker);
-        $this->audit->log('Création de la personne ' . $person->slug . ' pour le conférencier ' . $speaker->getId());
-        $this->addFlash('notice', 'La personne a été créée');
+        $this->audit->log('Détachement du conférencier ' . $speaker->getId() . ' de la personne ' . $personneId);
+        $this->addFlash('notice', 'Le conférencier a été détaché de la personne');
 
-        return $this->redirectToRoute('admin_speaker_person', ['id' => $person->id]);
+        return $this->redirectToRoute('admin_speaker_personne', ['id' => $personneId]);
     }
 }

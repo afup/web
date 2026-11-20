@@ -74,7 +74,7 @@ Feature: Administration - Partie Speakers
     And the ".content table" element should contain "Ancienne Marie"
     # même personne, champs et photo repris
     When I follow the button of tooltip "Modifier la fiche de Ancienne Marie"
-    Then the "#speaker-person" element should contain "marie-ancienne"
+    Then the "#speaker-personne" element should contain "marie-ancienne"
     And the "speaker[locality]" field should contain "Lyon"
     And the "speaker[referent_person_email]" field should contain "referente@example.com"
     And I should see "Voir la photo originale"
@@ -89,19 +89,19 @@ Feature: Administration - Partie Speakers
     Given I am logged in as admin and on the Administration
     And I follow "Speakers"
     When I follow the button of tooltip "Modifier la fiche de Bachelet Geoffrey"
-    Then the "#speaker-person" element should contain "geoffrey-bachelet"
+    Then the "#speaker-personne" element should contain "geoffrey-bachelet"
     When I follow "geoffrey-bachelet"
     Then I should see "Personne geoffrey-bachelet"
-    And the "#person-suggestions" element should contain "geoffrey@example.com"
+    And the "#personne-suggestions" element should contain "geoffrey@example.com"
     # rattacher la fiche homonyme d'une édition passée
     When I press "Rattacher" in the row of "geoffrey@example.com"
     Then I should see "Le conférencier a été rattaché à la personne"
-    And the "#person-speakers" element should contain "geoffrey@example.com"
+    And the "#personne-speakers" element should contain "geoffrey@example.com"
     And I should see "Aucune suggestion."
     # la détacher
     When I press "Détacher" in the row of "geoffrey@example.com"
     Then I should see "Le conférencier a été détaché de la personne"
-    And the "#person-suggestions" element should contain "geoffrey@example.com"
+    And the "#personne-suggestions" element should contain "geoffrey@example.com"
     # lui créer sa propre personne depuis sa fiche, puis fusionner les deux personnes
     When I am on "/admin/speaker/edit?id=5"
     Then I should see "Cette fiche n'est rattachée à aucune personne."
@@ -112,5 +112,5 @@ Feature: Administration - Partie Speakers
     And I press "Rechercher"
     And I press "Fusionner" in the row of "geoffrey-bachelet"
     Then I should see "La personne geoffrey-bachelet a été fusionnée dans geoffrey-bachelet-2"
-    And I should see 2 "#person-speakers tbody tr" elements
-    And the "#person-speakers" element should contain "foo@bar.baz"
+    And I should see 2 "#personne-speakers tbody tr" elements
+    And the "#personne-speakers" element should contain "foo@bar.baz"

@@ -146,5 +146,5 @@ Feature: Event pages - CFP
     And I follow "Connect as ancien"
     Then I should see "Mon espace conférencier"
     And I should not see "Vous n'avez pas encore rempli votre profil conférencier."
-    When I am on "/admin/speaker/person?id=4"
-    Then I should see 2 "#person-speakers tbody tr" elements
+    When I am on "/admin/speaker/personne?id=4"
+    Then I should see 2 "#personne-speakers tbody tr" elements

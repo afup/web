@@ -34,8 +34,8 @@
                         <tr>
                             <td>
                                 <strong>{{ result.lastname }} {{ result.firstname }}</strong>
-                                {% if result.personSlug %}
-                                    <a href="{{ path('admin_speaker_person', {id: result.personId}) }}" class="ui tiny label">{{ result.personSlug }}</a>
+                                {% if result.personneSlug %}
+                                    <a href="{{ path('admin_speaker_personne', {id: result.personneId}) }}" class="ui tiny label">{{ result.personneSlug }}</a>
                                 {% else %}
                                     <span class="ui tiny grey label">non rattaché</span>
                                 {% endif %}
