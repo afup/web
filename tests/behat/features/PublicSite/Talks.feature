@@ -3,7 +3,7 @@ Feature: Site Public - Talks
   @reloadDbWithTestData
   Scenario: Accès à la liste des vidéos
     Given I am on the homepage
-    When I follow "Vidéos"
+    When I follow "Talks"
     Then I should see "Historique des conférences de l'AFUP"
     And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/\" />"
     When I go to "/talks/?p=1"
@@ -187,6 +187,17 @@ Feature: Site Public - Talks
       """
     And the response should contain "href=\"/talks/2-rest-ou-graphql-exemples-illustres-avec-symfony-et-api-platform\""
     And the response should contain "href=\"/talks/1-jouons-tous-ensemble-a-un-petit-jeu\""
+    # Carte d'une vidéo : speakers et événement liés à leurs pages, puis les slides
+    And the "#dernieres-videos li:nth-child(1) article p" element should contain "href=\"/talks/speakers/geoffrey-bachelet\""
+    And the "#dernieres-videos li:nth-child(1) article p" element should contain "href=\"/talks/evenements/forum\""
+    And I should see "Slides" in the "#dernieres-videos li:nth-child(1)" element
+    # La recherche est sous le titre, avant la liste ; les facettes à côté. Les résultats Algolia, masqués,
+    # remplacent la liste dès qu'une recherche est active (htdocs/js/talk/list.js).
+    And I should see "Dernières vidéos" in the "#talks-title" element
+    And I should see a "#talks > #search-box + div #dernieres-videos" element
+    And I should see a "#talks #refinement-event" element
+    And I should see a "#hits-container[hidden]" element
+    And I should see a "#pagination[hidden]" element
     And the texts of "#editions section li a" should be, in this order:
       """
       forum
@@ -208,6 +219,8 @@ Feature: Site Public - Talks
     When I go to "/talks/?q=symfony&hPP=7&idx=afup_talks&p=0&is_v=1"
     Then the response status code should be 200
     And the response should not contain "id=\"dernieres-videos\""
+    And I should see "Résultats de la recherche" in the "#talks-title" element
+    And I should not see a "#hits-container[hidden]" element
     And the response should not contain "id=\"editions\""
     And the response should contain "<div id=\"search-box\"></div>"
     When I go to "/talks/?fR[event.title][0]=forum&p=1"

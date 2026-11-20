@@ -20,7 +20,6 @@ var icon = function (path, extraClass) {
 var ICONS = {
     rss: '<path fill="currentColor" d="M5 17a2 2 0 1 1 0 4a2 2 0 0 1 0-4M4 10a1 1 0 0 0 0 2a8 8 0 0 1 8 8a1 1 0 1 0 2 0A10 10 0 0 0 4 10m0-7a1 1 0 1 0 0 2a15 15 0 0 1 15 15a1 1 0 1 0 2 0A17 17 0 0 0 4 3"/>',
     slides: '<path fill="currentColor" d="M20 3a1 1 0 1 1 0 2v9a3 3 0 0 1-3 3h-3.5l2.3 3.4a1 1 0 1 1-1.6 1.2L12 18.3l-2.2 3.3a1 1 0 1 1-1.6-1.2l2.3-3.4H7a3 3 0 0 1-3-3V5a1 1 0 0 1 0-2zM6 5v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V5z"/>',
-    comments: '<path fill="currentColor" d="M12 2c5.5 0 10 3.8 10 8.5S17.5 19 12 19c-.9 0-1.8-.1-2.6-.3l-4 2.2A1 1 0 0 1 4 20v-3.2C2.7 15.2 2 13 2 10.5C2 5.8 6.5 2 12 2"/>',
     angleLeft: '<path fill="currentColor" d="M15.5 4.5a1 1 0 0 1 0 1.4L9.4 12l6.1 6.1a1 1 0 1 1-1.4 1.4l-6.8-6.8a1 1 0 0 1 0-1.4l6.8-6.8a1 1 0 0 1 1.4 0"/>',
     angleRight: '<path fill="currentColor" d="M8.5 4.5a1 1 0 0 0 0 1.4l6.1 6.1l-6.1 6.1a1 1 0 1 0 1.4 1.4l6.8-6.8a1 1 0 0 0 0-1.4L9.9 4.5a1 1 0 0 0-1.4 0"/>',
     angleDoubleLeft: '<path fill="currentColor" d="M12.7 4.5a1 1 0 0 1 0 1.4L6.6 12l6.1 6.1a1 1 0 1 1-1.4 1.4l-6.8-6.8a1 1 0 0 1 0-1.4l6.8-6.8a1 1 0 0 1 1.4 0m7 0a1 1 0 0 1 0 1.4L13.6 12l6.1 6.1a1 1 0 1 1-1.4 1.4l-6.8-6.8a1 1 0 0 1 0-1.4l6.8-6.8a1 1 0 0 1 1.4 0"/>',
@@ -87,6 +86,63 @@ search.addWidget(
     })
 );
 
+var escapeHtml = function (value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+};
+
+var LINK_CLASS = 'text-afup-500 underline hover:no-underline';
+var RESOURCE_CLASS = 'inline-flex items-center gap-1.5 rounded-lg bg-afup-100 px-2 py-1 text-xs font-medium text-afup-500 hover:bg-afup-500 hover:text-white';
+
+/* Même rendu que la carte Twig templates/site/talks/_talk_card.html.twig : modifier les deux ensemble.
+   Les liens vers les pages speaker et événement n'existent que si l'index les fournit (slug, path) ;
+   sinon le nom reste en texte. */
+var talkCard = function (data) {
+    var url = '/talks/' + encodeURIComponent(data.url_key);
+    var thumbnail = typeof data.video_id !== 'undefined'
+        ? 'https://img.youtube.com/vi/' + encodeURIComponent(data.video_id) + '/hqdefault.jpg'
+        : '/images/no_video.jpg';
+
+    var speakers = (data.speakers || []).map(function (speaker) {
+        return speaker.slug
+            ? '<a href="/talks/speakers/' + encodeURIComponent(speaker.slug) + '" class="' + LINK_CLASS + '">' + escapeHtml(speaker.label) + '</a>'
+            : escapeHtml(speaker.label);
+    }).join(' et ');
+    var event = data.event && data.event.title
+        ? (data.event.path
+            ? '<a href="/talks/evenements/' + encodeURIComponent(data.event.path) + '" class="' + LINK_CLASS + '">' + escapeHtml(data.event.title) + '</a>'
+            : escapeHtml(data.event.title))
+        : '';
+    var meta = [speakers, event].filter(function (part) { return part !== ''; }).join(' · ');
+
+    var resource = function (href, svg, label) {
+        return '<li><a href="' + escapeHtml(href) + '" target="_blank" rel="noopener" class="' + RESOURCE_CLASS + '">'
+            + icon(svg, 'size-3.5') + label + '</a></li>';
+    };
+    var resources = '';
+    if (typeof data.blog_post_url !== 'undefined') {
+        resources += resource(data.blog_post_url, ICONS.rss, 'Article de blog');
+    }
+    if (typeof data.slides_url !== 'undefined') {
+        resources += resource(data.slides_url, ICONS.slides, 'Slides');
+    }
+
+    return ''
+        + '<article class="flex flex-col sm:flex-row gap-4 rounded-2xl border-2 border-neutre-300 p-4">'
+        +   '<a href="' + url + '" class="shrink-0 w-full sm:w-44" tabindex="-1" aria-hidden="true">'
+        +     '<img src="' + thumbnail + '" alt="" loading="lazy" class="w-full aspect-video rounded-xl object-cover bg-neutre-200" />'
+        +   '</a>'
+        +   '<div class="flex flex-col gap-2 grow min-w-0">'
+        +     '<h3 class="font-titre text-lg leading-snug text-afup-800"><a href="' + url + '" class="hover:underline">' + escapeHtml(data.title) + '</a></h3>'
+        +     (meta ? '<p class="text-sm text-neutre-400">' + meta + '</p>' : '')
+        +     (resources ? '<ul class="flex flex-wrap items-center gap-2 mt-auto">' + resources + '</ul>' : '')
+        +   '</div>'
+        + '</article>';
+};
+
 search.addWidget(
     instantsearch.widgets.hits({
         hitsPerPage: 7,
@@ -97,41 +153,7 @@ search.addWidget(
         },
         templates: {
             empty: 'Aucune conférence ne correspond à ces critères.',
-            item: function (data) {
-                var url = '/talks/' + data.url_key;
-                var thumbnail = typeof data.video_id !== 'undefined'
-                    ? 'https://img.youtube.com/vi/' + data.video_id + '/hqdefault.jpg'
-                    : '/images/no_video.jpg';
-
-                var links = '';
-                var link = function (href, svg, label) {
-                    return '<a href="' + href + '" target="_blank" rel="noopener"'
-                        + ' class="inline-flex items-center gap-1.5 rounded-lg bg-afup-100 px-2 py-1 text-xs font-medium text-afup-500 hover:bg-afup-500 hover:text-white">'
-                        + icon(svg, 'size-3.5') + label + '</a>';
-                };
-
-                if (typeof data.blog_post_url !== 'undefined') {
-                    links += link(data.blog_post_url, ICONS.rss, 'Article de blog');
-                }
-                if (typeof data.slides_url !== 'undefined') {
-                    links += link(data.slides_url, ICONS.slides, 'Slides');
-                }
-                if (typeof data.joindin_url !== 'undefined') {
-                    links += link(data.joindin_url, ICONS.comments, 'Fiche joind.in');
-                }
-
-                return ''
-                    + '<article class="flex flex-col sm:flex-row gap-4 rounded-2xl border-2 border-neutre-300 p-4">'
-                    +   '<a href="' + url + '" class="shrink-0 w-full sm:w-44">'
-                    +     '<img src="' + thumbnail + '" alt="" loading="lazy" class="w-full aspect-video rounded-xl object-cover bg-neutre-200" />'
-                    +   '</a>'
-                    +   '<div class="flex flex-col gap-2 grow">'
-                    +     '<a href="' + url + '" class="font-titre text-lg leading-snug text-afup-800 hover:underline">' + data.title + '</a>'
-                    +     '<p class="font-sans text-sm text-neutre-400">' + data.speakers_label + ' · ' + data.event.title + '</p>'
-                    +     (links ? '<div class="flex flex-wrap items-center gap-2 mt-auto">' + links + '</div>' : '')
-                    +   '</div>'
-                    + '</article>';
-            }
+            item: talkCard
         }
     })
 );
@@ -259,6 +281,42 @@ search.addWidget(
         }
     })
 );
+
+/* Une recherche est active dès qu'il y a un texte, un filtre ou une page autre que la première. */
+var isSearchActive = function (state) {
+    var hasRefinement = function (refinements) {
+        return Object.keys(refinements || {}).some(function (attribute) {
+            var values = refinements[attribute];
+            return Array.isArray(values) ? values.length > 0 : Object.keys(values || {}).length > 0;
+        });
+    };
+
+    return (state.query || '') !== ''
+        || (state.page || 0) > 0
+        || hasRefinement(state.facetsRefinements)
+        || hasRefinement(state.disjunctiveFacetsRefinements)
+        || hasRefinement(state.hierarchicalFacetsRefinements)
+        || hasRefinement(state.numericRefinements)
+        || (state.tagRefinements || []).length > 0;
+};
+
+/* Sans recherche active, la liste des dernières vidéos rendue côté serveur reste affichée ;
+   sinon les résultats Algolia la remplacent. Sans liste serveur (page ouverte sur une URL de recherche),
+   les résultats restent affichés. */
+var latestTalks = document.getElementById('dernieres-videos');
+var section = document.getElementById('talks');
+var sectionTitle = document.getElementById('talks-title');
+
+search.on('render', function () {
+    var showResults = !latestTalks || isSearchActive(search.helper.state);
+
+    document.getElementById('hits-container').hidden = !showResults;
+    document.getElementById('pagination').hidden = !showResults;
+    if (latestTalks) {
+        latestTalks.hidden = showResults;
+        sectionTitle.textContent = showResults ? section.dataset.searchTitle : section.dataset.latestTitle;
+    }
+});
 
 /* instantsearch 1.x n'émet pas aria-current sur la page courante. */
 search.on('render', function () {

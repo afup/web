@@ -11,6 +11,18 @@ use AppBundle\Event\Model\Talk;
 
 class Transformer
 {
+    /** @var \Closure(Speaker): ?string */
+    private readonly \Closure $speakerSlug;
+
+    /**
+     * @param (\Closure(Speaker): ?string)|null $speakerSlug slug de la page de la personne d'une ligne speaker,
+     *                                                     null si elle n'en a pas
+     */
+    public function __construct(?\Closure $speakerSlug = null)
+    {
+        $this->speakerSlug = $speakerSlug ?? static fn(Speaker $speaker): ?string => null;
+    }
+
     /**
      * @param Speaker[]|\Traversable $speakers
      *
@@ -25,6 +37,7 @@ class Transformer
             'event' => [
                 'id' => $event->getId(),
                 'title' => $event->getTitle(),
+                'path' => $event->getPath(),
                 'start_date' => $event->getDateStart() instanceof \DateTime ? $event->getDateStart()->format('Y-m-d') : null,
             ],
             'type' => [
@@ -51,6 +64,7 @@ class Transformer
                 'first_name' => $speaker->getFirstname(),
                 'last_name' => $speaker->getLastname(),
                 'label' => $speaker->getLabel(),
+                'slug' => ($this->speakerSlug)($speaker),
             ];
         }
 

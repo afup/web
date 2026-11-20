@@ -11,6 +11,8 @@ use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Speaker\SpeakerProfileResolver;
 
 class Runner
 {
@@ -22,8 +24,11 @@ class Runner
         private readonly TalkRepository $talkRepository,
         private readonly EventRepository $eventRepository,
         private readonly SpeakerRepository $speakerRepository,
+        SpeakerProfileResolver $speakerProfileResolver,
     ) {
-        $this->transformer = new Transformer();
+        $this->transformer = new Transformer(
+            static fn(Speaker $speaker): ?string => $speakerProfileResolver->getIdentityForSpeaker($speaker)?->slug,
+        );
     }
 
     public function run(): void

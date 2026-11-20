@@ -485,28 +485,45 @@ SQL;
     }
 
     /**
-     * Les derniers talks publiés qui ont une vidéo, avec leur édition, du créneau terminé le plus récent au plus
-     * ancien, en une seule requête.
+     * Les derniers talks publiés qui ont une vidéo, avec leur édition et leurs speakers, du créneau terminé le plus
+     * récent au plus ancien, en une seule requête.
      *
-     * @return list<array{talk: Talk, event: Event}>
+     * @return list<array{talk: Talk, event: Event, speakers: list<Speaker>}>
      */
     public function getLatestPublishedTalksWithVideo(int $limit): array
     {
+        $hydrator = new JoinHydrator();
+        $hydrator->aggregateOn('talk', 'speaker', 'getId');
+
+        // La limite porte sur les talks : elle s'applique avant la jointure des speakers, qui multiplie les lignes.
         $query = $this->getQuery(
-            "SELECT talk.session_id, talk.titre, talk.youtube_id, event.id, event.titre, event.path
-            FROM afup_sessions talk
-            " . self::PUBLISHED_TALK_PLANNING_JOIN . '
+            "SELECT talk.session_id, talk.titre, talk.youtube_id, talk.slides_url, talk.blog_post_url,
+            event.id, event.titre, event.path,
+            speaker.conferencier_id, speaker.id_forum, speaker.nom, speaker.prenom, speaker.user_github, speaker.person_id
+            FROM (
+                SELECT talk.session_id, planning.fin AS slot_end
+                FROM afup_sessions talk
+                " . self::PUBLISHED_TALK_PLANNING_JOIN . '
+                WHERE ' . self::PUBLISHED_TALK_CONDITIONS . "
+                AND talk.youtube_id IS NOT NULL AND talk.youtube_id <> ''
+                ORDER BY planning.fin DESC, talk.session_id DESC
+                LIMIT " . max(0, $limit) . '
+            ) latest
+            INNER JOIN afup_sessions talk ON talk.session_id = latest.session_id
             INNER JOIN afup_forum event ON event.id = talk.id_forum
-            WHERE ' . self::PUBLISHED_TALK_CONDITIONS . "
-            AND talk.youtube_id IS NOT NULL AND talk.youtube_id <> ''
-            ORDER BY planning.fin DESC, talk.session_id DESC
-            LIMIT " . max(0, $limit),
+            LEFT JOIN afup_conferenciers_sessions cs ON cs.session_id = talk.session_id
+            LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = cs.conferencier_id
+            ORDER BY latest.slot_end DESC, talk.session_id DESC, speaker.conferencier_id ASC',
         );
 
         $latest = [];
-        /** @var array{talk: Talk, event: Event} $row */
-        foreach ($query->query($this->getCollection(new Hydrator())) as $row) {
-            $latest[] = ['talk' => $row['talk'], 'event' => $row['event']];
+        /** @var array{talk: Talk, event: Event, '.aggregation': array{speaker: array<Speaker|null>}} $row */
+        foreach ($query->query($this->getCollection($hydrator)) as $row) {
+            $latest[] = [
+                'talk' => $row['talk'],
+                'event' => $row['event'],
+                'speakers' => array_values(array_filter($row['.aggregation']['speaker'])),
+            ];
         }
 
         return $latest;
