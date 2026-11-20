@@ -11,6 +11,7 @@ use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Event\Talk\PublishedTalkRepository;
 use AppBundle\Indexation\Talks\Runner;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +37,7 @@ final class RunnerTest extends TestCase
                 EventRepository $events,
                 SpeakerRepository $speakers,
             ) {
-                parent::__construct($client, $plannings, $talks, $events, $speakers, $publishedTalkRepository);
+                parent::__construct($client, $plannings, $talks, $events, $speakers, $publishedTalkRepository, new SpeakerProfileResolver($publishedTalkRepository, $speakers));
             }
 
             protected function initIndex(): SearchIndex

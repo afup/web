@@ -68,9 +68,9 @@ final class ListAction extends AbstractController
         $speakerSlugs = [];
         foreach ($latestTalks as $latest) {
             foreach ($latest['speakers'] as $speaker) {
-                $identity = $this->speakerProfileResolver->getIdentityForSpeaker($speaker);
-                if (null !== $identity && null !== $speaker->getId()) {
-                    $speakerSlugs[$speaker->getId()] = $identity->slug;
+                $identity = $this->speakerProfileResolver->getIdentityByPersonneId($speaker->personneId);
+                if (null !== $identity) {
+                    $speakerSlugs[$speaker->id] = $identity->slug;
                 }
             }
         }

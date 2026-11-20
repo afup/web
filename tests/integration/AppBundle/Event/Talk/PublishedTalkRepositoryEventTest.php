@@ -89,21 +89,21 @@ final class PublishedTalkRepositoryEventTest extends IntegrationTestCase
         );
     }
 
-    public function testGetLatestPublishedTalksWithVideoSortsBySlotEnd(): void
+    public function testLatestTalksWithVideoAreSortedBySlotEnd(): void
     {
         // Le créneau du talk 301 se termine après celui du talk 300, qui a un identifiant plus petit.
         $this->insertTalk(301, 3, 'Forum 2018, fin de journée', strtotime('2018-10-25 17:00:00'), speakerIds: [12, 11], youtubeId: 'video301', slidesUrl: 'https://slides.example/301', blogPostUrl: 'https://blog.example/301');
         $this->insertTalk(110, 1, 'Vidéo, créneau en cours', time() - 600, youtubeId: 'video110', slotEnd: time() + 600);
         $this->insertTalk(111, 1, 'Vidéo, non planifié', strtotime('2019-10-24 11:00:00'), youtubeId: 'video111', scheduled: false);
-        $repository = self::getContainer()->get(TalkRepository::class);
+        $repository = new PublishedTalkRepository($this->connection);
         $toRows = static fn(array $latest): array => array_map(static fn(array $row): array => [
-            $row['talk']->getId(),
-            $row['talk']->getTitle(),
-            $row['talk']->getYoutubeId(),
-            $row['event']->getPath(),
-            array_map(static fn(Speaker $speaker): ?int => $speaker->getId(), $row['speakers']),
-            $row['talk']->getSlidesUrl(),
-            $row['talk']->getBlogPostUrl(),
+            $row['talk']->id,
+            $row['talk']->title,
+            $row['talk']->youtubeId,
+            $row['event']->path,
+            array_map(static fn(PublishedSpeaker $speaker): int => $speaker->id, $row['speakers']),
+            $row['talk']->slidesUrl,
+            $row['talk']->blogPostUrl,
         ], $latest);
 
         // Exclus : sans vidéo ou vidéo vide (101, 103, 200), clinique (104), publication à venir (107), créneau en
@@ -116,18 +116,10 @@ final class PublishedTalkRepositoryEventTest extends IntegrationTestCase
                 [301, 'Forum 2018, fin de journée', 'video301', 'forumphp2018', [11, 12], 'https://slides.example/301', 'https://blog.example/301'],
                 [300, 'Forum 2018', 'video300', 'forumphp2018', [], null, null],
             ],
-            $toRows($repository->getLatestPublishedTalksWithVideo(12)),
+            $toRows($repository->getLatestTalksWithVideo(12)),
         );
-        self::assertSame([100, 102], array_column($toRows($repository->getLatestPublishedTalksWithVideo(2)), 0));
-        self::assertSame([100, 102, 301], array_column($toRows($repository->getLatestPublishedTalksWithVideo(3)), 0));
-    }
-
-    private function getEvent(string $path): Event
-    {
-        $event = self::getContainer()->get(EventRepository::class)->getByPath($path);
-        self::assertNotNull($event);
-
-        return $event;
+        self::assertSame([100, 102], array_column($toRows($repository->getLatestTalksWithVideo(2)), 0));
+        self::assertSame([100, 102, 301], array_column($toRows($repository->getLatestTalksWithVideo(3)), 0));
     }
 
     /**
