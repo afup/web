@@ -31,10 +31,10 @@ final readonly class EventTalksJsonLd
                 'position' => $index + 1,
                 'url' => $this->urlGenerator->generate(
                     'talks_show',
-                    ['id' => $eventTalk->talk->getId(), 'slug' => $eventTalk->talk->getSlug()],
+                    ['id' => $eventTalk->talk->id, 'slug' => $eventTalk->talk->slug],
                     UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
-                'name' => $eventTalk->talk->getTitle(),
+                'name' => $eventTalk->talk->title,
             ];
         }
 

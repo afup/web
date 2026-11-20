@@ -10,14 +10,11 @@ use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\TalkAggregate;
-use AppBundle\Event\Talk\EventTalk;
-use AppBundle\Event\Talk\EventTalksSummary;
 use AppBundle\Ting\JoinHydrator;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
-use CCMBenchmark\Ting\Repository\Hydrator;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -30,25 +27,6 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
  */
 class TalkRepository extends Repository implements MetadataInitializer
 {
-    /**
-     * Le créneau d'un talk (le premier, s'il en a plusieurs), sous l'alias `planning`, pour une requête dont
-     * le talk a l'alias `talk`. Jointure interne : un talk sans créneau n'est pas publié.
-     */
-    public const string PUBLISHED_TALK_PLANNING_JOIN = 'INNER JOIN (
-            SELECT id_session, MIN(debut) AS debut, MIN(fin) AS fin, MIN(id_salle) AS id_salle FROM afup_forum_planning GROUP BY id_session
-        ) planning ON planning.id_session = talk.session_id';
-
-    /**
-     * Conditions d'un talk publié, à combiner avec PUBLISHED_TALK_PLANNING_JOIN : planifié, ni clinique ni
-     * présentation des speakers (l'équivalent SQL de Talk::isDisplayedOnHistory(), le filtre de la page du
-     * talk), avec un créneau terminé et une date de publication vide ou passée.
-     */
-    public const string PUBLISHED_TALK_CONDITIONS = '
-        talk.plannifie = 1
-        AND talk.genre NOT IN (' . Talk::TYPE_CLINIC . ', ' . Talk::TYPE_SPEAKER_INTRODUCTIONS . ')
-        AND planning.fin <= UNIX_TIMESTAMP()
-        AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)';
-
     public function getNumberOfTalksByEvent(Event|int $event, ?\DateTime $since = null)
     {
         return $this->getNumberOfTalksByEventAndLanguage($event, null, $since);
@@ -414,74 +392,6 @@ SQL;
         )->setParams(['date_fin' => $dateTime->format('U')]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
-    }
-
-    /**
-     * Les talks publiés d'une édition dans l'ordre du planning (créneau, salle), avec leurs speakers.
-     *
-     * Requête dédiée plutôt que getByEventWithSpeakers() : celle-ci trie d'abord par `position`, garde les
-     * talks sans créneau ou pas encore terminés, les cliniques et les présentations des speakers, et ne lit
-     * pas l'ID YouTube.
-     *
-     * @return list<EventTalk>
-     */
-    public function getPublishedByEventWithSpeakers(Event $event): array
-    {
-        $hydrator = new JoinHydrator();
-        $hydrator->aggregateOn('talk', 'speaker', 'getId');
-
-        $query = $this->getPreparedQuery(
-            'SELECT talk.session_id, talk.id_forum, talk.titre, talk.genre, talk.plannifie, talk.youtube_id, talk.language_code,
-            speaker.conferencier_id, speaker.id_forum, speaker.nom, speaker.prenom, speaker.user_github, speaker.person_id,
-            planning.debut AS starts_at
-            FROM afup_sessions talk
-            ' . self::PUBLISHED_TALK_PLANNING_JOIN . '
-            LEFT JOIN afup_conferenciers_sessions cs ON cs.session_id = talk.session_id
-            LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = cs.conferencier_id
-            WHERE talk.id_forum = :eventId AND ' . self::PUBLISHED_TALK_CONDITIONS . '
-            ORDER BY planning.debut ASC, planning.id_salle ASC, talk.session_id ASC, speaker.conferencier_id ASC',
-        )->setParams(['eventId' => $event->getId()]);
-
-        $eventTalks = [];
-        /** @var array{talk: Talk, 0: object{starts_at: int|string}, '.aggregation': array{speaker: array<Speaker|null>}} $row */
-        foreach ($query->query($this->getCollection($hydrator)) as $row) {
-            $eventTalks[] = new EventTalk(
-                $row['talk'],
-                new \DateTimeImmutable('@' . $row[0]->starts_at)->setTimezone(new \DateTimeZone(date_default_timezone_get())),
-                array_values(array_filter($row['.aggregation']['speaker'])),
-            );
-        }
-
-        return $eventTalks;
-    }
-
-    /**
-     * Les éditions qui ont au moins un talk publié, de la plus récente à la plus ancienne, avec le nombre de
-     * talks publiés et de vidéos, en une seule requête agrégée.
-     *
-     * @return list<EventTalksSummary>
-     */
-    public function getEventTalksSummaries(): array
-    {
-        $query = $this->getQuery(
-            "SELECT event.id, event.titre, event.path, event.date_debut, event.date_fin, event.place_name,
-            COUNT(talk.session_id) AS talk_count,
-            SUM(talk.youtube_id IS NOT NULL AND talk.youtube_id <> '') AS video_count
-            FROM afup_sessions talk
-            " . self::PUBLISHED_TALK_PLANNING_JOIN . '
-            INNER JOIN afup_forum event ON event.id = talk.id_forum
-            WHERE ' . self::PUBLISHED_TALK_CONDITIONS . '
-            GROUP BY event.id
-            ORDER BY event.date_debut DESC, event.id DESC',
-        );
-
-        $summaries = [];
-        /** @var array{event: Event, 0: object{talk_count: int|string, video_count: int|string|null}} $row */
-        foreach ($query->query($this->getCollection(new Hydrator())) as $row) {
-            $summaries[] = new EventTalksSummary($row['event'], (int) $row[0]->talk_count, (int) $row[0]->video_count);
-        }
-
-        return $summaries;
     }
 
     /**

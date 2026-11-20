@@ -20,7 +20,7 @@ readonly class PublishedTalkRepository
 {
     private const string PLANNING_JOIN = '
         INNER JOIN (
-            SELECT id_session, MIN(debut) AS debut, MIN(fin) AS fin FROM afup_forum_planning GROUP BY id_session
+            SELECT id_session, MIN(debut) AS debut, MIN(fin) AS fin, MIN(id_salle) AS id_salle FROM afup_forum_planning GROUP BY id_session
         ) planning ON planning.id_session = talk.session_id';
 
     private const string CONDITIONS = '
@@ -90,6 +90,69 @@ readonly class PublishedTalkRepository
     }
 
     /**
+     * Les talks publiés d'une édition dans l'ordre du planning (créneau, salle), avec leurs speakers.
+     *
+     * @return list<EventTalk>
+     */
+    public function getEventTalks(int $eventId): array
+    {
+        $rows = $this->connection->fetchAllAssociative(
+            'SELECT talk.session_id, talk.titre, talk.youtube_id, planning.debut,
+            speaker.conferencier_id, speaker.prenom, speaker.nom, speaker.personne_id
+            FROM afup_sessions talk'
+            . self::PLANNING_JOIN . '
+            LEFT JOIN afup_conferenciers_sessions cs ON cs.session_id = talk.session_id
+            LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = cs.conferencier_id
+            WHERE talk.id_forum = :eventId AND ' . self::CONDITIONS . '
+            ORDER BY planning.debut ASC, planning.id_salle ASC, talk.session_id ASC, speaker.conferencier_id ASC',
+            ['eventId' => $eventId],
+        );
+
+        /** @var array<int, array{talk: PublishedTalk, starts_at: \DateTimeImmutable, speakers: list<PublishedSpeaker>}> $talks */
+        $talks = [];
+        foreach ($rows as $row) {
+            $talkId = self::toInt($row['session_id']);
+            $talks[$talkId] ??= ['talk' => self::talk($row), 'starts_at' => self::timestamp($row['debut']), 'speakers' => []];
+            if (null !== $row['conferencier_id']) {
+                $talks[$talkId]['speakers'][] = self::speaker($row);
+            }
+        }
+
+        return array_values(array_map(
+            static fn(array $talk): EventTalk => new EventTalk($talk['talk'], $talk['starts_at'], $talk['speakers']),
+            $talks,
+        ));
+    }
+
+    /**
+     * Les éditions qui ont au moins un talk publié, de la plus récente à la plus ancienne, avec le nombre de
+     * talks publiés et de vidéos, en une seule requête agrégée.
+     *
+     * @return list<EventTalksSummary>
+     */
+    public function getEventSummaries(): array
+    {
+        $rows = $this->connection->fetchAllAssociative(
+            "SELECT event.id AS event_id, event.titre AS event_titre, event.path AS event_path,
+            event.date_debut AS event_date_debut, event.date_fin AS event_date_fin,
+            COUNT(talk.session_id) AS talk_count,
+            SUM(talk.youtube_id IS NOT NULL AND talk.youtube_id <> '') AS video_count
+            FROM afup_sessions talk"
+            . self::PLANNING_JOIN . '
+            INNER JOIN afup_forum event ON event.id = talk.id_forum
+            WHERE ' . self::CONDITIONS . '
+            GROUP BY event.id
+            ORDER BY event.date_debut DESC, event.id DESC',
+        );
+
+        return array_map(static fn(array $row): EventTalksSummary => new EventTalksSummary(
+            self::event($row),
+            self::toInt($row['talk_count']),
+            self::toInt($row['video_count'] ?? 0),
+        ), $rows);
+    }
+
+    /**
      * Les talks publiés de ces lignes speaker, avec leur événement, du plus récent au plus ancien.
      *
      * @param list<int> $speakerIds
@@ -135,6 +198,19 @@ readonly class PublishedTalkRepository
             self::toInt($row['session_id']),
             self::toString($row['titre']),
             self::nullableString($row['youtube_id']),
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $row
+     */
+    private static function speaker(array $row): PublishedSpeaker
+    {
+        return new PublishedSpeaker(
+            self::toInt($row['conferencier_id']),
+            self::toString($row['prenom'] ?? ''),
+            self::toString($row['nom'] ?? ''),
+            null !== $row['personne_id'] ? self::toInt($row['personne_id']) : null,
         );
     }
 

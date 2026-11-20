@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\IntegrationTests\Event\Model\Repository;
+namespace AppBundle\IntegrationTests\Event\Talk;
 
 use Afup\Tests\Support\IntegrationTestCase;
-use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Talk\EventTalk;
 use AppBundle\Event\Talk\EventTalksSummary;
+use AppBundle\Event\Talk\PublishedSpeaker;
+use AppBundle\Event\Talk\PublishedTalkRepository;
 use Doctrine\DBAL\Connection;
 
-final class TalkRepositoryTest extends IntegrationTestCase
+/**
+ * Les talks publiés vus depuis les éditions ; les speakers sont dans PublishedTalkRepositoryTest.
+ */
+final class PublishedTalkRepositoryEventTest extends IntegrationTestCase
 {
     private Connection $connection;
 
@@ -49,9 +50,9 @@ final class TalkRepositoryTest extends IntegrationTestCase
         $this->insertTalk(400, 4, 'Non planifié', strtotime('2020-10-25 10:00:00'), scheduled: false);
     }
 
-    public function testGetPublishedByEventWithSpeakersFollowsThePlanning(): void
+    public function testEventTalksFollowThePlanning(): void
     {
-        $eventTalks = self::getContainer()->get(TalkRepository::class)->getPublishedByEventWithSpeakers($this->getEvent('forumphp2019'));
+        $eventTalks = new PublishedTalkRepository($this->connection)->getEventTalks(1);
 
         self::assertSame(
             [
@@ -61,17 +62,17 @@ final class TalkRepositoryTest extends IntegrationTestCase
                 [100, 'Clôture', '2019-10-25 17:00', [10], 'video100'],
             ],
             array_map(static fn(EventTalk $eventTalk): array => [
-                $eventTalk->talk->getId(),
-                $eventTalk->talk->getTitle(),
+                $eventTalk->talk->id,
+                $eventTalk->talk->title,
                 $eventTalk->startsAt->format('Y-m-d H:i'),
-                array_map(static fn(Speaker $speaker): ?int => $speaker->getId(), $eventTalk->speakers),
-                $eventTalk->talk->getYoutubeId(),
+                array_map(static fn(PublishedSpeaker $speaker): int => $speaker->id, $eventTalk->speakers),
+                $eventTalk->talk->youtubeId,
             ], $eventTalks),
         );
-        self::assertSame([], self::getContainer()->get(TalkRepository::class)->getPublishedByEventWithSpeakers($this->getEvent('sanstalk')));
+        self::assertSame([], new PublishedTalkRepository($this->connection)->getEventTalks(4));
     }
 
-    public function testGetEventTalksSummariesCountsPublishedTalksAndVideos(): void
+    public function testEventSummariesCountPublishedTalksAndVideos(): void
     {
         self::assertSame(
             [
@@ -80,20 +81,12 @@ final class TalkRepositoryTest extends IntegrationTestCase
                 ['forumphp2018', 1, 1, 2018],
             ],
             array_map(static fn(EventTalksSummary $summary): array => [
-                $summary->event->getPath(),
+                $summary->event->path,
                 $summary->talkCount,
                 $summary->videoCount,
                 $summary->getYear(),
-            ], self::getContainer()->get(TalkRepository::class)->getEventTalksSummaries()),
+            ], new PublishedTalkRepository($this->connection)->getEventSummaries()),
         );
-    }
-
-    private function getEvent(string $path): Event
-    {
-        $event = self::getContainer()->get(EventRepository::class)->getByPath($path);
-        self::assertNotNull($event);
-
-        return $event;
     }
 
     /**

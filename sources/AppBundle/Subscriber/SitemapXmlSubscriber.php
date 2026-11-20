@@ -9,8 +9,8 @@ use AppBundle\Association\Model\CompanyMember;
 use AppBundle\Association\Model\Repository\CompanyMemberRepository;
 use AppBundle\Controller\Website\News\ListAction;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Talk\PublishedTalkRepository;
+use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Site\Entity\Repository\FeuilleRepository;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
@@ -27,11 +27,11 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly TalkRepository $talkRepository,
+        private readonly PublishedTalkRepository $publishedTalkRepository,
         private readonly SpeakerProfileResolver $speakerProfileResolver,
         private readonly ArticleRepository $articleRepository,
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly FeuilleRepository $feuilleRepository,
-        private readonly PublishedTalkRepository $publishedTalkRepository,
     ) {}
 
     public static function getSubscribedEvents(): array
@@ -111,14 +111,14 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
      */
     public function registerEventsTalksUrls(UrlContainerInterface $urls): void
     {
-        foreach ($this->talkRepository->getEventTalksSummaries() as $summary) {
+        foreach ($this->publishedTalkRepository->getEventSummaries() as $summary) {
             $url = new UrlConcrete(
                 $this->urlGenerator->generate(
                     'talks_event',
-                    ['path' => $summary->event->getPath()],
+                    ['path' => $summary->event->path],
                     UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
-                $summary->event->getDateEnd(),
+                $summary->event->dateEnd,
                 UrlConcrete::CHANGEFREQ_MONTHLY,
             );
             $urls->addUrl($url, 'talks');
