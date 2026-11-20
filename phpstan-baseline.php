@@ -4106,24 +4106,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Talks/JoindinAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between \'Les vidéos de \' and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Talks/ListAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between mixed and \' les vidéos\' results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Talks/ListAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset 0 on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Talks/ListAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$objectOrClass of class ReflectionClass constructor expects class\\-string\\<T of object\\>\\|T of object, string given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,

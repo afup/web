@@ -27,6 +27,17 @@ use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
  */
 class TalkRepository extends Repository implements MetadataInitializer
 {
+    /**
+     * Condition SQL d'un talk publié : créneau terminé avant `:published_before`
+     * (timestamp) et `Talk::isDisplayedOnHistory()`, c'est-à-dire planifié
+     * (`plannifie = 1`) et ni clinique ni présentation des speakers.
+     *
+     * Attend les alias `talk` (afup_sessions) et `planning` (afup_forum_planning).
+     */
+    public const string PUBLISHED_TALK_CONDITION = 'talk.plannifie = 1'
+        . ' AND talk.genre NOT IN (' . Talk::TYPE_CLINIC . ', ' . Talk::TYPE_SPEAKER_INTRODUCTIONS . ')'
+        . ' AND planning.fin <= :published_before';
+
     public function getNumberOfTalksByEvent(Event|int $event, ?\DateTime $since = null)
     {
         return $this->getNumberOfTalksByEventAndLanguage($event, null, $since);
@@ -378,6 +389,27 @@ SQL;
         )->setParams(['eventId' => $eventId]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
+     * L'événement de ce titre exact a-t-il au moins un talk publié ?
+     * Comme l'index Algolia, l'événement est celui du créneau de planning.
+     */
+    public function hasPublishedTalkForEventTitle(string $eventTitle, \DateTimeInterface $publishedBefore): bool
+    {
+        $query = $this->getPreparedQuery(
+            'SELECT 1
+            FROM afup_forum event
+            INNER JOIN afup_forum_planning planning ON planning.id_forum = event.id
+            INNER JOIN afup_sessions talk ON talk.session_id = planning.id_session
+            WHERE event.titre = :event_title AND ' . self::PUBLISHED_TALK_CONDITION . '
+            LIMIT 1',
+        )->setParams([
+            'event_title' => $eventTitle,
+            'published_before' => $publishedBefore->format('U'),
+        ]);
+
+        return $query->query($this->getCollection(new HydratorArray()))->count() > 0;
     }
 
     public function getAllPastTalks(\DateTime $dateTime)

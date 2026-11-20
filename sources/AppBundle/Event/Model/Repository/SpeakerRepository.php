@@ -41,6 +41,54 @@ class SpeakerRepository extends Repository implements MetadataInitializer
     }
 
     /**
+     * Un speaker dont le libellé (`Speaker::getLabel()`) correspond à celui donné
+     * a-t-il au moins un talk publié ? Les variations d'espaces sont tolérées
+     * (espaces en bord de chaîne, espaces multiples).
+     *
+     * Le SQL ne fait qu'un pré-filtre, compatible MySQL 5.7 (pas de REGEXP_REPLACE) :
+     * prénom et nom concaténés sans espaces, tabulations ni retours à la ligne,
+     * comparés sans tenir compte de la casse. La comparaison finale reprend
+     * `Speaker::getLabel()` pour rester fidèle aux libellés indexés dans Algolia.
+     */
+    public function hasPublishedTalkForLabel(string $label, \DateTimeInterface $publishedBefore): bool
+    {
+        $label = self::normalizeLabel($label);
+        if ($label === '') {
+            return false;
+        }
+
+        $query = $this->getPreparedQuery(
+            "SELECT c.conferencier_id, c.prenom, c.nom
+            FROM afup_conferenciers c
+            WHERE UPPER(REPLACE(REPLACE(REPLACE(REPLACE(CONCAT_WS('', c.prenom, c.nom), ' ', ''), '\t', ''), '\n', ''), '\r', '')) = UPPER(:compact_label)
+            AND EXISTS (
+                SELECT 1
+                FROM afup_conferenciers_sessions cs
+                INNER JOIN afup_sessions talk ON talk.session_id = cs.session_id
+                INNER JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
+                WHERE cs.conferencier_id = c.conferencier_id AND " . TalkRepository::PUBLISHED_TALK_CONDITION . '
+            )',
+        )->setParams([
+            'compact_label' => str_replace(' ', '', $label),
+            'published_before' => $publishedBefore->format('U'),
+        ]);
+
+        /** @var Speaker $speaker */
+        foreach ($query->query($this->getCollection(new HydratorSingleObject())) as $speaker) {
+            if (self::normalizeLabel($speaker->getLabel()) === $label) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static function normalizeLabel(string $label): string
+    {
+        return (string) preg_replace('/\s+/u', ' ', trim($label));
+    }
+
+    /**
      * Retrieve speakers with a scheduled talk for a given event
      * @param bool $returnTalksThatWillBePublished
      * @return CollectionInterface<array<mixed>>&iterable<array<mixed>>

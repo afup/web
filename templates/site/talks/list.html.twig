@@ -17,6 +17,9 @@
 
 {% block metas %}
     {{ parent() }}
+    {% if noindex %}
+        <meta name="robots" content="noindex, follow">
+    {% endif %}
     <meta name="algolia_appid" content="{{ algolia_app_id }}" />
     <meta name="algolia_apikey" content="{{ algolia_api_key }}" />
 
