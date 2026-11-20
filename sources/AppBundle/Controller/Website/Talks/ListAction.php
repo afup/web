@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\Talks;
 
 use AppBundle\Antennes\Entity\Repository\AntenneRepository;
-use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Talk\PublishedTalkRepository;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +25,7 @@ final class ListAction extends AbstractController
         private readonly string $algoliaFrontendApikey,
         private readonly AntenneRepository $antennesRepository,
         private readonly SpeakerProfileResolver $speakerProfileResolver,
-        private readonly TalkRepository $talkRepository,
+        private readonly PublishedTalkRepository $publishedTalkRepository,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -90,9 +90,9 @@ final class ListAction extends AbstractController
             return null;
         }
 
-        foreach ($this->talkRepository->getEventTalksSummaries() as $summary) {
-            if ($summary->event->getTitle() === $title) {
-                return $this->redirectToRoute('talks_event', ['path' => $summary->event->getPath()], Response::HTTP_MOVED_PERMANENTLY);
+        foreach ($this->publishedTalkRepository->getEventSummaries() as $summary) {
+            if ($summary->event->title === $title) {
+                return $this->redirectToRoute('talks_event', ['path' => $summary->event->path], Response::HTTP_MOVED_PERMANENTLY);
             }
         }
 

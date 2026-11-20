@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Tests\Event\Talk;
 
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Talk;
+use AppBundle\Event\Talk\PublishedTalk;
 use AppBundle\Event\Speaker\PersonJsonLd;
 use AppBundle\Event\Talk\EventTalk;
 use AppBundle\Event\Talk\EventTalksJsonLd;
@@ -56,6 +56,6 @@ final class EventTalksJsonLdTest extends TestCase
 
     private static function eventTalk(int $id, string $title): EventTalk
     {
-        return new EventTalk(new Talk()->setId($id)->setTitle($title), new \DateTimeImmutable(), []);
+        return new EventTalk(new PublishedTalk($id, $title), new \DateTimeImmutable(), []);
     }
 }

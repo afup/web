@@ -84,7 +84,14 @@ final class SpeakerProfileResolver implements ResetInterface
      */
     public function getIdentityForSpeaker(Speaker $speaker): ?SpeakerIdentity
     {
-        $personneId = $speaker->getPersonneId();
+        return $this->getIdentityByPersonneId($speaker->getPersonneId());
+    }
+
+    /**
+     * La personne qui a ce id, si elle a au moins un talk publié.
+     */
+    public function getIdentityByPersonneId(?int $personneId): ?SpeakerIdentity
+    {
         if (null === $personneId) {
             return null;
         }

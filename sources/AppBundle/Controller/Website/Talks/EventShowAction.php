@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Talks;
 
+use AppBundle\Event\Talk\PublishedTalkRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Event\Talk\EventTalksJsonLd;
 use AppBundle\Twig\ViewRenderer;
@@ -17,7 +17,7 @@ final class EventShowAction extends AbstractController
     public function __construct(
         private readonly ViewRenderer $view,
         private readonly EventRepository $eventRepository,
-        private readonly TalkRepository $talkRepository,
+        private readonly PublishedTalkRepository $publishedTalkRepository,
         private readonly SpeakerProfileResolver $speakerProfileResolver,
         private readonly EventTalksJsonLd $eventTalksJsonLd,
     ) {}
@@ -25,7 +25,7 @@ final class EventShowAction extends AbstractController
     public function __invoke(string $path): Response
     {
         $event = $this->eventRepository->getByPath($path);
-        $eventTalks = null !== $event ? $this->talkRepository->getPublishedByEventWithSpeakers($event) : [];
+        $eventTalks = null !== $event ? $this->publishedTalkRepository->getEventTalks((int) $event->getId()) : [];
 
         if (null === $event || $eventTalks === []) {
             throw $this->createNotFoundException();
@@ -35,9 +35,9 @@ final class EventShowAction extends AbstractController
         $speakerSlugs = [];
         foreach ($eventTalks as $eventTalk) {
             foreach ($eventTalk->speakers as $speaker) {
-                $identity = $this->speakerProfileResolver->getIdentityForSpeaker($speaker);
-                if (null !== $identity && null !== $speaker->getId()) {
-                    $speakerSlugs[$speaker->getId()] = $identity->slug;
+                $identity = $this->speakerProfileResolver->getIdentityByPersonneId($speaker->personneId);
+                if (null !== $identity) {
+                    $speakerSlugs[$speaker->id] = $identity->slug;
                 }
             }
         }
