@@ -6,7 +6,7 @@ namespace AppBundle\Controller\Website\Global;
 
 use Afup\Site\Corporate\Feuille;
 use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
-use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Talk\PublishedTalkRepository;
 use AppBundle\Event\Talk\EventTalksSummary;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
 use AppBundle\Site\Entity\Repository\FeuilleRepository;
@@ -20,7 +20,7 @@ final class HtmlSitemapAction extends AbstractController
         private readonly ViewRenderer $view,
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly ArticleRepository $articleRepository,
-        private readonly TalkRepository $talkRepository,
+        private readonly PublishedTalkRepository $publishedTalkRepository,
         private readonly FeuilleRepository $feuilleRepository,
     ) {}
 
@@ -31,7 +31,7 @@ final class HtmlSitemapAction extends AbstractController
             'association' => $this->buildPages(Feuille::ID_FEUILLE_ANTENNES),
             'members' => $this->members(),
             'news' => $this->news(),
-            'summaries_by_year' => EventTalksSummary::groupByYear($this->talkRepository->getEventTalksSummaries()),
+            'summaries_by_year' => EventTalksSummary::groupByYear($this->publishedTalkRepository->getEventSummaries()),
         ]);
     }
 
