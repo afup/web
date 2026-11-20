@@ -31,6 +31,9 @@ class Article
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $chapeau = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    public ?string $description = null;
+
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $contenu = null;
 

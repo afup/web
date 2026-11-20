@@ -86,6 +86,20 @@ class ArticleType extends AbstractType
                     new Assert\Type('string'),
                 ],
             ])
+            ->add('description', TextareaType::class, [
+                'label' => 'Description',
+                'required' => false,
+                'help' => 'Résumé affiché par les moteurs de recherche (155 caractères conseillés). '
+                    . 'Si ce champ est vide, le début du contenu est utilisé.',
+                'attr' => [
+                    'maxlength' => 255,
+                    'rows' => 3,
+                ],
+                'constraints' => [
+                    new Assert\Length(max: 255),
+                    new Assert\Type('string'),
+                ],
+            ])
             ->add('image', FileType::class, [
                 'label' => 'Image de couverture',
                 'required' => false,
