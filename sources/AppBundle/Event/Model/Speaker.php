@@ -39,7 +39,7 @@ class Speaker implements NotifyPropertyInterface
     #[Assert\GreaterThan(0)]
     private $user;
 
-    private ?int $personId = null;
+    private ?int $personneId = null;
 
     private ?Genre $genre = null;
 
@@ -168,15 +168,15 @@ class Speaker implements NotifyPropertyInterface
         return $this;
     }
 
-    public function getPersonId(): ?int
+    public function getPersonneId(): ?int
     {
-        return $this->personId;
+        return $this->personneId;
     }
 
-    public function setPersonId(?int $personId): self
+    public function setPersonneId(?int $personneId): self
     {
-        $this->propertyChanged('personId', $this->personId, $personId);
-        $this->personId = $personId;
+        $this->propertyChanged('personneId', $this->personneId, $personneId);
+        $this->personneId = $personneId;
         return $this;
     }
 

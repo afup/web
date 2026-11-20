@@ -12,8 +12,8 @@ final readonly class SpeakerSearchResult
 {
     public function __construct(
         public int $speakerId,
-        public ?int $personId,
-        public ?string $personSlug,
+        public ?int $personneId,
+        public ?string $personneSlug,
         public string $firstname,
         public string $lastname,
         public ?string $company,

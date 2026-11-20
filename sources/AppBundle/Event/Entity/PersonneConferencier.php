@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Entity;
 
-use AppBundle\Event\Entity\Repository\SpeakerPersonRepository;
+use AppBundle\Event\Entity\Repository\PersonneConferencierRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Personne derrière les lignes afup_conferenciers (une par édition) d'un même conférencier.
  * Le slug ne change plus une fois créé, pour que les URL publiques restent stables.
  */
-#[ORM\Entity(repositoryClass: SpeakerPersonRepository::class)]
-#[ORM\Table(name: 'afup_speaker_person')]
-class SpeakerPerson
+#[ORM\Entity(repositoryClass: PersonneConferencierRepository::class)]
+#[ORM\Table(name: 'afup_conferenciers_personnes')]
+class PersonneConferencier
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

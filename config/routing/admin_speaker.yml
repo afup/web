@@ -30,26 +30,26 @@ admin_speaker_pick:
   path: /pick
   defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerPickAction}
 
-admin_speaker_person:
-  path: /person
-  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerPersonAction}
+admin_speaker_personne:
+  path: /personne
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\PersonneConferencierAction}
 
-admin_speaker_person_create:
-  path: /person/create
+admin_speaker_personne_create:
+  path: /personne/create
   methods: [POST]
-  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerPersonCreateAction}
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\PersonneConferencierCreateAction}
 
-admin_speaker_person_attach:
-  path: /person/attach
+admin_speaker_personne_attach:
+  path: /personne/attach
   methods: [POST]
-  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerPersonAttachAction}
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\PersonneConferencierAttachAction}
 
-admin_speaker_person_detach:
-  path: /person/detach
+admin_speaker_personne_detach:
+  path: /personne/detach
   methods: [POST]
-  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerPersonDetachAction}
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\PersonneConferencierDetachAction}
 
-admin_speaker_person_merge:
-  path: /person/merge
+admin_speaker_personne_merge:
+  path: /personne/merge
   methods: [POST]
-  defaults: {_controller: AppBundle\Controller\Admin\Speaker\SpeakerPersonMergeAction}
+  defaults: {_controller: AppBundle\Controller\Admin\Speaker\PersonneConferencierMergeAction}

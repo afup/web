@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\CFP;
 
-use AppBundle\Event\Model\Event;
 use AppBundle\Event\Entity\GithubUser;
+use AppBundle\Event\Entity\Repository\PersonneConferencierRepository;
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -16,6 +17,7 @@ class SpeakerFactory
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly SpeakerRepository $speakerRepository,
+        private readonly PersonneConferencierRepository $personneConferencierRepository,
     ) {}
 
     /**
@@ -41,13 +43,16 @@ class SpeakerFactory
             return $speaker;
         }
 
-        $personId = null;
+        $personneId = null;
         if (is_int($user)) {
-            $personId = $this->speakerRepository->findLatestPersonIdByGithubUser($user);
+            $personneId = $this->personneConferencierRepository->findLatestIdByGithubUser($user);
             // La personne a peut-être déjà une ligne pour cet événement, saisie par l'admin sans compte GitHub :
             // on la reprend plutôt que de créer un doublon.
-            $adminSpeaker = $personId !== null ? $this->speakerRepository->findOneByPersonInEventWithoutGithubUser($personId, $event) : null;
-            if ($adminSpeaker !== null) {
+            $adminSpeakerId = $personneId !== null && $event->getId() !== null
+                ? $this->personneConferencierRepository->findSpeakerIdInEvent($personneId, $event->getId(), withoutGithubUser: true)
+                : null;
+            $adminSpeaker = $adminSpeakerId !== null ? $this->speakerRepository->get($adminSpeakerId) : null;
+            if ($adminSpeaker instanceof Speaker) {
                 $adminSpeaker->setUser($user);
                 $this->speakerRepository->save($adminSpeaker);
 
@@ -59,7 +64,7 @@ class SpeakerFactory
         $speaker
             ->setUser($user)
             ->setEventId($event->getId())
-            ->setPersonId($personId)
+            ->setPersonneId($personneId)
         ;
 
         return $speaker;

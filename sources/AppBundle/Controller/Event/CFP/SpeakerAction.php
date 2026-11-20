@@ -10,7 +10,7 @@ use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\SpeakerType;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;
-use AppBundle\Event\Speaker\SpeakerPersonLinker;
+use AppBundle\Event\Speaker\PersonneConferencierLinker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +27,7 @@ class SpeakerAction extends AbstractController
         private readonly TranslatorInterface $translator,
         private readonly PhotoStorage $photoStorage,
         private readonly SidebarRenderer $sidebarRenderer,
-        private readonly SpeakerPersonLinker $speakerPersonLinker,
+        private readonly PersonneConferencierLinker $personneConferencierLinker,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -59,7 +59,7 @@ class SpeakerAction extends AbstractController
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->speakerPersonLinker->ensurePerson($speaker);
+            $this->personneConferencierLinker->ensurePersonne($speaker);
             $this->speakerRepository->save($speaker);
 
             $file = $speaker->getPhotoFile();

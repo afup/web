@@ -22,13 +22,13 @@ final class SpeakerFactoryTest extends IntegrationTestCase
         $this->connection = self::getContainer()->get(Connection::class);
         $this->connection->insert('afup_forum', ['id' => 1, 'titre' => 'Forum 2024', 'date_debut' => '2024-11-01']);
         $this->connection->insert('afup_forum', ['id' => 2, 'titre' => 'Forum 2025', 'date_debut' => '2025-11-01']);
-        $this->connection->insert('afup_speaker_person', ['id' => 1, 'slug' => 'marie-curie']);
+        $this->connection->insert('afup_conferenciers_personnes', ['id' => 1, 'slug' => 'marie-curie']);
         // Édition passée, saisie via le CFP avec le compte GitHub 7
         $this->insertSpeaker(10, 1, 7, 1);
         $this->logInAsGithubUser(7);
     }
 
-    public function testReusesTheRowOfThePersonCreatedByTheAdminWithoutGithubAccount(): void
+    public function testReusesTheRowOfThePersonneCreatedByTheAdminWithoutGithubAccount(): void
     {
         $this->insertSpeaker(20, 2, null, 1);
 
@@ -39,13 +39,13 @@ final class SpeakerFactoryTest extends IntegrationTestCase
         self::assertSame(2, (int) $this->connection->fetchOne('SELECT COUNT(*) FROM afup_conferenciers'), 'aucune ligne créée');
     }
 
-    public function testCreatesANewRowLinkedToThePersonOfTheGithubAccount(): void
+    public function testCreatesANewRowLinkedToThePersonneOfTheGithubAccount(): void
     {
         $speaker = self::getContainer()->get(SpeakerFactory::class)->getSpeaker($this->event(2));
 
         self::assertNull($speaker->getId());
         self::assertSame(7, $speaker->getUser());
-        self::assertSame(1, $speaker->getPersonId());
+        self::assertSame(1, $speaker->getPersonneId());
     }
 
     public function testReturnsTheExistingRowOfTheGithubAccount(): void
@@ -68,7 +68,7 @@ final class SpeakerFactoryTest extends IntegrationTestCase
         return new Event()->setId($id);
     }
 
-    private function insertSpeaker(int $id, int $eventId, ?int $githubUserId, ?int $personId): void
+    private function insertSpeaker(int $id, int $eventId, ?int $githubUserId, ?int $personneId): void
     {
         $this->connection->insert('afup_conferenciers', [
             'conferencier_id' => $id,
@@ -77,7 +77,7 @@ final class SpeakerFactoryTest extends IntegrationTestCase
             'nom' => 'Curie',
             'email' => 'marie@example.com',
             'user_github' => $githubUserId,
-            'person_id' => $personId,
+            'personne_id' => $personneId,
         ]);
     }
 }

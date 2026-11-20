@@ -7,7 +7,7 @@ namespace AppBundle\Controller\Admin\Speaker;
 use Afup\Site\Utils\Utils;
 use AppBundle\AuditLog\Audit;
 use AppBundle\CFP\PhotoStorage;
-use AppBundle\Event\Entity\Repository\SpeakerPersonRepository;
+use AppBundle\Event\Entity\Repository\PersonneConferencierRepository;
 use AppBundle\Event\Form\SpeakerFormDataFactory;
 use AppBundle\Event\Form\SpeakerType;
 use AppBundle\Event\Model\Repository\EventRepository;
@@ -31,7 +31,7 @@ class SpeakerEditAction extends AbstractController
         private readonly EventRepository $eventRepository,
         private readonly PhotoStorage $photoStorage,
         private readonly SpeakerFormDataFactory $speakerFormDataFactory,
-        private readonly SpeakerPersonRepository $speakerPersonRepository,
+        private readonly PersonneConferencierRepository $personneConferencierRepository,
         private readonly Audit $audit,
     ) {}
 
@@ -99,7 +99,7 @@ class SpeakerEditAction extends AbstractController
         }
 
         // Recherche d'une personne à laquelle rattacher la ligne (formulaire GET du bloc « Personne »)
-        $personSearch = $request->query->getString('personQuery');
+        $personneSearch = $request->query->getString('personneQuery');
 
         return $this->render('admin/speaker/edit.html.twig', [
             'speakerId' => $speaker->getId(),
@@ -110,11 +110,11 @@ class SpeakerEditAction extends AbstractController
             'talks' => $talks,
             'photo' => $photo,
             'originalPhoto' => $originalPhoto,
-            'person' => $speaker->getPersonId() !== null ? $this->speakerPersonRepository->find($speaker->getPersonId()) : null,
-            'personSearch' => $personSearch,
-            'personCandidates' => array_values(array_filter(
-                $this->speakerRepository->searchAcrossEvents($personSearch),
-                static fn(SpeakerSearchResult $result): bool => $result->personId !== null,
+            'personne' => $speaker->getPersonneId() !== null ? $this->personneConferencierRepository->find($speaker->getPersonneId()) : null,
+            'personneSearch' => $personneSearch,
+            'personneCandidates' => array_values(array_filter(
+                $this->personneConferencierRepository->searchAcrossEvents($personneSearch),
+                static fn(SpeakerSearchResult $result): bool => $result->personneId !== null,
             )),
         ]);
     }
