@@ -15,6 +15,7 @@ use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
+use CCMBenchmark\Ting\Repository\Hydrator;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -378,6 +379,48 @@ SQL;
         )->setParams(['eventId' => $eventId]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
+     * Derniers talks publiés avec une vidéo, du créneau terminé le plus récent au plus ancien.
+     * « Publié » reprend les règles de la page talk : talk planifié, affiché dans l'historique
+     * (ni clinique, ni introduction des speakers), date de publication passée ou vide,
+     * et tous ses créneaux de planning terminés.
+     *
+     * @return list<array{talk: Talk, event: Event}>
+     */
+    public function getLatestPublishedWithVideo(\DateTimeInterface $now, int $limit): array
+    {
+        $query = $this->getPreparedQuery(
+            'SELECT talk.session_id, talk.titre, talk.youtube_id, event.id, event.titre
+            FROM afup_sessions AS talk
+            INNER JOIN (
+                SELECT id_session, MAX(fin) AS fin
+                FROM afup_forum_planning
+                GROUP BY id_session
+            ) AS planning ON planning.id_session = talk.session_id
+            INNER JOIN afup_forum AS event ON event.id = talk.id_forum
+            WHERE talk.plannifie = 1
+            AND talk.genre NOT IN (:clinic, :speakerIntroductions)
+            AND LENGTH(talk.youtube_id) > 0
+            AND (talk.date_publication IS NULL OR talk.date_publication < :now)
+            AND planning.fin <= :nowTimestamp
+            ORDER BY planning.fin DESC, talk.session_id DESC
+            LIMIT ' . $limit,
+        )->setParams([
+            'clinic' => Talk::TYPE_CLINIC,
+            'speakerIntroductions' => Talk::TYPE_SPEAKER_INTRODUCTIONS,
+            'now' => $now->format('Y-m-d H:i:s'),
+            'nowTimestamp' => $now->getTimestamp(),
+        ]);
+
+        $latest = [];
+        /** @var array{talk: Talk, event: Event} $row */
+        foreach ($query->query($this->getCollection(new Hydrator())) as $row) {
+            $latest[] = ['talk' => $row['talk'], 'event' => $row['event']];
+        }
+
+        return $latest;
     }
 
     public function getAllPastTalks(\DateTime $dateTime)
