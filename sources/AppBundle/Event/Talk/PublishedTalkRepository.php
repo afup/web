@@ -7,6 +7,7 @@ namespace AppBundle\Event\Talk;
 use AppBundle\Event\Model\Talk;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Webmozart\Assert\Assert;
 
 /**
@@ -30,7 +31,7 @@ readonly class PublishedTalkRepository
         AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)';
 
     /** Colonnes lues par self::talk() et self::event(). */
-    private const string TALK_AND_EVENT_COLUMNS = 'talk.session_id, talk.titre, talk.youtube_id,
+    private const string TALK_AND_EVENT_COLUMNS = 'talk.session_id, talk.titre, talk.youtube_id, talk.slides_url, talk.blog_post_url,
         event.id AS event_id, event.titre AS event_titre, event.path AS event_path, event.date_debut AS event_date_debut, event.date_fin AS event_date_fin';
 
     public function __construct(private Connection $connection) {}
@@ -97,7 +98,7 @@ readonly class PublishedTalkRepository
     public function getEventTalks(int $eventId): array
     {
         $rows = $this->connection->fetchAllAssociative(
-            'SELECT talk.session_id, talk.titre, talk.youtube_id, planning.debut,
+            'SELECT talk.session_id, talk.titre, talk.youtube_id, talk.slides_url, talk.blog_post_url, planning.debut,
             speaker.conferencier_id, speaker.prenom, speaker.nom, speaker.personne_id
             FROM afup_sessions talk'
             . self::PLANNING_JOIN . '
@@ -153,6 +154,49 @@ readonly class PublishedTalkRepository
     }
 
     /**
+     * Les derniers talks publiés qui ont une vidéo, avec leur édition et leurs speakers, du créneau terminé le plus
+     * récent au plus ancien, en une seule requête.
+     *
+     * @return list<array{talk: PublishedTalk, event: PublishedEvent, speakers: list<PublishedSpeaker>}>
+     */
+    public function getLatestTalksWithVideo(int $limit): array
+    {
+        // La limite porte sur les talks : elle s'applique avant la jointure des speakers, qui multiplie les lignes.
+        $rows = $this->connection->fetchAllAssociative(
+            'SELECT ' . self::TALK_AND_EVENT_COLUMNS . ',
+            speaker.conferencier_id, speaker.prenom, speaker.nom, speaker.personne_id
+            FROM (
+                SELECT talk.session_id, planning.fin AS slot_end
+                FROM afup_sessions talk'
+                . self::PLANNING_JOIN . '
+                WHERE ' . self::CONDITIONS . "
+                AND talk.youtube_id IS NOT NULL AND talk.youtube_id <> ''
+                ORDER BY planning.fin DESC, talk.session_id DESC
+                LIMIT :limit
+            ) latest
+            INNER JOIN afup_sessions talk ON talk.session_id = latest.session_id
+            INNER JOIN afup_forum event ON event.id = talk.id_forum
+            LEFT JOIN afup_conferenciers_sessions cs ON cs.session_id = talk.session_id
+            LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = cs.conferencier_id
+            ORDER BY latest.slot_end DESC, talk.session_id DESC, speaker.conferencier_id ASC",
+            ['limit' => max(0, $limit)],
+            ['limit' => ParameterType::INTEGER],
+        );
+
+        /** @var array<int, array{talk: PublishedTalk, event: PublishedEvent, speakers: list<PublishedSpeaker>}> $latest */
+        $latest = [];
+        foreach ($rows as $row) {
+            $talkId = self::toInt($row['session_id']);
+            $latest[$talkId] ??= ['talk' => self::talk($row), 'event' => self::event($row), 'speakers' => []];
+            if (null !== $row['conferencier_id']) {
+                $latest[$talkId]['speakers'][] = self::speaker($row);
+            }
+        }
+
+        return array_values($latest);
+    }
+
+    /**
      * Les talks publiés de ces lignes speaker, avec leur événement, du plus récent au plus ancien.
      *
      * @param list<int> $speakerIds
@@ -198,6 +242,8 @@ readonly class PublishedTalkRepository
             self::toInt($row['session_id']),
             self::toString($row['titre']),
             self::nullableString($row['youtube_id']),
+            self::nullableString($row['slides_url'] ?? null),
+            self::nullableString($row['blog_post_url'] ?? null),
         );
     }
 
