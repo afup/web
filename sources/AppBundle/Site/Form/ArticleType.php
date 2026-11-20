@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Site\Form;
 
+use AppBundle\Doctrine\Type\UnixTimestampType;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Site\Entity\Article;
 use AppBundle\Site\Entity\Rubrique;
@@ -113,6 +114,7 @@ class ArticleType extends AbstractType
                 'html5' => true,
                 'label' => 'Date',
                 'input' => 'timestamp',
+                'view_timezone' => UnixTimestampType::TIMEZONE,
                 'widget' => 'single_text',
                 'years' => range(2001, date('Y')),
                 'attr' => [
