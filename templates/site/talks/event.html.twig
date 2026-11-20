@@ -42,25 +42,7 @@
         <ol class="flex flex-col gap-4">
             {% for event_talk in event_talks %}
                 <li>
-                    {% embed 'site/talks/_talk_card.html.twig' with {talk: event_talk.talk} %}
-                        {% block details %}
-                            {% if event_talk.speakers|length %}
-                                <p class="text-neutre-700">
-                                    {% for speaker in event_talk.speakers -%}
-                                        {%- if speaker_slugs[speaker.id] is defined -%}
-                                            <a href="{{ path('talks_speaker', {slug: speaker_slugs[speaker.id]}) }}" class="text-afup-500 underline hover:no-underline">{{ speaker.label }}</a>
-                                        {%- else -%}
-                                            {{ speaker.label }}
-                                        {%- endif -%}
-                                        {{- not loop.last ? ', ' -}}
-                                    {%- endfor %}
-                                </p>
-                            {% endif %}
-                            <p class="text-sm text-neutre-400">
-                                <time datetime="{{ event_talk.startsAt|date('Y-m-d\\TH:i') }}">{{ event_talk.startsAt|format_datetime('long', 'short') }}</time>
-                            </p>
-                        {% endblock %}
-                    {% endembed %}
+                    {% include 'site/talks/_talk_card.html.twig' with {talk: event_talk.talk, speakers: event_talk.speakers, speaker_slugs: speaker_slugs, date: event_talk.startsAt, date_with_time: true} only %}
                 </li>
             {% endfor %}
         </ol>

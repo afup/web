@@ -57,13 +57,7 @@
         <ul class="flex flex-col gap-4">
             {% for speaker_talk in profile.talks %}
                 <li>
-                    {% embed 'site/talks/_talk_card.html.twig' with {talk: speaker_talk.talk} %}
-                        {% block details %}
-                            <p class="text-sm text-neutre-400">
-                                <a href="{{ path('talks_event', {path: speaker_talk.event.path}) }}" class="text-afup-500 underline hover:no-underline">{{ speaker_talk.event.title }}</a> · <time datetime="{{ speaker_talk.startsAt|date('Y-m-d') }}">{{ speaker_talk.startsAt|format_date('long') }}</time>
-                            </p>
-                        {% endblock %}
-                    {% endembed %}
+                    {% include 'site/talks/_talk_card.html.twig' with {talk: speaker_talk.talk, event: speaker_talk.event, date: speaker_talk.startsAt} only %}
                 </li>
             {% endfor %}
         </ul>

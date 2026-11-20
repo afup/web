@@ -1,12 +1,18 @@
-{# Carte d'un talk : vignette (ou image par défaut), titre en lien, puis :
-   - si `speakers` ou `event` sont fournis : « Speaker A et Speaker B · Événement », chacun lié à sa page
-     (`speaker_slugs` : slug de la page speaker, par ID de ligne speaker ; un speaker sans page reste en texte) ;
-   - les liens vers les slides et l'article de blog du talk ;
-   - le bloc « details » de l'appelant.
-   Les résultats de recherche Algolia reprennent ce rendu (htdocs/js/talk/list.js) : modifier les deux ensemble. #}
+{# Carte d'un talk, la même sur le hub, les pages événement et speaker, et dans les résultats de recherche
+   Algolia (htdocs/js/talk/list.js : modifier les deux ensemble).
+
+   Vignette, titre, puis une ligne « Speakers · Événement · Date », chaque partie n'apparaissant que si elle est
+   fournie ; ce qui a une page est un lien (couleur AFUP), le reste est du texte (gris) :
+   - `speakers` et `speaker_slugs` (slug de la page speaker, par ID de ligne speaker) ;
+   - `event` ;
+   - `date`, avec l'heure si `date_with_time`.
+   Enfin les liens vers les slides et l'article de blog du talk. #}
 {% set talk_url = path('talks_show', {id: talk.id, slug: talk.slug}) %}
-{% set link_class = 'text-afup-500 underline hover:no-underline' %}
+{% set link_class = 'text-afup-500 hover:underline' %}
 {% set resource_class = 'inline-flex items-center gap-1.5 rounded-lg bg-afup-100 px-2 py-1 text-xs font-medium text-afup-500 hover:bg-afup-500 hover:text-white' %}
+{% set speakers = speakers|default([]) %}
+{% set event = event|default(null) %}
+{% set date = date|default(null) %}
 <article class="flex flex-col sm:flex-row gap-4 rounded-2xl border-2 border-neutre-300 p-4">
     <a href="{{ talk_url }}" class="shrink-0 w-full sm:w-44" tabindex="-1" aria-hidden="true">
         <img src="{{ talk.hasYoutubeId ? 'https://img.youtube.com/vi/' ~ talk.youtubeId ~ '/hqdefault.jpg' : asset('/images/no_video.jpg') }}"
@@ -16,9 +22,9 @@
         <h3 class="font-titre text-lg leading-snug text-afup-800">
             <a href="{{ talk_url }}" class="hover:underline">{{ talk.title }}</a>
         </h3>
-        {% if speakers|default([]) is not empty or event|default(null) is not null %}
+        {% if speakers is not empty or event is not null or date is not null %}
             <p class="text-sm text-neutre-400">
-                {%- for speaker in speakers|default([]) -%}
+                {%- for speaker in speakers -%}
                     {%- if speaker_slugs|default({})[speaker.id] is defined -%}
                         <a href="{{ path('talks_speaker', {slug: speaker_slugs[speaker.id]}) }}" class="{{ link_class }}">{{ speaker.label }}</a>
                     {%- else -%}
@@ -26,9 +32,17 @@
                     {%- endif -%}
                     {{- not loop.last ? ' et ' -}}
                 {%- endfor -%}
-                {%- if speakers|default([]) is not empty and event|default(null) is not null %} · {% endif -%}
-                {%- if event|default(null) is not null -%}
+                {%- if event is not null -%}
+                    {{- speakers is not empty ? ' · ' -}}
                     <a href="{{ path('talks_event', {path: event.path}) }}" class="{{ link_class }}">{{ event.title }}</a>
+                {%- endif -%}
+                {%- if date is not null -%}
+                    {{- speakers is not empty or event is not null ? ' · ' -}}
+                    {%- if date_with_time|default(false) -%}
+                        <time datetime="{{ date|date('Y-m-d\\TH:i') }}">{{ date|format_datetime('long', 'short') }}</time>
+                    {%- else -%}
+                        <time datetime="{{ date|date('Y-m-d') }}">{{ date|format_date('long') }}</time>
+                    {%- endif -%}
                 {%- endif -%}
             </p>
         {% endif %}
@@ -42,6 +56,5 @@
                 {% endif %}
             </ul>
         {% endif %}
-        {% block details %}{% endblock %}
     </div>
 </article>
