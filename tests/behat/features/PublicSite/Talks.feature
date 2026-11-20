@@ -133,7 +133,7 @@ Feature: Site Public - Talks
   @reloadDbWithTestData
   Scenario: Un speaker non rattaché à une personne n'a pas de page
     Given I am logged in as admin and on the Administration
-    And I am on "/admin/speaker/person?id=1"
+    And I am on "/admin/speaker/personne?id=1"
     When I press "Détacher" in the row of "foo@bar.baz"
     Then I should see "Le conférencier a été détaché de la personne"
     When I go to "/talks/speakers/geoffrey-bachelet"
