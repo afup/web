@@ -70,7 +70,7 @@ final readonly class RelatedTalks
     }
 
     /**
-     * Même règle que TalkRepository::getPublishedBySpeakers() : même compte GitHub,
+     * Même règle que RelatedTalkRepository::getPublishedBySpeakers() : même compte GitHub,
      * ou même prénom et même nom.
      */
     private static function isSamePerson(Speaker $speaker, Speaker $candidate): bool

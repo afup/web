@@ -12,6 +12,7 @@ use AppBundle\Event\Talk\PublishedTalkRepository;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Event\Talk\VideoObjectJsonLd;
+use AppBundle\Event\Talk\RelatedTalkRepository;
 use AppBundle\Event\Talk\RelatedTalks;
 use AppBundle\Joindin\JoindinComments;
 use AppBundle\Subtitles\Parser;
@@ -32,6 +33,7 @@ final class ShowAction extends AbstractController
         private readonly VideoObjectJsonLd $videoObjectJsonLd,
         private readonly PublishedTalkRepository $publishedTalkRepository,
         private readonly SpeakerProfileResolver $speakerProfileResolver,
+        private readonly RelatedTalkRepository $relatedTalkRepository,
     ) {}
 
     public function __invoke(int $id, string $slug): Response
@@ -67,9 +69,9 @@ final class ShowAction extends AbstractController
         }
         $relatedTalks = RelatedTalks::build(
             $talk,
-            $this->talkRepository->getPublishedByEventInPlanningOrder($event),
+            $this->relatedTalkRepository->getPublishedByEventInPlanningOrder($event),
             $speakers,
-            $this->talkRepository->getPublishedBySpeakers($speakers, $talk),
+            $this->relatedTalkRepository->getPublishedBySpeakers($speakers, $talk),
         );
         $comments = $this->joindinComments->getCommentsFromTalk($talk);
 
