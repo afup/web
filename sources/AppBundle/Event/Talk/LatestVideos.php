@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Talk;
 
-use AppBundle\Event\Model\Repository\TalkRepository;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Clock\ClockInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -15,7 +14,7 @@ final readonly class LatestVideos
     private const string CACHE_KEY = 'latest_videos';
 
     public function __construct(
-        private TalkRepository $talkRepository,
+        private LatestVideoRepository $latestVideoRepository,
         private ClockInterface $clock,
         // Durée de vie du cache définie sur le pool (config/packages/cache.yaml).
         #[Autowire('@cache.latest_videos')]
@@ -30,18 +29,7 @@ final readonly class LatestVideos
         $cacheItem = $this->cache->getItem(self::CACHE_KEY);
 
         if (!$cacheItem->isHit()) {
-            $videos = [];
-            foreach ($this->talkRepository->getLatestPublishedWithVideo($this->clock->now(), self::LIMIT) as $row) {
-                $videos[] = new LatestVideo(
-                    (int) $row['talk']->getId(),
-                    $row['talk']->getSlug(),
-                    $row['talk']->getTitle(),
-                    (string) $row['talk']->getYoutubeId(),
-                    (string) $row['event']->getTitle(),
-                );
-            }
-
-            $cacheItem->set($videos);
+            $cacheItem->set($this->latestVideoRepository->getLatest($this->clock->now(), self::LIMIT));
             $this->cache->save($cacheItem);
         }
 
