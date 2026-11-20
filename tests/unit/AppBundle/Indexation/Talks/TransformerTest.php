@@ -62,9 +62,14 @@ final class TransformerTest extends TestCase
             ->setBiography('Dimitri Fontaine travaille sur PostgreSQL, à la fois en tant que Contributeur Majeur du projet au sein d\'une communauté vibrante et en tant qu\'expert PostgreSQL pour 2ndQuadrant.')
             ->setTwitter('tapoueh');
 
-        $transformer = new Transformer();
+        ($otherSpeaker = new Speaker())
+            ->setId(801)
+            ->setFirstname('Sans')
+            ->setLastname('Page');
 
-        $result = $transformer->transform($planning, $talk, $event, new \ArrayObject([$speaker]));
+        $transformer = new Transformer(static fn(Speaker $speaker): ?string => $speaker->getId() === 800 ? 'dimitri-fontaine' : null);
+
+        $result = $transformer->transform($planning, $talk, $event, new \ArrayObject([$speaker, $otherSpeaker]));
 
         self::assertEquals(
             [
@@ -75,19 +80,28 @@ final class TransformerTest extends TestCase
                 'event' => [
                     'id' => 10,
                     'title' => 'PHP Tour Lyon 2014',
+                    'path' => 'phptourlyon2014',
                     'start_date' => '2014-06-24',
                 ],
                 'type' => [
                     'id' => 1,
                     'label' => 'Conférence (40 minutes)',
                 ],
-                'speakers_label' => 'Dimitri FONTAINE',
+                'speakers_label' => 'Dimitri FONTAINE et Sans PAGE',
                 'speakers' => [
                     [
                         'id' => 800,
                         'first_name' => 'Dimitri',
                         'last_name' => 'Fontaine',
                         'label' => 'Dimitri FONTAINE',
+                        'slug' => 'dimitri-fontaine',
+                    ],
+                    [
+                        'id' => 801,
+                        'first_name' => 'Sans',
+                        'last_name' => 'Page',
+                        'label' => 'Sans PAGE',
+                        'slug' => null,
                     ],
                 ],
                 'has_video' => true,

@@ -1,5 +1,12 @@
-{# Carte d'un talk : vignette (ou image par défaut), titre en lien, puis le bloc « details » de l'appelant. #}
+{# Carte d'un talk : vignette (ou image par défaut), titre en lien, puis :
+   - si `speakers` ou `event` sont fournis : « Speaker A et Speaker B · Événement », chacun lié à sa page
+     (`speaker_slugs` : slug de la page speaker, par ID de ligne speaker ; un speaker sans page reste en texte) ;
+   - les liens vers les slides et l'article de blog du talk ;
+   - le bloc « details » de l'appelant.
+   Les résultats de recherche Algolia reprennent ce rendu (htdocs/js/talk/list.js) : modifier les deux ensemble. #}
 {% set talk_url = path('talks_show', {id: talk.id, slug: talk.slug}) %}
+{% set link_class = 'text-afup-500 underline hover:no-underline' %}
+{% set resource_class = 'inline-flex items-center gap-1.5 rounded-lg bg-afup-100 px-2 py-1 text-xs font-medium text-afup-500 hover:bg-afup-500 hover:text-white' %}
 <article class="flex flex-col sm:flex-row gap-4 rounded-2xl border-2 border-neutre-300 p-4">
     <a href="{{ talk_url }}" class="shrink-0 w-full sm:w-44" tabindex="-1" aria-hidden="true">
         <img src="{{ talk.hasYoutubeId ? 'https://img.youtube.com/vi/' ~ talk.youtubeId ~ '/hqdefault.jpg' : asset('/images/no_video.jpg') }}"
@@ -9,6 +16,32 @@
         <h3 class="font-titre text-lg leading-snug text-afup-800">
             <a href="{{ talk_url }}" class="hover:underline">{{ talk.title }}</a>
         </h3>
+        {% if speakers|default([]) is not empty or event|default(null) is not null %}
+            <p class="text-sm text-neutre-400">
+                {%- for speaker in speakers|default([]) -%}
+                    {%- if speaker_slugs|default({})[speaker.id] is defined -%}
+                        <a href="{{ path('talks_speaker', {slug: speaker_slugs[speaker.id]}) }}" class="{{ link_class }}">{{ speaker.label }}</a>
+                    {%- else -%}
+                        {{ speaker.label }}
+                    {%- endif -%}
+                    {{- not loop.last ? ' et ' -}}
+                {%- endfor -%}
+                {%- if speakers|default([]) is not empty and event|default(null) is not null %} · {% endif -%}
+                {%- if event|default(null) is not null -%}
+                    <a href="{{ path('talks_event', {path: event.path}) }}" class="{{ link_class }}">{{ event.title }}</a>
+                {%- endif -%}
+            </p>
+        {% endif %}
+        {% if talk.slidesUrl or talk.blogPostUrl %}
+            <ul class="flex flex-wrap items-center gap-2 mt-auto">
+                {% if talk.blogPostUrl %}
+                    <li><a href="{{ talk.blogPostUrl }}" target="_blank" rel="noopener" class="{{ resource_class }}"><twig:ux:icon name="mingcute:rss-fill" class="size-3.5" />Article de blog</a></li>
+                {% endif %}
+                {% if talk.slidesUrl %}
+                    <li><a href="{{ talk.slidesUrl }}" target="_blank" rel="noopener" class="{{ resource_class }}"><twig:ux:icon name="mingcute:presentation-1-fill" class="size-3.5" />Slides</a></li>
+                {% endif %}
+            </ul>
+        {% endif %}
         {% block details %}{% endblock %}
     </div>
 </article>

@@ -62,11 +62,24 @@ final class ListAction extends AbstractController
         // Le hub (dernières vidéos, éditions, speakers) ne s'affiche que hors recherche : sur une URL de recherche,
         // il repousserait les résultats sous la ligne de flottaison, et ces URLs ne sont pas destinées à être indexées.
         $showHub = !$this->isSearch($request);
+        $latestTalks = $showHub ? $this->publishedTalkRepository->getLatestTalksWithVideo(self::LATEST_TALKS_COUNT) : [];
+
+        // Slug de la page de chaque speaker, par ID de ligne speaker, pour lier les speakers des cartes.
+        $speakerSlugs = [];
+        foreach ($latestTalks as $latest) {
+            foreach ($latest['speakers'] as $speaker) {
+                $identity = $this->speakerProfileResolver->getIdentityForSpeaker($speaker);
+                if (null !== $identity && null !== $speaker->getId()) {
+                    $speakerSlugs[$speaker->getId()] = $identity->slug;
+                }
+            }
+        }
 
         return $this->view->render('site/talks/list.html.twig', [
             'title' => $title,
             'show_hub' => $showHub,
-            'latest_talks' => $showHub ? $this->publishedTalkRepository->getLatestTalksWithVideo(self::LATEST_TALKS_COUNT) : [],
+            'latest_talks' => $latestTalks,
+            'speaker_slugs' => $speakerSlugs,
             'summaries_by_year' => $showHub ? EventTalksSummary::groupByYear($this->publishedTalkRepository->getEventSummaries()) : [],
             'canonical' => $canonical,
             'antennes' => $this->antennesRepository->getAllSortedByLabels(),

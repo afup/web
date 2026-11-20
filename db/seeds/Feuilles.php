@@ -57,7 +57,7 @@ class Feuilles extends AbstractSeed
             [
                 'id' => 44,
                 'id_parent' => Feuille::ID_FEUILLE_HEADER,
-                'nom' => 'Vidéos',
+                'nom' => 'Talks',
                 'lien' => '/talks/',
                 'alt' => '',
                 'position' => 5,
