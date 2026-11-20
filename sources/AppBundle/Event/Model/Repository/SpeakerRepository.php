@@ -41,6 +41,42 @@ class SpeakerRepository extends Repository implements MetadataInitializer
     }
 
     /**
+     * Conférenciers liés à au moins une des sessions données, triés par identifiant.
+     *
+     * @param list<int> $talkIds
+     *
+     * @return list<Speaker>
+     */
+    public function getSpeakersByTalkIds(array $talkIds): array
+    {
+        if ($talkIds === []) {
+            return [];
+        }
+
+        $placeholders = [];
+        $params = [];
+        foreach ($talkIds as $index => $talkId) {
+            $placeholders[] = ':talk' . $index;
+            $params['talk' . $index] = $talkId;
+        }
+
+        $query = $this->getPreparedQuery(sprintf(
+            'SELECT DISTINCT c.conferencier_id, c.id_forum, c.genre, c.nom, c.prenom, c.email, c.societe,
+            c.biographie, c.twitter, c.user_github, c.photo, c.bluesky, c.mastodon, c.linkedin
+            FROM afup_conferenciers c
+            INNER JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = c.conferencier_id
+            WHERE cs.session_id IN (%s)
+            ORDER BY c.conferencier_id ASC',
+            implode(', ', $placeholders),
+        ))->setParams($params);
+
+        /** @var list<Speaker> $speakers */
+        $speakers = iterator_to_array($query->query($this->getCollection(new HydratorSingleObject())), false);
+
+        return $speakers;
+    }
+
+    /**
      * Retrieve speakers with a scheduled talk for a given event
      * @param bool $returnTalksThatWillBePublished
      * @return CollectionInterface<array<mixed>>&iterable<array<mixed>>
