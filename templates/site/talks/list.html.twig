@@ -47,68 +47,60 @@
         {% endif %}
     </div>
 
-    {# Hub rendu côté serveur : liens HTML vers les talks, les éditions et les speakers, lisibles sans JavaScript. #}
-    {% if show_hub %}
-        {% if latest_talks is not empty %}
-            <section id="dernieres-videos" class="container mx-auto px-4 pb-6 sm:px-28 sm:pb-10 flex flex-col gap-4">
-                <twig:SectionTitle>Dernières vidéos</twig:SectionTitle>
-                <ol class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    {% for latest in latest_talks %}
-                        <li>
-                            {% embed 'site/talks/_talk_card.html.twig' with {talk: latest.talk} %}
-                                {% block details %}
-                                    <p class="text-sm text-neutre-400">
-                                        <a href="{{ path('talks_event', {path: latest.event.path}) }}" class="text-afup-500 underline hover:no-underline">{{ latest.event.title }}</a>
-                                    </p>
-                                {% endblock %}
-                            {% endembed %}
-                        </li>
-                    {% endfor %}
-                </ol>
-            </section>
-        {% endif %}
+    {# Recherche Algolia (htdocs/js/talk/list.js) : sans recherche active, la liste affichée est celle des dernières
+       vidéos, rendue côté serveur (lisible sans JavaScript et par les moteurs) ; dès qu'une recherche ou un filtre est
+       actif, le script la masque et affiche les résultats Algolia à sa place, puis la rétablit quand on efface tout.
+       Sur une URL de recherche, la liste serveur n'est pas rendue : seuls les résultats s'affichent. #}
+    <section id="talks" class="container mx-auto px-4 pb-6 sm:px-28 sm:pb-10 flex flex-col gap-4"
+             data-latest-title="Dernières vidéos" data-search-title="Résultats de la recherche">
+        <twig:SectionTitle id="talks-title">{{ show_hub ? 'Dernières vidéos' : 'Résultats de la recherche' }}</twig:SectionTitle>
 
+        {# instantsearch remplace cet input ; les classes sont posées via cssClasses.input #}
+        <div id="search-box"></div>
+
+        {# flex-col et non flex-col-reverse : en mobile le bloc de filtres fait ~500px, il doit
+           passer APRÈS les résultats et non les repousser sous la ligne de flottaison. #}
+        <div class="flex flex-col sm:flex-row gap-5 sm:gap-8 items-start">
+            <div class="flex flex-col gap-6 grow w-full min-w-0">
+                {% if latest_talks is not empty %}
+                    <ol id="dernieres-videos" class="flex flex-col gap-4">
+                        {% for latest in latest_talks %}
+                            <li>
+                                {% include 'site/talks/_talk_card.html.twig' with {talk: latest.talk, speakers: latest.speakers, speaker_slugs: speaker_slugs, event: latest.event} only %}
+                            </li>
+                        {% endfor %}
+                    </ol>
+                {% endif %}
+
+                <div id="hits-container" class="flex flex-col gap-4 w-full"{% if latest_talks is not empty %} hidden{% endif %}></div>
+                <nav id="pagination" aria-label="Pagination des conférences" class="mx-auto flex w-full justify-center"{% if latest_talks is not empty %} hidden{% endif %}></nav>
+            </div>
+
+            <div class="w-full sm:w-80 sm:shrink-0">
+                <twig:Card class="flex flex-col gap-6">
+                    <div class="flex flex-col gap-2">
+                        <div id="refinement-has-video"></div>
+                        <div id="refinement-has-slides"></div>
+                        <div id="refinement-has-blog-post"></div>
+                        <div id="refinement-video-has-fr-subtitles"></div>
+                        <div id="refinement-video-has-en-subtitles"></div>
+                    </div>
+                    <div id="refinement-event"></div>
+                    <div id="refinement-type"></div>
+                    <div id="refinement-language"></div>
+                    <div id="refinement-speaker"></div>
+                    <div id="refinement-clear"></div>
+                </twig:Card>
+            </div>
+        </div>
+    </section>
+
+    {% if show_hub %}
         <section id="editions" class="container mx-auto px-4 pb-6 sm:px-28 sm:pb-10 flex flex-col gap-4">
             <twig:SectionTitle>Les éditions</twig:SectionTitle>
             {% include 'site/talks/_events_by_year.html.twig' with {heading_level: 3} %}
         </section>
     {% endif %}
-
-    <div class="container mx-auto px-4 pb-6 sm:px-28 sm:pb-10 flex flex-col gap-4">
-        {% if show_hub %}
-            <twig:SectionTitle>Rechercher une conférence</twig:SectionTitle>
-        {% endif %}
-
-        {# instantsearch remplace cet input ; les classes sont posées via cssClasses.input #}
-        <div id="search-box"></div>
-    </div>
-
-    {# flex-col et non flex-col-reverse : en mobile le bloc de filtres fait ~500px, il doit
-   passer APRÈS les résultats et non les repousser sous la ligne de flottaison. #}
-    <div class="container mx-auto px-4 pb-6 sm:px-28 sm:pb-10 flex flex-col sm:flex-row gap-5 sm:gap-8 items-start">
-        <div id="hits-container" class="flex flex-col gap-4 grow w-full"></div>
-
-        <div class="w-full sm:w-80 sm:shrink-0">
-            <twig:Card class="flex flex-col gap-6">
-                <div class="flex flex-col gap-2">
-                    <div id="refinement-has-video"></div>
-                    <div id="refinement-has-slides"></div>
-                    <div id="refinement-has-blog-post"></div>
-                    <div id="refinement-video-has-fr-subtitles"></div>
-                    <div id="refinement-video-has-en-subtitles"></div>
-                </div>
-                <div id="refinement-event"></div>
-                <div id="refinement-type"></div>
-                <div id="refinement-language"></div>
-                <div id="refinement-speaker"></div>
-                <div id="refinement-clear"></div>
-            </twig:Card>
-        </div>
-    </div>
-
-    <div class="container mx-auto px-4 pb-10 sm:px-28">
-        <nav id="pagination" aria-label="Pagination des conférences" class="mx-auto flex w-full justify-center"></nav>
-    </div>
 
     <div class="container mx-auto px-4 py-6 sm:px-28 sm:py-10 flex flex-col gap-5">
         <h2 class="font-semibold text-afup-800 border-b border-neutre-300 pb-2">

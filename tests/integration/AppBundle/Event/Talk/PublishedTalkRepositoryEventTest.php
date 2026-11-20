@@ -92,7 +92,7 @@ final class PublishedTalkRepositoryEventTest extends IntegrationTestCase
     public function testGetLatestPublishedTalksWithVideoSortsBySlotEnd(): void
     {
         // Le créneau du talk 301 se termine après celui du talk 300, qui a un identifiant plus petit.
-        $this->insertTalk(301, 3, 'Forum 2018, fin de journée', strtotime('2018-10-25 17:00:00'), youtubeId: 'video301');
+        $this->insertTalk(301, 3, 'Forum 2018, fin de journée', strtotime('2018-10-25 17:00:00'), speakerIds: [12, 11], youtubeId: 'video301', slidesUrl: 'https://slides.example/301', blogPostUrl: 'https://blog.example/301');
         $this->insertTalk(110, 1, 'Vidéo, créneau en cours', time() - 600, youtubeId: 'video110', slotEnd: time() + 600);
         $this->insertTalk(111, 1, 'Vidéo, non planifié', strtotime('2019-10-24 11:00:00'), youtubeId: 'video111', scheduled: false);
         $repository = self::getContainer()->get(TalkRepository::class);
@@ -101,20 +101,25 @@ final class PublishedTalkRepositoryEventTest extends IntegrationTestCase
             $row['talk']->getTitle(),
             $row['talk']->getYoutubeId(),
             $row['event']->getPath(),
+            array_map(static fn(Speaker $speaker): ?int => $speaker->getId(), $row['speakers']),
+            $row['talk']->getSlidesUrl(),
+            $row['talk']->getBlogPostUrl(),
         ], $latest);
 
         // Exclus : sans vidéo ou vidéo vide (101, 103, 200), clinique (104), publication à venir (107), créneau en
         // cours (110), non planifié (111).
         self::assertSame(
             [
-                [100, 'Clôture', 'video100', 'forumphp2019'],
-                [102, 'Salle 2', 'video102', 'forumphp2019'],
-                [301, 'Forum 2018, fin de journée', 'video301', 'forumphp2018'],
-                [300, 'Forum 2018', 'video300', 'forumphp2018'],
+                [100, 'Clôture', 'video100', 'forumphp2019', [10], null, null],
+                [102, 'Salle 2', 'video102', 'forumphp2019', [10], null, null],
+                // Deux speakers : le talk n'apparaît qu'une fois, la limite porte sur les talks.
+                [301, 'Forum 2018, fin de journée', 'video301', 'forumphp2018', [11, 12], 'https://slides.example/301', 'https://blog.example/301'],
+                [300, 'Forum 2018', 'video300', 'forumphp2018', [], null, null],
             ],
             $toRows($repository->getLatestPublishedTalksWithVideo(12)),
         );
         self::assertSame([100, 102], array_column($toRows($repository->getLatestPublishedTalksWithVideo(2)), 0));
+        self::assertSame([100, 102, 301], array_column($toRows($repository->getLatestPublishedTalksWithVideo(3)), 0));
     }
 
     private function getEvent(string $path): Event
@@ -128,7 +133,7 @@ final class PublishedTalkRepositoryEventTest extends IntegrationTestCase
     /**
      * @param list<int> $speakerIds
      */
-    private function insertTalk(int $id, int $eventId, string $title, ?int $slotStart, int $type = Talk::TYPE_FULL_LONG, int $room = 1, array $speakerIds = [], ?string $youtubeId = null, bool $scheduled = true, ?string $publishedOn = null, ?int $slotEnd = null): void
+    private function insertTalk(int $id, int $eventId, string $title, ?int $slotStart, int $type = Talk::TYPE_FULL_LONG, int $room = 1, array $speakerIds = [], ?string $youtubeId = null, bool $scheduled = true, ?string $publishedOn = null, ?int $slotEnd = null, ?string $slidesUrl = null, ?string $blogPostUrl = null): void
     {
         $this->connection->insert('afup_sessions', [
             'session_id' => $id,
@@ -139,6 +144,8 @@ final class PublishedTalkRepositoryEventTest extends IntegrationTestCase
             'genre' => $type,
             'plannifie' => (int) $scheduled,
             'youtube_id' => $youtubeId,
+            'slides_url' => $slidesUrl,
+            'blog_post_url' => $blogPostUrl,
             'date_publication' => null !== $publishedOn ? date('Y-m-d H:i:s', (int) strtotime($publishedOn)) : null,
         ]);
 
