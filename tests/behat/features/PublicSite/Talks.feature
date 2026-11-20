@@ -51,6 +51,9 @@ Feature: Site Public - Talks
     And the response should contain "href=\"/talks/evenements/passed\""
     And the response should contain "https://img.youtube.com/vi/MseSkWbhxV8/hqdefault.jpg"
     And the response should contain "/images/no_video.jpg"
+    # Carte d'un talk, la même partout : événement lié puis date, et les slides
+    And the "main ul article:has(a[href='/talks/2-rest-ou-graphql-exemples-illustres-avec-symfony-et-api-platform']) p" element should contain "<a href=\"/talks/evenements/forum\" class=\"text-afup-500 hover:underline\">forum</a> · <time datetime="
+    And I should see "Slides" in the "main ul article:has(a[href='/talks/2-rest-ou-graphql-exemples-illustres-avec-symfony-et-api-platform'])" element
     And the response should contain "href=\"https://phpc.social/@ubermuda\""
     And the JSON-LD "Person" should have the following properties:
       | name | Geoffrey Bachelet                                          |
@@ -79,6 +82,7 @@ Feature: Site Public - Talks
     When I go to "/talks/speakers/"
     Then the response status code should be 200
     And I should see "B" in the "section#speakers-B h2" element
+    And I should see "Talks" in the "main a[href='/talks/']" element
     And the response should contain "href=\"/talks/speakers/geoffrey-bachelet\""
 
   @reloadDbWithTestData
@@ -118,6 +122,9 @@ Feature: Site Public - Talks
     And I should not see "Révolutionons PHP"
     And the response should contain "https://img.youtube.com/vi/QhAToFl_Omo/hqdefault.jpg"
     And the response should contain "href=\"/talks/speakers/geoffrey-bachelet\""
+    # Carte d'un talk, la même partout : speakers liés puis date et heure, et les slides
+    And the "main ol li:nth-child(2) article p" element should contain "<a href=\"/talks/speakers/geoffrey-bachelet\" class=\"text-afup-500 hover:underline\">Geoffrey BACHELET</a> · <time datetime="
+    And I should see "Slides" in the "main ol li:nth-child(2) article" element
     And the JSON-LD "ItemList" should have the following properties:
       | name          | forum : les talks et vidéos                     |
       | url           | https://apachephptest:80/talks/evenements/forum |
@@ -140,6 +147,7 @@ Feature: Site Public - Talks
     When I go to "/talks/evenements/"
     Then the response status code should be 200
     And I should see "2020" in the "section#evenements-2020 h2" element
+    And I should see "Talks" in the "main a[href='/talks/']" element
     And the texts of "section#evenements-2020 li a" should be, in this order:
       """
       Un évènement du passé
@@ -188,8 +196,7 @@ Feature: Site Public - Talks
     And the response should contain "href=\"/talks/2-rest-ou-graphql-exemples-illustres-avec-symfony-et-api-platform\""
     And the response should contain "href=\"/talks/1-jouons-tous-ensemble-a-un-petit-jeu\""
     # Carte d'une vidéo : speakers et événement liés à leurs pages, puis les slides
-    And the "#dernieres-videos li:nth-child(1) article p" element should contain "href=\"/talks/speakers/geoffrey-bachelet\""
-    And the "#dernieres-videos li:nth-child(1) article p" element should contain "href=\"/talks/evenements/forum\""
+    And the "#dernieres-videos li:nth-child(1) article p" element should contain "<a href=\"/talks/speakers/geoffrey-bachelet\" class=\"text-afup-500 hover:underline\">Geoffrey BACHELET</a> · <a href=\"/talks/evenements/forum\" class=\"text-afup-500 hover:underline\">forum</a>"
     And I should see "Slides" in the "#dernieres-videos li:nth-child(1)" element
     # La recherche est sous le titre, avant la liste ; les facettes à côté. Les résultats Algolia, masqués,
     # remplacent la liste dès qu'une recherche est active (htdocs/js/talk/list.js).

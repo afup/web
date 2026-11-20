@@ -432,6 +432,7 @@ SQL;
 
         $query = $this->getPreparedQuery(
             'SELECT talk.session_id, talk.id_forum, talk.titre, talk.genre, talk.plannifie, talk.youtube_id, talk.language_code,
+            talk.slides_url, talk.blog_post_url,
             speaker.conferencier_id, speaker.id_forum, speaker.nom, speaker.prenom, speaker.user_github, speaker.person_id,
             planning.debut AS starts_at
             FROM afup_sessions talk

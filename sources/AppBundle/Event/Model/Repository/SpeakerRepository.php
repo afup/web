@@ -386,6 +386,7 @@ SQL
             speaker.biographie, speaker.twitter, speaker.mastodon, speaker.bluesky, speaker.linkedin,
             speaker.user_github, speaker.photo,
             talk.session_id, talk.id_forum, talk.titre, talk.genre, talk.plannifie, talk.youtube_id, talk.language_code,
+            talk.slides_url, talk.blog_post_url,
             event.id, event.titre, event.path, event.date_debut, event.date_fin,
             github.login AS github_login,
             planning.debut AS starts_at'
