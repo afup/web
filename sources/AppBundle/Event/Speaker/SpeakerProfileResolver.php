@@ -6,15 +6,16 @@ namespace AppBundle\Event\Speaker;
 
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Talk\PublishedTalkRepository;
 use Cocur\Slugify\Slugify;
 use Symfony\Contracts\Service\ResetInterface;
 
 use function Symfony\Component\String\u;
 
 /**
- * Les personnes (afup_speaker_person) qui ont au moins un talk publié, avec le slug enregistré en base.
+ * Les personnes (afup_conferenciers_personnes) qui ont au moins un talk publié, avec le slug enregistré en base.
  *
- * Une personne regroupe ses lignes speaker (une par édition) par afup_conferenciers.person_id.
+ * Une personne regroupe ses lignes speaker (une par édition) par afup_conferenciers.personne_id.
  * Une ligne sans personne n'a pas de page : elle n'apparaît pas tant qu'elle n'est pas rattachée.
  *
  * L'index repose sur une requête légère (sans hydratation d'entités), faite une fois
@@ -25,7 +26,7 @@ final class SpeakerProfileResolver implements ResetInterface
     /**
      * @var array{
      *     bySlug: array<string, SpeakerIdentity>,
-     *     byPersonId: array<int, string>,
+     *     byPersonneId: array<int, string>,
      *     byLabel: array<string, string|null>,
      * }|null
      */
@@ -33,8 +34,10 @@ final class SpeakerProfileResolver implements ResetInterface
 
     private readonly Slugify $slugify;
 
-    public function __construct(private readonly SpeakerRepository $speakerRepository)
-    {
+    public function __construct(
+        private readonly PublishedTalkRepository $publishedTalkRepository,
+        private readonly SpeakerRepository $speakerRepository,
+    ) {
         // Le même slugifier que Talk::getSlug(), pour le tri.
         $this->slugify = new Slugify();
     }
@@ -81,13 +84,13 @@ final class SpeakerProfileResolver implements ResetInterface
      */
     public function getIdentityForSpeaker(Speaker $speaker): ?SpeakerIdentity
     {
-        $personId = $speaker->getPersonId();
-        if (null === $personId) {
+        $personneId = $speaker->getPersonneId();
+        if (null === $personneId) {
             return null;
         }
 
         $index = $this->getIndex();
-        $slug = $index['byPersonId'][$personId] ?? null;
+        $slug = $index['byPersonneId'][$personneId] ?? null;
 
         return null !== $slug ? $index['bySlug'][$slug] : null;
     }
@@ -102,7 +105,7 @@ final class SpeakerProfileResolver implements ResetInterface
             return null;
         }
 
-        $speakerTalks = $this->speakerRepository->getPublishedSpeakerTalks($identity->speakerIds);
+        $speakerTalks = $this->loadSpeakerTalks($identity->speakerIds);
         if ($speakerTalks === []) {
             return null;
         }
@@ -118,21 +121,21 @@ final class SpeakerProfileResolver implements ResetInterface
     /**
      * @return array{
      *     bySlug: array<string, SpeakerIdentity>,
-     *     byPersonId: array<int, string>,
+     *     byPersonneId: array<int, string>,
      *     byLabel: array<string, string|null>,
      * }
      */
     private function getIndex(): array
     {
-        return $this->index ??= $this->buildIndex($this->speakerRepository->getPublishedTalkAppearances());
+        return $this->index ??= $this->buildIndex($this->publishedTalkRepository->getSpeakerAppearances());
     }
 
     /**
-     * @param list<array{speaker_id: int, person_id: int, slug: string, firstname: string, lastname: string, talk_id: int, starts_at: int}> $appearances
+     * @param list<array{speaker_id: int, personne_id: int, slug: string, firstname: string, lastname: string, talk_id: int, starts_at: int}> $appearances
      *
      * @return array{
      *     bySlug: array<string, SpeakerIdentity>,
-     *     byPersonId: array<int, string>,
+     *     byPersonneId: array<int, string>,
      *     byLabel: array<string, string|null>,
      * }
      */
@@ -141,26 +144,26 @@ final class SpeakerProfileResolver implements ResetInterface
         // Du plus récent au plus ancien, quel que soit l'ordre de lecture.
         usort($appearances, static fn(array $a, array $b): int => [$b['starts_at'], $b['talk_id'], $b['speaker_id']] <=> [$a['starts_at'], $a['talk_id'], $a['speaker_id']]);
 
-        /** @var array<int, non-empty-list<array{speaker_id: int, person_id: int, slug: string, firstname: string, lastname: string, talk_id: int, starts_at: int}>> $groups */
+        /** @var array<int, non-empty-list<array{speaker_id: int, personne_id: int, slug: string, firstname: string, lastname: string, talk_id: int, starts_at: int}>> $groups */
         $groups = [];
         $slugsByLabel = [];
         foreach ($appearances as $appearance) {
-            $groups[$appearance['person_id']][] = $appearance;
+            $groups[$appearance['personne_id']][] = $appearance;
             $slugsByLabel[self::normalizeLabel($appearance['firstname'] . ' ' . $appearance['lastname'])][$appearance['slug']] = true;
         }
 
-        $index = ['bySlug' => [], 'byPersonId' => [], 'byLabel' => []];
+        $index = ['bySlug' => [], 'byPersonneId' => [], 'byLabel' => []];
         $identities = [];
-        foreach ($groups as $personId => $personAppearances) {
-            $latest = $personAppearances[0];
+        foreach ($groups as $personneId => $personneAppearances) {
+            $latest = $personneAppearances[0];
             $identities[] = new SpeakerIdentity(
                 $latest['slug'],
                 $latest['firstname'],
                 $latest['lastname'],
-                array_values(array_unique(array_column($personAppearances, 'speaker_id'))),
+                array_values(array_unique(array_column($personneAppearances, 'speaker_id'))),
                 new \DateTimeImmutable('@' . $latest['starts_at'])->setTimezone(new \DateTimeZone(date_default_timezone_get())),
             );
-            $index['byPersonId'][$personId] = $latest['slug'];
+            $index['byPersonneId'][$personneId] = $latest['slug'];
         }
 
         // Un libellé porté par deux personnes distinctes ne désigne personne.
@@ -179,6 +182,27 @@ final class SpeakerProfileResolver implements ResetInterface
     }
 
     /**
+     * Les talks publiés de ces lignes speaker ; chaque ligne speaker est chargée une fois, pour le profil.
+     *
+     * @param list<int> $speakerIds
+     *
+     * @return list<SpeakerTalk>
+     */
+    private function loadSpeakerTalks(array $speakerIds): array
+    {
+        $speakers = [];
+        $speakerTalks = [];
+        foreach ($this->publishedTalkRepository->getSpeakerTalks($speakerIds) as $row) {
+            $speaker = $speakers[$row['speaker_id']] ??= $this->speakerRepository->get($row['speaker_id']);
+            if ($speaker instanceof Speaker) {
+                $speakerTalks[] = new SpeakerTalk($speaker, $row['talk'], $row['event'], $row['starts_at'], $row['github_login']);
+            }
+        }
+
+        return $speakerTalks;
+    }
+
+    /**
      * @param non-empty-list<SpeakerTalk> $speakerTalks
      */
     private function buildProfile(SpeakerIdentity $identity, array $speakerTalks): SpeakerProfile
@@ -186,11 +210,11 @@ final class SpeakerProfileResolver implements ResetInterface
         // Du plus récent au plus ancien, quel que soit l'ordre de lecture.
         usort($speakerTalks, static fn(SpeakerTalk $a, SpeakerTalk $b): int => [
             $b->startsAt->getTimestamp(),
-            $b->talk->getId(),
+            $b->talk->id,
             $b->speaker->getId(),
         ] <=> [
             $a->startsAt->getTimestamp(),
-            $a->talk->getId(),
+            $a->talk->id,
             $a->speaker->getId(),
         ]);
 
@@ -204,7 +228,7 @@ final class SpeakerProfileResolver implements ResetInterface
                 $githubLogins[] = $speakerTalk->githubLogin;
             }
             // Deux lignes de la même personne sur un même talk : le talk n'est listé qu'une fois.
-            $talks[(int) $speakerTalk->talk->getId()] ??= $speakerTalk;
+            $talks[$speakerTalk->talk->id] ??= $speakerTalk;
         }
 
         $socialLinks = array_filter([
