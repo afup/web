@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Event\Blog;
 
+use AppBundle\Event\Talk\PublishedTalkRepository;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Entity\Repository\EventThemeRepository;
 use AppBundle\Event\Entity\Repository\PlanningRepository;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class ProgramAction extends AbstractController
 {
     public function __construct(
+        private readonly PublishedTalkRepository $publishedTalkRepository,
         private readonly JsonLd $jsonLd,
         private readonly EventActionHelper $eventActionHelper,
         private readonly TalkRepository $talkRepository,
@@ -39,9 +41,9 @@ final class ProgramAction extends AbstractController
         // Talks publiés qui ont une vidéo (définition commune aux pages /talks/), en une requête :
         // le widget leur ajoute un lien vers leur page sur afup.org.
         $videoTalkIds = [];
-        foreach ($this->talkRepository->getPublishedByEventWithSpeakers($event) as $eventTalk) {
+        foreach ($this->publishedTalkRepository->getEventTalks((int) $event->getId()) as $eventTalk) {
             if ($eventTalk->talk->hasYoutubeId()) {
-                $videoTalkIds[(int) $eventTalk->talk->getId()] = true;
+                $videoTalkIds[$eventTalk->talk->id] = true;
             }
         }
         $now = new \DateTime();
