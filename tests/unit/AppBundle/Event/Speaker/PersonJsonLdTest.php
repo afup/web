@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\Event\Speaker;
 
-use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Speaker;
-use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Speaker\PersonJsonLd;
 use AppBundle\Event\Speaker\SpeakerIdentity;
 use AppBundle\Event\Speaker\SpeakerProfile;
 use AppBundle\Event\Speaker\SpeakerTalk;
+use AppBundle\Event\Talk\PublishedEvent;
+use AppBundle\Event\Talk\PublishedTalk;
 use PHPUnit\Framework\TestCase;
 
 final class PersonJsonLdTest extends TestCase
@@ -50,7 +50,7 @@ final class PersonJsonLdTest extends TestCase
             null,
             null,
             [],
-            [new SpeakerTalk(new Speaker(), new Talk(), new Event(), new \DateTimeImmutable())],
+            [new SpeakerTalk(new Speaker(), new PublishedTalk(1, 'Talk'), new PublishedEvent(1, 'Forum PHP', 'forumphp'), new \DateTimeImmutable())],
         );
 
         $json = json_encode(new PersonJsonLd()->getData($profile, 'https://afup.org/talks/speakers/x', null), PersonJsonLd::JSON_FLAGS);
@@ -73,7 +73,7 @@ final class PersonJsonLdTest extends TestCase
             null,
             null,
             $socialLinks,
-            [new SpeakerTalk($speaker, new Talk()->setId(1), new Event(), new \DateTimeImmutable())],
+            [new SpeakerTalk($speaker, new PublishedTalk(1, 'Talk'), new PublishedEvent(1, 'Forum PHP', 'forumphp'), new \DateTimeImmutable())],
         );
     }
 }
