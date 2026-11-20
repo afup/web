@@ -94,7 +94,7 @@ var escapeHtml = function (value) {
         .replace(/"/g, '&quot;');
 };
 
-var LINK_CLASS = 'text-afup-500 underline hover:no-underline';
+var LINK_CLASS = 'text-afup-500 hover:underline';
 var RESOURCE_CLASS = 'inline-flex items-center gap-1.5 rounded-lg bg-afup-100 px-2 py-1 text-xs font-medium text-afup-500 hover:bg-afup-500 hover:text-white';
 
 /* Même rendu que la carte Twig templates/site/talks/_talk_card.html.twig : modifier les deux ensemble.
