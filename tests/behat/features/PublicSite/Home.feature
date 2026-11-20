@@ -45,3 +45,13 @@ Feature: Site Public - Home
     When I am on "/home"
     Then the response status code should be 301
     And the response header "Location" should match "#^(https?://[^/]+)?/$#"
+
+  @reloadDbWithTestData
+  Scenario: Title, meta description et titre unique de la home
+    Given the current date is "2026-01-01"
+    And I am on the homepage
+    Then the response should contain "<title>AFUP – Association française des utilisateurs de PHP</title>"
+    And the page should have a meta description
+    And the meta description should be "Association française des utilisateurs de PHP depuis 2000 : Forum PHP, AFUP Day, meetups en région, vidéos des conférences et veille technique."
+    And I should see 1 "h1" elements
+    And the "h1" element should contain "AFUP : Association Française"

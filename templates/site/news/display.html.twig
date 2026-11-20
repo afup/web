@@ -18,6 +18,8 @@
 
 {% block title %}{{ article.titre }} - AFUP{% endblock %}
 
+{% block description %}{{ (article.chapeau ?: article.contenu)|markdown_to_html|meta_description }}{% endblock %}
+
 {% block content %}
 
     <div class="container mx-auto sm:pt-10 flex flex-col sm:flex-row gap-5">
