@@ -59,6 +59,21 @@ final class PublishedTalkRepositoryTest extends IntegrationTestCase
         ], $appearances);
     }
 
+    public function testSpeakerAppearancesAcceptARowWithoutFirstname(): void
+    {
+        // Une entreprise saisie comme speaker : prénom NULL en base (cas réel en prod).
+        $this->connection->insert('afup_conferenciers_personnes', ['id' => 3, 'slug' => 'alterway']);
+        $this->insertSpeaker(50, 1, null, 'ALTERWAY', null, 3);
+        $this->insertTalk(500, 1, 50, 'Talk sponsor', Talk::TYPE_FULL_LONG, strtotime('2019-10-24 11:00:00'));
+
+        $appearances = array_values(array_filter(
+            new PublishedTalkRepository($this->connection)->getSpeakerAppearances(),
+            static fn(array $appearance): bool => $appearance['speaker_id'] === 50,
+        ));
+
+        self::assertSame([['speaker_id' => 50, 'personne_id' => 3, 'slug' => 'alterway', 'firstname' => '', 'lastname' => 'ALTERWAY', 'talk_id' => 500, 'starts_at' => strtotime('2019-10-24 11:00:00')]], $appearances);
+    }
+
     public function testSpeakerTalksReturnTalksEventsAndGithubLogins(): void
     {
         $speakerTalks = new PublishedTalkRepository($this->connection)->getSpeakerTalks([10, 20, 30]);
@@ -96,7 +111,7 @@ final class PublishedTalkRepositoryTest extends IntegrationTestCase
         self::assertSame([200, 100], array_map(static fn(SpeakerTalk $speakerTalk): int => $speakerTalk->talk->id, $profile->talks));
     }
 
-    private function insertSpeaker(int $id, int $eventId, string $firstname, string $lastname, ?int $githubUserId, ?int $personneId): void
+    private function insertSpeaker(int $id, int $eventId, ?string $firstname, ?string $lastname, ?int $githubUserId, ?int $personneId): void
     {
         $this->connection->insert('afup_conferenciers', [
             'conferencier_id' => $id,

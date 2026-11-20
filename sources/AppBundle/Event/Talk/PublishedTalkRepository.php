@@ -59,8 +59,8 @@ readonly class PublishedTalkRepository
             'speaker_id' => self::toInt($row['conferencier_id']),
             'personne_id' => self::toInt($row['personne_id']),
             'slug' => self::toString($row['slug']),
-            'firstname' => self::toString($row['prenom']),
-            'lastname' => self::toString($row['nom']),
+            'firstname' => self::nullableString($row['prenom']) ?? '',
+            'lastname' => self::nullableString($row['nom']) ?? '',
             'talk_id' => self::toInt($row['session_id']),
             'starts_at' => self::toInt($row['debut']),
         ], $rows);
