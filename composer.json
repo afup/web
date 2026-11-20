@@ -15,7 +15,7 @@
     "algolia/algoliasearch-client-php": "^3.4.2",
     "beberlei/doctrineextensions": "^1.5",
     "captioning/captioning": "^2.6.3",
-    "ccmbenchmark/ting_bundle": "^3.10",
+    "ccmbenchmark/ting_bundle": "^4.1",
     "cocur/slugify": "^4.7",
     "cuyz/valinor-bundle": "^2.3",
     "cweagans/composer-patches": "^1.7",
