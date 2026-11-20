@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\Static;
 
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Twig\ViewRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

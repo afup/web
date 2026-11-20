@@ -716,12 +716,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Association/Form/UserType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\CompanyMember\\:\\:getFormattedRelatedAfupOffices\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/CompanyMember.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\CompanyMember\\:\\:setFormattedRelatedAfupOffices\\(\\) has parameter \\$relatedAfupOffices with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -1203,12 +1197,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:getDaysBeforeMembershipExpiration\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Association\\\\Model\\\\User\\:\\:getNearestOfficeLabel\\(\\) has no return type specified\\.$#',
 	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Association/Model/User.php',
@@ -3660,12 +3648,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/ValueResolver/AdminEventSelectionValueResolver.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$code of method AppBundle\\\\Antennes\\\\AntenneRepository\\:\\:findByCode\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/CompanyPublicProfile/IndexAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$callback of function usort expects callable\\(mixed, mixed\\)\\: int, Closure\\(AppBundle\\\\Association\\\\Model\\\\CompanyMember, AppBundle\\\\Association\\\\Model\\\\CompanyMember\\)\\: int\\<\\-1, 1\\> given\\.$#',
@@ -7908,12 +7890,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Twig/AssetsExtension.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$code of method AppBundle\\\\Antennes\\\\AntenneRepository\\:\\:findByCode\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/Twig/OfficesExtension.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$url of function curl_init expects string\\|null, mixed given\\.$#',

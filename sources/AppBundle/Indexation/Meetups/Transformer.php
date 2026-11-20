@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Indexation\Meetups;
 
-use AppBundle\Antennes\Antenne;
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Antenne;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Event\Entity\Meetup;
 
 class Transformer
@@ -38,16 +38,16 @@ class Transformer
             'datetime' => $datetime->format('Y-m-d H:i:s'),
             'day_month' => $datetime->format('d M'),
             'office' => [
-                'label' => $antenne->label,
-                'logo_url' => $antenne->logoUrl,
+                'label' => $antenne->libelle,
+                'logo_url' => $antenne->urlLogo,
             ],
             'description' => $parseDown->parse($meetup->description),
             'is_upcoming' => $isUpcoming,
             'custom_sort' => $isUpcoming ? PHP_INT_MAX - $meetup->date->getTimestamp() : $meetup->date->getTimestamp(),
         ];
 
-        if ($antenne->socials->twitter !== null) {
-            $item['twitter'] = $antenne->socials->twitter;
+        if ($antenne->reseauxSociaux->twitter !== null) {
+            $item['twitter'] = $antenne->reseauxSociaux->twitter;
         }
 
         return $item;
@@ -60,6 +60,6 @@ class Transformer
             return self::MEETUP_URL . '/events/' . $meetup->id;
         }
 
-        return self::MEETUP_URL . $antenneMeetup->urlName . '/events/' . $meetup->id;
+        return self::MEETUP_URL . $antenneMeetup->nomUrl . '/events/' . $meetup->id;
     }
 }

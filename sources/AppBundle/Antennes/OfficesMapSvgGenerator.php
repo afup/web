@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace AppBundle\Antennes;
 
+use AppBundle\Antennes\Entity\Antenne;
+
 /**
  * Génère la carte des antennes de la page /association/antennes.
  *
  * Reproduit le rendu de l'ancienne carte jQuery Mapael : fond de carte décalé dans un
  * viewBox élargi, zones et points des antennes, et légendes (traits, logo, nom) dans le
- * repère du viewBox, aux coordonnées définies dans `Map`.
+ * repère du viewBox, aux coordonnées définies dans `Carte`.
  */
 final class OfficesMapSvgGenerator
 {
@@ -85,7 +87,7 @@ final class OfficesMapSvgGenerator
     {
         $antenneByArea = [];
         foreach ($antennes as $antenne) {
-            foreach ($antenne->departments ?? [] as $department) {
+            foreach ($antenne->departements ?? [] as $department) {
                 $antenneByArea['department-' . $department] = $antenne;
             }
             foreach ($antenne->pays ?? [] as $pays) {
@@ -105,7 +107,7 @@ final class OfficesMapSvgGenerator
             if ($link !== null) {
                 $xml->startElement('a');
                 $xml->writeAttribute('href', $link);
-                $xml->writeAttribute('aria-label', $antenne->label);
+                $xml->writeAttribute('aria-label', $antenne->libelle);
             }
 
             $this->writePath($xml, $key, $path, self::ANTENNE_COLOR);
@@ -133,12 +135,12 @@ final class OfficesMapSvgGenerator
     private function writePlots(\XMLWriter $xml, array $antennes): void
     {
         foreach ($antennes as $antenne) {
-            if (!$antenne->map instanceof Map) {
+            if (!$antenne->carte instanceof Carte) {
                 continue;
             }
 
-            foreach ([$antenne->map->firstCity, $antenne->map->secondCity] as $city) {
-                if (!$city instanceof City) {
+            foreach ([$antenne->carte->premiereVille, $antenne->carte->secondeVille] as $city) {
+                if (!$city instanceof Ville) {
                     continue;
                 }
 
@@ -157,37 +159,37 @@ final class OfficesMapSvgGenerator
 
     private function writeLegend(\XMLWriter $xml, Antenne $antenne): void
     {
-        $map = $antenne->map;
-        if (!$map instanceof Map) {
+        $map = $antenne->carte;
+        if (!$map instanceof Carte) {
             return;
         }
 
-        foreach ([$map->firstCity, $map->secondCity] as $city) {
-            if (!$city instanceof City) {
+        foreach ([$map->premiereVille, $map->secondeVille] as $city) {
+            if (!$city instanceof Ville) {
                 continue;
             }
 
-            $this->writeLine($xml, $city->firstPoint, $city->secondPoint);
-            $this->writeLine($xml, $city->secondPoint, $city->thirdPoint);
+            $this->writeLine($xml, $city->premierPoint, $city->deuxiemePoint);
+            $this->writeLine($xml, $city->deuxiemePoint, $city->troisiemePoint);
         }
 
         // La légende (logo + nom) s'accroche au troisième point de la première ville.
-        $anchor = $map->firstCity->thirdPoint;
+        $anchor = $map->premiereVille->troisiemePoint;
 
-        [$logoX, $logoY] = match ($map->legendAttachment) {
-            LegendAttachment::Left => [$anchor->x + self::LOGO_MARGIN, $anchor->y - self::LOGO_HEIGHT / 2],
-            LegendAttachment::Right => [$anchor->x - self::LOGO_MARGIN - self::LOGO_WIDTH, $anchor->y - self::LOGO_HEIGHT / 2],
-            LegendAttachment::Top => [$anchor->x - self::LEGEND_BOX_WIDTH / 2, $anchor->y + self::LOGO_MARGIN],
-            LegendAttachment::Bottom => [$anchor->x - self::LEGEND_BOX_WIDTH / 2, $anchor->y - self::LOGO_HEIGHT - self::LOGO_MARGIN],
+        [$logoX, $logoY] = match ($map->ancrageLegende) {
+            AncrageLegende::Gauche => [$anchor->x + self::LOGO_MARGIN, $anchor->y - self::LOGO_HEIGHT / 2],
+            AncrageLegende::Droite => [$anchor->x - self::LOGO_MARGIN - self::LOGO_WIDTH, $anchor->y - self::LOGO_HEIGHT / 2],
+            AncrageLegende::Haut => [$anchor->x - self::LEGEND_BOX_WIDTH / 2, $anchor->y + self::LOGO_MARGIN],
+            AncrageLegende::Bas => [$anchor->x - self::LEGEND_BOX_WIDTH / 2, $anchor->y - self::LOGO_HEIGHT - self::LOGO_MARGIN],
         };
 
         // Le nom est à droite du logo, sauf quand la légende s'accroche par la droite.
-        [$textX, $textAnchor] = $map->legendAttachment === LegendAttachment::Right
+        [$textX, $textAnchor] = $map->ancrageLegende === AncrageLegende::Droite
             ? [$logoX - self::TEXT_MARGIN, 'end']
             : [$logoX + self::LOGO_WIDTH + self::TEXT_MARGIN, 'start'];
 
         $xml->startElement('image');
-        $xml->writeAttribute('href', $antenne->logoUrl);
+        $xml->writeAttribute('href', $antenne->urlLogo);
         $xml->writeAttribute('x', $this->number($logoX));
         $xml->writeAttribute('y', $this->number($logoY));
         $xml->writeAttribute('width', (string) self::LOGO_WIDTH);
@@ -209,7 +211,7 @@ final class OfficesMapSvgGenerator
         $xml->writeAttribute('font-family', 'Arial');
         $xml->writeAttribute('font-size', '14px');
         $xml->writeAttribute('font-weight', 'bold');
-        $xml->text($antenne->label);
+        $xml->text($antenne->libelle);
         $xml->endElement();
 
         if ($link !== null) {
@@ -231,14 +233,14 @@ final class OfficesMapSvgGenerator
      */
     private function link(Antenne $antenne): ?string
     {
-        $socials = $antenne->socials;
+        $socials = $antenne->reseauxSociaux;
 
         return match (true) {
             $socials->blog !== null => $socials->blog,
             $socials->twitter !== null => 'https://twitter.com/' . $socials->twitter,
             $socials->linkedin !== null => 'https://www.linkedin.com/company/' . $socials->linkedin,
             $socials->bluesky !== null => 'https://bsky.app/profile/' . $socials->bluesky,
-            $antenne->meetup instanceof Meetup => 'https://www.meetup.com/fr-FR/' . $antenne->meetup->urlName,
+            $antenne->meetup instanceof Meetup => 'https://www.meetup.com/fr-FR/' . $antenne->meetup->nomUrl,
             $socials->youtube !== null => $socials->youtube,
             default => null,
         };

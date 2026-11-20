@@ -65,12 +65,12 @@
                 <tbody>
                 {% for antenne in antennes %}
                     <tr data-qa="antenne-{{ antenne.code }}">
-                        <td class="{{ antenne.hideOnOfficesPage ? 'disabled' : 'actif' }}">
-                            <span class="ui image spaced"><img src="{{ antenne.logoUrl }}" width="30" height="30" /></span>
-                            {{ antenne.label }}
+                        <td class="{{ antenne.masqueePageAntennes ? 'disabled' : 'actif' }}">
+                            <span class="ui image spaced"><img src="{{ antenne.urlLogo }}" width="30" height="30" /></span>
+                            {{ antenne.libelle }}
                         </td>
                         <td style="text-align: center">
-                            {% if antenne.hideOnOfficesPage %}
+                            {% if antenne.masqueePageAntennes %}
                                 <div class="ui label red">Inactive</div>
                             {% else %}
                                 <div class="ui label green">Active</div>
@@ -79,7 +79,7 @@
                         <td>
                             <div class="ui small basic icon buttons">
                                 {% if antenne.meetup %}
-                                    <a href="https://meetup.com/fr-FR/{{ antenne.meetup.urlName }}"
+                                    <a href="https://meetup.com/fr-FR/{{ antenne.meetup.nomUrl }}"
                                        class="ui button"
                                        data-position="top center"
                                        data-tooltip="Meetup"
@@ -90,8 +90,8 @@
                                     <a class="ui button disabled"><i class="icon"></i></a>
                                 {% endif %}
 
-                                {% if antenne.socials.linkedin %}
-                                    <a href="https://www.linkedin.com/company/{{ antenne.socials.linkedin }}/"
+                                {% if antenne.reseauxSociaux.linkedin %}
+                                    <a href="https://www.linkedin.com/company/{{ antenne.reseauxSociaux.linkedin }}/"
                                        class="ui button"
                                        data-position="top center"
                                        data-tooltip="LinkedIn"
@@ -102,8 +102,8 @@
                                     <a class="ui button disabled"><i class="icon"></i></a>
                                 {% endif %}
 
-                                {% if antenne.socials.bluesky %}
-                                    <a href="https://bsky.app/profile/{{ antenne.socials.bluesky }}"
+                                {% if antenne.reseauxSociaux.bluesky %}
+                                    <a href="https://bsky.app/profile/{{ antenne.reseauxSociaux.bluesky }}"
                                        class="ui button"
                                        data-position="top center"
                                        data-tooltip="Bluesky"
@@ -116,8 +116,8 @@
                                     <a class="ui button disabled"><i class="icon"></i></a>
                                 {% endif %}
 
-                                {% if antenne.socials.blog %}
-                                    <a href="{{ antenne.socials.blog }}"
+                                {% if antenne.reseauxSociaux.blog %}
+                                    <a href="{{ antenne.reseauxSociaux.blog }}"
                                        class="ui button"
                                        data-position="top center"
                                        data-tooltip="Blog"
@@ -128,8 +128,8 @@
                                     <a class="ui button disabled"><i class="icon"></i></a>
                                 {% endif %}
 
-                                {% if antenne.socials.youtube %}
-                                    <a href="{{ antenne.socials.youtube }}"
+                                {% if antenne.reseauxSociaux.youtube %}
+                                    <a href="{{ antenne.reseauxSociaux.youtube }}"
                                        class="ui button"
                                        data-position="top center"
                                        data-tooltip="YouTube"
@@ -140,8 +140,8 @@
                                     <a class="ui button disabled"><i class="icon"></i></a>
                                 {% endif %}
 
-                                {% if antenne.socials.twitter %}
-                                    <a href="https://twitter.com/{{ antenne.socials.twitter }}"
+                                {% if antenne.reseauxSociaux.twitter %}
+                                    <a href="https://twitter.com/{{ antenne.reseauxSociaux.twitter }}"
                                        class="ui button"
                                        data-position="top center"
                                        data-tooltip="Twitter"

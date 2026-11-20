@@ -584,9 +584,9 @@ class CompanyMember implements NotifyPropertyInterface
     }
 
     /**
-     * @return array
+     * @return list<string>
      */
-    public function getFormattedRelatedAfupOffices()
+    public function getFormattedRelatedAfupOffices(): array
     {
         $relatedAfupOffices = $this->getRelatedAfupOffices();
         if (null === $relatedAfupOffices) {

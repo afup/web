@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Members;
 
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Association\Model\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

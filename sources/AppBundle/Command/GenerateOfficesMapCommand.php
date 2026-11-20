@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Command;
 
-use AppBundle\Antennes\AntenneRepository;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Antennes\OfficesMapSvgGenerator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -16,7 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 #[AsCommand(
     name: 'antennes:generate-map',
-    description: 'Génère la carte SVG de la page des antennes, à relancer après chaque modification de AntenneRepository',
+    description: 'Génère la carte SVG de la page des antennes, à relancer après chaque modification d\'une antenne (migration ou seed)',
 )]
 class GenerateOfficesMapCommand extends Command
 {

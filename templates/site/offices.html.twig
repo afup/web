@@ -84,47 +84,47 @@
             <div class="flex flex-col items-start bg-white border-2 border-neutre-300 rounded-2xl p-4 sm:p-6">
                <div class="flex flex-row gap-4">
                     <div class="bg-neutre-200 rounded-2xl w-20 h-20 flex items-center justify-center">
-                        <img src="{{ antenne.logoUrl }}" alt="" class="w-full h-full object-contain"/>
+                        <img src="{{ antenne.urlLogo }}" alt="" class="w-full h-full object-contain"/>
                     </div>
                     <div class="flex flex-col gap-2">
-                        <h3 class="font-titre font-bold text-2xl text-afup-800">{{ antenne.label }}</h3>
-                        <span class="text-neutre-700">{{ antenne.administrativeArea }}</span>
+                        <h3 class="font-titre font-bold text-2xl text-afup-800">{{ antenne.libelle }}</h3>
+                        <span class="text-neutre-700">{{ antenne.region }}</span>
                     </div>
                 </div>
                 <p class="h-4 font-semibold text-xs uppercase text-neutre-400 mt-6 mb-4">réseaux sociaux</p>
                 <div class="flex flex-row flex-wrap items-start content-start gap-2">
-                        {% if antenne.socials.blog is not null %}
-                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="{{ antenne.socials.blog }}">
+                        {% if antenne.reseauxSociaux.blog is not null %}
+                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="{{ antenne.reseauxSociaux.blog }}">
                                 <twig:ux:icon name="mdi:rss" class="size-5" />
                             </a>
                         {% endif %}
 
-                        {% if antenne.socials.twitter is not null %}
-                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://twitter.com/{{ antenne.socials.twitter }}">
+                        {% if antenne.reseauxSociaux.twitter is not null %}
+                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://twitter.com/{{ antenne.reseauxSociaux.twitter }}">
                                 <twig:ux:icon name="fa:twitter" class="size-5" />
                             </a>
                         {% endif %}
 
-                        {% if antenne.socials.linkedin is not null %}
-                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://www.linkedin.com/company/{{ antenne.socials.linkedin }}">
+                        {% if antenne.reseauxSociaux.linkedin is not null %}
+                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://www.linkedin.com/company/{{ antenne.reseauxSociaux.linkedin }}">
                                 <twig:ux:icon name="mdi:linkedin" class="size-5" />
                             </a>
                         {% endif %}
 
-                        {% if antenne.socials.bluesky is not null %}
-                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://bsky.app/profile/{{ antenne.socials.bluesky }}">
+                        {% if antenne.reseauxSociaux.bluesky is not null %}
+                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://bsky.app/profile/{{ antenne.reseauxSociaux.bluesky }}">
                                 <twig:ux:icon name="simple-icons:bluesky" class="size-5" />
                             </a>
                         {% endif %}
 
                         {% if antenne.meetup is not null %}
-                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://www.meetup.com/fr-FR/{{ antenne.meetup.urlName }}">
+                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="https://www.meetup.com/fr-FR/{{ antenne.meetup.nomUrl }}">
                                 <twig:ux:icon name="fa:meetup" class="size-5" />
                             </a>
                         {% endif %}
 
-                        {% if antenne.socials.youtube is not null %}
-                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="{{ antenne.socials.youtube }}">
+                        {% if antenne.reseauxSociaux.youtube is not null %}
+                            <a class="flex flex-row justify-center items-center w-12 h-10 bg-afup-100 rounded-2xl flex-none grow-0" href="{{ antenne.reseauxSociaux.youtube }}">
                                 <twig:ux:icon name="fa:youtube" class="size-5" />
                             </a>
                         {% endif %}
