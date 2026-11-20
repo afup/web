@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\Event\Speaker;
 
-use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Speaker;
-use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Speaker\SpeakerIdentity;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Event\Speaker\SpeakerTalk;
+use AppBundle\Event\Talk\PublishedEvent;
+use AppBundle\Event\Talk\PublishedTalk;
+use AppBundle\Event\Talk\PublishedTalkRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -31,7 +32,7 @@ final class SpeakerProfileResolverTest extends TestCase
         yield 'espaces en tête et tabulation' => [" \tCyrille\t GRANDVAL", 'cyrille grandval'];
     }
 
-    public function testGroupsSpeakerRowsByPerson(): void
+    public function testGroupsSpeakerRowsByPersonne(): void
     {
         $resolver = $this->resolver([
             self::appearance(1, 1, 'helene-schapira', 'Hélène', 'SCHAPIRA', 10, '2019-10-24'),
@@ -67,7 +68,7 @@ final class SpeakerProfileResolverTest extends TestCase
         self::assertSame('2023-10-12', $identity->latestTalkAt->format('Y-m-d'));
     }
 
-    public function testLabelDesignatesThePersonCarryingItOnAnyOfItsRows(): void
+    public function testLabelDesignatesThePersonneCarryingItOnAnyOfItsRows(): void
     {
         $resolver = $this->resolver([
             self::appearance(1, 7, 'frederic-dupont', 'Fred', 'Dupont', 10, '2015-10-24'),
@@ -80,7 +81,7 @@ final class SpeakerProfileResolverTest extends TestCase
         self::assertNull($resolver->getIdentityByLabel('Inconnu SPEAKER'));
     }
 
-    public function testLabelCarriedBySeveralPersonsDesignatesNoOne(): void
+    public function testLabelCarriedBySeveralPersonnesDesignatesNoOne(): void
     {
         $resolver = $this->resolver([
             self::appearance(1, 5, 'jean-martin', 'Jean', 'Martin', 10, '2012-11-20'),
@@ -127,7 +128,7 @@ final class SpeakerProfileResolverTest extends TestCase
         self::assertSame(['paul-albert', 'zoe-elan', 'aline-martin', 'anne-martin'], self::slugs($resolver));
     }
 
-    public function testFindsTheIdentityOfASpeakerFromAnyEditionByItsPerson(): void
+    public function testFindsTheIdentityOfASpeakerFromAnyEditionByItsPersonne(): void
     {
         $resolver = $this->resolver([
             self::appearance(1, 1, 'helene-schapira', 'Hélène', 'SCHAPIRA', 10, '2019-10-24'),
@@ -172,25 +173,34 @@ final class SpeakerProfileResolverTest extends TestCase
             self::speakerTalk($old, 21, '2020-10-23'),
         ];
 
-        $speakerRepository = $this->createMock(SpeakerRepository::class);
-        $speakerRepository->method('getPublishedTalkAppearances')->willReturn(array_map(
+        $publishedTalkRepository = $this->createMock(PublishedTalkRepository::class);
+        $publishedTalkRepository->method('getSpeakerAppearances')->willReturn(array_map(
             static fn(SpeakerTalk $speakerTalk): array => self::appearance(
                 (int) $speakerTalk->speaker->getId(),
                 1,
                 'helene-schapira',
                 (string) $speakerTalk->speaker->getFirstname(),
                 (string) $speakerTalk->speaker->getLastname(),
-                (int) $speakerTalk->talk->getId(),
+                $speakerTalk->talk->id,
                 $speakerTalk->startsAt->format('Y-m-d'),
             ),
             $speakerTalks,
         ));
-        $speakerRepository->expects(self::once())
-            ->method('getPublishedSpeakerTalks')
+        $publishedTalkRepository->expects(self::once())
+            ->method('getSpeakerTalks')
             ->with([3, 2, 1])
-            ->willReturn($speakerTalks);
+            ->willReturn(array_map(static fn(SpeakerTalk $speakerTalk): array => [
+                'speaker_id' => (int) $speakerTalk->speaker->getId(),
+                'talk' => $speakerTalk->talk,
+                'event' => $speakerTalk->event,
+                'starts_at' => $speakerTalk->startsAt,
+                'github_login' => $speakerTalk->githubLogin,
+            ], $speakerTalks));
+        // Chaque ligne speaker est chargée une seule fois, quel que soit son nombre de talks.
+        $speakerRepository = $this->createMock(SpeakerRepository::class);
+        $speakerRepository->expects(self::exactly(3))->method('get')->willReturnMap([[3, $latest], [2, $middle], [1, $old]]);
 
-        $profile = new SpeakerProfileResolver($speakerRepository)->getProfileBySlug('helene-schapira');
+        $profile = new SpeakerProfileResolver($publishedTalkRepository, $speakerRepository)->getProfileBySlug('helene-schapira');
 
         self::assertNotNull($profile);
         self::assertSame('helene-schapira', $profile->identity->slug);
@@ -203,37 +213,37 @@ final class SpeakerProfileResolverTest extends TestCase
             'linkedin' => 'https://www.linkedin.com/in/helene-schapira',
             'github' => 'https://github.com/hschapira',
         ], $profile->socialLinks);
-        self::assertSame([30, 21, 20, 10], array_map(static fn(SpeakerTalk $speakerTalk): ?int => $speakerTalk->talk->getId(), $profile->talks));
+        self::assertSame([30, 21, 20, 10], array_map(static fn(SpeakerTalk $speakerTalk): int => $speakerTalk->talk->id, $profile->talks));
     }
 
     public function testNoProfileForAnUnknownSlug(): void
     {
-        $speakerRepository = $this->createMock(SpeakerRepository::class);
-        $speakerRepository->method('getPublishedTalkAppearances')->willReturn([]);
-        $speakerRepository->expects(self::never())->method('getPublishedSpeakerTalks');
+        $publishedTalkRepository = $this->createMock(PublishedTalkRepository::class);
+        $publishedTalkRepository->method('getSpeakerAppearances')->willReturn([]);
+        $publishedTalkRepository->expects(self::never())->method('getSpeakerTalks');
 
-        self::assertNull(new SpeakerProfileResolver($speakerRepository)->getProfileBySlug('inconnu'));
+        self::assertNull(new SpeakerProfileResolver($publishedTalkRepository, $this->createStub(SpeakerRepository::class))->getProfileBySlug('inconnu'));
     }
 
     /**
-     * @param list<array{speaker_id: int, person_id: int, slug: string, firstname: string, lastname: string, talk_id: int, starts_at: int}> $appearances
+     * @param list<array{speaker_id: int, personne_id: int, slug: string, firstname: string, lastname: string, talk_id: int, starts_at: int}> $appearances
      */
     private function resolver(array $appearances): SpeakerProfileResolver
     {
-        $speakerRepository = $this->createStub(SpeakerRepository::class);
-        $speakerRepository->method('getPublishedTalkAppearances')->willReturn($appearances);
+        $publishedTalkRepository = $this->createStub(PublishedTalkRepository::class);
+        $publishedTalkRepository->method('getSpeakerAppearances')->willReturn($appearances);
 
-        return new SpeakerProfileResolver($speakerRepository);
+        return new SpeakerProfileResolver($publishedTalkRepository, $this->createStub(SpeakerRepository::class));
     }
 
     /**
-     * @return array{speaker_id: int, person_id: int, slug: string, firstname: string, lastname: string, talk_id: int, starts_at: int}
+     * @return array{speaker_id: int, personne_id: int, slug: string, firstname: string, lastname: string, talk_id: int, starts_at: int}
      */
-    private static function appearance(int $speakerId, int $personId, string $slug, string $firstname, string $lastname, int $talkId, string $date): array
+    private static function appearance(int $speakerId, int $personneId, string $slug, string $firstname, string $lastname, int $talkId, string $date): array
     {
         return [
             'speaker_id' => $speakerId,
-            'person_id' => $personId,
+            'personne_id' => $personneId,
             'slug' => $slug,
             'firstname' => $firstname,
             'lastname' => $lastname,
@@ -242,14 +252,14 @@ final class SpeakerProfileResolverTest extends TestCase
         ];
     }
 
-    private static function speaker(int $id, string $firstname, string $lastname, ?int $personId = null): Speaker
+    private static function speaker(int $id, string $firstname, string $lastname, ?int $personneId = null): Speaker
     {
-        return new Speaker()->setId($id)->setFirstname($firstname)->setLastname($lastname)->setPersonId($personId);
+        return new Speaker()->setId($id)->setFirstname($firstname)->setLastname($lastname)->setPersonneId($personneId);
     }
 
     private static function speakerTalk(Speaker $speaker, int $talkId, string $date, ?string $githubLogin = null): SpeakerTalk
     {
-        return new SpeakerTalk($speaker, new Talk()->setId($talkId), new Event(), new \DateTimeImmutable($date), $githubLogin);
+        return new SpeakerTalk($speaker, new PublishedTalk($talkId, 'Talk ' . $talkId), new PublishedEvent(1, 'Forum PHP', 'forumphp'), new \DateTimeImmutable($date), $githubLogin);
     }
 
     /**

@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\IntegrationTests\Event\Model\Repository;
+namespace AppBundle\IntegrationTests\Event\Talk;
 
 use Afup\Tests\Support\IntegrationTestCase;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Event\Speaker\SpeakerTalk;
+use AppBundle\Event\Talk\PublishedTalkRepository;
 use Doctrine\DBAL\Connection;
 
-final class SpeakerRepositoryTest extends IntegrationTestCase
+final class PublishedTalkRepositoryTest extends IntegrationTestCase
 {
     private Connection $connection;
 
@@ -25,8 +26,8 @@ final class SpeakerRepositoryTest extends IntegrationTestCase
         $this->connection->insert('afup_forum', ['id' => 2, 'titre' => 'Forum PHP 2021', 'path' => 'forumphp2021', 'date_debut' => '2021-10-14', 'date_fin' => '2021-10-15', 'nb_places' => 100]);
         $this->connection->insert('afup_user_github', ['id' => 7, 'github_id' => 1007, 'login' => 'hschapira', 'profile_url' => '', 'avatar_url' => '', 'afup_crew' => 0]);
 
-        $this->connection->insert('afup_speaker_person', ['id' => 1, 'slug' => 'helene-schapira']);
-        $this->connection->insert('afup_speaker_person', ['id' => 2, 'slug' => 'benjamin-moules']);
+        $this->connection->insert('afup_conferenciers_personnes', ['id' => 1, 'slug' => 'helene-schapira']);
+        $this->connection->insert('afup_conferenciers_personnes', ['id' => 2, 'slug' => 'benjamin-moules']);
 
         $this->insertSpeaker(10, 1, 'Hélène', 'SCHAPIRA', null, 1);
         $this->insertSpeaker(20, 2, 'Helene', 'SCHAPIRA ', 7, 1);
@@ -47,42 +48,42 @@ final class SpeakerRepositoryTest extends IntegrationTestCase
         $this->insertTalk(400, 1, 40, 'Talk publié sans personne', Talk::TYPE_FULL_LONG, $past);
     }
 
-    public function testGetPublishedTalkAppearancesOnlyReturnsPublishedTalksOfLinkedSpeakers(): void
+    public function testSpeakerAppearancesOnlyReturnPublishedTalksOfLinkedSpeakers(): void
     {
-        $appearances = self::getContainer()->get(SpeakerRepository::class)->getPublishedTalkAppearances();
+        $appearances = new PublishedTalkRepository($this->connection)->getSpeakerAppearances();
 
         usort($appearances, static fn(array $a, array $b): int => $a['talk_id'] <=> $b['talk_id']);
         self::assertSame([
-            ['speaker_id' => 10, 'person_id' => 1, 'slug' => 'helene-schapira', 'firstname' => 'Hélène', 'lastname' => 'SCHAPIRA', 'talk_id' => 100, 'starts_at' => strtotime('2019-10-24 10:00:00')],
-            ['speaker_id' => 20, 'person_id' => 1, 'slug' => 'helene-schapira', 'firstname' => 'Helene', 'lastname' => 'SCHAPIRA ', 'talk_id' => 200, 'starts_at' => strtotime('2021-10-14 10:00:00')],
+            ['speaker_id' => 10, 'personne_id' => 1, 'slug' => 'helene-schapira', 'firstname' => 'Hélène', 'lastname' => 'SCHAPIRA', 'talk_id' => 100, 'starts_at' => strtotime('2019-10-24 10:00:00')],
+            ['speaker_id' => 20, 'personne_id' => 1, 'slug' => 'helene-schapira', 'firstname' => 'Helene', 'lastname' => 'SCHAPIRA ', 'talk_id' => 200, 'starts_at' => strtotime('2021-10-14 10:00:00')],
         ], $appearances);
     }
 
-    public function testGetPublishedSpeakerTalksHydratesTalksEventsAndGithubLogins(): void
+    public function testSpeakerTalksReturnTalksEventsAndGithubLogins(): void
     {
-        $speakerTalks = self::getContainer()->get(SpeakerRepository::class)->getPublishedSpeakerTalks([10, 20, 30]);
+        $speakerTalks = new PublishedTalkRepository($this->connection)->getSpeakerTalks([10, 20, 30]);
 
         self::assertSame(
             [
                 [200, 'Talk publié 2021', 20, 'Forum PHP 2021', 'forumphp2021', 'hschapira', '2021-10-14 10:00'],
                 [100, 'Talk publié 2019', 10, 'Forum PHP 2019', 'forumphp2019', null, '2019-10-24 10:00'],
             ],
-            array_map(static fn(SpeakerTalk $speakerTalk): array => [
-                $speakerTalk->talk->getId(),
-                $speakerTalk->talk->getTitle(),
-                $speakerTalk->speaker->getId(),
-                $speakerTalk->event->getTitle(),
-                $speakerTalk->event->getPath(),
-                $speakerTalk->githubLogin,
-                $speakerTalk->startsAt->format('Y-m-d H:i'),
+            array_map(static fn(array $speakerTalk): array => [
+                $speakerTalk['talk']->id,
+                $speakerTalk['talk']->title,
+                $speakerTalk['speaker_id'],
+                $speakerTalk['event']->title,
+                $speakerTalk['event']->path,
+                $speakerTalk['github_login'],
+                $speakerTalk['starts_at']->format('Y-m-d H:i'),
             ], $speakerTalks),
         );
-        self::assertSame([], self::getContainer()->get(SpeakerRepository::class)->getPublishedSpeakerTalks([]));
+        self::assertSame([], new PublishedTalkRepository($this->connection)->getSpeakerTalks([]));
     }
 
     public function testResolverBuildsTheProfileOfASpeakerAcrossEditions(): void
     {
-        $resolver = new SpeakerProfileResolver(self::getContainer()->get(SpeakerRepository::class));
+        $resolver = new SpeakerProfileResolver(new PublishedTalkRepository($this->connection), self::getContainer()->get(SpeakerRepository::class));
 
         self::assertSame(['helene-schapira'], array_map(static fn($identity): string => $identity->slug, $resolver->getIdentities()));
         self::assertSame('helene-schapira', $resolver->getIdentityByLabel('Hélène SCHAPIRA')?->slug);
@@ -92,10 +93,10 @@ final class SpeakerRepositoryTest extends IntegrationTestCase
         self::assertSame([20, 10], $profile->identity->speakerIds);
         self::assertSame('Bio de 20', $profile->biography);
         self::assertSame(['github' => 'https://github.com/hschapira'], $profile->socialLinks);
-        self::assertSame([200, 100], array_map(static fn(SpeakerTalk $speakerTalk): ?int => $speakerTalk->talk->getId(), $profile->talks));
+        self::assertSame([200, 100], array_map(static fn(SpeakerTalk $speakerTalk): int => $speakerTalk->talk->id, $profile->talks));
     }
 
-    private function insertSpeaker(int $id, int $eventId, string $firstname, string $lastname, ?int $githubUserId, ?int $personId): void
+    private function insertSpeaker(int $id, int $eventId, string $firstname, string $lastname, ?int $githubUserId, ?int $personneId): void
     {
         $this->connection->insert('afup_conferenciers', [
             'conferencier_id' => $id,
@@ -105,7 +106,7 @@ final class SpeakerRepositoryTest extends IntegrationTestCase
             'email' => 'speaker' . $id . '@example.com',
             'biographie' => 'Bio de ' . $id,
             'user_github' => $githubUserId,
-            'person_id' => $personId,
+            'personne_id' => $personneId,
         ]);
     }
 
