@@ -9,6 +9,8 @@ use AppBundle\CFP\SpeakerFactory;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\SpeakerType;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
+use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Speaker\SpeakerPersonLinker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +27,7 @@ class SpeakerAction extends AbstractController
         private readonly TranslatorInterface $translator,
         private readonly PhotoStorage $photoStorage,
         private readonly SidebarRenderer $sidebarRenderer,
+        private readonly SpeakerPersonLinker $speakerPersonLinker,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -38,17 +41,34 @@ class SpeakerAction extends AbstractController
         }
 
         $speaker = $this->speakerFactory->getSpeaker($event);
+        // Profil prérempli depuis la dernière édition (voir SpeakerType) : sa photo, rangée par édition,
+        // est copiée à l'enregistrement. Le nom provisoire satisfait la validation de Speaker.
+        $previousSpeaker = null;
+        $previousPhoto = null;
+        if ($speaker->getId() === null) {
+            $previousSpeaker = $this->speakerRepository->getFromLastEventAndUserId($event->getId(), $speaker->getUser());
+            if ($previousSpeaker instanceof Speaker && $previousSpeaker->getPhoto() !== null) {
+                $previousPhoto = $this->photoStorage->getUrl($previousSpeaker, PhotoStorage::DIR_ORIGINAL);
+                if ($previousPhoto !== null) {
+                    $speaker->setPhoto($previousSpeaker->getPhoto());
+                }
+            }
+        }
         $form = $this->createForm(SpeakerType::class, $speaker, [
             SpeakerType::OPT_PHOTO_REQUIRED => null === $speaker->getPhoto(),
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->speakerPersonLinker->ensurePerson($speaker);
             $this->speakerRepository->save($speaker);
 
             $file = $speaker->getPhotoFile();
             if ($file instanceof UploadedFile) {
                 $fileName = $this->photoStorage->store($file, $speaker);
                 $speaker->setPhoto($fileName);
+                $this->speakerRepository->save($speaker);
+            } elseif ($previousPhoto !== null && $previousSpeaker instanceof Speaker) {
+                $speaker->setPhoto($this->photoStorage->copyFrom($previousSpeaker, $speaker));
                 $this->speakerRepository->save($speaker);
             }
 
@@ -65,8 +85,8 @@ class SpeakerAction extends AbstractController
             ]);
         }
 
-        $photo = null;
-        if (null !== $speaker->getPhoto()) {
+        $photo = $previousPhoto;
+        if (null === $photo && null !== $speaker->getPhoto()) {
             $photo = $this->photoStorage->getUrl($speaker, PhotoStorage::DIR_ORIGINAL);
         }
 

@@ -157,8 +157,9 @@ class TalkRepository extends Repository implements MetadataInitializer
             AND asvg.id IS NULL AND sessions.session_id NOT IN (
                 SELECT sessions.session_id
                 FROM afup_sessions sessions
-                LEFT JOIN afup_conferenciers_sessions cs ON cs.session_id = sessions.session_id
-                WHERE id_forum = :excluded_event AND cs.conferencier_id = :excluded_user
+                INNER JOIN afup_conferenciers_sessions cs ON cs.session_id = sessions.session_id
+                INNER JOIN afup_conferenciers c ON c.conferencier_id = cs.conferencier_id
+                WHERE sessions.id_forum = :excluded_event AND c.user_github = :excluded_user
             )
             ORDER BY RAND(:randomSeed)
             LIMIT ' . ((int) $page - 1) * $limit . ', ' . ((int) $limit + 1),
