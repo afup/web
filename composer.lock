@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ea33ad433ff798c46ced9a301327144f",
+    "content-hash": "86885f33799ee9f8e3d205bc693c8705",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -649,8 +649,7 @@
                 "issues": "https://gitlab.ccmbg.com/core/ting/-/issues",
                 "source": "https://gitlab.ccmbg.com/core/ting"
             },
-            "time": "2026-10-07T09:44:39+00:00",
-            "published-time": "2026-10-07T09:45:39+00:00"
+            "time": "2026-10-07T09:44:39+00:00"
         },
         {
             "name": "ccmbenchmark/ting_bundle",
@@ -702,8 +701,7 @@
                 "issues": "https://gitlab.ccmbg.com/core/ting_bundle/-/issues",
                 "source": "https://gitlab.ccmbg.com/core/ting_bundle"
             },
-            "time": "2026-10-05T15:05:56+00:00",
-            "published-time": "2026-10-07T09:45:39+00:00"
+            "time": "2026-10-05T15:05:56+00:00"
         },
         {
             "name": "cocur/slugify",
@@ -4487,6 +4485,19 @@
                 "source": "https://github.com/nette/utils/tree/v4.1.4"
             },
             "time": "2026-05-11T20:49:54+00:00"
+        },
+        {
+            "name": "npm-asset/tarteaucitronjs",
+            "version": "1.32.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/tarteaucitronjs/-/tarteaucitronjs-1.32.0.tgz",
+                "shasum": "35888a974a0c9e80b1711b51852d30d1a6fc4da3"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "nyholm/psr7",
@@ -11469,8 +11480,7 @@
                 "issues": "https://github.com/Tiime-Software/TiimeNewRelicBundle/issues",
                 "source": "https://github.com/Tiime-Software/TiimeNewRelicBundle/tree/v2.0.0"
             },
-            "time": "2026-08-18T08:26:06+00:00",
-            "published-time": "2026-08-18T08:33:44+00:00"
+            "time": "2026-08-18T08:26:06+00:00"
         },
         {
             "name": "twig/extra-bundle",
@@ -12129,8 +12139,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-28T16:13:53+00:00",
-            "published-time": "2026-09-28T16:17:31+00:00"
+            "time": "2026-09-28T16:13:53+00:00"
         },
         {
             "name": "behat/gherkin",
@@ -12214,8 +12223,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-25T21:26:10+00:00",
-            "published-time": "2026-09-25T21:28:06+00:00"
+            "time": "2026-09-25T21:26:10+00:00"
         },
         {
             "name": "behat/mink",
@@ -12523,8 +12531,7 @@
                 "issues": "https://github.com/cucumber/tag-expressions/issues",
                 "source": "https://github.com/cucumber/tag-expressions-php/tree/v11.0.1"
             },
-            "time": "2026-03-24T10:42:49+00:00",
-            "published-time": "2026-08-15T17:37:27+00:00"
+            "time": "2026-03-24T10:42:49+00:00"
         },
         {
             "name": "dbrekelmans/bdi",
@@ -12883,8 +12890,7 @@
                 "issues": "https://github.com/FriendsOfBehat/MinkExtension/issues",
                 "source": "https://github.com/FriendsOfBehat/MinkExtension/tree/v3.0.0-ALPHA.1"
             },
-            "time": "2026-07-15T10:25:06+00:00",
-            "published-time": "2026-07-15T10:32:12+00:00"
+            "time": "2026-07-15T10:25:06+00:00"
         },
         {
             "name": "friendsofphp/php-cs-fixer",
@@ -13513,8 +13519,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-06-05T09:00:01+00:00",
-            "published-time": "2026-06-05T09:00:18+00:00"
+            "time": "2026-06-05T09:00:01+00:00"
         },
         {
             "name": "phpstan/phpstan-beberlei-assert",
@@ -16855,5 +16860,5 @@
         "ext-zip": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.11.0"
+    "plugin-api-version": "2.9.0"
 }
