@@ -58,6 +58,7 @@ final class OfficesMapSvgGenerator
         // Nom accessible sans <title>, que les navigateurs afficheraient en infobulle au
         // survol de chaque élément de la carte.
         $xml->writeAttribute('aria-label', "Carte de France des antennes de l'AFUP");
+        $this->writeStyle($xml, $antennes);
 
         $xml->startElement('g');
         $xml->writeAttribute('transform', sprintf('translate(%d %d)', self::MAP_OFFSET_X, self::MAP_OFFSET_Y));
@@ -78,6 +79,28 @@ final class OfficesMapSvgGenerator
         $xml->endElement();
 
         return $xml->outputMemory();
+    }
+
+    /**
+     * Le point d'une ville n'est visible qu'au survol, grâce à son contour : en survolant
+     * le point lui-même, ou n'importe quelle zone de son antenne.
+     *
+     * @param array<Antenne> $antennes
+     */
+    private function writeStyle(\XMLWriter $xml, array $antennes): void
+    {
+        $hovered = ['circle[data-antenne]:hover'];
+        foreach ($antennes as $antenne) {
+            $hovered[] = sprintf(
+                "svg:has(path[data-antenne='%1\$s']:hover) circle[data-antenne='%1\$s']",
+                $antenne->code,
+            );
+        }
+
+        $xml->writeElement('style', sprintf(
+            "\ncircle[data-antenne] { transition: stroke-width 300ms; }\n%s { stroke-width: 3; }\n",
+            implode(",\n", $hovered),
+        ));
     }
 
     /**
@@ -110,7 +133,7 @@ final class OfficesMapSvgGenerator
                 $xml->writeAttribute('aria-label', $antenne->libelle);
             }
 
-            $this->writePath($xml, $key, $path, self::ANTENNE_COLOR);
+            $this->writePath($xml, $key, $path, $antenne);
 
             if ($link !== null) {
                 $xml->endElement();
@@ -118,12 +141,13 @@ final class OfficesMapSvgGenerator
         }
     }
 
-    private function writePath(\XMLWriter $xml, string $key, string $path, ?string $fill = null): void
+    private function writePath(\XMLWriter $xml, string $key, string $path, ?Antenne $antenne = null): void
     {
         $xml->startElement('path');
         $xml->writeAttribute('data-id', $key);
-        if ($fill !== null) {
-            $xml->writeAttribute('fill', $fill);
+        if ($antenne instanceof Antenne) {
+            $xml->writeAttribute('data-antenne', $antenne->code);
+            $xml->writeAttribute('fill', self::ANTENNE_COLOR);
         }
         $xml->writeAttribute('d', $path);
         $xml->endElement();
@@ -147,10 +171,14 @@ final class OfficesMapSvgGenerator
                 $point = FranceMap::project($city->position->latitude, $city->position->longitude);
 
                 $xml->startElement('circle');
+                $xml->writeAttribute('data-antenne', $antenne->code);
                 $xml->writeAttribute('cx', $this->number($point['x']));
                 $xml->writeAttribute('cy', $this->number($point['y']));
                 $xml->writeAttribute('r', (string) self::PLOT_RADIUS);
                 $xml->writeAttribute('fill', self::ANTENNE_COLOR);
+                // Contour révélé au survol (voir writeStyle()) : le point a la même couleur
+                // que la zone de l'antenne.
+                $xml->writeAttribute('stroke', '#fff');
                 $xml->writeAttribute('stroke-width', '0');
                 $xml->endElement();
             }
