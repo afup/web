@@ -10,9 +10,11 @@ use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Speaker\SpeakerSearchResult;
 use AppBundle\Event\Speaker\MicrophoneType;
+use AppBundle\Event\Speaker\SpeakerTalk;
 use AppBundle\Ting\JoinHydrator;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
+use CCMBenchmark\Ting\Repository\Hydrator;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -27,6 +29,25 @@ use Webmozart\Assert\Assert;
  */
 class SpeakerRepository extends Repository implements MetadataInitializer
 {
+    /**
+     * Jointures et conditions d'un talk publié, vu depuis ses speakers : planifié, ni clinique ni
+     * présentation des speakers (l'équivalent SQL de Talk::isDisplayedOnHistory(), le filtre de la
+     * page du talk), avec un créneau terminé et une date de publication vide ou passée.
+     */
+    private const string PUBLISHED_SPEAKER_TALKS_JOINS = '
+        FROM afup_conferenciers speaker
+        INNER JOIN afup_conferenciers_sessions cs ON cs.conferencier_id = speaker.conferencier_id
+        INNER JOIN afup_sessions talk ON talk.session_id = cs.session_id
+        INNER JOIN (
+            SELECT id_session, MIN(debut) AS debut, MIN(fin) AS fin FROM afup_forum_planning GROUP BY id_session
+        ) planning ON planning.id_session = talk.session_id';
+
+    private const string PUBLISHED_SPEAKER_TALKS_CONDITIONS = '
+        talk.plannifie = 1
+        AND talk.genre NOT IN (' . Talk::TYPE_CLINIC . ', ' . Talk::TYPE_SPEAKER_INTRODUCTIONS . ')
+        AND planning.fin <= UNIX_TIMESTAMP()
+        AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)';
+
     /**
      * @return CollectionInterface<Speaker>&iterable<Speaker>
      */
@@ -316,6 +337,89 @@ SQL
         )->setParams($params);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
+     * Les lignes speaker rattachées à une personne qui ont un talk publié, toutes éditions confondues,
+     * une ligne par couple speaker / talk, sans hydrater d'entité : de quoi construire l'index des personnes.
+     * Les lignes sans personne sont écartées.
+     *
+     * @return list<array{speaker_id: int, person_id: int, slug: string, firstname: string, lastname: string, talk_id: int, starts_at: int}>
+     */
+    public function getPublishedTalkAppearances(): array
+    {
+        $query = $this->getQuery(
+            'SELECT speaker.conferencier_id AS speaker_id, person.id AS person_id, person.slug,
+            speaker.prenom AS firstname, speaker.nom AS lastname, talk.session_id AS talk_id, planning.debut AS starts_at'
+            . self::PUBLISHED_SPEAKER_TALKS_JOINS
+            . ' INNER JOIN afup_speaker_person person ON person.id = speaker.person_id'
+            . ' WHERE ' . self::PUBLISHED_SPEAKER_TALKS_CONDITIONS,
+        );
+
+        $appearances = [];
+        /** @var array{speaker_id: int|string, person_id: int|string, slug: string, firstname: string|null, lastname: string|null, talk_id: int|string, starts_at: int|string} $row */
+        foreach ($query->query($this->getCollection(new HydratorArray())) as $row) {
+            $appearances[] = [
+                'speaker_id' => (int) $row['speaker_id'],
+                'person_id' => (int) $row['person_id'],
+                'slug' => $row['slug'],
+                'firstname' => (string) $row['firstname'],
+                'lastname' => (string) $row['lastname'],
+                'talk_id' => (int) $row['talk_id'],
+                'starts_at' => (int) $row['starts_at'],
+            ];
+        }
+
+        return $appearances;
+    }
+
+    /**
+     * Les talks publiés de ces lignes speaker, avec leur événement, du plus récent au plus ancien.
+     *
+     * @param list<int> $speakerIds
+     *
+     * @return list<SpeakerTalk>
+     */
+    public function getPublishedSpeakerTalks(array $speakerIds): array
+    {
+        if ($speakerIds === []) {
+            return [];
+        }
+
+        $params = [];
+        foreach ($speakerIds as $index => $speakerId) {
+            $params['speaker' . $index] = $speakerId;
+        }
+
+        $query = $this->getPreparedQuery(
+            'SELECT speaker.conferencier_id, speaker.id_forum, speaker.nom, speaker.prenom, speaker.societe,
+            speaker.biographie, speaker.twitter, speaker.mastodon, speaker.bluesky, speaker.linkedin,
+            speaker.user_github, speaker.photo,
+            talk.session_id, talk.id_forum, talk.titre, talk.genre, talk.plannifie, talk.youtube_id, talk.language_code,
+            event.id, event.titre, event.path, event.date_debut, event.date_fin,
+            github.login AS github_login,
+            planning.debut AS starts_at'
+            . self::PUBLISHED_SPEAKER_TALKS_JOINS
+            . ' INNER JOIN afup_forum event ON event.id = talk.id_forum
+            LEFT JOIN afup_user_github github ON github.id = speaker.user_github
+            WHERE speaker.conferencier_id IN (:' . implode(', :', array_keys($params)) . ')
+            AND ' . self::PUBLISHED_SPEAKER_TALKS_CONDITIONS
+            . ' ORDER BY planning.debut DESC, talk.session_id DESC, speaker.conferencier_id DESC',
+        )->setParams($params);
+
+        $speakerTalks = [];
+        /** @var array{speaker: Speaker, talk: Talk, event: Event, 0: object{starts_at: int|string, github_login: string|null}} $row */
+        foreach ($query->query($this->getCollection(new Hydrator())) as $row) {
+            $speakerTalks[] = new SpeakerTalk(
+                $row['speaker'],
+                $row['talk'],
+                $row['event'],
+                new \DateTimeImmutable('@' . $row[0]->starts_at)->setTimezone(new \DateTimeZone(date_default_timezone_get())),
+                $row[0]->github_login,
+            );
+        }
+
+        return $speakerTalks;
     }
 
     public function countByEvent(Event $event): int
