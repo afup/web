@@ -32,11 +32,11 @@ class InvoicingDetail
 
     #[Assert\NotBlank]
     #[ORM\Column(name: 'quantite', type: 'float', nullable: false)]
-    public ?float $quantite = null;
+    public ?float $quantite = null; // @phpstan-ignore doctrine.columnType (un champ vide donne null, rejeté ensuite par NotBlank)
 
     #[Assert\NotBlank]
     #[ORM\Column(name: 'pu', type: 'float', nullable: false)]
-    public ?float $prixUnitaire = null;
+    public ?float $prixUnitaire = null; // @phpstan-ignore doctrine.columnType (un champ vide donne null, rejeté ensuite par NotBlank)
 
     #[Assert\NotBlank]
     #[ORM\Column(type: 'float', nullable: true)]
