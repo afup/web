@@ -34,41 +34,19 @@ class QuotationType extends AbstractType
         ])->add('societe', TextType::class, [
             'label' => 'Société',
             'empty_data' => '',
-            'constraints' => [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-                new Assert\Length(max: 50),
-            ],
         ])->add('service', TextType::class, [
             'label' => 'Service',
             'required' => false,
             'empty_data' => '',
-            'constraints' => [
-                new Assert\Type('string'),
-                new Assert\Length(max: 50),
-            ],
         ])->add('adresse', TextareaType::class, [
             'label' => 'Adresse',
             'empty_data' => '',
-            'constraints' => [
-                new Assert\Type('string'),
-            ],
         ])->add('codePostal', TextType::class, [
             'label' => 'Code postal',
             'empty_data' => '',
-            'constraints' => [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-                new Assert\Length(max: 10),
-            ],
         ])->add('ville', TextType::class, [
             'label' => 'Ville',
             'empty_data' => '',
-            'constraints' => [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-                new Assert\Length(max: 50),
-            ],
         ])->add('idPays', ChoiceType::class, [
             'label' => 'Pays',
             'choices' => array_flip($this->pays->obtenirPays()),
@@ -76,66 +54,33 @@ class QuotationType extends AbstractType
             'label' => 'Nom',
             'required' => false,
             'empty_data' => '',
-            'constraints' => [
-                new Assert\Type('string'),
-                new Assert\Length(max: 50),
-            ],
         ])->add('prenom', TextType::class, [
             'label' => 'Prénom',
             'required' => false,
             'empty_data' => '',
-            'constraints' => [
-                new Assert\Type('string'),
-                new Assert\Length(max: 50),
-            ],
         ])->add('telephone', TextType::class, [
             'label' => 'Tel',
             'required' => false,
             'empty_data' => '',
-            'constraints' => [
-                new Assert\Type('string'),
-                new Assert\Length(max: 30),
-            ],
         ])->add('email', EmailType::class, [
             'label' => 'Email (facture)',
             'required' => true,
             'empty_data' => '',
-            'constraints' => [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-                new Assert\Length(max: 100),
-            ],
         ])->add('tvaIntra', TextType::class, [
             'label' => 'TVA intracommunautaire (facture)',
             'required' => false,
-            'constraints' => [
-                new Assert\Type('string'),
-                new Assert\Length(max: 20),
-            ],
         ])->add('referenceClient1', TextType::class, [
             'label' => 'Référence client',
             'required' => false,
             'empty_data' => '',
-            'constraints' => [
-                new Assert\Type('string'),
-                new Assert\Length(max: 50),
-            ],
         ])->add('referenceClient2', TextType::class, [
             'label' => 'Référence client 2',
             'required' => false,
             'empty_data' => '',
-            'constraints' => [
-                new Assert\Type('string'),
-                new Assert\Length(max: 50),
-            ],
         ])->add('referenceClient3', TextType::class, [
             'label' => 'Référence client 3',
             'required' => false,
             'empty_data' => '',
-            'constraints' => [
-                new Assert\Type('string'),
-                new Assert\Length(max: 50),
-            ],
         ])->add('observation', TextareaType::class, [
             'required' => false,
             'empty_data' => '',
@@ -159,11 +104,8 @@ class QuotationType extends AbstractType
                 'label' => 'Numéro de devis',
                 'required' => false,
                 'empty_data' => '',
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Type('string'),
-                    new Assert\Length(max: 50),
-                ],
+                // Propre à cet écran : à la création, le numéro est généré après la validation.
+                'constraints' => [new Assert\NotBlank()],
             ]);
         }
     }
