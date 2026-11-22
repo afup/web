@@ -14,7 +14,7 @@ class InvoicingDetail
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\ManyToOne(targetEntity: Invoicing::class, inversedBy: 'details')]
     #[ORM\JoinColumn(name: 'idafup_compta_facture', referencedColumnName: 'id', nullable: false)]

@@ -20,7 +20,7 @@ class Invoicing
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    public int $id;
 
     #[ORM\Column(name: 'date_devis', type: Types::DATE_MUTABLE, nullable: false)]
     public \DateTime $dateDevis;
