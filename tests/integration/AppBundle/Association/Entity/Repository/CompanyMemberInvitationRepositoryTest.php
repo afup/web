@@ -26,7 +26,7 @@ final class CompanyMemberInvitationRepositoryTest extends IntegrationTestCase
         $this->persistInvitation($repository, $company->id, 'acceptee@example.com', InvitationEtat::Acceptee);
         $this->persistInvitation($repository, $otherCompany->id, 'autre-societe@example.com', InvitationEtat::EnAttente);
 
-        $invitations = $repository->loadPendingInvitationsByCompany((int) $company->id);
+        $invitations = $repository->loadPendingInvitationsByCompany($company->id);
 
         self::assertCount(1, $invitations);
         self::assertSame('en-attente@example.com', $invitations[0]->email);
@@ -46,7 +46,7 @@ final class CompanyMemberInvitationRepositoryTest extends IntegrationTestCase
 
         $recente = $this->persistInvitation($repository, $company->id, 'recente@example.com', InvitationEtat::EnAttente);
 
-        $invitations = $repository->loadPendingInvitationsByCompany((int) $company->id);
+        $invitations = $repository->loadPendingInvitationsByCompany($company->id);
 
         self::assertSame(['ancienne@example.com', 'recente@example.com'], array_map(
             static fn(CompanyMemberInvitation $invitation): string => $invitation->email,
@@ -65,14 +65,14 @@ final class CompanyMemberInvitationRepositoryTest extends IntegrationTestCase
 
         $this->persistInvitation($repository, $company->id, 'invite@example.com', InvitationEtat::EnAttente);
 
-        $invitation = $repository->findPendingByEmail((int) $company->id, 'invite@example.com');
+        $invitation = $repository->findPendingByEmail($company->id, 'invite@example.com');
 
         self::assertNotNull($invitation);
         self::assertSame('invite@example.com', $invitation->email);
-        self::assertSame((int) $company->id, $invitation->companyId);
+        self::assertSame($company->id, $invitation->companyId);
 
         // Le même email chez une autre société ne doit rien retourner.
-        self::assertNull($repository->findPendingByEmail((int) $otherCompany->id, 'invite@example.com'));
+        self::assertNull($repository->findPendingByEmail($otherCompany->id, 'invite@example.com'));
     }
 
     public function testFindPendingByEmailIgnoresCancelledInvitation(): void
@@ -86,7 +86,7 @@ final class CompanyMemberInvitationRepositoryTest extends IntegrationTestCase
         $invitation->status = InvitationEtat::Annulee;
         $repository->save($invitation);
 
-        self::assertNull($repository->findPendingByEmail((int) $company->id, 'annulee@example.com'));
+        self::assertNull($repository->findPendingByEmail($company->id, 'annulee@example.com'));
     }
 
     public function testSaveThenUpdateKeepsSameRow(): void

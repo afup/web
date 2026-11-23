@@ -53,7 +53,7 @@ final class MemberInvitationAction extends AbstractController
             $user->setPassword($hash);
             $user
                 ->setStatus(User::STATUS_ACTIVE)
-                ->setCompanyId((int) $company->id)
+                ->setCompanyId($company->id)
             ;
 
             if ($invitation->manager) {

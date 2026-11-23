@@ -57,8 +57,8 @@
                 </thead>
                 {% for company in companies %}
                     {# @var company \AppBundle\Association\Entity\CompanyMember #}
-                    {% set isActive = company.status == constant('AppBundle\\Association\\Enum\\CompanyMemberStatus::Active') %}
-                    {% set isPending = company.status == constant('AppBundle\\Association\\Enum\\CompanyMemberStatus::Pending') %}
+                    {% set isActive = company.status == constant('AppBundle\\Association\\Enum\\PersonneMoraleEtat::Active') %}
+                    {% set isPending = company.status == constant('AppBundle\\Association\\Enum\\PersonneMoraleEtat::EnAttente') %}
                     <tr class="{{ loop.index % 2 ? 'odd' : 'even' }} {% if isActive %}actif{% elseif isPending %}non_finalise{% else %}inactif{% endif %}">
                         <td class="{% if not isActive %}disabled{% endif %}">{{ company.companyName }}</td>
                         <td style="text-align: center">

@@ -14,7 +14,7 @@ abstract class CompanyPublicProfileController extends AbstractController
 
     protected function checkAndGetCompanyMember(int $id, string $slug): CompanyMember
     {
-        $companyMember = $this->companyMemberRepository->findById($id);
+        $companyMember = $this->companyMemberRepository->findWithLastSubscription($id);
 
         if ($companyMember === null
             || $companyMember->getSlug() != $slug

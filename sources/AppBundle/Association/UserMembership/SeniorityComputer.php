@@ -21,7 +21,7 @@ final readonly class SeniorityComputer
     /** @return array{years: int, first_year: int|null} */
     public function computeCompanyAndReturnInfos(CompanyMember $companyMember): array
     {
-        $cotis = $this->membershipFeeRepository->getListByUserTypeAndId(MemberType::MemberCompany, (int) $companyMember->id);
+        $cotis = $this->membershipFeeRepository->getListByUserTypeAndId(MemberType::MemberCompany, $companyMember->id);
 
         return $this->computeFromCotisationsAndReturnInfos($cotis);
     }

@@ -6,7 +6,7 @@ namespace AppBundle\Association\Form;
 
 use Afup\Site\Utils\Pays;
 use AppBundle\Association\Entity\CompanyMember;
-use AppBundle\Association\Enum\CompanyMemberStatus;
+use AppBundle\Association\Enum\PersonneMoraleEtat;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -119,9 +119,9 @@ class CompanyEditType extends AbstractType
             ->add('status', ChoiceType::class, [
                 'label' => 'État',
                 'choices' => [
-                    'Non finalisé' => CompanyMemberStatus::Pending,
-                    'Actif' => CompanyMemberStatus::Active,
-                    'Inactif' => CompanyMemberStatus::Inactive,
+                    'Non finalisé' => PersonneMoraleEtat::EnAttente,
+                    'Actif' => PersonneMoraleEtat::Active,
+                    'Inactif' => PersonneMoraleEtat::Inactive,
                 ],
             ])
             ->add('maxMembers', ChoiceType::class, [

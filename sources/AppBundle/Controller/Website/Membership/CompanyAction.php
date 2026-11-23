@@ -63,7 +63,7 @@ final class CompanyAction extends AbstractController
                     continue;
                 }
                 $invitation->submittedOn = new \DateTime();
-                $invitation->companyId = (int) $member->id;
+                $invitation->companyId = $member->id;
                 $invitation->token = base64_encode(random_bytes(30));
                 $invitation->status = InvitationEtat::EnAttente;
                 if ($index === 0) {

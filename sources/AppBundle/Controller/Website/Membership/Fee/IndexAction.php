@@ -76,7 +76,7 @@ final class IndexAction extends AbstractController
             $type_personne = MemberType::MemberCompany;
             $prefixe = 'Personne morale';
 
-            if (!$company = $this->companyMemberRepository->findById($id_personne)) {
+            if (!$company = $this->companyMemberRepository->findWithLastSubscription($id_personne)) {
                 throw $this->createNotFoundException('La personne morale n\'existe pas');
             }
             $montant = $company->getMembershipFee();

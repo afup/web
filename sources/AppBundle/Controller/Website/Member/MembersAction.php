@@ -57,7 +57,7 @@ final class MembersAction extends AbstractController
         }
 
         $users = $this->userRepository->loadActiveUsersByCompany($company);
-        $pendingInvitations = $this->companyMemberInvitationRepository->loadPendingInvitationsByCompany((int) $company->id);
+        $pendingInvitations = $this->companyMemberInvitationRepository->loadPendingInvitationsByCompany($company->id);
 
         $invitation = new CompanyMemberInvitation();
         $invitationForm = $this->createForm(CompanyMemberInvitationType::class, $invitation);
@@ -107,7 +107,7 @@ final class MembersAction extends AbstractController
     ): void {
         // Check if there is already a pending invitation for this email and this company
         $matchingUser = $this->collectionFilter->findOne($users, 'getEmail', $invitation->email);
-        $matchingInvitation = $this->companyMemberInvitationRepository->findPendingByEmail((int) $company->id, $invitation->email);
+        $matchingInvitation = $this->companyMemberInvitationRepository->findPendingByEmail($company->id, $invitation->email);
 
         if ($matchingInvitation !== null || $matchingUser !== null) {
             $this->addFlash('error', 'Vous ne pouvez pas envoyer plusieurs invitations au même email.');
@@ -117,7 +117,7 @@ final class MembersAction extends AbstractController
 
         // Handle invitation
         $invitation->submittedOn = new DateTime();
-        $invitation->companyId = (int) $company->id;
+        $invitation->companyId = $company->id;
         $invitation->token = base64_encode(random_bytes(30));
         $invitation->status = InvitationEtat::EnAttente;
         $this->companyMemberInvitationRepository->save($invitation);
@@ -130,7 +130,7 @@ final class MembersAction extends AbstractController
 
     private function removeInvitation(string $emailToDelete, CompanyMember $company): void
     {
-        $invitationToDelete = $this->companyMemberInvitationRepository->findPendingByEmail((int) $company->id, $emailToDelete);
+        $invitationToDelete = $this->companyMemberInvitationRepository->findPendingByEmail($company->id, $emailToDelete);
 
         if ($invitationToDelete !== null) {
             $invitationToDelete->status = InvitationEtat::Annulee;
@@ -143,7 +143,7 @@ final class MembersAction extends AbstractController
 
     private function resendInvitation(string $emailToSend, CompanyMember $company): void
     {
-        $invitationToSend = $this->companyMemberInvitationRepository->findPendingByEmail((int) $company->id, $emailToSend);
+        $invitationToSend = $this->companyMemberInvitationRepository->findPendingByEmail($company->id, $emailToSend);
 
         if ($invitationToSend !== null) {
             $this->invitationMail->sendInvitation($company, $invitationToSend);

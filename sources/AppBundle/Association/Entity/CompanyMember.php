@@ -6,7 +6,7 @@ namespace AppBundle\Association\Entity;
 
 use AppBundle\Association\CompanyMembership\SubscriptionManagement;
 use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
-use AppBundle\Association\Enum\CompanyMemberStatus;
+use AppBundle\Association\Enum\PersonneMoraleEtat;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -63,8 +63,8 @@ class CompanyMember
     #[ORM\Column(name: 'telephone_portable', length: 20, nullable: true)]
     public ?string $cellphone = null;
 
-    #[ORM\Column(name: 'etat', type: 'smallint', enumType: CompanyMemberStatus::class)]
-    public CompanyMemberStatus $status = CompanyMemberStatus::Active;
+    #[ORM\Column(name: 'etat', type: 'smallint', enumType: PersonneMoraleEtat::class)]
+    public PersonneMoraleEtat $status = PersonneMoraleEtat::Active;
 
     #[ORM\Column(name: 'max_members', type: 'smallint', nullable: true, options: ['unsigned' => true])]
     public ?int $maxMembers = 0;

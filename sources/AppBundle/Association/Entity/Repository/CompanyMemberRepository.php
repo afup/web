@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Association\Entity\Repository;
 
 use AppBundle\Association\Entity\CompanyMember;
-use AppBundle\Association\Enum\CompanyMemberStatus;
+use AppBundle\Association\Enum\PersonneMoraleEtat;
 use AppBundle\Association\MemberType;
 use AppBundle\Doctrine\EntityRepository;
 use AppBundle\MembershipFee\Entity\Cotisation;
@@ -43,7 +43,7 @@ final class CompanyMemberRepository extends EntityRepository
     /**
      * Contrairement à find(), renseigne la date de fin de dernière cotisation (lastSubscription).
      */
-    public function findById(int $id): ?CompanyMember
+    public function findWithLastSubscription(int $id): ?CompanyMember
     {
         $rows = $this->createQueryBuilderWithLastSubscription()
             ->where('c.id = :id')
@@ -103,7 +103,7 @@ final class CompanyMemberRepository extends EntityRepository
 
         if ($onlyDisplayActive) {
             $queryBuilder->andWhere('c.status = :status')
-                ->setParameter('status', CompanyMemberStatus::Active);
+                ->setParameter('status', PersonneMoraleEtat::Active);
         }
 
         return $this->hydrateLastSubscription($queryBuilder->getQuery()->getResult());
@@ -166,13 +166,13 @@ final class CompanyMemberRepository extends EntityRepository
     {
         $result = [];
         foreach ($this->findBy([], ['companyName' => 'ASC']) as $companyMember) {
-            $result[(int) $companyMember->id] = sprintf('%s (id : %d)', $companyMember->companyName, $companyMember->id);
+            $result[$companyMember->id] = sprintf('%s (id : %d)', $companyMember->companyName, $companyMember->id);
         }
 
         return $result;
     }
 
-    public function countByStatus(CompanyMemberStatus $status): int
+    public function countByStatus(PersonneMoraleEtat $status): int
     {
         return (int) $this->createQueryBuilder('c')
             ->select('COUNT(c.id)')
