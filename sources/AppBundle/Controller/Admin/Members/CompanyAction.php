@@ -47,7 +47,7 @@ class CompanyAction extends AbstractController
 
         return $this->render('admin/members/company/' . ($id ? 'edit' : 'add') . '.html.twig', [
             'form' => $form->createView(),
-            'users' => $this->userRepository->search('lastname', 'asc', null, $company->id, onlyActive: false),
+            'users' => $this->userRepository->search('lastname', 'asc', null, $company->id ?? null, onlyActive: false),
             'company' => $company,
         ]);
     }

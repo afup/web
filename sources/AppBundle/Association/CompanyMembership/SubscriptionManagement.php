@@ -20,7 +20,7 @@ final readonly class SubscriptionManagement
 
     public function createInvoiceForInscription(CompanyMember $company, int $numberOfMembers): array
     {
-        if (null === $company->id) {
+        if (!isset($company->id)) {
             throw new \LogicException('The company member must be persisted.');
         }
         $endSubscription = $this->membershipFeeService->getNextSubscriptionExpiration(null);

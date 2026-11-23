@@ -18,7 +18,7 @@ class CompanyMember
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
-    public ?int $id = null;
+    public int $id;
 
     #[Assert\NotBlank]
     #[ORM\Column(name: 'prenom', length: 40)]
