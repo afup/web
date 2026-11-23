@@ -38,7 +38,7 @@ readonly class TicketOffers
             $ticketTypeId = $ticketEventType->ticketTypeId;
             $offers[$ticketTypeId] = new TicketOffer(
                 $ticketTypeId,
-                $ticketEventType->ticketType?->getPrettyName() ?? '',
+                $ticketEventType->ticketType->prettyName ?? '',
                 $ticketEventType->price ?? 0.0,
                 $this->ticketTypeAvailability->getStock($ticketEventType, $event),
                 $event,

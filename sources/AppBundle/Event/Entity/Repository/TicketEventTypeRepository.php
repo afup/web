@@ -7,7 +7,7 @@ namespace AppBundle\Event\Entity\Repository;
 use AppBundle\Doctrine\EntityRepository;
 use AppBundle\Event\Entity\TicketEventType;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\TicketTypeRepository;
+use AppBundle\Event\Entity\TicketType;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,10 +19,8 @@ final class TicketEventTypeRepository extends EntityRepository
     public const int REMOVE_FUTURE_TICKETS = 2;
     public const int ACTUAL_TICKETS_ONLY = 3; // Combinaison de REMOVE_PAST_TICKETS et REMOVE_FUTURE_TICKETS
 
-    public function __construct(
-        ManagerRegistry $registry,
-        private readonly TicketTypeRepository $ticketTypeRepository,
-    ) {
+    public function __construct(ManagerRegistry $registry)
+    {
         parent::__construct($registry, TicketEventType::class);
     }
 
@@ -58,11 +56,6 @@ final class TicketEventTypeRepository extends EntityRepository
             ->addOrderBy('tarif_event.price')
             ->addOrderBy('tarif.members_only', 'DESC');
 
-        $ticketTypes = [];
-        foreach ($this->ticketTypeRepository->getAll() as $ticketType) {
-            $ticketTypes[$ticketType->getId()] = $ticketType;
-        }
-
         $ticketEventTypes = [];
         foreach ($queryBuilder->executeQuery()->fetchAllAssociative() as $row) {
             if (!isset($row['id_tarif'], $row['id_event'])
@@ -78,9 +71,10 @@ final class TicketEventTypeRepository extends EntityRepository
             if ($ticketEventType === null) {
                 continue;
             }
-            $ticketEventType->ticketType = $ticketTypes[$ticketEventType->ticketTypeId] ?? null;
             $ticketEventTypes[] = $ticketEventType;
         }
+
+        $this->getEntityManager()->getRepository(TicketType::class)->attachTo($ticketEventTypes);
 
         return $ticketEventTypes;
     }
@@ -91,7 +85,7 @@ final class TicketEventTypeRepository extends EntityRepository
     public function doesEventHasRestrictedToMembersTickets(Event $event, bool $publicOnly = true, ?int $datesFilter = null): bool
     {
         foreach ($this->getTicketsByEvent($event, $publicOnly, $datesFilter) as $ticketEventType) {
-            if ($ticketEventType->ticketType?->getIsRestrictedToMembers() === true) {
+            if ($ticketEventType->ticketType?->isRestrictedToMembers === true) {
                 return true;
             }
         }

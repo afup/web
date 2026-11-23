@@ -6,7 +6,10 @@ namespace AppBundle\IntegrationTests\Event\Entity\Repository;
 
 use Afup\Tests\Support\IntegrationTestCase;
 use AppBundle\Event\Entity\Repository\TicketTypeRepository;
+use AppBundle\Event\Entity\TicketEventType;
 use AppBundle\Event\Entity\TicketType;
+use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Model\TicketAggregate;
 use Doctrine\DBAL\Connection;
 
 final class TicketTypeRepositoryTest extends IntegrationTestCase
@@ -77,6 +80,42 @@ final class TicketTypeRepositoryTest extends IntegrationTestCase
         $repository = self::getContainer()->get(TicketTypeRepository::class);
 
         self::assertNull($repository->find(999999));
+    }
+
+    public function testAttachToRenseigneLeTypeDeTarif(): void
+    {
+        $repository = self::getContainer()->get(TicketTypeRepository::class);
+        $connection = self::getContainer()->get(Connection::class);
+
+        $id = $this->insertTicketType($connection, ['pretty_name' => 'Tarif rattaché']);
+
+        $connu = new TicketEventType();
+        $connu->ticketTypeId = $id;
+        // Tarif d'évènement dont le type n'existe plus
+        $inconnu = new TicketEventType();
+        $inconnu->ticketTypeId = 999999;
+
+        $repository->attachTo([$connu, $inconnu]);
+
+        self::assertSame('Tarif rattaché', $connu->ticketType?->prettyName);
+        self::assertNull($inconnu->ticketType);
+    }
+
+    public function testEnrichTicketAggregatesChargeLeTypeDeTarif(): void
+    {
+        $repository = self::getContainer()->get(TicketTypeRepository::class);
+        $connection = self::getContainer()->get(Connection::class);
+
+        $id = $this->insertTicketType($connection, ['pretty_name' => 'Tarif inscrit']);
+
+        $aggregates = $repository->enrichTicketAggregates([
+            new TicketAggregate(new Ticket()->setTicketTypeId($id), null, null, null),
+            new TicketAggregate(new Ticket()->setTicketTypeId(999999), null, null, null),
+        ]);
+
+        self::assertCount(2, $aggregates);
+        self::assertSame('Tarif inscrit', $aggregates[0]->ticketType?->prettyName);
+        self::assertNull($aggregates[1]->ticketType);
     }
 
     /**

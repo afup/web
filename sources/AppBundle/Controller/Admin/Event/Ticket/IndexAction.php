@@ -7,6 +7,7 @@ namespace AppBundle\Controller\Admin\Event\Ticket;
 use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Entity\Repository\BilleteriePriveeRepository;
 use AppBundle\Event\Entity\Repository\TicketSpecialPriceRepository;
+use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\EventStats;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
@@ -35,6 +36,7 @@ class IndexAction extends AbstractController
         private readonly BilleteriePriveeRepository $billeteriePriveeRepository,
         private readonly TicketSpecialPriceRepository $ticketSpecialPriceRepository,
         private readonly FormFactoryInterface $formFactory,
+        private readonly TicketTypeRepository $ticketTypeRepository,
     ) {}
 
     public function __invoke(Request $request, AdminEventSelection $eventSelection): Response
@@ -54,12 +56,12 @@ class IndexAction extends AbstractController
         $data['sort_direction'] ??= 'desc';
 
         $statistics = $this->eventStatsRepository->getStats($event->getId());
-        $tickets = $this->ticketRepository->getByEventWithAll(
+        $tickets = $this->ticketTypeRepository->enrichTicketAggregates($this->ticketRepository->getByEventWithAll(
             event: $event,
             search: $data['filter'] ?? null,
             sortKey: $data['sort_key'],
             sortDirection: $data['sort_direction'],
-        );
+        ));
         $computed = $this->computeStatistics($statistics, $event);
         $specialPriceLabels = $this->getSpecialPriceLabels($tickets);
 
@@ -87,7 +89,7 @@ class IndexAction extends AbstractController
         $tokens = [];
         foreach ($tickets as $aggregate) {
             if (
-                $aggregate->ticketType->getId() === Ticket::TYPE_SPECIAL_PRICE
+                $aggregate->ticketType?->id === Ticket::TYPE_SPECIAL_PRICE
                 && $aggregate->ticket->getSpecialPriceToken() !== null
             ) {
                 $tokens[] = $aggregate->ticket->getSpecialPriceToken();

@@ -33,7 +33,7 @@ class CorporateMemberValidator extends ConstraintValidator
         $eventId = null;
 
         foreach ($tickets as $ticket) {
-            if (!($ticket instanceof Ticket) || !$ticket->getTicketEventType() instanceof TicketEventType || $ticket->getTicketEventType()->ticketType->getIsRestrictedToMembers() === false) {
+            if (!($ticket instanceof Ticket) || !$ticket->getTicketEventType() instanceof TicketEventType || $ticket->getTicketEventType()->ticketType->isRestrictedToMembers === false) {
                 continue;
             }
             if ($eventId === null) {

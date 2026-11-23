@@ -97,7 +97,7 @@ final class TicketAction extends AbstractController
 
             foreach ($tickets as $ticket) {
                 if ($ticket->getTicketEventType()?->ticketType !== null
-                    && $ticket->getTicketEventType()->ticketType->getIsRestrictedToMembers()
+                    && $ticket->getTicketEventType()->ticketType->isRestrictedToMembers
                     && isset($memberId, $memberType)) {
                     $ticket
                         ->setMemberId($memberId)

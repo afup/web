@@ -7,12 +7,13 @@ namespace AppBundle\Event\Ticket;
 use AppBundle\Association\Model\Repository\UserRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\Association\UserMembership\SeniorityComputer;
+use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Model\Ticket;
-use AppBundle\Event\Model\TicketType;
+use AppBundle\Event\Entity\TicketType;
 use AppBundle\Offices\OfficeFinder;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
@@ -24,6 +25,7 @@ readonly class RegistrationsExportGenerator
         private TicketRepository $ticketRepository,
         private InvoiceRepository $invoiceRepository,
         private UserRepository $userRepository,
+        private TicketTypeRepository $ticketTypeRepository,
     ) {}
 
     public function export(Event $event, \SplFileObject $toFile): void
@@ -58,12 +60,12 @@ readonly class RegistrationsExportGenerator
 
     protected function getFromRegistrationsOnEvent(Event $event): \Generator
     {
-        $aggregates = $this->ticketRepository->getByEventWithAll(
+        $aggregates = $this->ticketTypeRepository->enrichTicketAggregates($this->ticketRepository->getByEventWithAll(
             event: $event,
             search: null,
             sortKey: 'date',
             sortDirection: 'desc',
-        );
+        ));
 
         foreach ($aggregates as $aggregate) {
             $ticket = $aggregate->ticket;
@@ -132,9 +134,13 @@ readonly class RegistrationsExportGenerator
         return $this->seniorityComputer->compute($user);
     }
 
-    private function getTypePass(TicketType $ticketType): string
+    private function getTypePass(?TicketType $ticketType): string
     {
-        $typePass = match ($ticketType->getId()) {
+        if ($ticketType === null) {
+            throw new \RuntimeException('Type de tarif de l\'inscription non trouvé');
+        }
+
+        $typePass = match ($ticketType->id) {
             Ticket::TYPE_ORGANIZATION => 'ORGANISATION',
             Ticket::TYPE_PRESS => 'PRESSE',
             Ticket::TYPE_SPEAKER => 'CONFERENCIER',
@@ -145,13 +151,13 @@ readonly class RegistrationsExportGenerator
             return $typePass;
         }
 
-        if ($ticketType->getDay() === 'one') {
+        if ($ticketType->day === 'one') {
             return 'PASS JOUR 1';
         }
-        if ($ticketType->getDay() === 'two') {
+        if ($ticketType->day === 'two') {
             return 'PASS JOUR 2';
         }
-        if ($ticketType->getDay() === 'one,two') {
+        if ($ticketType->day === 'one,two') {
             return 'PASS 2 JOURS';
         }
 
