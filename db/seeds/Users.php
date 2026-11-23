@@ -16,6 +16,7 @@ class Users extends AbstractSeed
     public const ID_USER_PERSONNE_PHYSIQUE_FIXED_COTISATIONS = 6;
     public const ID_USER_PERSONNE_LIE_PERSONNE_MORALE_FIXED_COTISATIONS = 7;
     public const ID_USER_GESTIONNAIRE_MEMBRES = 8;
+    public const ID_USER_LECTEUR_ANTENNES = 9;
 
     public const ID_PERSONNE_MORALE_MY_CORP = 1;
     public const ID_PERSONNE_MORALE_HELIOS_AEROSPACE = 2;
@@ -156,6 +157,18 @@ class Users extends AbstractSeed
                 'prenom' => 'Gestion',
                 'email' => 'gestion.membres@afup.test',
                 'roles' => json_encode(['ROLE_MEMBRES_WRITER']),
+                'etat' => User::STATUS_ACTIVE,
+                'adresse' => '',
+            ],
+            // lecteur du module Antennes, sans droit d'écriture
+            [
+                'id'    => self::ID_USER_LECTEUR_ANTENNES,
+                'login' => 'lecteurantennes',
+                'mot_de_passe' => md5('lecteurantennes'),
+                'nom' => 'Lecteur',
+                'prenom' => 'Antennes',
+                'email' => 'lecteur.antennes@afup.test',
+                'roles' => json_encode(['ROLE_ANTENNES_READER']),
                 'etat' => User::STATUS_ACTIVE,
                 'adresse' => '',
             ],

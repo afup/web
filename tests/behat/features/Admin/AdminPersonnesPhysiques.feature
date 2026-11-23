@@ -37,10 +37,10 @@ Feature: Administration - Partie Personnes physiques
 
     Then I should not see "Cette valeur ne doit pas être vide"
     # les droits sont relus depuis les rôles de la personne
-    # l'id 9 correspond à la personne créée ci-dessus : les seeds insèrent 8 personnes
+    # l'id 10 correspond à la personne créée ci-dessus : les seeds insèrent 9 personnes
     # avec des identifiants explicites (cf. db/seeds/Users.php), le compteur auto-incrément
-    # est donc à 8
-    When I am on "/admin/members/users/edit?id=9"
+    # est donc à 9
+    When I am on "/admin/members/users/edit?id=10"
     Then the "user_edit_access_veille_2" checkbox should be checked
     And the "user_edit_access_site_1" checkbox should be checked
     And the "user_edit_access_membres_0" checkbox should be checked

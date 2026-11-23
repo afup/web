@@ -1,0 +1,116 @@
+{% extends 'admin/base_with_header.html.twig' %}
+
+{% form_theme form 'form_theme_admin.html.twig' %}
+
+{% macro ville(form) %}
+    {{ form_errors(form) }}
+    {{ form_row(form.premierPointX) }}
+    {{ form_row(form.premierPointY) }}
+    {{ form_row(form.deuxiemePointX) }}
+    {{ form_row(form.deuxiemePointY) }}
+    {{ form_row(form.troisiemePointX) }}
+    {{ form_row(form.troisiemePointY) }}
+    {{ form_row(form.latitude) }}
+    {{ form_row(form.longitude) }}
+{% endmacro %}
+
+{% block content %}
+    <h2>{{ formTitle }}</h2>
+
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <div class="ui segment">
+            <h3 class="ui header">Général</h3>
+            <div class="ui form">
+                {% if form.code is defined %}
+                    {{ form_row(form.code) }}
+                {% else %}
+                    <div class="inline fields ui grid">
+                        <div class="three wide column right aligned"><label>Code</label></div>
+                        <div class="field nine wide column"><code>{{ antenne.code }}</code></div>
+                    </div>
+                {% endif %}
+                {{ form_row(form.libelle) }}
+                {{ form_row(form.urlLogo) }}
+                {% if form.urlLogo.vars.value %}
+                    <div class="inline fields ui grid">
+                        <div class="three wide column"></div>
+                        <div class="field nine wide column">
+                            <img src="{{ form.urlLogo.vars.value }}" alt="Logo actuel" height="60" data-qa="antenne-logo-preview">
+                        </div>
+                    </div>
+                {% endif %}
+                {{ form_row(form.actif) }}
+            </div>
+        </div>
+
+        <div class="ui segment">
+            <h3 class="ui header">Meetup</h3>
+            <div class="ui form">
+                {{ form_row(form.meetupNomUrl) }}
+                {{ form_row(form.meetupIdExterne) }}
+            </div>
+        </div>
+
+        <div class="ui segment">
+            <h3 class="ui header">Réseaux sociaux</h3>
+            <div class="ui form">
+                {{ form_row(form.reseauxSociaux.blog) }}
+                {{ form_row(form.reseauxSociaux.youtube) }}
+                {{ form_row(form.reseauxSociaux.linkedin) }}
+                {{ form_row(form.reseauxSociaux.bluesky) }}
+                {{ form_row(form.reseauxSociaux.twitter) }}
+                {{ form_row(form.reseauxSociaux.github) }}
+                {{ form_row(form.reseauxSociaux.discord) }}
+                {{ form_row(form.reseauxSociaux.cfp) }}
+            </div>
+        </div>
+
+        <div class="ui segment">
+            <h3 class="ui header">Localisation</h3>
+            <div class="ui form">
+                {{ form_row(form.region) }}
+                {{ form_row(form.departements) }}
+                {{ form_row(form.pays) }}
+            </div>
+        </div>
+
+        <div class="ui segment">
+            <h3 class="ui header">Carte</h3>
+            <div class="ui message">
+                <p>
+                    Les points x/y tracent le trait de légende sur la carte des antennes ; la latitude et la longitude
+                    placent la ville sur la carte et servent à trouver l'antenne la plus proche d'un membre.
+                    Laisser la seconde ville vide si l'antenne ne couvre qu'une ville.
+                </p>
+            </div>
+            <div class="ui form">
+                {{ form_errors(form.carte) }}
+                {{ form_row(form.carte.afficherSurCarte) }}
+                {{ form_row(form.carte.utiliserSecondeCouleur) }}
+                {{ form_row(form.carte.ancrageLegende) }}
+
+                <h4 class="ui header">Première ville</h4>
+                {{ _self.ville(form.carte.premiereVille) }}
+
+                <h4 class="ui header">Seconde ville</h4>
+                {{ _self.ville(form.carte.secondeVille) }}
+            </div>
+        </div>
+
+        <div class="ui segment">
+            <div class="ui form">
+                <div class="inline fields ui grid">
+                    <div class="three wide column">
+                        <a href="{{ path('admin_antennes_list') }}" class="ui button">Annuler</a>
+                    </div>
+                    <div class="three wide column">
+                        <input type="submit" value="{{ submitLabel }}" class="ui primary button">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {{ form_end(form) }}
+{% endblock %}
