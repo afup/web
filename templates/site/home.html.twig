@@ -119,56 +119,34 @@
 
     <section class="w-full">
         <h1 class="text-afup-800 font-titre text-2xl sm:text-4xl border-b-2 border-neutre-300 pb-3 mb-5 hidden sm:block">
-            {{ currentEvent.title }}
+            Forum PHP 2026
         </h1>
 
         <div class="flex flex-col sm:grid sm:grid-cols-2">
             <div class="relative isolate bg-cover bg-center grow flex items-center justify-center rounded-t-xl rounded-bl-none sm:rounded-l-xl sm:rounded-tr-none
             before:content-[''] before:absolute before:inset-0 before:bg-afup-800/70 before:-z-10 before:rounded-t-xl before:rounded-bl-none sm:before:rounded-l-xl sm:before:rounded-tr-none"
                  style="background-image: url('{{ asset('images/home-banner.webp') }}')">
-                <img src="{{ asset('images/forumphp-2026-vecto-light.svg') }}" class="min-h-30 sm:min-h-60 m-20" alt="Logo {{ currentEvent.title }}" />
+                <img src="{{ asset('images/forumphp-2026-vecto-light.svg') }}" class="min-h-30 sm:min-h-60 m-20" alt="Logo Forum PHP 2026" />
             </div>
-            <div class="rounded-b-xl rounded-tr-none sm:rounded-r-xl sm:rounded-bl-none p-4 sm:p-10 flex flex-col gap-10 bg-linear-to-b from-afup-700 to-afup-300 text-white">
+            <div class="rounded-b-xl rounded-tr-none sm:rounded-r-xl sm:rounded-bl-none p-4 sm:p-10 flex flex-col gap-8 bg-linear-to-b from-afup-700 to-afup-300 text-white">
                 <h1 class="font-titre text-4xl">
-                    Participez au {{ currentEvent.title }}
+                    Merci d’avoir été des nôtres au Forum PHP 2026 !
                 </h1>
                 <p>
-                    Le rendez-vous incontournable de la communauté PHP en France. Rejoignez-nous les 8 et 9 octobre 2026
-                    pour deux jours de conférences, d'ateliers et de networking.
+                    Merci d’avoir été des nôtres ces 8-9 octobre à Disneyland Paris, lors de ces deux jours de rencontres,
+                    d’échanges, de partage des savoirs : le Forum PHP, c’est bien plus que des conférences !
                 </p>
-                <div class="flex flex-col gap-3">
-                    <div class="flex flex-row gap-3 items-center">
-                        <div class="border-neutre-200 bg-white/20 border-white/50 border p-3 rounded-xl">
-                            <twig:UX:Icon name="uil:calendar" class="size-6" />
-                        </div>
-                        <h2 class="font-titre text-xl sm:text-3xl">8 &amp; 9 octobre 2026</h2>
-                    </div>
-
-                    <div class="flex flex-row gap-3 items-center">
-                        <div class="border-neutre-200 bg-white/20 border-white/50 border p-3 rounded-xl">
-                            <twig:UX:Icon name="akar-icons:location" class="size-6" />
-                        </div>
-                        <h2 class="font-titre text-sm sm:text-lg leading-5">
-                            Hotel New York - The Art of Marvel,<br/>
-                            Disneyland Paris
-                        </h2>
-                    </div>
-                </div>
-                <div class="flex flex-col sm:flex-row gap-5">
-                    <twig:Button variant="secondary"
-                                 class="flex gap-2"
-                                 as="a"
-                                 href="{{ path('ticket', {eventSlug: currentEvent.path}) }}">
-                        Réserver ma place <twig:UX:Icon name="mingcute:arrow-right-fill" class="size-5" />
-                    </twig:Button>
-
-                    <twig:Button variant="secondary-outline"
-                                 class="flex gap-2"
-                                 as="a"
-                                 href="https://event.afup.org/forum-php-2026/programme/">
-                        Voir le programme
-                    </twig:Button>
-                </div>
+                <h2 class="font-titre text-3xl">Et le prochain événement ?</h2>
+                <p>
+                    Notre secteur est en plein bouleversement.<br />
+                    <br />
+                    Comme l’indiquent les signataires de la <a class="underline" href="https://lettreouverte.afup.org/">lettre ouverte</a>
+                    pour la survie des événements tech, l’année a été exigeante pour le secteur, l’AFUP comprise.
+                    Plutôt que de reconduire à l’identique, l’équipe a lancé plusieurs chantiers pour réinventer nos
+                    rendez-vous. Parce que nous aurons toujours besoin de partager nos savoirs !<br />
+                    <br />
+                    Pour connaître la suite de nos aventures communes, restez à l’écoute de l’AFUP !
+                </p>
             </div>
         </div>
     </section>
