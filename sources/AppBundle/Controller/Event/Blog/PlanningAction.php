@@ -53,7 +53,7 @@ final class PlanningAction extends AbstractController
             $planning = $talkAggregate->planning;
             $room = $talkAggregate->room;
 
-            if ($planning === null) {
+            if ($planning === null || $room === null) {
                 continue;
             }
 
@@ -86,7 +86,7 @@ final class PlanningAction extends AbstractController
                 $defaultProgramPagePrefix = $request->query->get('program-page-prefix-' . $eventPath, '/' . $eventPath . '/programme/');
             }
 
-            $eventPlanning[$startDay][$start][$room->getId()][] = [
+            $eventPlanning[$startDay][$start][$room->id][] = [
                 'talk' => $talkAggregate->talk,
                 'speakers' => $talkAggregate->speakers,
                 'room' => $talkAggregate->room,
@@ -95,8 +95,8 @@ final class PlanningAction extends AbstractController
                 'length' => $interval->i + $interval->h * 60,
             ];
 
-            if (isset($rooms[$room->getId()]) === false) {
-                $rooms[$room->getId()] = $room;
+            if (isset($rooms[$room->id]) === false) {
+                $rooms[$room->id] = $room;
             }
         }
 

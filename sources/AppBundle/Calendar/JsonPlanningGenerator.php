@@ -57,7 +57,7 @@ class JsonPlanningGenerator
                 'id' => $talkAggregate->talk->getId(),
                 'lang' => $talkAggregate->talk->getLanguageLabel(),
                 'name' => $talkAggregate->talk->getTitle(),
-                'salle' => $talkAggregate->room->getName(),
+                'salle' => $talkAggregate->room->name,
             ];
         }
 

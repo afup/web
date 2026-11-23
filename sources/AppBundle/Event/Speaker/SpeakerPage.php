@@ -9,7 +9,7 @@ use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Room;
+use AppBundle\Event\Entity\Room;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\SpeakerInfos\Form\HotelReservationType;

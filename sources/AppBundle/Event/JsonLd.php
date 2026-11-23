@@ -64,7 +64,7 @@ final readonly class JsonLd
                 'description' => html_entity_decode(strip_tags((string) $talkAggregate->talk->getDescription())),
                 'location' => [
                     '@type' => 'Place',
-                    'name' => $talkAggregate->room?->getName() ?? '',
+                    'name' => $talkAggregate->room->name ?? '',
                     'address' => $event->getPlaceAddress(),
                 ],
                 'performers' => $performers,

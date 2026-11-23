@@ -7,6 +7,7 @@ namespace AppBundle\Event\Entity\Repository;
 use AppBundle\Doctrine\EntityRepository;
 use AppBundle\Doctrine\Type\UnixTimestampType;
 use AppBundle\Event\Entity\Planning;
+use AppBundle\Event\Entity\Room;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\TalkAggregate;
 use Doctrine\Persistence\ManagerRegistry;
@@ -72,8 +73,8 @@ final class PlanningRepository extends EntityRepository
     }
 
     /**
-     * Complète les agrégats session/conférenciers/salle produits par TalkRepository (Ting)
-     * avec les plannings correspondants, rechargés via Doctrine.
+     * Complète les agrégats session/conférenciers produits par TalkRepository (Ting)
+     * avec les plannings et les salles correspondants, rechargés via Doctrine.
      *
      * @param array<TalkAggregate> $talkAggregates
      *
@@ -90,19 +91,38 @@ final class PlanningRepository extends EntityRepository
         }
 
         $plannings = $this->findIndexedByTalkIds($talkIds);
+        $rooms = $this->findRoomsOf($plannings);
 
         $enriched = [];
         foreach ($talkAggregates as $talkAggregate) {
             $talkId = $talkAggregate->talk->getId();
+            $planning = $talkId !== null ? ($plannings[$talkId] ?? null) : null;
             $enriched[] = new TalkAggregate(
                 $talkAggregate->talk,
                 $talkAggregate->speakers,
-                $talkAggregate->room,
-                $talkId !== null ? ($plannings[$talkId] ?? null) : null,
+                $planning?->roomId !== null ? ($rooms[$planning->roomId] ?? null) : null,
+                $planning,
                 $talkAggregate->vote,
             );
         }
 
         return $enriched;
+    }
+
+    /**
+     * @param array<Planning> $plannings
+     *
+     * @return array<int, Room>
+     */
+    public function findRoomsOf(array $plannings): array
+    {
+        $roomIds = [];
+        foreach ($plannings as $planning) {
+            if ($planning->roomId !== null) {
+                $roomIds[] = $planning->roomId;
+            }
+        }
+
+        return $this->getEntityManager()->getRepository(Room::class)->findIndexedByIds($roomIds);
     }
 }
