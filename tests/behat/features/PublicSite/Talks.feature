@@ -385,3 +385,14 @@ Feature: Site Public - Talks
   Scenario: Meta description de la liste des vidéos
     When I go to "/talks/"
     Then the page should have a meta description
+
+  @reloadDbWithTestData
+  Scenario: Meta description des pages speaker et événement
+    When I go to "/talks/speakers/geoffrey-bachelet"
+    Then the meta description should be "Geoffrey Bachelet : 3 talks aux conférences de l'AFUP, dont « REST ou GraphQL ? Exemples illustrés avec Symfony et API Platform » (forum). Président…"
+    When I go to "/talks/evenements/forum"
+    Then the page should have a meta description
+    When I go to "/talks/speakers/"
+    Then the page should have a meta description
+    When I go to "/talks/evenements/"
+    Then the page should have a meta description
