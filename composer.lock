@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "352fd94b5dc7cc9d6b9a228230894ee8",
+    "content-hash": "9a3f82da521a0c67e4fed55d01be84e5",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -4496,6 +4496,19 @@
             },
             "require": {
                 "npm-asset/types--offscreencanvas": ">=2019.6.4,<2020.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/sass-embedded-linux-x64",
+            "version": "1.108.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/sass-embedded-linux-x64/-/sass-embedded-linux-x64-1.108.2.tgz",
+                "shasum": "0788e1f0376a36e8f2d1611dc06178216f87d103"
             },
             "type": "npm-asset",
             "license": [

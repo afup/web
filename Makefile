@@ -44,7 +44,7 @@ help:
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
-.PHONY: help up stop down docker\:test docker\:test-integration docker\:behat docker\:cs-lint docker\:cs-fix docker\:rector docker\:rector-fix docker\:phpstan docker\:phpstan-update-baseline hooks watch install test-functional test-functional-no-js test-functional-js test-integration-ci init init-db reset-db config console logs
+.PHONY: help up stop down docker\:test docker\:test-integration docker\:behat docker\:cs-lint docker\:cs-fix docker\:rector docker\:rector-fix docker\:phpstan docker\:phpstan-update-baseline hooks install test-functional test-functional-no-js test-functional-js test-integration-ci init init-db reset-db config console logs
 
 ##@ Setup
 
@@ -163,13 +163,9 @@ docker\:phpstan-update-baseline:
 
 ### Compiler les assets pour la production
 docker\:assets:
-	./node_modules/.bin/webpack -p
+	composer sass
 	php bin/console importmap:install
 	php bin/console tailwind:build --minify
-
-### Lancer le watcher pour les assets
-watch:
-	./node_modules/.bin/webpack --progress --colors --watch
 
 ##@ Git
 

@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-./node_modules/.bin/webpack -p
+composer sass
 php bin/phinx migrate
 php bin/console tailwind:build --minify
 php bin/console asset-map:compile
