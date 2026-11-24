@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Invoice;
 
-use AppBundle\Accounting\Model\Repository\InvoicingRepository;
+use AppBundle\Accounting\Entity\Repository\InvoicingRepository;
 use AppBundle\Association\Model\User;
 use AppBundle\AuditLog\Audit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,10 +39,10 @@ class MarkFactureAsSentAction extends AbstractController
             throw new NotFoundHttpException("Cette facture n'existe pas");
         }
 
-        $invoice->setDateEnvoi(new \DateTime());
+        $invoice->dateEnvoi = new \DateTime();
         $user = $this->security->getUser();
         if ($user instanceof User) {
-            $invoice->setEnvoyePar($user->getUsername());
+            $invoice->envoyePar = $user->getUsername();
         }
         $this->invoicingRepository->save($invoice);
         $this->audit->log('Facture n°' . $invoiceRef . ' marquée comme envoyée manuellement');

@@ -66,8 +66,8 @@
                 const newRow = document.querySelector('.invoice_row_container').lastElementChild;
 
                 newRow.querySelector('[name$="[reference]"]').value = btn.dataset.reference;
-                newRow.querySelector('[name$="[quantity]"]').value = btn.dataset.quantite || '';
-                newRow.querySelector('[name$="[unitPrice]"]').value = btn.dataset.prixUnitaireHt;
+                newRow.querySelector('[name$="[quantite]"]').value = btn.dataset.quantite || '';
+                newRow.querySelector('[name$="[prixUnitaire]"]').value = btn.dataset.prixUnitaireHt;
                 newRow.querySelector('[name$="[tva]"]').value = btn.dataset.tauxTva;
                 newRow.querySelector('[name$="[designation]"]').value = btn.dataset.designation;
 

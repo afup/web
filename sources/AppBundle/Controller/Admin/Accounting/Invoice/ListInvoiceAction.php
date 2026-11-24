@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Accounting\Invoice;
 
 use Afup\Site\Utils\Vat;
+use AppBundle\Accounting\Entity\Invoicing;
 use AppBundle\Accounting\Entity\Repository\InvoicingPeriodRepository;
+use AppBundle\Accounting\Entity\Repository\InvoicingRepository;
 use AppBundle\Accounting\Form\InvoicingPeriodType;
 use AppBundle\Accounting\InvoicingPaymentStatus;
-use AppBundle\Accounting\Model\Invoicing;
-use AppBundle\Accounting\Model\Repository\InvoicingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,11 +40,11 @@ class ListInvoiceAction extends AbstractController
 
         /** @var Invoicing $invoice */
         foreach ($invoices as $invoice) {
-            if ($invoice->getPaymentStatus() === InvoicingPaymentStatus::Cancelled) {
+            if ($invoice->etatPaiement === InvoicingPaymentStatus::Cancelled) {
                 continue;
             }
 
-            $totalHt += $invoice->getPrice();
+            $totalHt += $invoice->prix;
         }
 
         return new Response($this->twig->render('admin/accounting/invoice/list.html.twig', [

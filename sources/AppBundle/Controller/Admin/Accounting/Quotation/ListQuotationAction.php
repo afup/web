@@ -6,8 +6,8 @@ namespace AppBundle\Controller\Admin\Accounting\Quotation;
 
 use Afup\Site\Utils\Vat;
 use AppBundle\Accounting\Entity\Repository\InvoicingPeriodRepository;
+use AppBundle\Accounting\Entity\Repository\InvoicingRepository;
 use AppBundle\Accounting\Form\InvoicingPeriodType;
-use AppBundle\Accounting\Model\Repository\InvoicingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

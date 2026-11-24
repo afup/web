@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Accounting\Invoice;
 
+use AppBundle\Accounting\Entity\Invoicing;
+use AppBundle\Accounting\Entity\Repository\InvoicingRepository;
 use AppBundle\Accounting\InvoicingPdfGenerator;
-use AppBundle\Accounting\Model\Invoicing;
-use AppBundle\Accounting\Model\Repository\InvoicingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
