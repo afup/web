@@ -63,6 +63,17 @@ services:
     volumes:
       - ./:/var/www/html
 
+  # Watcher Sass : recompile le CSS des pages événement à chaque modification du SCSS
+  sass:
+    build: *apachephp-build
+    user: localUser
+    working_dir: /var/www/html
+    init: true
+    restart: unless-stopped
+    command: composer run-script --timeout=0 sass -- --watch
+    volumes:
+      - ./:/var/www/html
+
   apachephptest:
     build:
       context: ./docker/dockerfiles/apachephp
