@@ -19,13 +19,6 @@ class TicketInvoiceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $paymentTypes = [
-            'Carte bancaire' => TypeReglement::CarteBancaire->value,
-            'Chèque' => TypeReglement::Cheque->value,
-            'Virement' => TypeReglement::Virement->value,
-            'Aucun' => TypeReglement::Aucun->value,
-        ];
-
         $builder
             ->add('reference', TextType::class, [
                 'label' => 'Référence',
@@ -47,7 +40,8 @@ class TicketInvoiceType extends AbstractType
                 'label' => 'Règlement',
                 'expanded' => true,
                 'row_attr' => ['class' => 'fields inline'],
-                'choices' => $paymentTypes,
+                'choices' => array_column(TypeReglement::cases(), 'value'),
+                'choice_label' => static fn(int $type): string => TypeReglement::from($type)->label(),
             ])
             ->add('paymentInfos', TextareaType::class, [
                 'label' => 'Informations règlement',

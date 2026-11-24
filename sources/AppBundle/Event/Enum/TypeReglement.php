@@ -13,4 +13,27 @@ enum TypeReglement: int
     case Cheque = 1;
     case Virement = 2;
     case Aucun = 3;
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::CarteBancaire => 'Carte bancaire',
+            self::Cheque => 'Chèque',
+            self::Virement => 'Virement',
+            self::Aucun => 'Aucun',
+        };
+    }
+
+    /**
+     * Mention « Payé … » imprimée sur la facture PDF, null quand aucun règlement n'est à mentionner.
+     */
+    public function invoiceMention(): ?string
+    {
+        return match ($this) {
+            self::CarteBancaire => 'par CB',
+            self::Cheque => 'par chèque',
+            self::Virement => 'par virement',
+            self::Aucun => null,
+        };
+    }
 }

@@ -98,6 +98,8 @@ class EventInvoicePdfGenerator
             : new \DateTimeImmutable();
 
         $isSubjectedToVat = Vat::isSubjectedToVat($dateFacture);
+        $typeReglementBrut = $facture['type_reglement'] ?? null;
+        $typeReglement = is_numeric($typeReglementBrut) ? TypeReglement::tryFrom((int) $typeReglementBrut) : null;
 
         $pdf = new PDF_Facture($this->bankAccountFactory->createApplyableAt($dateFacture), $isSubjectedToVat);
         $pdf->AddPage();
@@ -174,7 +176,7 @@ class EventInvoicePdfGenerator
             $total += $montant;
         }
 
-        if ($facture['type_reglement'] == 1) {
+        if ($typeReglement === TypeReglement::Cheque) {
             $pdf->Ln();
             $pdf->Cell(50, 5, 'FRAIS', 1);
             $pdf->Cell(100, 5, 'Paiement par chèque', 1);
@@ -203,16 +205,11 @@ class EventInvoicePdfGenerator
 
         $pdf->Ln(15);
         if ($facture['etat'] == 4) {
-            $type = match ($facture['type_reglement']) {
-                TypeReglement::CarteBancaire->value => 'par CB',
-                TypeReglement::Cheque->value => 'par chèque',
-                TypeReglement::Virement->value => 'par virement',
-                default => '',
-            };
+            $mention = $typeReglement?->invoiceMention();
             $pdf->SetTextColor(255, 0, 0);
             $pdf->Cell(130, 5);
-            if ($facture['type_reglement'] != TypeReglement::Aucun->value) {
-                $pdf->Cell(60, 5, 'Payé ' . $type . ' le ' . date('d/m/Y', (int) $facture['date_reglement']));
+            if ($mention !== null) {
+                $pdf->Cell(60, 5, 'Payé ' . $mention . ' le ' . date('d/m/Y', (int) $facture['date_reglement']));
             }
             $pdf->SetTextColor(0, 0, 0);
         }
