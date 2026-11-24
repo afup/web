@@ -1,6 +1,5 @@
 // webpack.config.js
 const webpack = require('webpack')
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 
@@ -13,10 +12,6 @@ const siteConfig = {
   },
   plugins: [
     new ExtractTextPlugin('styles.css'),
-    new CopyWebpackPlugin([
-      { from: path.resolve(__dirname, 'node_modules/qr-scanner/qr-scanner.min.js'), to: path.resolve(__dirname, 'htdocs/assets/qr-scanner/qr-scanner.min.js') },
-      { from: path.resolve(__dirname, 'node_modules/qr-scanner/qr-scanner-worker.min.js'), to: path.resolve(__dirname, 'htdocs/assets/qr-scanner/qr-scanner-worker.min.js') },
-    ]),
   ],
   module: {
     rules: [

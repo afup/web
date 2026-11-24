@@ -22,6 +22,15 @@ return [
         'path' => './assets/techletter/techletter.js',
         'entrypoint' => true,
     ],
+    'sponsor-scanner' => [
+        'path' => './assets/sponsor/scanner.js',
+        'entrypoint' => true,
+    ],
+    // Installé par Composer (npm-asset/qr-scanner) : le worker, chargé par import
+    // dynamique, doit rester à côté de la lib.
+    'qr-scanner' => [
+        'path' => 'npm-asset/qr-scanner/qr-scanner.min.js',
+    ],
     'semantic-ui/dist/semantic.min.css' => [
         'version' => '2.5.0',
         'type' => 'css',

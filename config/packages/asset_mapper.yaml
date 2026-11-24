@@ -4,6 +4,7 @@ framework:
     paths:
       '%kernel.project_dir%/assets/': ''
       '%kernel.project_dir%/vendor/npm-asset/tarteaucitronjs/': 'npm-asset/tarteaucitronjs'
+      '%kernel.project_dir%/vendor/npm-asset/qr-scanner/': 'npm-asset/qr-scanner'
     importmap_path: '%kernel.project_dir%/importmap.php'
     missing_import_mode: strict
     vendor_dir: '%kernel.project_dir%/assets/vendor'
