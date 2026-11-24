@@ -239,7 +239,7 @@ Feature: Site Public - Talks
       """
     And the texts of "section#evenements-2020 li p" should be, in this order:
       """
-      1 talk · 0 vidéo
+      7 talks · 3 vidéos
       """
     And the response should contain "href=\"/talks/evenements/forum\""
     And I should see "2 talks · 2 vidéos"
@@ -271,12 +271,15 @@ Feature: Site Public - Talks
     Then the response status code should be 200
     And I should see "Historique des conférences de l'AFUP" in the "h1" element
     And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/\" />"
-    # Les données de test n'ont que 2 talks publiés avec vidéo (le hub en affiche jusqu'à 12) ;
-    # « Révolutionons PHP » a une vidéo mais une publication à venir.
+    # Les données de test n'ont que 5 talks publiés avec vidéo (le hub en affiche jusqu'à 12) ;
+    # « Révolutionons PHP » et « Un talk pas encore publié » ont une vidéo mais une publication à venir.
     And the texts of "#dernieres-videos article h3" should be, in this order:
       """
       REST ou GraphQL ? Exemples illustrés avec Symfony et API Platform
       Jouons tous ensemble à un petit jeu
+      Clôture : le futur de PHP
+      Observabilité avec OpenTelemetry
+      Tester sans se ruiner
       """
     And the response should contain "href=\"/talks/2-rest-ou-graphql-exemples-illustres-avec-symfony-et-api-platform\""
     And the response should contain "href=\"/talks/1-jouons-tous-ensemble-a-un-petit-jeu\""
@@ -334,7 +337,7 @@ Feature: Site Public - Talks
       | position | name                  | item                                                                                    |
       | 1        | Accueil               | https://apachephptest:80/                                                               |
       | 2        | Conférences           | https://apachephptest:80/talks/                                                         |
-      | 3        | Un évènement du passé | https://apachephptest:80/talks/?fR%5Bevent.title%5D%5B0%5D=Un%20%C3%A9v%C3%A8nement%20du%20pass%C3%A9 |
+      | 3        | Un évènement du passé | https://apachephptest:80/talks/evenements/passed                                        |
       | 4        | Révolutionons PHP     | https://apachephptest:80/talks/6-revolutionons-php                                      |
 
   @reloadDbWithTestData
