@@ -8,7 +8,7 @@ use AppBundle\Association\Form\TicketEventType;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Form\EventSelectType;
 use AppBundle\Event\Entity\Repository\TicketEventTypeRepository;
-use AppBundle\Event\Model\Repository\TicketTypeRepository;
+use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,18 +29,21 @@ class PricesEditAction extends AbstractController
     public function __invoke(Request $request, int $event, int $id): Response
     {
         $event = $this->eventActionHelper->getEventById($event);
-        $ticketType = $this->ticketTypeRepository->get($id);
+        $ticketType = $this->ticketTypeRepository->find($id);
+        if ($ticketType === null) {
+            throw new NotFoundHttpException();
+        }
 
         $ticketEventType = $this->ticketEventTypeRepository->find([
             'eventId' => $event->getId(),
-            'ticketTypeId' => $ticketType->getId(),
+            'ticketTypeId' => $ticketType->id,
         ]);
         if ($ticketEventType === null) {
             throw new NotFoundHttpException();
         }
         $ticketEventType->ticketType = $ticketType;
 
-        $ticketTypes = $this->ticketTypeRepository->getAll();
+        $ticketTypes = $this->ticketTypeRepository->findAllOrderedById();
         $form = $this->createForm(TicketEventType::class, $ticketEventType, [
             'ticketTypes' => $ticketTypes,
             'has_prices_defined_with_vat' => $event->hasPricesDefinedWithVat(),

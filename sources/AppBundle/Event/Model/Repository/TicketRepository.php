@@ -9,7 +9,7 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Model\TicketAggregate;
-use AppBundle\Event\Model\TicketType;
+use AppBundle\Event\Entity\TicketType;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
@@ -110,8 +110,9 @@ class TicketRepository extends Repository implements MetadataInitializer
 
     public function getByInvoiceWithDetail(Invoice $invoice)
     {
-        // Les tarifs sont hydratés par Ting via un JOIN : l'entité Doctrine
-        // TicketEventType est ré-attachée au ticket (TicketEventTypeHydrationRepository)
+        // Le tarif d'évènement est hydraté par Ting via un JOIN : l'entité Doctrine
+        // TicketEventType est ré-attachée au ticket (TicketEventTypeHydrationRepository).
+        // Son type de tarif n'est pas chargé.
         return $this->getPreparedQuery(
             'SELECT
             inscriptions.id, inscriptions.date, inscriptions.reference, inscriptions.coupon, inscriptions.type_inscription,
@@ -119,17 +120,14 @@ class TicketRepository extends Repository implements MetadataInitializer
             inscriptions.email, inscriptions.telephone, inscriptions.citer_societe, inscriptions.newsletter_afup, inscriptions.newsletter_nexen,
             inscriptions.commentaires, inscriptions.etat, inscriptions.facturation, inscriptions.id_forum,
             inscriptions.mail_partenaire, inscriptions.presence_day1, inscriptions.presence_day2,
-            tarif_event.id_tarif, tarif_event.id_event, tarif_event.price, tarif_event.date_start, tarif_event.date_end, tarif_event.description, tarif_event.max_tickets,
-            tarif.id, tarif.technical_name, tarif.day, tarif.pretty_name, tarif.public, tarif.members_only, tarif.default_price, tarif.active, tarif.cfp_submitter_only
+            tarif_event.id_tarif, tarif_event.id_event, tarif_event.price, tarif_event.date_start, tarif_event.date_end, tarif_event.description, tarif_event.max_tickets
             FROM afup_inscription_forum inscriptions
             JOIN afup_forum_tarif_event tarif_event ON tarif_event.id_tarif = inscriptions.type_inscription AND tarif_event.id_event = inscriptions.id_forum
-            JOIN afup_forum_tarif tarif ON tarif.id = tarif_event.id_tarif
             WHERE inscriptions.reference = :ref
             ',
         )->setParams(['ref' => $invoice->getReference()])->query(
             $this->getCollection(
                 new HydratorSingleObject()
-                ->mapObjectTo('tarif', 'tarif_event', 'setTicketType')
                 ->mapObjectTo('tarif_event', 'inscriptions', 'setTicketEventType'),
             ),
         );
@@ -167,7 +165,7 @@ class TicketRepository extends Repository implements MetadataInitializer
 
         if ($ticketType instanceof TicketType) {
             $sql .= ' AND aif.type_inscription = :ticket_type_id';
-            $params['ticket_type_id'] = $ticketType->getId();
+            $params['ticket_type_id'] = $ticketType->id;
         }
 
         $tickets = $this->getPreparedQuery($sql)
@@ -208,7 +206,9 @@ class TicketRepository extends Repository implements MetadataInitializer
      */
     public function getByEventWithAll(Event $event, ?string $search, ?string $sortKey, ?string $sortDirection): array
     {
-        $sql = 'SELECT ticket.*, aff.*, aft.*, afto.*,
+        // Le type de tarif n'est plus hydraté par Ting : il est rechargé via Doctrine
+        // avec TicketTypeRepository::enrichTicketAggregates().
+        $sql = 'SELECT ticket.*, aff.*,
         CASE WHEN ticket.id_member IS NOT NULL
         THEN (SELECT MAX(ac.date_fin) AS last_subscription
               FROM afup_cotisations ac
@@ -224,7 +224,6 @@ class TicketRepository extends Repository implements MetadataInitializer
         LEFT JOIN afup_facturation_forum aff ON ticket.reference = aff.reference 
         LEFT JOIN afup_forum_tarif_event afte ON afte.id_tarif = ticket.type_inscription AND afte.id_event = ticket.id_forum
         LEFT JOIN afup_forum_tarif aft ON aft.id = afte.id_tarif
-        LEFT JOIN afup_forum_tarif afto ON afto.id = ticket.type_inscription
         WHERE %s
         ORDER BY %s';
 
@@ -256,7 +255,7 @@ class TicketRepository extends Repository implements MetadataInitializer
         foreach ($result as $row) {
             $aggregates[] = new TicketAggregate(
                 $row['ticket'],
-                $row['aft'] ?? $row['afto'],
+                null,
                 $row['aff'],
                 $row[0]->last_subscription ? new \DateTimeImmutable('@' . $row[0]->last_subscription) : null,
             );

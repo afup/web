@@ -11,7 +11,6 @@ use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Entity\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Entity\Repository\TicketSpecialPriceRepository;
-use AppBundle\Event\Model\Repository\TicketTypeRepository as TingTicketTypeRepository;
 use AppBundle\Event\Model\Ticket;
 use AppBundle\Event\Entity\TicketEventType;
 use AppBundle\Event\Entity\TicketSpecialPrice;
@@ -41,7 +40,6 @@ class TicketType extends AbstractType
         private readonly TicketTypeAvailability $ticketTypeAvailability,
         private readonly TicketSpecialPriceRepository $ticketSpecialPriceRepository,
         private readonly TicketTypeRepository $ticketTypeRepository,
-        private readonly TingTicketTypeRepository $tingTicketTypeRepository,
         private readonly AntenneRepository $antenneRepository,
     ) {}
 
@@ -91,7 +89,7 @@ class TicketType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) use ($eventTickets, $options, $event): void {
             $filteredEventTickets = [];
             foreach ($eventTickets as $eventTicket) {
-                if ($eventTicket->ticketType->getIsRestrictedToCfpSubmitter() && !$options['is_cfp_submitter']) {
+                if ($eventTicket->ticketType->isRestrictedToCfpSubmitter && !$options['is_cfp_submitter']) {
                     continue;
                 }
                 $filteredEventTickets[] = $eventTicket;
@@ -135,13 +133,13 @@ class TicketType extends AbstractType
                     ];
 
                     if ($type->ticketType !== null) {
-                        $attr['data-members-only'] = (int) $type->ticketType->getIsRestrictedToMembers();
+                        $attr['data-members-only'] = (int) $type->ticketType->isRestrictedToMembers;
                         $attr['data-stock'] = $this->ticketTypeAvailability->getStock($type, $event);
-                        $attr['data-label'] = $type->ticketType->getPrettyName();
+                        $attr['data-label'] = $type->ticketType->prettyName;
                     }
 
                     if (
-                        ($type->ticketType?->getIsRestrictedToMembers() === true && $options['member_type'] === self::MEMBER_NOT)
+                        ($type->ticketType?->isRestrictedToMembers === true && $options['member_type'] === self::MEMBER_NOT)
                         || (isset($attr['data-stock']) && $attr['data-stock'] <= 0)
                     ) {
                         $attr['disabled'] = 'disabled';
@@ -196,8 +194,8 @@ class TicketType extends AbstractType
      */
     private function createSpecialPriceTicketEventType(TicketSpecialPrice $ticketSpecialPrice, array $filteredEventTickets): array
     {
-        $ticketType = $this->tingTicketTypeRepository->get(Ticket::TYPE_SPECIAL_PRICE);
-        if (!$ticketType instanceof \AppBundle\Event\Model\TicketType) {
+        $ticketType = $this->ticketTypeRepository->find(Ticket::TYPE_SPECIAL_PRICE);
+        if ($ticketType === null) {
             return $filteredEventTickets;
         }
 
@@ -218,8 +216,8 @@ class TicketType extends AbstractType
      */
     private function createBilleteriePriveeTicketEventType(BilleteriePrivee $billeteriePrivee, array $filteredEventTickets): array
     {
-        $ticketType = $this->tingTicketTypeRepository->get(Ticket::TYPE_SPECIAL_PRICE);
-        if (!$ticketType instanceof \AppBundle\Event\Model\TicketType) {
+        $ticketType = $this->ticketTypeRepository->find(Ticket::TYPE_SPECIAL_PRICE);
+        if ($ticketType === null) {
             return $filteredEventTickets;
         }
 

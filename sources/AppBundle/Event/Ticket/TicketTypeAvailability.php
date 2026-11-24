@@ -7,7 +7,7 @@ namespace AppBundle\Event\Ticket;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TicketRepository;
 use AppBundle\Event\Entity\TicketEventType;
-use AppBundle\Event\Model\TicketType;
+use AppBundle\Event\Entity\TicketType;
 
 class TicketTypeAvailability
 {
@@ -20,7 +20,7 @@ class TicketTypeAvailability
     public function getStock(TicketEventType $ticketEventType, Event $event): int
     {
         // Les tickets depuis les tokens doivent fonctionner même après le sold out
-        if ($ticketEventType->ticketType !== null && $ticketEventType->ticketType->getTechnicalName() == TicketType::SPECIAL_PRICE_TECHNICAL_NAME) {
+        if ($ticketEventType->ticketType !== null && $ticketEventType->ticketType->technicalName == TicketType::SPECIAL_PRICE_TECHNICAL_NAME) {
             return PHP_INT_MAX;
         }
 
@@ -34,8 +34,8 @@ class TicketTypeAvailability
             $allTickets = $this->ticketRepository->getPublicSoldTickets($event);
             $typeTickets = $this->ticketRepository->getPublicSoldTicketsOfType($event, $ticketType);
         } else {
-            $allTickets = $this->ticketRepository->getPublicSoldTicketsByDay($ticketType->getDay(), $event);
-            $typeTickets = $this->ticketRepository->getPublicSoldTicketsByDayOfType($event, $ticketType->getDay(), $ticketType);
+            $allTickets = $this->ticketRepository->getPublicSoldTicketsByDay($ticketType->day, $event);
+            $typeTickets = $this->ticketRepository->getPublicSoldTicketsByDayOfType($event, $ticketType->day, $ticketType);
         }
 
         // on regarde combien de tickets il nous reste

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AppBundle\Event\Entity;
 
 use AppBundle\Event\Entity\Repository\TicketEventTypeRepository;
-use AppBundle\Event\Model\TicketType;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TicketEventTypeRepository::class)]
@@ -35,11 +34,6 @@ class TicketEventType
     #[ORM\Column(name: 'max_tickets', nullable: true)]
     public ?int $maxTickets = null;
 
-    // Type de ticket associé, encore géré par Ting : champ non mappé, hydraté manuellement
+    // Type de tarif associé : champ non mappé, renseigné par TicketTypeRepository::attachTo()
     public ?TicketType $ticketType = null;
-
-    public function setTicketType(?TicketType $ticketType): void
-    {
-        $this->ticketType = $ticketType;
-    }
 }

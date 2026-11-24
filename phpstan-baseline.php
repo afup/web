@@ -1922,16 +1922,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/PreviousRegistrationsAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
+	'message' => '#^Cannot access property \\$id on AppBundle\\\\Event\\\\Entity\\\\TicketType\\|null\\.$#',
+	'identifier' => 'property.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/PricesAddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/PricesEditAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Event\\\\RedirectEventFromSessionListener\\:\\:__construct\\(\\) has parameter \\$controllersWithEventSelector with no value type specified in iterable type array\\.$#',
@@ -4046,8 +4040,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketInvoiceType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getIsRestrictedToCfpSubmitter\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
+	'message' => '#^Cannot access property \\$isRestrictedToCfpSubmitter on AppBundle\\\\Event\\\\Entity\\\\TicketType\\|null\\.$#',
+	'identifier' => 'property.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TicketType.php',
 ];
@@ -5036,18 +5030,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'aft\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'afto\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'sold_tickets\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
 	'count' => 1,
@@ -5192,34 +5174,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$ticketType of class AppBundle\\\\Event\\\\Model\\\\TicketAggregate constructor expects AppBundle\\\\Event\\\\Model\\\\TicketType, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$invoice of class AppBundle\\\\Event\\\\Model\\\\TicketAggregate constructor expects AppBundle\\\\Event\\\\Model\\\\Invoice\\|null, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketTypeRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketTypeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketTypeRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketTypeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketTypeRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Property AppBundle\\\\Event\\\\Model\\\\Room\\:\\:\\$name \\(string\\) does not accept mixed\\.$#',
@@ -5304,18 +5262,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Ticket.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/TicketType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\TicketType\\:\\:getDays\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/TicketType.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
@@ -5672,12 +5618,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/TicketTypeAvailability.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$value of function count expects array\\|Countable, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/TicketTypeAvailability.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Validator\\\\Constraints\\\\AvailableTicketValidator\\:\\:validate\\(\\) has parameter \\$ticket with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
 	'count' => 1,
@@ -5702,8 +5642,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Validator/Constraints/CorporateMemberValidator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getIsRestrictedToMembers\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
+	'message' => '#^Cannot access property \\$isRestrictedToMembers on AppBundle\\\\Event\\\\Entity\\\\TicketType\\|null\\.$#',
+	'identifier' => 'property.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Validator/Constraints/CorporateMemberValidator.php',
 ];
@@ -5714,8 +5654,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Validator/Constraints/CorporateMemberValidator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getIsRestrictedToMembers\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
+	'message' => '#^Cannot access property \\$isRestrictedToMembers on AppBundle\\\\Event\\\\Entity\\\\TicketType\\|null\\.$#',
+	'identifier' => 'property.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Validator/Constraints/LoggedInMemberValidator.php',
 ];
@@ -5726,8 +5666,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Validator/Constraints/LoggedInMemberValidator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getIsRestrictedToMembers\\(\\) on AppBundle\\\\Event\\\\Model\\\\TicketType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
+	'message' => '#^Cannot access property \\$isRestrictedToMembers on AppBundle\\\\Event\\\\Entity\\\\TicketType\\|null\\.$#',
+	'identifier' => 'property.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Validator/Constraints/PublicTicketValidator.php',
 ];

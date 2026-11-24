@@ -22,7 +22,7 @@ class LoggedInMemberValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, LoggedInMember::class);
         }
 
-        if (!($ticket instanceof Ticket) || !$ticket->getTicketEventType() instanceof TicketEventType || $ticket->getTicketEventType()->ticketType->getIsRestrictedToMembers() === false) {
+        if (!($ticket instanceof Ticket) || !$ticket->getTicketEventType() instanceof TicketEventType || $ticket->getTicketEventType()->ticketType->isRestrictedToMembers === false) {
             return ;
         }
 

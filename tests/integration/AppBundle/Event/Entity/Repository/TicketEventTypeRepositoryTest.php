@@ -23,9 +23,9 @@ final class TicketEventTypeRepositoryTest extends IntegrationTestCase
         self::assertSame(9001, $ticketEventTypes[0]->ticketTypeId);
         self::assertSame(150.0, $ticketEventTypes[0]->price);
         self::assertSame(2, $ticketEventTypes[0]->maxTickets);
-        self::assertSame('Tarif public', $ticketEventTypes[0]->ticketType->getPrettyName());
+        self::assertSame('Tarif public', $ticketEventTypes[0]->ticketType->prettyName);
         self::assertSame(9002, $ticketEventTypes[1]->ticketTypeId);
-        self::assertTrue($ticketEventTypes[1]->ticketType->getIsRestrictedToMembers());
+        self::assertTrue($ticketEventTypes[1]->ticketType->isRestrictedToMembers);
     }
 
     public function testGetTicketsByEventAvecFiltrePublic(): void

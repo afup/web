@@ -22,7 +22,7 @@ class PublicTicketValidator extends ConstraintValidator
             return ;
         }
 
-        if ($ticket->getTicketEventType()->ticketType->getIsRestrictedToMembers() === true) {
+        if ($ticket->getTicketEventType()->ticketType->isRestrictedToMembers === true) {
             $this->context->buildViolation($constraint->messageNotLoggedIn)
                 ->atPath('email')
                 ->addViolation();

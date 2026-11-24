@@ -97,8 +97,8 @@ final readonly class JsonLd
         foreach ($eventTickets as $eventTicket) {
             $offers[] = [
                 '@type' => 'Offer',
-                'name' => $eventTicket->ticketType?->getPrettyName(),
-                'sku' => $eventTicket->ticketType?->getTechnicalName(),
+                'name' => $eventTicket->ticketType?->prettyName,
+                'sku' => $eventTicket->ticketType?->technicalName,
                 'priceCurrency' => 'EUR',
                 'price' => $eventTicket->price,
                 'validFrom' => $eventTicket->dateStart->format('c'),
