@@ -13,6 +13,10 @@ framework:
                 base_uri: 'https://bsky.social'
             http_client.bluesky_embed:
                 base_uri: 'https://embed.bsky.app'
+            http_client.joindin:
+                base_uri: 'https://api.joind.in'
+                timeout: 3
+                max_duration: 5
             http_client.wordpress:
                 base_uri: '%env(WORDPRESS_BASE_URI)%'
                 auth_basic: '%env(WORDPRESS_AUTH)%'
