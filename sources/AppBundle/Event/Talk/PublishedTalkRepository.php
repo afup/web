@@ -49,6 +49,27 @@ readonly class PublishedTalkRepository
         ));
     }
 
+    /**
+     * Date de publication de chaque talk publié, par ID : la fin de son créneau, ou sa date de publication si elle est plus tardive.
+     *
+     * @return array<int, \DateTimeImmutable>
+     */
+    public function getPublicationDates(): array
+    {
+        $timezone = new \DateTimeZone(date_default_timezone_get());
+        $dates = [];
+        foreach ($this->connection->fetchAllKeyValue(
+            'SELECT talk.session_id, GREATEST(planning.fin, COALESCE(UNIX_TIMESTAMP(talk.date_publication), 0)) FROM afup_sessions talk'
+            . self::PLANNING_JOIN . '
+            WHERE ' . self::CONDITIONS . '
+            ORDER BY talk.session_id',
+        ) as $talkId => $timestamp) {
+            $dates[self::toInt($talkId)] = new \DateTimeImmutable('@' . self::toInt($timestamp))->setTimezone($timezone);
+        }
+
+        return $dates;
+    }
+
     public function isPublished(int $talkId): bool
     {
         return false !== $this->connection->fetchOne(

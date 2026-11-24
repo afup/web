@@ -6,7 +6,6 @@ namespace AppBundle\Subscriber;
 
 use Afup\Site\Corporate\Feuille;
 use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
-use AppBundle\Controller\Website\News\ListAction;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Talk\PublishedTalkRepository;
 use AppBundle\Event\Model\Talk;
@@ -52,19 +51,18 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
 
     public function registerTalksUrls(UrlContainerInterface $urls): void
     {
-        // Une entrée par talk publié, même planifié sur plusieurs créneaux.
-        $publishedTalkIds = $this->publishedTalkRepository->getIds();
-        $talks = $publishedTalkIds === [] ? [] : $this->talkRepository->findList($publishedTalkIds);
+        // Une entrée par talk publié, même planifié sur plusieurs créneaux, datée de sa publication.
+        $publicationDates = $this->publishedTalkRepository->getPublicationDates();
+        $talks = $publicationDates === [] ? [] : $this->talkRepository->findList(array_keys($publicationDates));
 
         foreach ($talks as $talk) {
-
             $url = new UrlConcrete(
                 $this->urlGenerator->generate(
                     'talks_show',
                     ['id' => $talk->getId(), 'slug' => $talk->getSlug()],
                     UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
-                $talk->getSubmittedOn(),
+                $publicationDates[(int) $talk->getId()] ?? null,
             );
             $urls->addUrl($url, 'talks');
 
@@ -121,6 +119,10 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * Les articles publiés. La liste des actualités est déclarée par l'option sitemap de sa route :
+     * seule sa première page y figure.
+     */
     public function registerNewsUrls(UrlContainerInterface $urls): void
     {
         $news = $this->articleRepository->findAllPublishedArticles();
@@ -136,23 +138,6 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                     $article->datePublication,
                     UrlConcrete::CHANGEFREQ_DAILY,
                     1,
-                ),
-                'news',
-            );
-        }
-
-        $total = $this->articleRepository->countPublishedArticles([]);
-        $byPage = ListAction::ARTICLES_PER_PAGE;
-        $lastPage = ceil($total / $byPage);
-
-        for ($page = max($lastPage, 1); $page <= $lastPage; $page++) {
-            $urls->addUrl(
-                new UrlConcrete(
-                    $this->urlGenerator->generate(
-                        'news_list',
-                        ['page' => $page],
-                        UrlGeneratorInterface::ABSOLUTE_URL,
-                    ),
                 ),
                 'news',
             );

@@ -41,13 +41,33 @@ final class SitemapXmlSubscriberTest extends IntegrationTestCase
         self::assertSame(['http://localhost/talks/2-talk-sur-deux-creneaux'], $urls['video']);
     }
 
+    public function testTalkLastmodIsItsPublicationDate(): void
+    {
+        $connection = self::getContainer()->get(Connection::class);
+        $connection->insert('afup_forum', ['id' => 10, 'titre' => 'Forum PHP 2016', 'path' => 'forumphp2016', 'date_debut' => '2016-01-01', 'date_fin' => '2016-01-02']);
+
+        // Publié à la fin de son créneau, et non à sa soumission au CFP
+        $this->insertTalk($connection, 1, 'Talk publié');
+        $this->insertPlanning($connection, 1, self::PAST_START, self::PAST_END);
+        // Publié à sa date de publication, plus tardive que son créneau
+        $this->insertTalk($connection, 2, 'Talk publié plus tard', publishedOn: '2016-02-01 12:00:00');
+        $this->insertPlanning($connection, 2, self::PAST_START, self::PAST_END);
+
+        self::assertSame([
+            'http://localhost/talks/1-talk-publie' => '2016-01-01T10:40:00+01:00',
+            'http://localhost/talks/2-talk-publie-plus-tard' => '2016-02-01T12:00:00+01:00',
+        ], $this->registerTalksUrls()['lastmod']);
+    }
+
     /**
-     * @return array<string, list<string>>
+     * URLs par section, et `lastmod` des talks par URL.
+     *
+     * @return array<string, array<string|null>>
      */
     private function registerTalksUrls(): array
     {
         $container = new class implements UrlContainerInterface {
-            /** @var array<string, list<string>> */
+            /** @var array<string, array<string|null>> */
             public array $locs = [];
 
             public function addUrl(Url $url, string $section): void
@@ -55,6 +75,9 @@ final class SitemapXmlSubscriberTest extends IntegrationTestCase
                 $concrete = $url instanceof UrlDecorator ? $url->getUrlDecorated() : $url;
                 if ($concrete instanceof UrlConcrete) {
                     $this->locs[$section][] = $concrete->getLoc();
+                    if ('talks' === $section) {
+                        $this->locs['lastmod'][$concrete->getLoc()] = $concrete->getLastmod()?->format(\DATE_ATOM);
+                    }
                 }
             }
         };
