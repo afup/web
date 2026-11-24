@@ -33,3 +33,15 @@ Feature: Administration - Trésorerie - Recherche comptable
     And the ".content table" element should contain "Helios Aerospace"
     When I follow "telecharger_REF-TEST-001"
     Then the response header "Content-disposition" should match '#attachment; filename="Facture - Helios Aerospace - (.*).pdf"#'
+
+  Scenario: Recherche Comptable d'un devis et d'une facture
+    Given I am logged in as admin and on the Administration
+    When I follow "Recherche comptable"
+    When I fill in "search[query]" with "2023-01"
+    And I press "Rechercher"
+    Then the "h2.ui.header" element should contain "Devis / Factures"
+    And the ".content table" element should contain "2023-06-11"
+    And the ".content table" element should contain "forum_php_2023"
+    And the ".content table" element should contain "Forum PHP 2023 - Sponsoring Bronze"
+    And the ".content table" element should contain "Krampouz"
+    And the ".content table" element should contain "Payée"
