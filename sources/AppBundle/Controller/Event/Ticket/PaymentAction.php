@@ -12,8 +12,7 @@ use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Email\Emails;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
-use AppBundle\Event\Model\Repository\TicketRepository;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
 use AppBundle\Payment\PayboxFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +20,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
+use AppBundle\Event\Enum\InscriptionEtat;
+use AppBundle\Event\Enum\InscriptionFacturation;
+use AppBundle\Event\Enum\TypeReglement;
 
 final class PaymentAction extends AbstractController
 {
@@ -29,7 +31,7 @@ final class PaymentAction extends AbstractController
         private readonly LoggerInterface $logger,
         private readonly Emails $emails,
         private readonly InvoiceRepository $invoiceRepository,
-        private readonly TicketRepository $ticketRepository,
+        private readonly InscriptionRepository $inscriptionRepository,
         private readonly PayboxFactory $payboxFactory,
         private readonly EventActionHelper $eventActionHelper,
         private readonly EventInvoiceMailer $invoiceMailer,
@@ -48,7 +50,7 @@ final class PaymentAction extends AbstractController
             throw $this->createNotFoundException(sprintf('Could not find invoice with reference "%s"', $invoiceRef));
         }
 
-        if ($invoice->getStatus() === Ticket::STATUS_PAID) {
+        if ($invoice->getStatus() === InscriptionEtat::Reglee->value) {
             $this->logger->warning(
                 sprintf('Invoice %s already paid, cannot show the paymentAction', $invoiceRef),
             );
@@ -65,39 +67,35 @@ final class PaymentAction extends AbstractController
             'event' => $event,
             'invoice' => $invoice,
             'amount' => $amount,
-            'tickets' => $this->ticketRepository->getByInvoiceWithDetail(
-                $invoice,
-            ),
+            'tickets' => $this->inscriptionRepository->getByReferenceWithTicketEventType($invoiceRef),
         ];
 
         if ($invoice->isFree()) {
-            $invoice->setStatus(Ticket::STATUS_PAID);
+            $invoice->setStatus(InscriptionEtat::Reglee->value);
             $invoice->setInvoiceDate(new \DateTime('now'));
             $invoice->setPaymentDate(new \DateTime('now'));
             $invoice->setInvoice(true);
-            $invoice->setPaymentType(Ticket::PAYMENT_NONE);
+            $invoice->setPaymentType(TypeReglement::Aucun->value);
 
             $invoiceRepository->save($invoice);
 
             $this->invoiceMailer->send($invoice->getReference());
 
-            $ticketRepository = $this->ticketRepository;
-            $tickets = $ticketRepository->getByInvoiceWithDetail($invoice);
+            $tickets = $this->inscriptionRepository->getByReferenceWithTicketEventType($invoiceRef);
 
-            /** @var Ticket $ticket */
             foreach ($tickets as $ticket) {
-                $ticket->setStatus(Ticket::STATUS_PAID);
-                $ticket->setInvoiceStatus(Ticket::INVOICE_SENT);
-                $ticketRepository->save($ticket);
+                $ticket->status = InscriptionEtat::Reglee;
+                $ticket->invoiceStatus = InscriptionFacturation::Envoyee;
+                $this->inscriptionRepository->save($ticket);
 
                 $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket): int {
-                    $this->emails->sendInscription($event, new MailUser($ticket->getEmail(), $ticket->getLabel()));
+                    $this->emails->sendInscription($event, new MailUser($ticket->email, $ticket->getLabel()));
                     return 1;
                 });
             }
-        } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_CREDIT_CARD) {
+        } elseif ($invoice->getPaymentType() === TypeReglement::CarteBancaire->value) {
             $params['paybox'] = $this->payboxFactory->createPayboxForTicket($invoice, $event, $amount);
-        } elseif ($invoice->getPaymentType() === Ticket::PAYMENT_BANKWIRE) {
+        } elseif ($invoice->getPaymentType() === TypeReglement::Virement->value) {
             $bankAccountFactory = new BankAccountFactory();
             $params['bankAccount'] = $bankAccountFactory->createApplyableAt($invoice->getinvoiceDate());
 

@@ -11,18 +11,19 @@ use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
-use AppBundle\Event\Model\Repository\TicketRepository;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
 use AppBundle\Event\Entity\TicketType;
 use AppBundle\Offices\OfficeFinder;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use AppBundle\Event\Enum\InscriptionEtat;
+use AppBundle\Event\Enum\TypeInscription;
 
 readonly class RegistrationsExportGenerator
 {
     public function __construct(
         private OfficeFinder $officeFinder,
         private SeniorityComputer $seniorityComputer,
-        private TicketRepository $ticketRepository,
+        private InscriptionRepository $inscriptionRepository,
         private InvoiceRepository $invoiceRepository,
         private UserRepository $userRepository,
         private TicketTypeRepository $ticketTypeRepository,
@@ -60,7 +61,7 @@ readonly class RegistrationsExportGenerator
 
     protected function getFromRegistrationsOnEvent(Event $event): \Generator
     {
-        $aggregates = $this->ticketTypeRepository->enrichTicketAggregates($this->ticketRepository->getByEventWithAll(
+        $aggregates = $this->ticketTypeRepository->enrichTicketAggregates($this->inscriptionRepository->getByEventWithAll(
             event: $event,
             search: null,
             sortKey: 'date',
@@ -70,41 +71,39 @@ readonly class RegistrationsExportGenerator
         foreach ($aggregates as $aggregate) {
             $ticket = $aggregate->ticket;
             $ticketType = $aggregate->ticketType;
-            $status = $ticket->getStatus();
+            $status = $ticket->status;
             if (
-                in_array($status, [Ticket::STATUS_CANCELLED, Ticket::STATUS_ERROR, Ticket::STATUS_DECLINED])
+                in_array($status, [InscriptionEtat::Annulee, InscriptionEtat::ErreurPaiement, InscriptionEtat::PaiementRefuse], true)
             ) {
                 // On n'exporte pas les billets inscriptions annulées
                 // ou en erreur de paiement / refusées
                 continue;
             }
 
-            $invoice = $this->invoiceRepository->getByReference($ticket->getReference());
+            $invoice = $this->invoiceRepository->getByReference($ticket->reference);
             if (!$invoice instanceof Invoice) {
                 continue;
             }
 
             try {
-                $user = $this->userRepository->loadUserByUsername($ticket->getEmail());
+                $user = $this->userRepository->loadUserByUsername($ticket->email);
             } catch (UserNotFoundException) {
                 $user = null;
             }
 
-            if (null === ($office = $ticket->getNearestOffice())) {
+            if (null === ($office = $ticket->nearestOffice)) {
                 $office = $this->officeFinder->findOffice($invoice, $user);
             }
 
-            $dateInscription = $ticket->getDate();
-
             yield [
-                'id' => $ticket->getId(),
+                'id' => $ticket->id,
                 'reference' => $invoice->getReference(),
-                'prenom' => $ticket->getFirstname(),
-                'nom' => $ticket->getLastname(),
+                'prenom' => $ticket->firstname,
+                'nom' => $ticket->lastname,
                 'societe' => $invoice->getCompany(),
-                'tags' => $this->extractAndCleanTags($ticket->getComments()),
+                'tags' => $this->extractAndCleanTags($ticket->comments),
                 'type_pass' => $this->getTypePass($ticketType),
-                'email' => $ticket->getEmail(),
+                'email' => $ticket->email,
                 'member_since' => null !== $user ? $this->computeSeniority($user) : null,
                 'office' => $office,
                 'distance' => null,
@@ -112,7 +111,7 @@ readonly class RegistrationsExportGenerator
                 'city' => null !== $user ? $user->getCity() : $invoice->getCity(),
                 'zip_code' => null !== $user ? $user->getZipCode() : $invoice->getZipCode(),
                 'country' => null !== $user ? $user->getCountry() : $invoice->getCountryId(),
-                'date_inscription' => $dateInscription ? $dateInscription->format('Y-m-d') : null,
+                'date_inscription' => $ticket->date->format('Y-m-d'),
             ];
         }
     }
@@ -141,10 +140,10 @@ readonly class RegistrationsExportGenerator
         }
 
         $typePass = match ($ticketType->id) {
-            Ticket::TYPE_ORGANIZATION => 'ORGANISATION',
-            Ticket::TYPE_PRESS => 'PRESSE',
-            Ticket::TYPE_SPEAKER => 'CONFERENCIER',
-            Ticket::TYPE_SPONSOR => 'SPONSOR',
+            TypeInscription::Organisation->value => 'ORGANISATION',
+            TypeInscription::Presse->value => 'PRESSE',
+            TypeInscription::Conferencier->value => 'CONFERENCIER',
+            TypeInscription::Sponsor->value => 'SPONSOR',
             default => false,
         };
         if ($typePass !== false) {

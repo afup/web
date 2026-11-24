@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Model;
 
+use AppBundle\Event\Entity\Inscription;
 use Afup\Site\Utils\Pays;
 use AppBundle\Event\Validator\Constraints as AfupAssert;
 use CCMBenchmark\Ting\Entity\NotifyProperty;
@@ -105,7 +106,7 @@ class Invoice implements NotifyPropertyInterface
     private $forumId;
 
     /**
-     * @var Ticket[]
+     * @var Inscription[]
      */
     #[Assert\Valid]
     #[AfupAssert\CorporateMember(groups: ['corporate'])]
@@ -448,13 +449,16 @@ class Invoice implements NotifyPropertyInterface
         return $this->tickets;
     }
 
+    /**
+     * @param array<Inscription> $tickets
+     */
     public function setTickets(array $tickets): self
     {
         $this->tickets = $tickets;
         return $this;
     }
 
-    public function addTicket(Ticket $ticket): self
+    public function addTicket(Inscription $ticket): self
     {
         $this->tickets[] = $ticket;
         return $this;

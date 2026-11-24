@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace AppBundle\Event\Form;
 
 use AppBundle\Association\Genre;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Inscription;
+use AppBundle\Event\Enum\DistanceTransport;
+use AppBundle\Event\Enum\ModeTransport;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,33 +28,38 @@ class SponsorTicketType extends AbstractType
                 'placeholder' => 'Ne se prononce pas',
             ])
             ->add('firstname', TextType::class, [
+                'empty_data' => '',
                 'label' => 'Prénom',
             ])
             ->add('lastname', TextType::class, [
+                'empty_data' => '',
                 'label' => 'Nom',
             ])
             ->add('email', EmailType::class, [
+                'empty_data' => '',
                 'label' => 'Email',
             ]);
 
         if ($options['with_transport']) {
-            $transportMode = Ticket::TRANSPORT_MODES;
-            asort($transportMode);
-
             $builder
-                ->add('transport_mode', ChoiceType::class, [
+                ->add('transport_mode', EnumType::class, [
+                    'property_path' => 'transportMode',
                     'label' => 'Votre mode de transport ?',
                     'placeholder' => '',
                     'required' => true,
                     'constraints' => [new NotBlank()],
-                    'choices' => array_flip($transportMode),
+                    'class' => ModeTransport::class,
+                    'choices' => ModeTransport::choixParLibelle(),
+                    'choice_label' => static fn(ModeTransport $mode): string => $mode->label(),
                 ])
-                ->add('transport_distance', ChoiceType::class, [
+                ->add('transport_distance', EnumType::class, [
+                    'property_path' => 'transportDistance',
                     'label' => 'La distance parcourue ?',
                     'placeholder' => '',
                     'required' => true,
                     'constraints' => [new NotBlank()],
-                    'choices' => array_flip(Ticket::TRANSPORT_DISTANCES),
+                    'class' => DistanceTransport::class,
+                    'choice_label' => static fn(DistanceTransport $distance): string => $distance->label(),
                 ]);
         }
     }
@@ -61,7 +67,7 @@ class SponsorTicketType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Ticket::class,
+            'data_class' => Inscription::class,
             'with_transport' => false,
         ]);
     }

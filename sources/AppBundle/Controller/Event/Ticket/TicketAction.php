@@ -12,10 +12,10 @@ use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Entity\BilleteriePrivee;
 use AppBundle\Event\Entity\Repository\BilleteriePriveeRepository;
 use AppBundle\Event\Model\Invoice;
-use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Entity\Repository\TicketEventTypeRepository;
-use AppBundle\Event\Model\Repository\TicketRepository;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
+use AppBundle\Event\Invoice\InvoiceService;
+use AppBundle\Event\Entity\Inscription;
 use AppBundle\Event\Ticket\PurchaseTypeFactory;
 use AppBundle\Security\Authentication;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,8 +26,8 @@ final class TicketAction extends AbstractController
 {
     public function __construct(
         private readonly PurchaseTypeFactory $purchaseTypeFactory,
-        private readonly InvoiceRepository $invoiceRepository,
-        private readonly TicketRepository $ticketRepository,
+        private readonly InvoiceService $invoiceService,
+        private readonly InscriptionRepository $inscriptionRepository,
         private readonly EventActionHelper $eventActionHelper,
         private readonly TicketEventTypeRepository $ticketEventTypeRepository,
         private readonly BilleteriePriveeRepository $billeteriePriveeRepository,
@@ -58,25 +58,22 @@ final class TicketAction extends AbstractController
 
         $user = $this->authentication->getAfupUserOrNull();
 
-        $purchaseForm = $purchaseFactory->getPurchaseForUser($event, $user, $request->query->get('token', null), $billeteriePrivee, $placesRestantes);
+        $purchaseForm = $purchaseFactory->getPurchaseForUser($event, $user, $request->query->has('token') ? $request->query->getString('token') : null, $billeteriePrivee, $placesRestantes);
 
         $purchaseForm->handleRequest($request);
 
         if ($purchaseForm->isSubmitted() && $purchaseForm->isValid()) {
-            $invoiceRepository = $this->invoiceRepository;
             /**
              * @var Invoice $invoice
              */
             $invoice = $purchaseForm->getData();
 
             /**
-             * @var Ticket[] $tickets
+             * @var Inscription[] $tickets
              */
             $tickets = array_slice($invoice->getTickets(), 0, $purchaseForm->get('nbPersonnes')->getData());
-            $tickets[0]
-                ->setCompanyCitation($purchaseForm->get('companyCitation')->getData())
-                ->setNewsletter($purchaseForm->get('newsletterAfup')->getData())
-            ;
+            $tickets[0]->companyCitation = (bool) $purchaseForm->get('companyCitation')->getData();
+            $tickets[0]->newsletter = (bool) $purchaseForm->get('newsletterAfup')->getData();
 
             if ($billeteriePrivee !== null) {
                 // Re-vérification du quota au moment de la prise des places
@@ -86,6 +83,8 @@ final class TicketAction extends AbstractController
                 }
             }
 
+            $memberId = null;
+            $memberType = null;
             if ($user instanceof User) {
                 $memberId = $user->getId();
                 $memberType = MemberType::MemberPhysical->value;
@@ -96,13 +95,11 @@ final class TicketAction extends AbstractController
             }
 
             foreach ($tickets as $ticket) {
-                if ($ticket->getTicketEventType()?->ticketType !== null
-                    && $ticket->getTicketEventType()->ticketType->isRestrictedToMembers
-                    && isset($memberId, $memberType)) {
-                    $ticket
-                        ->setMemberId($memberId)
-                        ->setMemberType($memberType)
-                    ;
+                if ($ticket->ticketEventType?->ticketType !== null
+                    && $ticket->ticketEventType->ticketType->isRestrictedToMembers
+                    && $memberId !== null) {
+                    $ticket->memberId = (int) $memberId;
+                    $ticket->memberType = $memberType;
                 }
             }
 
@@ -110,7 +107,7 @@ final class TicketAction extends AbstractController
 
             $reference = $this->referenceGenerator->generate($event->getId(), $invoice->getLabel());
             $invoice->setReference($reference);
-            $invoiceRepository->saveWithTickets($invoice);
+            $this->invoiceService->saveWithTickets($invoice);
 
             // La commande est créée : on retire uniquement le token de billetterie privée de la session
             $request->getSession()->remove('billeterie_privee_token');
@@ -120,10 +117,10 @@ final class TicketAction extends AbstractController
 
         $totalOfSoldTicketsByMember = 0;
         if ($user !== null) {
-            $totalOfSoldTicketsByMember = $this->ticketRepository->getTotalOfSoldTicketsByMember(
+            $totalOfSoldTicketsByMember = $this->inscriptionRepository->getTotalOfSoldTicketsByMember(
                 $user->isMemberForCompany() ? MemberType::MemberCompany->value : MemberType::MemberPhysical->value,
-                $user->isMemberForCompany() ? $user->getCompanyId() : $user->getId(),
-                $event->getId(),
+                (int) ($user->isMemberForCompany() ? $user->getCompanyId() : $user->getId()),
+                (int) $event->getId(),
             );
         }
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\Invoice;
-use AppBundle\Event\Model\Ticket;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -14,16 +13,17 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use AppBundle\Event\Enum\TypeReglement;
 
 class TicketInvoiceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $paymentTypes = [
-            'Carte bancaire' => Ticket::PAYMENT_CREDIT_CARD,
-            'Chèque' => Ticket::PAYMENT_CHEQUE,
-            'Virement' => Ticket::PAYMENT_BANKWIRE,
-            'Aucun' => Ticket::PAYMENT_NONE,
+            'Carte bancaire' => TypeReglement::CarteBancaire->value,
+            'Chèque' => TypeReglement::Cheque->value,
+            'Virement' => TypeReglement::Virement->value,
+            'Aucun' => TypeReglement::Aucun->value,
         ];
 
         $builder

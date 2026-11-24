@@ -11,21 +11,22 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
-use AppBundle\Event\Model\Repository\TicketRepository;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
+use AppBundle\Event\Entity\Inscription;
 use AppBundle\Event\Model\TicketOffer;
 use AppBundle\Event\Ticket\TicketOffers;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use AppBundle\Event\Enum\TypeReglement;
 
 #[IsGranted('ROLE_EVENT_WRITER')]
 final class AddAction extends AbstractController
 {
     public function __construct(
         private readonly TicketOffers $ticketOffers,
-        private readonly TicketRepository $ticketRepository,
+        private readonly InscriptionRepository $inscriptionRepository,
         private readonly EventRepository $eventRepository,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly Audit $audit,
@@ -42,9 +43,9 @@ final class AddAction extends AbstractController
 
         $offers = $this->ticketOffers->getAllOffersForEvent($event);
 
-        $ticket = new Ticket();
+        $ticket = new Inscription();
         $invoice = new Invoice();
-        $invoice->setPaymentType(Ticket::PAYMENT_NONE);
+        $invoice->setPaymentType(TypeReglement::Aucun->value);
         $invoice->setPaymentDate(new \DateTime());
 
         $form = $this->createForm(TicketAdminWithInvoiceType::class, [
@@ -57,9 +58,7 @@ final class AddAction extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            ['ticket' => $ticket, 'invoice' => $invoice] = $form->getData();
-
-            $ticketTypeId = $ticket->getTicketTypeId();
+            $ticketTypeId = $ticket->ticketTypeId;
             $offer = array_find($offers, fn(TicketOffer $offer): bool => $offer->ticketTypeId === $ticketTypeId);
             if (!$offer instanceof TicketOffer) {
                 throw $this->createNotFoundException(sprintf('Offer not found with ticketTypeId "%s"', $ticketTypeId));
@@ -69,23 +68,23 @@ final class AddAction extends AbstractController
             if ($offer->ticketEventType) {
                 $ticket->setTicketEventType($offer->ticketEventType);
             }
-            $ticket->setForumId($event->getId());
-            $ticket->setAmount($offer->price);
-            $ticket->setDate(new \DateTime());
-            $ticket->setReference($reference);
+            $ticket->forumId = (int) $event->getId();
+            $ticket->amount = $offer->price;
+            $ticket->date = new \DateTime();
+            $ticket->reference = $reference;
 
             $invoice->setReference($reference);
-            $invoice->setAmount($ticket->getAmount());
-            $invoice->setForumId($ticket->getForumId());
-            $invoice->setStatus($ticket->getInvoiceStatus());
-            $invoice->setStatus($ticket->getStatus());
+            $invoice->setAmount($ticket->amount);
+            $invoice->setForumId($ticket->forumId);
+            $invoice->setStatus($ticket->invoiceStatus->value);
+            $invoice->setStatus($ticket->status->value);
             $invoice->setInvoice(true);
             $invoice->setInvoiceDate($invoice->getPaymentDate());
 
-            $this->ticketRepository->save($ticket);
+            $this->inscriptionRepository->save($ticket);
             $this->invoiceRepository->save($invoice);
 
-            $this->audit->log(sprintf("Ajout de l'inscription de %s (%d)", $ticket->getLabel(), $ticket->getId()));
+            $this->audit->log(sprintf("Ajout de l'inscription de %s (%d)", $ticket->getLabel(), $ticket->id));
             $this->addFlash('notice', "L'inscription a été ajoutée.");
 
             return $this->redirectToRoute('admin_event_ticket_list');

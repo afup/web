@@ -8,7 +8,7 @@ use Afup\Tests\Support\IntegrationTestCase;
 use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use AppBundle\Event\Entity\TicketEventType;
 use AppBundle\Event\Entity\TicketType;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Inscription;
 use AppBundle\Event\Model\TicketAggregate;
 use Doctrine\DBAL\Connection;
 
@@ -108,9 +108,14 @@ final class TicketTypeRepositoryTest extends IntegrationTestCase
 
         $id = $this->insertTicketType($connection, ['pretty_name' => 'Tarif inscrit']);
 
+        $connue = new Inscription();
+        $connue->ticketTypeId = $id;
+        $inconnue = new Inscription();
+        $inconnue->ticketTypeId = 999999;
+
         $aggregates = $repository->enrichTicketAggregates([
-            new TicketAggregate(new Ticket()->setTicketTypeId($id), null, null, null),
-            new TicketAggregate(new Ticket()->setTicketTypeId(999999), null, null, null),
+            new TicketAggregate($connue, null, null, null),
+            new TicketAggregate($inconnue, null, null, null),
         ]);
 
         self::assertCount(2, $aggregates);

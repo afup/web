@@ -57,18 +57,18 @@
                 {% for ticket in registeredTickets %}
                     <tr>
                         <td>
-                            {{ ticket.firstName }}
+                            {{ ticket.firstname }}
                         </td>
                         <td>
-                            {{ ticket.lastName }}
+                            {{ ticket.lastname }}
                         </td>
                         <td>
                             {{ ticket.email }}
                         </td>
                         {% if with_transport %}
                         <td>
-                            {{ constant('AppBundle\\Event\\Model\\Ticket::TRANSPORT_MODES')[ticket.transportMode] }}<br />
-                            {{ constant('AppBundle\\Event\\Model\\Ticket::TRANSPORT_DISTANCES')[ticket.transportDistance] }}
+                            {{ ticket.transportMode ? ticket.transportMode.label }}<br />
+                            {{ ticket.transportDistance ? ticket.transportDistance.label }}
                         </td>
                         {% endif %}
                         <td>

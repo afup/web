@@ -10,14 +10,14 @@ use Afup\Site\Utils\Utils;
 use Afup\Site\Utils\Vat;
 use AppBundle\Compta\BankAccount\BankAccountFactory;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
-use AppBundle\Event\Model\Repository\TicketRepository;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
+use AppBundle\Event\Enum\TypeReglement;
 
 class EventInvoicePdfGenerator
 {
     public function __construct(
         private readonly InvoiceRepository $invoiceRepository,
-        private readonly TicketRepository $ticketRepository,
+        private readonly InscriptionRepository $inscriptionRepository,
         private readonly Pays $pays,
         private readonly BankAccountFactory $bankAccountFactory,
     ) {}
@@ -25,10 +25,11 @@ class EventInvoicePdfGenerator
     public function generateQuote(string $reference, ?string $path = null): string
     {
         $facture = $this->invoiceRepository->getWithEventDataByReference($reference);
-        $inscriptions = $this->ticketRepository->getWithTicketTypeByReference($reference);
+        $inscriptions = $this->inscriptionRepository->getWithTicketTypeByReference($reference);
 
-        $dateFacture = isset($facture['date_facture']) && !empty($facture['date_facture'])
-            ? new \DateTimeImmutable('@' . $facture['date_facture'])
+        $timestampFacture = $facture['date_facture'] ?? null;
+        $dateFacture = is_numeric($timestampFacture) && (int) $timestampFacture > 0
+            ? new \DateTimeImmutable('@' . (int) $timestampFacture)
             : new \DateTimeImmutable();
 
         $pdf = new PDF_Facture($this->bankAccountFactory->createApplyableAt($dateFacture));
@@ -41,7 +42,7 @@ class EventInvoicePdfGenerator
         $pdf->Ln();
         $pdf->Ln();
 
-        if (empty($facture['societe'])) {
+        if (in_array($facture['societe'] ?? null, [null, '', '0'], true)) {
             $facture['societe'] = $facture['nom'] . ' ' . $facture['prenom'];
         }
 
@@ -89,10 +90,11 @@ class EventInvoicePdfGenerator
     public function generateInvoice(string $reference, ?string $path = null): string
     {
         $facture = $this->invoiceRepository->getWithEventDataByReference($reference);
-        $inscriptions = $this->ticketRepository->getWithTicketTypeByReference($reference);
+        $inscriptions = $this->inscriptionRepository->getWithTicketTypeByReference($reference);
 
-        $dateFacture = isset($facture['date_facture']) && !empty($facture['date_facture'])
-            ? new \DateTimeImmutable('@' . $facture['date_facture'])
+        $timestampFacture = $facture['date_facture'] ?? null;
+        $dateFacture = is_numeric($timestampFacture) && (int) $timestampFacture > 0
+            ? new \DateTimeImmutable('@' . (int) $timestampFacture)
             : new \DateTimeImmutable();
 
         $isSubjectedToVat = Vat::isSubjectedToVat($dateFacture);
@@ -107,7 +109,7 @@ class EventInvoicePdfGenerator
         $pdf->Ln();
         $pdf->Ln();
 
-        if (empty($facture['societe'])) {
+        if (in_array($facture['societe'] ?? null, [null, '', '0'], true)) {
             $facture['societe'] = $facture['nom'] . ' ' . $facture['prenom'];
         }
 
@@ -202,14 +204,14 @@ class EventInvoicePdfGenerator
         $pdf->Ln(15);
         if ($facture['etat'] == 4) {
             $type = match ($facture['type_reglement']) {
-                Ticket::PAYMENT_CREDIT_CARD => 'par CB',
-                Ticket::PAYMENT_CHEQUE => 'par chèque',
-                Ticket::PAYMENT_BANKWIRE => 'par virement',
+                TypeReglement::CarteBancaire->value => 'par CB',
+                TypeReglement::Cheque->value => 'par chèque',
+                TypeReglement::Virement->value => 'par virement',
                 default => '',
             };
             $pdf->SetTextColor(255, 0, 0);
             $pdf->Cell(130, 5);
-            if ($facture['type_reglement'] != Ticket::PAYMENT_NONE) {
+            if ($facture['type_reglement'] != TypeReglement::Aucun->value) {
                 $pdf->Cell(60, 5, 'Payé ' . $type . ' le ' . date('d/m/Y', (int) $facture['date_reglement']));
             }
             $pdf->SetTextColor(0, 0, 0);

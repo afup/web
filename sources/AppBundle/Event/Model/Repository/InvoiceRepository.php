@@ -6,11 +6,9 @@ namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Model\TicketAggregate;
 use AppBundle\Ting\DateTimeWithTimeZoneSerializer;
-use AppBundle\Ting\JoinHydrator;
 use Aura\SqlQuery\Mysql\Select;
-use CCMBenchmark\Ting\Driver\Exception;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorArray;
@@ -19,50 +17,14 @@ use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
+use AppBundle\Event\Enum\InscriptionEtat;
+use AppBundle\Event\Enum\TypeReglement;
 
 /**
  * @extends Repository<Invoice>
  */
 class InvoiceRepository extends Repository implements MetadataInitializer
 {
-    public function saveWithTickets(Invoice $invoice): void
-    {
-        $totalAmount = 0;
-        /**
-         * @var Ticket[] $tickets
-         */
-        $tickets = $invoice->getTickets();
-
-        try {
-            $this->startTransaction();
-            $this->unitOfWork->pushSave($invoice);
-            foreach ($tickets as $ticket) {
-                if ($ticket->getTicketEventType() === null) {
-                    continue;
-                }
-                $ticket
-                    ->setTransportMode(null)
-                    ->setTransportDistance(null)
-                    ->setReference($invoice->getReference())
-                    ->setDate(new \DateTime())
-                    ->setAmount($ticket->getTicketEventType()->price ?? 0.0)
-                    ->setStatus(Ticket::STATUS_CREATED)
-                    ->setInvoiceStatus(Ticket::INVOICE_TODO)
-                    ->setForumId($invoice->getForumId())
-                    ->setComments('<tag>' . implode(';', $ticket->getTags()) . '</tag>')
-                ;
-                $totalAmount += $ticket->getAmount();
-                $this->unitOfWork->pushSave($ticket);
-            }
-            $invoice->setAmount($totalAmount);
-            $this->unitOfWork->process();
-            $this->commit();
-        } catch (Exception $e) {
-            $this->rollback();
-            throw $e;
-        }
-    }
-
     public function getByReference(mixed $reference): ?Invoice
     {
         return $this->getOneBy(['reference' => $reference]);
@@ -81,60 +43,96 @@ class InvoiceRepository extends Repository implements MetadataInitializer
         return $query->query($this->getCollection(new HydratorArray()))->first();
     }
 
-    public function getPendingBankwires(Event $event)
+    /**
+     * Factures réglées par virement et en attente de paiement, ayant au moins une inscription.
+     *
+     * @return CollectionInterface<Invoice>&iterable<Invoice>
+     */
+    public function getPendingBankwires(Event $event): CollectionInterface
     {
-        /**
-         * @var Select $queryBuilder
-         */
-        $queryBuilder = $this->getQueryBuilder(self::QUERY_SELECT);
-        $queryBuilder
-            ->cols([
-                'invoices.reference',
-                'invoices.montant',
-                'invoices.date_reglement',
-                'invoices.type_reglement',
-                'invoices.informations_reglement',
-                'invoices.email',
-                'invoices.societe',
-                'invoices.nom',
-                'invoices.prenom',
-                'invoices.adresse',
-                'invoices.code_postal',
-                'invoices.ville',
-                'invoices.id_pays',
-                'invoices.autorisation',
-                'invoices.transaction',
-                'invoices.etat',
-                'invoices.facturation',
-                'invoices.id_forum',
-                'invoices.date_facture',
-                'inscriptions.id', 'inscriptions.date', 'inscriptions.reference', 'inscriptions.coupon', 'inscriptions.type_inscription',
-                'inscriptions.montant', 'inscriptions.informations_reglement', 'inscriptions.genre', 'inscriptions.nom', 'inscriptions.prenom',
-                'inscriptions.email', 'inscriptions.telephone', 'inscriptions.citer_societe', 'inscriptions.newsletter_afup',
-                'inscriptions.commentaires', 'inscriptions.etat', 'inscriptions.facturation', 'inscriptions.id_forum',
-                'inscriptions.mail_partenaire', 'inscriptions.presence_day1', 'inscriptions.presence_day2',
-            ])
-            ->from('afup_facturation_forum AS invoices')
-            ->innerJoin('afup_inscription_forum as inscriptions', 'ON inscriptions.reference = invoices.reference')
-            ->where('invoices.id_forum = :event_id')
-            ->where('invoices.type_reglement = :paymentType')
-            ->where('invoices.etat = :state')
-            ->orderBy(['invoices.reference'])
-        ;
-
-
-        $hydrator = new JoinHydrator();
-        $hydrator->aggregateOn('invoices', 'inscriptions', 'getReference');
-
         return $this
-            ->getPreparedQuery($queryBuilder->getStatement())
+            ->getPreparedQuery(
+                'SELECT invoices.*
+                FROM afup_facturation_forum AS invoices
+                WHERE invoices.id_forum = :event_id
+                AND invoices.type_reglement = :paymentType
+                AND invoices.etat = :state
+                AND EXISTS (
+                    SELECT 1 FROM afup_inscription_forum AS inscriptions
+                    WHERE inscriptions.reference = invoices.reference
+                )
+                ORDER BY invoices.reference',
+            )
             ->setParams([
                 'event_id' => $event->getId(),
-                'paymentType' => Ticket::PAYMENT_BANKWIRE,
-                'state' => Ticket::STATUS_CREATED,
+                'paymentType' => TypeReglement::Virement->value,
+                'state' => InscriptionEtat::Creee->value,
             ])
-            ->query($this->getCollection($hydrator))
+            ->query($this->getCollection(new HydratorSingleObject()))
         ;
+    }
+
+    /**
+     * @param list<string> $references
+     *
+     * @return array<string, Invoice>
+     */
+    public function getIndexedByReferences(array $references): array
+    {
+        $references = array_values(array_unique($references));
+        if ($references === []) {
+            return [];
+        }
+
+        $params = [];
+        foreach ($references as $index => $reference) {
+            $params['reference' . $index] = $reference;
+        }
+
+        $invoices = $this
+            ->getPreparedQuery(sprintf(
+                'SELECT aff.* FROM afup_facturation_forum aff WHERE aff.reference IN (%s)',
+                implode(', ', array_map(static fn(string $key): string => ':' . $key, array_keys($params))),
+            ))
+            ->setParams($params)
+            ->query($this->getCollection(new HydratorSingleObject()))
+        ;
+
+        $indexed = [];
+        foreach ($invoices as $invoice) {
+            if ($invoice instanceof Invoice) {
+                $indexed[$invoice->getReference()] = $invoice;
+            }
+        }
+
+        return $indexed;
+    }
+
+    /**
+     * Complète les agrégats d'inscriptions produits par InscriptionRepository avec leur facture.
+     *
+     * @param array<TicketAggregate> $ticketAggregates
+     *
+     * @return list<TicketAggregate>
+     */
+    public function enrichTicketAggregates(array $ticketAggregates): array
+    {
+        $invoices = $this->getIndexedByReferences(array_values(array_map(
+            static fn(TicketAggregate $ticketAggregate): string => $ticketAggregate->ticket->reference,
+            $ticketAggregates,
+        )));
+
+        $enriched = [];
+        foreach ($ticketAggregates as $ticketAggregate) {
+            $enriched[] = new TicketAggregate(
+                $ticketAggregate->ticket,
+                $ticketAggregate->ticketType,
+                $invoices[$ticketAggregate->ticket->reference] ?? null,
+                $ticketAggregate->lastSubscription,
+            );
+        }
+
+        return $enriched;
     }
 
     public function searchAllPastEventsInvoices(string $search): CollectionInterface
@@ -188,7 +186,7 @@ class InvoiceRepository extends Repository implements MetadataInitializer
                 ->from('afup_facturation_forum aff')
                 ->where('aff.id_forum = :event_id')
                 ->where(
-                    'aff.etat in (' . Ticket::STATUS_PAID . ', ' . Ticket::STATUS_WAITING . ', ' . Ticket::STATUS_CONFIRMED . ')',
+                    'aff.etat in (' . InscriptionEtat::Reglee->value . ', ' . InscriptionEtat::AttenteReglement->value . ', ' . InscriptionEtat::Confirmee->value . ')',
                 );
         if ($filter !== '') {
             $builder->where('(aff.societe LIKE :filter OR aff.reference LIKE :filter)')

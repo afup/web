@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Event\Validator\Constraints;
 
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Inscription;
 use AppBundle\Event\Entity\TicketEventType;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
 use Symfony\Component\Validator\Constraint;
@@ -25,14 +25,14 @@ class AvailableTicketValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, AvailableTicket::class);
         }
 
-        if (!($ticket instanceof Ticket) || !$ticket->getTicketEventType() instanceof TicketEventType) {
+        if (!($ticket instanceof Inscription) || !$ticket->ticketEventType instanceof TicketEventType) {
             return ;
         }
 
-        $event = $this->eventRepository->get($ticket->getTicketEventType()->eventId);
+        $event = $this->eventRepository->get($ticket->ticketEventType->eventId);
         if (
-            $ticket->getTicketEventType()->dateEnd < new \DateTime()
-            || $this->ticketTypeAvailability->getStock($ticket->getTicketEventType(), $event) <= 0
+            $ticket->ticketEventType->dateEnd < new \DateTime()
+            || $this->ticketTypeAvailability->getStock($ticket->ticketEventType, $event) <= 0
         ) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('ticketEventType')

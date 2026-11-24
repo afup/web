@@ -11,8 +11,8 @@ use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
-use AppBundle\Event\Model\Repository\TicketRepository;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
+use AppBundle\Event\Entity\Inscription;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -22,13 +22,15 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use AppBundle\Event\Enum\InscriptionEtat;
+use AppBundle\Event\Enum\InscriptionFacturation;
 
 #[IsGranted('ROLE_EVENT_WRITER')]
 class PendingBankwiresAction extends AbstractController
 {
     public function __construct(
         private readonly InvoiceRepository $invoiceRepository,
-        private readonly TicketRepository $ticketRepository,
+        private readonly InscriptionRepository $inscriptionRepository,
         private readonly Emails $emails,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
@@ -56,7 +58,7 @@ class PendingBankwiresAction extends AbstractController
         }
 
         return $this->render('admin/event/bankwires.html.twig', [
-            'pendingBankwires' => $this->invoiceRepository->getPendingBankwires($event),
+            'pendingBankwires' => $this->getPendingBankwires($event),
             'event' => $event,
             'title' => 'Virements en attente',
             'token' => $this->csrfTokenManager->getToken('admin_event_bankwires'),
@@ -64,25 +66,40 @@ class PendingBankwiresAction extends AbstractController
         ]);
     }
 
+    /**
+     * @return list<array{invoice: Invoice, inscriptions: list<Inscription>}>
+     */
+    private function getPendingBankwires(Event $event): array
+    {
+        $pendingBankwires = [];
+        foreach ($this->invoiceRepository->getPendingBankwires($event) as $invoice) {
+            $pendingBankwires[] = [
+                'invoice' => $invoice,
+                'inscriptions' => $this->inscriptionRepository->getByReference((string) $invoice->getReference()),
+            ];
+        }
+
+        return $pendingBankwires;
+    }
+
     private function setInvoicePaid(Event $event, Invoice $invoice): void
     {
         $invoice
-            ->setStatus(Ticket::STATUS_PAID)
+            ->setStatus(InscriptionEtat::Reglee->value)
             ->setPaymentDate(new DateTime());
         $this->invoiceRepository->save($invoice);
-        $tickets = $this->ticketRepository->getByReference($invoice->getReference());
+        $tickets = $this->inscriptionRepository->getByReference((string) $invoice->getReference());
 
         $this->invoiceMailer->send($invoice->getReference());
         $this->addFlash('notice', sprintf('La facture %s a été marquée comme payée', $invoice->getReference()));
 
         foreach ($tickets as $ticket) {
-            $ticket
-                ->setStatus(Ticket::STATUS_PAID)
-                ->setInvoiceStatus(Ticket::INVOICE_SENT);
-            $this->ticketRepository->save($ticket);
+            $ticket->status = InscriptionEtat::Reglee;
+            $ticket->invoiceStatus = InscriptionFacturation::Envoyee;
+            $this->inscriptionRepository->save($ticket);
 
             $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket): int {
-                $this->emails->sendInscription($event, new MailUser($ticket->getEmail(), $ticket->getLabel()));
+                $this->emails->sendInscription($event, new MailUser($ticket->email, $ticket->getLabel()));
 
                 return 1;
             });

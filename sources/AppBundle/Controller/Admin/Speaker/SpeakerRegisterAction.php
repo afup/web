@@ -10,16 +10,20 @@ use AppBundle\Event\Invoice\InvoiceService;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Repository\TicketRepository;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Inscription;
 use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use AppBundle\Event\Enum\InscriptionEtat;
+use AppBundle\Event\Enum\InscriptionFacturation;
+use AppBundle\Event\Enum\TypeInscription;
+use AppBundle\Event\Enum\TypeReglement;
 
 #[IsGranted('ROLE_EVENT_WRITER')]
 class SpeakerRegisterAction extends AbstractController
@@ -27,7 +31,7 @@ class SpeakerRegisterAction extends AbstractController
     public function __construct(
         private readonly SpeakerRepository $speakerRepository,
         private readonly TalkRepository $talkRepository,
-        private readonly TicketRepository $ticketRepository,
+        private readonly InscriptionRepository $inscriptionRepository,
         private readonly InvoiceService $invoiceService,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly Audit $audit,
@@ -48,31 +52,31 @@ class SpeakerRegisterAction extends AbstractController
             $speakers = $this->speakerRepository->getSpeakersByTalk($talkAggregate->talk);
 
             foreach ($speakers as $speaker) {
-                $reference = 'GENCONF-' . $event->getId() . '-' . $speaker->getId() . '-' . Ticket::TYPE_SPEAKER;
+                $reference = 'GENCONF-' . $event->getId() . '-' . $speaker->getId() . '-' . TypeInscription::Conferencier->value;
                 $invoice = $this->invoiceRepository->getByReference($reference);
 
                 if ($invoice) {
                     continue;
                 }
 
-                $ticket = new Ticket();
-                $ticket->setDate(new DateTime());
-                $ticket->setAmount(0);
-                $ticket->setForumId($event->getId());
-                $ticket->setReference($reference);
-                $ticket->setTicketTypeId(Ticket::TYPE_SPEAKER);
-                $ticket->setGenre($speaker->getGenre());
-                $ticket->setLastname($speaker->getLastname());
-                $ticket->setFirstname($speaker->getFirstname());
-                $ticket->setEmail($speaker->getEmail());
-                $ticket->setCompanyCitation(true);
-                $ticket->setNewsletter(true);
-                $ticket->setComments('import auto');
-                $ticket->setStatus(Ticket::STATUS_GUEST);
-                $ticket->setInvoiceStatus(Ticket::INVOICE_TODO);
+                $ticket = new Inscription();
+                $ticket->date = new DateTime();
+                $ticket->amount = 0.0;
+                $ticket->forumId = (int) $event->getId();
+                $ticket->reference = $reference;
+                $ticket->ticketTypeId = TypeInscription::Conferencier->value;
+                $ticket->genre = $speaker->getGenre();
+                $ticket->lastname = $speaker->getLastname();
+                $ticket->firstname = $speaker->getFirstname();
+                $ticket->email = $speaker->getEmail();
+                $ticket->companyCitation = true;
+                $ticket->newsletter = true;
+                $ticket->comments = 'import auto';
+                $ticket->status = InscriptionEtat::Invitation;
+                $ticket->invoiceStatus = InscriptionFacturation::AEnvoyer;
 
                 try {
-                    $this->ticketRepository->save($ticket);
+                    $this->inscriptionRepository->save($ticket);
                 } catch (Exception) {
                     $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout de l\'inscription');
 
@@ -82,7 +86,7 @@ class SpeakerRegisterAction extends AbstractController
                 try {
                     $this->invoiceService->handleInvoicing(
                         $reference,
-                        Ticket::PAYMENT_NONE,
+                        TypeReglement::Aucun->value,
                         '',
                         null,
                         $speaker->getEmail(),
@@ -97,7 +101,7 @@ class SpeakerRegisterAction extends AbstractController
                         null,
                         '',
                         '',
-                        Ticket::STATUS_GUEST,
+                        InscriptionEtat::Invitation->value,
                     );
                     $this->audit->log('Ajout inscription conférencier ' . $speaker->getId());
                     $nbSpeakers++;

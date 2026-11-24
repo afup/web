@@ -8,10 +8,10 @@ use AppBundle\Doctrine\EntityRepository;
 use AppBundle\Association\Entity\Utilisateur;
 use AppBundle\Event\Entity\Inscription;
 use AppBundle\Event\Entity\TicketSpecialPrice;
-use AppBundle\Event\Model\Ticket;
 use DateTimeImmutable;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\Persistence\ManagerRegistry;
+use AppBundle\Event\Enum\InscriptionEtat;
 
 /**
  * @extends EntityRepository<TicketSpecialPrice>
@@ -45,13 +45,13 @@ final class TicketSpecialPriceRepository extends EntityRepository
                 SELECT inscription.id
                 FROM ' . Inscription::class . ' inscription
                 WHERE inscription.specialPriceToken = specialPrice.token
-                  AND inscription.etat <> :etatAnnule
+                  AND inscription.status <> :etatAnnule
             )')
             ->setMaxResults(1)
             ->setParameter('token', $token)
             ->setParameter('eventId', $eventId)
             ->setParameter('now', $now)
-            ->setParameter('etatAnnule', Ticket::STATUS_CANCELLED)
+            ->setParameter('etatAnnule', InscriptionEtat::Annulee->value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -106,10 +106,10 @@ final class TicketSpecialPriceRepository extends EntityRepository
             ->select('inscription.specialPriceToken AS token', 'COUNT(inscription.id) AS nbInscriptions')
             ->from(Inscription::class, 'inscription')
             ->where('inscription.specialPriceToken IN (:tokens)')
-            ->andWhere('inscription.etat <> :etatAnnule')
+            ->andWhere('inscription.status <> :etatAnnule')
             ->groupBy('inscription.specialPriceToken')
             ->setParameter('tokens', $tokens, ArrayParameterType::STRING)
-            ->setParameter('etatAnnule', Ticket::STATUS_CANCELLED)
+            ->setParameter('etatAnnule', InscriptionEtat::Annulee->value)
         ;
 
         $usedCounts = [];
@@ -136,9 +136,7 @@ final class TicketSpecialPriceRepository extends EntityRepository
         ;
         $creatorsById = [];
         foreach ($creators as $creator) {
-            if (isset($creator->id)) {
-                $creatorsById[$creator->id] = $creator;
-            }
+            $creatorsById[$creator->id] = $creator;
         }
 
         $byEvent = [];

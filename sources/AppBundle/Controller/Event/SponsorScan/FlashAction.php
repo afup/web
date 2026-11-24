@@ -9,9 +9,9 @@ use AppBundle\Controller\Exception\InvalidSponsorTokenException;
 use AppBundle\Event\Entity\Repository\SponsorScanRepository;
 use AppBundle\Event\Entity\SponsorScan;
 use AppBundle\Event\Entity\Repository\SponsorTicketRepository;
-use AppBundle\Event\Model\Repository\TicketRepository;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
 use AppBundle\Event\Entity\SponsorTicket;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Inscription;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,7 +21,7 @@ final class FlashAction extends SponsorScanController
         SponsorTicketRepository $sponsorTicketRepository,
         private readonly EventActionHelper $eventActionHelper,
         private readonly SponsorScanRepository $sponsorScanRepository,
-        private readonly TicketRepository $ticketRepository,
+        private readonly InscriptionRepository $inscriptionRepository,
     ) {
         parent::__construct($sponsorTicketRepository);
     }
@@ -37,14 +37,14 @@ final class FlashAction extends SponsorScanController
             return $this->redirectToRoute('sponsor_ticket_home', ['eventSlug' => $eventSlug]);
         }
 
-        $ticket = $this->ticketRepository->getOneBy(['forumId' => $event->getId(), 'qrCode' => $code]);
+        $ticket = $this->inscriptionRepository->findOneBy(['forumId' => $event->getId(), 'qrCode' => $code]);
 
         if ($ticket === null) {
             $this->addFlash('error', 'Code inexistant ou invalide');
             return $this->redirectToRoute('sponsor_scan', ['eventSlug' => $eventSlug]);
         }
 
-        $scan = $this->sponsorScanRepository->findOneBy(['sponsorTicketId' => $sponsorTicket->id, 'ticketId' => $ticket->getId()]);
+        $scan = $this->sponsorScanRepository->findOneBy(['sponsorTicketId' => $sponsorTicket->id, 'ticketId' => $ticket->id]);
 
         if ($scan instanceof SponsorScan && $scan->deletedOn === null) {
             $this->addFlash('error', 'Code déjà scanné.');
@@ -64,16 +64,11 @@ final class FlashAction extends SponsorScanController
         return $this->redirectToRoute('sponsor_scan', ['eventSlug' => $eventSlug]);
     }
 
-    private function createSponsorScan(SponsorTicket $sponsorTicket, Ticket $ticket): SponsorScan
+    private function createSponsorScan(SponsorTicket $sponsorTicket, Inscription $ticket): SponsorScan
     {
-        $ticketId = $ticket->getId();
-        if (!isset($sponsorTicket->id) || $ticketId === null) {
-            throw new \InvalidArgumentException('Le ticket sponsor et le billet doivent être enregistrés');
-        }
-
         $scan = new SponsorScan();
         $scan->sponsorTicketId = $sponsorTicket->id;
-        $scan->ticketId = $ticketId;
+        $scan->ticketId = $ticket->id;
 
         return $scan;
     }

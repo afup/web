@@ -7,8 +7,8 @@ namespace AppBundle\Event\Validator\Constraints;
 use AppBundle\Association\MemberType;
 use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Association\Model\User;
-use AppBundle\Event\Model\Repository\TicketRepository;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
+use AppBundle\Event\Entity\Inscription;
 use AppBundle\Event\Entity\TicketEventType;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
@@ -20,7 +20,7 @@ class CorporateMemberValidator extends ConstraintValidator
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly CompanyMemberRepository $companyMemberRepository,
-        private readonly TicketRepository $ticketRepository,
+        private readonly InscriptionRepository $inscriptionRepository,
     ) {}
 
     public function validate($tickets, Constraint $constraint): void
@@ -33,11 +33,11 @@ class CorporateMemberValidator extends ConstraintValidator
         $eventId = null;
 
         foreach ($tickets as $ticket) {
-            if (!($ticket instanceof Ticket) || !$ticket->getTicketEventType() instanceof TicketEventType || $ticket->getTicketEventType()->ticketType->isRestrictedToMembers === false) {
+            if (!($ticket instanceof Inscription) || !$ticket->ticketEventType instanceof TicketEventType || $ticket->ticketEventType->ticketType->isRestrictedToMembers === false) {
                 continue;
             }
             if ($eventId === null) {
-                $eventId = $ticket->getTicketEventType()->eventId;
+                $eventId = $ticket->ticketEventType->eventId;
             }
             $restrictedTickets++;
         }
@@ -75,10 +75,10 @@ class CorporateMemberValidator extends ConstraintValidator
             return ;
         }
 
-        $ticketsSoldToThisCompany = $this->ticketRepository->getTotalOfSoldTicketsByMember(
+        $ticketsSoldToThisCompany = $this->inscriptionRepository->getTotalOfSoldTicketsByMember(
             MemberType::MemberCompany->value,
             $company->id,
-            $eventId,
+            (int) $eventId,
         );
 
         if (($ticketsSoldToThisCompany + $restrictedTickets) > $company->maxMembers) {

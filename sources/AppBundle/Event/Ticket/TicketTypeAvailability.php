@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Event\Ticket;
 
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\TicketRepository;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
 use AppBundle\Event\Entity\TicketEventType;
 use AppBundle\Event\Entity\TicketType;
 
@@ -15,7 +15,7 @@ class TicketTypeAvailability
     public const string DAY_TWO = 'two';
     public const string DAY_BOTH = 'both';
 
-    public function __construct(private readonly TicketRepository $ticketRepository) {}
+    public function __construct(private readonly InscriptionRepository $inscriptionRepository) {}
 
     public function getStock(TicketEventType $ticketEventType, Event $event): int
     {
@@ -31,11 +31,11 @@ class TicketTypeAvailability
 
         // selon si on est sur un ticket un jour ou deux jours, on calcule différement le nombre de tickets vendus, et le nombre de tickets vendus du type
         if (count($ticketType->getDays()) === 2) {
-            $allTickets = $this->ticketRepository->getPublicSoldTickets($event);
-            $typeTickets = $this->ticketRepository->getPublicSoldTicketsOfType($event, $ticketType);
+            $allTickets = $this->inscriptionRepository->getPublicSoldTickets($event);
+            $typeTickets = $this->inscriptionRepository->getPublicSoldTicketsOfType($event, $ticketType);
         } else {
-            $allTickets = $this->ticketRepository->getPublicSoldTicketsByDay($ticketType->day, $event);
-            $typeTickets = $this->ticketRepository->getPublicSoldTicketsByDayOfType($event, $ticketType->day, $ticketType);
+            $allTickets = $this->inscriptionRepository->getPublicSoldTicketsByDay($ticketType->day, $event);
+            $typeTickets = $this->inscriptionRepository->getPublicSoldTicketsByDayOfType($event, $ticketType->day, $ticketType);
         }
 
         // on regarde combien de tickets il nous reste

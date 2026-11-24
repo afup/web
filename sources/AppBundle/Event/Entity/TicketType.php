@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AppBundle\Event\Entity;
 
 use AppBundle\Event\Entity\Repository\TicketTypeRepository;
-use AppBundle\Event\Model\Ticket;
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Event\Enum\JourTarif;
 
 #[ORM\Entity(repositoryClass: TicketTypeRepository::class)]
 #[ORM\Table(name: 'afup_forum_tarif')]
@@ -79,10 +79,10 @@ class TicketType
         $days = [];
         foreach ($this->getDays() as $day) {
             switch ($day) {
-                case Ticket::DAY_ONE:
+                case JourTarif::Un->value:
                     $days[] = 'JOUR 1';
                     break;
-                case Ticket::DAY_TWO:
+                case JourTarif::Deux->value:
                     $days[] = 'JOUR 2';
                     break;
                 default:
