@@ -7,77 +7,83 @@ namespace AppBundle\Joindin;
 use AppBundle\Event\Model\Talk;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final readonly class JoindinComments
 {
     public function __construct(
+        #[Autowire('@http_client.joindin')]
+        private HttpClientInterface $httpClient,
         #[Autowire('@cache.system')]
         private CacheItemPoolInterface $cache,
     ) {}
 
+    /**
+     * @return array{comment: mixed, user_display_name: mixed, created_date: mixed, rating: mixed}[]
+     */
     public function getCommentsFromTalk(Talk $talk): array
     {
-        if (!$talk->hasJoindinId()) {
+        $joindinId = $talk->getJoindinId();
+
+        if ($joindinId === null) {
             return [];
         }
 
         try {
-            return $this->getCommmentsFromId($talk->getJoindinId());
-        } catch (\RuntimeException) {
+            return $this->prepareCommentsFromJoindinResponse($this->callJoindInApi($joindinId));
+        } catch (\RuntimeException|ExceptionInterface) {
             return [];
         }
     }
 
     /**
-     * @param int $joindinId
+     * @throws ExceptionInterface
      */
-    protected function getCommmentsFromId($joindinId): array
+    private function callJoindInApi(int $joindinId): string
     {
-        return $this->prepareCommentsFromJoindinResponse($this->callJoindInApi($joindinId));
-    }
+        $cacheItem = $this->cache->getItem('joindin_talk_comments_' . $joindinId);
 
-    /**
-     * @param int $joindinId
-     *
-     * @return string
-     */
-    private function callJoindInApi($joindinId)
-    {
-        $joindInurl = 'http://api.joind.in/v2.1/talks/' . $joindinId . '/comments?resultsperpage=0';
-        $cacheItem = $this->cache->getItem(urlencode($joindInurl));
-        if (!$cacheItem->isHit()) {
-            $cacheItem->set(file_get_contents($joindInurl));
-            $this->cache->save($cacheItem);
+        $cached = $cacheItem->get();
+
+        if ($cacheItem->isHit() && is_string($cached)) {
+            return $cached;
         }
 
-        return $cacheItem->get();
+        $content = $this->httpClient->request('GET', '/v2.1/talks/' . $joindinId . '/comments', [
+            'query' => ['resultsperpage' => 0],
+        ])->getContent();
+
+        // Only cache successful responses, so that a joind.in outage is not cached.
+        $cacheItem->set($content);
+        $this->cache->save($cacheItem);
+
+        return $content;
     }
 
     /**
-     * @param string $response
-     *
      * @return array{comment: mixed, user_display_name: mixed, created_date: mixed, rating: mixed}[]
-     *
-     * @throws \Exception
      */
-    private function prepareCommentsFromJoindinResponse($response): array
+    private function prepareCommentsFromJoindinResponse(string $response): array
     {
         $decodedResponse = json_decode($response, true);
-        if (!is_array($decodedResponse) || !isset($decodedResponse['comments'])) {
+        if (!is_array($decodedResponse) || !isset($decodedResponse['comments']) || !is_array($decodedResponse['comments'])) {
             throw new \RuntimeException('Error reading joindin response');
         }
 
         $comments = [];
         foreach ($decodedResponse['comments'] as $comment) {
-            if ((string) $comment['user_display_name'] === '') {
-                $comment['user_display_name'] = 'Anonyme';
+            if (!is_array($comment)) {
+                continue;
             }
 
+            $userDisplayName = $comment['user_display_name'] ?? '';
+
             $comments[] = [
-                'comment' => $comment['comment'],
-                'user_display_name' => $comment['user_display_name'],
-                'created_date' => $comment['created_date'],
-                'rating' => $comment['rating'],
+                'comment' => $comment['comment'] ?? null,
+                'user_display_name' => is_scalar($userDisplayName) && (string) $userDisplayName !== '' ? $userDisplayName : 'Anonyme',
+                'created_date' => $comment['created_date'] ?? null,
+                'rating' => $comment['rating'] ?? null,
             ];
         }
 

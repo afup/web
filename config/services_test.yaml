@@ -20,6 +20,9 @@ services:
         tags:
             - { name: kernel.event_listener, priority: 1000 }
 
+    http_client.joindin:
+        class: Symfony\Component\HttpClient\MockHttpClient
+
     http_client.bluesky_embed:
         class: Symfony\Component\HttpClient\MockHttpClient
 

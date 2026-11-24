@@ -3596,12 +3596,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/SecondaryMenuController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between \'https\\://joind\\.in…\' and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Talks/JoindinAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between \'Les vidéos de \' and mixed results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 1,
@@ -5586,108 +5580,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Indexation/Talks/Transformer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinComments.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'comment\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinComments.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'created_date\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinComments.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'rating\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinComments.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'user_display_name\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinComments.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to string\\.$#',
-	'identifier' => 'cast.string',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinComments.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Joindin\\\\JoindinComments\\:\\:callJoindInApi\\(\\) should return string but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinComments.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Joindin\\\\JoindinComments\\:\\:getCommentsFromTalk\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinComments.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Joindin\\\\JoindinComments\\:\\:getCommmentsFromId\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinComments.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$joindinId of method AppBundle\\\\Joindin\\\\JoindinComments\\:\\:getCommmentsFromId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinComments.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'stub\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinTalk.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset 0 on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinTalk.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Joindin\\\\JoindinTalk\\:\\:callJoindInApi\\(\\) should return string but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinTalk.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Joindin\\\\JoindinTalk\\:\\:getStubFromTalk\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinTalk.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Joindin\\\\JoindinTalk\\:\\:prepareStubFromJoindinResponse\\(\\) should return string\\|null but returns mixed\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinTalk.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Joindin\\\\JoindinTalk\\:\\:readResponse\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinTalk.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$joindinId of method AppBundle\\\\Joindin\\\\JoindinTalk\\:\\:callJoindInApi\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Joindin/JoindinTalk.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$locale of method Symfony\\\\Component\\\\HttpFoundation\\\\Request\\:\\:setLocale\\(\\) expects string, mixed given\\.$#',
