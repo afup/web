@@ -1,6 +1,17 @@
 name: CI
 
-on: [push, pull_request]
+# Les branches sont testées par leur pull request : un push sur une branche de PR ne relance pas la CI
+# une seconde fois sur le même commit. master reste testé à chaque push.
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+# Un nouveau commit sur une PR annule les runs encore en cours de son commit précédent ; sur master,
+# chaque commit va au bout.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   php_version: "8.5"
