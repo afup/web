@@ -14,6 +14,7 @@ use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
+use AppBundle\Event\Talk\PublishedTalkRepository;
 use AppBundle\Site\Entity\Repository\FeuilleRepository;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
@@ -34,6 +35,7 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
         private readonly ArticleRepository $articleRepository,
         private readonly CompanyMemberRepository $companyMemberRepository,
         private readonly FeuilleRepository $feuilleRepository,
+        private readonly PublishedTalkRepository $publishedTalkRepository,
     ) {}
 
     public static function getSubscribedEvents(): array
@@ -57,9 +59,10 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
     {
         /** @var Talk[] $talks */
         $talks = $this->talkRepository->getAllPastTalks(new \DateTime());
+        $publishedTalkIds = array_flip($this->publishedTalkRepository->getIds());
 
         foreach ($talks as $talk) {
-            if (!$talk->isDisplayedOnHistory()) {
+            if (!isset($publishedTalkIds[(int) $talk->getId()])) {
                 continue;
             }
 

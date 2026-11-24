@@ -13,6 +13,8 @@ Feature: Site Public - Sitemaps
   Scenario: On accède sitemap talks
     Given I am on "/sitemap.talks.xml"
     And the response should contain "<loc>https://apachephptest:80/talks/1-jouons-tous-ensemble-a-un-petit-jeu</loc>"
+    # Publication à venir : pas de lien
+    But the response should not contain "/talks/3-revolutionons-php"
     And the response should contain "<loc>https://apachephptest:80/talks/?fR%5Bspeakers.label%5D%5B0%5D=Geoffrey%20BACHELET</loc>"
     And the response should contain "<loc>https://apachephptest:80/talks/?fR%5Bevent.title%5D%5B0%5D=forum</loc>"
     And the response should contain "<loc>https://apachephptest:80/talks/</loc>"

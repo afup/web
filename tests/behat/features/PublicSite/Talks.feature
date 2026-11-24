@@ -67,6 +67,9 @@ Feature: Site Public - Talks
     Then the response status code should be 404
     When I go to "/talks/4-mauvais-slug/joindin"
     Then the response status code should be 404
+    # Talk planifié dont la date de publication est à venir : ni page, ni lien dans le sitemap
+    When I go to "/talks/3-revolutionons-php"
+    Then the response status code should be 404
 
   @reloadDbWithTestData
   Scenario: Les liens vers joind.in d'un talk ne sont pas suivis par les robots

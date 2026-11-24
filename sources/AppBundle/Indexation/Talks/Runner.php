@@ -11,6 +11,7 @@ use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Talk\PublishedTalkRepository;
 
 class Runner
 {
@@ -22,6 +23,7 @@ class Runner
         private readonly TalkRepository $talkRepository,
         private readonly EventRepository $eventRepository,
         private readonly SpeakerRepository $speakerRepository,
+        private readonly PublishedTalkRepository $publishedTalkRepository,
     ) {
         $this->transformer = new Transformer();
     }
@@ -31,8 +33,13 @@ class Runner
         $index = $this->initIndex();
 
         $objects = [];
+        // Seuls les talks publiés (créneau terminé, date de publication passée) sont indexés.
+        $publishedTalkIds = array_flip($this->publishedTalkRepository->getIds());
 
         foreach ($this->getAllPlannings() as $planning) {
+            if (null === $planning->talkId || !isset($publishedTalkIds[$planning->talkId])) {
+                continue;
+            }
             if (null === ($object = $this->prepareObject($planning))) {
                 continue;
             }
@@ -88,13 +95,9 @@ class Runner
 
     protected function prepareObject(Planning $planning): ?array
     {
-        if ($planning->start > new \DateTime()) {
-            return null;
-        }
-
         $talk = $this->talkRepository->get($planning->talkId);
 
-        if (null === $talk || !$talk->isDisplayedOnHistory()) {
+        if (null === $talk) {
             return  null;
         }
 
