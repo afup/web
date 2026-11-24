@@ -69,3 +69,9 @@ Feature: Site Public - Sitemaps
     And I should see "Association" in the "section#association h2" element
     And the response should contain "href=\"/profile/company/1-mycorp\""
     And the response should contain "href=\"/news/1-les-videos-du-forum-2018-en-ligne\""
+
+  @reloadDbWithTestData
+  Scenario: Tous les liens du plan du site vers les talks répondent 200
+    Given I am on "/plan-du-site"
+    Then every link matching "#^(https?://[^/]+)?/talks/#" should respond with status 200
+

@@ -52,14 +52,11 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
 
     public function registerTalksUrls(UrlContainerInterface $urls): void
     {
-        /** @var Talk[] $talks */
-        $talks = $this->talkRepository->getAllPastTalks(new \DateTime());
-        $publishedTalkIds = array_flip($this->publishedTalkRepository->getIds());
+        // Une entrée par talk publié, même planifié sur plusieurs créneaux.
+        $publishedTalkIds = $this->publishedTalkRepository->getIds();
+        $talks = $publishedTalkIds === [] ? [] : $this->talkRepository->findList($publishedTalkIds);
 
         foreach ($talks as $talk) {
-            if (!isset($publishedTalkIds[(int) $talk->getId()])) {
-                continue;
-            }
 
             $url = new UrlConcrete(
                 $this->urlGenerator->generate(
