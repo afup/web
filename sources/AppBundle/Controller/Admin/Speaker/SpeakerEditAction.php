@@ -98,8 +98,14 @@ class SpeakerEditAction extends AbstractController
             ]);
         }
 
-        // Recherche d'une personne à laquelle rattacher la ligne (formulaire GET du bloc « Personne »)
+        $personne = $speaker->getPersonneId() !== null ? $this->personneConferencierRepository->find($speaker->getPersonneId()) : null;
+        // Recherche d'une personne à laquelle rattacher la ligne (formulaire GET du bloc « Personne »), utile
+        // seulement tant que la ligne n'est rattachée à personne.
         $personneSearch = $request->query->getString('personneQuery');
+        $personneCandidates = $personne === null && $personneSearch !== '' ? array_values(array_filter(
+            $this->personneConferencierRepository->searchAcrossEvents($personneSearch),
+            static fn(SpeakerSearchResult $result): bool => $result->personneId !== null,
+        )) : [];
 
         return $this->render('admin/speaker/edit.html.twig', [
             'speakerId' => $speaker->getId(),
@@ -110,12 +116,9 @@ class SpeakerEditAction extends AbstractController
             'talks' => $talks,
             'photo' => $photo,
             'originalPhoto' => $originalPhoto,
-            'personne' => $speaker->getPersonneId() !== null ? $this->personneConferencierRepository->find($speaker->getPersonneId()) : null,
+            'personne' => $personne,
             'personneSearch' => $personneSearch,
-            'personneCandidates' => array_values(array_filter(
-                $this->personneConferencierRepository->searchAcrossEvents($personneSearch),
-                static fn(SpeakerSearchResult $result): bool => $result->personneId !== null,
-            )),
+            'personneCandidates' => $personneCandidates,
         ]);
     }
 }
