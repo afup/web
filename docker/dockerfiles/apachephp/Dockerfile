@@ -47,6 +47,6 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 FROM base AS full
 
-RUN curl -sL https://deb.nodesource.com/setup_22.x | bash - && \
-    apt-get install -y --no-install-recommends nodejs chromium && \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends chromium && \
     rm -rf /var/lib/apt/lists/*
