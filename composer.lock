@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "86885f33799ee9f8e3d205bc693c8705",
+    "content-hash": "352fd94b5dc7cc9d6b9a228230894ee8",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -4487,12 +4487,41 @@
             "time": "2026-05-11T20:49:54+00:00"
         },
         {
+            "name": "npm-asset/qr-scanner",
+            "version": "1.4.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/qr-scanner/-/qr-scanner-1.4.2.tgz",
+                "shasum": "bc4fb88022a8c9be95c49527a1c8fb8724b47dc4"
+            },
+            "require": {
+                "npm-asset/types--offscreencanvas": ">=2019.6.4,<2020.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
             "name": "npm-asset/tarteaucitronjs",
             "version": "1.32.0",
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/tarteaucitronjs/-/tarteaucitronjs-1.32.0.tgz",
                 "shasum": "35888a974a0c9e80b1711b51852d30d1a6fc4da3"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/types--offscreencanvas",
+            "version": "2019.7.3",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/@types/offscreencanvas/-/offscreencanvas-2019.7.3.tgz",
+                "shasum": "90267db13f64d6e9ccb5ae3eac92786a7c77a516"
             },
             "type": "npm-asset",
             "license": [

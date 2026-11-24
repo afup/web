@@ -27,7 +27,4 @@
     </div>
 {% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script type="module" src="{{ asset('/js/qr-scanner/scanner.js') }}"></script>
-{% endblock %}
+{% block importmap %}{{ importmap('sponsor-scanner') }}{% endblock %}
