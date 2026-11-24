@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Website\Member;
 
 use AppBundle\Association\Form\CompanyPublicProfile;
-use AppBundle\Association\Model\Repository\CompanyMemberRepository;
+use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
 use AppBundle\Security\Authentication;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class CompanyPublicProfileAction extends AbstractController
 {
@@ -24,21 +25,21 @@ final class CompanyPublicProfileAction extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $companyMember = $this->companyMemberRepository->get($this->authentication->getAfupUser()->getCompanyId());
+        $companyMember = $this->companyMemberRepository->find($this->authentication->getAfupUser()->getCompanyId());
 
         if ($companyMember === null) {
             throw $this->createNotFoundException("Company member not found");
         }
 
         $defaultData = [
-            'enabled' => $companyMember->getPublicProfileEnabled(),
-            'description' => $companyMember->getDescription(),
-            'website_url' => $companyMember->getWebsiteUrl(),
-            'contact_page_url' => $companyMember->getContactPageUrl(),
-            'careers_page_url' => $companyMember->getCareersPageUrl(),
-            'twitter_handle' => $companyMember->getTwitterHandle(),
+            'enabled' => (bool) $companyMember->publicProfileEnabled,
+            'description' => $companyMember->description,
+            'website_url' => $companyMember->websiteUrl,
+            'contact_page_url' => $companyMember->contactPageUrl,
+            'careers_page_url' => $companyMember->careersPageUrl,
+            'twitter_handle' => $companyMember->twitterHandle,
             'related_afup_offices' => $companyMember->getFormattedRelatedAfupOffices(),
-            'membership_reason' => $companyMember->getMembershipReason(),
+            'membership_reason' => $companyMember->membershipReason,
         ];
 
         $formOptions = [
@@ -55,26 +56,29 @@ final class CompanyPublicProfileAction extends AbstractController
             $uploadedFile = $data['logo'] ?? null;
 
             if ($uploadedFile instanceof UploadedFile) {
-                $filename = $companyMember->getId() . '.' . $uploadedFile->getClientOriginalExtension();
+                $filename = $companyMember->id . '.' . $uploadedFile->getClientOriginalExtension();
 
                 $uploadedFile->move(
                     $this->prepareUploadedFilesDir(),
                     $filename,
                 );
 
-                $companyMember->setLogoUrl($filename);
+                $companyMember->logoUrl = $filename;
             }
 
-            $companyMember
-                ->setPublicProfileEnabled($data['enabled'])
-                ->setDescription($data[('description')])
-                ->setWebsiteUrl($data['website_url'])
-                ->setContactPageUrl($data['contact_page_url'])
-                ->setCareersPageUrl($data['careers_page_url'])
-                ->setTwitterHandle($data['twitter_handle'])
-                ->setFormattedRelatedAfupOffices($data['related_afup_offices'])
-                ->setMembershipReason($data['membership_reason'])
-            ;
+            $relatedAfupOffices = $data['related_afup_offices'] ?? [];
+            if (!is_array($relatedAfupOffices) || array_filter($relatedAfupOffices, is_string(...)) !== $relatedAfupOffices) {
+                throw new BadRequestHttpException('Invalid related AFUP offices.');
+            }
+
+            $companyMember->publicProfileEnabled = (bool) $data['enabled'];
+            $companyMember->description = $this->nullableString($data['description'] ?? null);
+            $companyMember->websiteUrl = $this->nullableString($data['website_url'] ?? null);
+            $companyMember->contactPageUrl = $this->nullableString($data['contact_page_url'] ?? null);
+            $companyMember->careersPageUrl = $this->nullableString($data['careers_page_url'] ?? null);
+            $companyMember->twitterHandle = $this->nullableString($data['twitter_handle'] ?? null);
+            $companyMember->setFormattedRelatedAfupOffices($relatedAfupOffices);
+            $companyMember->membershipReason = $this->nullableString($data['membership_reason'] ?? null);
 
             $this->companyMemberRepository->save($companyMember);
 
@@ -89,6 +93,15 @@ final class CompanyPublicProfileAction extends AbstractController
                 'company_member' => $companyMember,
             ],
         );
+    }
+
+    private function nullableString(mixed $value): ?string
+    {
+        if (null !== $value && !is_string($value)) {
+            throw new BadRequestHttpException('Expected a string.');
+        }
+
+        return $value;
     }
 
     private function prepareUploadedFilesDir(): string

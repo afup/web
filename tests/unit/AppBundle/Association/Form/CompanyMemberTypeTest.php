@@ -6,7 +6,7 @@ namespace AppBundle\Tests\Association\Form;
 
 use AppBundle\Association\Entity\CompanyMemberInvitation;
 use AppBundle\Association\Form\CompanyMemberType;
-use AppBundle\Association\Model\CompanyMember;
+use AppBundle\Association\Entity\CompanyMember;
 use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
 use EWZ\Bundle\RecaptchaBundle\Locale\LocaleResolver;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -118,7 +118,7 @@ class CompanyMemberTypeTest extends TypeTestCase
 
     private function invitation(CompanyMember $member, int $index): CompanyMemberInvitation
     {
-        $invitations = $member->getInvitations() ?? [];
+        $invitations = $member->getValidInvitations();
         self::assertArrayHasKey($index, $invitations);
 
         return $invitations[$index];
@@ -129,7 +129,7 @@ class CompanyMemberTypeTest extends TypeTestCase
      */
     private function invitations(CompanyMember $member): array
     {
-        return array_values($member->getInvitations() ?? []);
+        return array_values($member->getValidInvitations());
     }
 
     /**
@@ -146,7 +146,7 @@ class CompanyMemberTypeTest extends TypeTestCase
         $member = new CompanyMember();
         $invitation = new CompanyMemberInvitation();
         $invitation->manager = true;
-        $member->setInvitations([$invitation]);
+        $member->invitations = [$invitation];
 
         return $member;
     }
