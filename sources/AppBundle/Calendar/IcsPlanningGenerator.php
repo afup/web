@@ -36,7 +36,7 @@ class IcsPlanningGenerator
                 'DTSTART' => $talkAggregate->planning->start,
                 'DTEND'   => $talkAggregate->planning->end,
                 'DESCRIPTION' => strip_tags(html_entity_decode($talkAggregate->talk->getAbstract())),
-                'LOCATION' => $talkAggregate->room->getName(),
+                'LOCATION' => $talkAggregate->room->name,
             ]);
         }
 

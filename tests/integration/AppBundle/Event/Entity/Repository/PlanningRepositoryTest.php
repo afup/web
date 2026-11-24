@@ -7,7 +7,10 @@ namespace AppBundle\IntegrationTests\Event\Entity\Repository;
 use Afup\Tests\Support\IntegrationTestCase;
 use AppBundle\Event\Entity\Planning;
 use AppBundle\Event\Entity\Repository\PlanningRepository;
+use AppBundle\Event\Entity\Repository\RoomRepository;
+use AppBundle\Event\Entity\Room;
 use AppBundle\Event\Model\Talk;
+use AppBundle\Event\Model\TalkAggregate;
 use Doctrine\DBAL\Connection;
 
 final class PlanningRepositoryTest extends IntegrationTestCase
@@ -75,6 +78,40 @@ final class PlanningRepositoryTest extends IntegrationTestCase
         self::assertInstanceOf(Planning::class, $planning);
         self::assertSame(1001, $planning->talkId);
         self::assertFalse($planning->isKeynote);
+    }
+
+    public function testEnrichTalkAggregatesChargeLePlanningEtLaSalle(): void
+    {
+        $planningRepository = self::getContainer()->get(PlanningRepository::class);
+        $roomRepository = self::getContainer()->get(RoomRepository::class);
+        $connection = self::getContainer()->get(Connection::class);
+
+        $room = new Room();
+        $room->name = 'Salle Rasmus';
+        $room->eventId = 10;
+        $roomRepository->save($room);
+
+        $this->insertPlanning($connection, '1011', '1451606400', '1451608800', (string) $room->id, '10', '0');
+        // Planning dont la salle n'existe plus
+        $this->insertPlanning($connection, '1012', '1451606400', '1451608800', '9999', '10', '0');
+
+        $aggregates = $planningRepository->enrichTalkAggregates([
+            new TalkAggregate(new Talk()->setId(1011), [], null, null),
+            new TalkAggregate(new Talk()->setId(1012), [], null, null),
+            // Session non planifiée
+            new TalkAggregate(new Talk()->setId(1013), [], null, null),
+        ]);
+
+        self::assertCount(3, $aggregates);
+        self::assertSame(1011, $aggregates[0]->planning?->talkId);
+        self::assertSame($room->id, $aggregates[0]->room?->id);
+        self::assertSame('Salle Rasmus', $aggregates[0]->room->name);
+
+        self::assertSame(1012, $aggregates[1]->planning?->talkId);
+        self::assertNull($aggregates[1]->room);
+
+        self::assertNull($aggregates[2]->planning);
+        self::assertNull($aggregates[2]->room);
     }
 
     /**

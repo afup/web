@@ -26,4 +26,23 @@ final class RoomRepository extends EntityRepository
     {
         return array_values($this->findBy(['eventId' => $event->getId()]));
     }
+
+    /**
+     * @param list<int> $ids
+     *
+     * @return array<int, Room>
+     */
+    public function findIndexedByIds(array $ids): array
+    {
+        if ($ids === []) {
+            return [];
+        }
+
+        $rooms = [];
+        foreach ($this->findBy(['id' => array_values(array_unique($ids))]) as $room) {
+            $rooms[$room->id] = $room;
+        }
+
+        return $rooms;
+    }
 }

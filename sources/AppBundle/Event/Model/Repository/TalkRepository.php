@@ -183,19 +183,18 @@ class TalkRepository extends Repository implements MetadataInitializer
         $hydrator->aggregateOn('talk', 'speaker', 'getId');
 
         $query = $this->getPreparedQuery(
-            // Les plannings ne sont plus hydratés par Ting : ils sont rechargés
-            // via Doctrine avec PlanningRepository::findIndexedByTalkIds().
+            // Les salles et les plannings ne sont plus hydratés par Ting : ils sont
+            // rechargés via Doctrine avec PlanningRepository::findIndexedByTalkIds().
             'SELECT talk.session_id, talk.titre, skill, talk.genre, abstract, talk.plannifie,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe, speaker.biographie,
-            room.id, room.nom, event.date_annonce_planning, event.path, event.interviews_intro, event.interviews_cta_text
+            event.date_annonce_planning, event.path, event.interviews_intro, event.interviews_cta_text
             FROM afup_sessions AS talk
             LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
             LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
-            LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
             LEFT JOIN afup_forum event ON talk.id_forum = event.id
             WHERE talk.session_id = :talk AND plannifie = 1 AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)
-            ORDER BY planning.debut ASC, room.id ASC, talk.session_id ASC ',
+            ORDER BY planning.debut ASC, planning.id_salle ASC, talk.session_id ASC ',
         )->setParams(['talk' => $talk->getId()]);
 
         return $query->query($this->getCollection($hydrator));
@@ -252,16 +251,14 @@ class TalkRepository extends Repository implements MetadataInitializer
         $query = $this->getPreparedQuery(
             sprintf('SELECT talk.id_forum, talk.session_id, titre, skill, talk.genre, abstract, talk.plannifie, talk.language_code,
             talk.joindin, talk.theme, talk.position,
-            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe,
-            room.id, room.nom
+            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe
             FROM afup_sessions AS talk
             LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
             LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
-            LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
             LEFT JOIN afup_conference_theme ON afup_conference_theme.id = talk.theme
             WHERE talk.id_forum IN(%s) AND plannifie = 1 %s %s
-            ORDER BY %s ', $inEvents, $publicationdateFilters, $themeFilters, $orderByTheme ? 'afup_conference_theme.priority ASC, afup_conference_theme.name ASC, talk.position IS NULL, talk.position ASC, talk.date_publication DESC, talk.session_id ASC' : 'talk.position IS NULL, talk.position ASC, planning.debut ASC, room.id ASC, talk.date_publication DESC, talk.session_id ASC '),
+            ORDER BY %s ', $inEvents, $publicationdateFilters, $themeFilters, $orderByTheme ? 'afup_conference_theme.priority ASC, afup_conference_theme.name ASC, talk.position IS NULL, talk.position ASC, talk.date_publication DESC, talk.session_id ASC' : 'talk.position IS NULL, talk.position ASC, planning.debut ASC, planning.id_salle ASC, talk.date_publication DESC, talk.session_id ASC '),
         )->setParams($params);
 
         $result = $query->query($this->getCollection($hydrator));
@@ -271,9 +268,9 @@ class TalkRepository extends Repository implements MetadataInitializer
             $aggregates[] = new TalkAggregate(
                 $row['talk'],
                 $row['.aggregation']['speaker'],
-                $row['room'] ?? null,
-                // Les plannings ne sont plus hydratés par Ting : ils sont rechargés
-                // via Doctrine avec PlanningRepository::enrichTalkAggregates().
+                // Les salles et les plannings ne sont plus hydratés par Ting : ils sont
+                // rechargés via Doctrine avec PlanningRepository::enrichTalkAggregates().
+                null,
                 null,
             );
         }
@@ -292,14 +289,12 @@ class TalkRepository extends Repository implements MetadataInitializer
             talk.joindin, talk.youtube_id, talk.slides_url, talk.interview_url, talk.blog_post_url, talk.needs_mentoring,
             talk.date_soumission,
             speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe,
-            room.id, room.nom,
             (SELECT AVG(vote) FROM afup_sessions_vote_github asvg WHERE asvg.session_id = talk.session_id) AS vote_note,
             (SELECT COUNT(vote) FROM afup_sessions_vote_github asvg WHERE asvg.session_id = talk.session_id) AS vote_total
             FROM afup_sessions AS talk
             LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
             LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
             LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
-            LEFT JOIN afup_forum_salle room ON planning.id_salle = room.id
             WHERE talk.id_forum = :id %s
             ORDER BY %s 
 SQL;
@@ -334,9 +329,9 @@ SQL;
             $aggregates[] = new TalkAggregate(
                 $row['talk'],
                 $row['.aggregation']['speaker'],
-                $row['room'] ?? null,
-                // Les plannings ne sont plus hydratés par Ting : ils sont rechargés
-                // via Doctrine avec PlanningRepository::enrichTalkAggregates().
+                // Les salles et les plannings ne sont plus hydratés par Ting : ils sont
+                // rechargés via Doctrine avec PlanningRepository::enrichTalkAggregates().
+                null,
                 null,
                 $row[0]->vote_note ? new TalkAggregateVote($row[0]->vote_note, $row[0]->vote_total) : null,
             );

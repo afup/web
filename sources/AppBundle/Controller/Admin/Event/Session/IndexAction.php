@@ -87,7 +87,7 @@ final class IndexAction extends AbstractController
                 $session->talk->getTitle(),
                 $this->formatForCalendar($session->planning->start, $timezone),
                 $this->formatForCalendar($session->planning->end, $timezone),
-                $session->room->getId(),
+                $session->room->id,
             );
         }
 

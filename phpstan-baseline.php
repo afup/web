@@ -2036,12 +2036,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/IndexAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#5 \\$resourceId of class AppBundle\\\\Event\\\\Model\\\\Session\\\\CalendarEvent constructor expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/IndexAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$speaker of method AppBundle\\\\Event\\\\Speaker\\\\SpeakerPage\\:\\:handleRequest\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Speaker, AppBundle\\\\Event\\\\Model\\\\Speaker\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -2924,12 +2918,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Blog/PlanningAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Event\\\\Model\\\\Room\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Blog/PlanningAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method setTimezone\\(\\) on DateTime\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 2,
@@ -2944,7 +2932,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Possibly invalid array key type int\\|null\\.$#',
 	'identifier' => 'offsetAccess.invalidOffset',
-	'count' => 6,
+	'count' => 3,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Blog/PlanningAction.php',
 ];
 $ignoreErrors[] = [
@@ -4748,24 +4736,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/InvoiceRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\RoomRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/RoomRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\RoomRepository\\:\\:initMetadata\\(\\) return type with generic class CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/RoomRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/RoomRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset 0 on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
 	'count' => 2,
@@ -4857,12 +4827,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'\\.aggregation\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'room\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
 	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
@@ -5003,12 +4967,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$total of class AppBundle\\\\Event\\\\Model\\\\TalkAggregateVote constructor expects int, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$room of class AppBundle\\\\Event\\\\Model\\\\TalkAggregate constructor expects AppBundle\\\\Event\\\\Model\\\\Room\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
 ];
 $ignoreErrors[] = [
@@ -5178,12 +5136,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Event\\\\Model\\\\Room\\:\\:\\$name \\(string\\) does not accept mixed\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Room.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:getHotelNightsArray\\(\\) return type has no value type specified in iterable type array\\.$#',

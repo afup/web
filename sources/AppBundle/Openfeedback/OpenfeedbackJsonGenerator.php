@@ -46,7 +46,7 @@ class OpenfeedbackJsonGenerator
                 'tags' => [$talkAggregate->talk->getTypeLabel()],
                 'title' => $talkAggregate->talk->getTitle(),
                 'id' => "{$talkAggregate->talk->getId()}",
-                'trackTitle' => $talkAggregate->room?->getName() ?? '',
+                'trackTitle' => $talkAggregate->room->name ?? '',
             ];
 
             if (null !== $talkAggregate->planning) {

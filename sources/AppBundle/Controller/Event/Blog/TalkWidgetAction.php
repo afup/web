@@ -28,15 +28,17 @@ final class TalkWidgetAction extends AbstractController
 
         $talkIds = array_map(static fn($talk) => (int) $talk->getId(), iterator_to_array($talks, false));
         $plannings = $this->planningRepository->findIndexedByTalkIds($talkIds);
+        $rooms = $this->planningRepository->findRoomsOf($plannings);
 
         $event = null;
         $speakers = [];
         $talksInfos = [];
         foreach ($talks as $talk) {
             foreach ($this->talkRepository->getByTalkWithSpeakers($talk) as $row) {
-                // Les plannings ne sont plus hydratés par Ting : ils sont rechargés
-                // via Doctrine avec PlanningRepository::findIndexedByTalkIds().
+                // Les salles et les plannings ne sont plus hydratés par Ting : ils sont
+                // rechargés via Doctrine avec PlanningRepository::findIndexedByTalkIds().
                 $row['planning'] = $talk->getId() !== null ? ($plannings[$talk->getId()] ?? null) : null;
+                $row['room'] = $row['planning']?->roomId !== null ? ($rooms[$row['planning']->roomId] ?? null) : null;
                 if (($row['event'] ?? null) instanceof Event) {
                     $event = $row['event'];
                 }
