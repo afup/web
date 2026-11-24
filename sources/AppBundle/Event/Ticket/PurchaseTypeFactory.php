@@ -10,7 +10,7 @@ use AppBundle\Event\Form\PurchaseType;
 use AppBundle\Event\Form\TicketType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\InvoiceFactory;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Ticket;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -39,7 +39,7 @@ class PurchaseTypeFactory
             }
         }
 
-        $isCfpSubmitter = $user instanceof User && $this->speakerRepository->hasCFPSubmitted($event, $user->getEmail());
+        $isCfpSubmitter = $user instanceof User && $this->speakerRepository->hasCFPSubmitted((int) $event->getId(), (string) $user->getEmail());
 
         $invoice = $this->invoiceFactory->createInvoiceForEvent($event);
         $ticket = new Ticket();

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\VideoNotifier;
 
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\SocialNetwork\Embed;
 use AppBundle\SocialNetwork\SocialNetwork;
@@ -46,7 +46,7 @@ class StatusGeneratorTest extends TestCase
             SocialNetwork::Bluesky,
             new Talk()->setTitle(self::faker()->realText(SocialNetwork::Bluesky->statusMaxLength() * 2)),
             [
-                new Speaker()->setBluesky(self::faker()->domainName()),
+                self::speaker(bluesky: self::faker()->domainName()),
             ],
             'Statut généré pour bluesky trop long',
         ];
@@ -55,7 +55,7 @@ class StatusGeneratorTest extends TestCase
             SocialNetwork::Mastodon,
             new Talk()->setTitle(self::faker()->realText(SocialNetwork::Mastodon->statusMaxLength() * 2)),
             [
-                new Speaker()->setMastodon(self::faker()->domainName()),
+                self::speaker(mastodon: self::faker()->domainName()),
             ],
             'Statut généré pour mastodon trop long',
         ];
@@ -85,11 +85,11 @@ class StatusGeneratorTest extends TestCase
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                new Speaker()->setMastodon('foo'),
-                new Speaker()->setFirstname('John')->setLastname('Smith'),
-                new Speaker()->setMastodon('bar'),
-                new Speaker()->setFirstname('Jane')->setLastname('Doe'),
-                new Speaker()->setMastodon('fiz'),
+                self::speaker(mastodon: 'foo'),
+                self::speaker(firstname: 'John', lastname: 'Smith'),
+                self::speaker(mastodon: 'bar'),
+                self::speaker(firstname: 'Jane', lastname: 'Doe'),
+                self::speaker(mastodon: 'fiz'),
             ],
             new Status(
                 "« Lorem ipsum dolor si amet », la conférence de @foo, John SMITH, @bar, Jane DOE et @fiz à revoir sur le site de l'AFUP",
@@ -110,7 +110,7 @@ class StatusGeneratorTest extends TestCase
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                new Speaker()->setBluesky('example.bsky.social'),
+                self::speaker(bluesky: 'example.bsky.social'),
             ],
             new Status(
                 "« Lorem ipsum dolor si amet », la conférence de @example.bsky.social à revoir sur le site de l'AFUP",
@@ -131,7 +131,7 @@ class StatusGeneratorTest extends TestCase
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                new Speaker()->setFirstname('Jane')->setLastname('Doe'),
+                self::speaker(firstname: 'Jane', lastname: 'Doe'),
             ],
             new Status(
                 "« Lorem ipsum dolor si amet », la conférence de Jane DOE à revoir sur le site de l'AFUP",
@@ -152,8 +152,8 @@ class StatusGeneratorTest extends TestCase
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                new Speaker()->setBluesky('foo'),
-                new Speaker()->setBluesky('bar'),
+                self::speaker(bluesky: 'foo'),
+                self::speaker(bluesky: 'bar'),
             ],
             new Status(
                 "« Lorem ipsum dolor si amet », la conférence de @foo et @bar à revoir sur le site de l'AFUP",
@@ -174,9 +174,9 @@ class StatusGeneratorTest extends TestCase
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                new Speaker()->setBluesky('foo'),
-                new Speaker()->setBluesky('bar'),
-                new Speaker()->setBluesky('fiz'),
+                self::speaker(bluesky: 'foo'),
+                self::speaker(bluesky: 'bar'),
+                self::speaker(bluesky: 'fiz'),
             ],
             new Status(
                 "« Lorem ipsum dolor si amet », la conférence de @foo, @bar et @fiz à revoir sur le site de l'AFUP",
@@ -197,7 +197,7 @@ class StatusGeneratorTest extends TestCase
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                new Speaker()->setBluesky('example.bsky.social'),
+                self::speaker(bluesky: 'example.bsky.social'),
             ],
             new Status(
                 "« Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium architecto assumenda consequuntur corporis dolorem doloremque eaque magnam mollitia necessitatibus neque nesciunt, obcaecati odio odit quam, repellat repellendus. », par @example.bsky.social à revoir sur le site de l'AFUP",
@@ -218,7 +218,7 @@ class StatusGeneratorTest extends TestCase
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                new Speaker()->setBluesky('example.bsky.social'),
+                self::speaker(bluesky: 'example.bsky.social'),
             ],
             new Status(
                 "« Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium architecto assumenda consequuntur corporis dolorem doloremque eaque magnam mollitia necessitatibus neque nesciunt, obcaecati odio odit quam, repellat repellendus magnam. », par @example.bsky.social à revoir sur l'AFUP",
@@ -239,7 +239,7 @@ class StatusGeneratorTest extends TestCase
                 ->setAbstract('Foo bar')
                 ->setYoutubeId('abcd1234'),
             [
-                new Speaker()->setBluesky('example.bsky.social'),
+                self::speaker(bluesky: 'example.bsky.social'),
             ],
             new Status(
                 "« Lorem ipsum », la conférence de @example.bsky.social à revoir sur le site de l'AFUP",
@@ -251,5 +251,15 @@ class StatusGeneratorTest extends TestCase
                 ),
             ),
         ];
+    }
+
+    private static function speaker(mixed ...$properties): Speaker
+    {
+        $speaker = new Speaker();
+        foreach ($properties as $property => $value) {
+            $speaker->{$property} = $value;
+        }
+
+        return $speaker;
     }
 }

@@ -8,7 +8,7 @@
             {% if event.cfpOpen %}
             <p class="right mrm"><a href="{{ url('cfp_speaker', {eventSlug: event.path}) }}">Modifier</a></p>
             {% endif %}
-            {% if speaker.id == 0 %}
+            {% if speaker.id is not defined %}
                 <p>{{ 'Vous n\'avez pas encore rempli votre profil conférencier.'|trans }}</p>
             {% else %}
                 {% if speakerPhoto %}

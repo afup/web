@@ -6,9 +6,10 @@ namespace AppBundle\Event\Talk;
 
 use AppBundle\Doctrine\Type\UnixTimestampType;
 use AppBundle\Event\Entity\Repository\PlanningRepository;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Model\Talk;
 use CCMBenchmark\Ting\Query\QueryException;
 
@@ -17,6 +18,7 @@ class ExportGenerator
     public function __construct(
         private readonly TalkRepository $talkRepository,
         private readonly PlanningRepository $planningRepository,
+        private readonly SpeakerRepository $speakerRepository,
     ) {}
 
     /**
@@ -74,7 +76,7 @@ class ExportGenerator
             // Gestion des conférenciers
             $speakers = [];
             foreach ($talkAggregate->speakers as $speaker) {
-                $speakers[] = $speaker->getFirstname() . ' ' . $speaker->getLastname();
+                $speakers[] = $speaker->firstname . ' ' . $speaker->lastname;
             }
             if ($speakers === []) {
                 $speakers[] = '-';
@@ -113,14 +115,17 @@ class ExportGenerator
      */
     private function getFromRegistrationsOnEvent(Event $event)
     {
-        $talksWithSpeakers = $this->talkRepository->getAllByEventWithSpeakers($event);
+        /** @var list<Talk> $talks */
+        $talks = iterator_to_array($this->talkRepository->getAllByEvent($event), false);
+        $speakersByTalk = $this->speakerRepository->findIndexedByTalkIds(array_map(static fn(Talk $talk): int => (int) $talk->getId(), $talks));
 
-        foreach ($talksWithSpeakers as $talkWithSpeaker) {
-            yield $this->prepareLine($talkWithSpeaker['talk'], $talkWithSpeaker['.aggregation']['speaker']);
+        foreach ($talks as $talk) {
+            yield $this->prepareLine($talk, $speakersByTalk[(int) $talk->getId()] ?? []);
         }
     }
 
     /**
+     * @param list<Speaker> $speakers
      *
      * @throws \Exception
      */
@@ -142,16 +147,24 @@ class ExportGenerator
         ];
     }
 
+    /**
+     * @param list<Speaker> $speakers
+     */
     private function prepareSpeakersLabel(array $speakers): string
     {
         return implode(',', $this->getSpeakersLabels($speakers));
     }
 
+    /**
+     * @param list<Speaker> $speakers
+     *
+     * @return list<string>
+     */
     private function getSpeakersLabels(array $speakers): array
     {
         $names = [];
         foreach ($speakers as $speaker) {
-            $names[] = $speaker->getLabel();
+            $names[] = $speaker->label;
         }
 
         return $names;
@@ -172,7 +185,7 @@ class ExportGenerator
     {
         $localities = [];
         foreach ($speakers as $speaker) {
-            $localities[] = $speaker->getLocality();
+            $localities[] = (string) $speaker->locality;
         }
 
         return $localities;

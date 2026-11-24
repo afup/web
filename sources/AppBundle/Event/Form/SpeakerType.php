@@ -7,8 +7,8 @@ namespace AppBundle\Event\Form;
 use AppBundle\Association\Genre;
 use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Event\Entity\Repository\GithubUserRepository;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Speaker;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -79,7 +79,7 @@ class SpeakerType extends AbstractType
                             }
                             return $choice;
                         },
-                        'choice_loader' => new CallbackChoiceLoader(fn() => $this->githubUserRepository->getAllOrderedByLogin()),
+                        'choice_loader' => new CallbackChoiceLoader(fn(): array => $this->githubUserRepository->getAllOrderedByLogin()),
                     ],
                 )
             ;
@@ -97,21 +97,21 @@ class SpeakerType extends AbstractType
                 $user = $token->getUser();
             }
 
-            if ($user instanceof GithubUser && $speaker instanceof Speaker && $speaker->getId() === null) {
-                $previousSpeakerInfos = $this->speakerRepository->getFromLastEventAndUserId($speaker->getEventId(), $user->getId());
+            if ($user instanceof GithubUser && $speaker instanceof Speaker && !isset($speaker->id) && $user->getId() !== null) {
+                $previousSpeakerInfos = $this->speakerRepository->getFromLastEventAndUserId($speaker->eventId, $user->getId());
                 if ($previousSpeakerInfos instanceof Speaker) {
-                    $speaker->setGenre($previousSpeakerInfos->getGenre());
-                    $speaker->setFirstname($previousSpeakerInfos->getFirstname());
-                    $speaker->setLastname($previousSpeakerInfos->getLastname());
-                    $speaker->setEmail($previousSpeakerInfos->getEmail());
-                    $speaker->setCompany($previousSpeakerInfos->getCompany());
-                    $speaker->setLocality($previousSpeakerInfos->getLocality());
-                    $speaker->setPhoneNumber($previousSpeakerInfos->getPhoneNumber());
-                    $speaker->setBiography($previousSpeakerInfos->getBiography());
-                    $speaker->setTwitter($previousSpeakerInfos->getTwitter());
-                    $speaker->setMastodon($previousSpeakerInfos->getMastodon());
-                    $speaker->setLinkedin($previousSpeakerInfos->getLinkedin());
-                    $speaker->setBluesky($previousSpeakerInfos->getBluesky());
+                    $speaker->genre = $previousSpeakerInfos->genre;
+                    $speaker->firstname = $previousSpeakerInfos->firstname;
+                    $speaker->lastname = $previousSpeakerInfos->lastname;
+                    $speaker->email = $previousSpeakerInfos->email;
+                    $speaker->company = $previousSpeakerInfos->company;
+                    $speaker->locality = $previousSpeakerInfos->locality;
+                    $speaker->phoneNumber = $previousSpeakerInfos->phoneNumber;
+                    $speaker->biography = $previousSpeakerInfos->biography;
+                    $speaker->twitter = $previousSpeakerInfos->twitter;
+                    $speaker->mastodon = $previousSpeakerInfos->mastodon;
+                    $speaker->linkedin = $previousSpeakerInfos->linkedin;
+                    $speaker->bluesky = $previousSpeakerInfos->bluesky;
                     // La photo n'est pas reprise ici : son fichier est rangé par édition, SpeakerAction le copie à l'enregistrement.
 
                     $formEvent->getForm()->add('isFromPreviousEvent', HiddenType::class, ['mapped' => false]);

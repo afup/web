@@ -7,7 +7,7 @@ namespace AppBundle\Controller\Admin\Speaker;
 use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,17 +38,18 @@ class SpeakerListAction
         $filter = $request->query->get('filter');
 
         $event = $eventSelection->event;
-        $speakers = $this->speakerRepository->searchSpeakers($event, $sort, $direction, $filter);
+        $eventId = (int) $event->getId();
+        $speakers = $this->speakerRepository->searchSpeakers($eventId, $sort, $direction, is_string($filter) ? $filter : null);
         $talks = [];
         foreach ($speakers as $speaker) {
             $speakerTalks = [];
-            foreach ($this->talkRepository->getTalksBySpeaker($event, $speaker) as $talk) {
+            foreach ($this->talkRepository->getTalksBySpeaker($event, $speaker->id) as $talk) {
                 if ($talk->getType() !== Talk::TYPE_PHP_PROJECT) {
                     $speakerTalks[$talk->getTitle()] = $talk;
                 }
             }
             ksort($speakerTalks);
-            $talks[$speaker->getId()] = array_values($speakerTalks);
+            $talks[$speaker->id] = array_values($speakerTalks);
         }
 
         /** @var Event[] $events */
@@ -60,7 +61,7 @@ class SpeakerListAction
             'events' => $events,
             'speakers' => $speakers,
             'talks' => $talks,
-            'nbSpeakers' => $this->speakerRepository->countByEvent($event),
+            'nbSpeakers' => $this->speakerRepository->countByEvent($eventId),
             'sort' => $sort,
             'direction' => $direction,
             'filter' => $filter,

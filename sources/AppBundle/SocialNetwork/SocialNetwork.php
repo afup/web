@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\SocialNetwork;
 
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\VideoNotifier\HistoryEntry;
 
 use function Symfony\Component\String\u;
@@ -25,9 +25,9 @@ enum SocialNetwork: string
     public function getSpeakerHandle(Speaker $speaker): ?string
     {
         if ($this === self::Bluesky) {
-            $handle = $speaker->getBluesky();
+            $handle = $speaker->bluesky;
         } else {
-            $handle = $speaker->getMastodon();
+            $handle = $speaker->mastodon;
         }
 
         if ($handle === null) {

@@ -38,8 +38,8 @@ class JsonPlanningGenerator
             foreach ($talkAggregate->speakers as $speaker) {
                 $conferenciers[] = [
                     'img' => 'https://afup.org' . $this->photoStorage->getUrl($speaker),
-                    'link' => sprintf('https://event.afup.org/%s/speakers/#%d', $event->getPath(), $speaker->getId()),
-                    'name' => $speaker->getLabel(),
+                    'link' => sprintf('https://event.afup.org/%s/speakers/#%d', $event->getPath(), $speaker->id),
+                    'name' => $speaker->label,
                 ];
             }
 

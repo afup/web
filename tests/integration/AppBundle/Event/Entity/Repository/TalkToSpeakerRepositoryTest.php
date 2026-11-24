@@ -7,7 +7,7 @@ namespace AppBundle\IntegrationTests\Event\Entity\Repository;
 use Afup\Tests\Support\IntegrationTestCase;
 use AppBundle\Event\Entity\Repository\TalkToSpeakerRepository;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Model\Talk;
 use Doctrine\DBAL\Connection;
 
@@ -168,16 +168,19 @@ final class TalkToSpeakerRepositoryTest extends IntegrationTestCase
 
     private function buildTalk(int $id): Talk
     {
-        return (new Talk())->setId($id);
+        return new Talk()->setId($id);
     }
 
     private function buildSpeaker(int $id): Speaker
     {
-        return (new Speaker())->setId($id);
+        $speaker = new Speaker();
+        $speaker->id = $id;
+
+        return $speaker;
     }
 
     private function buildEvent(int $id): Event
     {
-        return (new Event())->setId($id);
+        return new Event()->setId($id);
     }
 }

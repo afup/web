@@ -14,31 +14,31 @@ class SpeakerFormData
     public ?Genre $genre = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     #[Assert\NotBlank]
     public $firstname;
     /**
-     * @var string
+     * @var string|null
      */
     #[Assert\NotBlank]
     public $lastname;
     /**
-     * @var string
+     * @var string|null
      */
     #[Assert\NotBlank]
     #[Assert\Email]
     public $email;
     /**
-     * @var string
+     * @var string|null
      */
     public $company;
     /**
-     * @var string
+     * @var string|null
      */
     public $locality;
     /**
-     * @var string
+     * @var string|null
      */
     #[Assert\NotBlank]
     public $biography;

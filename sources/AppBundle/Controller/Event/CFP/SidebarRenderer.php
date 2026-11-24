@@ -23,8 +23,10 @@ class SidebarRenderer
             return '';
         }
 
+        $speaker = $this->speakerFactory->getSpeaker($event);
+
         return $this->twig->render('event/cfp/sidebar.html.twig', [
-            'talks' => $this->talkRepository->getTalksBySpeaker($event, $this->speakerFactory->getSpeaker($event)),
+            'talks' => isset($speaker->id) ? $this->talkRepository->getTalksBySpeaker($event, $speaker->id) : [],
             'event' => $event,
         ]);
     }

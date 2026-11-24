@@ -30,7 +30,7 @@ final readonly class SpeakerIdentity
     }
 
     /**
-     * « Prénom NOM », comme Speaker::getLabel(), espaces superflus retirés.
+     * « Prénom NOM », comme Speaker::$label, espaces superflus retirés.
      */
     public function getLabel(): string
     {

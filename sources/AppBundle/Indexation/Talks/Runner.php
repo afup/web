@@ -9,10 +9,10 @@ use Algolia\AlgoliaSearch\SearchIndex;
 use AppBundle\Event\Entity\Planning;
 use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Talk\PublishedTalkRepository;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
 
 class Runner
@@ -112,7 +112,7 @@ class Runner
             return null;
         }
 
-        $speakers = $this->speakerRepository->getSpeakersByTalk($talk);
+        $speakers = $this->speakerRepository->getSpeakersByTalk((int) $talk->getId());
 
         return $this->transformer->transform($planning, $talk, $event, $speakers);
     }

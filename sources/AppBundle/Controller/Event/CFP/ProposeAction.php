@@ -34,7 +34,7 @@ class ProposeAction extends AbstractController
             ]);
         }
         $speaker = $this->speakerFactory->getSpeaker($event);
-        if ($speaker->getId() === null) {
+        if (!isset($speaker->id)) {
             $this->addFlash('error', $this->translator->trans('Vous devez remplir votre profil conférencier afin de pouvoir soumettre un sujet.'));
 
             return $this->redirectToRoute('cfp_speaker', [

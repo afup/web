@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Talk;
 
 use AppBundle\Event\AdminEventSelection;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -24,6 +25,7 @@ final class IndexAction extends AbstractController
     public function __construct(
         private readonly FormFactoryInterface $formFactory,
         private readonly TalkRepository $talkRepository,
+        private readonly PlanningRepository $planningRepository,
     ) {}
 
     public function __invoke(Request $request, AdminEventSelection $eventSelection): Response
@@ -44,13 +46,13 @@ final class IndexAction extends AbstractController
         $data['sort_key'] ??= 'talk.date_soumission';
         $data['sort_direction'] ??= 'asc';
 
-        $sessions = $this->talkRepository->getByEventWithSpeakersAndVotes(
+        $sessions = $this->planningRepository->enrichTalkAggregates($this->talkRepository->getByEventWithSpeakersAndVotes(
             event: $event,
             search: $data['filter'] ?? '',
             orderBy: $data['sort_key'] . ' ' . $data['sort_direction'],
             planned: $data['planned'] ?? false,
             needMentoring: $data['needs_mentoring'] ?? false,
-        );
+        ));
 
         return $this->render('admin/talk/index.html.twig', [
             'event' => $event,

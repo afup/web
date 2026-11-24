@@ -41,7 +41,8 @@ class IndexAction extends AbstractController
         }
         $speaker = $this->speakerFactory->getSpeaker($event);
         $eventTalkList = new EventTalkList($event);
-        foreach ($this->talkRepository->getTalksBySpeaker($event, $speaker) as $talk) {
+        $talks = isset($speaker->id) ? $this->talkRepository->getTalksBySpeaker($event, $speaker->id) : [];
+        foreach ($talks as $talk) {
             $eventTalkList->addTalk($talk);
         }
         /** @var EventTalkList[] $previousEventTalkLists */
@@ -50,8 +51,9 @@ class IndexAction extends AbstractController
         foreach ($this->eventRepository->getPreviousEvents(self::MAX_EVENTS_HISTORY) as $previousEvent) {
             $previousEventTalkLists[$previousEvent->getId()] = new EventTalkList($previousEvent);
         }
+        $previousTalks = isset($speaker->id) ? $this->talkRepository->getPreviousTalksBySpeaker($event, $speaker->id) : [];
         /** @var Talk $talk */
-        foreach ($this->talkRepository->getPreviousTalksBySpeaker($event, $speaker) as $talk) {
+        foreach ($previousTalks as $talk) {
             if (array_key_exists((string) $talk->getForumId(), $previousEventTalkLists)) {
                 $previousEventTalkLists[$talk->getForumId()]->addTalk($talk);
             }

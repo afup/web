@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Tests\CFP;
 
 use AppBundle\CFP\PhotoStorage;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -49,6 +49,11 @@ final class PhotoStorageTest extends TestCase
 
     private function speaker(int $id, int $eventId, ?string $photo): Speaker
     {
-        return new Speaker()->setId($id)->setEventId($eventId)->setPhoto($photo);
+        $speaker = new Speaker();
+        $speaker->id = $id;
+        $speaker->eventId = $eventId;
+        $speaker->photo = $photo;
+
+        return $speaker;
     }
 }

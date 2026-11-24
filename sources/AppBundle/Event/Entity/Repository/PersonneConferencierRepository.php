@@ -11,8 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Webmozart\Assert\Assert;
 
 /**
- * Les lignes conférencier restent des modèles Ting : les requêtes renvoient leurs ids, que l'appelant
- * charge avec SpeakerRepository::get().
+ * Les requêtes renvoient les ids des lignes conférencier, que l'appelant charge avec SpeakerRepository::find().
  *
  * @extends EntityRepository<PersonneConferencier>
  */

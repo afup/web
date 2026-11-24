@@ -6,7 +6,7 @@ namespace AppBundle\Indexation\Talks;
 
 use AppBundle\Event\Entity\Planning;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Model\Talk;
 
 class Transformer
@@ -24,10 +24,9 @@ class Transformer
     }
 
     /**
-     * @param Speaker[]|\Traversable $speakers
-     *
+     * @param iterable<Speaker> $speakers
      */
-    public function transform(Planning $planning, Talk $talk, Event $event, \Traversable $speakers): array
+    public function transform(Planning $planning, Talk $talk, Event $event, iterable $speakers): array
     {
         $item = [
             'planning_id' => $planning->id,
@@ -58,12 +57,12 @@ class Transformer
 
         $speakersLabels = [];
         foreach ($speakers as $speaker) {
-            $speakersLabels[] = $speaker->getLabel();
+            $speakersLabels[] = $speaker->label;
             $item['speakers'][] = [
-                'id' => $speaker->getId(),
-                'first_name' => $speaker->getFirstname(),
-                'last_name' => $speaker->getLastname(),
-                'label' => $speaker->getLabel(),
+                'id' => $speaker->id,
+                'first_name' => $speaker->firstname,
+                'last_name' => $speaker->lastname,
+                'label' => $speaker->label,
                 'slug' => ($this->speakerSlug)($speaker),
             ];
         }

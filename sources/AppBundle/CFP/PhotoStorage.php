@@ -6,7 +6,7 @@ namespace AppBundle\CFP;
 
 use Afup\Site\Utils\Utils;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -37,8 +37,8 @@ final readonly class PhotoStorage
 
     public function store(File $photo, Speaker $speaker): string
     {
-        $fileName = $speaker->getId() . '.' . $photo->guessExtension();
-        $directory = $this->basePath . '/' . $speaker->getEventId() . '/' . self::DIR_ORIGINAL;
+        $fileName = $speaker->id . '.' . $photo->guessExtension();
+        $directory = $this->basePath . '/' . $speaker->eventId . '/' . self::DIR_ORIGINAL;
         $this->createDirectory($directory);
         $this->removeAllFormats($speaker);
 
@@ -53,7 +53,7 @@ final readonly class PhotoStorage
      */
     public function copyFrom(Speaker $source, Speaker $target): ?string
     {
-        if ($source->getPhoto() === null || $target->getId() === null) {
+        if ($source->photo === null || !isset($target->id)) {
             return null;
         }
         $sourcePath = $this->getPath($source, self::DIR_ORIGINAL);
@@ -61,8 +61,8 @@ final readonly class PhotoStorage
             return null;
         }
 
-        $fileName = $target->getId() . '.' . pathinfo($sourcePath, PATHINFO_EXTENSION);
-        $directory = $this->basePath . '/' . $target->getEventId() . '/' . self::DIR_ORIGINAL;
+        $fileName = $target->id . '.' . pathinfo($sourcePath, PATHINFO_EXTENSION);
+        $directory = $this->basePath . '/' . $target->eventId . '/' . self::DIR_ORIGINAL;
         $this->createDirectory($directory);
         $this->removeAllFormats($target);
         $this->filesystem->copy($sourcePath, $directory . '/' . $fileName, true);
@@ -72,11 +72,11 @@ final readonly class PhotoStorage
 
     private function removeAllFormats(Speaker $speaker): void
     {
-        if ($speaker->getId() === null) {
+        if (!isset($speaker->id)) {
             return;
         }
         foreach (array_keys(self::FORMAT) as $format) {
-            $files = glob($this->basePath . '/' . $speaker->getEventId() . '/' . $format . '/' . $speaker->getId() . '.*');
+            $files = glob($this->basePath . '/' . $speaker->eventId . '/' . $format . '/' . $speaker->id . '.*');
             $this->filesystem->remove($files);
         }
     }
@@ -95,7 +95,7 @@ final readonly class PhotoStorage
         }
 
         if ($this->filesystem->exists($this->getPath($speaker, $format))) {
-            return '/uploads/speakers/' . $speaker->getEventId() . '/' . $format . '/' . $speaker->getPhoto();
+            return '/uploads/speakers/' . $speaker->eventId . '/' . $format . '/' . $speaker->photo;
         }
 
         return null;
@@ -107,16 +107,16 @@ final readonly class PhotoStorage
             throw new \UnexpectedValueException(sprintf('Bad format: %s', $format));
         }
 
-        $directory = $this->basePath . '/' . $speaker->getEventId() . '/' . $format;
+        $directory = $this->basePath . '/' . $speaker->eventId . '/' . $format;
         $this->createDirectory($directory);
 
-        return $directory . '/' . $speaker->getPhoto();
+        return $directory . '/' . $speaker->photo;
     }
 
     public function storeLegacy(UploadedFile $photo, Event $event, Speaker $speaker): string
     {
         $dir = '/templates/' . $event->getPath() . '/images/intervenants';
-        $path = $dir . '/' . $speaker->getId() . '.jpg';
+        $path = $dir . '/' . $speaker->id . '.jpg';
         // Transformation en 90x120 JPG pour simplifier
         if ($photo->getMimeType() === 'image/png') {
             $img = imagecreatefrompng($photo->getRealPath());
@@ -138,7 +138,7 @@ final readonly class PhotoStorage
 
     public function getLegacyUrl(Event $event, Speaker $speaker): ?string
     {
-        $path = '/templates/' . $event->getPath() . '/images/intervenants/' . $speaker->getId() . '.jpg';
+        $path = '/templates/' . $event->getPath() . '/images/intervenants/' . $speaker->id . '.jpg';
         if (is_file($this->legacyBasePath . $path)) {
             return $path;
         }
@@ -150,7 +150,7 @@ final readonly class PhotoStorage
     {
         $tmpImagePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('gravatar-', true) . '.jpg';
         // Transformation en 90x120 JPG pour simplifier
-        $url = Utils::get_gravatar($speaker->getEmail(), 90);
+        $url = Utils::get_gravatar((string) $speaker->email, 90);
         $img = @imagecreatefromjpeg($url);
         if ($img === false) {
             $img = imagecreatefrompng($url);
@@ -172,7 +172,7 @@ final readonly class PhotoStorage
         if (file_exists($originalPath) === false) {
             return ;
         }
-        $ext = substr((string) $speaker->getPhoto(), -4);
+        $ext = substr((string) $speaker->photo, -4);
         $transparent = false;
         // This part is just our old script. We should do better
         if ($ext === '.png') {

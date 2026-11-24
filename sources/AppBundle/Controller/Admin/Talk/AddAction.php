@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Talk;
 
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\AuditLog\Audit;
 use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Entity\Repository\TalkToSpeakerRepository;
@@ -13,6 +14,7 @@ use AppBundle\Event\Model\Talk;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Webmozart\Assert\Assert;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_EVENT_WRITER')]
@@ -35,8 +37,11 @@ class AddAction extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $speakers = $form->get('speakers')->getData();
+            Assert::isArray($speakers);
+            Assert::allIsInstanceOf($speakers, Speaker::class);
             $this->talkRepository->save($talk);
-            $this->talkToSpeakersRepository->replaceSpeakers($talk, $form->get('speakers')->getData());
+            $this->talkToSpeakersRepository->replaceSpeakers($talk, $speakers);
 
             $this->audit->log(sprintf('Ajout de la session de %s', $talk->getTitle()));
             $this->addFlash('notice', 'La conférence a été ajoutée.');

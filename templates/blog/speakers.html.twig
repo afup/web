@@ -48,7 +48,7 @@
                 {{ row.speaker.biography }}
             </p>
             <ul>
-                {% for talk in row[".aggregation"].talk %}
+                {% for talk in row.talks %}
                 <li class="conferencier_session">
                     <a href="{{ programPagePrefix }}#{{ talk.id }}">{{ talk.title }}</a>
                 </li>

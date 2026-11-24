@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\SocialNetwork;
 
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\SocialNetwork\SocialNetwork;
 use AppBundle\SocialNetwork\StatusId;
 use AppBundle\VideoNotifier\HistoryEntry;
@@ -25,25 +25,25 @@ class SocialNetworkTest extends TestCase
     {
         yield 'bluesky without @ prefix' => [
             SocialNetwork::Bluesky,
-            new Speaker()->setBluesky('foo.bar'),
+            self::speaker(bluesky: 'foo.bar'),
             '@foo.bar',
         ];
 
         yield 'bluesky with @ prefix' => [
             SocialNetwork::Bluesky,
-            new Speaker()->setBluesky('@foo.bar'),
+            self::speaker(bluesky: '@foo.bar'),
             '@foo.bar',
         ];
 
         yield 'mastodon without @ prefix' => [
             SocialNetwork::Mastodon,
-            new Speaker()->setMastodon('foo.bar'),
+            self::speaker(mastodon: 'foo.bar'),
             '@foo.bar',
         ];
 
         yield 'mastodon with @ prefix' => [
             SocialNetwork::Mastodon,
-            new Speaker()->setMastodon('@foo.bar'),
+            self::speaker(mastodon: '@foo.bar'),
             '@foo.bar',
         ];
     }
@@ -66,5 +66,15 @@ class SocialNetworkTest extends TestCase
 
         self::assertEquals('abcd', $entry->getStatusIdMastodon());
         self::assertNull($entry->getStatusIdBluesky());
+    }
+
+    private static function speaker(mixed ...$properties): Speaker
+    {
+        $speaker = new Speaker();
+        foreach ($properties as $property => $value) {
+            $speaker->{$property} = $value;
+        }
+
+        return $speaker;
     }
 }

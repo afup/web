@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\SpeakerInfos\Form;
 
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\IntegrationTests\Event\Talk;
 
 use Afup\Tests\Support\IntegrationTestCase;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Event\Speaker\SpeakerTalk;

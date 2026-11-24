@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Speaker;
 
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 
 /**
  * Le profil consolidé d'une personne, à partir de ses lignes speaker de toutes les éditions :

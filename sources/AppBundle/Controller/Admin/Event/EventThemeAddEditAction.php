@@ -6,6 +6,7 @@ namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Event\Entity\EventTheme;
 use AppBundle\Event\Entity\Repository\EventThemeRepository;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Form\EventThemeType;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
@@ -22,6 +23,7 @@ class EventThemeAddEditAction extends AbstractController
         private readonly EventThemeRepository $eventThemeRepository,
         private readonly EventRepository $eventRepository,
         private readonly TalkRepository $talkRepository,
+        private readonly PlanningRepository $planningRepository,
     ) {}
 
     public function __invoke(Request $request, #[MapEntity] ?EventTheme $eventTheme = null): Response
@@ -36,7 +38,9 @@ class EventThemeAddEditAction extends AbstractController
         } else {
             $event = $this->eventRepository->get($eventTheme->eventId);
             if ($event !== null) {
-                $talks = $this->talkRepository->getByEventWithSpeakers($event, false, false, $eventTheme->id);
+                $talks = $this->planningRepository->enrichTalkAggregates(
+                    $this->talkRepository->getByEventWithSpeakers($event, false, false, $eventTheme->id),
+                );
             }
         }
 

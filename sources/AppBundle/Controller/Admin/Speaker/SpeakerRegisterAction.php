@@ -6,12 +6,11 @@ namespace AppBundle\Controller\Admin\Speaker;
 
 use AppBundle\AuditLog\Audit;
 use AppBundle\Event\AdminEventSelection;
+use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Invoice\InvoiceService;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Repository\TicketRepository;
-use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\Ticket;
 use DateTime;
@@ -25,8 +24,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class SpeakerRegisterAction extends AbstractController
 {
     public function __construct(
-        private readonly SpeakerRepository $speakerRepository,
         private readonly TalkRepository $talkRepository,
+        private readonly PlanningRepository $planningRepository,
         private readonly TicketRepository $ticketRepository,
         private readonly InvoiceService $invoiceService,
         private readonly InvoiceRepository $invoiceRepository,
@@ -36,7 +35,9 @@ class SpeakerRegisterAction extends AbstractController
     public function __invoke(Request $request, AdminEventSelection $eventSelection): RedirectResponse
     {
         $event = $eventSelection->event;
-        $talkAggregates = $this->talkRepository->getByEventWithSpeakers($event);
+        $talkAggregates = $this->planningRepository->enrichTalkAggregates(
+            $this->talkRepository->getByEventWithSpeakers($event),
+        );
         $nbSpeakers = 0;
 
         foreach ($talkAggregates as $talkAggregate) {
@@ -44,11 +45,8 @@ class SpeakerRegisterAction extends AbstractController
                 continue;
             }
 
-            /** @var array<Speaker> $speakers */
-            $speakers = $this->speakerRepository->getSpeakersByTalk($talkAggregate->talk);
-
-            foreach ($speakers as $speaker) {
-                $reference = 'GENCONF-' . $event->getId() . '-' . $speaker->getId() . '-' . Ticket::TYPE_SPEAKER;
+            foreach ($talkAggregate->speakers as $speaker) {
+                $reference = 'GENCONF-' . $event->getId() . '-' . $speaker->id . '-' . Ticket::TYPE_SPEAKER;
                 $invoice = $this->invoiceRepository->getByReference($reference);
 
                 if ($invoice) {
@@ -61,10 +59,10 @@ class SpeakerRegisterAction extends AbstractController
                 $ticket->setForumId($event->getId());
                 $ticket->setReference($reference);
                 $ticket->setTicketTypeId(Ticket::TYPE_SPEAKER);
-                $ticket->setGenre($speaker->getGenre());
-                $ticket->setLastname($speaker->getLastname());
-                $ticket->setFirstname($speaker->getFirstname());
-                $ticket->setEmail($speaker->getEmail());
+                $ticket->setGenre($speaker->genre);
+                $ticket->setLastname($speaker->lastname ?? '');
+                $ticket->setFirstname($speaker->firstname ?? '');
+                $ticket->setEmail($speaker->email ?? '');
                 $ticket->setCompanyCitation(true);
                 $ticket->setNewsletter(true);
                 $ticket->setComments('import auto');
@@ -85,10 +83,10 @@ class SpeakerRegisterAction extends AbstractController
                         Ticket::PAYMENT_NONE,
                         '',
                         null,
-                        $speaker->getEmail(),
-                        $speaker->getCompany(),
-                        $speaker->getLastname(),
-                        $speaker->getFirstname(),
+                        $speaker->email,
+                        $speaker->company,
+                        $speaker->lastname,
+                        $speaker->firstname,
                         '',
                         '',
                         '',
@@ -99,7 +97,7 @@ class SpeakerRegisterAction extends AbstractController
                         '',
                         Ticket::STATUS_GUEST,
                     );
-                    $this->audit->log('Ajout inscription conférencier ' . $speaker->getId());
+                    $this->audit->log('Ajout inscription conférencier ' . $speaker->id);
                     $nbSpeakers++;
                 } catch (Exception) {
                     $this->addFlash('error', 'Une erreur est survenue lors de l\'ajout de la facturation');

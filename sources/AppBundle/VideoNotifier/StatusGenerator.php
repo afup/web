@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\VideoNotifier;
 
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\SocialNetwork\Embed;
 use AppBundle\SocialNetwork\SocialNetwork;
@@ -19,6 +19,9 @@ final readonly class StatusGenerator
      *
      * La fonction tente plusieurs formats de statut jusqu'à en trouver un qui ne dépasse pas la longueur max
      * du réseau social en cours.
+     */
+    /**
+     * @param list<Speaker> $speakers
      */
     public function generate(Talk $talk, array $speakers): Status
     {
@@ -86,7 +89,7 @@ final readonly class StatusGenerator
     private function buildMentionsText(array $speakers): string
     {
         $mentions = array_map(
-            fn(Speaker $speaker): string => $this->socialNetwork->getSpeakerHandle($speaker) ?? $speaker->getLabel(),
+            fn(Speaker $speaker): string => $this->socialNetwork->getSpeakerHandle($speaker) ?? $speaker->label,
             $speakers,
         );
 

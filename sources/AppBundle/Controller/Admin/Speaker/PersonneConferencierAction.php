@@ -6,8 +6,8 @@ namespace AppBundle\Controller\Admin\Speaker;
 
 use AppBundle\Event\Entity\Repository\PersonneConferencierRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Speaker\SpeakerSearchResult;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,7 +62,7 @@ final class PersonneConferencierAction extends AbstractController
     {
         $speakers = [];
         foreach ($speakerIds as $speakerId) {
-            $speaker = $this->speakerRepository->get($speakerId);
+            $speaker = $this->speakerRepository->find($speakerId);
             if ($speaker instanceof Speaker) {
                 $speakers[] = $speaker;
             }

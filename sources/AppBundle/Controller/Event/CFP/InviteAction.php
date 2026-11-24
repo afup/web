@@ -40,7 +40,7 @@ class InviteAction extends AbstractController
 
         $speaker = $this->speakerFactory->getSpeaker($event);
 
-        if ($speaker->getId() === null) {
+        if (!isset($speaker->id)) {
             $this->addFlash('error', $this->translator->trans('Vous devez remplir votre profil conférencier afin de pouvoir accepter une invitation.'));
             $this->addFlash('pendingInvitation', ['talkId' => $talkId, 'token' => $token, 'eventSlug' => $event->getPath()]);
 

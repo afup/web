@@ -7,7 +7,7 @@ namespace AppBundle\Tests\Indexation\Talks;
 use AppBundle\Association\Genre;
 use AppBundle\Event\Entity\Planning;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Indexation\Talks\Transformer;
 use PHPUnit\Framework\TestCase;
@@ -50,24 +50,22 @@ final class TransformerTest extends TestCase
             ->setDateEndSales(new \DateTime('2014-06-22'))
             ->setPath('phptourlyon2014');
 
-        ($speaker = new Speaker())
-            ->setId(800)
-            ->setEventId(10)
-            ->setUser(0)
-            ->setGenre(Genre::Homme)
-            ->setFirstname('Dimitri')
-            ->setLastname('Fontaine')
-            ->setEmail('example@example.fr')
-            ->setCompany('2nbQuadrant')
-            ->setBiography('Dimitri Fontaine travaille sur PostgreSQL, à la fois en tant que Contributeur Majeur du projet au sein d\'une communauté vibrante et en tant qu\'expert PostgreSQL pour 2ndQuadrant.')
-            ->setTwitter('tapoueh');
+        $speaker = self::speaker(
+            id: 800,
+            eventId: 10,
+            githubUserId: 0,
+            genre: Genre::Homme,
+            firstname: 'Dimitri',
+            lastname: 'Fontaine',
+            email: 'example@example.fr',
+            company: '2nbQuadrant',
+            biography: 'Dimitri Fontaine travaille sur PostgreSQL, à la fois en tant que Contributeur Majeur du projet au sein d\'une communauté vibrante et en tant qu\'expert PostgreSQL pour 2ndQuadrant.',
+            twitter: 'tapoueh',
+        );
 
-        ($otherSpeaker = new Speaker())
-            ->setId(801)
-            ->setFirstname('Sans')
-            ->setLastname('Page');
+        $otherSpeaker = self::speaker(id: 801, firstname: 'Sans', lastname: 'Page');
 
-        $transformer = new Transformer(static fn(Speaker $speaker): ?string => $speaker->getId() === 800 ? 'dimitri-fontaine' : null);
+        $transformer = new Transformer(static fn(Speaker $speaker): ?string => $speaker->id === 800 ? 'dimitri-fontaine' : null);
 
         $result = $transformer->transform($planning, $talk, $event, new \ArrayObject([$speaker, $otherSpeaker]));
 
@@ -135,7 +133,7 @@ final class TransformerTest extends TestCase
             $planning,
             new Talk()->setLanguageCode('fr'),
             new Event(),
-            new \ArrayObject([new Speaker()]),
+            new \ArrayObject([self::speaker(id: 1)]),
         );
 
         self::assertArrayNotHasKey('slides_url', $result);
@@ -145,5 +143,15 @@ final class TransformerTest extends TestCase
         self::assertFalse($result['has_slides']);
         self::assertFalse($result['has_joindin']);
         self::assertFalse($result['has_blog_post']);
+    }
+
+    private static function speaker(mixed ...$properties): Speaker
+    {
+        $speaker = new Speaker();
+        foreach ($properties as $property => $value) {
+            $speaker->{$property} = $value;
+        }
+
+        return $speaker;
     }
 }
