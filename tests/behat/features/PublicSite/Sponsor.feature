@@ -2,6 +2,7 @@ Feature: Site Public - Devenir sponsor
 
   @reloadDbWithTestData
   @clearEmails
+  @withEventSponsorFiles
   Scenario: Devenir sponsor - tous les champs remplis
     Given I go to "/event/forum/sponsor/become-sponsor"
     Then I should see "Recevoir notre dossier"
@@ -26,6 +27,7 @@ Feature: Site Public - Devenir sponsor
 
   @reloadDbWithTestData
   @clearEmails
+  @withEventSponsorFiles
   Scenario: Devenir sponsor - tous les champs requis remplis
     Given I go to "/event/forum/sponsor/become-sponsor"
     Then I should see "Recevoir notre dossier"

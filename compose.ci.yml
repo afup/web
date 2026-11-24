@@ -1,0 +1,13 @@
+# Surcharges propres à la CI (activées via COMPOSE_FILE=compose.yml:compose.ci.yml dans .github/workflows/ci.yml).
+# La base de test est jetable : ses données vivent en mémoire et MySQL renonce à la durabilité
+# des écritures, ce qui accélère les rechargements du dump entre les scénarios Behat.
+services:
+  dbtest:
+    volumes:
+      - type: tmpfs
+        target: /var/lib/mysql
+    command:
+      - --innodb-flush-log-at-trx-commit=0
+      - --sync-binlog=0
+      - --innodb-doublewrite=0
+      - --innodb-use-native-aio=0
