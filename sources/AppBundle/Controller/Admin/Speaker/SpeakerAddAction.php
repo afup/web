@@ -88,6 +88,13 @@ class SpeakerAddAction extends AbstractController
             } else {
                 $this->personneConferencierLinker->ensurePersonne($speaker);
             }
+            // Une personne n'a qu'une fiche par édition : son compte GitHub peut désigner une personne déjà inscrite.
+            $existing = $this->personneConferencierLinker->findRowInEvent((int) $speaker->getPersonneId(), $event);
+            if ($existing instanceof Speaker) {
+                $this->addFlash('notice', 'Ce conférencier existe déjà pour cet événement');
+
+                return $this->redirectToRoute('admin_speaker_edit', ['id' => $existing->getId()]);
+            }
             $this->speakerRepository->save($speaker);
             if (null !== $data->photoFile) {
                 $speaker->setPhoto($this->photoStorage->store($data->photoFile, $speaker));

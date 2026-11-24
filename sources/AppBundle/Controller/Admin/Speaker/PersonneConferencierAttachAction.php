@@ -37,6 +37,14 @@ final class PersonneConferencierAttachAction extends AbstractController
             return $this->redirectToRoute('admin_speaker_personne', ['id' => $personne->id]);
         }
 
+        // Une personne n'a qu'une fiche par édition.
+        $existingId = $this->personneConferencierRepository->findSpeakerIdInEvent($personne->id, (int) $speaker->getEventId());
+        if ($existingId !== null && $existingId !== $speaker->getId()) {
+            $this->addFlash('error', 'Cette personne a déjà une fiche dans cette édition');
+
+            return $this->redirectToRoute('admin_speaker_personne', ['id' => $personne->id]);
+        }
+
         $speaker->setPersonneId($personne->id);
         $this->speakerRepository->save($speaker);
         $this->audit->log('Rattachement du conférencier ' . $speaker->getId() . ' à la personne ' . $personne->slug);

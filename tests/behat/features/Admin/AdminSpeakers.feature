@@ -114,3 +114,36 @@ Feature: Administration - Partie Speakers
     Then I should see "La personne geoffrey-bachelet a été fusionnée dans geoffrey-bachelet-2"
     And I should see 2 "#personne-speakers tbody tr" elements
     And the "#personne-speakers" element should contain "foo@bar.baz"
+
+  @reloadDbWithTestData
+  Scenario: Ajouter une seconde fiche à une personne dans la même édition est refusé
+    Given I am logged in as admin and on the Administration
+    And I follow "Speakers"
+    When I follow "Ajouter"
+    And I fill in "speaker[firstname]" with "Geoffrey"
+    And I fill in "speaker[lastname]" with "Bachelet"
+    And I fill in "speaker[email]" with "geoffrey@example.com"
+    And I fill in "speaker[phone_number]" with "0606060606"
+    And I fill in "speaker[biography]" with "Bio"
+    # le compte GitHub ubermuda est celui de la personne geoffrey-bachelet, qui a déjà une fiche dans l'édition
+    And I select "1" from "speaker[github_user]"
+    And I press "Sauvegarder"
+    Then I should see "Ce conférencier existe déjà pour cet événement"
+    And I should see "Modifier un conférencier pour le forum"
+    And the "#speaker-personne" element should contain "geoffrey-bachelet"
+    When I follow "Speakers"
+    Then I should see 1 ".content table tbody tr:contains('Bachelet Geoffrey')" elements
+
+  @reloadDbWithTestData
+  Scenario: Rattacher une fiche à une personne qui en a déjà une dans l'édition est refusé
+    Given I am logged in as admin and on the Administration
+    And I am on "/admin/speaker/personne?id=2"
+    When I press "Détacher" in the row of "Gallou"
+    Then I should see "Le conférencier a été détaché de la personne"
+    When I am on "/admin/speaker/edit?id=2"
+    And I fill in "personne_q" with "Bachelet"
+    And I press "Rechercher"
+    And I press "Rattacher" in the row of "geoffrey-bachelet"
+    Then I should see "Cette personne a déjà une fiche dans cette édition"
+    And I should see "Personne geoffrey-bachelet"
+    And I should see 1 "#personne-speakers tbody tr" elements
