@@ -48,12 +48,12 @@ final readonly class PhotoStorage
     }
 
     /**
-     * Copie la photo originale d'une ligne (autre édition) vers une ligne déjà enregistrée.
+     * Copie la photo originale d'une ligne (autre édition) vers une ligne déjà enregistrée (id requis).
      * Retourne le nom de fichier de la cible, ou null si la source n'a pas de photo.
      */
     public function copyFrom(Speaker $source, Speaker $target): ?string
     {
-        if ($source->photo === null || !isset($target->id)) {
+        if ($source->photo === null) {
             return null;
         }
         $sourcePath = $this->getPath($source, self::DIR_ORIGINAL);
@@ -72,9 +72,6 @@ final readonly class PhotoStorage
 
     private function removeAllFormats(Speaker $speaker): void
     {
-        if (!isset($speaker->id)) {
-            return;
-        }
         foreach (array_keys(self::FORMAT) as $format) {
             $files = glob($this->basePath . '/' . $speaker->eventId . '/' . $format . '/' . $speaker->id . '.*');
             $this->filesystem->remove($files);

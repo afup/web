@@ -39,9 +39,9 @@ class IndexAction extends AbstractController
         if ($event->getDateEndCallForPapers() < $now && $event->getDateEndVote() > $now) {
             return $this->redirectToRoute('event_index');
         }
-        $speaker = $this->speakerFactory->getSpeaker($event);
+        $speaker = $this->speakerFactory->findSpeaker($event);
         $eventTalkList = new EventTalkList($event);
-        $talks = isset($speaker->id) ? $this->talkRepository->getTalksBySpeaker($event, $speaker->id) : [];
+        $talks = $speaker !== null ? $this->talkRepository->getTalksBySpeaker($event, $speaker->id) : [];
         foreach ($talks as $talk) {
             $eventTalkList->addTalk($talk);
         }
@@ -51,7 +51,7 @@ class IndexAction extends AbstractController
         foreach ($this->eventRepository->getPreviousEvents(self::MAX_EVENTS_HISTORY) as $previousEvent) {
             $previousEventTalkLists[$previousEvent->getId()] = new EventTalkList($previousEvent);
         }
-        $previousTalks = isset($speaker->id) ? $this->talkRepository->getPreviousTalksBySpeaker($event, $speaker->id) : [];
+        $previousTalks = $speaker !== null ? $this->talkRepository->getPreviousTalksBySpeaker($event, $speaker->id) : [];
         /** @var Talk $talk */
         foreach ($previousTalks as $talk) {
             if (array_key_exists((string) $talk->getForumId(), $previousEventTalkLists)) {
@@ -66,7 +66,7 @@ class IndexAction extends AbstractController
             'eventTalkList' => $eventTalkList,
             'previousEventTalkLists' => $previousEventTalkLists,
             'speaker' => $speaker,
-            'speakerPhoto' => $this->photoStorage->getUrl($speaker),
+            'speakerPhoto' => $speaker !== null ? $this->photoStorage->getUrl($speaker) : null,
             'sidebar' => $this->sidebarRenderer->render($event),
             'talksVotes' => $this->voteRepository->getVotesByEventGroupedBySession((int) $event->getId()),
         ]);

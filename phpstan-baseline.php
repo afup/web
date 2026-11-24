@@ -4862,18 +4862,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/SpeakerPage.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Possibly invalid array key type int\\|null\\.$#',
-	'identifier' => 'offsetAccess.invalidOffset',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/SpeakerPage.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Talk\\\\ExportGenerator\\:\\:getSpeakersLocalities\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Talk\\\\ExportGenerator\\:\\:prepareLine\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -4881,12 +4869,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$array of function array_key_exists expects array, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$array of function implode expects array\\<string\\>, array given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',

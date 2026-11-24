@@ -83,7 +83,7 @@ class AddOrEditAction extends AbstractController
 
         $available = array_values(array_filter(
             $scheduledSpeakers,
-            static fn(Speaker $speaker): bool => !isset($existingInterviews[$speaker->id]) || in_array($speaker->id, $interview->getSpeakerIds(), true),
+            static fn(Speaker $speaker): bool => !array_key_exists($speaker->id, $existingInterviews) || in_array($speaker->id, $interview->getSpeakerIds(), true),
         ));
         usort($available, fn(Speaker $a, Speaker $b): int => strcmp($a->label, $b->label));
 

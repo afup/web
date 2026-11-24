@@ -41,7 +41,7 @@ final readonly class ScheduledSpeakersProvider
 
         $scheduledSpeakers = [];
         foreach ($talkIdsBySpeaker as $speakerId => $talkIds) {
-            if (!isset($speakers[$speakerId])) {
+            if (!array_key_exists($speakerId, $speakers)) {
                 continue;
             }
 

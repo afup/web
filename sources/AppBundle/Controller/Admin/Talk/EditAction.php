@@ -16,7 +16,6 @@ use AppBundle\Event\Model\Talk;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Webmozart\Assert\Assert;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_EVENT_WRITER')]
@@ -47,9 +46,10 @@ class EditAction extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $speakers = $form->get('speakers')->getData();
-            Assert::isArray($speakers);
-            Assert::allIsInstanceOf($speakers, Speaker::class);
+            $speakers = array_filter(
+                (array) $form->get('speakers')->getData(),
+                static fn(mixed $speaker): bool => $speaker instanceof Speaker,
+            );
             $this->talkRepository->save($talk);
             $this->talkToSpeakersRepository->replaceSpeakers($talk, $speakers);
 

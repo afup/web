@@ -40,12 +40,14 @@ class SpeakerAction extends AbstractController
             ]);
         }
 
-        $speaker = $this->speakerFactory->getSpeaker($event);
-        // Profil prérempli depuis la dernière édition (voir SpeakerType) : sa photo, rangée par édition,
-        // est copiée à l'enregistrement. Le nom provisoire satisfait la validation de Speaker.
+        $speaker = $this->speakerFactory->findSpeaker($event);
+        $isNewSpeaker = $speaker === null;
+        $speaker ??= $this->speakerFactory->createSpeaker($event);
         $previousSpeaker = null;
         $previousPhoto = null;
-        if (!isset($speaker->id) && $speaker->githubUserId !== null) {
+        // Nouveau profil prérempli depuis la dernière édition (voir SpeakerType) : sa photo, rangée par édition,
+        // est copiée à l'enregistrement. Le nom provisoire satisfait la validation de Speaker.
+        if ($isNewSpeaker && $speaker->githubUserId !== null) {
             $previousSpeaker = $this->speakerRepository->getFromLastEventAndUserId($speaker->eventId, $speaker->githubUserId);
             if ($previousSpeaker instanceof Speaker && $previousSpeaker->photo !== null) {
                 $previousPhoto = $this->photoStorage->getUrl($previousSpeaker, PhotoStorage::DIR_ORIGINAL);
@@ -56,6 +58,7 @@ class SpeakerAction extends AbstractController
         }
         $form = $this->createForm(SpeakerType::class, $speaker, [
             SpeakerType::OPT_PHOTO_REQUIRED => null === $speaker->photo,
+            SpeakerType::OPT_PREVIOUS_SPEAKER => $previousSpeaker,
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

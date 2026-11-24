@@ -7,7 +7,6 @@ namespace AppBundle\Event\Form;
 use AppBundle\Association\Genre;
 use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Event\Entity\Repository\GithubUserRepository;
-use AppBundle\Event\Entity\Repository\SpeakerRepository;
 use AppBundle\Event\Entity\Speaker;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
@@ -24,19 +23,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class SpeakerType extends AbstractType
 {
     public const string OPT_PHOTO_REQUIRED = 'photo_required';
     public const string OPT_USER_GITHUB = 'user_github';
+    public const string OPT_PREVIOUS_SPEAKER = 'previous_speaker';
 
-    public function __construct(
-        private readonly GithubUserRepository $githubUserRepository,
-        private readonly SpeakerRepository $speakerRepository,
-        private readonly TokenStorageInterface $tokenStorage,
-    ) {}
+    public function __construct(private readonly GithubUserRepository $githubUserRepository) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -90,33 +84,29 @@ class SpeakerType extends AbstractType
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent): void {
+        // Nouveau profil : prérempli depuis celui de la dernière édition.
+        $previousSpeaker = $options[self::OPT_PREVIOUS_SPEAKER];
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $formEvent) use ($previousSpeaker): void {
             $speaker = $formEvent->getData();
-            $user = null;
-            if (($token = $this->tokenStorage->getToken()) instanceof TokenInterface) {
-                $user = $token->getUser();
+            if (!$speaker instanceof Speaker || !$previousSpeaker instanceof Speaker) {
+                return;
             }
 
-            if ($user instanceof GithubUser && $speaker instanceof Speaker && !isset($speaker->id) && $user->getId() !== null) {
-                $previousSpeakerInfos = $this->speakerRepository->getFromLastEventAndUserId($speaker->eventId, $user->getId());
-                if ($previousSpeakerInfos instanceof Speaker) {
-                    $speaker->genre = $previousSpeakerInfos->genre;
-                    $speaker->firstname = $previousSpeakerInfos->firstname;
-                    $speaker->lastname = $previousSpeakerInfos->lastname;
-                    $speaker->email = $previousSpeakerInfos->email;
-                    $speaker->company = $previousSpeakerInfos->company;
-                    $speaker->locality = $previousSpeakerInfos->locality;
-                    $speaker->phoneNumber = $previousSpeakerInfos->phoneNumber;
-                    $speaker->biography = $previousSpeakerInfos->biography;
-                    $speaker->twitter = $previousSpeakerInfos->twitter;
-                    $speaker->mastodon = $previousSpeakerInfos->mastodon;
-                    $speaker->linkedin = $previousSpeakerInfos->linkedin;
-                    $speaker->bluesky = $previousSpeakerInfos->bluesky;
-                    // La photo n'est pas reprise ici : son fichier est rangé par édition, SpeakerAction le copie à l'enregistrement.
+            $speaker->genre = $previousSpeaker->genre;
+            $speaker->firstname = $previousSpeaker->firstname;
+            $speaker->lastname = $previousSpeaker->lastname;
+            $speaker->email = $previousSpeaker->email;
+            $speaker->company = $previousSpeaker->company;
+            $speaker->locality = $previousSpeaker->locality;
+            $speaker->phoneNumber = $previousSpeaker->phoneNumber;
+            $speaker->biography = $previousSpeaker->biography;
+            $speaker->twitter = $previousSpeaker->twitter;
+            $speaker->mastodon = $previousSpeaker->mastodon;
+            $speaker->linkedin = $previousSpeaker->linkedin;
+            $speaker->bluesky = $previousSpeaker->bluesky;
+            // La photo n'est pas reprise ici : son fichier est rangé par édition, SpeakerAction le copie à l'enregistrement.
 
-                    $formEvent->getForm()->add('isFromPreviousEvent', HiddenType::class, ['mapped' => false]);
-                }
-            }
+            $formEvent->getForm()->add('isFromPreviousEvent', HiddenType::class, ['mapped' => false]);
         });
     }
 
@@ -126,7 +116,9 @@ class SpeakerType extends AbstractType
             ->setDefaults([
                 self::OPT_PHOTO_REQUIRED => true,
                 self::OPT_USER_GITHUB => false,
+                self::OPT_PREVIOUS_SPEAKER => null,
             ])
+            ->setAllowedTypes(self::OPT_PREVIOUS_SPEAKER, ['null', Speaker::class])
         ;
     }
 }

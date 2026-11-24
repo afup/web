@@ -54,8 +54,8 @@ class EditAction extends AbstractController
         if (!$event->isCfpOpen()) {
             return $this->render('event/cfp/closed.html.twig', ['event' => $event]);
         }
-        $speaker = $this->speakerFactory->getSpeaker($event);
-        if (!isset($speaker->id)) {
+        $speaker = $this->speakerFactory->findSpeaker($event);
+        if ($speaker === null) {
             $this->addFlash('error', $this->translator->trans('Vous devez remplir votre profil conférencier afin de pouvoir soumettre un sujet.'));
 
             return $this->redirectToRoute('cfp_speaker', [

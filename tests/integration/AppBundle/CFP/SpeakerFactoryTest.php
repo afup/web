@@ -32,18 +32,24 @@ final class SpeakerFactoryTest extends IntegrationTestCase
     {
         $this->insertSpeaker(20, 2, null, 1);
 
-        $speaker = self::getContainer()->get(SpeakerFactory::class)->getSpeaker($this->event(2));
+        $speaker = self::getContainer()->get(SpeakerFactory::class)->findSpeaker($this->event(2));
 
+        self::assertNotNull($speaker);
         self::assertSame(20, $speaker->id);
         self::assertSame(7, (int) $this->connection->fetchOne('SELECT user_github FROM afup_conferenciers WHERE conferencier_id = 20'), 'le compte GitHub est rattaché à la ligne admin');
         self::assertSame(2, (int) $this->connection->fetchOne('SELECT COUNT(*) FROM afup_conferenciers'), 'aucune ligne créée');
     }
 
+    public function testFindsNoRowWhenTheGithubAccountHasNoneForTheEvent(): void
+    {
+        self::assertNull(self::getContainer()->get(SpeakerFactory::class)->findSpeaker($this->event(2)));
+    }
+
     public function testCreatesANewRowLinkedToThePersonneOfTheGithubAccount(): void
     {
-        $speaker = self::getContainer()->get(SpeakerFactory::class)->getSpeaker($this->event(2));
+        $speaker = self::getContainer()->get(SpeakerFactory::class)->createSpeaker($this->event(2));
 
-        self::assertFalse(isset($speaker->id));
+        self::assertSame(2, $speaker->eventId);
         self::assertSame(7, $speaker->githubUserId);
         self::assertSame(1, $speaker->personneId);
     }
@@ -53,7 +59,7 @@ final class SpeakerFactoryTest extends IntegrationTestCase
         $this->insertSpeaker(21, 2, 7, null);
         $this->insertSpeaker(20, 2, null, 1);
 
-        self::assertSame(21, self::getContainer()->get(SpeakerFactory::class)->getSpeaker($this->event(2))->id);
+        self::assertSame(21, self::getContainer()->get(SpeakerFactory::class)->findSpeaker($this->event(2))?->id);
     }
 
     private function logInAsGithubUser(int $id): void

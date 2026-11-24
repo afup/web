@@ -171,7 +171,7 @@ class ExportGenerator
     }
 
     /**
-     * @param array|Speaker[] $speakers
+     * @param list<Speaker> $speakers
      */
     private function prepareSpeakersLocalities(array $speakers): string
     {
@@ -179,7 +179,9 @@ class ExportGenerator
     }
 
     /**
-     * @param array|Speaker[] $speakers
+     * @param list<Speaker> $speakers
+     *
+     * @return list<string>
      */
     private function getSpeakersLocalities(array $speakers): array
     {

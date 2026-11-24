@@ -60,9 +60,7 @@ final class ShowAction extends AbstractController
             if (null === $identity) {
                 continue;
             }
-            if (null !== $speaker->id) {
-                $speakerSlugs[$speaker->id] = $identity->slug;
-            }
+            $speakerSlugs[$speaker->id] = $identity->slug;
             $speakersTalks[$identity->slug] ??= [
                 'identity' => $identity,
                 'talks' => array_map(

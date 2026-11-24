@@ -8,7 +8,6 @@ use AppBundle\Doctrine\EntityRepository;
 use AppBundle\Event\Entity\Speaker;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\Persistence\ManagerRegistry;
-use Webmozart\Assert\Assert;
 
 /**
  * @extends EntityRepository<Speaker>
@@ -138,7 +137,7 @@ class SpeakerRepository extends EntityRepository
 
         $speakers = [];
         foreach ($ids as $id) {
-            if (isset($found[$id])) {
+            if (array_key_exists($id, $found)) {
                 $speakers[$id] = $found[$id];
             }
         }
@@ -217,8 +216,13 @@ class SpeakerRepository extends EntityRepository
      */
     public function searchSpeakers(int $eventId, string $sort = 'name', string $direction = 'asc', ?string $filter = null): array
     {
-        Assert::keyExists(self::SORTS, $sort);
-        Assert::inArray($direction, ['asc', 'desc']);
+        if (!array_key_exists($sort, self::SORTS)) {
+            throw new \InvalidArgumentException(sprintf('Tri "%s" inconnu', $sort));
+        }
+
+        if (!in_array($direction, ['asc', 'desc'], true)) {
+            throw new \InvalidArgumentException(sprintf('Direction de tri "%s" inconnue', $direction));
+        }
 
         $queryBuilder = $this->createQueryBuilder('s')
             ->where('s.eventId = :eventId')
@@ -254,7 +258,9 @@ class SpeakerRepository extends EntityRepository
 
     private static function toInt(mixed $value): int
     {
-        Assert::integerish($value);
+        if (!is_numeric($value)) {
+            throw new \UnexpectedValueException('Le comptage doit renvoyer une valeur numérique');
+        }
 
         return (int) $value;
     }

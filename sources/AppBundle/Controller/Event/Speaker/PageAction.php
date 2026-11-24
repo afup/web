@@ -9,6 +9,7 @@ use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Speaker\SpeakerPage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final readonly class PageAction
 {
@@ -21,7 +22,8 @@ final readonly class PageAction
     public function __invoke(Request $request): Response
     {
         $event = $this->eventActionHelper->getEvent($request->attributes->get('eventSlug'));
-        $speaker = $this->speakerFactory->getSpeaker($event);
+        $speaker = $this->speakerFactory->findSpeaker($event)
+            ?? throw new NotFoundHttpException('Aucun profil conférencier pour cet événement');
 
         return $this->speakerPage->handleRequest($request, $event, $speaker);
     }

@@ -38,9 +38,9 @@ class InviteAction extends AbstractController
             throw $this->createNotFoundException('Invitation or talk not found');
         }
 
-        $speaker = $this->speakerFactory->getSpeaker($event);
+        $speaker = $this->speakerFactory->findSpeaker($event);
 
-        if (!isset($speaker->id)) {
+        if ($speaker === null) {
             $this->addFlash('error', $this->translator->trans('Vous devez remplir votre profil conférencier afin de pouvoir accepter une invitation.'));
             $this->addFlash('pendingInvitation', ['talkId' => $talkId, 'token' => $token, 'eventSlug' => $event->getPath()]);
 
