@@ -4,87 +4,80 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Talk;
 
-use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Speaker;
-use AppBundle\Event\Model\Talk;
+use AppBundle\Event\Speaker\SpeakerIdentity;
 
 /**
- * Liens vers d'autres talks affichés sur la page d'un talk.
+ * Liens vers d'autres talks affichés sur la page d'un talk : ses voisins dans le planning de l'édition,
+ * puis quelques talks de l'édition et de chacun de ses speakers.
+ *
+ * Chaque section est courte et renvoie à la page complète (édition, speaker) ;
+ * un même talk n'est lié qu'une fois sur la page.
  */
 final readonly class RelatedTalks
 {
-    public const int SAME_EVENT_LIMIT = 6;
+    public const int LIMIT = 3;
 
     /**
-     * @param list<Talk> $sameEvent
-     * @param list<array{speaker: Speaker, talks: list<array{talk: Talk, event: Event}>}> $bySpeaker
+     * @param list<PublishedTalk> $sameEvent
+     * @param list<array{identity: SpeakerIdentity, talks: list<array{talk: PublishedTalk, event: PublishedEvent}>}> $bySpeaker
      */
     public function __construct(
-        public ?Talk $previous,
-        public ?Talk $next,
+        public ?PublishedTalk $previous,
+        public ?PublishedTalk $next,
         public array $sameEvent,
         public array $bySpeaker,
     ) {}
 
     /**
-     * @param list<Talk> $eventTalks talks publiés de l'édition, dans l'ordre du planning
-     * @param list<Speaker> $speakers speakers du talk
-     * @param list<array{talk: Talk, event: Event, speakers: list<Speaker>}> $speakersTalks talks publiés des speakers, du plus récent au plus ancien
+     * @param list<EventTalk> $eventTalks talks publiés de l'édition, dans l'ordre du planning
+     * @param list<array{identity: SpeakerIdentity, talks: list<array{talk: PublishedTalk, event: PublishedEvent}>}> $speakersTalks talks publiés de chaque speaker, du plus récent au plus ancien
      */
-    public static function build(Talk $talk, array $eventTalks, array $speakers, array $speakersTalks): self
+    public static function build(int $talkId, array $eventTalks, array $speakersTalks): self
     {
-        $position = array_find_key($eventTalks, fn(Talk $eventTalk): bool => $eventTalk->getId() === $talk->getId());
+        $talks = array_map(static fn(EventTalk $eventTalk): PublishedTalk => $eventTalk->talk, $eventTalks);
+        $position = array_find_key($talks, static fn(PublishedTalk $talk): bool => $talk->id === $talkId);
 
         if ($position === null) {
             $previous = $next = null;
-            $others = $eventTalks;
+            $others = $talks;
         } else {
-            $previous = $eventTalks[$position - 1] ?? null;
-            $next = $eventTalks[$position + 1] ?? null;
-            // On part du talk suivant et on boucle sur le début du planning : chaque talk
+            $previous = $talks[$position - 1] ?? null;
+            $next = $talks[$position + 1] ?? null;
+            // On part du talk qui suit le suivant et on boucle sur le début du planning : chaque talk
             // de l'édition reçoit ainsi des liens, pas seulement les premiers du planning.
-            $others = [...array_slice($eventTalks, $position + 1), ...array_slice($eventTalks, 0, $position)];
+            $others = [...array_slice($talks, $position + 2), ...array_slice($talks, 0, max(0, $position - 1))];
         }
 
         // Tri stable : les vidéos d'abord, l'ordre du planning ensuite.
-        usort($others, fn(Talk $a, Talk $b): int => $b->hasYoutubeId() <=> $a->hasYoutubeId());
+        usort($others, static fn(PublishedTalk $a, PublishedTalk $b): int => $b->hasYoutubeId() <=> $a->hasYoutubeId());
+        $sameEvent = array_slice($others, 0, self::LIMIT);
+
+        $linked = [$talkId => true];
+        foreach ([$previous, $next, ...$sameEvent] as $talk) {
+            if (null !== $talk) {
+                $linked[$talk->id] = true;
+            }
+        }
 
         $bySpeaker = [];
-        foreach ($speakers as $speaker) {
-            $talks = [];
-            foreach ($speakersTalks as $speakerTalk) {
-                foreach ($speakerTalk['speakers'] as $candidate) {
-                    if (self::isSamePerson($speaker, $candidate)) {
-                        $talks[] = ['talk' => $speakerTalk['talk'], 'event' => $speakerTalk['event']];
-                        break;
-                    }
+        foreach ($speakersTalks as $speakerTalks) {
+            $selected = [];
+            foreach ($speakerTalks['talks'] as $candidate) {
+                if (count($selected) === self::LIMIT) {
+                    break;
                 }
+                if (isset($linked[$candidate['talk']->id])) {
+                    continue;
+                }
+                $linked[$candidate['talk']->id] = true;
+                $selected[] = $candidate;
             }
 
-            if ($talks !== []) {
-                $bySpeaker[] = ['speaker' => $speaker, 'talks' => $talks];
+            if ($selected !== []) {
+                $bySpeaker[] = ['identity' => $speakerTalks['identity'], 'talks' => $selected];
             }
         }
 
-        return new self($previous, $next, array_slice($others, 0, self::SAME_EVENT_LIMIT), $bySpeaker);
-    }
-
-    /**
-     * Même règle que RelatedTalkRepository::getPublishedBySpeakers() : même compte GitHub,
-     * ou même prénom et même nom.
-     */
-    private static function isSamePerson(Speaker $speaker, Speaker $candidate): bool
-    {
-        if ($speaker->getUser() && $speaker->getUser() === $candidate->getUser()) {
-            return true;
-        }
-
-        return self::normalize($speaker->getFirstname()) === self::normalize($candidate->getFirstname())
-            && self::normalize($speaker->getLastname()) === self::normalize($candidate->getLastname());
-    }
-
-    private static function normalize(?string $name): string
-    {
-        return mb_strtolower(trim((string) $name));
+        return new self($previous, $next, $sameEvent, $bySpeaker);
     }
 }

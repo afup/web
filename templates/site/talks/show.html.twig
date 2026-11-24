@@ -305,21 +305,9 @@
             {% if related_talks.sameEvent|length %}
                 <section class="flex flex-col gap-4">
                     <twig:SectionTitle>Aussi au {{ event.title }}</twig:SectionTitle>
-                    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <ul class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                         {% for related in related_talks.sameEvent %}
-                            <li>
-                                <a href="{{ path('talks_show', {id: related.id, slug: related.slug}) }}" class="group flex flex-col gap-2">
-                                    {% if related.hasYoutubeId %}
-                                        <img src="https://img.youtube.com/vi/{{ related.youtubeId }}/mqdefault.jpg" alt="" loading="lazy"
-                                             class="w-full aspect-video rounded-xl object-cover bg-neutre-200" />
-                                    {% else %}
-                                        <span class="w-full aspect-video rounded-xl bg-afup-100 flex items-center justify-center text-afup-300">
-                                            <twig:ux:icon name="mingcute:presentation-1-fill" class="size-10" />
-                                        </span>
-                                    {% endif %}
-                                    <span class="font-semibold text-afup-800 group-hover:text-afup-500">{{ related.title }}</span>
-                                </a>
-                            </li>
+                            <li>{% include 'site/talks/_related_talk.html.twig' with {talk: related} only %}</li>
                         {% endfor %}
                     </ul>
                     <a href="{{ event_url }}" class="self-start text-sm text-afup-500 underline hover:no-underline">Tous les talks du {{ event.title }}</a>
@@ -328,16 +316,13 @@
 
             {% for speaker_talks in related_talks.bySpeaker %}
                 <section class="flex flex-col gap-4">
-                    <twig:SectionTitle>Autres talks de {{ speaker_talks.speaker.label }}</twig:SectionTitle>
-                    <ul class="flex flex-col gap-2">
+                    <twig:SectionTitle>Autres talks de {{ speaker_talks.identity.label }}</twig:SectionTitle>
+                    <ul class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                         {% for related in speaker_talks.talks %}
-                            <li class="flex flex-wrap items-baseline gap-x-2">
-                                <a href="{{ path('talks_show', {id: related.talk.id, slug: related.talk.slug}) }}"
-                                   class="font-semibold text-afup-800 hover:text-afup-500">{{ related.talk.title }}</a>
-                                <span class="text-sm text-neutre-400">{{ related.event.title }}</span>
-                            </li>
+                            <li>{% include 'site/talks/_related_talk.html.twig' with {talk: related.talk, subtitle: related.event.title} only %}</li>
                         {% endfor %}
                     </ul>
+                    <a href="{{ path('talks_speaker', {slug: speaker_talks.identity.slug}) }}" class="self-start text-sm text-afup-500 underline hover:no-underline">Tous les talks de {{ speaker_talks.identity.label }}</a>
                 </section>
             {% endfor %}
         </div>

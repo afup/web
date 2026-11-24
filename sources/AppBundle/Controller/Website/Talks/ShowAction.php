@@ -12,7 +12,6 @@ use AppBundle\Event\Talk\PublishedTalkRepository;
 use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Event\Talk\VideoObjectJsonLd;
-use AppBundle\Event\Talk\RelatedTalkRepository;
 use AppBundle\Event\Talk\RelatedTalks;
 use AppBundle\Joindin\JoindinComments;
 use AppBundle\Subtitles\Parser;
@@ -33,7 +32,6 @@ final class ShowAction extends AbstractController
         private readonly VideoObjectJsonLd $videoObjectJsonLd,
         private readonly PublishedTalkRepository $publishedTalkRepository,
         private readonly SpeakerProfileResolver $speakerProfileResolver,
-        private readonly RelatedTalkRepository $relatedTalkRepository,
     ) {}
 
     public function __invoke(int $id, string $slug): Response
@@ -56,22 +54,33 @@ final class ShowAction extends AbstractController
         $speakers = iterator_to_array($this->speakerRepository->getSpeakersByTalk($talk), false);
         // Slug de la page de chaque speaker, par ID de ligne speaker : un seul index, chargé une fois pour tous.
         $speakerSlugs = [];
+        // Les autres talks de chaque personne, une fois par personne même si elle a deux lignes speaker sur ce talk.
+        $speakersTalks = [];
         /** @var Speaker $speaker */
         foreach ($speakers as $speaker) {
             $identity = $this->speakerProfileResolver->getIdentityForSpeaker($speaker);
-            if (null !== $identity && null !== $speaker->getId()) {
+            if (null === $identity) {
+                continue;
+            }
+            if (null !== $speaker->getId()) {
                 $speakerSlugs[$speaker->getId()] = $identity->slug;
             }
+            $speakersTalks[$identity->slug] ??= [
+                'identity' => $identity,
+                'talks' => array_map(
+                    static fn(array $row): array => ['talk' => $row['talk'], 'event' => $row['event']],
+                    $this->publishedTalkRepository->getSpeakerTalks($identity->speakerIds),
+                ),
+            ];
         }
         $event = $this->eventRepository->get($planning->eventId);
         if ($event === null) {
             throw $this->createNotFoundException();
         }
         $relatedTalks = RelatedTalks::build(
-            $talk,
-            $this->relatedTalkRepository->getPublishedByEventInPlanningOrder($event),
-            $speakers,
-            $this->relatedTalkRepository->getPublishedBySpeakers($speakers, $talk),
+            $id,
+            $this->publishedTalkRepository->getEventTalks((int) $event->getId()),
+            array_values($speakersTalks),
         );
         $comments = $this->joindinComments->getCommentsFromTalk($talk);
 

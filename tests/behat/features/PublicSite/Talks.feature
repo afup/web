@@ -343,17 +343,26 @@ Feature: Site Public - Talks
   @reloadDbWithTestData
   Scenario: Liens vers les autres talks depuis la page d'un talk
     When I go to "/talks/6-revolutionons-php"
-    Then the page should contain at least 8 links to other talks
+    Then the page should contain at least 7 links to other talks
     And I should see "Keynote d'ouverture" in the "a[rel=prev]" element
     And I should see "Tester sans se ruiner" in the "a[rel=next]" element
+    # 3 talks de l'édition, hors voisins, les vidéos d'abord, puis le lien vers la page de l'édition
     And I should see "Aussi au Un évènement du passé"
-    And I should see "Observabilité avec OpenTelemetry"
-    And I should see "Le typage statique en pratique"
-    And I should see "Clôture : le futur de PHP"
-    And I should see "Migrer une application legacy"
+    And the texts of "section:has(a[href='https://apachephptest:80/talks/evenements/passed']) li" should be, in this order:
+      """
+      Observabilité avec OpenTelemetry
+      Clôture : le futur de PHP
+      Migrer une application legacy
+      """
+    And I should not see "Le typage statique en pratique"
+    # Les autres talks de la personne, du plus récent au plus ancien, puis le lien vers sa page
     And I should see "Autres talks de Geoffrey BACHELET"
-    And I should see "Jouons tous ensemble à un petit jeu"
-    And I should see "REST ou GraphQL ? Exemples illustrés avec Symfony et API Platform"
+    And the texts of "section:has(a[href='/talks/speakers/geoffrey-bachelet']) li" should be, in this order:
+      """
+      REST ou GraphQL ? Exemples illustrés avec Symfony et API Platform forum
+      Jouons tous ensemble à un petit jeu forum
+      """
+    And I should see "Tous les talks de Geoffrey BACHELET"
     And I should not see "Un talk pas encore publié"
 
   @reloadDbWithTestData
