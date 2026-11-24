@@ -8,6 +8,7 @@ use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
+use AppBundle\Event\Talk\PublishedTalkRepository;
 use AppBundle\Event\Talk\VideoObjectJsonLd;
 use AppBundle\Joindin\JoindinComments;
 use AppBundle\Subtitles\Parser;
@@ -26,13 +27,14 @@ final class ShowAction extends AbstractController
         private readonly PlanningRepository $planningRepository,
         private readonly EventRepository $eventRepository,
         private readonly VideoObjectJsonLd $videoObjectJsonLd,
+        private readonly PublishedTalkRepository $publishedTalkRepository,
     ) {}
 
     public function __invoke(int $id, string $slug): Response
     {
         $talk = $this->talkRepository->get($id);
 
-        if (null === $talk || !$talk->isDisplayedOnHistory()) {
+        if (null === $talk || !$this->publishedTalkRepository->isPublished($id)) {
             throw $this->createNotFoundException();
         }
 

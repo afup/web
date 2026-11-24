@@ -10,11 +10,11 @@ use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
 /**
- * Les talks publiés tels que les montrent les pages publiques (speakers, événements, hub), lus en DBAL.
+ * Les talks publiés tels que les montrent toutes les pages publiques (talk, speakers, événements, hub), l'index
+ * Algolia et le sitemap, lus en DBAL.
  *
- * Un talk est publié s'il est planifié, n'est ni une clinique ni une présentation des speakers (l'équivalent
- * SQL de Talk::isDisplayedOnHistory(), le filtre de la page du talk), si son créneau est terminé et si sa date
- * de publication est vide ou passée.
+ * Un talk est publié s'il est planifié, n'est ni une clinique ni une présentation des speakers, si son créneau
+ * est terminé et si sa date de publication est vide ou passée : afup.org ne montre que les talks passés.
  */
 readonly class PublishedTalkRepository
 {
@@ -34,6 +34,29 @@ readonly class PublishedTalkRepository
         event.id AS event_id, event.titre AS event_titre, event.path AS event_path, event.date_debut AS event_date_debut, event.date_fin AS event_date_fin';
 
     public function __construct(private Connection $connection) {}
+
+    /**
+     * @return list<int>
+     */
+    public function getIds(): array
+    {
+        return array_map(self::toInt(...), $this->connection->fetchFirstColumn(
+            'SELECT talk.session_id FROM afup_sessions talk'
+            . self::PLANNING_JOIN . '
+            WHERE ' . self::CONDITIONS . '
+            ORDER BY talk.session_id',
+        ));
+    }
+
+    public function isPublished(int $talkId): bool
+    {
+        return false !== $this->connection->fetchOne(
+            'SELECT 1 FROM afup_sessions talk'
+            . self::PLANNING_JOIN . '
+            WHERE talk.session_id = :talkId AND ' . self::CONDITIONS,
+            ['talkId' => $talkId],
+        );
+    }
 
     /**
      * Les lignes speaker rattachées à une personne qui ont un talk publié, toutes éditions confondues,

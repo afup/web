@@ -48,6 +48,19 @@ final class PublishedTalkRepositoryTest extends IntegrationTestCase
         $this->insertTalk(400, 1, 40, 'Talk publié sans personne', Talk::TYPE_FULL_LONG, $past);
     }
 
+    public function testPublishedTalksExcludeUnscheduledUpcomingAndUnpublishedTalks(): void
+    {
+        $repository = new PublishedTalkRepository($this->connection);
+
+        // Exclus : clinique (201), présentation des speakers (202), non planifié (203), publication à venir (204),
+        // créneau en cours (205), sans créneau (206), à venir (300).
+        self::assertSame([100, 200, 400], $repository->getIds());
+        self::assertTrue($repository->isPublished(100));
+        self::assertFalse($repository->isPublished(204));
+        self::assertFalse($repository->isPublished(205));
+        self::assertFalse($repository->isPublished(999));
+    }
+
     public function testSpeakerAppearancesOnlyReturnPublishedTalksOfLinkedSpeakers(): void
     {
         $appearances = new PublishedTalkRepository($this->connection)->getSpeakerAppearances();
