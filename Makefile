@@ -48,7 +48,7 @@ help:
 
 ##@ Setup
 
-### Installer les dépendences (composer, npm)
+### Installer les dépendences (composer)
 install:
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephp make docker\:vendors
 
@@ -195,13 +195,10 @@ var/logs/.docker-build: compose.yml compose.override.yml $(shell find docker -ty
 compose.override.yml:
 	cp compose.override.yml-dist compose.override.yml
 
-docker\:vendors: docker\:vendor node_modules
+docker\:vendors: docker\:vendor
 
 docker\:vendor: composer.lock
 	composer install --no-scripts
-
-node_modules:
-	npm install --legacy-peer-deps
 
 init-db:
 	make reset-db
