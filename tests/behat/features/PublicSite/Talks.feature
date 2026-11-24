@@ -6,20 +6,21 @@ Feature: Site Public - Talks
     When I follow "Talks"
     Then I should see "Historique des conférences de l'AFUP"
     And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/\" />"
+    And the response should not contain "<meta name=\"robots\""
     When I go to "/talks/?p=1"
-    And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/\" />"
+    Then the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/\" />"
+    And the response should contain "<meta name=\"robots\" content=\"noindex, follow\">"
     When I go to "/talks/?q=&hPP=7&idx=afup_talks&p=-1"
-    And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/\" />"
+    Then the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/\" />"
+    And the response should not contain "<meta name=\"robots\""
 
   @reloadDbWithTestData
   Scenario: Accès à la liste des vidéos d'un évènement en particulier
-    When I go to "/talks/?fR[event.title][0]=AFUP Day 2019 Lyon"
-    Then I should see "AFUP Day 2019 Lyon les vidéos"
-    And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/?fR%5Bevent.title%5D%5B0%5D=AFUP%20Day%202019%20Lyon\" />"
-    When I go to "/talks/?q=&hPP=7&idx=afup_talks&p=0&fR[event.title][0]=AFUP Day 2019 Lyon"
-    Then I should see "AFUP Day 2019 Lyon les vidéos"
-    And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/?fR%5Bevent.title%5D%5B0%5D=AFUP%20Day%202019%20Lyon\" />"
-
+    When I go to "/talks/?q=&hPP=7&idx=afup_talks&p=0&fR[event.title][0]=forum"
+    Then the response status code should be 200
+    And I should see "forum les vidéos"
+    And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/\" />"
+    And the response should contain "<meta name=\"robots\" content=\"noindex, follow\">"
 
   @reloadDbWithTestData
   Scenario: Affichage des posts Bluesky sur la page d'un talk
@@ -29,12 +30,28 @@ Feature: Site Public - Talks
 
   @reloadDbWithTestData
   Scenario: Accès à la liste des vidéos d'un speaker
-    When I go to "/talks/?fR[speakers.label][0]=Un Speaker"
-    Then I should see "Les vidéos de Un Speaker"
-    And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/?fR%5Bspeakers.label%5D%5B0%5D=Un%20Speaker\" />"
-    When I go to "/talks/?q=&hPP=7&idx=afup_talks&p=0&fR[event.title][0]=AFUP Day 2019 Lyon&fR[speakers.label][0]=Un Speaker"
-    Then I should see "Les vidéos de Un Speaker"
-    And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/?fR%5Bspeakers.label%5D%5B0%5D=Un%20Speaker\" />"
+    When I go to "/talks/?q=&hPP=7&idx=afup_talks&p=0&fR[speakers.label][0]=Geoffrey BACHELET"
+    Then the response status code should be 200
+    And I should see "Les vidéos de Geoffrey BACHELET"
+    And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/\" />"
+    And the response should contain "<meta name=\"robots\" content=\"noindex, follow\">"
+
+  @reloadDbWithTestData
+  Scenario Outline: Une recherche ou un filtre de la liste des vidéos n'est pas indexé
+    When I go to "<url>"
+    Then the response status code should be 200
+    And the response should contain "<meta name=\"robots\" content=\"noindex, follow\">"
+    And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/\" />"
+
+    Examples:
+      | url                                                                      |
+      | /talks/?q=symfony                                                        |
+      | /talks/?dFR[type.label][0]=Conférence                                    |
+      | /talks/?nR[event.start_date][>=][0]=0                                    |
+      | /talks/?fR[has_video][0]=true                                            |
+      | /talks/?fR[event.title][0]=forum&fR[speakers.label][0]=Geoffrey BACHELET |
+      | /talks/?fR[speakers.label][0]=Un Speaker                                 |
+      | /talks/?fR[event.title][0]=AFUP Day Lyon                                 |
 
   @reloadDbWithTestData
   Scenario: Un talk avec le bon slug répond 200

@@ -44,20 +44,14 @@ final class ListAction extends AbstractController
         }
 
         $title = 'Historique des conférences de l\'AFUP';
-        $canonical = $this->generateUrl('talks_list', referenceType: UrlGeneratorInterface::ABSOLUTE_URL);
         if (isset($request->query->all('fR')['speakers.label'][0])) {
-            $label = $request->query->all('fR')['speakers.label'][0];
-            $title = 'Les vidéos de ' . $label;
-            $canonical = $this->generateUrl('talks_list', [
-                'fR' => ['speakers.label' => [$label]],
-            ], UrlGeneratorInterface::ABSOLUTE_URL);
+            $title = 'Les vidéos de ' . $request->query->all('fR')['speakers.label'][0];
         } elseif (isset($request->query->all('fR')['event.title'][0])) {
-            $label = $request->query->all('fR')['event.title'][0];
             $title = $request->query->all('fR')['event.title'][0] . ' les vidéos';
-            $canonical = $this->generateUrl('talks_list', [
-                'fR' => ['event.title' => [$label]],
-            ], UrlGeneratorInterface::ABSOLUTE_URL);
         }
+        // Une recherche n'est pas une page à indexer (noindex dans le template) : la canonical est toujours le hub.
+        // Une facette simple d'une personne ou d'une édition a déjà été redirigée vers sa page.
+        $canonical = $this->generateUrl('talks_list', referenceType: UrlGeneratorInterface::ABSOLUTE_URL);
 
         // Le hub (dernières vidéos, éditions, speakers) ne s'affiche que hors recherche : sur une URL de recherche,
         // il repousserait les résultats sous la ligne de flottaison, et ces URLs ne sont pas destinées à être indexées.
