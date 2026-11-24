@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Twig;
 
+use AppBundle\Text\Truncator;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -15,8 +16,6 @@ use Twig\TwigFilter;
 final class MetaDescriptionExtension extends AbstractExtension
 {
     public const int MAX_LENGTH = 155;
-
-    private const string ELLIPSIS = '…';
 
     #[\Override]
     public function getFilters(): array
@@ -35,18 +34,6 @@ final class MetaDescriptionExtension extends AbstractExtension
         $text = html_entity_decode(strip_tags((string) $content), ENT_QUOTES | ENT_HTML5, 'UTF-8');
         $text = trim((string) preg_replace('/\s+/u', ' ', $text));
 
-        if (mb_strlen($text) <= $maxLength) {
-            return $text;
-        }
-
-        $truncated = mb_substr($text, 0, $maxLength - mb_strlen(self::ELLIPSIS) + 1);
-        $lastSpace = mb_strrpos($truncated, ' ');
-        if ($lastSpace !== false) {
-            $truncated = mb_substr($truncated, 0, $lastSpace);
-        } else {
-            $truncated = mb_substr($truncated, 0, -1);
-        }
-
-        return rtrim($truncated, ' ,;:.-–—') . self::ELLIPSIS;
+        return Truncator::truncate($text, $maxLength);
     }
 }
