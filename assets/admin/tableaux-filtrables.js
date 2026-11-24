@@ -1,14 +1,16 @@
-var TableFilter = require('tablefilter');
+// Script classique (defer) : TableFilter est exposé par assets/tablefilter/tablefilter.js.
+// Les URL des CSS, versionnées par AssetMapper, sont passées par les attributs data du <script>.
+var tableFilterStyles = document.currentScript.dataset;
 
 $('table.afup-tab-filterable').each(function() {
 
     var tfConfig = {
         auto_filter: false,
-        base_path: '/js_dist/tablefilter/',
         filters_row_index: 1,
         headers_row_index: 0,
         themes: [{
-            name: 'transparent'
+            name: 'transparent',
+            path: tableFilterStyles.theme
         }],
         alternate_rows: false,
         clear_filter_text: "- Filtre -",
@@ -50,6 +52,11 @@ $('table.afup-tab-filterable').each(function() {
         colNumber++;
     });
 
-    var tf = new TableFilter(this, tfConfig);
+    var tf = new window.TableFilter(this, tfConfig);
+    // TableFilter 0.7.2 ignore l'option `stylesheet` (getStylesheetPath() lit this.config,
+    // qui est une méthode) : on surcharge le getter pour charger la feuille versionnée.
+    tf.getStylesheetPath = function () {
+        return tableFilterStyles.stylesheet;
+    };
     tf.init();
 });

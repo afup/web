@@ -177,7 +177,11 @@
 
                 <script type="text/javascript" src="/javascript/dropzone/dropzone.min.js"></script>
 
-            <script src="/js_dist/admin.js"></script>
+            <script src="{{ asset('tablefilter/tablefilter.js') }}" defer></script>
+            <script src="{{ asset('admin/tableaux-filtrables.js') }}"
+                    data-stylesheet="{{ asset('tablefilter/style/tablefilter.css') }}"
+                    data-theme="{{ asset('tablefilter/style/themes/transparent/transparent.css') }}"
+                    defer></script>
 
 
 
