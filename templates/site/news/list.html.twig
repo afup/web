@@ -24,7 +24,7 @@
                     {{ article.datePublication|format_date('long') }}
                 </time>
 
-                <p class="text-gray-700 mt-2">{{ article.resume|raw }}</p>
+                <p class="text-gray-700 mt-2">{{ article|news_resume }}</p>
 
                 <a href="{{ path('news_display', { code: article.slug}) }}"
                    title="Lire l'article: {{ article.titre }}"

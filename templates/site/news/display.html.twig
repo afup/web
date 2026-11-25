@@ -3,12 +3,12 @@
 {% block metas %}
     <meta name="twitter:card" content="{{ image_url ? 'summary_large_image' : 'summary' }}">
     <meta name="twitter:title" content="AFUP - {{ article.titre }}">
-    <meta name="twitter:description" content="{{ article.resumeTexte }}">
+    <meta name="twitter:description" content="{{ article|news_resume }}">
     <meta name="twitter:domain" content="afup.org">
     <meta property="og:type" content="article" />
     <meta property="og:title" content="AFUP - {{ article.titre }}" />
     <meta property="og:url" content="{{ url('news_display', {code: article.slug }) }}" />
-    <meta property="og:description" content="{{ article.resumeTexte }}" />
+    <meta property="og:description" content="{{ article|news_resume }}" />
     <meta property="og:site_name" content="AFUP" />
     {% if image_url %}
         <meta name="twitter:image" content="{{ absolute_url(asset(image_url)) }}" />
