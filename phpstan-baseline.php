@@ -3662,18 +3662,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/NewsletterController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Binary operation "\\-" between mixed and 3 results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/PagerController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "/" between mixed and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/PagerController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,

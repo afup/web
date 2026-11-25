@@ -6,10 +6,12 @@ namespace AppBundle\Subscriber;
 
 use Afup\Site\Corporate\Feuille;
 use AppBundle\Association\Entity\Repository\CompanyMemberRepository;
+use AppBundle\Controller\Website\News\ListAction;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Talk\PublishedTalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
+use AppBundle\Pagination\SeoPagination;
 use AppBundle\Site\Entity\Repository\FeuilleRepository;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
@@ -138,6 +140,20 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
                     $article->datePublication,
                     UrlConcrete::CHANGEFREQ_DAILY,
                     1,
+                ),
+                'news',
+            );
+        }
+
+        // Chaque page de la liste a sa propre canonical ; la première est déclarée par sa route.
+        $lastPage = SeoPagination::getLastPage(
+            $this->articleRepository->countPublishedArticles([]),
+            ListAction::ARTICLES_PER_PAGE,
+        );
+        for ($page = 2; $page <= $lastPage; $page++) {
+            $urls->addUrl(
+                new UrlConcrete(
+                    $this->urlGenerator->generate('news_list', ['page' => $page], UrlGeneratorInterface::ABSOLUTE_URL),
                 ),
                 'news',
             );

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Website\News;
 
+use AppBundle\Pagination\SeoPagination;
 use AppBundle\Site\Form\NewsFiltersType;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
 use AppBundle\Twig\ViewRenderer;
@@ -30,12 +31,21 @@ final class ListAction extends AbstractController
         $formData = $form->getData();
         $filters = $formData ?? [];
 
+        $lastPage = SeoPagination::getLastPage(
+            $this->articleRepository->countPublishedArticles($filters),
+            self::ARTICLES_PER_PAGE,
+        );
+
+        if ($page < 1 || $page > $lastPage) {
+            throw $this->createNotFoundException(sprintf('La page %d n\'existe pas.', $page));
+        }
+
         return $this->view->render('site/news/list.html.twig', [
             'filters' => $filters,
             'articles' => $this->articleRepository->findPublishedArticles($page, self::ARTICLES_PER_PAGE, $filters),
-            'total_items' => $this->articleRepository->countPublishedArticles($filters),
             'current_page' => $page,
-            'articles_per_page' => self::ARTICLES_PER_PAGE,
+            'last_page' => $lastPage,
+            'pages' => SeoPagination::getPages($page, $lastPage),
             'form' => $form->createView(),
         ]);
     }

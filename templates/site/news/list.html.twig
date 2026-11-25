@@ -41,15 +41,12 @@
             </a>
         {% endfor %}
 
-        {{ render(controller(
-            'AppBundle\\Controller\\Website\\PagerController::display',
-            {
-                'total_items': total_items,
-                'current_page': current_page,
-                'extra_parameters': { news_filters: filters },
-                'items_per_page' : articles_per_page,
-            }
-        )) }}
+        {% include 'site/pager.html.twig' with {
+            pages: pages,
+            current_page: current_page,
+            last_page: last_page,
+            extra_parameters: {news_filters: filters},
+        } only %}
     </div>
 
     <div class="min-w-fit max-w-100 hidden sm:block">

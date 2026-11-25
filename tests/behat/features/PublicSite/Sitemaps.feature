@@ -33,8 +33,11 @@ Feature: Site Public - Sitemaps
   Scenario: On accède sitemap news
     Given I am on "/sitemap.news.xml"
     And the response should contain "<loc>https://apachephptest:80/news/1-les-videos-du-forum-2018-en-ligne</loc>"
-    # Pages de la liste des actualités : seule la première, déclarée par sa route, figure au sitemap
-    And the response should not contain "?page="
+    # 16 actualités, 5 par page : les pages 2 à 4 ; la première est déclarée par sa route
+    And the response should contain "<loc>https://apachephptest:80/news/?page=2</loc>"
+    And the response should contain "<loc>https://apachephptest:80/news/?page=4</loc>"
+    And the response should not contain "?page=1<"
+    And the response should not contain "?page=5"
 
   @reloadDbWithTestData
   Scenario: On accède sitemap members
