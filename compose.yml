@@ -29,8 +29,10 @@ services:
       - ./data/mysqltest:/var/lib/mysql
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 2s
       timeout: 20s
-      retries: 10
+      retries: 30
+      start_period: 120s
 
   apachephp:
     build: *apachephp-build

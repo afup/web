@@ -41,6 +41,19 @@ trait EmailContext
         $filesystem->copy(__DIR__ . '/../files/test_file1.pdf', SponsorshipLeadMail::getSponsorshipFilePath('fr'), true);
     }
 
+    /**
+     * Dossiers de sponsoring de l'évènement "forum", pour ne pas dépendre de leur dépôt
+     * par un scénario d'administration joué avant.
+     */
+    #[BeforeScenario('@withEventSponsorFiles')]
+    public static function beforeScenarioWithEventSponsorFiles(): void
+    {
+        $filesystem = new Filesystem();
+        foreach (SponsorshipLeadMail::LANGUAGES as $language) {
+            $filesystem->copy(__DIR__ . '/../files/test_file1.pdf', Event::getSponsorFilePath('forum', $language), true);
+        }
+    }
+
     #[BeforeScenario('@clearEmails')]
     public static function clearEmails(): void
     {

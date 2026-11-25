@@ -11,6 +11,10 @@ default: help
 CURRENT_UID ?= $(shell id -u)
 DOCKER_UP_OPTIONS ?= --detach
 DOCKER_COMPOSE_BIN ?= docker compose
+# Services de base de test (re)démarrés par les targets de test ; la CI la démarre plus tôt et vide cette variable
+TEST_DB_SERVICES ?= dbtest
+# Chemins (dossiers, fichiers ou globs) de features Behat sans JS à jouer ; vide = toute la suite
+BEHAT_PATHS ?=
 
 # Exécutables
 DOCKER_COMP = CURRENT_UID=$(CURRENT_UID) $(DOCKER_COMPOSE_BIN)
@@ -112,44 +116,44 @@ docker\:rector-fix: var/cache/dev/AppKernelDevDebugContainer.xml
 
 ### Tests fonctionnels
 test-functional: data config htdocs/uploads tmp
-	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
-	$(DOCKER_COMP) up -d dbtest apachephptest mailcatcher
+	$(DOCKER_COMP) stop $(TEST_DB_SERVICES) apachephptest mailcatcher
+	$(DOCKER_COMP) up -d $(TEST_DB_SERVICES) apachephptest mailcatcher
 	make clean-test-deprecated-log
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/console cache:warmup --env=test
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/bdi detect drivers
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/behat --colors
 	make var/logs/test.deprecations_grouped.log
-	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
+	$(DOCKER_COMP) stop $(TEST_DB_SERVICES) apachephptest mailcatcher
 
 ### Tests fonctionnels (scénarios sans JS)
 test-functional-no-js: data config htdocs/uploads tmp
-	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
-	$(DOCKER_COMP) up -d dbtest apachephptest mailcatcher
+	$(DOCKER_COMP) stop $(TEST_DB_SERVICES) apachephptest mailcatcher
+	$(DOCKER_COMP) up -d $(TEST_DB_SERVICES) apachephptest mailcatcher
 	make clean-test-deprecated-log
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/console cache:warmup --env=test
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/bdi detect drivers
-	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/behat --suite=web_features_no_js
+	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/behat --suite=web_features_no_js $(BEHAT_PATHS)
 	make var/logs/test.deprecations_grouped.log
-	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
+	$(DOCKER_COMP) stop $(TEST_DB_SERVICES) apachephptest mailcatcher
 
 ### Tests fonctionnels (scénarios JS via Panther)
 test-functional-js: data config htdocs/uploads tmp
-	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
-	$(DOCKER_COMP) up -d dbtest apachephptest mailcatcher
+	$(DOCKER_COMP) stop $(TEST_DB_SERVICES) apachephptest mailcatcher
+	$(DOCKER_COMP) up -d $(TEST_DB_SERVICES) apachephptest mailcatcher
 	make clean-test-deprecated-log
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/console cache:warmup --env=test
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/bdi detect drivers
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/behat --suite=web_features_js
 	make var/logs/test.deprecations_grouped.log
-	$(DOCKER_COMP) stop dbtest apachephptest mailcatcher
+	$(DOCKER_COMP) stop $(TEST_DB_SERVICES) apachephptest mailcatcher
 
 ### Tests d'intégration avec start/stop des images docker
 test-integration-ci:
-	$(DOCKER_COMP) stop dbtest apachephptest
-	$(DOCKER_COMP) up -d dbtest apachephptest
+	$(DOCKER_COMP) stop $(TEST_DB_SERVICES) apachephptest
+	$(DOCKER_COMP) up -d $(TEST_DB_SERVICES) apachephptest
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest make docker\:vendor
 	$(DOCKER_COMP) run --no-deps --rm -u localUser apachephptest ./bin/phpunit --testsuite integration
-	$(DOCKER_COMP) stop dbtest apachephptest
+	$(DOCKER_COMP) stop $(TEST_DB_SERVICES) apachephptest
 
 ### Analyse PHPStan
 docker\:phpstan:

@@ -1,0 +1,8 @@
+# Répartition des features Behat sans JS entre les jobs « Functional tests (no JS) » de la CI.
+# Une ligne par shard (ligne N = shard N de la matrice dans .github/workflows/ci.yml), chemins séparés par
+# des espaces, globs autorisés. Chaque fichier .feature de tests/behat/features doit être couvert par
+# exactement un shard : la CI échoue sinon. Équilibrer sur le nombre de scénarios sans JS (≈ 80 par shard).
+tests/behat/features/Admin/Events tests/behat/features/Admin/Tresorerie
+tests/behat/features/Admin/*.feature tests/behat/features/Admin/Antennes tests/behat/features/Admin/Divers tests/behat/features/Admin/Members tests/behat/features/Admin/PlanetePHP tests/behat/features/Admin/Site tests/behat/features/Admin/SuperApero tests/behat/features/Admin/Techletter
+tests/behat/features/PublicSite tests/behat/features/Api
+tests/behat/features/EventPages tests/behat/features/MembersArea
