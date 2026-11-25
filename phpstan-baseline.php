@@ -3254,12 +3254,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/ValueResolver/AdminEventSelectionValueResolver.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HtmlSitemapAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Controller\\\\Website\\\\Global\\\\HtmlSitemapAction\\:\\:buildPages\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -3273,12 +3267,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Controller\\\\Website\\\\Global\\\\HtmlSitemapAction\\:\\:news\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HtmlSitemapAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Controller\\\\Website\\\\Global\\\\HtmlSitemapAction\\:\\:talks\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Global/HtmlSitemapAction.php',
@@ -3564,18 +3552,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/NewsletterController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\-" between mixed and 3 results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/PagerController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "/" between mixed and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/PagerController.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method format\\(\\) on DateTime\\|null\\.$#',
@@ -4750,12 +4726,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TalkRepository\\:\\:getAllByEventWithSpeakers\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TalkRepository\\:\\:getAllPastTalks\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
 ];

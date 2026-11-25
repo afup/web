@@ -186,7 +186,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             // Les salles et les plannings ne sont plus hydratés par Ting : ils sont
             // rechargés via Doctrine avec PlanningRepository::findIndexedByTalkIds().
             'SELECT talk.session_id, talk.titre, skill, talk.genre, abstract, talk.plannifie,
-            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe, speaker.biographie,
+            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe, speaker.biographie, speaker.personne_id,
             event.date_annonce_planning, event.path, event.interviews_intro, event.interviews_cta_text
             FROM afup_sessions AS talk
             LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
@@ -372,19 +372,6 @@ SQL;
             WHERE id_forum = :eventId AND plannifie = 1
             ORDER BY titre ASC',
         )->setParams(['eventId' => $eventId]);
-
-        return $query->query($this->getCollection(new HydratorSingleObject()));
-    }
-
-    public function getAllPastTalks(\DateTime $dateTime)
-    {
-        $query = $this->getPreparedQuery(
-            '
-            SELECT talk.*
-            FROM afup_sessions AS talk
-            LEFT JOIN afup_forum_planning afp ON talk.session_id = afp.id_session
-            WHERE afp.fin <= :date_fin',
-        )->setParams(['date_fin' => $dateTime->format('U')]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }

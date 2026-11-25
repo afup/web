@@ -27,6 +27,21 @@ Feature: Site Public - News
     And I should not see "Les vidéos des talks du Forum PHP 2018 sont disponibles"
 
   @reloadDbWithTestData
+  Scenario: Pagination de la liste des actualités
+    # 16 actualités, 5 par page : la dernière page, incomplète, est liée
+    Given I am on "/news/"
+    Then the response should contain "href=\"/news/?page=4\""
+    And the response should contain "aria-current=\"page\""
+    When I am on "/news/?page=4"
+    Then the response status code should be 200
+    And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/news/?page=4\" />"
+    And the response should not contain "rel=\"next\""
+    When I am on "/news/?page=5"
+    Then the response status code should be 404
+    When I am on "/news/?page=0"
+    Then the response status code should be 404
+
+  @reloadDbWithTestData
   Scenario: Affichage d'un article MARKDOWN
     Given I am on the homepage
     When I follow "Actualités"

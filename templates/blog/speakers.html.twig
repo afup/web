@@ -54,6 +54,11 @@
                 </li>
                 {% endfor %}
             </ul>
+            {% if speaker_slugs[row.speaker.id] is defined %}
+            <p>
+                <a href="{{ url('talks_speaker', {slug: speaker_slugs[row.speaker.id]}) }}">Toutes les conférences de {{ row.speaker.label }} sur afup.org</a>
+            </p>
+            {% endif %}
         </div>
     </article>
     {% endfor %}

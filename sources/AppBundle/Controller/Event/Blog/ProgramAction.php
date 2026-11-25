@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Event\Blog;
 
+use AppBundle\Event\Talk\PublishedTalkRepository;
 use AppBundle\Controller\Event\EventActionHelper;
 use AppBundle\Event\Entity\Repository\EventThemeRepository;
 use AppBundle\Event\Entity\Repository\PlanningRepository;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class ProgramAction extends AbstractController
 {
     public function __construct(
+        private readonly PublishedTalkRepository $publishedTalkRepository,
         private readonly JsonLd $jsonLd,
         private readonly EventActionHelper $eventActionHelper,
         private readonly TalkRepository $talkRepository,
@@ -36,6 +38,14 @@ final class ProgramAction extends AbstractController
             usort($themes, fn($a, $b): int => $a->priority === $b->priority ? $a->name <=> $b->name : $a->priority <=> $b->priority);
             $themes = array_combine(array_map(fn($theme): int => (int) $theme->id, $themes), $themes);
         }
+        // Talks publiés qui ont une vidéo (définition commune aux pages /talks/), en une requête :
+        // le widget leur ajoute un lien vers leur page sur afup.org.
+        $videoTalkIds = [];
+        foreach ($this->publishedTalkRepository->getEventTalks((int) $event->getId()) as $eventTalk) {
+            if ($eventTalk->talk->hasYoutubeId()) {
+                $videoTalkIds[$eventTalk->talk->id] = true;
+            }
+        }
         $now = new \DateTime();
 
         return $this->render(
@@ -47,6 +57,7 @@ final class ProgramAction extends AbstractController
                 'speakersPagePrefix' => $request->query->get('speakers-page-prefix', '/' . $event->getPath() . '/speakers/'),
                 'display_joindin_links' => $now >= $event->getDateStart() && $now <= \DateTimeImmutable::createFromMutable($event->getDateEnd())->modify('+10 days'),
                 'themes' => $themes,
+                'video_talk_ids' => $videoTalkIds,
             ],
         );
     }

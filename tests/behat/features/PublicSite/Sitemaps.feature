@@ -33,6 +33,11 @@ Feature: Site Public - Sitemaps
   Scenario: On accède sitemap news
     Given I am on "/sitemap.news.xml"
     And the response should contain "<loc>https://apachephptest:80/news/1-les-videos-du-forum-2018-en-ligne</loc>"
+    # 16 actualités, 5 par page : les pages 2 à 4 ; la première est déclarée par sa route
+    And the response should contain "<loc>https://apachephptest:80/news/?page=2</loc>"
+    And the response should contain "<loc>https://apachephptest:80/news/?page=4</loc>"
+    And the response should not contain "?page=1<"
+    And the response should not contain "?page=5"
 
   @reloadDbWithTestData
   Scenario: On accède sitemap members
@@ -44,3 +49,34 @@ Feature: Site Public - Sitemaps
     Given I am on "/sitemap.default.xml"
     And the response should contain "<loc>https://apachephptest:80/</loc>"
     And the response should not contain "<loc>https://apachephptest:80/home</loc>"
+
+  @reloadDbWithTestData
+  Scenario: Le plan du site liste les pages événement et les index, pas les talks un par un
+    Given I am on "/plan-du-site"
+    Then the response status code should be 200
+    And the texts of "section#conferences a[href^='/talks/']" should be, in this order:
+      """
+      Historique des conférences
+      Tous les talks et vidéos
+      Tous les événements
+      Tous les speakers
+      forum
+      Un évènement du passé
+      """
+    And the response should contain "href=\"/talks/evenements/forum\""
+    And the response should contain "href=\"/talks/evenements/passed\""
+    And the response should contain "href=\"/talks/evenements/\""
+    And the response should contain "href=\"/talks/speakers/\""
+    And the response should not contain "href=\"/talks/1-jouons-tous-ensemble-a-un-petit-jeu\""
+    And I should see "2020" in the "section#conferences section#evenements-2020 h3" element
+    And I should see "Le site" in the "section#pages h2" element
+    And I should see "Adhérer à l'AFUP" in the "section#adherer h2" element
+    And I should see "Association" in the "section#association h2" element
+    And the response should contain "href=\"/profile/company/1-mycorp\""
+    And the response should contain "href=\"/news/1-les-videos-du-forum-2018-en-ligne\""
+
+  @reloadDbWithTestData
+  Scenario: Tous les liens du plan du site vers les talks répondent 200
+    Given I am on "/plan-du-site"
+    Then every link matching "#^(https?://[^/]+)?/talks/#" should respond with status 200
+

@@ -11,6 +11,7 @@ use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Talk\PublishedTalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
+use AppBundle\Pagination\SeoPagination;
 use AppBundle\Site\Entity\Repository\FeuilleRepository;
 use AppBundle\Site\Entity\Repository\ArticleRepository;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
@@ -52,22 +53,18 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
 
     public function registerTalksUrls(UrlContainerInterface $urls): void
     {
-        /** @var Talk[] $talks */
-        $talks = $this->talkRepository->getAllPastTalks(new \DateTime());
-        $publishedTalkIds = array_flip($this->publishedTalkRepository->getIds());
+        // Une entrée par talk publié, même planifié sur plusieurs créneaux, datée de sa publication.
+        $publicationDates = $this->publishedTalkRepository->getPublicationDates();
+        $talks = $publicationDates === [] ? [] : $this->talkRepository->findList(array_keys($publicationDates));
 
         foreach ($talks as $talk) {
-            if (!isset($publishedTalkIds[(int) $talk->getId()])) {
-                continue;
-            }
-
             $url = new UrlConcrete(
                 $this->urlGenerator->generate(
                     'talks_show',
                     ['id' => $talk->getId(), 'slug' => $talk->getSlug()],
                     UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
-                $talk->getSubmittedOn(),
+                $publicationDates[(int) $talk->getId()] ?? null,
             );
             $urls->addUrl($url, 'talks');
 
@@ -124,6 +121,10 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * Les articles publiés. La liste des actualités est déclarée par l'option sitemap de sa route :
+     * seule sa première page y figure.
+     */
     public function registerNewsUrls(UrlContainerInterface $urls): void
     {
         $news = $this->articleRepository->findAllPublishedArticles();
@@ -144,18 +145,15 @@ class SitemapXmlSubscriber implements EventSubscriberInterface
             );
         }
 
-        $total = $this->articleRepository->countPublishedArticles([]);
-        $byPage = ListAction::ARTICLES_PER_PAGE;
-        $lastPage = ceil($total / $byPage);
-
-        for ($page = max($lastPage, 1); $page <= $lastPage; $page++) {
+        // Chaque page de la liste a sa propre canonical ; la première est déclarée par sa route.
+        $lastPage = SeoPagination::getLastPage(
+            $this->articleRepository->countPublishedArticles([]),
+            ListAction::ARTICLES_PER_PAGE,
+        );
+        for ($page = 2; $page <= $lastPage; $page++) {
             $urls->addUrl(
                 new UrlConcrete(
-                    $this->urlGenerator->generate(
-                        'news_list',
-                        ['page' => $page],
-                        UrlGeneratorInterface::ABSOLUTE_URL,
-                    ),
+                    $this->urlGenerator->generate('news_list', ['page' => $page], UrlGeneratorInterface::ABSOLUTE_URL),
                 ),
                 'news',
             );
