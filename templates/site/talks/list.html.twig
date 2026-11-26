@@ -19,6 +19,10 @@
 
 {% block metas %}
     {{ parent() }}
+    {# Une recherche (requête, filtre, page de résultats) n'est pas une page à indexer : seuls le hub et les pages speaker ou événement le sont. #}
+    {% if not show_hub %}
+        <meta name="robots" content="noindex, follow">
+    {% endif %}
     <meta name="algolia_appid" content="{{ algolia_app_id }}" />
     <meta name="algolia_apikey" content="{{ algolia_api_key }}" />
 
