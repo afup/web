@@ -3,7 +3,7 @@ Feature: Site Public - Meta descriptions des gabarits
   @reloadDbWithTestData
   Scenario: Meta description de la liste des entreprises adhérentes
     Given I am on "/profile/company"
-    Then the meta description should be "Les entreprises adhérentes à l'AFUP, qui soutiennent l'association et la communauté PHP française : présentation, site web et antennes de rattachement."
+    Then the meta description should be "Les entreprises adhérentes à l'AFUP, qui soutiennent l'association et la communauté PHP francophone : présentation, site web et antennes de rattachement."
 
   @reloadDbWithTestData
   Scenario: Meta description d'une entreprise tirée de sa description
@@ -13,7 +13,8 @@ Feature: Site Public - Meta descriptions des gabarits
   @reloadDbWithTestData
   Scenario: Meta description d'une entreprise sans description
     Given I am on "/profile/company/2-helios-aerospace"
-    Then the meta description should be "Helios Aerospace est une entreprise adhérente à l'AFUP et soutient la communauté PHP française."
+    Then the meta description should be "Helios Aerospace est une entreprise adhérente à l'AFUP et soutient la communauté PHP francophone."
+    And the response should contain "<meta name=\"twitter:description\" content=\"Helios Aerospace est une entreprise adhérente à l&#039;AFUP et soutient la communauté PHP francophone.\" />"
 
   Scenario: Meta description de la liste des meetups
     Given I am on "/meetups/"
@@ -29,4 +30,4 @@ Feature: Site Public - Meta descriptions des gabarits
 
   Scenario: Meta description du formulaire d'adhésion entreprise
     Given I am on "/association/adherer/entreprise"
-    Then the meta description should be "Formulaire d'adhésion à l'AFUP réservé aux entreprises : créez le compte de votre société pour soutenir l'association et la communauté PHP française."
+    Then the meta description should be "Formulaire d'adhésion à l'AFUP réservé aux entreprises : créez le compte de votre société pour soutenir l'association et la communauté PHP francophone."

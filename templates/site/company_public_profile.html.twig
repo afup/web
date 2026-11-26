@@ -10,7 +10,10 @@
 
 {% block title %}{{ company_member.companyName }} est adhérente à l'AFUP{% endblock %}
 
-{% block description %}{{ (company_member.description ?: company_member.companyName ~ " est une entreprise adhérente à l'AFUP et soutient la communauté PHP française.")|meta_description }}{% endblock %}
+{# Description de l'entreprise, à défaut un texte générique : meta description et partage sur les réseaux sociaux. #}
+{% set company_description = company_member.description ?: company_member.companyName ~ " est une entreprise adhérente à l'AFUP et soutient la communauté PHP francophone." %}
+
+{% block description %}{{ company_description|meta_description }}{% endblock %}
 
 {% set logo_url = path('company_public_profile_logo', {id : company_member.id, slug: company_member.slug }) %}
 
@@ -19,7 +22,7 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@afup" />
     <meta name="twitter:title" content="AFUP - Profil entreprise - {{ company_member.companyName }}" />
-    <meta name="twitter:description" content="{{ company_member.description|u.truncate(200) }}" />
+    <meta name="twitter:description" content="{{ company_description|meta_description(200) }}" />
     <meta name="twitter:image" content="{{ app.request.getSchemeAndHttpHost() }}{{ logo_url }}" />
 {% endblock %}
 

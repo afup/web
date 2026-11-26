@@ -45,6 +45,8 @@ Feature: Administration - Partie Site
     Then I should see "Le chapeau de l'article"
     Then I should see "Le contenu de l'article"
     And the meta description should be "La description de l'article"
+    And the response should contain "<meta property=\"og:description\" content=\"La description de l&#039;article\" />"
+    And the response should contain "<meta name=\"twitter:description\" content=\"La description de l&#039;article\">"
 
     # modification d'un article
     When I follow "Administration"

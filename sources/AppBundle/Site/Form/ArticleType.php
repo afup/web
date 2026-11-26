@@ -90,7 +90,7 @@ class ArticleType extends AbstractType
                 'label' => 'Description',
                 'required' => false,
                 'help' => 'Résumé affiché par les moteurs de recherche (155 caractères conseillés). '
-                    . 'Si ce champ est vide, le début du contenu est utilisé.',
+                    . 'Si ce champ est vide : le chapeau pour une actualité, sinon le début du contenu.',
                 'attr' => [
                     'maxlength' => 255,
                     'rows' => 3,
