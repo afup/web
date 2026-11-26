@@ -151,6 +151,41 @@
         </div>
     </section>
 
+    {% if latestVideos is not empty %}
+        <section id="dernieres-videos" class="w-full flex flex-col gap-5">
+            <h2 class="text-afup-800 font-titre text-2xl sm:text-4xl border-b-2 border-neutre-300 pb-3">
+                Dernières vidéos
+            </h2>
+
+            <ul class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                {% for video in latestVideos %}
+                    <li>
+                        <twig:Card class="p-0 h-full overflow-hidden">
+                            <a href="{{ path('talks_show', {id: video.talkId, slug: video.slug}) }}"
+                               class="flex flex-col h-full group">
+                                <img src="{{ video.thumbnailUrl }}"
+                                     alt=""
+                                     loading="lazy"
+                                     class="w-full aspect-video object-cover bg-neutre-200" />
+
+                                <span class="flex flex-col gap-2 p-4">
+                                    <span class="font-titre text-lg leading-snug text-afup-800 group-hover:underline">
+                                        {{ video.title }}
+                                    </span>
+                                    <span class="text-sm text-neutre-400">{{ video.eventTitle }}</span>
+                                </span>
+                            </a>
+                        </twig:Card>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <twig:Button variant="tertiary" as="a" href="{{ path('talks_list') }}" class="self-start flex gap-2">
+                Toutes les vidéos <twig:UX:Icon name="mingcute:arrow-right-fill" class="size-5" />
+            </twig:Button>
+        </section>
+    {% endif %}
+
     <section class="flex flex-col sm:grid grid-flow-col grid-cols-2 gap-10">
         <twig:Card class="row-span-1">
             <twig:Card:Title size="big">Dans les antennes</twig:Card:Title>

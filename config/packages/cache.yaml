@@ -1,0 +1,17 @@
+framework:
+    cache:
+        pools:
+            # Bloc « Dernières vidéos » de la home : une heure suffit, une vidéo est
+            # publiée quelques jours après l'événement, pas à la minute près.
+            cache.latest_videos:
+                adapter: cache.app
+                default_lifetime: 3600
+
+when@test:
+    framework:
+        cache:
+            pools:
+                # Pas de cache persistant en test : chaque scénario Behat recharge
+                # la base et peut changer la date courante.
+                cache.latest_videos:
+                    adapter: cache.adapter.array
