@@ -3524,18 +3524,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/Membership/Techletter/SubscribeAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$filtres of method AppBundle\\\\Site\\\\Entity\\\\Repository\\\\ArticleRepository\\:\\:countPublishedArticles\\(\\) expects array, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/News/ListAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$filtres of method AppBundle\\\\Site\\\\Entity\\\\Repository\\\\ArticleRepository\\:\\:findPublishedArticles\\(\\) expects array, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Website/News/ListAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'email\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
 	'count' => 1,

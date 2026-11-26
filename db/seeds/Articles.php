@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use AppBundle\Site\Entity\Rubrique;
+use AppBundle\Site\Enum\ArticleTheme;
 use Cocur\Slugify\Slugify;
 use Faker\Factory;
 use Phinx\Seed\AbstractSeed;
@@ -38,6 +39,8 @@ EOF;
 
         $slugger = Slugify::create();
         $faker = Factory::create();
+        // 14 actualités de 2017, une semaine d'écart : de quoi paginer (5 par page) sur l'année
+        // et sur le thème « Cycles de conférences », porté par une sur deux.
         for ($i = 1; $i < 15; $i++) {
             $titre = $faker->text(80);
             $data[] = [
@@ -46,7 +49,8 @@ EOF;
                 'contenu' => '<p>' . implode('</p><p>', $faker->paragraphs(10)) . '</p>',
                 'raccourci' => $slugger->slugify($titre),
                 'id_site_rubrique' => Rubrique::ID_RUBRIQUE_ACTUALITES,
-                'date' => $faker->unixTime(new DateTime('2017-12-31T23:59:59')),
+                'date' => new DateTime('2017-12-01T10:00:00')->modify(sprintf('-%d weeks', $i))->getTimestamp(),
+                'theme' => $i % 2 === 1 ? ArticleTheme::CycleConference->value : null,
                 'etat' => 1,
             ];
         }
