@@ -65,7 +65,8 @@ Feature: API pour event
     Given I am on "/blog/passed/program"
     Then the response should contain "Révolutionons PHP"
     And the response should not contain "/talks/6-"
-    And the response should not contain "Voir la vidéo"
+    # Les talks de la même édition qui ont une vidéo restent liés
+    And the response should contain "href=\"https://apachephptest:80/talks/9-tester-sans-se-ruiner\""
 
   @reloadDbWithTestData
   Scenario: Les speakers sont liés à leur page sur afup.org quand elle existe
