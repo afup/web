@@ -64,18 +64,4 @@ class Article
     {
         return $this->id . '-' . $this->raccourci;
     }
-
-    public function getResume(): string
-    {
-        if (strlen((string) $this->chapeau) !== 0) {
-            return strip_tags((string) $this->chapeau);
-        }
-
-        return substr(strip_tags((string) $this->contenu), 0, 200);
-    }
-
-    public function getResumeTexte(): string
-    {
-        return html_entity_decode($this->getResume());
-    }
 }

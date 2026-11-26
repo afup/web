@@ -60,3 +60,13 @@ Feature: Site Public - News
     """
     <a href="https://afup.org">commodi delectus</a>
     """
+
+  @reloadDbWithTestData
+  Scenario: Les aperçus des actualités sont en texte brut
+    Given I am on "/news/"
+    Then I should see "Un peu de text avec de la mise en forme"
+    And I should not see "**avec de la mise**"
+    And I should see "Comme à chaque édition du Forum PHP"
+    When I follow "Lire l'article: Un article en Markdown"
+    Then the response should contain "<meta property=\"og:description\" content=\"Un peu de text avec de la mise en forme\" />"
+    And the response should contain "<meta name=\"twitter:description\" content=\"Un peu de text avec de la mise en forme\">"
