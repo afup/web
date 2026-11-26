@@ -30,7 +30,7 @@ final class AntenneType extends AbstractType
         if ($options['creation']) {
             $builder->add('code', TextType::class, [
                 'label' => 'Code',
-                'help' => 'Identifiant technique (ex. lyon) : lettres minuscules, chiffres et tirets. Il ne pourra plus être modifié.',
+                'help' => 'Identifiant technique (ex. lyon) : commence par une lettre ; lettres minuscules, chiffres et underscores. Il ne pourra plus être modifié.',
             ]);
         }
 
@@ -41,11 +41,11 @@ final class AntenneType extends AbstractType
             ->add('urlLogo', UrlType::class, [
                 'label' => 'Logo',
                 'default_protocol' => 'https',
-                'help' => 'URL du logo (ex. hébergé sur https://identity.afup.org/)',
+                'help' => 'URL du logo (ex. hébergé sur https://identity.afup.org/) ou chemin commençant par « / »',
             ])
             ->add('actif', CheckboxType::class, [
                 'label' => 'Active',
-                'help' => "Une antenne inactive n'est pas affichée sur la page des antennes.",
+                'help' => "Une antenne inactive est masquée de la page des antennes, de l'API, des listes de choix (antenne la plus proche, filtre des talks) et du formulaire Super Apéro : son meetup Super Apéro sera supprimé à la prochaine modification de celui-ci. Elle peut toutefois encore être attribuée automatiquement comme antenne la plus proche d'un membre.",
                 'required' => false,
             ])
             ->add('meetupNomUrl', TextType::class, [

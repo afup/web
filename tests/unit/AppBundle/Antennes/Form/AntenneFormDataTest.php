@@ -16,7 +16,10 @@ use AppBundle\Antennes\Point;
 use AppBundle\Antennes\Position;
 use AppBundle\Antennes\ReseauxSociaux;
 use AppBundle\Antennes\Ville;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class AntenneFormDataTest extends TestCase
 {
@@ -96,6 +99,60 @@ final class AntenneFormDataTest extends TestCase
         self::assertNull($data->toEntity()->meetup);
     }
 
+    #[DataProvider('codes')]
+    public function testValidationDuCode(string $code, bool $valide): void
+    {
+        $data = new AntenneFormData();
+        $data->code = $code;
+
+        $violations = self::validator()->validateProperty($data, 'code', [AntenneFormData::GROUPE_CREATION]);
+
+        self::assertSame($valide, count($violations) === 0, (string) $violations);
+    }
+
+    /**
+     * Le code sert d'alias GraphQL dans l'indexation des meetups.
+     *
+     * @return iterable<string, array{string, bool}>
+     */
+    public static function codes(): iterable
+    {
+        yield 'lettres' => ['lyon', true];
+        yield 'underscore' => ['aix_marseille', true];
+        yield 'chiffres' => ['lyon2', true];
+        yield 'tiret' => ['aix-marseille', false];
+        yield 'commence par un chiffre' => ['2lyon', false];
+        yield 'commence par un underscore' => ['_lyon', false];
+        yield 'majuscule' => ['Lyon', false];
+    }
+
+    #[DataProvider('meetups')]
+    public function testValidationDuMeetup(string $propriete, string $valeur, bool $valide): void
+    {
+        $data = new AntenneFormData();
+        $data->{$propriete} = $valeur;
+
+        $violations = self::validator()->validateProperty($data, $propriete);
+
+        self::assertSame($valide, count($violations) === 0, (string) $violations);
+    }
+
+    /**
+     * @return iterable<string, array{string, string, bool}>
+     */
+    public static function meetups(): iterable
+    {
+        yield 'id numérique' => ['meetupIdExterne', '19630036', true];
+        yield 'id vide' => ['meetupIdExterne', '', true];
+        yield 'id avec espaces' => ['meetupIdExterne', ' 19630036 ', true];
+        yield 'id composé d\'espaces' => ['meetupIdExterne', '  ', true];
+        yield 'id non numérique' => ['meetupIdExterne', 'afup-lyon', false];
+        yield 'nom d\'URL' => ['meetupNomUrl', 'afup-lyon-php', true];
+        yield 'nom d\'URL avec underscore' => ['meetupNomUrl', 'Afup_Lyon_PHP', true];
+        yield 'nom d\'URL vide' => ['meetupNomUrl', '', true];
+        yield 'URL complète' => ['meetupNomUrl', 'https://www.meetup.com/afup-lyon-php/', false];
+    }
+
     public function testReseauxSociauxVidesDeviennentNull(): void
     {
         $data = new ReseauxSociauxFormData();
@@ -149,6 +206,11 @@ final class AntenneFormDataTest extends TestCase
         $ville = VilleFormData::fromVille(self::ville(45.0, 4.0));
         self::assertFalse($ville->estVide());
         self::assertTrue($ville->estComplete());
+    }
+
+    private static function validator(): ValidatorInterface
+    {
+        return Validation::createValidatorBuilder()->enableAttributeMapping()->getValidator();
     }
 
     private static function antenne(?Ville $secondeVille = null): Antenne

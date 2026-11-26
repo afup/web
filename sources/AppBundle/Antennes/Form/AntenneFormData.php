@@ -17,12 +17,14 @@ final class AntenneFormData
      * Uniquement saisi à la création : le code est la clé primaire et il est référencé ailleurs
      * (super apéros, antenne la plus proche des membres, billets, indexation des meetups).
      * Son unicité est vérifiée par AntenneType.
+     * Il sert d'alias dans la requête GraphQL de l'indexation des meetups (MeetupClient) : il doit donc
+     * respecter la syntaxe d'un nom GraphQL, sans quoi l'indexation de toutes les antennes échoue.
      */
     #[Assert\NotBlank(groups: [self::GROUPE_CREATION])]
     #[Assert\Length(max: 50, groups: [self::GROUPE_CREATION])]
     #[Assert\Regex(
-        pattern: '/^[a-z0-9-]+$/',
-        message: 'Le code ne peut contenir que des lettres minuscules non accentuées, des chiffres et des tirets.',
+        pattern: '/^[a-z][a-z0-9_]*$/',
+        message: 'Le code doit commencer par une lettre minuscule et ne contenir que des lettres minuscules non accentuées, des chiffres et des underscores.',
         groups: [self::GROUPE_CREATION],
     )]
     public ?string $code = null;
@@ -47,10 +49,25 @@ final class AntenneFormData
     )]
     public ?string $urlLogo = null;
 
+    /**
+     * Les espaces autour de la valeur sont tolérés (et une valeur vide ignorée) : nullIfEmpty() les retire
+     * avant l'enregistrement.
+     */
     #[Assert\Length(max: 255)]
+    #[Assert\Regex(
+        pattern: '/^\s*[A-Za-z0-9_-]*\s*$/',
+        message: "Le nom d'URL Meetup ne doit contenir que le nom du groupe (ex. afup-lyon-php), pas l'URL complète.",
+    )]
     public ?string $meetupNomUrl = null;
 
+    /**
+     * Injecté sans guillemets dans la requête GraphQL de l'indexation des meetups (MeetupClient).
+     */
     #[Assert\Length(max: 50)]
+    #[Assert\Regex(
+        pattern: '/^\s*\d*\s*$/',
+        message: "L'identifiant Meetup doit être numérique.",
+    )]
     public ?string $meetupIdExterne = null;
 
     #[Assert\Valid]

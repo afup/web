@@ -52,6 +52,10 @@ Feature: Administration - Partie Antennes
     When I follow "antenne-edit-grenoble"
     Then the "antenne[departements]" field should contain "38"
     And the "antenne[carte][premiereVille][latitude]" field should contain "45.188529"
+    # un logo saisi en URL complète est renvoyé tel quel par l'API
+    When I go to "/api/antennes/grenoble"
+    Then the response status code should be 200
+    And the json response has the key "$.logo.simple" with value "https://identity.afup.org/logos/grenoble.svg"
 
   @reloadDbWithTestData
   Scenario: Modification d'une antenne
@@ -106,6 +110,19 @@ Feature: Administration - Partie Antennes
     And I fill in "antenne[urlLogo]" with "pas-une-url"
     And I press "Ajouter"
     Then I should see "Le logo doit être une URL valide"
+
+  Scenario: Le code et le Meetup doivent être utilisables par l'indexation des meetups
+    Given I am logged in as admin and on the Administration
+    And I am on "/admin/antennes/add"
+    When I fill in "antenne[code]" with "aix-marseille"
+    And I fill in "antenne[libelle]" with "Aix-Marseille"
+    And I fill in "antenne[urlLogo]" with "https://identity.afup.org/logos/marseille.svg"
+    And I fill in "antenne[meetupNomUrl]" with "https://www.meetup.com/afup-aix-marseille-php/"
+    And I fill in "antenne[meetupIdExterne]" with "afup-aix-marseille-php"
+    And I press "Ajouter"
+    Then I should see "Le code doit commencer par une lettre minuscule"
+    And I should see "Le nom d'URL Meetup ne doit contenir que le nom du groupe"
+    And I should see "L'identifiant Meetup doit être numérique."
 
   Scenario: Un lecteur des antennes ne peut pas les modifier
     Given I am logged-in with the user "lecteurantennes" and the password "lecteurantennes"

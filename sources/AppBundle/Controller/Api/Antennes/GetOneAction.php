@@ -34,7 +34,8 @@ final readonly class GetOneAction
             'code' => $antenne->code,
             'label' => $antenne->libelle,
             'logo' => [
-                'simple' => 'https://afup.org' . $antenne->urlLogo,
+                // les logos historiques sont des chemins servis par le site, les nouveaux peuvent être des URL complètes
+                'simple' => str_starts_with($antenne->urlLogo, '/') ? 'https://afup.org' . $antenne->urlLogo : $antenne->urlLogo,
             ],
             'links' => [
                 'meetup' => $this->createLink('https://www.meetup.com/fr-FR/', $antenne->meetup?->nomUrl),
