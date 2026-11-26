@@ -44,7 +44,7 @@ final class RelatedTalksTest extends TestCase
         self::assertSame([3, 4, 5], $this->ids($related->sameEvent));
     }
 
-    public function testUnpublishedTalkHasNoNeighboursButStillLinksToItsEvent(): void
+    public function testTalkMissingFromThePlanningHasNoNeighboursButStillLinksToItsEvent(): void
     {
         $related = RelatedTalks::build(99, $this->eventTalks([1 => false, 2 => true]), []);
 

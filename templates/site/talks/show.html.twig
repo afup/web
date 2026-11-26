@@ -43,7 +43,7 @@
                 name: item.name,
                 item: item.url,
             }),
-        }|json_encode|raw }}
+        }|json_encode(constant('AppBundle\\Event\\Talk\\VideoObjectJsonLd::JSON_FLAGS'))|raw }}
     </script>
 {% endblock %}
 
@@ -283,7 +283,7 @@
                            class="group flex items-center gap-3 border-2 border-neutre-300 rounded-2xl p-4 hover:border-afup-300">
                             <twig:ux:icon name="mingcute:arrow-left-fill" class="size-5 shrink-0 text-afup-500" />
                             <span class="flex flex-col min-w-0">
-                                <span class="text-sm text-neutre-400">Talk précédent</span>
+                                <span class="text-sm text-neutre-400">Précédent dans le planning</span>
                                 <span class="font-semibold text-afup-800 group-hover:text-afup-500">{{ related_talks.previous.title }}</span>
                             </span>
                         </a>
@@ -293,7 +293,7 @@
                            rel="next"
                            class="group flex items-center justify-end gap-3 border-2 border-neutre-300 rounded-2xl p-4 text-right hover:border-afup-300 sm:col-start-2">
                             <span class="flex flex-col min-w-0">
-                                <span class="text-sm text-neutre-400">Talk suivant</span>
+                                <span class="text-sm text-neutre-400">Suivant dans le planning</span>
                                 <span class="font-semibold text-afup-800 group-hover:text-afup-500">{{ related_talks.next.title }}</span>
                             </span>
                             <twig:ux:icon name="mingcute:arrow-right-fill" class="size-5 shrink-0 text-afup-500" />
@@ -304,13 +304,13 @@
 
             {% if related_talks.sameEvent|length %}
                 <section class="flex flex-col gap-4">
-                    <twig:SectionTitle>Aussi au {{ event.title }}</twig:SectionTitle>
+                    <twig:SectionTitle>Aussi {{ au(event.title) }}</twig:SectionTitle>
                     <ul class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                         {% for related in related_talks.sameEvent %}
                             <li>{% include 'site/talks/_related_talk.html.twig' with {talk: related} only %}</li>
                         {% endfor %}
                     </ul>
-                    <a href="{{ event_url }}" class="self-start text-sm text-afup-500 underline hover:no-underline">Tous les talks du {{ event.title }}</a>
+                    <a href="{{ path('talks_event', {path: event.path}) }}" class="self-start text-sm text-afup-500 underline hover:no-underline">Tous les talks {{ du(event.title) }}</a>
                 </section>
             {% endif %}
 

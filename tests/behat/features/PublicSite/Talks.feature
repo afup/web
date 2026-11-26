@@ -347,13 +347,14 @@ Feature: Site Public - Talks
     And I should see "Keynote d'ouverture" in the "a[rel=prev]" element
     And I should see "Tester sans se ruiner" in the "a[rel=next]" element
     # 3 talks de l'édition, hors voisins, les vidéos d'abord, puis le lien vers la page de l'édition
-    And I should see "Aussi au Un évènement du passé"
-    And the texts of "section:has(a[href='https://apachephptest:80/talks/evenements/passed']) li" should be, in this order:
+    And I should see "Aussi à l'Un évènement du passé"
+    And the texts of "section:has(a[href='/talks/evenements/passed']) li" should be, in this order:
       """
       Observabilité avec OpenTelemetry
       Clôture : le futur de PHP
       Migrer une application legacy
       """
+    And I should see "Tous les talks de l'Un évènement du passé"
     And I should not see "Le typage statique en pratique"
     # Les autres talks de la personne, du plus récent au plus ancien, puis le lien vers sa page
     And I should see "Autres talks de Geoffrey BACHELET"
@@ -368,8 +369,8 @@ Feature: Site Public - Talks
   @reloadDbWithTestData
   Scenario: Premier et dernier talks du planning d'une édition
     When I go to "/talks/8-keynote-d-ouverture"
-    Then I should not see "Talk précédent"
+    Then I should not see "Précédent dans le planning"
     And I should see "Révolutionons PHP" in the "a[rel=next]" element
     When I go to "/talks/7-cloture-le-futur-de-php"
     Then I should see "Le typage statique en pratique" in the "a[rel=prev]" element
-    And I should not see "Talk suivant"
+    And I should not see "Suivant dans le planning"
