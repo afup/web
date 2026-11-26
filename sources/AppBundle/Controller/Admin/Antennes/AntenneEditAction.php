@@ -35,7 +35,7 @@ final class AntenneEditAction extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data->appliquerA($antenne);
+            $data->applyTo($antenne);
             $this->antenneRepository->save($antenne);
             $this->audit->log("Modification de l'antenne " . $antenne->code);
             $this->addFlash('notice', "L'antenne " . $antenne->libelle . ' a été modifiée');

@@ -56,13 +56,13 @@ final class CarteFormData
                 ->addViolation();
         }
 
-        if (!$this->premiereVille instanceof VilleFormData || !$this->premiereVille->estComplete()) {
+        if (!$this->premiereVille instanceof VilleFormData || !$this->premiereVille->isComplete()) {
             $context->buildViolation("Tous les champs de la première ville sont obligatoires pour afficher l'antenne sur la carte.")
                 ->atPath('premiereVille')
                 ->addViolation();
         }
 
-        if ($this->secondeVille instanceof VilleFormData && !$this->secondeVille->estVide() && !$this->secondeVille->estComplete()) {
+        if ($this->secondeVille instanceof VilleFormData && !$this->secondeVille->isEmpty() && !$this->secondeVille->isComplete()) {
             $context->buildViolation('La seconde ville doit être soit entièrement remplie, soit vide.')
                 ->atPath('secondeVille')
                 ->addViolation();
@@ -77,7 +77,7 @@ final class CarteFormData
             return null;
         }
 
-        $secondeVille = $this->secondeVille instanceof VilleFormData && !$this->secondeVille->estVide()
+        $secondeVille = $this->secondeVille instanceof VilleFormData && !$this->secondeVille->isEmpty()
             ? $this->secondeVille->toVille()
             : null;
 

@@ -43,19 +43,19 @@ final class VilleFormData
         return $data;
     }
 
-    public function estVide(): bool
+    public function isEmpty(): bool
     {
-        return array_filter($this->valeurs(), fn(int|float|null $valeur): bool => $valeur !== null) === [];
+        return array_filter($this->values(), fn(int|float|null $valeur): bool => $valeur !== null) === [];
     }
 
-    public function estComplete(): bool
+    public function isComplete(): bool
     {
-        return !\in_array(null, $this->valeurs(), true);
+        return !\in_array(null, $this->values(), true);
     }
 
     public function toVille(): Ville
     {
-        if (!$this->estComplete()) {
+        if (!$this->isComplete()) {
             throw new \LogicException('La ville doit être complète pour être convertie.');
         }
 
@@ -70,7 +70,7 @@ final class VilleFormData
     /**
      * @return list<int|float|null>
      */
-    private function valeurs(): array
+    private function values(): array
     {
         return [
             $this->premierPointX,

@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * `meetup` est une propriété virtuelle calculée à partir des colonnes `meetup_nom_url` / `meetup_id_externe`.
- * Seul `code` (clé primaire, référencée ailleurs) est immuable ; le reste est modifiable via `modifier()`.
+ * Seul `code` (clé primaire, référencée ailleurs) est immuable.
  */
 #[ORM\Entity(repositoryClass: AntenneRepository::class)]
 #[ORM\Table(name: 'afup_antenne')]
@@ -25,6 +25,10 @@ final class Antenne
         get => $this->meetupNomUrl !== null && $this->meetupIdExterne !== null
             ? new Meetup($this->meetupNomUrl, $this->meetupIdExterne)
             : null;
+        set(?Meetup $value) {
+            $this->meetupNomUrl = $value?->nomUrl;
+            $this->meetupIdExterne = $value?->id;
+        }
     }
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -42,51 +46,23 @@ final class Antenne
         #[ORM\Column(length: 50)]
         public readonly string $code,
         #[ORM\Column(length: 255)]
-        public private(set) string $libelle,
+        public string $libelle,
         ?Meetup $meetup,
         #[ORM\Column(length: 255)]
-        public private(set) string $urlLogo,
+        public string $urlLogo,
         #[ORM\Column(type: AntenneReseauxSociauxType::NAME)]
-        public private(set) ReseauxSociaux $reseauxSociaux,
+        public ReseauxSociaux $reseauxSociaux,
         #[ORM\Column(type: AntenneCarteType::NAME, nullable: true)]
-        public private(set) ?Carte $carte,
+        public ?Carte $carte,
         #[ORM\Column(type: Types::JSON, nullable: true)]
-        public private(set) ?array $departements = null,
+        public ?array $departements = null,
         #[ORM\Column(type: Types::JSON, nullable: true)]
-        public private(set) ?array $pays = null,
+        public ?array $pays = null,
         #[ORM\Column(length: 255, nullable: true)]
-        public private(set) ?string $region = null,
+        public ?string $region = null,
         #[ORM\Column(options: ['default' => false])]
-        public private(set) bool $masqueePageAntennes = false,
+        public bool $masqueePageAntennes = false,
     ) {
-        $this->meetupNomUrl = $meetup?->nomUrl;
-        $this->meetupIdExterne = $meetup?->id;
-    }
-
-    /**
-     * @param string[]|null $departements
-     * @param string[]|null $pays
-     */
-    public function modifier(
-        string $libelle,
-        ?Meetup $meetup,
-        string $urlLogo,
-        ReseauxSociaux $reseauxSociaux,
-        ?Carte $carte,
-        ?array $departements,
-        ?array $pays,
-        ?string $region,
-        bool $masqueePageAntennes,
-    ): void {
-        $this->libelle = $libelle;
-        $this->meetupNomUrl = $meetup?->nomUrl;
-        $this->meetupIdExterne = $meetup?->id;
-        $this->urlLogo = $urlLogo;
-        $this->reseauxSociaux = $reseauxSociaux;
-        $this->carte = $carte;
-        $this->departements = $departements;
-        $this->pays = $pays;
-        $this->region = $region;
-        $this->masqueePageAntennes = $masqueePageAntennes;
+        $this->meetup = $meetup;
     }
 }

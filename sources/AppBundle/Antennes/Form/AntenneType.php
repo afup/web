@@ -79,7 +79,7 @@ final class AntenneType extends AbstractType
                 'label' => false,
             ]);
 
-        $listeTransformer = new CallbackTransformer(self::listeVersTexte(...), self::texteVersListe(...));
+        $listeTransformer = new CallbackTransformer(self::listToText(...), self::textToList(...));
 
         $builder->get('departements')->addModelTransformer($listeTransformer);
         $builder->get('pays')->addModelTransformer($listeTransformer);
@@ -117,7 +117,7 @@ final class AntenneType extends AbstractType
     /**
      * @param string[]|null $valeurs
      */
-    private static function listeVersTexte(?array $valeurs): string
+    private static function listToText(?array $valeurs): string
     {
         return implode(', ', $valeurs ?? []);
     }
@@ -125,7 +125,7 @@ final class AntenneType extends AbstractType
     /**
      * @return string[]|null
      */
-    private static function texteVersListe(?string $texte): ?array
+    private static function textToList(?string $texte): ?array
     {
         $valeurs = array_values(array_filter(
             array_map(trim(...), explode(',', (string) $texte)),

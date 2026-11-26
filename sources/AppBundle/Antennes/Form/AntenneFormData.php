@@ -146,19 +146,17 @@ final class AntenneFormData
         );
     }
 
-    public function appliquerA(Antenne $antenne): void
+    public function applyTo(Antenne $antenne): void
     {
-        $antenne->modifier(
-            libelle: (string) $this->libelle,
-            meetup: $this->meetup(),
-            urlLogo: (string) $this->urlLogo,
-            reseauxSociaux: $this->reseauxSociaux->toReseauxSociaux(),
-            carte: $this->carte->toCarte(),
-            departements: $this->departements,
-            pays: $this->pays,
-            region: self::nullIfEmpty($this->region),
-            masqueePageAntennes: !$this->actif,
-        );
+        $antenne->libelle = (string) $this->libelle;
+        $antenne->meetup = $this->meetup();
+        $antenne->urlLogo = (string) $this->urlLogo;
+        $antenne->reseauxSociaux = $this->reseauxSociaux->toReseauxSociaux();
+        $antenne->carte = $this->carte->toCarte();
+        $antenne->departements = $this->departements;
+        $antenne->pays = $this->pays;
+        $antenne->region = self::nullIfEmpty($this->region);
+        $antenne->masqueePageAntennes = !$this->actif;
     }
 
     private function meetup(): ?Meetup
