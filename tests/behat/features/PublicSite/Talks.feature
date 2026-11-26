@@ -239,7 +239,7 @@ Feature: Site Public - Talks
       """
     And the texts of "section#evenements-2020 li p" should be, in this order:
       """
-      1 talk · 0 vidéo
+      7 talks · 3 vidéos
       """
     And the response should contain "href=\"/talks/evenements/forum\""
     And I should see "2 talks · 2 vidéos"
@@ -271,12 +271,15 @@ Feature: Site Public - Talks
     Then the response status code should be 200
     And I should see "Historique des conférences de l'AFUP" in the "h1" element
     And the response should contain "<link rel=\"canonical\" href=\"https://apachephptest:80/talks/\" />"
-    # Les données de test n'ont que 2 talks publiés avec vidéo (le hub en affiche jusqu'à 12) ;
-    # « Révolutionons PHP » a une vidéo mais une publication à venir.
+    # Les données de test n'ont que 5 talks publiés avec vidéo (le hub en affiche jusqu'à 12) ;
+    # « Révolutionons PHP » et « Un talk pas encore publié » ont une vidéo mais une publication à venir.
     And the texts of "#dernieres-videos article h3" should be, in this order:
       """
       REST ou GraphQL ? Exemples illustrés avec Symfony et API Platform
       Jouons tous ensemble à un petit jeu
+      Clôture : le futur de PHP
+      Observabilité avec OpenTelemetry
+      Tester sans se ruiner
       """
     And the response should contain "href=\"/talks/2-rest-ou-graphql-exemples-illustres-avec-symfony-et-api-platform\""
     And the response should contain "href=\"/talks/1-jouons-tous-ensemble-a-un-petit-jeu\""
@@ -322,3 +325,52 @@ Feature: Site Public - Talks
     Then the response should not contain "id=\"dernieres-videos\""
     When I go to "/talks/?q=&hPP=7&idx=afup_talks&p=0&is_v=1&utm_source=newsletter"
     Then the response should contain "id=\"dernieres-videos\""
+
+  @reloadDbWithTestData
+  Scenario: Fil d'Ariane de la page d'un talk
+    When I go to "/talks/6-revolutionons-php"
+    Then I should see "Accueil" in the "nav[aria-label^=Fil]" element
+    And I should see "Conférences" in the "nav[aria-label^=Fil]" element
+    And I should see "Un évènement du passé" in the "nav[aria-label^=Fil]" element
+    And I should see "Révolutionons PHP" in the "nav[aria-label^=Fil] [aria-current=page]" element
+    And the JSON-LD "BreadcrumbList" should have the following items:
+      | position | name                  | item                                                                                    |
+      | 1        | Accueil               | https://apachephptest:80/                                                               |
+      | 2        | Conférences           | https://apachephptest:80/talks/                                                         |
+      | 3        | Un évènement du passé | https://apachephptest:80/talks/evenements/passed                                        |
+      | 4        | Révolutionons PHP     | https://apachephptest:80/talks/6-revolutionons-php                                      |
+
+  @reloadDbWithTestData
+  Scenario: Liens vers les autres talks depuis la page d'un talk
+    When I go to "/talks/6-revolutionons-php"
+    Then the page should contain at least 7 links to other talks
+    And I should see "Keynote d'ouverture" in the "a[rel=prev]" element
+    And I should see "Tester sans se ruiner" in the "a[rel=next]" element
+    # 3 talks de l'édition, hors voisins, les vidéos d'abord, puis le lien vers la page de l'édition
+    And I should see "Aussi à l'Un évènement du passé"
+    And the texts of "section:has(a[href='/talks/evenements/passed']) li" should be, in this order:
+      """
+      Observabilité avec OpenTelemetry
+      Clôture : le futur de PHP
+      Migrer une application legacy
+      """
+    And I should see "Tous les talks de l'Un évènement du passé"
+    And I should not see "Le typage statique en pratique"
+    # Les autres talks de la personne, du plus récent au plus ancien, puis le lien vers sa page
+    And I should see "Autres talks de Geoffrey BACHELET"
+    And the texts of "section:has(a[href='/talks/speakers/geoffrey-bachelet']) li" should be, in this order:
+      """
+      REST ou GraphQL ? Exemples illustrés avec Symfony et API Platform forum
+      Jouons tous ensemble à un petit jeu forum
+      """
+    And I should see "Tous les talks de Geoffrey BACHELET"
+    And I should not see "Un talk pas encore publié"
+
+  @reloadDbWithTestData
+  Scenario: Premier et dernier talks du planning d'une édition
+    When I go to "/talks/8-keynote-d-ouverture"
+    Then I should not see "Précédent dans le planning"
+    And I should see "Révolutionons PHP" in the "a[rel=next]" element
+    When I go to "/talks/7-cloture-le-futur-de-php"
+    Then I should see "Le typage statique en pratique" in the "a[rel=prev]" element
+    And I should not see "Suivant dans le planning"

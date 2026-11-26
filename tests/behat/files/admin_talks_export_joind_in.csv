@@ -1,2 +1,8 @@
 Title,Description,Speaker,Date,Time,Type
+"Keynote d'ouverture","Résumé du talk « Keynote d'ouverture ».","John Doe",2020-09-15,09:00,Talk
 "Révolutionons PHP","Hey ! Viens changer PHP avec moi !","Geoffrey Bachelet",2020-09-15,10:00,Talk
+"Tester sans se ruiner","Résumé du talk « Tester sans se ruiner ».","John Doe",2020-09-15,11:00,Talk
+"Migrer une application legacy","Résumé du talk « Migrer une application legacy ».","John Doe",2020-09-15,12:00,Talk
+"Observabilité avec OpenTelemetry","Résumé du talk « Observabilité avec OpenTelemetry ».","John Doe",2020-09-15,14:00,Talk
+"Le typage statique en pratique","Résumé du talk « Le typage statique en pratique ».","John Doe",2020-09-15,15:00,Talk
+"Clôture : le futur de PHP","Résumé du talk « Clôture : le futur de PHP ».","John Doe",2020-09-15,16:00,Talk

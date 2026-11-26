@@ -29,6 +29,7 @@ class FeatureContext implements Context
     use EmailContext;
     use FormContext;
     use PdfContext;
+    use SeoContext;
     use TimeContext;
     use WaitContext;
 

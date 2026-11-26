@@ -1,0 +1,17 @@
+{# Vignette d'un talk lié, sur la page d'un talk : un seul lien (vignette et titre), et en option
+   une ligne de texte (`subtitle`, par exemple l'édition). Plus légère que _talk_card.html.twig, pour
+   ne pas multiplier les liens dans les sections de recirculation. #}
+<a href="{{ path('talks_show', {id: talk.id, slug: talk.slug}) }}" class="group flex flex-col gap-2">
+    {% if talk.hasYoutubeId %}
+        <img src="https://img.youtube.com/vi/{{ talk.youtubeId }}/mqdefault.jpg" alt="" loading="lazy"
+             class="w-full aspect-video rounded-xl object-cover bg-neutre-200" />
+    {% else %}
+        <span class="w-full aspect-video rounded-xl bg-afup-100 flex items-center justify-center text-afup-300">
+            <twig:ux:icon name="mingcute:presentation-1-fill" class="size-10" />
+        </span>
+    {% endif %}
+    <span class="font-semibold text-afup-800 group-hover:text-afup-500">{{ talk.title }}</span>
+    {% if subtitle|default(null) %}
+        <span class="text-sm text-neutre-400">{{ subtitle }}</span>
+    {% endif %}
+</a>
