@@ -2,12 +2,17 @@
 
 {% block title %}Les actualités de l'AFUP, page {{ current_page }}{% endblock %}
 
-{% block canonical %}
-    {% if current_page == 1 %}
-        <link rel="canonical" href="{{ url('news_list') }}" />
-    {% else %}
-        <link rel="canonical" href="{{ url('news_list', {page: current_page}) }}" />
+{% block metas %}
+    {{ parent() }}
+    {# Une liste filtrée est une page de recherche : utile aux visiteurs, hors de l'index. #}
+    {% if is_filtered %}
+        <meta name="robots" content="noindex, follow">
     {% endif %}
+{% endblock %}
+
+{# Chaque page est sa propre canonical, filtres compris, avec les paramètres normalisés par le contrôleur. #}
+{% block canonical %}
+    <link rel="canonical" href="{{ url('news_list', (current_page > 1 ? {page: current_page} : {})|merge(is_filtered ? {news_filters: query_filters} : {})) }}" />
 {% endblock %}
 
 {% block content %}
@@ -45,7 +50,7 @@
             pages: pages,
             current_page: current_page,
             last_page: last_page,
-            extra_parameters: {news_filters: filters},
+            extra_parameters: {news_filters: query_filters},
         } only %}
     </div>
 
@@ -59,7 +64,7 @@
                     <twig:Form:FilterList :field="form.event" title="Cycle de conférences" />
                 </div>
 
-                {% if filters|filter(values => values is not empty)|length %}
+                {% if is_filtered %}
                     <a href="{{ path('news_list') }}" class="text-neutre-400">
                         Effacer les filtres
                     </a>

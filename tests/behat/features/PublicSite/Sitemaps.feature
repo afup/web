@@ -38,6 +38,8 @@ Feature: Site Public - Sitemaps
     And the response should contain "<loc>https://apachephptest:80/news/?page=4</loc>"
     And the response should not contain "?page=1<"
     And the response should not contain "?page=5"
+    # Une liste filtrée est une page de recherche, hors sitemap
+    And the response should not contain "news_filters"
 
   @reloadDbWithTestData
   Scenario: On accède sitemap members
