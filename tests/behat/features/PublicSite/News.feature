@@ -136,3 +136,17 @@ Feature: Site Public - News
       | /news/?news_filters[event][0]=999                       |
       | /news/?news_filters[year][0]=2018&news_filters[theme][0]=1 |
       | /news/?page=4&news_filters[theme][0]=1                  |
+
+  @reloadDbWithTestData
+  Scenario: Titre et meta description de la liste des actualités
+    Given I am on "/news/"
+    Then I should see 1 "h1" elements
+    And the "h1" element should contain "Actualités de l'AFUP"
+    And the page should have a meta description
+
+  @reloadDbWithTestData
+  Scenario: Meta description d'un article tirée de son chapeau, sans Markdown
+    Given I am on "/news/"
+    When I follow "Lire l'article: Un article en Markdown"
+    Then the page should have a meta description
+    And the meta description should be "Un peu de text avec de la mise en forme"

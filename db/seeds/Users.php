@@ -29,6 +29,7 @@ class Users extends AbstractSeed
                 'prenom' => 'Raoul',
                 'email' => 'raoul.dupont@mycorp.fr',
                 'raison_sociale' => 'MyCorp',
+                'description' => "MyCorp développe des applications PHP sur mesure & accompagne les équipes dans leurs migrations.",
                 'siret' => '4445451',
                 'adresse' => '12 cours Hopper',
                 'code_postal' => '69001',

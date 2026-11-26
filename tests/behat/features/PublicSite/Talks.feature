@@ -374,3 +374,35 @@ Feature: Site Public - Talks
     When I go to "/talks/7-cloture-le-futur-de-php"
     Then I should see "Le typage statique en pratique" in the "a[rel=prev]" element
     And I should not see "Suivant dans le planning"
+
+  @reloadDbWithTestData
+  Scenario: Meta description d'un talk tirée de son résumé, sans balises et tronquée
+    When I go to "/talks/2-rest-ou-graphql-exemples-illustres-avec-symfony-et-api-platform"
+    Then the page should have a meta description
+    And the meta description should be "GraphQL est une alternative aux architectures REST pour la réalisation d’API web. Le langage promu par Facebook a des avantages indéniab les…"
+
+  @reloadDbWithTestData
+  Scenario: Meta description de la liste des vidéos
+    When I go to "/talks/"
+    Then the page should have a meta description
+
+  @reloadDbWithTestData
+  Scenario: Meta description des pages speaker et événement
+    When I go to "/talks/speakers/geoffrey-bachelet"
+    Then the meta description should be "Geoffrey Bachelet : 3 talks aux conférences de l'AFUP, dont « REST ou GraphQL ? Exemples illustrés avec Symfony et API Platform » (forum). Président…"
+    When I go to "/talks/evenements/forum"
+    Then the page should have a meta description
+    When I go to "/talks/speakers/"
+    Then the page should have a meta description
+    When I go to "/talks/evenements/"
+    Then the page should have a meta description
+
+  @reloadDbWithTestData
+  Scenario: Le title d'un talk au titre court contient l'évènement
+    When I go to "/talks/1-jouons-tous-ensemble-a-un-petit-jeu"
+    Then the response should contain "<title>Jouons tous ensemble à un petit jeu – forum</title>"
+
+  @reloadDbWithTestData
+  Scenario: Le title d'un talk au titre long se limite au titre
+    When I go to "/talks/2-rest-ou-graphql-exemples-illustres-avec-symfony-et-api-platform"
+    Then the response should contain "<title>REST ou GraphQL ? Exemples illustrés avec Symfony et API Platform</title>"

@@ -360,6 +360,41 @@ class FeatureContext implements Context
         }
     }
 
+    #[Then('the page should have a meta description')]
+    public function assertMetaDescriptionIsNotEmpty(): void
+    {
+        if ($this->getMetaDescription() === '') {
+            throw new ExpectationException('The meta description is empty', $this->minkContext->getSession()->getDriver());
+        }
+    }
+
+    #[Then('the meta description should be :expected')]
+    public function assertMetaDescriptionEquals(string $expected): void
+    {
+        $actual = $this->getMetaDescription();
+
+        if ($actual !== $expected) {
+            throw new ExpectationException(
+                sprintf('The meta description is "%s", "%s" expected', $actual, $expected),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+    }
+
+    private function getMetaDescription(): string
+    {
+        $metas = $this->minkContext->getSession()->getPage()->findAll('css', 'meta[name="description"]');
+
+        if (count($metas) !== 1) {
+            throw new ExpectationException(
+                sprintf('Exactly one meta description expected, %d found', count($metas)),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+
+        return trim((string) $metas[0]->getAttribute('content'));
+    }
+
     #[Then('/^(?:|I )click on link with (class|id) "(?P<text>(?:[^"]|\\")*)"$/')]
     public function clickOnLink(string $type, string $text): void
     {

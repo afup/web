@@ -24,7 +24,7 @@ Feature: Administration - Partie Site
     Then I should see "Liste des rubriques"
     And the ".content table" element should contain "Évènement"
     # modification d'une rubrique
-    When I follow "modifier_10"
+    When I follow "modifier_86"
     Then I should see "Modifier une rubrique"
     When I fill in "rubrique[nom]" with "Évènements"
     And I press "Modifier"
@@ -35,10 +35,10 @@ Feature: Administration - Partie Site
     Then I should see "Liste des articles"
     When I follow "Ajouter"
     Then I should see "Ajouter un article"
-    Then The "article[rubrique]" field should only contain the follow values '["Actualités", "Évènements"]'
+    Then The "article[rubrique]" field should only contain the follow values '["Actualités", "Association", "Évènements"]'
 
     # suppression d'une rubrique
     When I follow "Rubriques"
-    And I follow "supprimer_10"
+    And I follow "supprimer_86"
     Then I should see "Liste des rubriques"
     But the ".content table" element should not contain "Évènements"

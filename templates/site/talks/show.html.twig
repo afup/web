@@ -7,7 +7,9 @@
     { name: talk.title, url: url('talks_show', {id: talk.id, slug: talk.slug}) },
 ] %}
 
-{% block title %}{{ talk.title }} - {{ event.title }}{% endblock %}
+{% block title %}{{ talk_page_title(talk.title, event.title) }}{% endblock %}
+
+{% block description %}{{ talk.description|meta_description }}{% endblock %}
 
 {% block metas %}
     {{ parent() }}
