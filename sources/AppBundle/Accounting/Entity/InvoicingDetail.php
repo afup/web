@@ -38,7 +38,6 @@ class InvoicingDetail
     #[ORM\Column(name: 'pu', type: 'float', nullable: false)]
     public ?float $prixUnitaire = null; // @phpstan-ignore doctrine.columnType (un champ vide donne null, rejeté ensuite par NotBlank)
 
-    #[Assert\NotBlank]
-    #[ORM\Column(type: 'float', nullable: true)]
-    public ?float $tva = null;
+    #[ORM\Column(type: 'float', nullable: false, options: ['default' => 0])]
+    public float $tva = 0.0;
 }
