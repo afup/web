@@ -58,6 +58,11 @@ final class AntenneType extends AbstractType
                 'help' => 'Identifiant numérique du groupe Meetup',
                 'required' => false,
             ])
+            ->add('slackMembresIdCanal', TextType::class, [
+                'label' => 'ID canal Slack Membres',
+                'help' => "Identifiant du canal de l'antenne sur le Slack Membres (ex. C0123ABCDEF), visible tout en bas de « Afficher les détails du canal » ou à la fin du lien copié via clic droit sur le canal > Copier > Copier le lien.",
+                'required' => false,
+            ])
             ->add('reseauxSociaux', ReseauxSociauxType::class, [
                 'label' => false,
             ])
