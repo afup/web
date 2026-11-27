@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: InvoicingRepository::class)]
 #[ORM\Table(name: 'afup_compta_facture')]
@@ -25,57 +26,75 @@ class Invoicing
     #[ORM\Column(name: 'date_devis', type: Types::DATE_MUTABLE, nullable: false)]
     public \DateTime $dateDevis;
 
+    #[Assert\Length(max: 50)]
     #[ORM\Column(name: 'numero_devis', length: 50, nullable: false)]
     public string $numeroDevis = '';
 
     #[ORM\Column(name: 'date_facture', type: Types::DATE_MUTABLE, nullable: true)]
     public ?\DateTime $dateFacture = null;
 
+    #[Assert\Length(max: 50)]
     #[ORM\Column(name: 'numero_facture', length: 50, nullable: true)]
     public ?string $numeroFacture = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 50)]
     #[ORM\Column(name: 'societe', length: 50, nullable: false)]
     public string $societe = '';
 
+    #[Assert\Length(max: 50)]
     #[ORM\Column(name: 'service', length: 50, nullable: false)]
     public string $service = '';
 
     #[ORM\Column(name: 'adresse', type: 'text', nullable: false)]
     public string $adresse = '';
 
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 10)]
     #[ORM\Column(name: 'code_postal', length: 10, nullable: false)]
     public string $codePostal = '';
 
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 50)]
     #[ORM\Column(name: 'ville', length: 50, nullable: false)]
     public string $ville = '';
 
     #[ORM\Column(name: 'id_pays', length: 10, nullable: false)]
     public string $idPays = '';
 
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     #[ORM\Column(length: 100, nullable: false)]
     public string $email = '';
 
+    #[Assert\Length(max: 20)]
     #[ORM\Column(name: 'tva_intra', length: 20, nullable: true)]
     public ?string $tvaIntra = null;
 
     #[ORM\Column(type: 'text', nullable: false)]
     public string $observation = '';
 
+    #[Assert\Length(max: 50)]
     #[ORM\Column(name: 'ref_clt1', length: 50, nullable: false)]
     public string $referenceClient1 = '';
 
+    #[Assert\Length(max: 50)]
     #[ORM\Column(name: 'ref_clt2', length: 50, nullable: false)]
     public string $referenceClient2 = '';
 
+    #[Assert\Length(max: 50)]
     #[ORM\Column(name: 'ref_clt3', length: 50, nullable: false)]
     public string $referenceClient3 = '';
 
+    #[Assert\Length(max: 50)]
     #[ORM\Column(name: 'nom', length: 50, nullable: false)]
     public string $nom = '';
 
+    #[Assert\Length(max: 50)]
     #[ORM\Column(name: 'prenom', length: 50, nullable: false)]
     public string $prenom = '';
 
+    #[Assert\Length(max: 30)]
     #[ORM\Column(name: 'tel', length: 30, nullable: false)]
     public string $telephone = '';
 

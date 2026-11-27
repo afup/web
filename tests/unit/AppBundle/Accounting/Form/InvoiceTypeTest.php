@@ -88,6 +88,23 @@ class InvoiceTypeTest extends TypeTestCase
     }
 
     /**
+     * Les contraintes sont portées par l'entité : leur erreur doit s'afficher sous le champ,
+     * l'écran facture n'affichant pas les erreurs globales du formulaire.
+     */
+    #[Test]
+    public function unCodePostalTropLongEstRefuseSousLeChamp(): void
+    {
+        $invoice = $this->newInvoice([$this->detail('SPONSO', 'Sponsoring bronze')]);
+        $form = $this->factory->create(InvoiceType::class, $invoice);
+
+        $form->submit(array_merge($this->payload(), ['codePostal' => '12345678901']));
+
+        self::assertFalse($form->isValid());
+        self::assertCount(1, $form->get('codePostal')->getErrors());
+        self::assertCount(0, $form->getErrors());
+    }
+
+    /**
      * @return iterable<string, array{string}>
      */
     public static function champsObligatoires(): iterable
