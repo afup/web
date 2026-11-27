@@ -44,6 +44,7 @@ final readonly class GetOneAction
                 'cfp' => $antenne->reseauxSociaux->cfp,
                 'github' => $this->createLink('https://github.com/', $antenne->reseauxSociaux->github),
                 'discord' => $this->createLink('https://discord.com/invite/', $antenne->reseauxSociaux->discord),
+                'email' => $antenne->reseauxSociaux->email,
             ],
         ];
 

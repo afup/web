@@ -12,6 +12,7 @@ Feature: Antennes API routes
     And the json response has the key "$.links.meetup" with value "https://www.meetup.com/fr-FR/afup-lyon-php"
     And the json response has the key "$.links.linkedin" with value "https://www.linkedin.com/company/afup-lyon"
     And the json response has the key "$.links.bluesky" with value "https://bsky.app/profile/lyon.afup.org"
+    And the json response has the key "$.links.email" with value "lyon@afup.org"
     And the json response has the key "$.next_meetup.title" with value "Le super meetup"
     And the json response has the key "$.next_meetup.date" with value "2025-11-08 19:00:00"
     And the json response has the key "$.next_meetup.location" with value "123 rue de la fleur"

@@ -38,6 +38,7 @@ final class AntenneReseauxSociauxType extends JsonValueObjectType
             cfp: self::nullableString($data, 'cfp'),
             github: self::nullableString($data, 'github'),
             discord: self::nullableString($data, 'discord'),
+            email: self::nullableString($data, 'email'),
         );
     }
 
@@ -53,6 +54,7 @@ final class AntenneReseauxSociauxType extends JsonValueObjectType
                 'cfp' => $value->cfp,
                 'github' => $value->github,
                 'discord' => $value->discord,
+                'email' => $value->email,
             ],
             static fn(?string $reseau): bool => $reseau !== null,
         );

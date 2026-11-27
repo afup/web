@@ -168,6 +168,7 @@ class Antenne extends AbstractSeed
                     'twitter' => 'AFUP_Lyon',
                     'linkedin' => 'afup-lyon',
                     'bluesky' => 'lyon.afup.org',
+                    'email' => 'lyon@afup.org',
                 ],
                 'carte' => [
                     'utiliserSecondeCouleur' => false,
