@@ -122,6 +122,42 @@ final class InvoicingRepository extends EntityRepository
     }
 
     /**
+     * Recherche comptable : devis et factures dont un champ texte contient la recherche,
+     * avec le total et les références/désignations des lignes (quantité positive).
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function searchAllQuotesAndInvoices(string $search): array
+    {
+        $queryBuilder = $this->getEntityManager()->getConnection()->createQueryBuilder();
+
+        return $queryBuilder
+            ->select(
+                'inv.*',
+                'SUM(det.pu * det.quantite) AS total',
+                "GROUP_CONCAT(det.ref SEPARATOR ', ') AS refs",
+                "GROUP_CONCAT(det.designation SEPARATOR ', ') AS details",
+            )
+            ->from('afup_compta_facture', 'inv')
+            ->leftJoin('inv', 'afup_compta_facture_details', 'det', 'det.idafup_compta_facture = inv.id AND det.quantite > 0')
+            ->where($queryBuilder->expr()->or(
+                'inv.numero_devis LIKE :like',
+                'inv.numero_facture LIKE :like',
+                'inv.societe LIKE :like',
+                'inv.service LIKE :like',
+                'inv.email LIKE :like',
+                'inv.ref_clt1 LIKE :like',
+                'inv.ref_clt2 LIKE :like',
+                'inv.ref_clt3 LIKE :like',
+                'inv.observation LIKE :like',
+            ))
+            ->groupBy('inv.id')
+            ->setParameter('like', '%' . $search . '%')
+            ->executeQuery()
+            ->fetchAllAssociative();
+    }
+
+    /**
      * @param array<array{0: Invoicing, prix: float|null}> $rows
      * @return array<Invoicing>
      */
