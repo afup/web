@@ -15,5 +15,6 @@ final readonly class ReseauxSociaux
         public ?string $cfp = null,
         public ?string $github = null,
         public ?string $discord = null,
+        public ?string $email = null,
     ) {}
 }

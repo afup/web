@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Antennes\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -56,6 +57,11 @@ final class ReseauxSociauxType extends AbstractType
             ->add('cfp', UrlType::class, [
                 'label' => 'CFP',
                 'default_protocol' => 'https',
+                'required' => false,
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'Email',
+                'help' => 'Adresse de contact de l\'antenne (ex. lyon@afup.org)',
                 'required' => false,
             ]);
     }

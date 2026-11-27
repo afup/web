@@ -23,11 +23,12 @@ final class AntenneReseauxSociauxTypeTest extends TestCase
             twitter: 'AFUP_Lyon',
             linkedin: 'afup-lyon',
             bluesky: 'lyon.afup.org',
+            email: 'lyon@afup.org',
         );
 
         $json = $type->convertToDatabaseValue($socials, $platform);
         self::assertSame(
-            '{"youtube":"https://www.youtube.com/@afuplyon","blog":"https://lyon.afup.org","twitter":"AFUP_Lyon","linkedin":"afup-lyon","bluesky":"lyon.afup.org"}',
+            '{"youtube":"https://www.youtube.com/@afuplyon","blog":"https://lyon.afup.org","twitter":"AFUP_Lyon","linkedin":"afup-lyon","bluesky":"lyon.afup.org","email":"lyon@afup.org"}',
             $json,
         );
 

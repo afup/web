@@ -29,6 +29,9 @@ final class ReseauxSociauxFormData
     #[Assert\Url(requireTld: true)]
     public ?string $discord = null;
 
+    #[Assert\Email]
+    public ?string $email = null;
+
     public static function fromReseauxSociaux(ReseauxSociaux $reseauxSociaux): self
     {
         $data = new self();
@@ -40,6 +43,7 @@ final class ReseauxSociauxFormData
         $data->cfp = $reseauxSociaux->cfp;
         $data->github = $reseauxSociaux->github;
         $data->discord = $reseauxSociaux->discord;
+        $data->email = $reseauxSociaux->email;
 
         return $data;
     }
@@ -55,6 +59,7 @@ final class ReseauxSociauxFormData
             cfp: self::nullIfEmpty($this->cfp),
             github: self::nullIfEmpty($this->github),
             discord: self::nullIfEmpty($this->discord),
+            email: self::nullIfEmpty($this->email),
         );
     }
 
