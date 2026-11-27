@@ -11,19 +11,16 @@ use AppBundle\Event\Model\EventStats\SalesPilotage;
 use AppBundle\Event\Model\EventStats\TicketTypeStats;
 use AppBundle\Event\Model\EventStats;
 use AppBundle\Event\Model\EventStats\DailyStats;
-use AppBundle\Event\Model\Ticket;
 use Datetime;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
-use Webmozart\Assert\Assert;
 use DateTimeImmutable;
+use AppBundle\Event\Enum\InscriptionEtat;
+use AppBundle\Event\Enum\JourTarif;
+use AppBundle\Event\Enum\TypeInscription;
 
 class EventStatsRepository
 {
-    private const string DAY_ONE = 'one';
-    private const string DAY_TWO = 'two';
-    private const array DAYS = [self::DAY_ONE, self::DAY_TWO];
-
     public function __construct(
         private readonly Connection $connection,
         private readonly TalkRepository $talkRepository,
@@ -34,8 +31,8 @@ class EventStatsRepository
     public function getStats(int $eventId, ?Datetime $from = null): EventStats
     {
         return new EventStats(
-            $this->getStatsForDay($eventId, self::DAY_ONE, $from),
-            $this->getStatsForDay($eventId, self::DAY_TWO, $from),
+            $this->getStatsForDay($eventId, JourTarif::Un, $from),
+            $this->getStatsForDay($eventId, JourTarif::Deux, $from),
             $this->getStatsForTicketTypes($eventId, $from),
             $this->getCFPStats($eventId),
         );
@@ -58,7 +55,7 @@ class EventStatsRepository
 
         $queryBuilder = clone $baseQueryBuilder;
         $statement = $queryBuilder->andWhere('etat IN(:states)')
-            ->setParameter('states', [Ticket::STATUS_PAID, Ticket::STATUS_WAITING, Ticket::STATUS_GUEST], ArrayParameterType::INTEGER)
+            ->setParameter('states', [InscriptionEtat::Reglee->value, InscriptionEtat::AttenteReglement->value, InscriptionEtat::Invitation->value], ArrayParameterType::INTEGER)
             ->executeQuery();
 
         $confirmed = [];
@@ -68,7 +65,7 @@ class EventStatsRepository
 
         $queryBuilder = clone $baseQueryBuilder;
         $statement = $queryBuilder->andWhere('etat IN(:states)')
-            ->setParameter('states', [Ticket::STATUS_PAID, Ticket::STATUS_WAITING], ArrayParameterType::INTEGER)
+            ->setParameter('states', [InscriptionEtat::Reglee->value, InscriptionEtat::AttenteReglement->value], ArrayParameterType::INTEGER)
             ->executeQuery();
 
         $paying = [];
@@ -80,7 +77,7 @@ class EventStatsRepository
         $queryBuilder
             ->select('type_inscription', 'SUM(montant) AS montant')
             ->andWhere('etat IN(:states)')
-            ->setParameter('states', [Ticket::STATUS_PAID, Ticket::STATUS_WAITING], ArrayParameterType::INTEGER);
+            ->setParameter('states', [InscriptionEtat::Reglee->value, InscriptionEtat::AttenteReglement->value], ArrayParameterType::INTEGER);
         $statement = $queryBuilder->executeQuery();
 
         $realAmounts = [];
@@ -94,15 +91,15 @@ class EventStatsRepository
         $queryBuilder
             ->select('COUNT(DISTINCT montant) AS nb_prices')
             ->andWhere('type_inscription = :specialPrice')
-            ->setParameter('specialPrice', Ticket::TYPE_SPECIAL_PRICE)
+            ->setParameter('specialPrice', TypeInscription::PrixSpecial->value)
             ->andWhere('etat IN(:states)')
-            ->setParameter('states', [Ticket::STATUS_PAID, Ticket::STATUS_WAITING], ArrayParameterType::INTEGER);
+            ->setParameter('states', [InscriptionEtat::Reglee->value, InscriptionEtat::AttenteReglement->value], ArrayParameterType::INTEGER);
         $nbPrices = $queryBuilder->executeQuery()->fetchOne();
         $specialPriceDistinctAmounts = is_numeric($nbPrices) ? (int) $nbPrices : 0;
 
         $queryBuilder = clone $baseQueryBuilder;
         $statement = $queryBuilder->andWhere('etat NOT IN(:states)')
-            ->setParameter('states', [Ticket::STATUS_CANCELLED, Ticket::STATUS_ERROR, Ticket::STATUS_DECLINED], ArrayParameterType::INTEGER)
+            ->setParameter('states', [InscriptionEtat::Annulee->value, InscriptionEtat::ErreurPaiement->value, InscriptionEtat::PaiementRefuse->value], ArrayParameterType::INTEGER)
             ->executeQuery();
 
         $registered = [];
@@ -113,15 +110,14 @@ class EventStatsRepository
         return new TicketTypeStats($confirmed, $registered, $paying, $realAmounts, $specialPriceDistinctAmounts);
     }
 
-    private function getStatsForDay(int $eventId, string $day, ?Datetime $from = null): DailyStats
+    private function getStatsForDay(int $eventId, JourTarif $day, ?Datetime $from = null): DailyStats
     {
-        Assert::inArray($day, self::DAYS);
         $baseQueryBuilder = $this->connection->createQueryBuilder()
             ->select('COUNT(*) AS c')
             ->from('afup_inscription_forum', 'aif')
             ->innerJoin('aif', 'afup_forum_tarif', 'aft', 'aif.type_inscription = aft.id')
             ->where('id_forum = :eventId AND FIND_IN_SET(:day, aft.day)')
-            ->setParameter('day', $day)
+            ->setParameter('day', $day->value)
             ->setParameter('eventId', $eventId);
 
         if ($from instanceof \Datetime) {
@@ -131,25 +127,25 @@ class EventStatsRepository
 
         $queryBuilder = clone $baseQueryBuilder;
         $registered = $queryBuilder->andWhere('etat NOT IN(:states)')
-            ->setParameter('states', [Ticket::STATUS_CANCELLED, Ticket::STATUS_ERROR, Ticket::STATUS_DECLINED], ArrayParameterType::INTEGER)
+            ->setParameter('states', [InscriptionEtat::Annulee->value, InscriptionEtat::ErreurPaiement->value, InscriptionEtat::PaiementRefuse->value], ArrayParameterType::INTEGER)
             ->executeQuery()
             ->fetchOne();
 
         $queryBuilder = clone $baseQueryBuilder;
         $confirmed = $queryBuilder->andWhere('etat IN(:states)')
-            ->setParameter('states', [Ticket::STATUS_PAID, Ticket::STATUS_GUEST, Ticket::STATUS_CONFIRMED], ArrayParameterType::INTEGER)
+            ->setParameter('states', [InscriptionEtat::Reglee->value, InscriptionEtat::Invitation->value, InscriptionEtat::Confirmee->value], ArrayParameterType::INTEGER)
             ->executeQuery()
             ->fetchOne();
 
         $queryBuilder = clone $baseQueryBuilder;
         $pending = $queryBuilder->andWhere('etat = :state')
-            ->setParameter('state', Ticket::STATUS_WAITING)
+            ->setParameter('state', InscriptionEtat::AttenteReglement->value)
             ->executeQuery()
             ->fetchOne();
 
         $queryBuilder = clone $baseQueryBuilder;
         $paid = $queryBuilder->andWhere('etat = :state')
-            ->setParameter('state', Ticket::STATUS_PAID)
+            ->setParameter('state', InscriptionEtat::Reglee->value)
             ->executeQuery()
             ->fetchOne();
 
@@ -297,7 +293,7 @@ class EventStatsRepository
             ->where('i.id_forum = :eventId')
             ->andWhere('i.etat = :paid')
             ->setParameter('eventId', $eventId)
-            ->setParameter('paid', Ticket::STATUS_PAID);
+            ->setParameter('paid', InscriptionEtat::Reglee->value);
 
         if ($maxDayOffset !== null) {
             $queryBuilder

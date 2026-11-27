@@ -25,31 +25,32 @@
                 </tr>
             </thead>
             <tbody>
-            {% for invoice in pendingBankwires %}
+            {% for pendingBankwire in pendingBankwires %}
+                {% set invoice = pendingBankwire.invoice %}
                 <tr>
                     <td>
-                        {{ invoice['invoices'].reference }}
+                        {{ invoice.reference }}
                     </td>
                     <td>
-                        {{ invoice['invoices'].company }}
+                        {{ invoice.company }}
                     </td>
                     <td>
-                        {{ invoice['invoices'].amount }}
+                        {{ invoice.amount }}
                     </td>
                     <td>
-                        {% if invoice['invoices'].invoiceDate %}
-                            {{ invoice['invoices'].invoiceDate|date('d/m/Y') }}
+                        {% if invoice.invoiceDate %}
+                            {{ invoice.invoiceDate|date('d/m/Y') }}
                         {% else %}
                             n/a
                         {% endif %}
                     </td>
                     <td>
-                    {% for ticket in invoice['.aggregation']['inscriptions'] %}
+                    {% for ticket in pendingBankwire.inscriptions %}
                         {{ ticket.label }}<br />
                     {% endfor %}
                     </td>
                     <td class="right aligned">
-                        <button class="ui button" type="submit" name="bankwireReceived" value="{{ invoice['invoices'].reference }}">Virement reçu</button>
+                        <button class="ui button" type="submit" name="bankwireReceived" value="{{ invoice.reference }}">Virement reçu</button>
                     </td>
                 </tr>
             {% endfor %}

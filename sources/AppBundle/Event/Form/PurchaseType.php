@@ -7,7 +7,6 @@ namespace AppBundle\Event\Form;
 use Afup\Site\Utils\Pays;
 use AppBundle\Association\Model\User;
 use AppBundle\Event\Model\Invoice;
-use AppBundle\Event\Model\Ticket;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -20,6 +19,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
+use AppBundle\Event\Enum\TypeReglement;
 
 class PurchaseType extends AbstractType
 {
@@ -63,8 +63,8 @@ class PurchaseType extends AbstractType
             ->add('paymentType', ChoiceType::class, [
                 'label' => 'Règlement',
                 'choices' => [
-                    'Carte bancaire' => Ticket::PAYMENT_CREDIT_CARD,
-                    'Virement' => Ticket::PAYMENT_BANKWIRE,
+                    'Carte bancaire' => TypeReglement::CarteBancaire->value,
+                    'Virement' => TypeReglement::Virement->value,
                 ],
                 'expanded' => true,
                 'multiple' => false,

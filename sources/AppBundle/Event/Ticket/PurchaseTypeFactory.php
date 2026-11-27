@@ -11,7 +11,7 @@ use AppBundle\Event\Form\TicketType;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\InvoiceFactory;
 use AppBundle\Event\Model\Repository\SpeakerRepository;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Inscription;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -24,7 +24,7 @@ class PurchaseTypeFactory
         private readonly SpeakerRepository $speakerRepository,
     ) {}
 
-    public function getPurchaseForUser(Event $event, ?User $user = null, $specialPriceToken = null, ?BilleteriePrivee $billeteriePrivee = null, ?int $nbPlacesRestantes = null)
+    public function getPurchaseForUser(Event $event, ?User $user = null, ?string $specialPriceToken = null, ?BilleteriePrivee $billeteriePrivee = null, ?int $nbPlacesRestantes = null)
     {
         $memberType = TicketType::MEMBER_NOT;
 
@@ -42,15 +42,15 @@ class PurchaseTypeFactory
         $isCfpSubmitter = $user instanceof User && $this->speakerRepository->hasCFPSubmitted($event, $user->getEmail());
 
         $invoice = $this->invoiceFactory->createInvoiceForEvent($event);
-        $ticket = new Ticket();
+        $ticket = new Inscription();
 
         if ($billeteriePrivee !== null) {
-            $ticket->setSpecialPriceToken($billeteriePrivee->token);
+            $ticket->specialPriceToken = $billeteriePrivee->token;
             for ($i = 1; $i <= min($nbPlacesRestantes ?? 1, PurchaseType::MAX_NB_PERSONNES); $i++) {
                 $invoice->addTicket(clone $ticket);
             }
         } elseif (null !== $specialPriceToken) {
-            $ticket->setSpecialPriceToken($specialPriceToken);
+            $ticket->specialPriceToken = $specialPriceToken;
             $invoice->addTicket(clone $ticket);
         } else {
             for ($i = 1; $i <= PurchaseType::MAX_NB_PERSONNES; $i++) {

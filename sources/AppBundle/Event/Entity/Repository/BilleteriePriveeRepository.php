@@ -7,8 +7,8 @@ namespace AppBundle\Event\Entity\Repository;
 use AppBundle\Doctrine\EntityRepository;
 use AppBundle\Event\Entity\BilleteriePrivee;
 use AppBundle\Event\Entity\Inscription;
-use AppBundle\Event\Model\Ticket;
 use Doctrine\Persistence\ManagerRegistry;
+use AppBundle\Event\Enum\InscriptionEtat;
 
 /**
  * @extends EntityRepository<BilleteriePrivee>
@@ -75,9 +75,9 @@ final class BilleteriePriveeRepository extends EntityRepository
             ->select('COUNT(inscription.id)')
             ->from(Inscription::class, 'inscription')
             ->where('inscription.specialPriceToken = :token')
-            ->andWhere('inscription.etat <> :etatAnnule')
+            ->andWhere('inscription.status <> :etatAnnule')
             ->setParameter('token', $token)
-            ->setParameter('etatAnnule', Ticket::STATUS_CANCELLED)
+            ->setParameter('etatAnnule', InscriptionEtat::Annulee->value)
             ->getQuery()
             ->getSingleScalarResult()
         ;

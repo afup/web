@@ -1388,12 +1388,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Command/QrCodesGeneratorCommand.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$idTicket of method AppBundle\\\\Event\\\\Ticket\\\\QrCodeGenerator\\:\\:generate\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Command/QrCodesGeneratorCommand.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$filename of class SplFileObject constructor expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -1748,12 +1742,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Accounting/SearchAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method count\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/DeleteSponsorTicketAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot cast mixed to string\\.$#',
 	'identifier' => 'cast.string',
 	'count' => 1,
@@ -1806,12 +1794,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/PendingBankwiresAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$fields of method SplFileObject\\:\\:fputcsv\\(\\) expects array, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/PreviousRegistrationsAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot access property \\$id on AppBundle\\\\Event\\\\Entity\\\\TicketType\\|null\\.$#',
@@ -1970,196 +1952,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/StatsAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getAmount\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getForumId\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getInvoiceStatus\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getLabel\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getPaymentDate\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getStatus\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getTicketTypeId\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setAmount\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setDate\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setForumId\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setInvoice\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setInvoiceDate\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setReference\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setStatus\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setTicketEventType\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot use array destructuring on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonArray',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\Invoice\\>\\:\\:save\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Invoice, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\Ticket\\>\\:\\:save\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Ticket, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$eventId of method AppBundle\\\\Event\\\\Invoice\\\\EventInvoiceReferenceGenerator\\:\\:generate\\(\\) expects int, int\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$label of method AppBundle\\\\Event\\\\Invoice\\\\EventInvoiceReferenceGenerator\\:\\:generate\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getLabel\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getStatus\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setStatus\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot use array destructuring on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonArray',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\Invoice\\>\\:\\:save\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Invoice, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\Ticket\\>\\:\\:save\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Ticket, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/EditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/EditAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Event\\\\Ticket\\\\IndexAction\\:\\:computeStatistics\\(\\) return type has no value type specified in iterable type array\\.$#',
@@ -2192,19 +1988,19 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/IndexAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\$search of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getByEventWithAll\\(\\) expects string\\|null, mixed given\\.$#',
+	'message' => '#^Parameter \\$search of method AppBundle\\\\Event\\\\Entity\\\\Repository\\\\InscriptionRepository\\:\\:getByEventWithAll\\(\\) expects string\\|null, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/IndexAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\$sortDirection of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getByEventWithAll\\(\\) expects string\\|null, mixed given\\.$#',
+	'message' => '#^Parameter \\$sortDirection of method AppBundle\\\\Event\\\\Entity\\\\Repository\\\\InscriptionRepository\\:\\:getByEventWithAll\\(\\) expects string\\|null, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/IndexAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\$sortKey of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getByEventWithAll\\(\\) expects string\\|null, mixed given\\.$#',
+	'message' => '#^Parameter \\$sortKey of method AppBundle\\\\Event\\\\Entity\\\\Repository\\\\InscriptionRepository\\:\\:getByEventWithAll\\(\\) expects string\\|null, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Ticket/IndexAction.php',
@@ -2604,12 +2400,6 @@ $ignoreErrors[] = [
 	'identifier' => 'offsetAccess.invalidOffset',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Speaker/SpeakerListAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$forumId of method AppBundle\\\\Event\\\\Model\\\\Ticket\\:\\:setForumId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Speaker/SpeakerRegisterAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$speakers of method AppBundle\\\\Event\\\\Entity\\\\Repository\\\\TalkToSpeakerRepository\\:\\:replaceSpeakers\\(\\) expects array\\<AppBundle\\\\Event\\\\Model\\\\Speaker\\>, mixed given\\.$#',
@@ -3056,12 +2846,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/SponsorScan/NewAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Ticket/PaymentAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Controller\\\\Event\\\\Ticket\\\\PaymentAction\\:\\:__invoke\\(\\) has parameter \\$eventSlug with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
 	'count' => 1,
@@ -3152,12 +2936,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Ticket/TicketAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$companyCitation of method AppBundle\\\\Event\\\\Model\\\\Ticket\\:\\:setCompanyCitation\\(\\) expects bool, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Ticket/TicketAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$eventId of method AppBundle\\\\Event\\\\Invoice\\\\EventInvoiceReferenceGenerator\\:\\:generate\\(\\) expects int, int\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -3165,12 +2943,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$eventSlug of method AppBundle\\\\Controller\\\\Event\\\\EventActionHelper\\:\\:getEvent\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Ticket/TicketAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$newsletter of method AppBundle\\\\Event\\\\Model\\\\Ticket\\:\\:setNewsletter\\(\\) expects bool, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Ticket/TicketAction.php',
@@ -3920,12 +3692,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Invoice/EventInvoicePdfGenerator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between \'@\' and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Invoice/EventInvoicePdfGenerator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between mixed and "\\\\n" results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 2,
@@ -3947,30 +3713,6 @@ $ignoreErrors[] = [
 	'message' => '#^Binary operation "\\." between non\\-falsy\\-string and mixed results in an error\\.$#',
 	'identifier' => 'binaryOp.invalid',
 	'count' => 10,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Invoice/EventInvoicePdfGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'montant\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 6,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Invoice/EventInvoicePdfGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'nom\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Invoice/EventInvoicePdfGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'prenom\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Invoice/EventInvoicePdfGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'pretty_name\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Invoice/EventInvoicePdfGenerator.php',
 ];
 $ignoreErrors[] = [
@@ -4094,12 +3836,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Invoice/InvoiceService.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Invoice\\\\InvoiceService\\:\\:handleInvoicing\\(\\) has parameter \\$reference with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Invoice/InvoiceService.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Invoice\\\\InvoiceService\\:\\:handleInvoicing\\(\\) has parameter \\$status with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
 	'count' => 1,
@@ -4184,18 +3920,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Invoice/InvoiceService.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$reference of method AppBundle\\\\Event\\\\Model\\\\Invoice\\:\\:setReference\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Invoice/InvoiceService.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$reference of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getByReference\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Invoice/InvoiceService.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$status of method AppBundle\\\\Event\\\\Model\\\\Invoice\\:\\:setStatus\\(\\) expects int, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -4242,24 +3966,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Invoice.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Invoice\\:\\:setTickets\\(\\) has parameter \\$tickets with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Invoice.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Event\\\\Model\\\\Invoice\\:\\:\\$tickets \\(array\\<AppBundle\\\\Event\\\\Model\\\\Ticket\\>\\) does not accept array\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Invoice.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\InvoiceFactory\\:\\:createInvoiceFromSponsorTicket\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/InvoiceFactory.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$forumId of method AppBundle\\\\Event\\\\Model\\\\Invoice\\:\\:setForumId\\(\\) expects int, int\\|null given\\.$#',
@@ -4532,12 +4238,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/InvoiceRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\InvoiceRepository\\:\\:getPendingBankwires\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/InvoiceRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\InvoiceRepository\\:\\:getWithEventDataByReference\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -4575,12 +4275,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/InvoiceRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$array of function implode expects array\\<string\\>, array given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/InvoiceRepository.php',
@@ -4814,174 +4508,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketEventTypeHydrationRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketEventTypeHydrationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\." between \'@\' and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'aff\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'sold_tickets\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'ticket\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'total\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset 0 on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access property \\$last_subscription on mixed\\.$#',
-	'identifier' => 'property.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getAllTicketsForExport\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getByInvoiceWithDetail\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getPublicSoldTickets\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getPublicSoldTicketsByDay\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getPublicSoldTicketsByDay\\(\\) has parameter \\$day with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getPublicSoldTicketsByDayOfType\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getPublicSoldTicketsByDayOfType\\(\\) has parameter \\$day with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getPublicSoldTicketsOfType\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getRegistrationsForEventsWithNewsletterAllowed\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getTotalOfSoldTicketsByMember\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getTotalOfSoldTicketsByMember\\(\\) has parameter \\$eventId with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getTotalOfSoldTicketsByMember\\(\\) has parameter \\$userId with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getTotalOfSoldTicketsByMember\\(\\) has parameter \\$userType with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getWithTicketTypeByReference\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:searchAllPastEvents\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$ticket of class AppBundle\\\\Event\\\\Model\\\\TicketAggregate constructor expects AppBundle\\\\Event\\\\Model\\\\Ticket, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$invoice of class AppBundle\\\\Event\\\\Model\\\\TicketAggregate constructor expects AppBundle\\\\Event\\\\Model\\\\Invoice\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:getHotelNightsArray\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -5052,12 +4578,6 @@ $ignoreErrors[] = [
 	'identifier' => 'class.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Talk.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Ticket\\:\\:getTags\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Ticket.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
@@ -5348,46 +4868,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/PurchaseTypeFactory.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Ticket\\\\PurchaseTypeFactory\\:\\:getPurchaseForUser\\(\\) has parameter \\$specialPriceToken with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/PurchaseTypeFactory.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$specialPriceToken of method AppBundle\\\\Event\\\\Model\\\\Ticket\\:\\:setSpecialPriceToken\\(\\) expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/PurchaseTypeFactory.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$array of function array_key_exists expects array, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/RegistrationsExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getReference\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/SponsorTicketHelper.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Ticket\\\\SponsorTicketHelper\\:\\:getRegisteredTickets\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/SponsorTicketHelper.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$entity of method CCMBenchmark\\\\Ting\\\\Repository\\\\Repository\\<AppBundle\\\\Event\\\\Model\\\\Invoice\\>\\:\\:save\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Invoice, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/SponsorTicketHelper.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$reference of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TicketRepository\\:\\:getByReference\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/SponsorTicketHelper.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Ticket\\\\SponsorTokenMail\\:\\:sendNotification\\(\\) has parameter \\$lastCall with no type specified\\.$#',
@@ -5400,18 +4884,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/TicketOffers.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\-" between int and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/TicketTypeAvailability.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\-" between int\\|null and mixed results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Ticket/TicketTypeAvailability.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Validator\\\\Constraints\\\\AvailableTicketValidator\\:\\:validate\\(\\) has parameter \\$ticket with no type specified\\.$#',
@@ -5428,12 +4900,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
 	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Validator/Constraints/CorporateMemberValidator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Binary operation "\\+" between mixed and int\\<1, max\\> results in an error\\.$#',
-	'identifier' => 'binaryOp.invalid',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Validator/Constraints/CorporateMemberValidator.php',
 ];

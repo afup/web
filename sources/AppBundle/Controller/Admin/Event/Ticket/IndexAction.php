@@ -11,8 +11,8 @@ use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\EventStats;
 use AppBundle\Event\Model\Repository\EventStatsRepository;
-use AppBundle\Event\Model\Repository\TicketRepository;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
+use AppBundle\Event\Model\Repository\InvoiceRepository;
 use AppBundle\Event\Model\TicketAggregate;
 use AppBundle\Event\Ticket\TicketOffers;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,18 +25,20 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use AppBundle\Event\Enum\TypeInscription;
 
 #[IsGranted('ROLE_EVENT_READER')]
 class IndexAction extends AbstractController
 {
     public function __construct(
         private readonly EventStatsRepository $eventStatsRepository,
-        private readonly TicketRepository $ticketRepository,
+        private readonly InscriptionRepository $inscriptionRepository,
         private readonly TicketOffers $ticketOffer,
         private readonly BilleteriePriveeRepository $billeteriePriveeRepository,
         private readonly TicketSpecialPriceRepository $ticketSpecialPriceRepository,
         private readonly FormFactoryInterface $formFactory,
         private readonly TicketTypeRepository $ticketTypeRepository,
+        private readonly InvoiceRepository $invoiceRepository,
     ) {}
 
     public function __invoke(Request $request, AdminEventSelection $eventSelection): Response
@@ -56,12 +58,14 @@ class IndexAction extends AbstractController
         $data['sort_direction'] ??= 'desc';
 
         $statistics = $this->eventStatsRepository->getStats($event->getId());
-        $tickets = $this->ticketTypeRepository->enrichTicketAggregates($this->ticketRepository->getByEventWithAll(
-            event: $event,
-            search: $data['filter'] ?? null,
-            sortKey: $data['sort_key'],
-            sortDirection: $data['sort_direction'],
-        ));
+        $tickets = $this->invoiceRepository->enrichTicketAggregates(
+            $this->ticketTypeRepository->enrichTicketAggregates($this->inscriptionRepository->getByEventWithAll(
+                event: $event,
+                search: $data['filter'] ?? null,
+                sortKey: $data['sort_key'],
+                sortDirection: $data['sort_direction'],
+            )),
+        );
         $computed = $this->computeStatistics($statistics, $event);
         $specialPriceLabels = $this->getSpecialPriceLabels($tickets);
 
@@ -89,10 +93,10 @@ class IndexAction extends AbstractController
         $tokens = [];
         foreach ($tickets as $aggregate) {
             if (
-                $aggregate->ticketType?->id === Ticket::TYPE_SPECIAL_PRICE
-                && $aggregate->ticket->getSpecialPriceToken() !== null
+                $aggregate->ticketType?->id === TypeInscription::PrixSpecial->value
+                && $aggregate->ticket->specialPriceToken !== null
             ) {
-                $tokens[] = $aggregate->ticket->getSpecialPriceToken();
+                $tokens[] = $aggregate->ticket->specialPriceToken;
             }
         }
 
@@ -106,7 +110,7 @@ class IndexAction extends AbstractController
         }
 
         foreach ($this->ticketSpecialPriceRepository->findByTokens($tokens) as $ticketSpecialPrice) {
-            if (isset($labels[$ticketSpecialPrice->token])) {
+            if (array_key_exists($ticketSpecialPrice->token, $labels)) {
                 continue;
             }
             $labels[$ticketSpecialPrice->token] = sprintf('Token visiteurs - %s', $ticketSpecialPrice->description);
@@ -130,7 +134,7 @@ class IndexAction extends AbstractController
 
             // Plusieurs montants distincts sur le tarif spécial : pas de prix unitaire trompeur,
             // le détail est à consulter sur la page des billetteries privées
-            $multiplePrices = (int) $ticketType === Ticket::TYPE_SPECIAL_PRICE
+            $multiplePrices = (int) $ticketType === TypeInscription::PrixSpecial->value
                 && $statistics->ticketType->specialPriceDistinctAmounts > 1;
 
             if ($registered) {

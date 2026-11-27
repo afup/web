@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Validator\Constraints;
 
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Inscription;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class EarlyBirdTicketValidator extends ConstraintValidator
 {
     /**
-     * @param Ticket[] $value
+     * @param Inscription[] $value
      */
     public function validate($value, Constraint $constraint): void
     {
@@ -23,14 +23,14 @@ class EarlyBirdTicketValidator extends ConstraintValidator
         $count = 0;
 
         foreach ($value as $index => $ticket) {
-            if ($ticket->getTicketEventType()?->ticketType !== null
-                && $ticket->getTicketEventType()->ticketType->isEarly()) {
+            if ($ticket->ticketEventType?->ticketType !== null
+                && $ticket->ticketEventType->ticketType->isEarly()) {
                 $count++;
 
                 // On autorise qu'un seul ticket
                 if ($count > 1) {
                     $this->context->buildViolation($constraint->message)
-                        ->setParameter('{{ ticket_pretty_name }}', $ticket->getTicketEventType()->ticketType->prettyName)
+                        ->setParameter('{{ ticket_pretty_name }}', $ticket->ticketEventType->ticketType->prettyName)
                         ->atPath('[' . $index . '].ticketEventType')
                         ->addViolation()
                     ;

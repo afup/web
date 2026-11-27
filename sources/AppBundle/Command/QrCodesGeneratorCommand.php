@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Command;
 
-use AppBundle\Event\Model\Repository\TicketRepository;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
 use AppBundle\Event\Ticket\QrCodeGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,7 +16,7 @@ class QrCodesGeneratorCommand extends Command
 {
     public function __construct(
         private readonly QrCodeGenerator $qrCodeGenerator,
-        private readonly TicketRepository $ticketRepository,
+        private readonly InscriptionRepository $inscriptionRepository,
     ) {
         parent::__construct();
     }
@@ -44,7 +44,7 @@ class QrCodesGeneratorCommand extends Command
         $io->title('Génération des QR codes pour les badges des participant.e.s pour les évènements.');
 
         try {
-            $tickets = $this->ticketRepository->getByEmptyQrCodes();
+            $tickets = $this->inscriptionRepository->getByEmptyQrCodes();
 
             if (count($tickets) === 0) {
                 $io->text('Aucun nouveau code à générer');
@@ -56,17 +56,17 @@ class QrCodesGeneratorCommand extends Command
                 $inscriptionIdMin = (int) $input->getOption('inscription-id-min');
                 $inscriptionIdMax = (int) $input->getOption('inscription-id-max');
 
-                if ($inscriptionIdMin > $ticket->getId()) {
+                if ($inscriptionIdMin > $ticket->id) {
                     continue;
                 }
 
-                if ($inscriptionIdMax < $ticket->getId()) {
+                if ($inscriptionIdMax < $ticket->id) {
                     continue;
                 }
 
                 $io->progressAdvance();
-                $ticket->setQrCode($this->qrCodeGenerator->generate($ticket->getId()));
-                $this->ticketRepository->save($ticket);
+                $ticket->qrCode = $this->qrCodeGenerator->generate($ticket->id);
+                $this->inscriptionRepository->save($ticket);
             }
             $io->progressFinish();
         } catch (\Exception $e) {

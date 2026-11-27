@@ -9,8 +9,7 @@ use AppBundle\Event\Invoice\EventInvoiceMailer;
 use AppBundle\Email\Emails;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
-use AppBundle\Event\Model\Repository\TicketRepository;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
 use AppBundle\Payment\PayboxResponse;
 use AppBundle\Payment\PayboxResponseFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,6 +17,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
+use AppBundle\Event\Enum\InscriptionEtat;
+use AppBundle\Event\Enum\InscriptionFacturation;
 
 /**
  * Action vers laquelle paybox post les résultats du paiement en serveur à serveur
@@ -28,7 +29,7 @@ final class PayboxCallbackAction extends AbstractController
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly Emails $emails,
         private readonly InvoiceRepository $invoiceRepository,
-        private readonly TicketRepository $ticketRepository,
+        private readonly InscriptionRepository $inscriptionRepository,
         private readonly EventActionHelper $eventActionHelper,
         private readonly EventInvoiceMailer $invoiceMailer,
     ) {}
@@ -44,45 +45,40 @@ final class PayboxCallbackAction extends AbstractController
 
         $payboxResponse = PayboxResponseFactory::createFromRequest($request);
 
-        $paymentStatus = Ticket::STATUS_ERROR;
-        $invoiceStatus = Ticket::INVOICE_TODO;
+        $paymentStatus = InscriptionEtat::ErreurPaiement;
+        $invoiceStatus = InscriptionFacturation::AEnvoyer;
         if ($payboxResponse->isSuccessful()) {
-            $paymentStatus = Ticket::STATUS_PAID;
-            $invoiceStatus = Ticket::INVOICE_SENT;
+            $paymentStatus = InscriptionEtat::Reglee;
+            $invoiceStatus = InscriptionFacturation::Envoyee;
         } elseif ($payboxResponse->getStatus() === PayboxResponse::STATUS_DUPLICATE) {
             // Designe un paiement deja effectue : on a surement deja eu le retour donc on s'arrete
             return new Response();
         } elseif ($payboxResponse->getStatus() === PayboxResponse::STATUS_CANCELED) {
-            $paymentStatus = Ticket::STATUS_CANCELLED;
+            $paymentStatus = InscriptionEtat::Annulee;
         } elseif ($payboxResponse->isErrorCode()) {
-            $paymentStatus = Ticket::STATUS_DECLINED;
+            $paymentStatus = InscriptionEtat::PaiementRefuse;
         }
         $invoice
-            ->setStatus($paymentStatus)
+            ->setStatus($paymentStatus->value)
             ->setPaymentDate(new \DateTime())
             ->setAuthorization($payboxResponse->getAuthorizationId())
             ->setTransaction($payboxResponse->getTransactionId())
         ;
         $this->invoiceRepository->save($invoice);
-        $tickets = $this->ticketRepository->getByReference($invoice->getReference());
+        $tickets = $this->inscriptionRepository->getByReference((string) $invoice->getReference());
 
-        if ($paymentStatus === Ticket::STATUS_PAID) {
+        if ($paymentStatus === InscriptionEtat::Reglee) {
             $this->invoiceMailer->send($invoice->getReference());
         }
 
         foreach ($tickets as $ticket) {
-            /**
-             * @var $ticket Ticket
-             */
-            $ticket
-                ->setStatus($paymentStatus)
-                ->setInvoiceStatus($invoiceStatus)
-            ;
-            $this->ticketRepository->save($ticket);
+            $ticket->status = $paymentStatus;
+            $ticket->invoiceStatus = $invoiceStatus;
+            $this->inscriptionRepository->save($ticket);
 
-            if ($paymentStatus === Ticket::STATUS_PAID) {
+            if ($paymentStatus === InscriptionEtat::Reglee) {
                 $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket): int {
-                    $this->emails->sendInscription($event, new MailUser($ticket->getEmail(), $ticket->getLabel()));
+                    $this->emails->sendInscription($event, new MailUser($ticket->email, $ticket->getLabel()));
                     return 1;
                 });
             }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\Invoice;
-use AppBundle\Event\Model\Ticket;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -14,18 +13,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use AppBundle\Event\Enum\TypeReglement;
 
 class TicketInvoiceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $paymentTypes = [
-            'Carte bancaire' => Ticket::PAYMENT_CREDIT_CARD,
-            'Chèque' => Ticket::PAYMENT_CHEQUE,
-            'Virement' => Ticket::PAYMENT_BANKWIRE,
-            'Aucun' => Ticket::PAYMENT_NONE,
-        ];
-
         $builder
             ->add('reference', TextType::class, [
                 'label' => 'Référence',
@@ -47,7 +40,8 @@ class TicketInvoiceType extends AbstractType
                 'label' => 'Règlement',
                 'expanded' => true,
                 'row_attr' => ['class' => 'fields inline'],
-                'choices' => $paymentTypes,
+                'choices' => array_column(TypeReglement::cases(), 'value'),
+                'choice_label' => static fn(int $type): string => TypeReglement::from($type)->label(),
             ])
             ->add('paymentInfos', TextareaType::class, [
                 'label' => 'Informations règlement',

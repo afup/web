@@ -11,7 +11,7 @@ use AppBundle\Event\Entity\Repository\TicketTypeRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Entity\Repository\TicketEventTypeRepository;
 use AppBundle\Event\Entity\Repository\TicketSpecialPriceRepository;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Inscription;
 use AppBundle\Event\Entity\TicketEventType;
 use AppBundle\Event\Entity\TicketSpecialPrice;
 use AppBundle\Event\Ticket\TicketTypeAvailability;
@@ -27,6 +27,9 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
+use AppBundle\Event\Enum\DistanceTransport;
+use AppBundle\Event\Enum\ModeTransport;
+use AppBundle\Event\Enum\TypeInscription;
 
 class TicketType extends AbstractType
 {
@@ -64,12 +67,15 @@ class TicketType extends AbstractType
                 'placeholder' => 'Ne se prononce pas',
             ])
             ->add('firstname', TextType::class, [
+                'empty_data' => '',
                 'label' => 'Prénom',
             ])
             ->add('lastname', TextType::class, [
+                'empty_data' => '',
                 'label' => 'Nom',
             ])
             ->add('email', EmailType::class, [
+                'empty_data' => '',
                 'label' => 'Email',
                 'constraints' => [
                     new Email(),
@@ -132,15 +138,17 @@ class TicketType extends AbstractType
                         'data-max-tickets' => $type->maxTickets,
                     ];
 
+                    $stock = null;
                     if ($type->ticketType !== null) {
+                        $stock = $this->ticketTypeAvailability->getStock($type, $event);
                         $attr['data-members-only'] = (int) $type->ticketType->isRestrictedToMembers;
-                        $attr['data-stock'] = $this->ticketTypeAvailability->getStock($type, $event);
+                        $attr['data-stock'] = $stock;
                         $attr['data-label'] = $type->ticketType->prettyName;
                     }
 
                     if (
                         ($type->ticketType?->isRestrictedToMembers === true && $options['member_type'] === self::MEMBER_NOT)
-                        || (isset($attr['data-stock']) && $attr['data-stock'] <= 0)
+                        || ($stock !== null && $stock <= 0)
                     ) {
                         $attr['disabled'] = 'disabled';
                     }
@@ -151,19 +159,21 @@ class TicketType extends AbstractType
         });
 
         if ($event->getTransportInformationEnabled()) {
-            $transportMode = Ticket::TRANSPORT_MODES;
-            asort($transportMode);
-
-            $builder->add('transportMode', ChoiceType::class, [
+            $builder->add('transportMode', EnumType::class, [
                 'label' => 'Quel est votre mode de transport ?',
                 'required' => true,
-                'choices' => ['' => ''] + array_flip($transportMode),
+                'placeholder' => '',
+                'class' => ModeTransport::class,
+                'choices' => ModeTransport::choixParLibelle(),
+                'choice_label' => static fn(ModeTransport $mode): string => $mode->label(),
             ]);
 
-            $builder->add('transportDistance', ChoiceType::class, [
+            $builder->add('transportDistance', EnumType::class, [
                 'label' => 'Quelle sera la distance parcourue ?',
                 'required' => true,
-                'choices' => ['' => ''] + array_flip(Ticket::TRANSPORT_DISTANCES),
+                'placeholder' => '',
+                'class' => DistanceTransport::class,
+                'choice_label' => static fn(DistanceTransport $distance): string => $distance->label(),
             ]);
         }
 
@@ -179,7 +189,7 @@ class TicketType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Ticket::class,
+            'data_class' => Inscription::class,
             'member_type' => self::MEMBER_NOT,
             'is_cfp_submitter' => false,
             'event_id' => null,
@@ -194,7 +204,7 @@ class TicketType extends AbstractType
      */
     private function createSpecialPriceTicketEventType(TicketSpecialPrice $ticketSpecialPrice, array $filteredEventTickets): array
     {
-        $ticketType = $this->ticketTypeRepository->find(Ticket::TYPE_SPECIAL_PRICE);
+        $ticketType = $this->ticketTypeRepository->find(TypeInscription::PrixSpecial->value);
         if ($ticketType === null) {
             return $filteredEventTickets;
         }
@@ -205,7 +215,7 @@ class TicketType extends AbstractType
         $eToken->price = $ticketSpecialPrice->price ?? 0.0;
         $eToken->ticketType = $ticketType;
         $eToken->eventId = $ticketSpecialPrice->eventId;
-        $eToken->ticketTypeId = Ticket::TYPE_SPECIAL_PRICE;
+        $eToken->ticketTypeId = TypeInscription::PrixSpecial->value;
 
         return [$eToken];
     }
@@ -216,7 +226,7 @@ class TicketType extends AbstractType
      */
     private function createBilleteriePriveeTicketEventType(BilleteriePrivee $billeteriePrivee, array $filteredEventTickets): array
     {
-        $ticketType = $this->ticketTypeRepository->find(Ticket::TYPE_SPECIAL_PRICE);
+        $ticketType = $this->ticketTypeRepository->find(TypeInscription::PrixSpecial->value);
         if ($ticketType === null) {
             return $filteredEventTickets;
         }
@@ -227,7 +237,7 @@ class TicketType extends AbstractType
         $eBilleterie->price = $billeteriePrivee->prix;
         $eBilleterie->ticketType = $ticketType;
         $eBilleterie->eventId = $billeteriePrivee->eventId;
-        $eBilleterie->ticketTypeId = Ticket::TYPE_SPECIAL_PRICE;
+        $eBilleterie->ticketTypeId = TypeInscription::PrixSpecial->value;
 
         return [$eBilleterie];
     }

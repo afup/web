@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Event\Validator\Constraints;
 
 use AppBundle\Association\Model\User;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Inscription;
 use AppBundle\Event\Entity\TicketEventType;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
@@ -22,7 +22,7 @@ class LoggedInMemberValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, LoggedInMember::class);
         }
 
-        if (!($ticket instanceof Ticket) || !$ticket->getTicketEventType() instanceof TicketEventType || $ticket->getTicketEventType()->ticketType->isRestrictedToMembers === false) {
+        if (!($ticket instanceof Inscription) || !$ticket->ticketEventType instanceof TicketEventType || $ticket->ticketEventType->ticketType->isRestrictedToMembers === false) {
             return ;
         }
 
@@ -38,7 +38,7 @@ class LoggedInMemberValidator extends ConstraintValidator
             $message = $constraint->messageNotLoggedIn;
         } elseif ($user->hasRole('ROLE_MEMBER_EXPIRED')) {
             $message = $constraint->messageFeeOutOfDate;
-        } elseif ($user->getEmail() !== $ticket->getEmail()) {
+        } elseif ($user->getEmail() !== $ticket->email) {
             $message = $constraint->messageBadMail;
         }
 

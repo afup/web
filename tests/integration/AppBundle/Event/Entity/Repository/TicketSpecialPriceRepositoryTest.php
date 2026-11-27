@@ -7,8 +7,8 @@ namespace AppBundle\IntegrationTests\Event\Entity\Repository;
 use Afup\Tests\Support\IntegrationTestCase;
 use AppBundle\Event\Entity\Repository\TicketSpecialPriceRepository;
 use AppBundle\Event\Entity\TicketSpecialPrice;
-use AppBundle\Event\Model\Ticket;
 use Doctrine\DBAL\Connection;
+use AppBundle\Event\Enum\InscriptionEtat;
 
 final class TicketSpecialPriceRepositoryTest extends IntegrationTestCase
 {
@@ -67,7 +67,7 @@ final class TicketSpecialPriceRepositoryTest extends IntegrationTestCase
     {
         $specialPrice = $this->buildToken('TOKEN-ANNULE', now: new \DateTimeImmutable('-1 hour'));
         $this->repository->save($specialPrice);
-        $this->insertInscription($this->connection, 'TOKEN-ANNULE', 'B', self::FORUM_ID, Ticket::STATUS_CANCELLED);
+        $this->insertInscription($this->connection, 'TOKEN-ANNULE', 'B', self::FORUM_ID, InscriptionEtat::Annulee->value);
 
         $found = $this->repository->findUnusedToken(self::FORUM_ID, 'TOKEN-ANNULE');
         self::assertInstanceOf(TicketSpecialPrice::class, $found);
@@ -102,7 +102,7 @@ final class TicketSpecialPriceRepositoryTest extends IntegrationTestCase
         $this->repository->save($used);
         $this->insertInscription($this->connection, 'TOKEN-LISTE-USED', 'C', self::FORUM_ID, 0);
         // Une inscription annulee ne consomme pas le token
-        $this->insertInscription($this->connection, 'TOKEN-LISTE-UNUSED', 'D', self::FORUM_ID, Ticket::STATUS_CANCELLED);
+        $this->insertInscription($this->connection, 'TOKEN-LISTE-UNUSED', 'D', self::FORUM_ID, InscriptionEtat::Annulee->value);
 
         $rows = $this->repository->getByEvent(self::FORUM_ID);
         self::assertCount(2, $rows);

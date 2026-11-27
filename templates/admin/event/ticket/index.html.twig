@@ -53,7 +53,7 @@
             </thead>
             <tbody>
             {% for a in tickets %}
-                <tr style="{{ a.ticket.status == 1 ? "color:#999;font-style:italic;text-decoration-line: line-through;" }}">
+                <tr style="{{ a.ticket.status.value == 1 ? "color:#999;font-style:italic;text-decoration-line: line-through;" }}">
                     <td nowrap="nowrap">{{ a.ticket.date|date('d/m/Y H:i') }}</td>
                     <td>
                         <strong>{{ a.ticket.lastname }} {{ a.ticket.firstname }}</strong>
@@ -83,30 +83,30 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if a.ticket.status == 0 %}
+                        {% if a.ticket.status.value == 0 %}
                             <span class="ui orange label">Créé</span>
-                        {% elseif a.ticket.status == 1 %}
+                        {% elseif a.ticket.status.value == 1 %}
                             <span class="ui label">Annulé</span>
-                        {% elseif a.ticket.status == 2 %}
+                        {% elseif a.ticket.status.value == 2 %}
                             <span class="ui red label">Erreur</span>
-                        {% elseif a.ticket.status == 3 %}
+                        {% elseif a.ticket.status.value == 3 %}
                             <span class="ui red label">Refusé</span>
-                        {% elseif a.ticket.status == 4 %}
+                        {% elseif a.ticket.status.value == 4 %}
                             <span class="ui green label">Réglé</span>
-                        {% elseif a.ticket.status == 5 %}
+                        {% elseif a.ticket.status.value == 5 %}
                             <span class="ui green label">Invité</span>
-                        {% elseif a.ticket.status == 6 %}
+                        {% elseif a.ticket.status.value == 6 %}
                             <span class="ui orange label">Attente règlement</span>
-                        {% elseif a.ticket.status == 7 %}
+                        {% elseif a.ticket.status.value == 7 %}
                             Facturé
                         {% endif %}
                     </td>
                     <td>
-                        {% if a.invoice.paymentType == constant('AppBundle\\Event\\Model\\Ticket::PAYMENT_CREDIT_CARD') %}
+                        {% if a.invoice.paymentType == constant('AppBundle\\Event\\Enum\\TypeReglement::CarteBancaire').value %}
                             CB
-                        {% elseif a.invoice.paymentType == constant('AppBundle\\Event\\Model\\Ticket::PAYMENT_CHEQUE') %}
+                        {% elseif a.invoice.paymentType == constant('AppBundle\\Event\\Enum\\TypeReglement::Cheque').value %}
                             CHQ
-                        {% elseif a.invoice.paymentType == constant('AppBundle\\Event\\Model\\Ticket::PAYMENT_BANKWIRE') %}
+                        {% elseif a.invoice.paymentType == constant('AppBundle\\Event\\Enum\\TypeReglement::Virement').value %}
                             VIR
                         {% endif %}
                     </td>

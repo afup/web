@@ -26,7 +26,7 @@ class DeleteSponsorTicketAction extends AbstractController
             throw $this->createNotFoundException(sprintf('Could not find token with id: %s', $tokenId));
         }
 
-        if ($this->sponsorTicketHelper->getRegisteredTickets($token)->count() > 0) {
+        if (count($this->sponsorTicketHelper->getRegisteredTickets($token)) > 0) {
             $this->addFlash('error', 'Le token ne peut être supprimé.');
             return $this->redirectToRoute('admin_event_sponsor_ticket');
         }

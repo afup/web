@@ -10,8 +10,8 @@ use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Invoice;
 use AppBundle\Event\Model\Repository\EventRepository;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
-use AppBundle\Event\Model\Repository\TicketRepository;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
+use AppBundle\Event\Entity\Inscription;
 use AppBundle\Event\Ticket\TicketOffers;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,7 @@ final class EditAction extends AbstractController
 {
     public function __construct(
         private readonly TicketOffers $ticketOffers,
-        private readonly TicketRepository $ticketRepository,
+        private readonly InscriptionRepository $inscriptionRepository,
         private readonly EventRepository $eventRepository,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly Audit $audit,
@@ -31,17 +31,17 @@ final class EditAction extends AbstractController
 
     public function __invoke(int $id, Request $request): Response
     {
-        $ticket = $this->ticketRepository->get($id);
-        if (!$ticket instanceof Ticket) {
+        $ticket = $this->inscriptionRepository->find($id);
+        if (!$ticket instanceof Inscription) {
             throw $this->createNotFoundException(sprintf('Ticket not found with id "%s"', $id));
         }
-        $event = $this->eventRepository->get($ticket->getForumId());
+        $event = $this->eventRepository->get($ticket->forumId);
         if (!$event instanceof Event) {
-            throw $this->createNotFoundException(sprintf('Event not found with id "%s"', $ticket->getForumId()));
+            throw $this->createNotFoundException(sprintf('Event not found with id "%s"', $ticket->forumId));
         }
-        $invoice = $this->invoiceRepository->getByReference($ticket->getReference());
+        $invoice = $this->invoiceRepository->getByReference($ticket->reference);
         if (!$invoice instanceof Invoice) {
-            throw $this->createNotFoundException(sprintf('Invoice not found with id "%s"', $ticket->getReference()));
+            throw $this->createNotFoundException(sprintf('Invoice not found with id "%s"', $ticket->reference));
         }
 
         $offers = $this->ticketOffers->getAllOffersForEvent($event);
@@ -56,14 +56,12 @@ final class EditAction extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            ['ticket' => $ticket, 'invoice' => $invoice] = $form->getData();
+            $invoice->setStatus($ticket->status->value);
 
-            $invoice->setStatus($ticket->getStatus());
-
-            $this->ticketRepository->save($ticket);
+            $this->inscriptionRepository->save($ticket);
             $this->invoiceRepository->save($invoice);
 
-            $this->audit->log(sprintf("Modification de l'inscription de %s (%d)", $ticket->getLabel(), $ticket->getId()));
+            $this->audit->log(sprintf("Modification de l'inscription de %s (%d)", $ticket->getLabel(), $ticket->id));
             $this->addFlash('notice', "L'inscription a été modifiée.");
 
             return $this->redirectToRoute('admin_event_ticket_list');

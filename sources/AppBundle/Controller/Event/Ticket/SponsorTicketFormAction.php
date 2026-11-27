@@ -9,7 +9,7 @@ use AppBundle\Email\Emails;
 use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Event\Form\SponsorTicketType;
 use AppBundle\Event\Entity\Repository\SponsorTicketRepository;
-use AppBundle\Event\Model\Repository\TicketRepository;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
 use AppBundle\Event\Model\TicketFactory;
 use AppBundle\Event\Ticket\SponsorTicketHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +25,7 @@ final class SponsorTicketFormAction extends AbstractController
         private readonly TicketFactory $ticketFactory,
         private readonly SponsorTicketHelper $sponsorTicketHelper,
         private readonly Emails $emails,
-        private readonly TicketRepository $ticketRepository,
+        private readonly InscriptionRepository $inscriptionRepository,
         private readonly EventActionHelper $eventActionHelper,
         private readonly SponsorTicketRepository $sponsorTicketRepository,
     ) {}
@@ -50,7 +50,7 @@ final class SponsorTicketFormAction extends AbstractController
         $sponsorTicketHelper = $this->sponsorTicketHelper;
         $edit = false;
         if ($request->query->has('ticket')) {
-            $ticket = $this->ticketRepository->get($request->query->get('ticket'));
+            $ticket = $this->inscriptionRepository->find($request->query->getInt('ticket'));
 
             if ($ticket === null || $sponsorTicketHelper->doesTicketBelongsToSponsor($sponsorTicket, $ticket) === false) {
                 throw $this->createNotFoundException();
@@ -66,20 +66,20 @@ final class SponsorTicketFormAction extends AbstractController
             // Si c'est l'ajout d'un ticket
             // Et qu'il n'y a plus d'invitation
             // ou que la date du sponsoring est pas passée
-            if ($ticket->getId() === null && ($sponsorTicket->getPendingInvitations() <= 0 || $event->getDateEndSalesSponsorToken() < new \DateTime())) {
+            if (!$edit && ($sponsorTicket->getPendingInvitations() <= 0 || $event->getDateEndSalesSponsorToken() < new \DateTime())) {
                 return $this->render('event/ticket/sold_out.html.twig', ['event' => $event]);
             }
 
-            $sponsorTicketHelper->addTicketToSponsor($sponsorTicket, $ticket);
+            $sponsorTicketHelper->addTicketToSponsor($sponsorTicket, $ticket, !$edit);
             $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () use ($event, $ticket): int {
-                $this->emails->sendInscription($event, new MailUser($ticket->getEmail(), $ticket->getLabel()));
+                $this->emails->sendInscription($event, new MailUser($ticket->email, $ticket->getLabel()));
                 return 1;
             });
 
             $this->addFlash('notice', 'Invitation enregistrée');
             return $this->redirectToRoute('sponsor_ticket_form', ['eventSlug' => $eventSlug]);
         } elseif ($request->isMethod(Request::METHOD_POST) && $request->request->has('delete')) {
-            $ticket = $this->ticketRepository->get($request->request->get('delete'));
+            $ticket = $this->inscriptionRepository->find($request->request->getInt('delete'));
 
             if ($ticket === null) {
                 $this->addFlash('error', 'Impossible de trouver ce ticket');

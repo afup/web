@@ -6,7 +6,7 @@ namespace AppBundle\Event\Form;
 
 use AppBundle\Association\Genre;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Inscription;
 use AppBundle\Event\Model\TicketOffer;
 use AppBundle\Form\BooleanType;
 use Symfony\Component\Form\AbstractType;
@@ -18,29 +18,15 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use AppBundle\Event\Enum\DistanceTransport;
+use AppBundle\Event\Enum\InscriptionEtat;
+use AppBundle\Event\Enum\ModeTransport;
+use AppBundle\Event\Enum\InscriptionFacturation;
 
 class TicketAdminType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $ticketStatuses = [
-            'Inscription créée' => Ticket::STATUS_CREATED,
-            'Inscription annulée' => Ticket::STATUS_CANCELLED,
-            'Paiement CB erreur' => Ticket::STATUS_ERROR,
-            'Paiement CB refusé' => Ticket::STATUS_DECLINED,
-            'Inscription réglée' => Ticket::STATUS_PAID,
-            'Invitation' => Ticket::STATUS_GUEST,
-            'Attente règlement' => Ticket::STATUS_WAITING,
-            'Inscription confirmée' => Ticket::STATUS_CONFIRMED,
-            'Inscription à posteriori' => Ticket::STATUS_PAID_AFTER,
-        ];
-
-        $invoiceStatuses = [
-            'Facture à envoyer' => Ticket::INVOICE_TODO,
-            'Facture envoyée' => Ticket::INVOICE_SENT,
-            'Facture reçue' => Ticket::INVOICE_RECEIVED,
-        ];
-
         $event = $options['event'];
         $ticketOffers = $options['offers'];
         usort($ticketOffers, static fn(TicketOffer $a, TicketOffer $b): int => $a->name > $b->name ? 1 : -1);
@@ -53,12 +39,15 @@ class TicketAdminType extends AbstractType
                 'placeholder' => 'Ne se prononce pas',
             ])
             ->add('firstname', TextType::class, [
+                'empty_data' => '',
                 'label' => 'Prénom',
             ])
             ->add('lastname', TextType::class, [
+                'empty_data' => '',
                 'label' => 'Nom',
             ])
             ->add('email', EmailType::class, [
+                'empty_data' => '',
                 'label' => 'Email',
             ])
             ->add('phoneNumber', TextType::class, [
@@ -87,31 +76,35 @@ class TicketAdminType extends AbstractType
                 'choice_value' => fn(?TicketOffer $offer): ?int => $offer->ticketTypeId ?? null,
                 'group_by' => fn(TicketOffer $choice): string => $choice->event ? 'Offre de l\'évènement' : 'Offre global',
             ])
-            ->add('status', ChoiceType::class, [
+            ->add('status', EnumType::class, [
                 'label' => "État de l'inscription",
-                'choices' => $ticketStatuses,
+                'class' => InscriptionEtat::class,
+                'choice_label' => static fn(InscriptionEtat $etat): string => $etat->label(),
                 'required' => true,
             ])
-            ->add('invoiceStatus', ChoiceType::class, [
+            ->add('invoiceStatus', EnumType::class, [
                 'label' => 'État de la facturation',
-                'choices' => $invoiceStatuses,
+                'class' => InscriptionFacturation::class,
+                'choice_label' => static fn(InscriptionFacturation $facturation): string => $facturation->label(),
                 'required' => true,
             ]);
 
         if ($event->getTransportInformationEnabled()) {
-            $transportMode = Ticket::TRANSPORT_MODES;
-            asort($transportMode);
-
-            $builder->add('transportMode', ChoiceType::class, [
+            $builder->add('transportMode', EnumType::class, [
                 'label' => 'Quel est votre mode de transport ?',
                 'required' => true,
-                'choices' => ['' => null] + array_flip($transportMode),
+                'placeholder' => '',
+                'class' => ModeTransport::class,
+                'choices' => ModeTransport::choixParLibelle(),
+                'choice_label' => static fn(ModeTransport $mode): string => $mode->label(),
             ]);
 
-            $builder->add('transportDistance', ChoiceType::class, [
+            $builder->add('transportDistance', EnumType::class, [
                 'label' => 'Quelle sera la distance parcourue ?',
                 'required' => true,
-                'choices' => ['' => null] + array_flip(Ticket::TRANSPORT_DISTANCES),
+                'placeholder' => '',
+                'class' => DistanceTransport::class,
+                'choice_label' => static fn(DistanceTransport $distance): string => $distance->label(),
             ]);
         }
 
@@ -133,7 +126,7 @@ class TicketAdminType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Ticket::class,
+            'data_class' => Inscription::class,
             'event' => Event::class,
             'offers' => TicketOffer::class . '[]',
         ]);

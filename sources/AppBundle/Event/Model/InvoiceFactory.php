@@ -6,12 +6,14 @@ namespace AppBundle\Event\Model;
 
 use AppBundle\Event\Entity\SponsorTicket;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
+use AppBundle\Event\Enum\InscriptionEtat;
+use AppBundle\Event\Enum\TypeReglement;
 
 class InvoiceFactory
 {
     public function __construct(private readonly InvoiceRepository $invoiceRepository) {}
 
-    public function createInvoiceFromSponsorTicket(SponsorTicket $sponsorTicket)
+    public function createInvoiceFromSponsorTicket(SponsorTicket $sponsorTicket): Invoice
     {
         $reference = 'SPONSOR-' . $sponsorTicket->eventId . '-' . $sponsorTicket->id;
         $invoice = $this->invoiceRepository->get($reference);
@@ -25,13 +27,13 @@ class InvoiceFactory
             ->setAmount(0)
             ->setReference($reference)
             ->setCompany($sponsorTicket->societe)
-            ->setPaymentType(Ticket::PAYMENT_NONE)
+            ->setPaymentType(TypeReglement::Aucun->value)
             ->setEmail('bureau@afup.org')
             ->setAddress('N/A')
             ->setZipcode('N/A')
             ->setCity('N/A')
             ->setCountryId('FR')
-            ->setStatus(Ticket::STATUS_GUEST)
+            ->setStatus(InscriptionEtat::Invitation->value)
             ->setInvoice(false)
         ;
 
@@ -43,8 +45,8 @@ class InvoiceFactory
         $invoice = new Invoice();
         $invoice
             ->setForumId($event->getId())
-            ->setStatus(Ticket::STATUS_CREATED)
-            ->setPaymentType(Ticket::PAYMENT_CREDIT_CARD)
+            ->setStatus(InscriptionEtat::Creee->value)
+            ->setPaymentType(TypeReglement::CarteBancaire->value)
             ->setInvoice(false)
         ;
 

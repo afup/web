@@ -26,7 +26,7 @@
             <p>
                 Nous avons bien re&ccedil;u votre inscription et nous vous en remercions !
             </p>
-            {% if invoice.paymentType == constant('AppBundle\\Event\\Model\\Ticket::PAYMENT_CREDIT_CARD') %}
+            {% if invoice.paymentType == constant('AppBundle\\Event\\Enum\\TypeReglement::CarteBancaire').value %}
                 <p>Pour finaliser le paiement de votre facture, merci de cliquer sur le bouton suivant :</p>
                 {{ paybox|raw }}
                 <p>Vous serez redirigé vers notre partenaire paybox afin de procéder au paiement d'un montant de {{ amount }}€</p>

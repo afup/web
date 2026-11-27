@@ -7,40 +7,38 @@ namespace AppBundle\Event\Ticket;
 use AppBundle\Event\Model\InvoiceFactory;
 use AppBundle\Event\Entity\Repository\SponsorTicketRepository;
 use AppBundle\Event\Model\Repository\InvoiceRepository;
-use AppBundle\Event\Model\Repository\TicketRepository;
+use AppBundle\Event\Entity\Repository\InscriptionRepository;
 use AppBundle\Event\Entity\SponsorTicket;
-use AppBundle\Event\Model\Ticket;
+use AppBundle\Event\Entity\Inscription;
 use CCMBenchmark\Ting\Exception;
+use Doctrine\DBAL\Exception as DBALException;
 
 class SponsorTicketHelper
 {
     public function __construct(
         private readonly InvoiceFactory $invoiceFactory,
         private readonly InvoiceRepository $invoiceRepository,
-        private readonly TicketRepository $ticketRepository,
+        private readonly InscriptionRepository $inscriptionRepository,
         private readonly SponsorTicketRepository $sponsorTicketRepository,
     ) {}
 
-    public function addTicketToSponsor(SponsorTicket $sponsorTicket, Ticket $ticket): void
+    public function addTicketToSponsor(SponsorTicket $sponsorTicket, Inscription $ticket, bool $isNewTicket): void
     {
         $invoice = $this->invoiceFactory->createInvoiceFromSponsorTicket($sponsorTicket);
-        $isNewTicket = $ticket->getId() === null;
 
         if ($isNewTicket) {
-            // Réservée hors transaction Ting (connexion Doctrine distincte) :
-            // en cas d'échec entre les deux écritures, le compteur surestime, sans risque de dépasser le quota
+            // Réservée avant l'enregistrement de l'inscription :
+            // en cas d'échec entre les écritures, le compteur surestime, sans risque de dépasser le quota
             $sponsorTicket->usedInvitations++;
             $this->sponsorTicketRepository->save($sponsorTicket);
         }
 
+        // La facture (Ting) et l'inscription (Doctrine) n'utilisent pas la même connexion :
+        // la facture sponsor est partagée par toutes les inscriptions du token, elle n'est donc pas supprimée en cas d'échec
         try {
-            $this->invoiceRepository->startTransaction();
             $this->invoiceRepository->save($invoice);
-            $this->ticketRepository->save($ticket);
-            $this->invoiceRepository->commit();
-        } catch (Exception) {
-            $this->invoiceRepository->rollback();
-
+            $this->inscriptionRepository->save($ticket);
+        } catch (Exception|DBALException) {
             if ($isNewTicket) {
                 $sponsorTicket->usedInvitations--;
                 $this->sponsorTicketRepository->save($sponsorTicket);
@@ -48,37 +46,36 @@ class SponsorTicketHelper
         }
     }
 
-    public function removeTicketFromSponsor(SponsorTicket $sponsorTicket, Ticket $ticket): void
+    public function removeTicketFromSponsor(SponsorTicket $sponsorTicket, Inscription $ticket): void
     {
         $invoice = $this->invoiceFactory->createInvoiceFromSponsorTicket($sponsorTicket);
-        if ($invoice->getReference() !== $ticket->getReference()) {
+        if ($invoice->getReference() !== $ticket->reference) {
             throw new \RuntimeException('Erreur: le ticket n\'est pas rattaché à ce token');
         }
         try {
-            $this->ticketRepository->startTransaction();
-            $this->ticketRepository->delete($ticket);
-            $this->ticketRepository->commit();
-        } catch (Exception) {
-            $this->ticketRepository->rollback();
-
+            $this->inscriptionRepository->delete($ticket);
+        } catch (DBALException) {
             return;
         }
 
-        // Libérée seulement après le commit Ting (connexion Doctrine distincte) :
+        // Libérée seulement après la suppression de l'inscription :
         // si cette écriture échoue, le compteur surestime, sans risque de dépasser le quota
         $sponsorTicket->usedInvitations--;
         $this->sponsorTicketRepository->save($sponsorTicket);
     }
 
-    public function doesTicketBelongsToSponsor(SponsorTicket $sponsorTicket, Ticket $ticket): bool
+    public function doesTicketBelongsToSponsor(SponsorTicket $sponsorTicket, Inscription $ticket): bool
     {
         $invoice = $this->invoiceFactory->createInvoiceFromSponsorTicket($sponsorTicket);
-        return ($ticket->getReference() === $invoice->getReference());
+        return $ticket->reference === $invoice->getReference();
     }
 
-    public function getRegisteredTickets(SponsorTicket $sponsorTicket)
+    /**
+     * @return list<Inscription>
+     */
+    public function getRegisteredTickets(SponsorTicket $sponsorTicket): array
     {
         $invoice = $this->invoiceFactory->createInvoiceFromSponsorTicket($sponsorTicket);
-        return $this->ticketRepository->getByReference($invoice->getReference());
+        return $this->inscriptionRepository->getByReference((string) $invoice->getReference());
     }
 }

@@ -70,7 +70,7 @@ final class TicketTypeRepository extends EntityRepository
     }
 
     /**
-     * Complète les agrégats d'inscriptions produits par TicketRepository (Ting) avec
+     * Complète les agrégats d'inscriptions produits par InscriptionRepository avec
      * le type de tarif de chaque inscription, rechargé via Doctrine.
      *
      * @param array<TicketAggregate> $ticketAggregates
@@ -80,7 +80,7 @@ final class TicketTypeRepository extends EntityRepository
     public function enrichTicketAggregates(array $ticketAggregates): array
     {
         $ticketTypes = $this->findIndexedByIds(array_values(array_map(
-            static fn(TicketAggregate $ticketAggregate): int => (int) $ticketAggregate->ticket->getTicketTypeId(),
+            static fn(TicketAggregate $ticketAggregate): int => $ticketAggregate->ticket->ticketTypeId,
             $ticketAggregates,
         )));
 
@@ -88,7 +88,7 @@ final class TicketTypeRepository extends EntityRepository
         foreach ($ticketAggregates as $ticketAggregate) {
             $enriched[] = new TicketAggregate(
                 $ticketAggregate->ticket,
-                $ticketTypes[(int) $ticketAggregate->ticket->getTicketTypeId()] ?? null,
+                $ticketTypes[$ticketAggregate->ticket->ticketTypeId] ?? null,
                 $ticketAggregate->invoice,
                 $ticketAggregate->lastSubscription,
             );

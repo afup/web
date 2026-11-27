@@ -6,7 +6,6 @@ namespace AppBundle\Event\Model\Repository;
 
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Entity\GithubUser;
-use AppBundle\Event\Model\Ticket;
 use AppBundle\Ting\DateTimeWithTimeZoneSerializer;
 use Aura\SqlQuery\Mysql\Select;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
@@ -20,6 +19,7 @@ use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
 use CCMBenchmark\Ting\Repository\Repository;
 use CCMBenchmark\Ting\Serializer\SerializerFactoryInterface;
+use AppBundle\Event\Enum\InscriptionEtat;
 
 /**
  * @extends Repository<Event>
@@ -210,8 +210,8 @@ SQL;
         $query = $this->getQuery($sql);
         $query->setParams([
             'email' => $email,
-            'status_paid' => Ticket::STATUS_PAID,
-            'status_guest' => Ticket::STATUS_GUEST,
+            'status_paid' => InscriptionEtat::Reglee->value,
+            'status_guest' => InscriptionEtat::Invitation->value,
         ]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
