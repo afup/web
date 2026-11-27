@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * `meetup` est une propriété virtuelle calculée à partir des colonnes `meetup_nom_url` / `meetup_id_externe`.
- * La classe ne peut pas être `readonly` à cause de ce hook : `readonly` est donc porté par chaque propriété.
+ * Seul `code` (clé primaire, référencée ailleurs) est immuable.
  */
 #[ORM\Entity(repositoryClass: AntenneRepository::class)]
 #[ORM\Table(name: 'afup_antenne')]
@@ -25,13 +25,17 @@ final class Antenne
         get => $this->meetupNomUrl !== null && $this->meetupIdExterne !== null
             ? new Meetup($this->meetupNomUrl, $this->meetupIdExterne)
             : null;
+        set(?Meetup $value) {
+            $this->meetupNomUrl = $value?->nomUrl;
+            $this->meetupIdExterne = $value?->id;
+        }
     }
 
     #[ORM\Column(length: 255, nullable: true)]
-    private readonly ?string $meetupNomUrl;
+    private ?string $meetupNomUrl;
 
     #[ORM\Column(length: 50, nullable: true)]
-    private readonly ?string $meetupIdExterne;
+    private ?string $meetupIdExterne;
 
     /**
      * @param string[]|null $departements
@@ -42,24 +46,23 @@ final class Antenne
         #[ORM\Column(length: 50)]
         public readonly string $code,
         #[ORM\Column(length: 255)]
-        public readonly string $libelle,
+        public string $libelle,
         ?Meetup $meetup,
         #[ORM\Column(length: 255)]
-        public readonly string $urlLogo,
+        public string $urlLogo,
         #[ORM\Column(type: AntenneReseauxSociauxType::NAME)]
-        public readonly ReseauxSociaux $reseauxSociaux,
+        public ReseauxSociaux $reseauxSociaux,
         #[ORM\Column(type: AntenneCarteType::NAME, nullable: true)]
-        public readonly ?Carte $carte,
+        public ?Carte $carte,
         #[ORM\Column(type: Types::JSON, nullable: true)]
-        public readonly ?array $departements = null,
+        public ?array $departements = null,
         #[ORM\Column(type: Types::JSON, nullable: true)]
-        public readonly ?array $pays = null,
+        public ?array $pays = null,
         #[ORM\Column(length: 255, nullable: true)]
-        public readonly ?string $region = null,
+        public ?string $region = null,
         #[ORM\Column(options: ['default' => false])]
-        public readonly bool $masqueePageAntennes = false,
+        public bool $masqueePageAntennes = false,
     ) {
-        $this->meetupNomUrl = $meetup?->nomUrl;
-        $this->meetupIdExterne = $meetup?->id;
+        $this->meetup = $meetup;
     }
 }

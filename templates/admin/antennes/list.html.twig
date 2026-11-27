@@ -3,13 +3,14 @@
 {% block content %}
     <h2>Antennes</h2>
 
-    <div class="ui message">
-        <div class="header">
-            Liste en lecture seule
+    {% if is_granted('ROLE_ANTENNES_WRITER') %}
+        <div class="ui menu">
+            <a href="{{ path('admin_antennes_add') }}" class="item" data-qa="antenne-add">
+                <i class="icon plus square"></i>
+                Ajouter une antenne
+            </a>
         </div>
-
-        <p>Les modifications sont à faire dans le code (il faut demander au pole outils).</p>
-    </div>
+    {% endif %}
 
     <div class="ui segment">
         {% if antennes|length > 0 %}
@@ -60,6 +61,9 @@
                             </span>
                         </div>
                     </th>
+                    {% if is_granted('ROLE_ANTENNES_WRITER') %}
+                        <th>Actions</th>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
@@ -153,6 +157,19 @@
                                 {% endif %}
                             </div>
                         </td>
+                        {% if is_granted('ROLE_ANTENNES_WRITER') %}
+                            <td class="collapsing">
+                                <a href="{{ path('admin_antennes_edit', {code: antenne.code}) }}"
+                                   class="compact ui icon button"
+                                   data-position="left center"
+                                   data-tooltip="Modifier l'antenne {{ antenne.libelle }}"
+                                   id="antenne-edit-{{ antenne.code }}"
+                                   data-qa="antenne-edit-{{ antenne.code }}"
+                                >
+                                    <i class="pencil alternate icon"></i>
+                                </a>
+                            </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                 </tbody>

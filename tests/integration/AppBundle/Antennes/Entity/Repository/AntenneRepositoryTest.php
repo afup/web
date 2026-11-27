@@ -8,22 +8,9 @@ use Afup\Tests\Support\IntegrationTestCase;
 use AppBundle\Antennes\Entity\Antenne;
 use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Antennes\AncrageLegende;
-use AppBundle\Antennes\OfficesMapSvgGenerator;
-use AppBundle\Command\GenerateOfficesMapCommand;
 
 final class AntenneRepositoryTest extends IntegrationTestCase
 {
-    public function testCommittedMapIsUpToDate(): void
-    {
-        $generated = new OfficesMapSvgGenerator()->generate($this->repository()->getAllSortedByLabels());
-
-        self::assertStringEqualsFile(
-            __DIR__ . '/../../../../../../templates/' . GenerateOfficesMapCommand::MAP_TEMPLATE,
-            $generated,
-            'La carte des antennes n\'est plus à jour : lancer `bin/console antennes:generate-map`.',
-        );
-    }
-
     public function testGetAll(): void
     {
         $antennes = $this->repository()->getAll();

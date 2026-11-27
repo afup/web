@@ -369,6 +369,8 @@ parameters:
                     url: '/admin/antennes'
                     extra_routes:
                         - admin_antennes_list
+                        - admin_antennes_add
+                        - admin_antennes_edit
         divers:
             nom: 'Divers'
             niveau: 'ROLE_SUPER_ADMIN'
