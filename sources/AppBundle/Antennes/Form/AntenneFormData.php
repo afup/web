@@ -70,6 +70,16 @@ final class AntenneFormData
     )]
     public ?string $meetupIdExterne = null;
 
+    /**
+     * Identifiant (et non nom) du canal de l'antenne sur le Slack Membres : l'API Slack n'accepte que les IDs.
+     */
+    #[Assert\Length(max: 50)]
+    #[Assert\Regex(
+        pattern: '/^\s*([CG][A-Z0-9]{8,})?\s*$/',
+        message: "L'identifiant du canal Slack doit être un ID de canal (ex. C0123ABCDEF), pas son nom.",
+    )]
+    public ?string $slackMembresIdCanal = null;
+
     #[Assert\Valid]
     public ReseauxSociauxFormData $reseauxSociaux;
 
@@ -101,6 +111,7 @@ final class AntenneFormData
         $data->urlLogo = $antenne->urlLogo;
         $data->meetupNomUrl = $antenne->meetup?->nomUrl;
         $data->meetupIdExterne = $antenne->meetup?->id;
+        $data->slackMembresIdCanal = $antenne->slackMembresIdCanal;
         $data->reseauxSociaux = ReseauxSociauxFormData::fromReseauxSociaux($antenne->reseauxSociaux);
         $data->carte = CarteFormData::fromCarte($antenne->carte);
         $data->departements = $antenne->departements;
@@ -143,6 +154,7 @@ final class AntenneFormData
             pays: $this->pays,
             region: self::nullIfEmpty($this->region),
             masqueePageAntennes: !$this->actif,
+            slackMembresIdCanal: self::nullIfEmpty($this->slackMembresIdCanal),
         );
     }
 
@@ -157,6 +169,7 @@ final class AntenneFormData
         $antenne->pays = $this->pays;
         $antenne->region = self::nullIfEmpty($this->region);
         $antenne->masqueePageAntennes = !$this->actif;
+        $antenne->slackMembresIdCanal = self::nullIfEmpty($this->slackMembresIdCanal);
     }
 
     private function meetup(): ?Meetup

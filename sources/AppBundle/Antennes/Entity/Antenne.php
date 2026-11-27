@@ -62,6 +62,8 @@ final class Antenne
         public ?string $region = null,
         #[ORM\Column(options: ['default' => false])]
         public bool $masqueePageAntennes = false,
+        #[ORM\Column(length: 50, nullable: true)]
+        public ?string $slackMembresIdCanal = null,
     ) {
         $this->meetup = $meetup;
     }

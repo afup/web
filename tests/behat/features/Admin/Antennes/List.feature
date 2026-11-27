@@ -67,11 +67,14 @@ Feature: Administration - Partie Antennes
     And the "antenne[reseauxSociaux][linkedin]" field should contain "afup-lyon"
     When I fill in "antenne[libelle]" with "Lyon et environs"
     And I fill in "antenne[reseauxSociaux][linkedin]" with "afup-lyon-officiel"
+    And I fill in "antenne[slackMembresIdCanal]" with " C0123ABCDEF "
     And I press "Modifier"
     Then I should see "L'antenne Lyon et environs a été modifiée"
     And the "tr[data-qa='antenne-lyon']" element should contain "Lyon et environs"
     And the "tr[data-qa='antenne-lyon']" element should contain "linkedin.com/company/afup-lyon-officiel"
     And the "tr[data-qa='antenne-lyon']" element should contain "youtube.com"
+    When I follow "antenne-edit-lyon"
+    Then the "antenne[slackMembresIdCanal]" field should contain "C0123ABCDEF"
     # la carte publique est générée à l'affichage : la modification y est visible immédiatement
     When I go to "/association/antennes"
     Then the response should contain "aria-label=\"Lyon et environs\""
@@ -123,6 +126,13 @@ Feature: Administration - Partie Antennes
     Then I should see "Le code doit commencer par une lettre minuscule"
     And I should see "Le nom d'URL Meetup ne doit contenir que le nom du groupe"
     And I should see "L'identifiant Meetup doit être numérique."
+
+  Scenario: Le canal Slack Membres doit être renseigné par son identifiant
+    Given I am logged in as admin and on the Administration
+    And I am on "/admin/antennes/edit/lyon"
+    When I fill in "antenne[slackMembresIdCanal]" with "#afup-lyon"
+    And I press "Modifier"
+    Then I should see "L'identifiant du canal Slack doit être un ID de canal"
 
   Scenario: Un lecteur des antennes ne peut pas les modifier
     Given I am logged-in with the user "lecteurantennes" and the password "lecteurantennes"
