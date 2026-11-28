@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Entity;
 
+use AppBundle\Antennes\Entity\Antenne;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'afup_meetup')]
 final class Meetup
 {
+    public const string MEETUP_URL = 'https://www.meetup.com/fr-FR/';
+
     #[ORM\Id]
     #[ORM\Column]
     public int $id;
@@ -31,4 +34,14 @@ final class Meetup
 
     #[ORM\Column(length: 255, nullable: true)]
     public ?string $photoUrl = null;
+
+    public function getUrl(Antenne $antenne): string
+    {
+        $antenneMeetup = $antenne->meetup;
+        if ($antenneMeetup === null) {
+            return self::MEETUP_URL . '/events/' . $this->id;
+        }
+
+        return self::MEETUP_URL . $antenneMeetup->nomUrl . '/events/' . $this->id;
+    }
 }
