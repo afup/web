@@ -33,6 +33,7 @@
     "league/html-to-markdown": "^5.1",
     "league/iso3166": "^4.4",
     "league/oauth2-github": "^3.1",
+    "npm-asset/jquery": "^3.8",
     "npm-asset/qr-scanner": "^1.4.2",
     "npm-asset/sass-embedded-linux-x64": "^1.108.2",
     "npm-asset/tarteaucitronjs": "^1.32.0",

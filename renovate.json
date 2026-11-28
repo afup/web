@@ -26,6 +26,12 @@
         {
             "matchManagers": [ "composer" ],
             "rangeStrategy": "bump"
+        },
+        {
+            "description": "Semantic UI 2.x utilise des API retirées en jQuery 4 ($.isFunction, $.isArray, $.isWindow, $.trim)",
+            "matchManagers": [ "composer" ],
+            "matchPackageNames": [ "npm-asset/jquery" ],
+            "allowedVersions": "<4"
         }
     ]
 }

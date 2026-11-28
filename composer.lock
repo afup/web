@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9a3f82da521a0c67e4fed55d01be84e5",
+    "content-hash": "3aa100a4d728c31fba5d662a01f194b9",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -4485,6 +4485,19 @@
                 "source": "https://github.com/nette/utils/tree/v4.1.4"
             },
             "time": "2026-05-11T20:49:54+00:00"
+        },
+        {
+            "name": "npm-asset/jquery",
+            "version": "3.8.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/jquery/-/jquery-3.8.0.tgz",
+                "shasum": "3bf83324052cc9e7148718e9d6ea3cde1b2b9f5a"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "npm-asset/qr-scanner",
