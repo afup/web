@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Command;
 
+use AppBundle\Antennes\Entity\Antenne;
+use AppBundle\Antennes\Entity\Repository\AntenneRepository;
+use AppBundle\Antennes\NewMeetupNotifier;
 use AppBundle\Event\Entity\Repository\MeetupRepository;
 use AppBundle\Indexation\Meetups\MeetupClient;
 use CuyZ\Valinor\Mapper\MappingError;
@@ -20,6 +23,8 @@ class ScrappingMeetupEventsCommand extends Command
     public function __construct(
         private readonly MeetupClient $meetupClient,
         private readonly MeetupRepository $meetupRepository,
+        private readonly AntenneRepository $antenneRepository,
+        private readonly NewMeetupNotifier $newMeetupNotifier,
     ) {
         parent::__construct();
     }
@@ -31,6 +36,7 @@ class ScrappingMeetupEventsCommand extends Command
             ->setAliases(['s-m-e'])
             ->setDescription('Récupère les évènements meetup AFUP sur meetup.com pour les afficher sur le site de l\'afup.')
             ->addOption('refresh-old-meetups', description: 'Mettre à jour les anciens meetups')
+            ->addOption('no-slack', description: 'Ne pas annoncer les nouveaux meetups sur le Slack Membres')
         ;
     }
 
@@ -39,6 +45,8 @@ class ScrappingMeetupEventsCommand extends Command
         if ($input->getOption('refresh-old-meetups') === true) {
             $quantityOfPastEvents = 100;
         }
+
+        $notifySlack = $input->getOption('no-slack') !== true;
 
         $io = new SymfonyStyle($input, $output);
         $io->title('Import des events meetups via scrapping de meetup.com');
@@ -74,7 +82,16 @@ class ScrappingMeetupEventsCommand extends Command
                     $meetup = $existingMeetup;
                 }
 
+                $isNew = $existingMeetup === null;
+
                 $this->meetupRepository->save($meetup);
+
+                if ($isNew && $notifySlack) {
+                    $antenne = $this->antenneRepository->find($meetup->codeAntenne);
+                    if ($antenne instanceof Antenne) {
+                        $this->newMeetupNotifier->notify($meetup, $antenne);
+                    }
+                }
             }
 
             $io->progressFinish();

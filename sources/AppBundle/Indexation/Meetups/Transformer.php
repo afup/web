@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace AppBundle\Indexation\Meetups;
 
-use AppBundle\Antennes\Entity\Antenne;
 use AppBundle\Antennes\Entity\Repository\AntenneRepository;
 use AppBundle\Event\Entity\Meetup;
 
 class Transformer
 {
-    public const string MEETUP_URL = 'https://www.meetup.com/fr-FR/';
-
     public function __construct(private readonly AntenneRepository $antennesCollection) {}
 
     /**
@@ -25,7 +22,7 @@ class Transformer
 
         $isUpcoming = new \DateTime() < $datetime;
 
-        $eventUrl = $this->getEventUrl($antenne, $meetup);
+        $eventUrl = $meetup->getUrl($antenne);
 
         $parseDown = new \Parsedown();
 
@@ -51,15 +48,5 @@ class Transformer
         }
 
         return $item;
-    }
-
-    private function getEventUrl(Antenne $antenne, Meetup $meetup): string
-    {
-        $antenneMeetup = $antenne->meetup;
-        if ($antenneMeetup === null) {
-            return self::MEETUP_URL . '/events/' . $meetup->id;
-        }
-
-        return self::MEETUP_URL . $antenneMeetup->nomUrl . '/events/' . $meetup->id;
     }
 }
