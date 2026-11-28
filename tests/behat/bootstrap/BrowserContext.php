@@ -56,6 +56,20 @@ trait BrowserContext
     }
 
     /**
+     * Évalue une expression JavaScript dans la page (ex. présence d'une lib globale).
+     */
+    #[Then('the JavaScript expression :expression should be true')]
+    public function javascriptExpressionShouldBeTrue(string $expression): void
+    {
+        if ($this->minkContext->getSession()->evaluateScript('return !!(' . $expression . ');') !== true) {
+            throw new ExpectationException(
+                sprintf('The JavaScript expression "%s" is not true', $expression),
+                $this->minkContext->getSession()->getDriver(),
+            );
+        }
+    }
+
+    /**
      * Vérifie le texte de la boîte de dialogue `alert()` ouverte, puis la ferme.
      */
     #[Then('I should see the alert :text')]
