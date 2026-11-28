@@ -7,8 +7,8 @@ namespace AppBundle\Controller\Admin\Event\Interview;
 use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Entity\Interview;
 use AppBundle\Event\Entity\Repository\InterviewRepository;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Speaker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,13 +29,8 @@ class ListAction extends AbstractController
         $event = $eventSelection->event;
 
         $speakers = [];
-        foreach ($this->speakerRepository->getScheduledSpeakersByEvent($event, true) as $row) {
-            $speaker = $row['speaker'] ?? null;
-            if (!$speaker instanceof Speaker) {
-                continue;
-            }
-
-            $speakers[(int) $speaker->getId()] = $speaker;
+        foreach ($this->speakerRepository->getScheduledSpeakers((int) $event->getId(), true) as $speaker) {
+            $speakers[$speaker->id] = $speaker;
         }
 
         $interviews = $this->interviewRepository->findBySpeakerIds(array_keys($speakers));
@@ -58,7 +53,7 @@ class ListAction extends AbstractController
 
         $speakersWithoutInterview = array_values(array_filter(
             $speakers,
-            fn(Speaker $speaker) => !in_array($speaker->getId(), $speakerIdsWithInterview, true),
+            fn(Speaker $speaker): bool => !in_array($speaker->id, $speakerIdsWithInterview, true),
         ));
 
         return $this->render('admin/event/interview/list.html.twig', [
@@ -85,7 +80,7 @@ class ListAction extends AbstractController
             }
         }
 
-        usort($resolved, fn(Speaker $a, Speaker $b) => $a->getLabel() <=> $b->getLabel());
+        usort($resolved, fn(Speaker $a, Speaker $b): int => $a->label <=> $b->label);
 
         return $resolved;
     }
@@ -95,6 +90,6 @@ class ListAction extends AbstractController
      */
     private function firstSpeakerLabel(array $speakers): string
     {
-        return $speakers === [] ? '' : $speakers[0]->getLabel();
+        return $speakers === [] ? '' : $speakers[0]->label;
     }
 }

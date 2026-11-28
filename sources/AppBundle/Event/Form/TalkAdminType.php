@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Form;
 
-use AppBundle\Event\Model\Repository\SpeakerRepository;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Speaker;
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Talk;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -26,9 +27,12 @@ class TalkAdminType extends TalkType
     {
         parent::buildForm($builder, $options);
 
-        $allSpeakers = $this->speakerRepository->searchSpeakers($options['event']);
-        $speakers = $this->speakerRepository->getSpeakersByTalk($builder->getData());
-        $speakers = iterator_to_array($speakers->getIterator());
+        /** @var Event $event */
+        $event = $options['event'];
+        /** @var Talk $talk */
+        $talk = $builder->getData();
+        $allSpeakers = $this->speakerRepository->searchSpeakers((int) $event->getId());
+        $speakers = $talk->getId() !== null ? $this->speakerRepository->getSpeakersByTalk($talk->getId()) : [];
 
         $builder->remove('hasAllowedToSharingWithLocalOffices');
         $builder
@@ -95,8 +99,8 @@ class TalkAdminType extends TalkType
                 'choices' => $allSpeakers,
                 'required' => false,
                 'data' => $speakers,
-                'choice_label' => fn(Speaker $speaker): string => $speaker->getLabel(),
-                'choice_value' => fn(?Speaker $speaker): ?int => $speaker?->getId(),
+                'choice_label' => fn(Speaker $speaker): string => $speaker->label,
+                'choice_value' => fn(?Speaker $speaker): ?int => $speaker?->id,
                 'choice_name' => 'id',
             ])
             ->add('verbatim', TextareaType::class, [

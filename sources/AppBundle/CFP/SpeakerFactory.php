@@ -6,11 +6,10 @@ namespace AppBundle\CFP;
 
 use AppBundle\Event\Entity\GithubUser;
 use AppBundle\Event\Entity\Repository\PersonneConferencierRepository;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
-use AppBundle\Event\Model\Speaker;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class SpeakerFactory
 {
@@ -21,21 +20,17 @@ class SpeakerFactory
     ) {}
 
     /**
-     * Get a speaker from current logged in user or create a new speaker if profile has not been created
+     * Profil conférencier enregistré de l'utilisateur GitHub connecté pour l'événement, null s'il n'en a pas encore.
      */
-    public function getSpeaker(Event $event): Speaker
+    public function findSpeaker(Event $event): ?Speaker
     {
-        // Try to get a speaker for the current logged in user
-        $user = null;
-        if ($this->tokenStorage->getToken() instanceof TokenInterface) {
-            $user = $this->tokenStorage->getToken()->getUser();
-            if ($user instanceof GithubUser) {
-                $user = $user->getId();
-            }
+        $githubUserId = $this->getGithubUserId();
+        if ($githubUserId === null) {
+            return null;
         }
 
-        $speaker = $this->speakerRepository->getOneBy([
-            'user' => $user,
+        $speaker = $this->speakerRepository->findOneBy([
+            'githubUserId' => $githubUserId,
             'eventId' => $event->getId(),
         ]);
 
@@ -43,30 +38,44 @@ class SpeakerFactory
             return $speaker;
         }
 
-        $personneId = null;
-        if (is_int($user)) {
-            $personneId = $this->personneConferencierRepository->findLatestIdByGithubUser($user);
-            // La personne a peut-être déjà une ligne pour cet événement, saisie par l'admin sans compte GitHub :
-            // on la reprend plutôt que de créer un doublon.
-            $adminSpeakerId = $personneId !== null && $event->getId() !== null
-                ? $this->personneConferencierRepository->findSpeakerIdInEvent($personneId, $event->getId(), withoutGithubUser: true)
-                : null;
-            $adminSpeaker = $adminSpeakerId !== null ? $this->speakerRepository->get($adminSpeakerId) : null;
-            if ($adminSpeaker instanceof Speaker) {
-                $adminSpeaker->setUser($user);
-                $this->speakerRepository->save($adminSpeaker);
-
-                return $adminSpeaker;
-            }
+        // La personne a peut-être déjà une ligne pour cet événement, saisie par l'admin sans compte GitHub :
+        // on la reprend plutôt que de créer un doublon.
+        $personneId = $this->personneConferencierRepository->findLatestIdByGithubUser($githubUserId);
+        $adminSpeakerId = $personneId !== null && $event->getId() !== null
+            ? $this->personneConferencierRepository->findSpeakerIdInEvent($personneId, $event->getId(), withoutGithubUser: true)
+            : null;
+        $adminSpeaker = $adminSpeakerId !== null ? $this->speakerRepository->find($adminSpeakerId) : null;
+        if (!$adminSpeaker instanceof Speaker) {
+            return null;
         }
 
+        $adminSpeaker->githubUserId = $githubUserId;
+        $this->speakerRepository->save($adminSpeaker);
+
+        return $adminSpeaker;
+    }
+
+    /**
+     * Nouveau profil conférencier, non enregistré, pour l'utilisateur GitHub connecté.
+     */
+    public function createSpeaker(Event $event): Speaker
+    {
+        $githubUserId = $this->getGithubUserId();
+
         $speaker = new Speaker();
-        $speaker
-            ->setUser($user)
-            ->setEventId($event->getId())
-            ->setPersonneId($personneId)
-        ;
+        $speaker->githubUserId = $githubUserId;
+        $speaker->eventId = (int) $event->getId();
+        $speaker->personneId = $githubUserId !== null
+            ? $this->personneConferencierRepository->findLatestIdByGithubUser($githubUserId)
+            : null;
 
         return $speaker;
+    }
+
+    private function getGithubUserId(): ?int
+    {
+        $user = $this->tokenStorage->getToken()?->getUser();
+
+        return $user instanceof GithubUser ? $user->getId() : null;
     }
 }

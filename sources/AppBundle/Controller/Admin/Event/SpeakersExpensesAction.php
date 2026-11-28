@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Event;
 
 use AppBundle\Event\AdminEventSelection;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
+use AppBundle\Event\Speaker\ScheduledSpeakersProvider;
 use AppBundle\SpeakerInfos\SpeakersExpensesStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class SpeakersExpensesAction extends AbstractController
 {
     public function __construct(
-        private readonly SpeakerRepository $speakerRepository,
+        private readonly ScheduledSpeakersProvider $scheduledSpeakersProvider,
         private readonly SpeakersExpensesStorage $speakersExpensesStorage,
     ) {}
 
@@ -26,13 +26,13 @@ class SpeakersExpensesAction extends AbstractController
 
         $event = $eventSelection->event;
 
-        $speakers = $this->speakerRepository->getScheduledSpeakersByEvent($event, true);
-        if ($speakers->count() > 0) {
-            $speakers = iterator_to_array($speakers->getIterator());
-            foreach ($speakers as $k => $speaker) {
-                $files = $this->speakersExpensesStorage->getFiles($speaker['speaker']);
-                $speakers[$k]['hasExpensesFiles'] = $files;
-            }
+        $speakers = [];
+        foreach ($this->scheduledSpeakersProvider->getScheduledSpeakers((int) $event->getId(), true) as $row) {
+            $files = $this->speakersExpensesStorage->getFiles($row['speaker']);
+            $speakers[] = [
+                'speaker' => $row['speaker'],
+                'hasExpensesFiles' => $files,
+            ];
         }
 
         return $this->render('admin/event/speakers_expenses.html.twig', [

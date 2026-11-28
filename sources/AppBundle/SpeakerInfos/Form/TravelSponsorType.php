@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\SpeakerInfos\Form;
 
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -48,11 +48,11 @@ final class TravelSponsorType extends AbstractType
     {
         $values = [];
 
-        if (!$speaker->isTravelRefundNeeded()) {
+        if (!$speaker->travelRefundNeeded) {
             $values[] = self::OPTION_NOT_NEEDED;
         }
 
-        if ($speaker->isTravelRefundSponsored()) {
+        if ($speaker->travelRefundSponsored) {
             $values[] = self::OPTION_SPONSORED;
         }
 

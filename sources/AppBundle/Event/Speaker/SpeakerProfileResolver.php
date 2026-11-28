@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Speaker;
 
-use AppBundle\Event\Model\Repository\SpeakerRepository;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Talk\PublishedTalkRepository;
 use Cocur\Slugify\Slugify;
 use Symfony\Contracts\Service\ResetInterface;
@@ -84,7 +84,7 @@ final class SpeakerProfileResolver implements ResetInterface
      */
     public function getIdentityForSpeaker(Speaker $speaker): ?SpeakerIdentity
     {
-        return $this->getIdentityByPersonneId($speaker->getPersonneId());
+        return $this->getIdentityByPersonneId($speaker->personneId);
     }
 
     /**
@@ -200,7 +200,7 @@ final class SpeakerProfileResolver implements ResetInterface
         $speakers = [];
         $speakerTalks = [];
         foreach ($this->publishedTalkRepository->getSpeakerTalks($speakerIds) as $row) {
-            $speaker = $speakers[$row['speaker_id']] ??= $this->speakerRepository->get($row['speaker_id']);
+            $speaker = $speakers[$row['speaker_id']] ??= $this->speakerRepository->find($row['speaker_id']);
             if ($speaker instanceof Speaker) {
                 $speakerTalks[] = new SpeakerTalk($speaker, $row['talk'], $row['event'], $row['starts_at'], $row['github_login']);
             }
@@ -218,11 +218,11 @@ final class SpeakerProfileResolver implements ResetInterface
         usort($speakerTalks, static fn(SpeakerTalk $a, SpeakerTalk $b): int => [
             $b->startsAt->getTimestamp(),
             $b->talk->id,
-            $b->speaker->getId(),
+            $b->speaker->id,
         ] <=> [
             $a->startsAt->getTimestamp(),
             $a->talk->id,
-            $a->speaker->getId(),
+            $a->speaker->id,
         ]);
 
         /** @var non-empty-array<int, Speaker> $speakers lignes speaker, de la plus récente à la plus ancienne */
@@ -230,7 +230,7 @@ final class SpeakerProfileResolver implements ResetInterface
         $githubLogins = [];
         $talks = [];
         foreach ($speakerTalks as $speakerTalk) {
-            $speakers[(int) $speakerTalk->speaker->getId()] ??= $speakerTalk->speaker;
+            $speakers[$speakerTalk->speaker->id] ??= $speakerTalk->speaker;
             if (null !== $speakerTalk->githubLogin) {
                 $githubLogins[] = $speakerTalk->githubLogin;
             }
@@ -241,17 +241,17 @@ final class SpeakerProfileResolver implements ResetInterface
         $socialLinks = array_filter([
             'twitter' => self::first($speakers, static fn(Speaker $speaker): string => $speaker->getUrlTwitter()),
             'mastodon' => self::first($speakers, static fn(Speaker $speaker): string => (string) $speaker->getUrlMastodon()),
-            'bluesky' => self::first($speakers, static fn(Speaker $speaker): string => trim((string) $speaker->getBluesky()) !== '' ? (string) $speaker->getUrlBluesky() : ''),
+            'bluesky' => self::first($speakers, static fn(Speaker $speaker): string => trim((string) $speaker->bluesky) !== '' ? (string) $speaker->getUrlBluesky() : ''),
             'linkedin' => self::first($speakers, static fn(Speaker $speaker): string => (string) $speaker->getUrlLinkedin()),
             'github' => self::first($githubLogins, static fn(string $login): string => '' !== $login ? 'https://github.com/' . $login : ''),
         ], static fn(?string $url): bool => null !== $url);
 
-        $photoSpeakers = array_filter($speakers, static fn(Speaker $speaker): bool => trim((string) $speaker->getPhoto()) !== '');
+        $photoSpeakers = array_filter($speakers, static fn(Speaker $speaker): bool => trim((string) $speaker->photo) !== '');
 
         return new SpeakerProfile(
             $identity,
             reset($speakers),
-            self::first($speakers, static fn(Speaker $speaker): string => trim((string) $speaker->getBiography())),
+            self::first($speakers, static fn(Speaker $speaker): string => trim((string) $speaker->biography)),
             reset($photoSpeakers) ?: null,
             $socialLinks,
             array_values($talks),

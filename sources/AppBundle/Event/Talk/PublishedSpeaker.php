@@ -17,7 +17,7 @@ final readonly class PublishedSpeaker
         public string $lastname,
         public ?int $personneId = null,
     ) {
-        // Le même libellé que Speaker::getLabel().
+        // Le même libellé que Speaker::$label.
         $this->label = $firstname . ' ' . ('' !== $lastname ? mb_strtoupper($lastname) : '');
     }
 }

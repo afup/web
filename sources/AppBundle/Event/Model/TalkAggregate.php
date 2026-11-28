@@ -6,6 +6,7 @@ namespace AppBundle\Event\Model;
 
 use AppBundle\Event\Entity\Planning;
 use AppBundle\Event\Entity\Room;
+use AppBundle\Event\Entity\Speaker;
 
 final readonly class TalkAggregate
 {

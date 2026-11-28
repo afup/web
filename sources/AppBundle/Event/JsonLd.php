@@ -46,7 +46,7 @@ final readonly class JsonLd
 
                 $person = [
                     '@type' => 'Person',
-                    'name' => $speaker->getLabel(),
+                    'name' => $speaker->label,
                     'image' => $imageUrl ? $this->packages->getUrl($imageUrl) : '',
                     'url' => $mainSocialUrl ?? null,
                 ];

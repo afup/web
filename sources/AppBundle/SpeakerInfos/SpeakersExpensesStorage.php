@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\SpeakerInfos;
 
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -57,11 +57,11 @@ final readonly class SpeakersExpensesStorage
         $this->createDirectory($directory);
 
         $finder = new Finder();
-        $iterator = $finder->files()->name(sprintf('%d_*', $speaker->getId()))->in($directory);
+        $iterator = $finder->files()->name(sprintf('%d_*', $speaker->id))->in($directory);
 
         $files = [];
         foreach ($iterator as $file) {
-            $basename = str_replace(sprintf('%d_', $speaker->getId()), '', $file->getBasename());
+            $basename = str_replace(sprintf('%d_', $speaker->id), '', $file->getBasename());
             $files[] = [
                 'basename' => $basename,
                 'path' => $directory . '/' . $file->getBasename(),
@@ -101,11 +101,11 @@ final readonly class SpeakersExpensesStorage
 
     private function getDir(Speaker $speaker): string
     {
-        return $this->basePath . '/' . $speaker->getEventId();
+        return $this->basePath . '/' . $speaker->eventId;
     }
 
     private function buildFilename($file, Speaker $speaker): string
     {
-        return sprintf('%d_%s', $speaker->getId(), $file);
+        return sprintf('%d_%s', $speaker->id, $file);
     }
 }

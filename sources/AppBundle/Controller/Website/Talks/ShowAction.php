@@ -6,10 +6,9 @@ namespace AppBundle\Controller\Website\Talks;
 
 use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Repository\EventRepository;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Talk\PublishedTalkRepository;
-use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Event\Talk\VideoObjectJsonLd;
 use AppBundle\Event\Talk\RelatedTalks;
@@ -51,20 +50,17 @@ final class ShowAction extends AbstractController
             return $this->redirectToRoute('talks_show', ['id' => $id, 'slug' => $talk->getSlug()], Response::HTTP_MOVED_PERMANENTLY);
         }
 
-        $speakers = iterator_to_array($this->speakerRepository->getSpeakersByTalk($talk), false);
+        $speakers = $this->speakerRepository->getSpeakersByTalk($id);
         // Slug de la page de chaque speaker, par ID de ligne speaker : un seul index, chargé une fois pour tous.
         $speakerSlugs = [];
         // Les autres talks de chaque personne, une fois par personne même si elle a deux lignes speaker sur ce talk.
         $speakersTalks = [];
-        /** @var Speaker $speaker */
         foreach ($speakers as $speaker) {
             $identity = $this->speakerProfileResolver->getIdentityForSpeaker($speaker);
             if (null === $identity) {
                 continue;
             }
-            if (null !== $speaker->getId()) {
-                $speakerSlugs[$speaker->getId()] = $identity->slug;
-            }
+            $speakerSlugs[$speaker->id] = $identity->slug;
             $speakersTalks[$identity->slug] ??= [
                 'identity' => $identity,
                 'talks' => array_map(

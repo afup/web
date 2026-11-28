@@ -7,10 +7,10 @@ namespace AppBundle\Event\Speaker;
 use AppBundle\Event\Entity\Planning;
 use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Entity\Room;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\SpeakerInfos\Form\HotelReservationType;
 use AppBundle\SpeakerInfos\Form\SpeakersContactType;
@@ -38,20 +38,20 @@ class SpeakerPage extends AbstractController
     public function handleRequest(Request $request, Event $event, Speaker $speaker): Response
     {
         $talks = array_filter(
-            iterator_to_array($this->talkRepository->getTalksBySpeaker($event, $speaker)),
+            iterator_to_array($this->talkRepository->getTalksBySpeaker($event, $speaker->id)),
             static fn(Talk $talk): bool => $talk->getScheduled(),
         );
 
         $now = new DateTime('now');
 
         $speakersContactDefaults = [
-            'phone_number' => $speaker->getPhoneNumber(),
+            'phone_number' => $speaker->phoneNumber,
         ];
         $speakersContactType = $this->createForm(SpeakersContactType::class, $speakersContactDefaults);
         $speakersContactType->handleRequest($request);
         if ($speakersContactType->isSubmitted() && $speakersContactType->isValid()) {
-            $speakersContactData = $speakersContactType->getData();
-            $speaker->setPhoneNumber($speakersContactData['phone_number']);
+            $phoneNumber = $speakersContactType->getData()['phone_number'];
+            $speaker->phoneNumber = is_string($phoneNumber) ? $phoneNumber : null;
             $this->speakerRepository->save($speaker);
             $this->addFlash('notice', 'Informations de contact enregistrées');
 
@@ -60,10 +60,11 @@ class SpeakerPage extends AbstractController
 
         $shouldDisplayMicrophoneForm = (bool) $event->getMicTypeEnabled();
 
-        $speakersMicrophoneType = $this->createForm(SpeakersMicrophoneType::class, ['type' => $speaker->getMicType()]);
+        $speakersMicrophoneType = $this->createForm(SpeakersMicrophoneType::class, ['type' => $speaker->micType]);
         $speakersMicrophoneType->handleRequest($request);
         if ($shouldDisplayMicrophoneForm && $speakersMicrophoneType->isSubmitted() && $speakersMicrophoneType->isValid()) {
-            $speaker->setMicType($speakersMicrophoneType->getData()['type']);
+            $micType = $speakersMicrophoneType->getData()['type'];
+            $speaker->micType = $micType instanceof MicrophoneType ? $micType : null;
             $this->speakerRepository->save($speaker);
             $this->addFlash('notice', 'Préférence de microphone enregistrée');
 
@@ -71,9 +72,9 @@ class SpeakerPage extends AbstractController
         }
 
         $speakersDinerDefaults = [
-            'will_attend' => $speaker->getWillAttendSpeakersDiner(),
-            'has_special_diet' => $speaker->getHasSpecialDiet(),
-            'special_diet_description' => $speaker->getSpecialDietDescription(),
+            'will_attend' => $speaker->willAttendSpeakersDiner,
+            'has_special_diet' => $speaker->hasSpecialDiet,
+            'special_diet_description' => $speaker->specialDietDescription,
         ];
         $speakersDinerType = $this->createForm(SpeakersDinerType::class, $speakersDinerDefaults);
         $speakersDinerType->handleRequest($request);
@@ -82,9 +83,10 @@ class SpeakerPage extends AbstractController
 
         if ($shouldDisplaySpeakersDinerForm && $speakersDinerType->isSubmitted() && $speakersDinerType->isValid()) {
             $speakersDinerData = $speakersDinerType->getData();
-            $speaker->setWillAttendSpeakersDiner($speakersDinerData['will_attend'] === 1);
-            $speaker->setHasSpecialDiet($speakersDinerData['has_special_diet'] === 1);
-            $speaker->setSpecialDietDescription($speakersDinerData['special_diet_description']);
+            $speaker->willAttendSpeakersDiner = $speakersDinerData['will_attend'] === 1;
+            $speaker->hasSpecialDiet = $speakersDinerData['has_special_diet'] === 1;
+            $specialDietDescription = $speakersDinerData['special_diet_description'];
+            $speaker->specialDietDescription = is_string($specialDietDescription) ? $specialDietDescription : null;
             $this->speakerRepository->save($speaker);
             $this->addFlash('notice', 'Informations sur votre venue au restaurant des speakers enregistrées');
 
@@ -97,7 +99,7 @@ class SpeakerPage extends AbstractController
             $nights[] = HotelReservationType::NIGHT_NONE;
         }
 
-        if ($speaker->hasHostingSponsor()) {
+        if ($speaker->hasHostingSponsor) {
             $nights[] = HotelReservationType::NIGHT_TRAVEL_SPONSOR;
         }
 
@@ -114,22 +116,23 @@ class SpeakerPage extends AbstractController
             $hotelReservationData = $hotelReservationType->getData();
             if (is_array($hotelReservationData['nights'])) {
                 $hasHostingSponsor = false;
+                $nights = [];
 
-                $nights = array_filter($hotelReservationData['nights'], function (mixed $value) use (&$hasHostingSponsor) {
+                foreach ($hotelReservationData['nights'] as $value) {
                     if ($value === HotelReservationType::NIGHT_TRAVEL_SPONSOR) {
                         $hasHostingSponsor = true;
 
-                        return false;
+                        continue;
                     }
 
-                    if ($value === HotelReservationType::NIGHT_NONE) {
-                        return false;
+                    if ($value === HotelReservationType::NIGHT_NONE || !is_string($value)) {
+                        continue;
                     }
 
-                    return true;
-                });
+                    $nights[] = $value;
+                }
 
-                $speaker->setHasHostingSponsor($hasHostingSponsor);
+                $speaker->hasHostingSponsor = $hasHostingSponsor;
                 $speaker->setHotelNightsArray($nights);
             }
 
@@ -156,8 +159,8 @@ class SpeakerPage extends AbstractController
         if ($travelSponsorType->isSubmitted() && $travelSponsorType->isValid()) {
             $travelSponsorData = $travelSponsorType->getData();
 
-            $speaker->setTravelRefundNeeded(!in_array(TravelSponsorType::OPTION_NOT_NEEDED, $travelSponsorData['choices'], true));
-            $speaker->setTravelRefundSponsored(in_array(TravelSponsorType::OPTION_SPONSORED, $travelSponsorData['choices'], true));
+            $speaker->travelRefundNeeded = !in_array(TravelSponsorType::OPTION_NOT_NEEDED, $travelSponsorData['choices'], true);
+            $speaker->travelRefundSponsored = in_array(TravelSponsorType::OPTION_SPONSORED, $travelSponsorData['choices'], true);
 
             $this->speakerRepository->save($speaker);
             $this->addFlash('notice', "Informations sur vos transports enregistrées");
@@ -172,12 +175,10 @@ class SpeakerPage extends AbstractController
             return $this->redirectFromRequest($request);
         }
 
-        $description = '';
         $eventCfp = $event->getCFP();
-        if (isset($eventCfp['speaker_management_en']) && $request->getLocale() === 'en') {
-            $description = $eventCfp['speaker_management_en'];
-        } elseif (isset($eventCfp['speaker_management_fr'])) {
-            $description = $eventCfp['speaker_management_fr'];
+        $description = $eventCfp['speaker_management_fr'] ?? '';
+        if ($request->getLocale() === 'en') {
+            $description = $eventCfp['speaker_management_en'] ?? $description;
         }
 
         return $this->render('event/speaker/page.html.twig', [
@@ -211,7 +212,11 @@ class SpeakerPage extends AbstractController
         );
         $allTalksById = [];
         foreach ($talkAggregates as $talkAggregate) {
-            $allTalksById[$talkAggregate->talk->getId()] = [
+            $talkId = $talkAggregate->talk->getId();
+            if ($talkId === null) {
+                continue;
+            }
+            $allTalksById[$talkId] = [
                 'talk' => $talkAggregate->talk,
                 'room' => $talkAggregate->room,
                 'planning' => $talkAggregate->planning,
@@ -220,10 +225,11 @@ class SpeakerPage extends AbstractController
 
         $speakerTalks = [];
         foreach ($talks as $talk) {
-            if (!isset($allTalksById[$talk->getId()])) {
+            $talkId = $talk->getId();
+            if ($talkId === null || !array_key_exists($talkId, $allTalksById)) {
                 continue;
             }
-            $speakerTalks[] = $allTalksById[$talk->getId()];
+            $speakerTalks[] = $allTalksById[$talkId];
         }
 
         return $speakerTalks;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\IntegrationTests\Event\Speaker;
 
 use Afup\Tests\Support\IntegrationTestCase;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Speaker\PersonneConferencierLinker;
 use Doctrine\DBAL\Connection;
 
@@ -24,7 +24,7 @@ final class PersonneConferencierLinkerTest extends IntegrationTestCase
         $speaker = $this->buildSpeaker(7);
         self::getContainer()->get(PersonneConferencierLinker::class)->ensurePersonne($speaker);
 
-        self::assertSame(2, $speaker->getPersonneId());
+        self::assertSame(2, $speaker->personneId);
         self::assertSame(2, (int) $connection->fetchOne('SELECT COUNT(*) FROM afup_conferenciers_personnes'), 'aucune personne créée');
     }
 
@@ -35,8 +35,8 @@ final class PersonneConferencierLinkerTest extends IntegrationTestCase
         $speaker = $this->buildSpeaker(7);
         self::getContainer()->get(PersonneConferencierLinker::class)->ensurePersonne($speaker);
 
-        self::assertNotNull($speaker->getPersonneId());
-        self::assertSame('marie-curie', $connection->fetchOne('SELECT slug FROM afup_conferenciers_personnes WHERE id = ?', [$speaker->getPersonneId()]));
+        self::assertNotNull($speaker->personneId);
+        self::assertSame('marie-curie', $connection->fetchOne('SELECT slug FROM afup_conferenciers_personnes WHERE id = ?', [$speaker->personneId]));
     }
 
     public function testEnsurePersonneSuffixesTheSlugWhenItIsAlreadyTaken(): void
@@ -48,20 +48,26 @@ final class PersonneConferencierLinkerTest extends IntegrationTestCase
         $speaker = $this->buildSpeaker(null);
         self::getContainer()->get(PersonneConferencierLinker::class)->ensurePersonne($speaker);
 
-        self::assertSame('marie-curie-3', $connection->fetchOne('SELECT slug FROM afup_conferenciers_personnes WHERE id = ?', [$speaker->getPersonneId()]));
+        self::assertSame('marie-curie-3', $connection->fetchOne('SELECT slug FROM afup_conferenciers_personnes WHERE id = ?', [$speaker->personneId]));
     }
 
     public function testEnsurePersonneKeepsAnExistingPersonne(): void
     {
-        $speaker = $this->buildSpeaker(7)->setPersonneId(42);
+        $speaker = $this->buildSpeaker(7);
+        $speaker->personneId = 42;
         self::getContainer()->get(PersonneConferencierLinker::class)->ensurePersonne($speaker);
 
-        self::assertSame(42, $speaker->getPersonneId());
+        self::assertSame(42, $speaker->personneId);
     }
 
     private function buildSpeaker(?int $githubUserId): Speaker
     {
-        return new Speaker()->setFirstname('Marie')->setLastname('Curie')->setUser($githubUserId);
+        $speaker = new Speaker();
+        $speaker->firstname = 'Marie';
+        $speaker->lastname = 'Curie';
+        $speaker->githubUserId = $githubUserId;
+
+        return $speaker;
     }
 
     private function insertSpeaker(Connection $connection, int $id, int $eventId, ?int $githubUserId, ?int $personneId): void

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace AppBundle\Event\Entity\Repository;
 
 use AppBundle\Doctrine\EntityRepository;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Entity\TalkToSpeaker;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use Doctrine\Persistence\ManagerRegistry;
 use Webmozart\Assert\Assert;
@@ -56,9 +56,7 @@ final class TalkToSpeakerRepository extends EntityRepository
 
         $targetSpeakerIds = [];
         foreach ($speakers as $speaker) {
-            $speakerId = $speaker->getId();
-            Assert::notNull($speakerId);
-            $targetSpeakerIds[$speakerId] = $speakerId;
+            $targetSpeakerIds[$speaker->id] = $speaker->id;
         }
 
         $entityManager = $this->getEntityManager();
@@ -80,9 +78,8 @@ final class TalkToSpeakerRepository extends EntityRepository
     public function addSpeakerToTalk(Talk $talk, Speaker $speaker): void
     {
         $talkId = $talk->getId();
-        $speakerId = $speaker->getId();
+        $speakerId = $speaker->id;
         Assert::notNull($talkId);
-        Assert::notNull($speakerId);
 
         if ($this->find(['talkId' => $talkId, 'speakerId' => $speakerId]) !== null) {
             return;

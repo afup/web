@@ -9,6 +9,7 @@ use AppBundle\Event\Entity\Planning;
 use AppBundle\Event\Entity\Repository\PlanningRepository;
 use AppBundle\Event\Entity\Repository\RoomRepository;
 use AppBundle\Event\Entity\Room;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\TalkAggregate;
 use Doctrine\DBAL\Connection;
@@ -68,8 +69,8 @@ final class PlanningRepositoryTest extends IntegrationTestCase
         // Keynote : exclue même dans la plage
         $this->insertPlanning($connection, '1004', '1451606401', '1451608800', '1', '10', '1');
 
-        $since = (new \DateTime())->setTimestamp(1451606400);
-        $until = (new \DateTime())->setTimestamp(1451692800);
+        $since = new \DateTime()->setTimestamp(1451606400);
+        $until = new \DateTime()->setTimestamp(1451692800);
 
         $plannings = $planningRepository->findNonKeynotesBetween($since, $until);
 
@@ -94,6 +95,8 @@ final class PlanningRepositoryTest extends IntegrationTestCase
         $this->insertPlanning($connection, '1011', '1451606400', '1451608800', (string) $room->id, '10', '0');
         // Planning dont la salle n'existe plus
         $this->insertPlanning($connection, '1012', '1451606400', '1451608800', '9999', '10', '0');
+        $connection->insert('afup_conferenciers', ['conferencier_id' => 1, 'id_forum' => 10, 'prenom' => 'Hélène', 'nom' => 'Schapira']);
+        $connection->insert('afup_conferenciers_sessions', ['session_id' => 1011, 'conferencier_id' => 1]);
 
         $aggregates = $planningRepository->enrichTalkAggregates([
             new TalkAggregate(new Talk()->setId(1011), [], null, null),
@@ -106,6 +109,8 @@ final class PlanningRepositoryTest extends IntegrationTestCase
         self::assertSame(1011, $aggregates[0]->planning?->talkId);
         self::assertSame($room->id, $aggregates[0]->room?->id);
         self::assertSame('Salle Rasmus', $aggregates[0]->room->name);
+        self::assertSame(['Hélène SCHAPIRA'], array_map(static fn(Speaker $speaker): string => $speaker->label, $aggregates[0]->speakers));
+        self::assertSame([], $aggregates[1]->speakers);
 
         self::assertSame(1012, $aggregates[1]->planning?->talkId);
         self::assertNull($aggregates[1]->room);

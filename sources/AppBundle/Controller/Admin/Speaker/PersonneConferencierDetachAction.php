@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller\Admin\Speaker;
 
 use AppBundle\AuditLog\Audit;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,13 +24,13 @@ final class PersonneConferencierDetachAction extends AbstractController
 
     public function __invoke(Request $request): RedirectResponse
     {
-        $speaker = $this->speakerRepository->get($request->request->getInt('speakerId'));
+        $speaker = $this->speakerRepository->find($request->request->getInt('speakerId'));
         if ($speaker === null) {
             throw $this->createNotFoundException('Speaker non trouvé');
         }
-        $personneId = $speaker->getPersonneId();
+        $personneId = $speaker->personneId;
         if ($personneId === null) {
-            return $this->redirectToRoute('admin_speaker_edit', ['id' => $speaker->getId()]);
+            return $this->redirectToRoute('admin_speaker_edit', ['id' => $speaker->id]);
         }
         if (!$this->isCsrfTokenValid('admin_speaker_personne', $request->request->getString('_token'))) {
             $this->addFlash('error', 'Token invalide');
@@ -38,9 +38,9 @@ final class PersonneConferencierDetachAction extends AbstractController
             return $this->redirectToRoute('admin_speaker_personne', ['id' => $personneId]);
         }
 
-        $speaker->setPersonneId(null);
+        $speaker->personneId = null;
         $this->speakerRepository->save($speaker);
-        $this->audit->log('Détachement du conférencier ' . $speaker->getId() . ' de la personne ' . $personneId);
+        $this->audit->log('Détachement du conférencier ' . $speaker->id . ' de la personne ' . $personneId);
         $this->addFlash('notice', 'Le conférencier a été détaché de la personne');
 
         return $this->redirectToRoute('admin_speaker_personne', ['id' => $personneId]);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller\Admin\Talk;
 
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\AuditLog\Audit;
 use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Entity\Repository\TalkToSpeakerRepository;
@@ -35,8 +36,12 @@ class AddAction extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $speakers = array_filter(
+                (array) $form->get('speakers')->getData(),
+                static fn(mixed $speaker): bool => $speaker instanceof Speaker,
+            );
             $this->talkRepository->save($talk);
-            $this->talkToSpeakersRepository->replaceSpeakers($talk, $form->get('speakers')->getData());
+            $this->talkToSpeakersRepository->replaceSpeakers($talk, $speakers);
 
             $this->audit->log(sprintf('Ajout de la session de %s', $talk->getTitle()));
             $this->addFlash('notice', 'La conférence a été ajoutée.');

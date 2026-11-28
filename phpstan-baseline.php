@@ -1214,18 +1214,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/CFP/PhotoStorage.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$eventId of method AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:setEventId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/CFP/SpeakerFactory.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$user of method AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:setUser\\(\\) expects int, int\\|Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/CFP/SpeakerFactory.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Possibly invalid array key type int\\|null\\.$#',
 	'identifier' => 'offsetAccess.invalidOffset',
 	'count' => 1,
@@ -1928,24 +1916,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/Session/IndexAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$speaker of method AppBundle\\\\Event\\\\Speaker\\\\SpeakerPage\\:\\:handleRequest\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Speaker, AppBundle\\\\Event\\\\Model\\\\Speaker\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SpeakerInfosAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$speaker of method AppBundle\\\\SpeakerInfos\\\\SpeakersExpensesStorage\\:\\:getFiles\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Speaker, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SpeakersExpensesAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$speaker of method AppBundle\\\\SpeakerInfos\\\\SpeakersExpensesStorage\\:\\:getFiles\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Speaker, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Event/SpeakersManagementAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'n\' on mixed\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
 	'count' => 1,
@@ -2564,64 +2534,16 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Site/Feuille/EditFeuilleAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Event\\\\Entity\\\\GithubUser\\|int\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Speaker/SpeakerAddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$eventId of method AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:setEventId\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Speaker/SpeakerAddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$user of method AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:setUser\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Speaker/SpeakerAddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on AppBundle\\\\Event\\\\Entity\\\\GithubUser\\|int\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Speaker/SpeakerEditAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Controller\\\\Admin\\\\Speaker\\\\SpeakerEditAction\\:\\:__invoke\\(\\) has no return type specified\\.$#',
 	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Speaker/SpeakerEditAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$user of method AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:setUser\\(\\) expects int, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Speaker/SpeakerEditAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Possibly invalid array key type int\\|null\\.$#',
-	'identifier' => 'offsetAccess.invalidOffset',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Speaker/SpeakerListAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$forumId of method AppBundle\\\\Event\\\\Model\\\\Ticket\\:\\:setForumId\\(\\) expects int, int\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Speaker/SpeakerRegisterAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$speakers of method AppBundle\\\\Event\\\\Entity\\\\Repository\\\\TalkToSpeakerRepository\\:\\:replaceSpeakers\\(\\) expects array\\<AppBundle\\\\Event\\\\Model\\\\Speaker\\>, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Talk/AddAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$speakers of method AppBundle\\\\Event\\\\Entity\\\\Repository\\\\TalkToSpeakerRepository\\:\\:replaceSpeakers\\(\\) expects array\\<AppBundle\\\\Event\\\\Model\\\\Speaker\\>, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Admin/Talk/EditAction.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method getPath\\(\\) on AppBundle\\\\Event\\\\Model\\\\Event\\|null\\.$#',
@@ -2846,18 +2768,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Blog/ProgramAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Blog/TalkWidgetAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'speaker\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Blog/TalkWidgetAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot cast mixed to int\\.$#',
 	'identifier' => 'cast.int',
 	'count' => 1,
@@ -2972,19 +2882,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Lead/PostLeadAction.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getEventId\\(\\) on AppBundle\\\\Event\\\\Model\\\\Speaker\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/FilesAction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$eventSlug of method AppBundle\\\\Controller\\\\Event\\\\EventActionHelper\\:\\:getEvent\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/FilesAction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$speaker of method AppBundle\\\\SpeakerInfos\\\\SpeakersExpensesStorage\\:\\:getFiles\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Speaker, AppBundle\\\\Event\\\\Model\\\\Speaker\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Controller/Event/Speaker/FilesAction.php',
@@ -3770,12 +3668,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/SpeakerType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$mastodon of method AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:setMastodon\\(\\) expects string, string\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Form/SpeakerType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Class AppBundle\\\\Event\\\\Form\\\\SponsorScanType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
@@ -3798,18 +3690,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Form/Support/EventSelectFactory.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$event of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerRepository\\:\\:searchSpeakers\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Event, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TalkAdminType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$talk of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerRepository\\:\\:getSpeakersByTalk\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Talk, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Form/TalkAdminType.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Class AppBundle\\\\Event\\\\Form\\\\TalkType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
@@ -4580,120 +4460,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/InvoiceRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access offset 0 on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access property \\$cfp on mixed\\.$#',
-	'identifier' => 'property.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access property \\$nb on mixed\\.$#',
-	'identifier' => 'property.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast mixed to int\\.$#',
-	'identifier' => 'cast.int',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerRepository\\:\\:getFromLastEventAndUserId\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerRepository\\:\\:getFromLastEventAndUserId\\(\\) has parameter \\$eventId with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerRepository\\:\\:getFromLastEventAndUserId\\(\\) has parameter \\$githubUserId with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerRepository\\:\\:getSpeakersByEvent\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerRepository\\:\\:initMetadata\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerRepository\\:\\:initMetadata\\(\\) should return M of CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata but returns CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerRepository\\:\\:searchSpeakers\\(\\) has parameter \\$direction with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerRepository\\:\\:searchSpeakers\\(\\) has parameter \\$sort with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerRepository\\:\\:searchSpeakers\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$databaseName of method CCMBenchmark\\\\Ting\\\\Repository\\\\Metadata\\<object\\>\\:\\:setDatabase\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$key of static method Webmozart\\\\Assert\\\\Assert\\:\\:keyExists\\(\\) expects int\\|string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/SpeakerRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'\\.aggregation\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'speaker\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'talk\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset 0 on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access property \\$vote_note on mixed\\.$#',
 	'identifier' => 'property.nonObject',
 	'count' => 2,
@@ -4706,19 +4472,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TalkRepository\\:\\:getAllByEventWithSpeakers\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TalkRepository\\:\\:getAllTalksAndRatingsForUser\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Repository\\\\TalkRepository\\:\\:getByTalkWithSpeakers\\(\\) return type with generic interface CCMBenchmark\\\\Ting\\\\Repository\\\\CollectionInterface does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
@@ -4787,18 +4541,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$note of class AppBundle\\\\Event\\\\Model\\\\TalkAggregateVote constructor expects float, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$talk of class AppBundle\\\\Event\\\\Model\\\\TalkAggregate constructor expects AppBundle\\\\Event\\\\Model\\\\Talk, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$speakers of class AppBundle\\\\Event\\\\Model\\\\TalkAggregate constructor expects array\\<AppBundle\\\\Event\\\\Model\\\\Speaker\\>, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TalkRepository.php',
 ];
 $ignoreErrors[] = [
@@ -4976,42 +4718,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Repository/TicketRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:getHotelNightsArray\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Speaker.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:setHotelNightsArray\\(\\) has parameter \\$hotelNights with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Speaker.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:setLinkedin\\(\\) has parameter \\$linkedin with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Speaker.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:validate\\(\\) has parameter \\$payload with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Speaker.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$array of function implode expects array\\<string\\>, array given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Speaker.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:\\$linkedin \\(string\\|null\\) does not accept mixed\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Speaker.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Model\\\\Talk\\:\\:getVotes\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -5054,36 +4760,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Model/Ticket.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'\\.aggregation\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'speaker\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'talk\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/ExportGenerator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Speaker\\\\ExportGenerator\\:\\:prepareLine\\(\\) has parameter \\$talks with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -5096,21 +4772,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/ExportGenerator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$speaker of method AppBundle\\\\Event\\\\Speaker\\\\ExportGenerator\\:\\:prepareLine\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Speaker, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/ExportGenerator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$array of function array_key_exists expects array, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Possibly invalid array key type mixed\\.$#',
-	'identifier' => 'offsetAccess.invalidOffset',
-	'count' => 3,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/ExportGenerator.php',
 ];
 $ignoreErrors[] = [
@@ -5174,31 +4838,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/SpeakerPage.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$micType of method AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:setMicType\\(\\) expects AppBundle\\\\Event\\\\Speaker\\\\MicrophoneType\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/SpeakerPage.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$object of static method DateTimeImmutable\\:\\:createFromMutable\\(\\) expects DateTime, DateTime\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/SpeakerPage.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$phoneNumber of method AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:setPhoneNumber\\(\\) expects string\\|null, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/SpeakerPage.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$route of method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:\\:redirectToRoute\\(\\) expects string, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/SpeakerPage.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$specialDietDescription of method AppBundle\\\\Event\\\\Model\\\\Speaker\\:\\:setSpecialDietDescription\\(\\) expects string, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/SpeakerPage.php',
@@ -5216,97 +4862,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/SpeakerPage.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Possibly invalid array key type int\\|null\\.$#',
-	'identifier' => 'offsetAccess.invalidOffset',
-	'count' => 3,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Speaker/SpeakerPage.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'\\.aggregation\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'speaker\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'talk\' on mixed\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getLabel\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Talk\\\\ExportGenerator\\:\\:getSpeakersLabels\\(\\) has parameter \\$speakers with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Talk\\\\ExportGenerator\\:\\:getSpeakersLabels\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Talk\\\\ExportGenerator\\:\\:getSpeakersLocalities\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Talk\\\\ExportGenerator\\:\\:prepareLine\\(\\) has parameter \\$speakers with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Event\\\\Talk\\\\ExportGenerator\\:\\:prepareLine\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\Event\\\\Talk\\\\ExportGenerator\\:\\:prepareSpeakersLabel\\(\\) has parameter \\$speakers with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$speakers of method AppBundle\\\\Event\\\\Talk\\\\ExportGenerator\\:\\:prepareSpeakersLocalities\\(\\) expects array\\<AppBundle\\\\Event\\\\Model\\\\Speaker\\>, array given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$talk of method AppBundle\\\\Event\\\\Talk\\\\ExportGenerator\\:\\:prepareLine\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Talk, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$array of function array_key_exists expects array, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$array of function implode expects array\\<string\\>, array given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$speakers of method AppBundle\\\\Event\\\\Talk\\\\ExportGenerator\\:\\:prepareLine\\(\\) expects array, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/Event/Talk/ExportGenerator.php',
@@ -6320,12 +5882,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/sources/AppBundle/Security/TalkVoter.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$talk of method AppBundle\\\\Event\\\\Model\\\\Repository\\\\SpeakerRepository\\:\\:getSpeakersByTalk\\(\\) expects AppBundle\\\\Event\\\\Model\\\\Talk, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/Security/TalkVoter.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method AppBundle\\\\Security\\\\TestGithubAuthenticator\\:\\:onAuthenticationSuccess\\(\\) has parameter \\$firewallName with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
 	'count' => 1,
@@ -7284,18 +6840,6 @@ $ignoreErrors[] = [
 	'identifier' => 'offsetAccess.invalidOffset',
 	'count' => 1,
 	'path' => __DIR__ . '/sources/AppBundle/VideoNotifier/HistoryRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method AppBundle\\\\VideoNotifier\\\\StatusGenerator\\:\\:generate\\(\\) has parameter \\$speakers with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/VideoNotifier/StatusGenerator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$speakers of method AppBundle\\\\VideoNotifier\\\\StatusGenerator\\:\\:buildMentionsText\\(\\) expects array\\<AppBundle\\\\Event\\\\Model\\\\Speaker\\>, array given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/sources/AppBundle/VideoNotifier/StatusGenerator.php',
 ];
 
 return ['parameters' => ['ignoreErrors' => $ignoreErrors]];

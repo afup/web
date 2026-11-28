@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Talk;
 
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
 use AppBundle\Event\Entity\Repository\TalkToSpeakerRepository;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Notifier\SlackNotifier;
 use CCMBenchmark\Ting\UnitOfWork;

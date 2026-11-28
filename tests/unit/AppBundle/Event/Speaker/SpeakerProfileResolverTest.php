@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\Event\Speaker;
 
-use AppBundle\Event\Model\Repository\SpeakerRepository;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Speaker\SpeakerIdentity;
 use AppBundle\Event\Speaker\SpeakerProfileResolver;
 use AppBundle\Event\Speaker\SpeakerTalk;
@@ -149,20 +149,20 @@ final class SpeakerProfileResolverTest extends TestCase
 
     public function testProfileConsolidatesTheMostRecentNonEmptyValues(): void
     {
-        $old = self::speaker(1, 'Hélène', 'SCHAPIRA')
-            ->setBiography('Ancienne bio')
-            ->setPhoto('1.jpg')
-            ->setTwitter('@helene_old')
-            ->setLinkedin('helene-schapira');
-        $middle = self::speaker(2, 'Helene', 'SCHAPIRA')
-            ->setBiography('Bio intermédiaire')
-            ->setPhoto('')
-            ->setMastodon('https://phpc.social/@helene')
-            ->setBluesky('');
-        $latest = self::speaker(3, 'Hélène', 'Schapira', 1)
-            ->setBiography('  ')
-            ->setPhoto(null)
-            ->setTwitter('helene');
+        $old = self::speaker(1, 'Hélène', 'SCHAPIRA');
+        $old->biography = 'Ancienne bio';
+        $old->photo = '1.jpg';
+        $old->twitter = '@helene_old';
+        $old->linkedin = 'helene-schapira';
+        $middle = self::speaker(2, 'Helene', 'SCHAPIRA');
+        $middle->biography = 'Bio intermédiaire';
+        $middle->photo = '';
+        $middle->mastodon = 'https://phpc.social/@helene';
+        $middle->bluesky = '';
+        $latest = self::speaker(3, 'Hélène', 'Schapira', 1);
+        $latest->biography = '  ';
+        $latest->photo = null;
+        $latest->twitter = 'helene';
 
         $speakerTalks = [
             self::speakerTalk($old, 10, '2017-10-26'),
@@ -176,11 +176,11 @@ final class SpeakerProfileResolverTest extends TestCase
         $publishedTalkRepository = $this->createMock(PublishedTalkRepository::class);
         $publishedTalkRepository->method('getSpeakerAppearances')->willReturn(array_map(
             static fn(SpeakerTalk $speakerTalk): array => self::appearance(
-                (int) $speakerTalk->speaker->getId(),
+                $speakerTalk->speaker->id,
                 1,
                 'helene-schapira',
-                (string) $speakerTalk->speaker->getFirstname(),
-                (string) $speakerTalk->speaker->getLastname(),
+                (string) $speakerTalk->speaker->firstname,
+                (string) $speakerTalk->speaker->lastname,
                 $speakerTalk->talk->id,
                 $speakerTalk->startsAt->format('Y-m-d'),
             ),
@@ -190,7 +190,7 @@ final class SpeakerProfileResolverTest extends TestCase
             ->method('getSpeakerTalks')
             ->with([3, 2, 1])
             ->willReturn(array_map(static fn(SpeakerTalk $speakerTalk): array => [
-                'speaker_id' => (int) $speakerTalk->speaker->getId(),
+                'speaker_id' => $speakerTalk->speaker->id,
                 'talk' => $speakerTalk->talk,
                 'event' => $speakerTalk->event,
                 'starts_at' => $speakerTalk->startsAt,
@@ -198,7 +198,7 @@ final class SpeakerProfileResolverTest extends TestCase
             ], $speakerTalks));
         // Chaque ligne speaker est chargée une seule fois, quel que soit son nombre de talks.
         $speakerRepository = $this->createMock(SpeakerRepository::class);
-        $speakerRepository->expects(self::exactly(3))->method('get')->willReturnMap([[3, $latest], [2, $middle], [1, $old]]);
+        $speakerRepository->expects(self::exactly(3))->method('find')->willReturnCallback(static fn(int $id): ?Speaker => [3 => $latest, 2 => $middle, 1 => $old][$id] ?? null);
 
         $profile = new SpeakerProfileResolver($publishedTalkRepository, $speakerRepository)->getProfileBySlug('helene-schapira');
 
@@ -254,7 +254,13 @@ final class SpeakerProfileResolverTest extends TestCase
 
     private static function speaker(int $id, string $firstname, string $lastname, ?int $personneId = null): Speaker
     {
-        return new Speaker()->setId($id)->setFirstname($firstname)->setLastname($lastname)->setPersonneId($personneId);
+        $speaker = new Speaker();
+        $speaker->id = $id;
+        $speaker->firstname = $firstname;
+        $speaker->lastname = $lastname;
+        $speaker->personneId = $personneId;
+
+        return $speaker;
     }
 
     private static function speakerTalk(Speaker $speaker, int $talkId, string $date, ?string $githubLogin = null): SpeakerTalk

@@ -9,7 +9,7 @@ use AppBundle\Email\Mailer\MailUser;
 use AppBundle\Email\Mailer\MailUserFactory;
 use AppBundle\Email\Mailer\Message;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Model\Talk;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -72,7 +72,7 @@ class TalkSubmissionConfirmationMail
         $message = new Message(
             $subject,
             MailUserFactory::conferences(),
-            new MailUser($speaker->getEmail(), $speaker->getLabel()),
+            new MailUser((string) $speaker->email, $speaker->label),
         );
 
         $this->mailer->sendTransactional($message, $content, MailUserFactory::conferences()->getEmail(), $bodyTitle);

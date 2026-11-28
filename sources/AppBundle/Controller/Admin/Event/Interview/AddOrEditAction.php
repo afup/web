@@ -8,14 +8,11 @@ use AppBundle\Event\AdminEventSelection;
 use AppBundle\Event\Entity\Interview;
 use AppBundle\Event\Entity\InterviewQuestion;
 use AppBundle\Event\Entity\Repository\InterviewRepository;
-use AppBundle\Event\Entity\Repository\SpeakerRepository as DoctrineSpeakerRepository;
-use AppBundle\Event\Entity\Speaker as DoctrineSpeaker;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Form\InterviewType;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\SpeakerRepository as TingSpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Speaker as TingSpeaker;
-use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Wordpress\WordpressClient;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,11 +21,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_EVENT_WRITER')]
-    class AddOrEditAction extends AbstractController
-    {
+class AddOrEditAction extends AbstractController
+{
     public function __construct(
-        private readonly TingSpeakerRepository $tingSpeakerRepository,
-        private readonly DoctrineSpeakerRepository $doctrineSpeakerRepository,
+        private readonly SpeakerRepository $speakerRepository,
         private readonly InterviewRepository $interviewRepository,
         private readonly TalkRepository $talkRepository,
         private readonly WordpressClient $wordpressClient,
@@ -78,32 +74,20 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
     }
 
     /**
-     * @return array<string, DoctrineSpeaker>
+     * @return array<string, Speaker>
      */
     private function getAvailableSpeakers(Event $event, Interview $interview): array
     {
-        $scheduledSpeakerIds = [];
-        foreach ($this->tingSpeakerRepository->getScheduledSpeakersByEvent($event, true) as $row) {
-            $speaker = $row['speaker'] ?? null;
-            if ($speaker instanceof TingSpeaker) {
-                $scheduledSpeakerIds[] = (int) $speaker->getId();
-            }
-        }
+        $scheduledSpeakers = $this->speakerRepository->getScheduledSpeakers((int) $event->getId(), true);
+        $existingInterviews = $this->interviewRepository->findIndexedBySpeakerIds(array_map(static fn(Speaker $speaker): int => $speaker->id, $scheduledSpeakers));
 
-        $existingInterviews = $this->interviewRepository->findIndexedBySpeakerIds($scheduledSpeakerIds);
-
-        $available = [];
-        foreach ($scheduledSpeakerIds as $id) {
-            if (!isset($existingInterviews[$id]) || in_array($id, $interview->getSpeakerIds(), true)) {
-                $available[] = $this->doctrineSpeakerRepository->find($id);
-            }
-        }
-
-        $available = array_filter($available);
-        usort($available, fn(DoctrineSpeaker $a, DoctrineSpeaker $b) => strcmp($a->label, $b->label));
+        $available = array_values(array_filter(
+            $scheduledSpeakers,
+            static fn(Speaker $speaker): bool => !array_key_exists($speaker->id, $existingInterviews) || in_array($speaker->id, $interview->getSpeakerIds(), true),
+        ));
+        usort($available, fn(Speaker $a, Speaker $b): int => strcmp($a->label, $b->label));
 
         $choices = [];
-        /** @var DoctrineSpeaker $speaker */
         foreach ($available as $speaker) {
             $choices[$speaker->label] = $speaker;
         }
@@ -116,10 +100,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
         $plannedTalks = [];
         foreach ($interview->speakers as $speaker) {
             foreach ($this->talkRepository->getTalksBySpeaker($event, $speaker->id) as $talk) {
-                foreach ($this->talkRepository->getByTalkWithSpeakers($talk) as $row) {
-                    if ($row['talk'] instanceof Talk) {
-                        $plannedTalks[] = $row['talk'];
-                    }
+                $row = $this->talkRepository->getPublishedScheduledWithEvent($talk);
+                if ($row !== null) {
+                    $plannedTalks[] = $row['talk'];
                 }
             }
         }

@@ -7,8 +7,8 @@ namespace AppBundle\Event\Speaker;
 use AppBundle\Event\Entity\Repository\PersonneConferencierRepository;
 use AppBundle\Event\Entity\PersonneConferencier;
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Speaker;
 use Cocur\Slugify\Slugify;
 
 /**
@@ -26,11 +26,11 @@ final readonly class PersonneConferencierLinker
      */
     public function findPersonneId(Speaker $speaker): ?int
     {
-        if ($speaker->getPersonneId() !== null) {
-            return $speaker->getPersonneId();
+        if ($speaker->personneId !== null) {
+            return $speaker->personneId;
         }
 
-        $githubUserId = $speaker->getUser();
+        $githubUserId = $speaker->githubUserId;
 
         return $githubUserId ? $this->personneConferencierRepository->findLatestIdByGithubUser($githubUserId) : null;
     }
@@ -41,14 +41,12 @@ final readonly class PersonneConferencierLinker
      */
     public function ensurePersonne(Speaker $speaker): void
     {
-        if ($speaker->getPersonneId() !== null) {
+        if ($speaker->personneId !== null) {
             return;
         }
 
-        $speaker->setPersonneId(
-            $this->findPersonneId($speaker)
-            ?? $this->createPersonne($speaker->getFirstname() . ' ' . $speaker->getLastname())->id,
-        );
+        $speaker->personneId = $this->findPersonneId($speaker)
+            ?? $this->createPersonne($speaker->firstname . ' ' . $speaker->lastname)->id;
     }
 
     /**
@@ -75,8 +73,6 @@ final readonly class PersonneConferencierLinker
     public function findRowInEvent(int $personneId, Event $event): ?Speaker
     {
         $speakerId = $event->getId() !== null ? $this->personneConferencierRepository->findSpeakerIdInEvent($personneId, $event->getId()) : null;
-        $speaker = $speakerId !== null ? $this->speakerRepository->get($speakerId) : null;
-
-        return $speaker instanceof Speaker ? $speaker : null;
+        return $speakerId !== null ? $this->speakerRepository->find($speakerId) : null;
     }
 }

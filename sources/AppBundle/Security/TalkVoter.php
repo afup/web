@@ -6,7 +6,8 @@ namespace AppBundle\Security;
 
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use AppBundle\Event\Entity\GithubUser;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Model\Talk;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -34,14 +35,15 @@ class TalkVoter extends Voter
             return false;
         }
 
-        $speakers = $this->speakerRepository->getSpeakersByTalk($subject);
+        $talkId = $subject instanceof Talk ? $subject->getId() : null;
+        if ($talkId === null) {
+            return false;
+        }
 
         // All speakers associated to a talk can edit the talk
-        foreach ($speakers as $speaker) {
-            if ($speaker->getUser() === $user->getId()) {
-                return true;
-            }
-        }
-        return false;
+        return array_any(
+            $this->speakerRepository->getSpeakersByTalk($talkId),
+            static fn(Speaker $speaker): bool => $speaker->githubUserId === $user->getId(),
+        );
     }
 }

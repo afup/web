@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\Event\Speaker;
 
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Speaker\PersonJsonLd;
 use AppBundle\Event\Speaker\SpeakerIdentity;
 use AppBundle\Event\Speaker\SpeakerProfile;
@@ -46,11 +46,11 @@ final class PersonJsonLdTest extends TestCase
     {
         $profile = new SpeakerProfile(
             new SpeakerIdentity('x', '</script><script>alert(1)</script>', 'Doe', [1], new \DateTimeImmutable()),
-            new Speaker(),
+            self::speaker(),
             null,
             null,
             [],
-            [new SpeakerTalk(new Speaker(), new PublishedTalk(1, 'Talk'), new PublishedEvent(1, 'Forum PHP', 'forumphp'), new \DateTimeImmutable())],
+            [new SpeakerTalk(self::speaker(), new PublishedTalk(1, 'Talk'), new PublishedEvent(1, 'Forum PHP', 'forumphp'), new \DateTimeImmutable())],
         );
 
         $json = json_encode(new PersonJsonLd()->getData($profile, 'https://afup.org/talks/speakers/x', null), PersonJsonLd::JSON_FLAGS);
@@ -65,7 +65,7 @@ final class PersonJsonLdTest extends TestCase
      */
     private static function profile(array $socialLinks): SpeakerProfile
     {
-        $speaker = new Speaker()->setId(1)->setFirstname('Geoffrey')->setLastname('Bachelet');
+        $speaker = self::speaker(id: 1, firstname: 'Geoffrey', lastname: 'Bachelet');
 
         return new SpeakerProfile(
             new SpeakerIdentity('geoffrey-bachelet', 'Geoffrey', 'Bachelet', [1], new \DateTimeImmutable()),
@@ -75,5 +75,15 @@ final class PersonJsonLdTest extends TestCase
             $socialLinks,
             [new SpeakerTalk($speaker, new PublishedTalk(1, 'Talk'), new PublishedEvent(1, 'Forum PHP', 'forumphp'), new \DateTimeImmutable())],
         );
+    }
+
+    private static function speaker(mixed ...$properties): Speaker
+    {
+        $speaker = new Speaker();
+        foreach ($properties as $property => $value) {
+            $speaker->{$property} = $value;
+        }
+
+        return $speaker;
     }
 }

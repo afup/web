@@ -8,6 +8,7 @@ use AppBundle\Doctrine\EntityRepository;
 use AppBundle\Doctrine\Type\UnixTimestampType;
 use AppBundle\Event\Entity\Planning;
 use AppBundle\Event\Entity\Room;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\TalkAggregate;
 use Doctrine\Persistence\ManagerRegistry;
@@ -73,8 +74,8 @@ final class PlanningRepository extends EntityRepository
     }
 
     /**
-     * Complète les agrégats session/conférenciers produits par TalkRepository (Ting)
-     * avec les plannings et les salles correspondants, rechargés via Doctrine.
+     * Complète les agrégats de sessions produits par TalkRepository (Ting)
+     * avec les conférenciers, les plannings et les salles correspondants, rechargés via Doctrine.
      *
      * @param array<TalkAggregate> $talkAggregates
      *
@@ -92,6 +93,7 @@ final class PlanningRepository extends EntityRepository
 
         $plannings = $this->findIndexedByTalkIds($talkIds);
         $rooms = $this->findRoomsOf($plannings);
+        $speakers = $this->getEntityManager()->getRepository(Speaker::class)->findIndexedByTalkIds($talkIds);
 
         $enriched = [];
         foreach ($talkAggregates as $talkAggregate) {
@@ -99,7 +101,7 @@ final class PlanningRepository extends EntityRepository
             $planning = $talkId !== null ? ($plannings[$talkId] ?? null) : null;
             $enriched[] = new TalkAggregate(
                 $talkAggregate->talk,
-                $talkAggregate->speakers,
+                $talkId !== null ? ($speakers[$talkId] ?? []) : [],
                 $planning?->roomId !== null ? ($rooms[$planning->roomId] ?? null) : null,
                 $planning,
                 $talkAggregate->vote,

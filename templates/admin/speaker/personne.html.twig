@@ -9,7 +9,7 @@
             <a href="{{ path('admin_speaker_edit', {id: speaker.id}) }}">{{ speaker.lastname }} {{ speaker.firstname }}</a>
         </td>
         <td>{{ speaker.email }}</td>
-        <td>{{ speaker.user ?: '' }}</td>
+        <td>{{ speaker.githubUserId ?: '' }}</td>
         <td style="text-align: right">
             <form method="post" action="{{ path(action) }}" style="display: inline">
                 <input type="hidden" name="_token" value="{{ token }}">

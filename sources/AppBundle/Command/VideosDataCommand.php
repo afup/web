@@ -47,7 +47,7 @@ class VideosDataCommand extends Command
         foreach ($talkAggregates as $talkAggregate) {
             $speakersNames = [];
             foreach ($talkAggregate->speakers as $speaker) {
-                $speakersNames[] = $speaker->getLabel();
+                $speakersNames[] = $speaker->label;
             }
 
             $data[] = [

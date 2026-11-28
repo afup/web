@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Speaker;
 
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Talk\PublishedEvent;
 use AppBundle\Event\Talk\PublishedTalk;
 

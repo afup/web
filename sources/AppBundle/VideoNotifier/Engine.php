@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AppBundle\VideoNotifier;
 
 use AppBundle\Event\Entity\Repository\PlanningRepository;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Model\Talk;
 use AppBundle\SocialNetwork\Transport;
@@ -44,7 +44,7 @@ final readonly class Engine
 
         $this->logger->debug('[video-notifier] Talk to post: ' . $talk->getId());
 
-        $speakers = $this->speakerRepository->getSpeakersByTalk($talk);
+        $speakers = $this->speakerRepository->getSpeakersByTalk((int) $talk->getId());
 
         $historyEntry = new HistoryEntry($talk->getId());
         $atLeastOneSuccessfulTransport = false;
@@ -53,7 +53,7 @@ final readonly class Engine
             $statusGenerator = new StatusGenerator($transport->socialNetwork());
 
             try {
-                $status = $statusGenerator->generate($talk, iterator_to_array($speakers));
+                $status = $statusGenerator->generate($talk, $speakers);
 
                 $statusId = $transport->send($status);
 

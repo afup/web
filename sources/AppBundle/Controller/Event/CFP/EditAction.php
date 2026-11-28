@@ -11,7 +11,7 @@ use AppBundle\Event\Form\TalkType;
 use AppBundle\Event\Entity\TalkInvitation;
 use AppBundle\Event\Enum\TalkInvitationState;
 use AppBundle\Event\Entity\GithubUser;
-use AppBundle\Event\Model\Repository\SpeakerRepository;
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Repository\TalkRepository;
 use AppBundle\Event\Entity\Repository\VoteRepository;
 use AppBundle\Event\Model\Talk;
@@ -54,8 +54,8 @@ class EditAction extends AbstractController
         if (!$event->isCfpOpen()) {
             return $this->render('event/cfp/closed.html.twig', ['event' => $event]);
         }
-        $speaker = $this->speakerFactory->getSpeaker($event);
-        if ($speaker->getId() === null) {
+        $speaker = $this->speakerFactory->findSpeaker($event);
+        if ($speaker === null) {
             $this->addFlash('error', $this->translator->trans('Vous devez remplir votre profil conférencier afin de pouvoir soumettre un sujet.'));
 
             return $this->redirectToRoute('cfp_speaker', [
@@ -97,7 +97,7 @@ class EditAction extends AbstractController
             'form' => $talkForm->createView(),
             'talk' => $talk,
             'invitations' => $this->talkInvitationRepository->getPendingInvitationsByTalkId($talkId),
-            'speakers' => $this->speakerRepository->getSpeakersByTalk($talk),
+            'speakers' => $this->speakerRepository->getSpeakersByTalk($talkId),
             'invitationForm' => $invitationForm->createView(),
             'votes' => $this->voteRepository->getVotesByTalkWithUser((int) $talk->getId()),
             'sidebar' => $this->sidebarRenderer->render($event),

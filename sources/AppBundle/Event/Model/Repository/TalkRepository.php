@@ -7,14 +7,13 @@ namespace AppBundle\Event\Model\Repository;
 use AppBundle\Event\Model\TalkAggregateVote;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Entity\GithubUser;
-use AppBundle\Event\Model\Speaker;
 use AppBundle\Event\Model\Talk;
 use AppBundle\Event\Model\TalkAggregate;
-use AppBundle\Ting\JoinHydrator;
 use Aura\SqlQuery\Common\SelectInterface;
 use CCMBenchmark\Ting\Driver\Mysqli\Serializer\Boolean;
 use CCMBenchmark\Ting\Query\QueryException;
 use CCMBenchmark\Ting\Repository\CollectionInterface;
+use CCMBenchmark\Ting\Repository\Hydrator;
 use CCMBenchmark\Ting\Repository\HydratorArray;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
@@ -57,12 +56,8 @@ class TalkRepository extends Repository implements MetadataInitializer
     /**
      * @return CollectionInterface&iterable<Talk>
      */
-    public function getTalksBySpeaker(Event $event, Speaker|int $speakerOrSpeakerId)
+    public function getTalksBySpeaker(Event $event, int $speakerId)
     {
-        if ($speakerOrSpeakerId instanceof Speaker) {
-            $speakerOrSpeakerId = $speakerOrSpeakerId->getId();
-        }
-
         $query = $this->getPreparedQuery(
             'SELECT sessions.session_id, titre, abstract, id_forum, sessions.plannifie, skill, genre
             FROM afup_sessions sessions
@@ -71,7 +66,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             ORDER BY titre
             LIMIT 0, 20
             ',
-        )->setParams(['event' => $event->getId(), 'speaker' => $speakerOrSpeakerId]);
+        )->setParams(['event' => $event->getId(), 'speaker' => $speakerId]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
@@ -79,7 +74,7 @@ class TalkRepository extends Repository implements MetadataInitializer
     /**
      * @return CollectionInterface
      */
-    public function getPreviousTalksBySpeaker(Event $event, Speaker $speaker)
+    public function getPreviousTalksBySpeaker(Event $event, int $speakerId)
     {
         $query = $this->getPreparedQuery(
             'SELECT s.session_id, s.titre, s.abstract, s.id_forum, s.plannifie, s.skill, s.genre
@@ -90,7 +85,7 @@ class TalkRepository extends Repository implements MetadataInitializer
             ORDER BY s.titre ASC
             LIMIT 0, 50
             ',
-        )->setParams(['event' => $event->getId(), 'speaker' => $speaker->getId()]);
+        )->setParams(['event' => $event->getId(), 'speaker' => $speakerId]);
 
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
@@ -175,29 +170,31 @@ class TalkRepository extends Repository implements MetadataInitializer
     }
 
     /**
-     * @return CollectionInterface&iterable<array<mixed>>
+     * La session, si elle est planifiée et publiée, avec son événement.
+     *
+     * @return array{talk: Talk, event: Event|null}|null
      */
-    public function getByTalkWithSpeakers(Talk $talk)
+    public function getPublishedScheduledWithEvent(Talk $talk): ?array
     {
-        $hydrator = new JoinHydrator();
-        $hydrator->aggregateOn('talk', 'speaker', 'getId');
-
         $query = $this->getPreparedQuery(
-            // Les salles et les plannings ne sont plus hydratés par Ting : ils sont
-            // rechargés via Doctrine avec PlanningRepository::findIndexedByTalkIds().
+            // Les conférenciers, les salles et les plannings ne sont plus hydratés par Ting : ils sont
+            // rechargés via Doctrine (SpeakerRepository, PlanningRepository).
             'SELECT talk.session_id, talk.titre, skill, talk.genre, abstract, talk.plannifie,
-            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe, speaker.biographie, speaker.personne_id,
             event.date_annonce_planning, event.path, event.interviews_intro, event.interviews_cta_text
             FROM afup_sessions AS talk
-            LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
-            LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
-            LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
             LEFT JOIN afup_forum event ON talk.id_forum = event.id
-            WHERE talk.session_id = :talk AND plannifie = 1 AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)
-            ORDER BY planning.debut ASC, planning.id_salle ASC, talk.session_id ASC ',
+            WHERE talk.session_id = :talk AND plannifie = 1 AND (talk.date_publication < NOW() OR talk.date_publication IS NULL)',
         )->setParams(['talk' => $talk->getId()]);
 
-        return $query->query($this->getCollection($hydrator));
+        $row = $query->query($this->getCollection(new Hydrator()))->first();
+        if (!is_array($row) || !($row['talk'] ?? null) instanceof Talk) {
+            return null;
+        }
+
+        return [
+            'talk' => $row['talk'],
+            'event' => ($row['event'] ?? null) instanceof Event ? $row['event'] : null,
+        ];
     }
 
     /**
@@ -222,10 +219,6 @@ class TalkRepository extends Repository implements MetadataInitializer
      */
     public function getByEventsWithSpeakers(array $events, bool $applyPublicationdateFilters = true, bool $orderByTheme = false, ?int $filterByThemeId = null): array
     {
-        $hydrator = new JoinHydrator();
-        $hydrator->aggregateOn('talk', 'speaker', 'getId');
-
-
         $params = [];
         $publicationdateFilters = '';
         if ($applyPublicationdateFilters) {
@@ -250,26 +243,21 @@ class TalkRepository extends Repository implements MetadataInitializer
 
         $query = $this->getPreparedQuery(
             sprintf('SELECT talk.id_forum, talk.session_id, titre, skill, talk.genre, abstract, talk.plannifie, talk.language_code,
-            talk.joindin, talk.theme, talk.position,
-            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe
+            talk.joindin, talk.theme, talk.position
             FROM afup_sessions AS talk
-            LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
-            LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
             LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
             LEFT JOIN afup_conference_theme ON afup_conference_theme.id = talk.theme
             WHERE talk.id_forum IN(%s) AND plannifie = 1 %s %s
             ORDER BY %s ', $inEvents, $publicationdateFilters, $themeFilters, $orderByTheme ? 'afup_conference_theme.priority ASC, afup_conference_theme.name ASC, talk.position IS NULL, talk.position ASC, talk.date_publication DESC, talk.session_id ASC' : 'talk.position IS NULL, talk.position ASC, planning.debut ASC, planning.id_salle ASC, talk.date_publication DESC, talk.session_id ASC '),
         )->setParams($params);
 
-        $result = $query->query($this->getCollection($hydrator));
         $aggregates = [];
-
-        foreach ($result as $row) {
+        foreach ($this->uniqueByTalk($query->query($this->getCollection(new Hydrator()))) as $row) {
             $aggregates[] = new TalkAggregate(
                 $row['talk'],
-                $row['.aggregation']['speaker'],
-                // Les salles et les plannings ne sont plus hydratés par Ting : ils sont
+                // Les conférenciers, les salles et les plannings ne sont plus hydratés par Ting : ils sont
                 // rechargés via Doctrine avec PlanningRepository::enrichTalkAggregates().
+                [],
                 null,
                 null,
             );
@@ -288,12 +276,9 @@ class TalkRepository extends Repository implements MetadataInitializer
             SELECT talk.id_forum, talk.session_id, titre, skill, talk.genre, abstract, talk.plannifie, talk.language_code,
             talk.joindin, talk.youtube_id, talk.slides_url, talk.interview_url, talk.blog_post_url, talk.needs_mentoring,
             talk.date_soumission,
-            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.societe,
             (SELECT AVG(vote) FROM afup_sessions_vote_github asvg WHERE asvg.session_id = talk.session_id) AS vote_note,
             (SELECT COUNT(vote) FROM afup_sessions_vote_github asvg WHERE asvg.session_id = talk.session_id) AS vote_total
             FROM afup_sessions AS talk
-            LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
-            LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
             LEFT JOIN afup_forum_planning planning ON planning.id_session = talk.session_id
             WHERE talk.id_forum = :id %s
             ORDER BY %s 
@@ -320,20 +305,16 @@ SQL;
             ->getPreparedQuery(sprintf($sql, $where, $orderBy))
             ->setParams($params);
 
-        $hydrator = new JoinHydrator();
-        $hydrator->aggregateOn('talk', 'speaker', 'getId');
-        $result = $query->query($this->getCollection($hydrator));
-
         $aggregates = [];
-        foreach ($result as $row) {
+        foreach ($this->uniqueByTalk($query->query($this->getCollection(new Hydrator()))) as $row) {
             $aggregates[] = new TalkAggregate(
                 $row['talk'],
-                $row['.aggregation']['speaker'],
-                // Les salles et les plannings ne sont plus hydratés par Ting : ils sont
+                // Les conférenciers, les salles et les plannings ne sont plus hydratés par Ting : ils sont
                 // rechargés via Doctrine avec PlanningRepository::enrichTalkAggregates().
+                [],
                 null,
                 null,
-                $row[0]->vote_note ? new TalkAggregateVote($row[0]->vote_note, $row[0]->vote_total) : null,
+                $row['values']->vote_note ? new TalkAggregateVote($row['values']->vote_note, $row['values']->vote_total) : null,
             );
         }
 
@@ -341,25 +322,20 @@ SQL;
     }
 
     /**
-     * @return CollectionInterface
-     * @throws QueryException
+     * Toutes les sessions de l'événement, planifiées ou non, par id.
+     *
+     * @return CollectionInterface<Talk>&iterable<Talk>
      */
-    public function getAllByEventWithSpeakers(Event $event)
+    public function getAllByEvent(Event $event): CollectionInterface
     {
-        $hydrator = new JoinHydrator();
-        $hydrator->aggregateOn('talk', 'speaker', 'getId');
-
         $query = $this->getPreparedQuery(
-            'SELECT talk.session_id, titre, skill, talk.genre, abstract, talk.plannifie, talk.language_code, talk.needs_mentoring, talk.staff_notes, talk.youtube_id,
-            speaker.conferencier_id, speaker.nom, speaker.prenom, speaker.id_forum, speaker.photo, speaker.ville, speaker.societe, speaker.email, speaker.conferencier_id
+            'SELECT talk.session_id, titre, skill, talk.genre, abstract, talk.plannifie, talk.language_code, talk.needs_mentoring, talk.staff_notes, talk.youtube_id
             FROM afup_sessions AS talk
-            LEFT JOIN afup_conferenciers_sessions acs ON acs.session_id = talk.session_id
-            LEFT JOIN afup_conferenciers speaker ON speaker.conferencier_id = acs.conferencier_id
             WHERE talk.id_forum = :event
             ORDER BY talk.session_id ASC ',
         )->setParams(['event' => $event->getId()]);
 
-        return $query->query($this->getCollection($hydrator));
+        return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
     /**
@@ -405,6 +381,27 @@ SQL;
             ->getQuery($qb->getStatement())
             ->setParams($qb->getBindValues())
             ->query($this->getCollection(new HydratorSingleObject()));
+    }
+
+    /**
+     * Une jointure (sur les plannings par exemple) peut renvoyer plusieurs lignes par session :
+     * seule la première de chaque session est gardée, à sa place.
+     *
+     * @param iterable<mixed> $rows
+     *
+     * @return list<array{talk: Talk, values: mixed}> values : les colonnes non mappées (sous-requêtes)
+     */
+    private function uniqueByTalk(iterable $rows): array
+    {
+        $unique = [];
+        foreach ($rows as $row) {
+            if (!is_array($row) || !($row['talk'] ?? null) instanceof Talk) {
+                continue;
+            }
+            $unique[(int) $row['talk']->getId()] ??= ['talk' => $row['talk'], 'values' => $row[0] ?? null];
+        }
+
+        return array_values($unique);
     }
 
     /**

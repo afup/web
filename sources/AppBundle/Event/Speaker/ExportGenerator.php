@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace AppBundle\Event\Speaker;
 
+use AppBundle\Event\Entity\Repository\SpeakerRepository;
 use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\TalkRepository;
-use AppBundle\Event\Model\Speaker;
+use AppBundle\Event\Entity\Speaker;
 use AppBundle\Event\Model\Talk;
 use CCMBenchmark\Ting\Query\QueryException;
 
 class ExportGenerator
 {
-    public function __construct(private readonly TalkRepository $talkRepository) {}
+    public function __construct(
+        private readonly TalkRepository $talkRepository,
+        private readonly SpeakerRepository $speakerRepository,
+    ) {}
 
     /**
      *
@@ -57,14 +61,16 @@ class ExportGenerator
      */
     private function getFromRegistrationsOnEvent(Event $event)
     {
-        $talksWithSpeakers = $this->talkRepository->getAllByEventWithSpeakers($event);
+        /** @var list<Talk> $talks */
+        $talks = iterator_to_array($this->talkRepository->getAllByEvent($event), false);
+        $speakersByTalk = $this->speakerRepository->findIndexedByTalkIds(array_map(static fn(Talk $talk): int => (int) $talk->getId(), $talks));
 
         $talksBySpeakers = [];
 
-        foreach ($talksWithSpeakers as $talkWithSpeaker) {
-            foreach ($talkWithSpeaker['.aggregation']['speaker'] as $speaker) {
-                $talksBySpeakers[$speaker->getId()]['speaker'] = $speaker;
-                $talksBySpeakers[$speaker->getId()]['talks'][$talkWithSpeaker['talk']->getId()] = $talkWithSpeaker['talk'];
+        foreach ($talks as $talk) {
+            foreach ($speakersByTalk[(int) $talk->getId()] ?? [] as $speaker) {
+                $talksBySpeakers[$speaker->id]['speaker'] = $speaker;
+                $talksBySpeakers[$speaker->id]['talks'][(int) $talk->getId()] = $talk;
             }
         }
 
@@ -87,8 +93,8 @@ class ExportGenerator
         }
 
         return [
-            'nom_prenom' => $speaker->getLabel(),
-            'email' => $speaker->getEmail(),
+            'nom_prenom' => $speaker->label,
+            'email' => $speaker->email,
             'retenu' => '',
             'mention_majoritaire_max' => '',
             'qui_envoie_le_mail' => '',
@@ -97,7 +103,7 @@ class ExportGenerator
             'mail_envoye' => '',
             'confirmation_speaker' => '',
             'sessions_proposees' => implode(PHP_EOL, $labels),
-            'id' => $speaker->getId(),
+            'id' => $speaker->id,
             'lien_bo' => '',
             'commentaire' => '',
         ];

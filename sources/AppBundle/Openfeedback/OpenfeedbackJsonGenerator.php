@@ -27,17 +27,17 @@ class OpenfeedbackJsonGenerator
             $speakersFormatted = [];
             $speakersId = [];
             foreach ($talkAggregate->speakers as $speaker) {
-                $speakersId[] = "{$speaker->getId()}";
+                $speakersId[] = "{$speaker->id}";
                 $speakersFormatted[] = [
-                    'name' => $speaker->getLabel(),
+                    'name' => $speaker->label,
                     'photoUrl' => 'https://afup.org' . $this->photoStorage->getUrl($speaker),
                     'social' => [
                         [
                             'Présentation',
-                            'link' => sprintf('https://event.afup.org/%s/speakers/#%d', $event->getPath(), $speaker->getId()),
+                            'link' => sprintf('https://event.afup.org/%s/speakers/#%d', $event->getPath(), $speaker->id),
                         ],
                     ],
-                    'id' => "{$speaker->getId()}",
+                    'id' => "{$speaker->id}",
                 ];
             }
 
